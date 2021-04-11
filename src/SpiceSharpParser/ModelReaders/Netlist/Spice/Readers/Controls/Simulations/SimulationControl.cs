@@ -62,7 +62,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 }
             }
 
-
             // TODO: Talk with Sven
             /*baseSimulation.Configurations.Add(
                 new CollectionConfiguration()

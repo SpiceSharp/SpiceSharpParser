@@ -3,7 +3,7 @@ using SpiceSharp.Simulations.Variables;
 
 namespace SpiceSharpParser.Common.Evaluation
 {
-    public class CustomVariable<T> : IVariable<T> 
+    public class CustomVariable<T> : IVariable<T>
     {
         public T Value { get; set; }
 

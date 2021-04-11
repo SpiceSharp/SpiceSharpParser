@@ -1,13 +1,11 @@
-﻿using SpiceSharp.Components;
-using SpiceSharp.Simulations;
+﻿using System.Linq;
+using SpiceSharp.Components;
 using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using System.Linq;
-using SpiceSharpParser.Common.Validation;
 using Component = SpiceSharp.Components.Component;
-using SpiceSharpParser.Parsers.Expression;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
 {

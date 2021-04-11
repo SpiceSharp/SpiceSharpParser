@@ -1,8 +1,8 @@
-﻿using SpiceSharpParser.Lexers.Netlist.Spice;
-using SpiceSharpParser.Models.Netlist.Spice;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Lexers;
+using SpiceSharpParser.Lexers.Netlist.Spice;
+using SpiceSharpParser.Models.Netlist.Spice;
 
 namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
 {
@@ -35,7 +35,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
         public int EndColumnIndex { get; }
 
         /// <summary>
-        /// Get the file name.
+        /// Gets the file name.
         /// </summary>
         public string FileName { get; }
 

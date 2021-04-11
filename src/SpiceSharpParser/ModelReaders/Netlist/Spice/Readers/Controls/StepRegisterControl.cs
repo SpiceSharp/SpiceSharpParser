@@ -24,10 +24,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
             if (statement.Parameters.Count < 4)
             {
-                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
-                    ValidationEntryLevel.Warning,
-                    "Too less parameters for .STEP_R",
-                    statement.LineInfo));
+                context.Result.Validation.Add(
+                    new ValidationEntry(
+                        ValidationEntrySource.Reader,
+                        ValidationEntryLevel.Warning,
+                        "Too less parameters for .STEP_R",
+                        statement.LineInfo));
             }
 
             string firstParam = statement.Parameters[0].Image;

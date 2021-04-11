@@ -6,13 +6,13 @@ using System.Text;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Custom
 {
-    public class ISwitchModel : Entity<BindingContext>, IParameterized<ISwitchModelBaseParameters>
+    public class ISwitchModel : Entity<BindingContext>, IParameterized<ISwitchModelParameters>
     {
         public ISwitchModel(string name)
             : base(name)
         {
         }
 
-        public ISwitchModelBaseParameters Parameters { get; } = new ISwitchModelBaseParameters();
+        public ISwitchModelParameters Parameters { get; } = new ISwitchModelParameters();
     }
 }

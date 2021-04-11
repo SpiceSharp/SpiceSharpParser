@@ -1,4 +1,10 @@
-﻿using SpiceSharp.Simulations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using SpiceSharp.Entities;
+using SpiceSharp.Simulations;
+using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
@@ -6,12 +12,6 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using SpiceSharpParser.Common.Validation;
-using SpiceSharp.Entities;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
@@ -333,10 +333,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
             else
             {
-                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
-                    ValidationEntryLevel.Warning,
-                    $"There is no {expressionName} expression",
-                    parameter.LineInfo));
+                context.Result.Validation.Add(
+                    new ValidationEntry(
+                        ValidationEntrySource.Reader,
+                        ValidationEntryLevel.Warning,
+                        $"There is no {expressionName} expression",
+                        parameter.LineInfo));
             }
         }
 

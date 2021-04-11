@@ -1,15 +1,15 @@
-﻿using SpiceSharp.Simulations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using SpiceSharpParser.Common;
-using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {

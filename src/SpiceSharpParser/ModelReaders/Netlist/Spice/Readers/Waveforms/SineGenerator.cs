@@ -1,8 +1,8 @@
-﻿using SpiceSharp.Components;
+﻿using System;
+using SpiceSharp.Components;
+using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using System;
-using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 {

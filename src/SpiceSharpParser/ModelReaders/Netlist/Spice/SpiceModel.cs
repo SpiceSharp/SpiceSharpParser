@@ -10,7 +10,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
     /// <summary>
     /// A result of reading a SPICE netlist model.
     /// </summary>
-    public class SpiceModel<TCircuit, TSimulation> : ISpiceModel<TCircuit, TSimulation> where TCircuit : class
+    public class SpiceModel<TCircuit, TSimulation> : ISpiceModel<TCircuit, TSimulation>
+        where TCircuit : class
     {
         public SpiceModel(TCircuit circuit, string title)
         {
@@ -25,7 +26,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         public string Title { get; }
 
         /// <summary>
-        /// Gets the circuit from the netlist.
+        /// Gets or sets the circuit from the netlist.
         /// </summary>
         public TCircuit Circuit { get; set; }
 

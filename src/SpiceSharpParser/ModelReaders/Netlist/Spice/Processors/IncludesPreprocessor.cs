@@ -1,12 +1,12 @@
-﻿using SpiceSharpParser.Common.FileSystem;
+﻿using System;
+using System.IO;
+using System.Linq;
+using SpiceSharpParser.Common.FileSystem;
+using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.Lexers.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Parsers.Netlist.Spice;
-using System;
-using System.IO;
-using System.Linq;
-using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {
@@ -57,14 +57,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// </summary>
         public ISingleSpiceNetlistParser SpiceNetlistParser { get; }
 
-        protected Func<string> InitialDirectoryPathProvider { get; }
-
         public SpiceParserValidationResult Validation { get; set; }
+
+        protected Func<string> InitialDirectoryPathProvider { get; }
 
         /// <summary>
         /// Reads .include statements.
         /// </summary>
-        /// <param name="statements">Statements</param>
+        /// <param name="statements">Statements.</param>
         public Statements Process(Statements statements)
         {
             if (statements == null)
@@ -128,7 +128,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
                 Validation.Reading.Add(
                     new ValidationEntry(
                         ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Warning, 
+                        ValidationEntryLevel.Warning,
                         $"Netlist include at {includeFullPath}  is not found",
                         include.LineInfo));
                 return;

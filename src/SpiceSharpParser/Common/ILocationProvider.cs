@@ -7,17 +7,17 @@ namespace SpiceSharpParser.Common
     public interface ILocationProvider
     {
         /// <summary>
-        /// Gets or sets token line number.
+        /// Gets token line number.
         /// </summary>
         int LineNumber { get; }
 
         /// <summary>
-        /// Gets or sets start column index.
+        /// Gets start column index.
         /// </summary>
         int StartColumnIndex { get; }
 
         /// <summary>
-        /// Gets or sets end column index.
+        /// Gets end column index.
         /// </summary>
         int EndColumnIndex { get; }
 
@@ -26,5 +26,4 @@ namespace SpiceSharpParser.Common
         /// </summary>
         string FileName { get; }
     }
-
 }

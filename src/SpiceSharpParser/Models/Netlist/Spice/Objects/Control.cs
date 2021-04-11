@@ -5,12 +5,13 @@
     /// </summary>
     public class Control : Statement
     {
-        public Control() : base(null)
+        public Control()
+            : base(null)
         {
-
         }
 
-        public Control(string name, ParameterCollection parameters, SpiceLineInfo lineInfo) : base(lineInfo)
+        public Control(string name, ParameterCollection parameters, SpiceLineInfo lineInfo)
+            : base(lineInfo)
         {
             Name = name;
             Parameters = parameters;

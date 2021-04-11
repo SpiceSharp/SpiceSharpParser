@@ -1,9 +1,9 @@
-﻿using SpiceSharp.Simulations;
+﻿using System;
+using System.Collections.Generic;
+using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using System;
-using System.Collections.Generic;
-using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {

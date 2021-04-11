@@ -1,10 +1,10 @@
-﻿using SpiceSharpParser.Common.Evaluation;
+﻿using System.Collections.Generic;
+using System.Linq;
+using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using System.Collections.Generic;
-using System.Linq;
-using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
 {

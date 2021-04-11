@@ -26,7 +26,6 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// </summary>
         public int Count => _list.Count;
 
-
         public override SpiceLineInfo LineInfo => _list.FirstOrDefault()?.LineInfo;
 
         /// <summary>

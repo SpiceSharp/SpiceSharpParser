@@ -1,8 +1,8 @@
-﻿using SpiceSharpParser.Common.Evaluation;
+﻿using System;
+using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using System;
-using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
@@ -57,8 +57,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         {
                             if (validate)
                             {
-                                validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning,
-                                    $"Problem with setting param `{assignmentParameter.Name}` with expression =`{assignmentParameter.Value}`", statement.LineInfo));
+                                validation.Add(
+                                    new ValidationEntry(
+                                        ValidationEntrySource.Reader,
+                                        ValidationEntryLevel.Warning,
+                                        $"Problem with setting param `{assignmentParameter.Name}` with expression =`{assignmentParameter.Value}`",
+                                        statement.LineInfo));
                             }
                         }
                     }
@@ -78,8 +82,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 }
                 else
                 {
-                    validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning,
-                        ".PARAM supports only assignments", statement.LineInfo));
+                    validation.Add(
+                        new ValidationEntry(
+                            ValidationEntrySource.Reader,
+                            ValidationEntryLevel.Warning,
+                            ".PARAM supports only assignments",
+                            statement.LineInfo));
                 }
             }
         }

@@ -5,7 +5,8 @@
     /// </summary>
     public class StringParameter : SingleParameter
     {
-        public StringParameter(string rawString, SpiceLineInfo lineInfo) : base(rawString, lineInfo)
+        public StringParameter(string rawString, SpiceLineInfo lineInfo)
+            : base(rawString, lineInfo)
         {
         }
 

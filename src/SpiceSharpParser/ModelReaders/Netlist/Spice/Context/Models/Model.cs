@@ -14,7 +14,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
         }
 
         public string Name { get; }
+
         public IEntity Entity { get; }
+
         public IParameterSet Parameters { get; }
     }
 }

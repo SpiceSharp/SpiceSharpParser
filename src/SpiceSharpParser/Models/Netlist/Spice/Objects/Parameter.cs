@@ -5,12 +5,13 @@
     /// </summary>
     public abstract class Parameter : SpiceObject
     {
-        protected Parameter(SpiceLineInfo lineInfo) : base(lineInfo)
+        protected Parameter(SpiceLineInfo lineInfo)
+            : base(lineInfo)
         {
         }
 
         protected Parameter()
-        { 
+        {
         }
 
         /// <summary>
@@ -24,7 +25,7 @@
         /// <summary>
         /// Gets the string representation of the parameter.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>String representation of the parameter.</returns>
         public override string ToString()
         {
             return Image;

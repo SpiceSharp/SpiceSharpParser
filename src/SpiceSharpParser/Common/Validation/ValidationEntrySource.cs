@@ -4,6 +4,6 @@
     {
         Lexer,
         Parser,
-        Reader
+        Reader,
     }
 }

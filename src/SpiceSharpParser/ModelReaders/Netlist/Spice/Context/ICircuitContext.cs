@@ -57,36 +57,31 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         IModelsRegistry ModelsRegistry { get; }
 
         /// <summary>
-        /// Gets or sets the statements reader.
+        /// Gets the statements reader.
         /// </summary>
         ISpiceStatementsReader StatementsReader { get; }
 
         /// <summary>
-        /// Gets or sets the waveform reader.
+        /// Gets the waveform reader.
         /// </summary>
         IWaveformReader WaveformReader { get; }
 
         /// <summary>
-        /// Gets or sets case-sensitivity settings.
+        /// Gets case-sensitivity settings.
         /// </summary>
         ISpiceNetlistCaseSensitivitySettings CaseSensitivity { get; }
 
         /// <summary>
-        /// Gets or sets working directory.
+        /// Gets working directory.
         /// </summary>
         string WorkingDirectory { get; }
-
-        /// <summary>
-        /// Gets or sets instance data.
-        /// </summary>
-        InstanceData InstanceData { get; }
 
         /// <summary>
         /// Sets parameter of entity to value of expression.
         /// </summary>
         /// <param name="entity">Entity.</param>
         /// <param name="parameterName">Parameter name.</param>
-        /// <param name="valueExpression">Value expression.</param>
+        /// <param name="expression">Value expression.</param>
         /// <param name="beforeTemperature">Should be re-evaluated before temperature.</param>
         /// <param name="onload">Should be re-evaluated OnBeforeLoad.</param>
         void SetParameter(IEntity entity, string parameterName, string expression, bool beforeTemperature = true, bool onload = true, Simulation simulation = null);
@@ -111,8 +106,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Creates nodes for a component.
         /// </summary>
-        /// <param name="component">A component</param>
-        /// <param name="parameters">Parameters of component</param>
+        /// <param name="component">A component.</param>
+        /// <param name="parameters">Parameters of component.</param>
         void CreateNodes(SpiceSharp.Components.IComponent component, ParameterCollection parameters);
 
         /// <summary>

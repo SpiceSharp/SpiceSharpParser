@@ -111,15 +111,13 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
 
                     if (tn.Token.SpiceTokenType == tokens[currentTokenIndex].SpiceTokenType && (tn.Token.Lexem == null || tn.Token.Lexem == tokens[currentTokenIndex].Lexem))
                     {
-                        //TODO: refactor it
-
+                        // TODO: refactor it
                         tn.Token.Lexem = tokens[currentTokenIndex].Lexem;
                         tn.Token.LineNumber = tokens[currentTokenIndex].LineNumber;
                         tn.Token.StartColumnIndex = tokens[currentTokenIndex].StartColumnIndex;
                         tn.Token.FileName = tokens[currentTokenIndex].FileName;
 
-                        ((ParseTreeNonTerminalNode) tn.Parent).EndColumnIndex =
-                            tokens[currentTokenIndex].EndColumnIndex;
+                        ((ParseTreeNonTerminalNode)tn.Parent).EndColumnIndex = tokens[currentTokenIndex].EndColumnIndex;
 
                         currentTokenIndex++;
                     }

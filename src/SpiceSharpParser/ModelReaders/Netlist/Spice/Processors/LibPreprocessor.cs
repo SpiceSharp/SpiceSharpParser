@@ -1,14 +1,14 @@
-﻿using SpiceSharpParser.Common.FileSystem;
-using SpiceSharpParser.Lexers.Netlist.Spice;
-using SpiceSharpParser.Models.Netlist.Spice;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.Parsers.Netlist.Spice;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.FileSystem;
 using SpiceSharpParser.Common.Validation;
+using SpiceSharpParser.Lexers.Netlist.Spice;
+using SpiceSharpParser.Models.Netlist.Spice;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Parsers.Netlist.Spice;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {
@@ -81,7 +81,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// <summary>
         /// Reads .include statements.
         /// </summary>
-        /// <param name="statements">Netlist model to search for .include statements</param>
+        /// <param name="statements">Netlist model to search for .include statements.</param>
         public Statements Process(Statements statements)
         {
             if (statements == null)
@@ -128,7 +128,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// <summary>
         /// Reads .include statements.
         /// </summary>
-        /// <param name="statements">Netlist model to search for .include statements</param>
+        /// <param name="statements">Netlist model to search for .include statements.</param>
         /// <param name="currentDirectoryPath">Current directory path.</param>
         private Statements Process(Statements statements, string currentDirectoryPath)
         {

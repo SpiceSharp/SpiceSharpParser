@@ -1,12 +1,11 @@
-﻿using SpiceSharp.Simulations;
-using SpiceSharpParser.Common.Evaluation;
+﻿using System.Collections.Generic;
+using System.Linq;
+using SpiceSharp.Simulations;
+using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using System.Collections.Generic;
-using SpiceSharpParser.Common.Validation;
-using System.Linq;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
 {
@@ -41,6 +40,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                         context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".dc - Source Name expected", statement.LineInfo));
                         return null;
                     }
+
                     break;
 
                 case 1:
@@ -64,14 +64,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 var start = context.Evaluator.EvaluateDouble(statement.Parameters.Get((4 * i) + 1));
                 var stop = context.Evaluator.EvaluateDouble(statement.Parameters.Get((4 * i) + 2));
                 var step = context.Evaluator.EvaluateDouble(statement.Parameters.Get((4 * i) + 3));
-                ParameterSweep sweep = new ParameterSweep(statement.Parameters.Get(4 * i).Image, Enumerable.Range(0, (int)((stop - start) / step) + 1).Select(index => start + index * step));
+                ParameterSweep sweep = new ParameterSweep(statement.Parameters.Get(4 * i).Image, Enumerable.Range(0, (int)((stop - start) / step) + 1).Select(index => start + (index * step)));
 
                 sweeps.Add(sweep);
             }
 
             DC dc = new DC(name, sweeps);
 
-            //TODO: Consult with Sven
+            // TODO: Consult with Sven
             /*dc.OnParameterSearch += (sender, e) =>
             {
                 string sweepParameterName = e.Name;

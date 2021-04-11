@@ -5,11 +5,13 @@
     /// </summary>
     public class IdentifierParameter : SingleParameter
     {
-        public IdentifierParameter(string identifier) : base(identifier, null)
+        public IdentifierParameter(string identifier)
+            : base(identifier, null)
         {
         }
 
-        public IdentifierParameter(string identifier, SpiceLineInfo lineInfo) : base(identifier, lineInfo)
+        public IdentifierParameter(string identifier, SpiceLineInfo lineInfo)
+            : base(identifier, lineInfo)
         {
         }
 

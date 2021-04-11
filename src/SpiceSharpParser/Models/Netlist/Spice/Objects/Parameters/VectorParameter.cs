@@ -15,14 +15,14 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
         }
 
         public VectorParameter()
-        { 
+        {
             Elements = new List<SingleParameter>();
         }
 
         public override SpiceLineInfo LineInfo => Elements.FirstOrDefault()?.LineInfo;
 
         /// <summary>
-        /// Gets or sets the elements of the vector.
+        /// Gets the elements of the vector.
         /// </summary>
         public List<SingleParameter> Elements { get; }
 

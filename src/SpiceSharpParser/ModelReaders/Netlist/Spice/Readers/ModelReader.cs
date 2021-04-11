@@ -1,10 +1,10 @@
-﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+﻿using System;
+using SpiceSharpParser.Common.Validation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using System;
-using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 {
@@ -61,9 +61,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
                     if (!Mapper.TryGetValue(type, context.CaseSensitivity.IsEntityNamesCaseSensitive, out var generator))
                     {
-                        context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
-                            ValidationEntryLevel.Warning, $"Unsupported model type: {type}",
-                            bracketParameter.LineInfo));
+                        context.Result.Validation.Add(
+                            new ValidationEntry(
+                                ValidationEntrySource.Reader,
+                                ValidationEntryLevel.Warning,
+                                $"Unsupported model type: {type}",
+                                bracketParameter.LineInfo));
                         return;
                     }
 
@@ -87,10 +90,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
                     if (!Mapper.TryGetValue(type, context.CaseSensitivity.IsModelTypeCaseSensitive, out var generator))
                     {
-                        context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
-                            ValidationEntryLevel.Warning, $"Unsupported model type: {type}",
-                            parameter.LineInfo));
-                        
+                        context.Result.Validation.Add(
+                            new ValidationEntry(
+                                ValidationEntrySource.Reader,
+                                ValidationEntryLevel.Warning,
+                                $"Unsupported model type: {type}",
+                                parameter.LineInfo));
+
                         return;
                     }
 

@@ -20,8 +20,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
                     var model2 = new CapacitorModel(id);
                     SetParameters(context, model2, parameters);
                     return new Context.Models.Model(id, model2, model2.Parameters);
-         
             }
+
             return null;
         }
     }

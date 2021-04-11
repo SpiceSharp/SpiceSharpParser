@@ -4,7 +4,8 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
 {
     public class ExpressionEqualParameter : Parameter
     {
-        public ExpressionEqualParameter(string expression, Points points, SpiceLineInfo lineInfo) : base(lineInfo)
+        public ExpressionEqualParameter(string expression, Points points, SpiceLineInfo lineInfo)
+            : base(lineInfo)
         {
             Expression = expression;
             Points = points;
@@ -18,7 +19,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
 
         public override SpiceObject Clone()
         {
-            var result = new ExpressionEqualParameter(Expression, (Points) Points.Clone(), LineInfo);
+            var result = new ExpressionEqualParameter(Expression, (Points)Points.Clone(), LineInfo);
             return result;
         }
     }

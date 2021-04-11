@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using SpiceSharp.Components;
+using SpiceSharp.Entities;
+using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using System.Linq;
-using SpiceSharpParser.Common.Validation;
-using SpiceSharp.Entities;
 using SpiceSharpParser.Parsers.Expression;
-using SpiceSharpParser.Parsers.Expression.Implementation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
 {
@@ -144,7 +143,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 context.CreateNodes(entity, parameters);
                 var valueParameter = (AssignmentParameter)parameters.Single(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");
                 entity.Parameters.Expression = valueParameter.Value;
-                entity.Parameters.ParseAction = (expression) => {
+                entity.Parameters.ParseAction = (expression) =>
+                {
                     var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
                     return parser.Resolve(expression);
                 };
@@ -161,11 +161,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 if (expressionParameter != null)
                 {
                     entity.Parameters.Expression = expressionParameter.Image;
-                    entity.Parameters.ParseAction = (expression) => {
+                    entity.Parameters.ParseAction = (expression) =>
+                    {
                         var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
                         return parser.Resolve(expression);
                     };
-
                 }
 
                 return entity;
@@ -199,7 +199,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var dimension = (int)context.Evaluator.EvaluateDouble(polyParameter.Parameters[0].Image);
                 var expression = CreatePolyExpression(dimension, parameters.Skip(1), isVoltageControlled, context.Evaluator.GetEvaluationContext());
                 entity.Parameters.Expression = expression;
-                entity.Parameters.ParseAction = (exp) => {
+                entity.Parameters.ParseAction = (exp) =>
+                {
                     var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
                     return parser.Resolve(exp);
                 };
@@ -222,8 +223,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     var entity = new BehavioralVoltageSource(name);
                     context.CreateNodes(entity, parameters);
-                    entity.Parameters.Expression =  ExpressionFactory.CreateTableExpression(eep.Expression, eep.Points);
-                    entity.Parameters.ParseAction = (exp) => {
+                    entity.Parameters.Expression = ExpressionFactory.CreateTableExpression(eep.Expression, eep.Points);
+                    entity.Parameters.ParseAction = (exp) =>
+                    {
                         var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
                         return parser.Resolve(exp);
                     };

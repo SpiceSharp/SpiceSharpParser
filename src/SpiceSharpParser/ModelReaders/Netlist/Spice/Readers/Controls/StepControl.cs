@@ -1,10 +1,10 @@
-﻿using SpiceSharp.Simulations;
+﻿using System.Collections.Generic;
+using SpiceSharp.Simulations;
+using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using System.Collections.Generic;
-using SpiceSharpParser.Common.Validation;
 using ParameterSweep = SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps.ParameterSweep;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
@@ -28,10 +28,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
             if (statement.Parameters.Count < 4)
             {
-                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
-                    ValidationEntryLevel.Warning,
-                    "Too less parameters for .STEP",
-                    statement.LineInfo));
+                context.Result.Validation.Add(
+                    new ValidationEntry(
+                        ValidationEntrySource.Reader,
+                        ValidationEntryLevel.Warning,
+                        "Too less parameters for .STEP",
+                        statement.LineInfo));
             }
 
             string firstParam = statement.Parameters[0].Image;
@@ -197,10 +199,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 if (!(parameter is SingleParameter))
                 {
-                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Warning,
-                        ".STEP list needs to have single parameters",
-                        parameter.LineInfo));
+                    context.Result.Validation.Add(
+                        new ValidationEntry(
+                            ValidationEntrySource.Reader,
+                            ValidationEntryLevel.Warning,
+                            ".STEP list needs to have single parameters",
+                            parameter.LineInfo));
                     continue;
                 }
 

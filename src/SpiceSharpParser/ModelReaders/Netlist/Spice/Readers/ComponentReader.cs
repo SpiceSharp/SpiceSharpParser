@@ -1,11 +1,11 @@
-﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+﻿using System;
+using SpiceSharp.Entities;
+using SpiceSharpParser.Common.Validation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using System;
-using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.Models.Netlist.Spice;
-using SpiceSharp.Entities;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 {
@@ -72,8 +72,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
                     return map.Value;
                 }
             }
-            context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Unsupported component {componentName}", lineInfo));
 
+            context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Unsupported component {componentName}", lineInfo));
             componentType = null;
             return null;
         }

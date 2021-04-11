@@ -11,7 +11,8 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
         {
         }
 
-        public AssignmentParameter(string name, List<string> arguments, List<string> values, bool hasFunctionSyntax, SpiceLineInfo lineInfo) : base(lineInfo)
+        public AssignmentParameter(string name, List<string> arguments, List<string> values, bool hasFunctionSyntax, SpiceLineInfo lineInfo)
+            : base(lineInfo)
         {
             Name = name;
             Arguments = arguments;

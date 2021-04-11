@@ -1,10 +1,10 @@
-﻿using SpiceSharp.Components;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using SpiceSharpParser.Common.Validation;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
+using SpiceSharp.Components;
 using SpiceSharp.Entities;
+using SpiceSharpParser.Common.Validation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors
 {
@@ -42,21 +42,30 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             switch (parameters.Count)
             {
                 case 0:
-                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Error,
-                        $"Node expected for component {componentIdentifier}", parameters.LineInfo));
+                    context.Result.Validation.Add(
+                        new ValidationEntry(
+                            ValidationEntrySource.Reader,
+                            ValidationEntryLevel.Error,
+                            $"Node expected for component {componentIdentifier}",
+                            parameters.LineInfo));
                     return null;
                 case 1:
                 case 2:
                 case 3:
-                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Error,
-                        $"Node expected", parameters.LineInfo));
+                    context.Result.Validation.Add(
+                        new ValidationEntry(
+                            ValidationEntrySource.Reader,
+                            ValidationEntryLevel.Error,
+                            $"Node expected",
+                            parameters.LineInfo));
                     return null;
                 case 4:
-                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Error,
-                        $"Model name expected", parameters.LineInfo));
+                    context.Result.Validation.Add(
+                        new ValidationEntry(
+                            ValidationEntrySource.Reader,
+                            ValidationEntryLevel.Error,
+                            $"Model name expected",
+                            parameters.LineInfo));
                     return null;
             }
 
@@ -66,9 +75,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             var model = context.ModelsRegistry.FindModel(modelNameParameter.Image);
             if (model == null)
             {
-                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
-                    ValidationEntryLevel.Error,
-                    $"Could not find model {modelNameParameter.Image} for mosfet {originalName}", parameters.LineInfo));
+                context.Result.Validation.Add(
+                    new ValidationEntry(
+                        ValidationEntrySource.Reader,
+                        ValidationEntryLevel.Error,
+                        $"Could not find model {modelNameParameter.Image} for mosfet {originalName}",
+                        parameters.LineInfo));
 
                 return null;
             }
@@ -91,9 +103,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
             else
             {
-                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
-                    ValidationEntryLevel.Error,
-                    $"Invalid model {model.GetType()} for {componentIdentifier}", parameters.LineInfo));
+                context.Result.Validation.Add(
+                    new ValidationEntry(
+                        ValidationEntrySource.Reader,
+                        ValidationEntryLevel.Error,
+                        $"Invalid model {model.GetType()} for {componentIdentifier}",
+                        parameters.LineInfo));
 
                 return null;
             }
@@ -106,7 +121,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
         protected class MosfetDetails
         {
-            public SpiceSharp.Components.Component Mosfet { get; set; }
+            public Component Mosfet { get; set; }
 
             public Action<Model> SetModelAction { get; set; }
         }

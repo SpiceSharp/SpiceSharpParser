@@ -2,7 +2,7 @@
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Custom
 {
-    public class ISwitchModelBaseParameters : ParameterSet
+    public class ISwitchModelParameters : ParameterSet
     {
         [ParameterName("ron")]
         [ParameterInfo("Resistance when closed/on")]

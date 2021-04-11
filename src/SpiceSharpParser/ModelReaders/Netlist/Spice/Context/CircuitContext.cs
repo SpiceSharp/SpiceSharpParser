@@ -1,24 +1,19 @@
-﻿using SpiceSharpParser.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using SpiceSharp.Entities;
+using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using SpiceSharpParser.Common.Validation;
-using SpiceSharp.Entities;
-using SpiceSharp.Simulations;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
-    public class InstanceData
-    {
-
-    }
-
     /// <summary>
     /// Reading context.
     /// </summary>
@@ -50,8 +45,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             IWaveformReader waveformReader,
             ISpiceNetlistCaseSensitivitySettings caseSettings,
             IMapper<Exporter> exporters,
-            string workingDirectory,
-            InstanceData instanceData)
+            string workingDirectory)
         {
             Name = contextName ?? throw new ArgumentNullException(nameof(contextName));
             Evaluator = evaluator;
@@ -67,18 +61,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             ModelsRegistry = CreateModelsRegistry();
             Exporters = exporters;
             WorkingDirectory = workingDirectory;
-            InstanceData = instanceData;
         }
 
         /// <summary>
         /// Gets the working directory.
         /// </summary>
         public string WorkingDirectory { get; }
-
-        /// <summary>
-        /// Gets instance data.
-        /// </summary>
-        public InstanceData InstanceData { get; }
 
         /// <summary>
         /// Gets the name of context.
@@ -303,8 +291,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
             catch (Exception ex)
             {
-                Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, 
-                    $"Exception during evaluation of parameter with expression: `{expression}`: {ex}", parameter.LineInfo));
+                Result.Validation.Add(
+                    new ValidationEntry(
+                        ValidationEntrySource.Reader,
+                        ValidationEntryLevel.Warning,
+                        $"Exception during evaluation of parameter with expression: `{expression}`: {ex}",
+                        parameter.LineInfo));
             }
         }
 

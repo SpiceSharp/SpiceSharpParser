@@ -1,9 +1,9 @@
-﻿using SpiceSharp.Simulations;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
 {

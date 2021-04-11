@@ -1,6 +1,13 @@
-﻿using SpiceSharpParser.Common.Evaluation;
+﻿using System;
+using System.Collections.Generic;
+using SpiceSharp;
+using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.FileSystem;
 using SpiceSharpParser.Common.Mathematics.Probability;
+using SpiceSharpParser.Common.Validation;
+using SpiceSharpParser.Lexers;
 using SpiceSharpParser.Lexers.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
@@ -9,15 +16,8 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Processors;
 using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.Parsers.Expression;
-using SpiceSharpParser.Parsers.Netlist.Spice;
-using System;
-using System.Collections.Generic;
-using SpiceSharp;
-using SpiceSharp.Simulations;
-using SpiceSharpParser.Common.Validation;
-using SpiceSharpParser.Lexers;
 using SpiceSharpParser.Parsers.Netlist;
-using SpiceSharpParser.Common;
+using SpiceSharpParser.Parsers.Netlist.Spice;
 
 namespace SpiceSharpParser
 {
@@ -124,13 +124,21 @@ namespace SpiceSharpParser
             }
             catch (LexerException e)
             {
-                result.ValidationResult.Lexing.Add(new ValidationEntry(ValidationEntrySource.Lexer,
-                    ValidationEntryLevel.Error, e.ToString(), null));
+                result.ValidationResult.Lexing.Add(
+                    new ValidationEntry(
+                        ValidationEntrySource.Lexer,
+                        ValidationEntryLevel.Error,
+                        e.ToString(),
+                        null));
             }
             catch (ParseException e)
             {
-                result.ValidationResult.Parsing.Add(new ValidationEntry(ValidationEntrySource.Parser,
-                    ValidationEntryLevel.Error, e.ToString(), null));
+                result.ValidationResult.Parsing.Add(
+                    new ValidationEntry(
+                        ValidationEntrySource.Parser,
+                        ValidationEntryLevel.Error,
+                        e.ToString(),
+                        null));
             }
 
             return result;
@@ -138,7 +146,7 @@ namespace SpiceSharpParser
 
         private SpiceNetlist GetPreprocessedNetListModel(SpiceNetlist originalNetlistModel, SpiceParserValidationResult validationResult)
         {
-            SpiceNetlist preprocessedNetListModel = (SpiceNetlist) originalNetlistModel.Clone();
+            SpiceNetlist preprocessedNetListModel = (SpiceNetlist)originalNetlistModel.Clone();
             var preprocessorContext = GetEvaluationContext();
 
             foreach (var preprocessor in Preprocessors)
@@ -160,7 +168,7 @@ namespace SpiceSharpParser
         private EvaluationContext GetEvaluationContext()
         {
             var nodeNameGenerator = new MainCircuitNodeNameGenerator(
-                new[] {"0"},
+                new[] { "0" },
                 Settings.Reading.CaseSensitivity.IsEntityNamesCaseSensitive);
 
             var objectNameGenerator = new ObjectNameGenerator(string.Empty);

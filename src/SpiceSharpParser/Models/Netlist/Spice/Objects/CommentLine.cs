@@ -5,13 +5,14 @@
     /// </summary>
     public class CommentLine : Statement
     {
-        public CommentLine(string text, SpiceLineInfo lineInfo) : base(lineInfo)
+        public CommentLine(string text, SpiceLineInfo lineInfo)
+            : base(lineInfo)
         {
             Text = text;
         }
 
         /// <summary>
-        /// Gets or sets the comment line's text.
+        /// Gets the comment line's text.
         /// </summary>
         public string Text { get; }
 

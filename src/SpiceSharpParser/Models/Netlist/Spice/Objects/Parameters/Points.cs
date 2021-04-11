@@ -6,7 +6,8 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
 {
     public class Points : SpiceObject, IEnumerable<PointParameter>
     {
-        public Points(List<PointParameter> values, SpiceLineInfo lineInfo) : base(lineInfo)
+        public Points(List<PointParameter> values, SpiceLineInfo lineInfo)
+            : base(lineInfo)
         {
             Values = values;
         }

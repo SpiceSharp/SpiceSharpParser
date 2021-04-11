@@ -9,10 +9,10 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
     {
         public BracketParameter()
         {
-
         }
 
-        public BracketParameter(string name, ParameterCollection parameters, SpiceLineInfo lineInfo) : base(lineInfo)
+        public BracketParameter(string name, ParameterCollection parameters, SpiceLineInfo lineInfo)
+            : base(lineInfo)
         {
             Name = name;
             Parameters = parameters;

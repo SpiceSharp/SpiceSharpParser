@@ -4,13 +4,13 @@ using SpiceSharp.ParameterSets;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Custom
 {
-    public class VSwitchModel : Entity<BindingContext>, IParameterized<VSwitchModelBaseParameters>
+    public class VSwitchModel : Entity<BindingContext>, IParameterized<VSwitchModelParameters>
     {
         public VSwitchModel(string name)
             : base(name)
         {
         }
 
-        public VSwitchModelBaseParameters Parameters { get; } = new VSwitchModelBaseParameters();
+        public VSwitchModelParameters Parameters { get; } = new VSwitchModelParameters();
     }
 }

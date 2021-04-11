@@ -1,27 +1,17 @@
-﻿using SpiceSharpBehavioral.Builders.Direct;
-using SpiceSharpBehavioral.Parsers.Nodes;
+﻿using SpiceSharpBehavioral.Parsers.Nodes;
 using System;
 using System.Collections.Generic;
 
 namespace SpiceSharpParser.Parsers.Expression.Implementation
 {
-    public class Resolver 
+    public class Resolver
     {
-        public class Function
-        {
-            public string Name { get; set; }
-
-            public IReadOnlyList<VariableNode> Arguments { get; set; }
-
-            public Node Body { get; set; }
-        }
-        public Dictionary<VariableNode, Node> VariableMap { get; set; }
-
         public event EventHandler<VariableFoundEventArgs<VariableNode>> UnknownVariableFound;
 
-        public Dictionary<string, Function> FunctionMap { get; set; }
+        public Dictionary<VariableNode, Node> VariableMap { get; set; }
 
-        /// <inheritdoc/>
+        public Dictionary<string, ResolverFunction> FunctionMap { get; set; }
+
         public Node Resolve(Node expression)
         {
             switch (expression)
@@ -33,6 +23,7 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
                         case NodeTypes.Minus: return Node.Minus(Resolve(un.Argument));
                         case NodeTypes.Not: return Node.Not(Resolve(un.Argument));
                     }
+
                     break;
 
                 case BinaryOperatorNode bn:
@@ -56,6 +47,7 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
                         case NodeTypes.Xor: return Node.Xor(left, right);
                         case NodeTypes.Pow: return Node.Power(left, right);
                     }
+
                     break;
 
                 case TernaryOperatorNode tn:
@@ -64,7 +56,10 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
                 case FunctionNode fn:
                     var args = new Node[fn.Arguments.Count];
                     for (var i = 0; i < args.Length; i++)
+                    {
                         args[i] = Resolve(fn.Arguments[i]);
+                    }
+
                     var funtionUpdated = Node.Function(fn.Name, args);
                     if (FunctionMap != null && FunctionMap.TryGetValue(fn.Name, out var function))
                     {
@@ -74,6 +69,7 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
                             VariableMap[argument] = args[i];
                             i++;
                         }
+
                         var functionBodyResolved = Resolve(function.Body);
                         return functionBodyResolved;
                     }
@@ -81,12 +77,15 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
                     {
                         return funtionUpdated;
                     }
+
                 case ConstantNode cn:
                     return cn;
 
                 case VariableNode vn:
                     if (VariableMap != null && VariableMap.TryGetValue(vn, out var mapped))
+                    {
                         return mapped;
+                    }
                     else
                     {
                         var vargs = new VariableFoundEventArgs<VariableNode>(this, vn);
@@ -94,23 +93,23 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
                         if (vargs.Created)
                         {
                             return vargs.Result;
-                            
                         }
                         else
                         {
                             return vn;
                         }
-                        
                     }
             }
 
             return expression;
         }
+
         /// <summary>
         /// Called when a variable was found.
         /// </summary>
         /// <param name="args">The event arguments.</param>
         protected virtual void OnUnknownVariableFound(VariableFoundEventArgs<VariableNode> args) => UnknownVariableFound?.Invoke(this, args);
+
         /// <summary>
         /// Event arguments used when a variable was found.
         /// </summary>
@@ -118,6 +117,20 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
         public class VariableFoundEventArgs<T> : EventArgs
         {
             private T _result;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="VariableFoundEventArgs{T}"/> class.
+            /// </summary>
+            /// <param name="builder">The builder.</param>
+            /// <param name="node">The variable node.</param>
+            /// <exception cref="ArgumentNullException">Throw if <paramref name="builder"/> or <paramref name="node"/> is <c>null</c>.</exception>
+            public VariableFoundEventArgs(Resolver builder, VariableNode node)
+            {
+                Created = false;
+                _result = default;
+                Node = node;
+                Builder = builder;
+            }
 
             /// <summary>
             /// Gets the builder.
@@ -152,26 +165,12 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
             }
 
             /// <summary>
-            /// Gets whether or not a variable has received a value.
+            /// Gets a value indicating whether gets a valute has received a value.
             /// </summary>
             /// <value>
             ///     <c>true</c> if the variable has received a value; otherwise, <c>false</c>.
             /// </value>
             public bool Created { get; private set; }
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="VariableFoundEventArgs{T}"/> class.
-            /// </summary>
-            /// <param name="builder">The builder.</param>
-            /// <param name="node">The variable node.</param>
-            /// <exception cref="ArgumentNullException">Throw if <paramref name="builder"/> or <paramref name="node"/> is <c>null</c>.</exception>
-            public VariableFoundEventArgs(Resolver builder, VariableNode node)
-            {
-                Created = false;
-                _result = default;
-                Node = node;
-                Builder = builder;
-            }
         }
     }
 }

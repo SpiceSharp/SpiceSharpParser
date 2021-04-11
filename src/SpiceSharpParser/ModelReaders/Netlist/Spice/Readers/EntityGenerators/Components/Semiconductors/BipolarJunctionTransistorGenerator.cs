@@ -61,7 +61,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     }
                     else
                     {
-                        //TODO: Verify it
+                        // TODO: Verify it
                         var bp = bjt.Parameters;
                         if (bp.Area == 0.0)
                         {

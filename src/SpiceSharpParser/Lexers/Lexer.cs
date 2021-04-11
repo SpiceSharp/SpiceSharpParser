@@ -43,7 +43,7 @@ namespace SpiceSharpParser.Lexers
             try
             {
                 int currentTokenIndex = 0;
-                var lineProvider = new LexerLineInfoProvider(text);
+                var lineProvider = new LexerLineNumberProvider(text);
 
                 if (state != null)
                 {
@@ -106,18 +106,18 @@ namespace SpiceSharpParser.Lexers
 
                         if (!matched)
                         {
-                            throw new LexerException("Can't get next token from text",
+                            throw new LexerException(
+                                "Can't get next token from text",
                                 new SpiceLineInfo
                                 {
-                                    LineNumber = state?.LineNumber ?? 0, 
-                                    StartColumnIndex = state?.StartColumnIndex ?? 0
+                                    LineNumber = state?.LineNumber ?? 0,
+                                    StartColumnIndex = state?.StartColumnIndex ?? 0,
                                 });
                         }
                     }
                 }
 
                 result.Tokens.Add(new Token(-1, "EOF", state?.LineNumber ?? 0, state?.StartColumnIndex ?? 0, null));
-
             }
             catch (LexerException ex)
             {

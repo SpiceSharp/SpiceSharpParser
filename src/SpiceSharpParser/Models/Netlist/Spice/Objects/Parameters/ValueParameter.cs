@@ -5,11 +5,13 @@
     /// </summary>
     public class ValueParameter : SingleParameter
     {
-        public ValueParameter(string value, SpiceLineInfo lineInfo) : base(value, lineInfo)
+        public ValueParameter(string value, SpiceLineInfo lineInfo)
+            : base(value, lineInfo)
         {
         }
 
-        public ValueParameter(string value) : base(value, null)
+        public ValueParameter(string value)
+            : base(value, null)
         {
         }
 

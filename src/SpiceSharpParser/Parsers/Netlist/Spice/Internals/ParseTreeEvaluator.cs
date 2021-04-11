@@ -402,19 +402,26 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                     break;
 
                 case ".if":
-                    control = new Control("if", new ParameterCollection(new List<Parameter>()
-                    {
-                        new ExpressionParameter(values.GetLexem(1), lineInfo)
-                    }), lineInfo);
+                    control = new Control(
+                        "if",
+                        new ParameterCollection(
+                            new List<Parameter>()
+                            {
+                                new ExpressionParameter(values.GetLexem(1), lineInfo),
+                            }),
+                        lineInfo);
 
                     break;
 
                 case ".elseif":
-                    control = new Control("elseif", new ParameterCollection(new List<Parameter>()
-                    {
-                        new ExpressionParameter(values.GetLexem(1), lineInfo)
-                    }), lineInfo);
-
+                    control = new Control(
+                        "elseif",
+                        new ParameterCollection(
+                            new List<Parameter>()
+                            {
+                                new ExpressionParameter(values.GetLexem(1), lineInfo),
+                            }),
+                        lineInfo);
                     break;
 
                 case ".else":
@@ -637,7 +644,6 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             {
                 throw new ParseTreeEvaluationException("Error during translating parse tree to Spice Object Model");
             }
-
         }
 
         /// <summary>
@@ -684,7 +690,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 var assignmentParameter = new AssignmentParameter(
                     values.GetLexem(0),
                     new List<string>(),
-                    new List<string>() {singleParameter.Image},
+                    new List<string>() { singleParameter.Image },
                     false,
                     singleParameter.LineInfo);
 

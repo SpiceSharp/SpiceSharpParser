@@ -52,7 +52,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
             Transient tran = null;
 
-
             double? maxStep = null;
             double? step = null;
             double? final = null;
@@ -90,7 +89,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             }
             else
             {
-                if (clonedParameters.Count == 2) {
+                if (clonedParameters.Count == 2)
+                {
                     tran = new Transient(name, step.Value, final.Value);
                     tran.TimeParameters.UseIc = useIc;
                 }

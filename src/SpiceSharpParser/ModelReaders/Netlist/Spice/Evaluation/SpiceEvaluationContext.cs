@@ -23,14 +23,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             INameGenerator nameGenerator,
             IResultService resultService)
 
-        : base(name, 
-            caseSetting,
-            randomizer,
-            expressionParserFactory, 
-            expressionFeaturesReader,
-            expressionValueProvider, 
-            nameGenerator,
-            resultService)
+        : base(
+              name,
+              caseSetting,
+              randomizer,
+              expressionParserFactory,
+              expressionFeaturesReader,
+              expressionValueProvider,
+              nameGenerator,
+              resultService)
         {
             Mode = mode;
             CreateSpiceFunctions();

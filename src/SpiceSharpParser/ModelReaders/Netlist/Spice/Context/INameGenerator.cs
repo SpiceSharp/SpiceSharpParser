@@ -7,6 +7,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
     {
         IEnumerable<string> Globals { get; }
 
+        INodeNameGenerator NodeNameGenerator { get; }
+
         string ParseNodeName(string nodePath);
 
         string GenerateObjectName(string entityName);
@@ -18,7 +20,5 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         void AddChild(INodeNameGenerator nodeNameGenerator);
 
         void SetGlobal(string spImage);
-
-        INodeNameGenerator NodeNameGenerator { get; }
     }
 }

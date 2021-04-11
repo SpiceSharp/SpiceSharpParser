@@ -3,6 +3,7 @@
     public enum ValidationEntryLevel
     {
         Warning,
-        Error
+
+        Error,
     }
 }

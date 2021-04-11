@@ -3,8 +3,6 @@ using SpiceSharp.Behaviors;
 using SpiceSharp.Components.Common;
 using SpiceSharp.Entities;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Custom
 {
@@ -15,20 +13,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Custom
     /// <seealso cref="Behavior" />
     /// <seealso cref="IParameterized{P}" />
     [BehaviorFor(typeof(VSwitchModel), typeof(ITemperatureBehavior))]
-    public class VSwitchModelBehavior : ParameterBehavior<VSwitchModelBaseParameters>
+    public class VSwitchModelBehavior : ParameterBehavior<VSwitchModelParameters>
     {
-        /// <inheritdoc/>
-        public new VSwitchModelBaseParameters Parameters { get; }
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="ParameterBehavior{P}"/> class.
+        /// Initializes a new instance of the <see cref="VSwitchModelBehavior"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="context"/> is <c>null</c>.</exception>
         public VSwitchModelBehavior(IBindingContext context)
             : base(context)
         {
-            Parameters = context.GetParameterSet<VSwitchModelBaseParameters>();
+            Parameters = context.GetParameterSet<VSwitchModelParameters>();
         }
+
+        public new VSwitchModelParameters Parameters { get; }
     }
 }

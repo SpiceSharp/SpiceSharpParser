@@ -5,7 +5,7 @@
     /// </summary>
     public class Component : Statement
     {
-        public Component(string name, ParameterCollection pinsAndParameters, SpiceLineInfo lineInfo) 
+        public Component(string name, ParameterCollection pinsAndParameters, SpiceLineInfo lineInfo)
             : base(lineInfo)
         {
             Name = name;
@@ -13,12 +13,12 @@
         }
 
         /// <summary>
-        /// Gets or sets the name of component.
+        /// Gets the name of component.
         /// </summary>
         public string Name { get; }
 
         /// <summary>
-        /// Gets or sets pins and components parameters.
+        /// Gets pins and components parameters.
         /// </summary>
         public ParameterCollection PinsAndParameters { get; }
 

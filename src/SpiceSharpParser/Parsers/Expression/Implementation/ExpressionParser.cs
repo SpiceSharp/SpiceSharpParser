@@ -1,6 +1,4 @@
-﻿using SpiceSharpBehavioral.Builders;
-using SpiceSharpBehavioral.Builders.Direct;
-using SpiceSharpBehavioral.Parsers;
+﻿using SpiceSharpBehavioral.Parsers;
 using SpiceSharpBehavioral.Parsers.Nodes;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
@@ -23,16 +21,23 @@ namespace SpiceSharpParser.Parsers.Expression
             ThrowOnErrors = throwOnErrors;
         }
 
-        protected CustomRealBuilder DoubleBuilder { get; }
-        protected Parser InternalParser { get; }
         public EvaluationContext Context { get; }
+
         public bool ThrowOnErrors { get; }
+
+        protected CustomRealBuilder DoubleBuilder { get; }
+
+        protected Parser InternalParser { get; }
 
         public IEnumerable<string> GetFunctions(string expression)
         {
             var list = new List<string>();
             var node = InternalParser.Parse(expression);
-            DoubleBuilder.FunctionFound += (o, e) => { list.Add(e.Function.Name); e.Result = 0; };
+            DoubleBuilder.FunctionFound += (o, e) =>
+            {
+                list.Add(e.Function.Name);
+                e.Result = 0;
+            };
 
             try
             {
@@ -40,8 +45,12 @@ namespace SpiceSharpParser.Parsers.Expression
             }
             catch (Exception ex)
             {
-                if (ThrowOnErrors) throw;
+                if (ThrowOnErrors)
+                {
+                    throw;
+                }
             }
+
             return list;
         }
 
@@ -49,14 +58,21 @@ namespace SpiceSharpParser.Parsers.Expression
         {
             var list = new List<string>();
             var node = InternalParser.Parse(expression);
-            DoubleBuilder.VariableFound += (o, e) => { list.Add(e.Node.ToString()); e.Result = 0; };
+            DoubleBuilder.VariableFound += (o, e) =>
+            {
+                list.Add(e.Node.ToString());
+                e.Result = 0;
+            };
             try
             {
                 DoubleBuilder.Build(node);
             }
             catch (Exception ex)
             {
-                if (ThrowOnErrors) throw;
+                if (ThrowOnErrors)
+                {
+                    throw;
+                }
             }
 
             return list;
@@ -96,17 +112,15 @@ namespace SpiceSharpParser.Parsers.Expression
                 resolver.VariableMap[VariableNode.Variable(variable.Name)] = variable.Value();
             }
 
-
             resolver.FunctionMap = CreateFunctions();
-
             var resolved = resolver.Resolve(node);
 
             return resolved;
         }
 
-        public Dictionary<string, Resolver.Function> CreateFunctions()
+        public Dictionary<string, ResolverFunction> CreateFunctions()
         {
-            var result = new Dictionary<string, Resolver.Function>();
+            var result = new Dictionary<string, ResolverFunction>();
 
             foreach (var functionName in Context.FunctionsBody.Keys)
             {
@@ -115,11 +129,11 @@ namespace SpiceSharpParser.Parsers.Expression
                 {
                     var bodyNode = InternalParser.Parse(body);
 
-                    result[functionName] = new Resolver.Function()
+                    result[functionName] = new ResolverFunction()
                     {
                         Body = bodyNode,
                         Name = functionName,
-                        Arguments = Context.FunctionArguments[functionName].Select(a => Node.Variable(a)).ToList()
+                        Arguments = Context.FunctionArguments[functionName].Select(a => Node.Variable(a)).ToList(),
                     };
                 }
             }

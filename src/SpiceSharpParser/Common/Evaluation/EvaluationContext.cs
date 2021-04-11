@@ -89,7 +89,6 @@ namespace SpiceSharpParser.Common.Evaluation
 
         public Dictionary<string, List<string>> FunctionArguments { get; private set; }
 
-
         /// <summary>
         /// Gets or sets expression registry for the context.
         /// </summary>
@@ -117,9 +116,11 @@ namespace SpiceSharpParser.Common.Evaluation
 
         public IResultService ResultService { get; }
 
-        protected IExpressionParserFactory ExpressionParserFactory { get; }
         public IExpressionFeaturesReader ExpressionFeaturesReader { get; }
+
         public IExpressionValueProvider ExpressionValueProvider { get; }
+
+        protected IExpressionParserFactory ExpressionParserFactory { get; }
 
         /// <summary>
         /// Sets the parameter.

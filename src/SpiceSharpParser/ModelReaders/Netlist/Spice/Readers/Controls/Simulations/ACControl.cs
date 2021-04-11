@@ -1,10 +1,9 @@
 ﻿using SpiceSharp.Simulations;
+using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using System;
-using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations
 {
@@ -75,8 +74,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                         var freq = ac.ComplexState.Laplace.Imaginary / (2.0 * Math.PI);
                         context.Evaluator.SetParameter(ac, "FREQ", freq);
                     }
-                };*/ //TODO
+                };*/
 
+            // TODO
             context.Result.AddSimulation(ac);
             return ac;
         }

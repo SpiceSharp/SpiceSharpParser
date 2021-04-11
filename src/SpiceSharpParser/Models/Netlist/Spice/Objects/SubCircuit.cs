@@ -5,12 +5,13 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
 {
     public class SubCircuit : Statement
     {
-        public SubCircuit() : base(null)
+        public SubCircuit()
+            : base(null)
         {
-
         }
 
-        public SubCircuit(string name, Statements statements, List<string> pins, SpiceLineInfo lineInfo) : base(lineInfo)
+        public SubCircuit(string name, Statements statements, List<string> pins, SpiceLineInfo lineInfo)
+            : base(lineInfo)
         {
             Name = name;
             Statements = statements;
@@ -18,12 +19,12 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         }
 
         /// <summary>
-        /// Gets the name of subcircuit.
+        /// Gets or sets the name of subcircuit.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets list of outside pins of subcircuit.
+        /// Gets or sets list of outside pins of subcircuit.
         /// </summary>
         public List<string> Pins { get; set; }
 

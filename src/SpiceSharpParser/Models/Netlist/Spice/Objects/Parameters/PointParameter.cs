@@ -7,13 +7,14 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
     /// </summary>
     public class PointParameter : Parameter
     {
-        public PointParameter(PointValues values, SpiceLineInfo lineInfo) : base(lineInfo)
+        public PointParameter(PointValues values, SpiceLineInfo lineInfo)
+            : base(lineInfo)
         {
             Values = values;
         }
 
         /// <summary>
-        /// Gets or sets the elements of the point.
+        /// Gets the elements of the point.
         /// </summary>
         public PointValues Values { get; }
 

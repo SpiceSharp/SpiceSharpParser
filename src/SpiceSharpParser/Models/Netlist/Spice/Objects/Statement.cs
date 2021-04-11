@@ -5,7 +5,8 @@
     /// </summary>
     public abstract class Statement : SpiceObject
     {
-        protected Statement(SpiceLineInfo lineInfo) : base(lineInfo)
+        protected Statement(SpiceLineInfo lineInfo)
+            : base(lineInfo)
         {
         }
     }

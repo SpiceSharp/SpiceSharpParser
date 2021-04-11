@@ -1,4 +1,5 @@
 ﻿using SpiceSharpParser.Common;
+
 namespace SpiceSharpParser.Models.Netlist.Spice
 {
     public class SpiceLineInfo

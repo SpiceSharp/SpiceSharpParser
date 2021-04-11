@@ -1,12 +1,12 @@
-﻿using SpiceSharp.Components;
+﻿using System.Globalization;
+using SpiceSharp.Components;
+using SpiceSharp.Entities;
+using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Custom;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using System.Globalization;
-using SpiceSharpParser.Common.Validation;
-using SpiceSharp.Entities;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Custom;
 using Model = SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.Model;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
@@ -63,7 +63,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                                 stochasticModelsRegistry.RegisterModelInstance(resistorModel);
                             }
                         }
-                        
+
                         string resExpression =
                             $"table(v({parameters.Get(2)}, {parameters.Get(3)}), @{resistorModel.Name}[voff], @{resistorModel.Name}[roff] , @{resistorModel.Name}[von], @{resistorModel.Name}[ron])";
                         context.SetParameter(resistor, "resistance", resExpression, beforeTemperature: true, onload: true, simulation);
@@ -150,6 +150,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                                 stochasticModelsRegistry.RegisterModelInstance(resistorModel);
                             }
                         }
+
                         double rOff = resistorModel.Parameters.GetProperty<double>("roff");
                         string resExpression = $"table(i({parameters.Get(2)}), @{resistorModel.Name}[ioff], @{resistorModel.Name}[roff] , @{resistorModel.Name}[ion], @{resistorModel.Name}[ron])";
                         context.SetParameter(resistor, "resistance", resExpression, beforeTemperature: true, onload: true, simulation);

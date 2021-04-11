@@ -25,7 +25,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 var expressionParameter = (AssignmentParameter)parameters.First(p => p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "v");
                 entity.Parameters.Expression = expressionParameter.Value;
-                entity.Parameters.ParseAction = (expression) => {
+                entity.Parameters.ParseAction = (expression) =>
+                {
                     var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
                     return parser.Resolve(expression);
                 };
@@ -41,7 +42,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "i");
 
                 entity.Parameters.Expression = expressionParameter.Value;
-                entity.Parameters.ParseAction = (expression) => {
+                entity.Parameters.ParseAction = (expression) =>
+                {
                     var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
                     return parser.Resolve(expression);
                 };

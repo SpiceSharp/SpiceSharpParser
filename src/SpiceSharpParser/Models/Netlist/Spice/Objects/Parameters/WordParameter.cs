@@ -5,11 +5,13 @@
     /// </summary>
     public class WordParameter : SingleParameter
     {
-        public WordParameter(string word, SpiceLineInfo lineInfo) : base(word, lineInfo)
+        public WordParameter(string word, SpiceLineInfo lineInfo)
+            : base(word, lineInfo)
         {
         }
 
-        public WordParameter(string word) : base(word, null)
+        public WordParameter(string word)
+            : base(word, null)
         {
         }
 

@@ -1,12 +1,12 @@
-﻿using SpiceSharp.Simulations;
+﻿using System.Collections.Generic;
+using System.Linq;
+using SpiceSharp.Simulations;
+using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using System.Collections.Generic;
-using System.Linq;
-using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
 {
@@ -43,8 +43,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
                             new List<SingleParameter>()
                             {
                                 new WordParameter(rp.Name, rp.LineInfo),
-                                new WordParameter(rp.Argument, rp.LineInfo)
-                            })
+                                new WordParameter(rp.Argument, rp.LineInfo),
+                            }),
                     });
 
                 if (mapper.TryGetValue(type, true, out var exporter))

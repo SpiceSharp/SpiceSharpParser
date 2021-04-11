@@ -34,6 +34,7 @@ namespace SpiceSharpParser.Parsers.Expression
                     return true;
                 }
             }
+
             return false;
         }
 

@@ -1,10 +1,10 @@
-﻿using SpiceSharp.Behaviors;
-using SpiceSharp.Simulations;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using SpiceSharpParser.Common;
+using SpiceSharp.Behaviors;
 using SpiceSharp.Entities;
+using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {

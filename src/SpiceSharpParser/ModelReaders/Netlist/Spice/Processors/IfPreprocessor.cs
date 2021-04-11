@@ -1,10 +1,10 @@
-﻿using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Validation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {
@@ -13,8 +13,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
     /// </summary>
     public class IfPreprocessor : IProcessor, IEvaluatorConsumer
     {
-        public EvaluationContext EvaluationContext { get; set; } 
-        
+        public EvaluationContext EvaluationContext { get; set; }
+
         public SpiceParserValidationResult Validation { get; set; }
 
         /// <summary>

@@ -1,11 +1,11 @@
-﻿using SpiceSharpParser.Common;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using SpiceSharpParser.Common.Validation;
+using System.Linq;
 using SpiceSharp.Entities;
 using SpiceSharp.Simulations;
-using System.Linq;
+using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Validation;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 {
@@ -269,7 +269,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
             return null;
         }
 
-
         public IEntity FindModelEntity(string modelName)
         {
             foreach (var generator in NamesGenerators)
@@ -284,7 +283,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 
             return null;
         }
-
 
         public IModelsRegistry CreateChildRegistry(List<INameGenerator> generators)
         {

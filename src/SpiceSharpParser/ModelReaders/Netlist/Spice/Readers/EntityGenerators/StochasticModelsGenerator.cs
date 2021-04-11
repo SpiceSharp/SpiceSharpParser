@@ -1,8 +1,8 @@
-﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+﻿using System;
+using SpiceSharpParser.Common.Validation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using System;
-using SpiceSharpParser.Common.Validation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
 {
@@ -57,9 +57,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
 
             if (!(context.ModelsRegistry is IStochasticModelsRegistry stochasticModelRegistry))
             {
-                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
-                    ValidationEntryLevel.Warning, "Model registry is not stochastic models registry",
-                    parameters.LineInfo));
+                context.Result.Validation.Add(
+                    new ValidationEntry(
+                        ValidationEntrySource.Reader,
+                        ValidationEntryLevel.Warning,
+                        "Model registry is not stochastic models registry",
+                        parameters.LineInfo));
 
                 return null;
             }
@@ -68,9 +71,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
             var model = modelGenerator.Generate(id, type, filteredParameters, context);
             if (model == null)
             {
-                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
-                    ValidationEntryLevel.Warning, $"Couldn't generate model {id}",
-                    parameters.LineInfo));
+                context.Result.Validation.Add(
+                    new ValidationEntry(
+                        ValidationEntrySource.Reader,
+                        ValidationEntryLevel.Warning,
+                        $"Couldn't generate model {id}",
+                        parameters.LineInfo));
 
                 return null;
             }
