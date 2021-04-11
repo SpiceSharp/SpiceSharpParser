@@ -104,6 +104,11 @@ namespace SpiceSharpParser.Parsers.Expression
                     {
                         args.Result = VariableNode.Voltage(Context.NameGenerator.NodeNameGenerator.Generate(args.Node.Name));
                     }
+
+                    if (args.Node.NodeType == NodeTypes.Current)
+                    {
+                        args.Result = VariableNode.Current(Context.NameGenerator.ParseNodeName(args.Node.Name));
+                    }
                 };
             }
 
