@@ -117,6 +117,9 @@ namespace SpiceSharpParser.Parsers.Expression
                 resolver.VariableMap[VariableNode.Variable(variable.Name)] = variable.Value();
             }
 
+            // TIME variable is handled well in SpiceSharpBehavioral
+            resolver.VariableMap.Remove(VariableNode.Variable("TIME")); 
+
             resolver.FunctionMap = CreateFunctions();
             var resolved = resolver.Resolve(node);
 
