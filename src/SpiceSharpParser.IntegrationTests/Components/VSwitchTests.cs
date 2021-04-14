@@ -20,7 +20,26 @@ namespace SpiceSharpParser.IntegrationTests.Components
             var export = RunOpSimulation(netlist, "I(V2)");
             Assert.NotNull(netlist);
 
-            EqualsWithTol(-1.9999800002E-05, export);
+            EqualsWithTol(-0.00316228, export);
+        }
+
+        [Fact]
+        public void PartialOnSecondTest()
+        {
+            var netlist = ParseNetlist(
+                "VSwitch test",
+                "S1 1 0 2 0 smodel",
+                "V1 2 0 11",
+                "V2 1 0 10",
+                ".model smodel VSWITCH (roff=5000 ron=10 voff = 10 von = 130)",
+                ".OP",
+                ".SAVE I(V2)",
+                ".END");
+
+            var export = RunOpSimulation(netlist, "I(V2)");
+            Assert.NotNull(netlist);
+
+            EqualsWithTol(-0.00200258, export);
         }
 
         [Fact]

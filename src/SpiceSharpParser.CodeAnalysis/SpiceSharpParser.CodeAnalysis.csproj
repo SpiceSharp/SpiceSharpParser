@@ -20,7 +20,7 @@
 
   <ItemGroup>
     <PackageReference Include="SpiceSharp" Version="3.0.5" />
-    <PackageReference Include="SpiceSharpBehavioral" Version="3.0.7" />
+    <PackageReference Include="SpiceSharpBehavioral" Version="3.0.8" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>

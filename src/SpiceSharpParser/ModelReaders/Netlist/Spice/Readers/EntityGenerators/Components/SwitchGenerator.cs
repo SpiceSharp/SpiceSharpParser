@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+﻿using System;
 using SpiceSharp.Components;
 using SpiceSharp.Entities;
 using SpiceSharpParser.Common.Validation;
@@ -7,6 +7,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Custom;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using SpiceSharpParser.Parsers.Expression;
 using Model = SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.Model;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
@@ -46,10 +47,29 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             var model = context.ModelsRegistry.FindModel(modelName);
             if (model.Entity is VSwitchModel)
             {
-                Resistor resistor = new Resistor(name);
+                BehavioralResistor resistor = new BehavioralResistor(name);
                 Model resistorModel = model;
-                context.CreateNodes(resistor, parameters.Take(2));
-                context.SimulationPreparations.ExecuteTemperatureBehaviorBeforeLoad(resistor);
+                context.CreateNodes(resistor, parameters.Take(BehavioralResistor.BehavioralResistorPinCount));
+
+                double vOff = resistorModel.Parameters.GetProperty<double>("voff");
+                double rOff = resistorModel.Parameters.GetProperty<double>("roff");
+                double vOn = resistorModel.Parameters.GetProperty<double>("von");
+                double rOn = resistorModel.Parameters.GetProperty<double>("ron");
+
+                string vc = $"v({ parameters.Get(2)}, {parameters.Get(3)})";
+                double lm = Math.Log(Math.Sqrt(rOn * rOff));
+                double lr = Math.Log(rOn / rOff);
+                double vm = (vOn + vOff) / 2.0;
+                double vd = vOn - vOff;
+                string resExpression = GetVSwitchExpression(vOff, rOff, vOn, rOn, vc, lm, lr, vm, vd);
+
+
+                resistor.Parameters.Expression = resExpression;
+                resistor.Parameters.ParseAction = (expression) =>
+                {
+                    var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
+                    return parser.Resolve(expression);
+                };
 
                 context.SimulationPreparations.ExecuteActionAfterSetup(
                     (simulation) =>
@@ -63,10 +83,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                                 stochasticModelsRegistry.RegisterModelInstance(resistorModel);
                             }
                         }
-
-                        string resExpression =
-                            $"table(v({parameters.Get(2)}, {parameters.Get(3)}), @{resistorModel.Name}[voff], @{resistorModel.Name}[roff] , @{resistorModel.Name}[von], @{resistorModel.Name}[ron])";
-                        context.SetParameter(resistor, "resistance", resExpression, beforeTemperature: true, onload: true, simulation);
+                        vOff = resistorModel.Parameters.GetProperty<double>("voff");
+                        rOff = resistorModel.Parameters.GetProperty<double>("roff");
+                        vOn = resistorModel.Parameters.GetProperty<double>("von");
+                        rOn = resistorModel.Parameters.GetProperty<double>("ron");
+                        lm = Math.Log(Math.Sqrt(rOn * rOff));
+                        lr = Math.Log(rOn / rOff);
+                        vm = (vOn + vOff) / 2.0;
+                        vd = vOn - vOff;
+                        resExpression = GetVSwitchExpression(vOff, rOff, vOn, rOn, vc, lm, lr, vm, vd);
+                        resistor.Parameters.Expression = resExpression;
+                        resistor.Parameters.ParseAction = (expression) =>
+                        {
+                            var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(simulation), false, context.CaseSensitivity);
+                            return parser.Resolve(expression);
+                        };
                     });
                 return resistor;
             }
@@ -110,6 +141,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
 
             return vsw;
+        }
+
+        private static string GetVSwitchExpression(double vOff, double rOff, double vOn, double rOn, string vc, double lm, double lr, double vm, double vd)
+        {
+            string resExpression;
+            if (vOn >= vOff)
+            {
+                resExpression = $"{vc} >= {vOn} ? {rOn} : ({vc} <= {vOff} ? {rOff} : (exp({lm} + 3 * {lr} * ({vc}-{vm})/(2*{vd}) - 2 * {lr} * pow({vc}-{vm}, 3)/(pow({vd},3)))))";
+            }
+            else
+            {
+                resExpression = $"{vc} < {vOn} ? {rOn} : ({vc} > {vOff} ? {rOff} : (exp({lm} - 3 * {lr} * ({vc}-{vm})/(2*{vd}) + 2 * {lr} * pow({vc}-{vm}, 3)/(pow({vd},3)))))";
+            }
+
+            return resExpression;
         }
 
         /// <summary>
