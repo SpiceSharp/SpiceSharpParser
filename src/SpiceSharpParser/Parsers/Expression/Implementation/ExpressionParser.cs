@@ -4,6 +4,7 @@ using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.Parsers.Expression.Implementation;
+using SpiceSharpParser.Parsers.Expression.Implementation.ResolverFunctions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -89,20 +90,14 @@ namespace SpiceSharpParser.Parsers.Expression
             var node = InternalParser.Parse(expression);
 
             var resolver = new Resolver();
-            resolver.VariableMap = new Dictionary<VariableNode, Node>();
 
             if (Context.NameGenerator?.NodeNameGenerator is SubcircuitNodeNameGenerator sng)
             {
-                foreach (var pin in sng.PinMap)
-                {
-                    resolver.VariableMap[VariableNode.Voltage(pin.Key)] = VariableNode.Voltage(pin.Value);
-                }
-
                 resolver.UnknownVariableFound += (sender, args) =>
                 {
                     if (args.Node.NodeType == NodeTypes.Voltage)
                     {
-                        args.Result = VariableNode.Voltage(Context.NameGenerator.NodeNameGenerator.Generate(args.Node.Name));
+                        args.Result = VariableNode.Voltage(Context.NameGenerator.ParseNodeName(args.Node.Name));
                     }
 
                     if (args.Node.NodeType == NodeTypes.Current)
@@ -112,6 +107,7 @@ namespace SpiceSharpParser.Parsers.Expression
                 };
             }
 
+            resolver.VariableMap = new Dictionary<VariableNode, Node>();
             foreach (var variable in DoubleBuilder.Variables)
             {
                 resolver.VariableMap[VariableNode.Variable(variable.Name)] = variable.Value();
@@ -119,8 +115,8 @@ namespace SpiceSharpParser.Parsers.Expression
 
             // TIME variable is handled well in SpiceSharpBehavioral
             resolver.VariableMap.Remove(VariableNode.Variable("TIME")); 
-
             resolver.FunctionMap = CreateFunctions();
+            
             var resolved = resolver.Resolve(node);
 
             return resolved;
@@ -137,14 +133,15 @@ namespace SpiceSharpParser.Parsers.Expression
                 {
                     var bodyNode = InternalParser.Parse(body);
 
-                    result[functionName] = new ResolverFunction()
-                    {
-                        Body = bodyNode,
-                        Name = functionName,
-                        Arguments = Context.FunctionArguments[functionName].Select(a => Node.Variable(a)).ToList(),
-                    };
+                    result[functionName] = new StaticResolverFunction(
+                        functionName, 
+                        bodyNode, 
+                        Context.FunctionArguments[functionName].Select(a => Node.Variable(a)).ToList());
                 }
             }
+
+            result["poly"] = new PolyResolverFunction();
+            result["if"] = new IfResolverFunction();
 
             return result;
         }

@@ -63,21 +63,27 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
                     var funtionUpdated = Node.Function(fn.Name, args);
                     if (FunctionMap != null && FunctionMap.TryGetValue(fn.Name, out var function))
                     {
-                        var i = 0;
-                        foreach (VariableNode argument in function.Arguments)
+                        if (function is StaticResolverFunction staticResolverFunction)
                         {
-                            VariableMap[argument] = args[i];
-                            i++;
+                            var i = 0;
+                            foreach (VariableNode argument in staticResolverFunction.Arguments)
+                            {
+                                VariableMap[argument] = args[i];
+                                i++;
+                            }
+
+                            var functionBodyResolved = Resolve(staticResolverFunction.GetBody());
+                            return functionBodyResolved;
+                        }
+                        if (function is DynamicResolverFunction dynamicResolverFunction)
+                        {
+                            var functionBodyResolved = dynamicResolverFunction.GetBody(args);
+                            return functionBodyResolved;
                         }
 
-                        var functionBodyResolved = Resolve(function.Body);
-                        return functionBodyResolved;
                     }
-                    else
-                    {
-                        return funtionUpdated;
-                    }
-
+                    return funtionUpdated;
+                    
                 case ConstantNode cn:
                     return cn;
 
