@@ -102,7 +102,7 @@ namespace SpiceSharpParser.Parsers.Expression
 
                     if (args.Node.NodeType == NodeTypes.Current)
                     {
-                        args.Result = VariableNode.Current(Context.NameGenerator.ParseNodeName(args.Node.Name));
+                        args.Result = VariableNode.Current(Context.NameGenerator.GenerateObjectName(args.Node.Name));
                     }
                 };
             }
