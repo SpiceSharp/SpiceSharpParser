@@ -707,6 +707,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
 
             if (currentToken.Is(SpiceTokenType.EXPRESSION_BRACKET)
                 || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES)
+                || currentToken.Is(SpiceTokenType.EXPRESSION)
                 || currentToken.Is(SpiceTokenType.VALUE)
                 || currentToken.Is(SpiceTokenType.WORD)
                 || currentToken.Is(SpiceTokenType.IDENTIFIER))
@@ -859,6 +860,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
                 || currentToken.Is(SpiceTokenType.IDENTIFIER)
                 || currentToken.Is(SpiceTokenType.REFERENCE)
                 || currentToken.Is(SpiceTokenType.EXPRESSION_BRACKET)
+                || currentToken.Is(SpiceTokenType.EXPRESSION)
                 || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES)
                 || currentToken.Is(SpiceTokenType.PERCENT)
                 || (currentToken.Is(SpiceTokenType.DELIMITER) && currentToken.Lexem == "("))
@@ -897,7 +899,9 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
             var currentToken = tokens[currentTokenIndex];
             var nextToken = tokens[currentTokenIndex + 1];
 
-            if (currentToken.Is(SpiceTokenType.EXPRESSION_BRACKET) || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES))
+            if (currentToken.Is(SpiceTokenType.EXPRESSION_BRACKET)
+                || currentToken.Is(SpiceTokenType.EXPRESSION)
+                || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES))
             {
                 if (nextToken.Is(SpiceTokenType.EQUAL))
                 {
@@ -1052,6 +1056,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
                         || currentToken.Is(SpiceTokenType.DOUBLE_QUOTED_STRING)
                         || currentToken.Is(SpiceTokenType.IDENTIFIER)
                         || currentToken.Is(SpiceTokenType.REFERENCE)
+                        || currentToken.Is(SpiceTokenType.EXPRESSION)
                         || currentToken.Is(SpiceTokenType.EXPRESSION_BRACKET)
                         || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES)
                         || currentToken.Is(SpiceTokenType.PERCENT))
@@ -1120,6 +1125,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
                         || currentToken.Is(SpiceTokenType.DOUBLE_QUOTED_STRING)
                         || currentToken.Is(SpiceTokenType.IDENTIFIER)
                         || currentToken.Is(SpiceTokenType.REFERENCE)
+                        || currentToken.Is(SpiceTokenType.EXPRESSION)
                         || currentToken.Is(SpiceTokenType.EXPRESSION_BRACKET)
                         || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES)
                         || currentToken.Is(SpiceTokenType.PERCENT))
@@ -1207,6 +1213,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
                 || currentToken.Is(SpiceTokenType.DOUBLE_QUOTED_STRING)
                 || currentToken.Is(SpiceTokenType.IDENTIFIER)
                 || currentToken.Is(SpiceTokenType.REFERENCE)
+                || currentToken.Is(SpiceTokenType.EXPRESSION)
                 || currentToken.Is(SpiceTokenType.EXPRESSION_BRACKET)
                 || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES)
                 || currentToken.Is(SpiceTokenType.PERCENT))

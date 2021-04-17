@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
+using SpiceSharpParser.Lexers.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice;
 
 namespace SpiceSharpParser.Lexers
@@ -60,60 +62,34 @@ namespace SpiceSharpParser.Lexers
                         state.StartColumnIndex = lineProvider.GetColumnForIndex(currentTokenIndex);
                     }
 
-                    if (FindBestTokenRule(text, currentTokenIndex, state, out var bestTokenRule, out var bestMatch))
+                    if (FindBestRule(text, currentTokenIndex, state, out var tokenType, out var returnToken, out var bestMatch, out var length))
                     {
-                        var tokenActionResult = bestTokenRule.ReturnDecisionProvider(state, bestMatch.Value);
-                        if (tokenActionResult == LexerRuleReturnDecision.ReturnToken)
+                        if (returnToken)
                         {
                             if (state != null)
                             {
-                                state.PreviousReturnedTokenType = bestTokenRule.TokenType;
+                                state.PreviousReturnedTokenType = tokenType;
                             }
 
                             result.Tokens.Add(new Token(
-                                bestTokenRule.TokenType,
-                                bestMatch.Value,
+                                (int)tokenType,
+                                bestMatch,
                                 state?.LineNumber ?? 0,
                                 state?.StartColumnIndex ?? 0,
                                 null));
                         }
 
-                        currentTokenIndex += bestMatch.Length;
+                        currentTokenIndex += length;
                     }
                     else
                     {
-                        bool matched = false;
-                        var textForDynamicRules = text.Substring(currentTokenIndex);
-                        foreach (LexerDynamicRule dynamicRule in Grammar.DynamicRules)
-                        {
-                            bool ruleMatch = textForDynamicRules.StartsWith(dynamicRule.Prefix);
-                            if (ruleMatch)
+                        throw new LexerException(
+                            "Can't get next token from text",
+                            new SpiceLineInfo
                             {
-                                var dynamicResult = dynamicRule.Action(textForDynamicRules, state);
-
-                                result.Tokens.Add(
-                                    new Token(
-                                        dynamicRule.TokenType,
-                                        dynamicResult.Item1,
-                                        state?.LineNumber ?? 0,
-                                        state?.StartColumnIndex ?? 0,
-                                        null));
-
-                                currentTokenIndex += dynamicResult.Item2;
-                                matched = true;
-                            }
-                        }
-
-                        if (!matched)
-                        {
-                            throw new LexerException(
-                                "Can't get next token from text",
-                                new SpiceLineInfo
-                                {
-                                    LineNumber = state?.LineNumber ?? 0,
-                                    StartColumnIndex = state?.StartColumnIndex ?? 0,
-                                });
-                        }
+                                LineNumber = state?.LineNumber ?? 0,
+                                StartColumnIndex = state?.StartColumnIndex ?? 0,
+                            });
                     }
                 }
 
@@ -133,15 +109,20 @@ namespace SpiceSharpParser.Lexers
         /// <returns>
         /// True if there is matching <see cref="LexerTokenRule{TLexerState}" />.
         /// </returns>
-        private bool FindBestTokenRule(
+        private bool FindBestRule(
             string textToLex,
             int startIndex,
             TLexerState state,
-            out LexerTokenRule<TLexerState> bestMatchTokenRule,
-            out Match bestMatch)
+            out int tokenType,
+            out bool returnToken,
+            out string bestMatch,
+            out int bestMatchTotalLength)
         {
-            bestMatchTokenRule = null;
+            returnToken = false;
             bestMatch = null;
+            tokenType = 0;
+            bestMatchTotalLength = 0;
+            bool skipDynamic = false;
             foreach (LexerTokenRule<TLexerState> tokenRule in Grammar.RegexRules)
             {
                 Match tokenMatch = tokenRule.RegularExpression.Match(textToLex, startIndex, textToLex.Length - startIndex);
@@ -153,11 +134,13 @@ namespace SpiceSharpParser.Lexers
                     {
                         if (bestMatch == null || tokenMatch.Length > bestMatch.Length || tokenRule.TopRule)
                         {
-                            bestMatch = tokenMatch;
-                            bestMatchTokenRule = tokenRule;
-
+                            bestMatch = tokenMatch.Value;
+                            bestMatchTotalLength = bestMatch.Length;
+                            returnToken = tokenRule.ReturnDecisionProvider(state, bestMatch) == LexerRuleReturnDecision.ReturnToken;
+                            tokenType = tokenRule.TokenType;
                             if (state.FullMatch || tokenRule.TopRule)
                             {
+                                skipDynamic = true;
                                 break;
                             }
                         }
@@ -165,7 +148,29 @@ namespace SpiceSharpParser.Lexers
                 }
             }
 
-            return bestMatch != null;
+            if (!skipDynamic)
+            {
+                foreach (LexerDynamicRule dynamicRule in Grammar
+                    .DynamicRules
+                    .Where(rule => rule.PreviousReturnedTokenTypes == null || rule.PreviousReturnedTokenTypes.Contains(state.PreviousReturnedTokenType)))
+                {
+                    Match tokenMatch = dynamicRule.PrefixExpression.Match(textToLex, startIndex, textToLex.Length - startIndex);
+                    bool ruleMatch = tokenMatch.Success;
+                    if (ruleMatch)
+                    {
+                        var dynamicResult = dynamicRule.Action(textToLex.Substring(startIndex), state);
+
+                        if (bestMatch == null || dynamicResult.Item2 > bestMatch.Length)
+                        {
+                            bestMatch = dynamicResult.Item1;
+                            returnToken = true;
+                            tokenType = dynamicRule.TokenType;
+                            bestMatchTotalLength = dynamicResult.Item2;
+                        }
+                    }
+                }
+            }
+            return !string.IsNullOrEmpty(bestMatch);
         }
     }
 }

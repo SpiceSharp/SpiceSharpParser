@@ -321,6 +321,9 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                     case SpiceTokenType.IDENTIFIER:
                         return new IdentifierParameter(lexemValue, new SpiceLineInfo(t.Token));
 
+                    case SpiceTokenType.EXPRESSION:
+                        return new ExpressionParameter(lexemValue, new SpiceLineInfo(t.Token));
+
                     case SpiceTokenType.EXPRESSION_BRACKET:
                         return new ExpressionParameter(lexemValue.Trim('{', '}'), new SpiceLineInfo(t.Token));
 

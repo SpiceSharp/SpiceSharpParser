@@ -65,7 +65,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 (int)SpiceTokenType.WHITESPACE,
                 "A whitespace characters that will be ignored",
                 @"[\t 	]+",
-                (SpiceLexerState state, string lexem) => LexerRuleReturnDecision.IgnoreToken));
+                (SpiceLexerState state, string lexem) => LexerRuleReturnDecision.IgnoreToken, topRule: true));
 
             builder.AddRegexRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.CONTINUATION_CURRENT_LINE,
@@ -108,7 +108,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
             builder.AddDynamicRule(new LexerDynamicRule(
                 (int)SpiceTokenType.EXPRESSION_BRACKET,
                 "A mathematical (also nested) expression in brackets",
-                "{",
+                @"\{.+",
                 (string textToLex, LexerState state) =>
                     {
                         int openBracketCount = 1;
@@ -144,7 +144,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
             builder.AddDynamicRule(new LexerDynamicRule(
                 (int)SpiceTokenType.BOOLEAN_EXPRESSION,
                 "A mathematical (also nested) expression in brackets",
-                "(",
+                @"\(.+",
                 (string textToLex, LexerState state) =>
                 {
                     int openBracketCount = 1;
@@ -174,7 +174,38 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                         LineNumber = state?.LineNumber ?? 0,
                         StartColumnIndex = state?.StartColumnIndex ?? 0,
                     });
-                }));
+                }, new int[] { (int)SpiceTokenType.IF, (int)SpiceTokenType.ELSE_IF }));
+
+            builder.AddDynamicRule(new LexerDynamicRule(
+                (int)SpiceTokenType.EXPRESSION_BRACKET,
+                "An expression after equal",
+                "[^{']+",
+                (string textToLex, LexerState state) =>
+                {
+                    try
+                    {
+                        var parser = new Parser();
+                        var lexer = new Lexer(textToLex);
+
+                        var node = parser.Parse(lexer);
+
+                        int length = lexer.Index - lexer.BuilderLength;
+
+                        if (lexer.Current == ' ')
+                        {
+                            length--; 
+                        }
+
+                        var expression = textToLex.Substring(0, length);
+
+                        return new Tuple<string, int>(expression, length);
+                    }
+                    catch
+                    {
+                        return new Tuple<string, int>(string.Empty, 0);
+                    }
+
+                }, new int[] { (int)SpiceTokenType.EQUAL }));
 
             builder.AddRegexRule(
                 new LexerTokenRule<SpiceLexerState>(
@@ -431,6 +462,24 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 "<LETTER>(<CHARACTER>|<SPECIAL>)*",
                 null,
                 (SpiceLexerState state, string lexem) => LexerRuleUseDecision.Use,
+                ignoreCase: true));
+
+            builder.AddRegexRule(new LexerTokenRule<SpiceLexerState>(
+                (int)SpiceTokenType.EXPRESSION,
+                "A expression after equal",
+                @"(<CHARACTER>|\t| |\+|\(|\)|,|<SPECIAL>)+",
+                null,
+                (SpiceLexerState state, string lexem) =>
+                {
+                    if (state.PreviousReturnedTokenType == (int)SpiceTokenType.EQUAL)
+                    {
+                        return LexerRuleUseDecision.UseDynamic;
+                    }
+                    else
+                    {
+                        return LexerRuleUseDecision.Next;
+                    }
+                },
                 ignoreCase: true));
 
             builder.AddRegexRule(new LexerTokenRule<SpiceLexerState>(

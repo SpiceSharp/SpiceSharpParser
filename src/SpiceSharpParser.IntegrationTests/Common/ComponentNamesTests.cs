@@ -5,6 +5,23 @@ namespace SpiceSharpParser.IntegrationTests.Common
     public class ComponentNamesTests : BaseTests
     {
         [Fact]
+        public void When_NamesHasExoticCharacters_Expect_NoException()
+        {
+            var netlist = ParseNetlist(
+                "Test circuit",
+                "V0_a 0 AVDD-INT 2",
+                "R§1m AVDD-INT N042 1",
+                "R2_a N042 0 1",
+                ".OP",
+                ".SAVE V(AVDD-INT) I(R§1m)",
+                ".END");
+
+            var exports = RunOpSimulation(netlist, "V(AVDD-INT)", "I(R§1m)");
+
+            EqualsWithTol(-2.0, exports[0]);
+            EqualsWithTol(-1.0, exports[1]);
+        }
+        [Fact]
         public void When_LTSpiceFormat_Expect_Reference()
         {
             var netlist = ParseNetlist(
