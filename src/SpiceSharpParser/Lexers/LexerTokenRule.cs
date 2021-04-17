@@ -69,19 +69,6 @@ namespace SpiceSharpParser.Lexers
         }
 
         /// <summary>
-        /// Returns true if the dynamic rule should be used instead.
-        /// </summary>
-        /// <param name="lexerState">The current lexer state.</param>
-        /// <param name="lexem">A lexem value.</param>
-        /// <returns>
-        /// True if the lexer token rule is active or should be skipped.
-        /// </returns>
-        public bool ShouldUseDynamic(TLexerState lexerState, string lexem)
-        {
-            return UseDecisionProvider(lexerState, lexem) == LexerRuleUseDecision.UseDynamic;
-        }
-
-        /// <summary>
         /// Clones the rule.
         /// </summary>
         /// <returns>

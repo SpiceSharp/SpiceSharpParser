@@ -14,10 +14,5 @@
         /// Specifies that the next rule will be tried.
         /// </summary>
         Next = 1,
-
-        /// <summary>
-        /// Specifies that the dynamic rule should be used.
-        /// </summary>
-        UseDynamic = 2,
     }
 }

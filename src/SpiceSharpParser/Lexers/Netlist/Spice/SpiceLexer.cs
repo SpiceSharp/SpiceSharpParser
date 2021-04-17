@@ -465,24 +465,6 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 ignoreCase: true));
 
             builder.AddRegexRule(new LexerTokenRule<SpiceLexerState>(
-                (int)SpiceTokenType.EXPRESSION,
-                "A expression after equal",
-                @"(<CHARACTER>|\t| |\+|\(|\)|,|<SPECIAL>)+",
-                null,
-                (SpiceLexerState state, string lexem) =>
-                {
-                    if (state.PreviousReturnedTokenType == (int)SpiceTokenType.EQUAL)
-                    {
-                        return LexerRuleUseDecision.UseDynamic;
-                    }
-                    else
-                    {
-                        return LexerRuleUseDecision.Next;
-                    }
-                },
-                ignoreCase: true));
-
-            builder.AddRegexRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.WORD,
                 "A relative path",
                 @"(\.\.\\|\.\.\/|\.\/|\.\\)(<CHARACTER>|<SPECIAL>)*",
