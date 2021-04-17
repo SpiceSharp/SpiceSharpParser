@@ -231,6 +231,21 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
                 }
             }
 
+            if (Context.FunctionsBody.ContainsKey(name))
+            {
+                var functionBody = Context.FunctionsBody[name];
+
+                var argumentsDefinition = Context.FunctionArguments[name].ToArray();
+
+                for (var i = 0; i < argumentsDefinition.Length; i++)
+                {
+                    var argumentValue = Build(Parser.Parse(argumentsDefinition[i]));
+                    Context.Arguments.Add(argumentsDefinition[i], new ConstantExpression(argumentValue));
+                }
+
+                return Build(Parser.Parse(functionBody));
+            }
+
             return null;
         }
     }
