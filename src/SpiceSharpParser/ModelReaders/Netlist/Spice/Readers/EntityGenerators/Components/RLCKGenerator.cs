@@ -434,7 +434,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                          || resistanceParameter is IdentifierParameter
                          || resistanceParameter is ValueParameter
                          || resistanceParameter is ExpressionParameter
-                         || (resistanceParameter is AssignmentParameter ap && !(ap.Name.ToLower() == "r" || ap.Name.ToLower() == "resistance"))))
+                         || (resistanceParameter is AssignmentParameter ap && (ap.Name.ToLower() == "r" || ap.Name.ToLower() == "resistance"))))
                     {
                         context.Result.Validation.Add(
                             new ValidationEntry(
