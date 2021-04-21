@@ -318,6 +318,10 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                     case SpiceTokenType.WORD:
                         return new WordParameter(lexemValue, new SpiceLineInfo(t.Token));
 
+                    case SpiceTokenType.PREFIX_SINGLE:
+                    case SpiceTokenType.PREFIX_COMPLEX:
+                        return new PrefixParameter(lexemValue, new SpiceLineInfo(t.Token));
+
                     case SpiceTokenType.IDENTIFIER:
                         return new IdentifierParameter(lexemValue, new SpiceLineInfo(t.Token));
 

@@ -125,6 +125,8 @@ namespace SpiceSharpParser.Lexers
             bool skipDynamic = false;
             foreach (LexerTokenRule<TLexerState> tokenRule in Grammar.RegexRules)
             {
+                state.CurrentRuleRegex = tokenRule.RegularExpression;
+
                 Match tokenMatch = tokenRule.RegularExpression.Match(textToLex, startIndex, textToLex.Length - startIndex);
                 if (tokenMatch.Success && tokenMatch.Length > 0 && tokenMatch.Index == startIndex)
                 {
@@ -154,6 +156,8 @@ namespace SpiceSharpParser.Lexers
                     .DynamicRules
                     .Where(rule => rule.PreviousReturnedTokenTypes == null || rule.PreviousReturnedTokenTypes.Contains(state.PreviousReturnedTokenType)))
                 {
+                    state.CurrentRuleRegex = dynamicRule.PrefixExpression;
+
                     Match tokenMatch = dynamicRule.PrefixExpression.Match(textToLex, startIndex, textToLex.Length - startIndex);
                     bool ruleMatch = tokenMatch.Success;
                     if (ruleMatch)

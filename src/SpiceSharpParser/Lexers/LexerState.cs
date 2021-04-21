@@ -1,4 +1,6 @@
-﻿namespace SpiceSharpParser.Lexers
+﻿using System.Text.RegularExpressions;
+
+namespace SpiceSharpParser.Lexers
 {
     /// <summary>
     /// A base class for lexer state classes. It contains a type of previous token.
@@ -34,5 +36,8 @@
         /// Gets or sets a value indicating lexer is lexing new line.
         /// </summary>
         public bool NewLine { get; set; } = true;
+
+
+        public Regex CurrentRuleRegex { get; set; }
     }
 }

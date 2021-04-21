@@ -47,6 +47,18 @@ namespace SpiceSharpParser.IntegrationTests
             return parser.ParseNetlist(text).SpiceModel;
         }
 
+
+        public static SpiceParserResult ParseNetlistRaw(params string[] lines)
+        {
+            var text = string.Join(Environment.NewLine, lines);
+            var parser = new SpiceParser();
+
+            parser.Settings.Lexing.HasTitle = true;
+            parser.Settings.Parsing.IsEndRequired = true;
+
+            return parser.ParseNetlist(text);
+        }
+
         public static ISpiceModel<Circuit, Simulation> ParseNetlist(int randomSeed, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);

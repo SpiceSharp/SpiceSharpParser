@@ -198,6 +198,10 @@
         /// <summary>
         /// expression with bracket token 
         /// </summary>
-        EXPRESSION = 38
+        EXPRESSION = 38,
+
+        PREFIX_SINGLE = 39,
+
+        PREFIX_COMPLEX = 40
     }
 }

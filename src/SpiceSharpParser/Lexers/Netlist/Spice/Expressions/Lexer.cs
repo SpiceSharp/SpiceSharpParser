@@ -2,7 +2,7 @@
 using System;
 using System.Text;
 
-namespace SpiceSharpParser.Lexers.Netlist.Spice
+namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
 {
     /// <summary>
     /// A lexer that will tokenize Spice expressions.

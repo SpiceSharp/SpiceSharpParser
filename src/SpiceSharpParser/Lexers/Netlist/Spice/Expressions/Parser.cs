@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using SpiceSharpBehavioral.Parsers;
 using SpiceSharpBehavioral.Parsers.Nodes;
 
-namespace SpiceSharpParser.Lexers.Netlist.Spice
+namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
 {
     /// <summary>
     /// A parser that parses Spice expressions.

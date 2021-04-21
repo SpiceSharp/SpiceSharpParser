@@ -65,8 +65,9 @@ namespace SpiceSharpParser
             var appendModelPreprocessor = new AppendModelPreprocessor();
             var sweepsPreprocessor = new SweepsPreprocessor();
             var ifPostprocessor = new IfPreprocessor();
+            var macroPreprocessor = new MacroPreprocessor();
 
-            Preprocessors.AddRange(new IProcessor[] { includesPreprocessor, libPreprocessor, appendModelPreprocessor, sweepsPreprocessor, ifPostprocessor });
+            Preprocessors.AddRange(new IProcessor[] { includesPreprocessor, libPreprocessor, macroPreprocessor, appendModelPreprocessor, sweepsPreprocessor, ifPostprocessor });
         }
 
         public ISpiceTokenProviderPool TokenProviderPool { get; set; }
