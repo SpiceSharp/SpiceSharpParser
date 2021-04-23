@@ -26,7 +26,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                     _cacheLock.EnterWriteLock();
                     try
                     {
-                        var provider = new SpiceTokenProvider(settings.HasTitle, settings.IsDotStatementNameCaseSensitive);
+                        var provider = new SpiceTokenProvider(settings.HasTitle, settings.IsDotStatementNameCaseSensitive, settings.EnableBusSyntax);
                         _providers[key] = provider;
                         return provider;
                     }

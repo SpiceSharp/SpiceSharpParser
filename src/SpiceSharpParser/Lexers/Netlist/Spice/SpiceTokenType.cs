@@ -202,6 +202,8 @@
 
         PREFIX_SINGLE = 39,
 
-        PREFIX_COMPLEX = 40
+        PREFIX_COMPLEX = 40,
+
+        SUFFIX = 41
     }
 }

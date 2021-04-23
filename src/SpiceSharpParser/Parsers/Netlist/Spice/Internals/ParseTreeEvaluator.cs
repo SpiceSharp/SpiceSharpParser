@@ -318,6 +318,9 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                     case SpiceTokenType.WORD:
                         return new WordParameter(lexemValue, new SpiceLineInfo(t.Token));
 
+                    case SpiceTokenType.SUFFIX:
+                        return new SuffixParameter(lexemValue, new SpiceLineInfo(t.Token));
+
                     case SpiceTokenType.PREFIX_SINGLE:
                     case SpiceTokenType.PREFIX_COMPLEX:
                         return new PrefixParameter(lexemValue, new SpiceLineInfo(t.Token));
@@ -461,7 +464,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 throw new ParseTreeEvaluationException("Error during translating parse tree to Spice Object Model");
             }
 
-            var subCkt = new SubCircuit(values.GetLexem(2), new Statements(), new List<string>(), new SpiceLineInfo(values));
+            var subCkt = new SubCircuit(values.GetLexem(2), new Statements(), new ParameterCollection(), new SpiceLineInfo(values));
 
             var allParameters = values.GetSpiceObject<ParameterCollection>(3);
 
@@ -489,9 +492,11 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                     {
                         if (s2 is WordParameter
                             || s2 is IdentifierParameter
+                            || s2 is PrefixParameter
+                            || s2 is SuffixParameter
                             || int.TryParse(s2.Image, out _))
                         {
-                            subCkt.Pins.Add(s2.Image);
+                            subCkt.Pins.Add(s2);
                         }
                     }
                 }

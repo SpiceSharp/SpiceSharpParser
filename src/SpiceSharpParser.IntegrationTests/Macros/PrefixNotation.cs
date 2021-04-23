@@ -8,6 +8,7 @@ namespace SpiceSharpParser.IntegrationTests.Macros
         public void Test01()
         {
             var result = ParseNetlistRaw(
+                enableBusSyntax: true,
                 "Prefix notation",
                 ".SUBCKT complex_component b1 b2 b3",
                 "R1 b1 1 100",
@@ -28,6 +29,7 @@ namespace SpiceSharpParser.IntegrationTests.Macros
         public void Test02()
         {
             var result = ParseNetlistRaw(
+                enableBusSyntax: true,
                 "Prefix notation",
                 ".SUBCKT complex_component b1 b2 b3 b4",
                 "R1 b1 1 100",
@@ -47,6 +49,7 @@ namespace SpiceSharpParser.IntegrationTests.Macros
         public void Test03()
         {
             var result = ParseNetlistRaw(
+                enableBusSyntax: true,
                 "Prefix notation",
                 ".SUBCKT complex_component b1 b2 b3 b4",
                 "R1 b1 1 100",
@@ -66,6 +69,7 @@ namespace SpiceSharpParser.IntegrationTests.Macros
         public void Test04()
         {
             var result = ParseNetlistRaw(
+                enableBusSyntax: true,
                 "Prefix notation",
                 ".SUBCKT complex_component b1 b2 b3 b4 b5 b6 b7 b8 b9 b10 b11 b12",
                 "R1 b1 1 100",
@@ -86,6 +90,7 @@ namespace SpiceSharpParser.IntegrationTests.Macros
         public void Test05()
         {
             var result = ParseNetlistRaw(
+                enableBusSyntax: true,
                 "Prefix notation",
                 ".SUBCKT complex_component b1 b2 b3 b4 b5 b6 b7 b8 b9 b10 b11 b12",
                 "R1 b1 1 100",

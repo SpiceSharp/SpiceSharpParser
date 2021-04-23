@@ -208,66 +208,70 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
 
                 }, new int[] { (int)SpiceTokenType.EQUAL }));
 
-            builder.AddDynamicRule(new LexerDynamicRule(
-               (int)SpiceTokenType.PREFIX_SINGLE,
-               "Prefix notation",
-               @"\<\*\d\>\s*[a-zA-Z0-9\-\+§µ_]+",
-               (string textToLex, LexerState state) =>
-               {
-                   Match tokenMatch = state.CurrentRuleRegex.Match(textToLex, 0, textToLex.Length);
+            if (_options.EnableBusSyntax)
+            {
+                builder.AddRegexRule(new LexerTokenRule<SpiceLexerState>(
+                  (int)SpiceTokenType.SUFFIX,
+                  "Suffix notation",
+                  @"[a-zA-Z]+<[\d,():*\s]+>",
+                  (SpiceLexerState state, string lexem) => LexerRuleReturnDecision.ReturnToken,
+                  (SpiceLexerState state, string lexem) =>
+                  {
+                      return LexerRuleUseDecision.Use;
+                  }));
 
-                   if (tokenMatch.Success && tokenMatch.Length > 0)
+                builder.AddRegexRule(new LexerTokenRule<SpiceLexerState>(
+                  (int)SpiceTokenType.PREFIX_SINGLE,
+                  "Prefix notation",
+                  @"\<\*\d\>\s*[a-zA-Z0-9\-\+§µ_]+",
+                  (SpiceLexerState state, string lexem) => LexerRuleReturnDecision.ReturnToken,
+                  (SpiceLexerState state, string lexem) =>
+                  {
+                      return LexerRuleUseDecision.Use;
+                  }));
+
+
+                builder.AddDynamicRule(new LexerDynamicRule(
+                   (int)SpiceTokenType.PREFIX_COMPLEX,
+                   "Prefix notation with brackets",
+                   @"\<\*\d\>\s*\(",
+                   (string textToLex, LexerState state) =>
                    {
-                       return new Tuple<string, int>(tokenMatch.Value, tokenMatch.Length);
-                   }
+                       Match tokenMatch = state.CurrentRuleRegex.Match(textToLex, 0, textToLex.Length);
 
-                   throw new LexerException("Error with prefix single notatation", new SpiceLineInfo()
-                   {
-                       LineNumber = state?.LineNumber ?? 0,
-                       StartColumnIndex = state?.StartColumnIndex ?? 0,
-                   });
-               }));
-
-            builder.AddDynamicRule(new LexerDynamicRule(
-               (int)SpiceTokenType.PREFIX_COMPLEX,
-               "Prefix notation with brackets",
-               @"\<\*\d\>\s*\(",
-               (string textToLex, LexerState state) =>
-               {
-                   Match tokenMatch = state.CurrentRuleRegex.Match(textToLex, 0, textToLex.Length);
-
-                   if (tokenMatch.Success && tokenMatch.Length > 0)
-                   {
-                       string prefixBeginning = tokenMatch.Value;
-
-                       int openBracketCount = 1;
-                       var i = 0;
-                       for (i = prefixBeginning.Length; i < textToLex.Length && openBracketCount > 0; i++)
+                       if (tokenMatch.Success && tokenMatch.Length > 0)
                        {
-                           if (textToLex[i] == ')')
+                           string prefixBeginning = tokenMatch.Value;
+
+                           int openBracketCount = 1;
+                           var i = 0;
+                           for (i = prefixBeginning.Length; i < textToLex.Length && openBracketCount > 0; i++)
                            {
-                               openBracketCount--;
+                               if (textToLex[i] == ')')
+                               {
+                                   openBracketCount--;
+                               }
+
+                               if (textToLex[i] == '(')
+                               {
+                                   openBracketCount++;
+                               }
                            }
 
-                           if (textToLex[i] == '(')
+                           if (openBracketCount == 0)
                            {
-                               openBracketCount++;
+                               var complexPrefix = textToLex.Substring(0, i);
+                               return new Tuple<string, int>(complexPrefix, complexPrefix.Length);
                            }
                        }
 
-                       if (openBracketCount == 0)
+                       throw new LexerException("Error with prefix complex notatation", new SpiceLineInfo()
                        {
-                           var complexPrefix = textToLex.Substring(0, i);
-                           return new Tuple<string, int>(complexPrefix, complexPrefix.Length);
-                       }
-                   }
-
-                   throw new LexerException("Error with prefix complex notatation", new SpiceLineInfo()
-                   {
-                       LineNumber = state?.LineNumber ?? 0,
-                       StartColumnIndex = state?.StartColumnIndex ?? 0,
-                   });
-               }));
+                           LineNumber = state?.LineNumber ?? 0,
+                           StartColumnIndex = state?.StartColumnIndex ?? 0,
+                       });
+                   }));
+            }
 
             builder.AddRegexRule(
                 new LexerTokenRule<SpiceLexerState>(

@@ -6,12 +6,13 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
     {
         private readonly SpiceLexer _lexer;
 
-        public SpiceTokenProvider(bool hasTitle, bool isDotStatementCaseSensitive)
+        public SpiceTokenProvider(bool hasTitle, bool isDotStatementCaseSensitive, bool enableBusSyntax)
         {
             _lexer = new SpiceLexer(new SpiceLexerSettings
             {
                 HasTitle = hasTitle,
                 IsDotStatementNameCaseSensitive = isDotStatementCaseSensitive,
+                EnableBusSyntax = enableBusSyntax
             });
         }
 

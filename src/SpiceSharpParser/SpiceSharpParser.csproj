@@ -43,8 +43,4 @@
     <PackageReference Include="SpiceSharp" Version="3.0.5" />
     <PackageReference Include="SpiceSharpBehavioral" Version="3.0.8" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Lexers\Netlist\Spice\BusSuffix\" />
-  </ItemGroup>
 </Project>

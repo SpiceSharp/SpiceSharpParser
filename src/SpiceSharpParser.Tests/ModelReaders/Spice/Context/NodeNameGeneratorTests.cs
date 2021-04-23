@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
@@ -26,7 +27,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
         public void GenerateWithSubcircuit()
         {
             var subcircuit = new Models.Netlist.Spice.Objects.SubCircuit();
-            subcircuit.Pins = new System.Collections.Generic.List<string>() { "IN", "OUT" };
+            subcircuit.Pins = new Models.Netlist.Spice.Objects.ParameterCollection() { new WordParameter("IN"), new WordParameter("OUT") };
+
             subcircuit.DefaultParameters =
                 new System.Collections.Generic.List<Models.Netlist.Spice.Objects.Parameters.AssignmentParameter>
                 {

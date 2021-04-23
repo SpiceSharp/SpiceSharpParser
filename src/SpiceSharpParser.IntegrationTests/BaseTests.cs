@@ -48,12 +48,13 @@ namespace SpiceSharpParser.IntegrationTests
         }
 
 
-        public static SpiceParserResult ParseNetlistRaw(params string[] lines)
+        public static SpiceParserResult ParseNetlistRaw(bool enableBusSyntax = false, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
             var parser = new SpiceParser();
 
             parser.Settings.Lexing.HasTitle = true;
+            parser.Settings.Lexing.EnableBusSyntax = enableBusSyntax;
             parser.Settings.Parsing.IsEndRequired = true;
 
             return parser.ParseNetlist(text);
