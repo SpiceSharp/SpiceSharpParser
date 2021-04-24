@@ -2,6 +2,8 @@
 using SpiceSharpParser.Lexers.Netlist.Spice.BusSuffix;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {
@@ -14,75 +16,122 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             Statements result = new Statements();
             foreach (var statement in statements)
             {
-                result.Add(Resolve(statement));
+                foreach (var resolved in Resolve(statement))
+                {
+                    result.Add(resolved);
+                }
             }
 
             return result;
         }
 
-        private Statement Resolve(Statement statement)
+        private List<Statement> Resolve(Statement statement)
         {
             if (statement is Component component)
             {
-                var clone = statement.Clone() as Component;
-                clone.PinsAndParameters.Clear();
-                clone.PinsAndParameters = Resolve(component.PinsAndParameters);
-                return clone;
+                if (component.NameParameter is SuffixParameter nameSuffixParameter)
+                {
+                    var lexer = new SpiceSharpParser.Lexers.Netlist.Spice.BusSuffix.Lexer(nameSuffixParameter.Image);
+                    var parser = new SpiceSharpParser.Lexers.Netlist.Spice.BusSuffix.Parser();
+                    var suffixNode = parser.Parse(lexer);
+                    var dimensionsCount = suffixNode.Dimensions.Count;
+                    var totalNumberOfComponents = CalculateTotal(suffixNode.Dimensions);
+                    var suffixes = GetSuffixes(suffixNode.Dimensions);
+
+                    var result = new List<Statement>();
+                    for (var i = 0; i < totalNumberOfComponents; i++)
+                    {
+                        var clone = component.Clone() as Component;
+                        clone.Name = suffixNode.Name + suffixes[i];
+                        clone.PinsAndParameters = ResolveParameters(component.PinsAndParameters, i, totalNumberOfComponents, dimensionsCount);
+
+                        result.Add(clone);
+                    }
+
+                    return result;
+                }
+                else
+                {
+                    var clone = statement.Clone() as Component;
+                    clone.PinsAndParameters.Clear();
+                    clone.PinsAndParameters = ResolveParameters(component.PinsAndParameters);
+                    return new List<Statement>() { clone };
+                }
             }
 
             if (statement is SubCircuit subCircuit)
             {
                 var clone = statement.Clone() as SubCircuit;
-                clone.Pins = Resolve(subCircuit.Pins);
+                clone.Pins = ResolveParameters(subCircuit.Pins);
 
                 var statementsClone = clone.Statements.Clone();
                 clone.Statements.Clear();
 
                 foreach (var subCircuitStatement in statementsClone as Statements)
                 {
-                    clone.Statements.Add(Resolve(subCircuitStatement));
+                    foreach (var resolved in Resolve(subCircuitStatement))
+                    {
+                        clone.Statements.Add(resolved);
+                    }
                 }
 
-                return clone;
+                return new List<Statement>() { clone };
             }
 
-            return statement;
+            return new List<Statement>() { statement };
         }
 
-        private ParameterCollection Resolve(ParameterCollection pinsAndParameters)
+        private List<string> GetSuffixes(List<Lexers.Netlist.Spice.BusSuffix.SufixDimension> dimensions)
         {
-            var result = new ParameterCollection();
+            // <1:2><3:4><11:10>
 
-            foreach (Parameter param in pinsAndParameters)
+            // <11>
+            // <10>
+
+            // <3><11>
+            // <4><11>
+            // <3><10>
+            // <4><10>
+
+
+            // <1><3><11>
+            // <2><3><11>
+
+
+            var result = new List<string>();
+
+            for (var dimensionIndex = dimensions.Count - 1; dimensionIndex >= 0; dimensionIndex--)
             {
-                if (param is PrefixParameter prefix)
+                var dimension = dimensions[dimensionIndex];
+                if (dimensionIndex != 0)
                 {
-                    ResolvePrefix(prefix, result);
-                }
-                else if (param is SuffixParameter suffix)
-                {
-                    ResolveSuffix(suffix, result);
+                    var newResult = new List<string>();
+
+                    foreach (var resultItem in result)
+                    {
+                        newResult.AddRange(GetSuffixes(dimension, resultItem));
+                    }
+
+                    result = newResult;
                 }
                 else
                 {
-                    result.Add(param);
+                    result.AddRange(GetSuffixes(dimension, string.Empty));
                 }
             }
 
             return result;
         }
 
-        private void ResolveSuffix(SuffixParameter suffix, ParameterCollection result)
+        private static List<string> GetSuffixes(SufixDimension dimension, string suffix)
         {
-            var lexer = new SpiceSharpParser.Lexers.Netlist.Spice.BusSuffix.Lexer(suffix.Image);
-            var parser = new SpiceSharpParser.Lexers.Netlist.Spice.BusSuffix.Parser();
-            var suffixNode = parser.Parse(lexer);
+            var result = new List<string>();
 
-            foreach (var node in suffixNode.Nodes)
+            foreach (var node in dimension.Nodes)
             {
                 if (node is NumberNode numberNode)
                 {
-                    result.Add(new WordParameter($"{suffixNode.Name}<{numberNode.Node}>"));
+                    result.Add($"<{numberNode.Node}>{suffix}");
                 }
 
                 if (node is RangeNode rangeNode)
@@ -95,7 +144,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
                         {
                             for (var i = rangeNode.Start; i <= rangeNode.Stop; i += rangeNode.Step ?? 1)
                             {
-                                result.Add(new WordParameter($"{suffixNode.Name}<{i}>"));
+                                result.Add($"<{i}>{suffix}");
                             }
                         }
 
@@ -103,14 +152,129 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
                         {
                             for (var i = rangeNode.Start; i >= rangeNode.Stop; i -= rangeNode.Step ?? 1)
                             {
-                                result.Add(new WordParameter($"{suffixNode.Name}<{i}>"));
+                                result.Add($"<{i}>{suffix}");
                             }
                         }
 
                         if (rangeNode.Start == rangeNode.Stop)
                         {
-                            result.Add(new WordParameter($"{suffixNode.Name}<{rangeNode.Start}>"));
+                            result.Add($"<{rangeNode.Start}>{suffix}");
                         }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private int CalculateTotal(List<Lexers.Netlist.Spice.BusSuffix.SufixDimension> dimensions)
+        {
+            int result = 1;
+
+            for (var i = 0; i < dimensions.Count; i++)
+            {
+                var dimensionCount = 0;
+                
+                foreach(var node in dimensions[0].Nodes)
+                {
+                    if (node is RangeNode range)
+                    {
+                        dimensionCount += (System.Math.Abs(range.Start - range.Stop) + 1 / (range.Step ?? 1)) * (range.Multiply ?? 1);
+                    }
+                    else
+                    {
+                        dimensionCount += 1;
+                    }
+                }
+
+                result *= dimensionCount;
+            }
+
+            return result;
+        }
+
+        private ParameterCollection ResolveParameters(ParameterCollection pinsAndParameters, int? componentIndex = null, int? total = null, int? componentDimensions = null)
+        {
+            var result = new ParameterCollection();
+
+            foreach (Parameter param in pinsAndParameters)
+            {
+                if (param is PrefixParameter prefix)
+                {
+                    ResolvePrefix(prefix, result);
+                }
+                else if (param is SuffixParameter suffix)
+                {
+                    ResolveSuffix(suffix, result, componentIndex, total, componentDimensions);
+                }
+                else
+                {
+                    result.Add(param);
+                }
+            }
+
+            return result;
+        }
+
+        private void ResolveSuffix(SuffixParameter suffix, ParameterCollection result, int? componentIndex = null, int? total = null, int? componentDimensions = null)
+        {
+            var lexer = new Lexers.Netlist.Spice.BusSuffix.Lexer(suffix.Image);
+            var parser = new Lexers.Netlist.Spice.BusSuffix.Parser();
+            var suffixNode = parser.Parse(lexer);
+
+            if (componentIndex == null && total == null && componentDimensions == null)
+            {
+                var suffixes = GetSuffixes(suffixNode.Dimensions);
+
+                foreach (var suffixEntry in suffixes)
+                {
+                    result.Add(new WordParameter(suffixEntry));
+                }
+            }
+            else
+            {
+                if (suffixNode.Dimensions.Count == componentDimensions)
+                {
+                    // case 1 => return one parameter
+
+                    var totalNumberOfNodes = CalculateTotal(suffixNode.Dimensions);
+
+                    if (totalNumberOfNodes != total)
+                    {
+                        throw new System.Exception("Wrong syntax for bus nodes. Mismatch.");
+                    }
+
+                    var allSuffixes = GetSuffixes(suffixNode.Dimensions);
+                    result.Add(new WordParameter(allSuffixes[componentIndex.Value]));
+                }
+                else
+                {
+                    if (suffixNode.Dimensions.Count > componentDimensions)
+                    {
+                        // case 2:
+                        // X<1:2><4:2>  input<4:5><6:8><1:10><3:50> my_subckt
+                        // X<1><4>  input<4><6><1:10><3:50> => X<1><4> input<4><6><1><3> 
+                        var allPrefixes = GetSuffixes(suffixNode.Dimensions.Take(componentDimensions.Value).ToList());
+                        var prefix = allPrefixes[componentIndex.Value];
+
+                        var suffixesPrefixes = GetSuffixes(suffixNode.Dimensions.Skip(componentDimensions.Value).ToList());
+
+                        foreach (var suffixPrefix in suffixesPrefixes)
+                        {
+                            result.Add(new WordParameter(prefix + suffixPrefix));
+                        }
+                    }
+                    else
+                    {
+                        // case 3:
+                        // X<1:2><4:3><5:6>  input<1:2><1:4> my_subckt
+                        var totalNumberOfNodes = CalculateTotal(suffixNode.Dimensions);
+                        if (totalNumberOfNodes != total)
+                        {
+                            throw new System.Exception("Wrong syntax for bus nodes. Mismatch.");
+                        }
+                        var allSuffixes = GetSuffixes(suffixNode.Dimensions);
+                        result.Add(new WordParameter(allSuffixes[componentIndex.Value]));
                     }
                 }
             }

@@ -213,7 +213,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 builder.AddRegexRule(new LexerTokenRule<SpiceLexerState>(
                   (int)SpiceTokenType.SUFFIX,
                   "Suffix notation",
-                  @"[a-zA-Z]+<[\d,():*\s]+>",
+                  @"[a-zA-Z0-9_§µ]+(<[\d,():*\s]+>)+",
                   (SpiceLexerState state, string lexem) => LexerRuleReturnDecision.ReturnToken,
                   (SpiceLexerState state, string lexem) =>
                   {

@@ -15,7 +15,12 @@
         /// <summary>
         /// Gets the name of component.
         /// </summary>
-        public string Name { get; }
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets name parameter.
+        /// </summary>
+        public Parameter NameParameter { get; set; }
 
         /// <summary>
         /// Gets pins and components parameters.
@@ -28,7 +33,9 @@
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
-            return new Component(Name, (ParameterCollection)PinsAndParameters.Clone(), LineInfo);
+            var clone = new Component(Name, (ParameterCollection)PinsAndParameters.Clone(), LineInfo);
+            clone.NameParameter = (Parameter)NameParameter.Clone();
+            return clone;
         }
     }
 }

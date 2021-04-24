@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SpiceSharpParser.Lexers.Netlist.Spice.BusSuffix
 {
@@ -13,11 +12,13 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.BusSuffix
 
         private Sufix ParseBusSuffix(Lexer lexer)
         {
-            var sufix = new Sufix();
-            sufix.Name = ParseName(lexer);
+            var suffix = new Sufix();
+            suffix.Name = ParseName(lexer);
 
-            if (lexer.Token == TokenType.LessThan)
+            while (lexer.Token == TokenType.LessThan)
             {
+                var dimension = new BusSuffix.SufixDimension();
+
                 do
                 {
                     lexer.ReadToken();
@@ -25,23 +26,22 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.BusSuffix
 
                     if (node != null)
                     {
-                        sufix.Nodes.Add(node);
+                        dimension.Nodes.Add(node);
                     }
                 }
                 while (lexer.Token == TokenType.Comma || lexer.Token == TokenType.Space);
-
 
                 if (lexer.Token != TokenType.GreaterThan)
                 {
                     throw new Exception("Wrong suffix");
                 }
 
-                return sufix;
+                lexer.ReadToken();
+
+                suffix.Dimensions.Add(dimension);
             }
-            else
-            {
-                throw new Exception("Wrong suffix");
-            }
+
+            return suffix;
         }
 
         private Node ParseSuffixNode(Lexer lexer)

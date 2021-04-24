@@ -4,8 +4,14 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.BusSuffix
 {
     public class Sufix
     {
-        public List<Node> Nodes { get; set; } = new List<Node>();
+        public List<SufixDimension> Dimensions { get; set; } = new List<SufixDimension>();
+
         public string Name { get; set; }
+    }
+
+    public class SufixDimension
+    {
+        public List<Node> Nodes { get; set; } = new List<Node>();
     }
 
     public abstract class Node

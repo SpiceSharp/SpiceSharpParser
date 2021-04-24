@@ -392,6 +392,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
 
             if (currentToken.Is(SpiceTokenType.DOT)
                 || currentToken.Is(SpiceTokenType.WORD)
+                || currentToken.Is(SpiceTokenType.SUFFIX)
                 || currentToken.Is(SpiceTokenType.MODEL)
                 || currentToken.Is(SpiceTokenType.IDENTIFIER)
                 || currentToken.Is(SpiceTokenType.COMMENT)
@@ -445,7 +446,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
             var currentToken = tokens[currentTokenIndex];
             var nextToken = tokens[currentTokenIndex + 1];
 
-            if (currentToken.Is(SpiceTokenType.WORD) || currentToken.Is(SpiceTokenType.IDENTIFIER))
+            if (currentToken.Is(SpiceTokenType.WORD) || currentToken.Is(SpiceTokenType.IDENTIFIER) || currentToken.Is(SpiceTokenType.SUFFIX))
             {
                 PushProductionExpression(
                     stack,
@@ -1374,7 +1375,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
         {
             var currentToken = tokens[currentTokenIndex];
 
-            if (currentToken.Is(SpiceTokenType.WORD) || currentToken.Is(SpiceTokenType.IDENTIFIER))
+            if (currentToken.Is(SpiceTokenType.WORD) || currentToken.Is(SpiceTokenType.IDENTIFIER) || currentToken.Is(SpiceTokenType.SUFFIX))
             {
                 PushProductionExpression(
                     stack,

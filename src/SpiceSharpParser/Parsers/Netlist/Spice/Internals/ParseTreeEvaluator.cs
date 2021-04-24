@@ -390,6 +390,17 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 values.GetSpiceObject<ParameterCollection>(1),
                 new SpiceLineInfo(values));
 
+            switch ((SpiceTokenType)values.GetToken(0).Type)
+            {
+                case SpiceTokenType.SUFFIX:
+                    component.NameParameter = new SuffixParameter(values.GetLexem(0));
+                    break;
+                default:
+                    component.NameParameter = new WordParameter(values.GetLexem(0));
+                    break;
+            }
+
+
             return component;
         }
 
