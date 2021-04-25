@@ -1,7 +1,8 @@
-﻿using System;
+﻿using SpiceSharpParser.Lexers.BusPrefix;
+using System;
 using System.Collections.Generic;
 
-namespace SpiceSharpParser.Lexers.Netlist.Spice.BusPrefix
+namespace SpiceSharpParser.Parsers.BusPrefix
 {
     public class Parser
     {

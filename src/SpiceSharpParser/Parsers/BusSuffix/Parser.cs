@@ -1,23 +1,24 @@
-﻿using System;
+﻿using SpiceSharpParser.Lexers.BusSuffix;
+using System;
 
-namespace SpiceSharpParser.Lexers.Netlist.Spice.BusSuffix
+namespace SpiceSharpParser.Parsers.BusSuffix
 {
     public class Parser
     {
-        public Sufix Parse(Lexer lexer)
+        public Suffix Parse(Lexer lexer)
         {
             lexer.ReadToken();
             return ParseBusSuffix(lexer);
         }
 
-        private Sufix ParseBusSuffix(Lexer lexer)
+        private Suffix ParseBusSuffix(Lexer lexer)
         {
-            var suffix = new Sufix();
+            var suffix = new Suffix();
             suffix.Name = ParseName(lexer);
 
             while (lexer.Token == TokenType.LessThan)
             {
-                var dimension = new BusSuffix.SufixDimension();
+                var dimension = new BusSuffix.SuffixDimension();
 
                 do
                 {

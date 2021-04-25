@@ -1,7 +1,7 @@
 ﻿using SpiceSharp;
 using System;
 
-namespace SpiceSharpParser.Lexers.Netlist.Spice.BusSuffix
+namespace SpiceSharpParser.Lexers.BusSuffix
 {
     /// <summary>
     /// A lexer that will tokenize bus prefix expressions.

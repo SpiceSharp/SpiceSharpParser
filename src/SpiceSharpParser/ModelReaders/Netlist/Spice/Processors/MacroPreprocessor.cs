@@ -1,7 +1,7 @@
-﻿using SpiceSharpParser.Lexers.Netlist.Spice.BusPrefix;
-using SpiceSharpParser.Lexers.Netlist.Spice.BusSuffix;
+﻿using SpiceSharpParser.Lexers.BusSuffix;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using SpiceSharpParser.Parsers.BusSuffix;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -31,8 +31,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             {
                 if (component.NameParameter is SuffixParameter nameSuffixParameter)
                 {
-                    var lexer = new SpiceSharpParser.Lexers.Netlist.Spice.BusSuffix.Lexer(nameSuffixParameter.Image);
-                    var parser = new SpiceSharpParser.Lexers.Netlist.Spice.BusSuffix.Parser();
+                    var lexer = new Lexer(nameSuffixParameter.Image);
+                    var parser = new Parser();
                     var suffixNode = parser.Parse(lexer);
                     var dimensionsCount = suffixNode.Dimensions.Count;
                     var totalNumberOfComponents = CalculateTotal(suffixNode.Dimensions);
@@ -81,7 +81,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             return new List<Statement>() { statement };
         }
 
-        private List<string> GetSuffixes(List<Lexers.Netlist.Spice.BusSuffix.SufixDimension> dimensions)
+        private List<string> GetSuffixes(List<SuffixDimension> dimensions)
         {
             var result = new List<string>();
 
@@ -108,7 +108,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             return result;
         }
 
-        private List<string> GetSuffixes(SufixDimension dimension, string suffix)
+        private List<string> GetSuffixes(SuffixDimension dimension, string suffix)
         {
             var result = new List<string>();
 
@@ -152,7 +152,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             return result;
         }
 
-        private int CalculateTotal(List<Lexers.Netlist.Spice.BusSuffix.SufixDimension> dimensions)
+        private int CalculateTotal(List<SuffixDimension> dimensions)
         {
             int result = 1;
 
@@ -203,8 +203,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
         private void ResolveSuffix(SuffixParameter suffix, ParameterCollection result, int? componentIndex = null, int? total = null, int? componentDimensions = null)
         {
-            var lexer = new Lexers.Netlist.Spice.BusSuffix.Lexer(suffix.Image);
-            var parser = new Lexers.Netlist.Spice.BusSuffix.Parser();
+            var lexer = new Lexer(suffix.Image);
+            var parser = new Parser();
             var suffixNode = parser.Parse(lexer);
 
             if (componentIndex == null && total == null && componentDimensions == null)
@@ -267,20 +267,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
         private void ResolvePrefix(PrefixParameter prefix, ParameterCollection result)
         {
-            var lexer = new SpiceSharpParser.Lexers.Netlist.Spice.BusPrefix.Lexer(prefix.Image);
-            var parser = new SpiceSharpParser.Lexers.Netlist.Spice.BusPrefix.Parser();
+            var lexer = new Lexers.BusPrefix.Lexer(prefix.Image);
+            var parser = new Parsers.BusPrefix.Parser();
             var node = parser.Parse(lexer);
 
             ResolvePrefix(node, result);
         }
 
-        private void ResolvePrefix(Lexers.Netlist.Spice.BusPrefix.Node node, ParameterCollection result)
+        private void ResolvePrefix(Parsers.BusPrefix.Node node, ParameterCollection result)
         {
-            if (node is PrefixNodeName prefixNode)
+            if (node is Parsers.BusPrefix.PrefixNodeName prefixNode)
             {
                 result.Add(new WordParameter(prefixNode.Name));
             }
-            else if (node is Prefix prefix)
+            else if (node is Parsers.BusPrefix.Prefix prefix)
             {
                 for (var i = 0; i < prefix.Value; i++)
                 {
