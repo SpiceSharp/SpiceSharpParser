@@ -110,6 +110,58 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </returns>
         protected SpiceSharp.Components.IComponent GenerateCap(string name, ParameterCollection parameters, ICircuitContext context)
         {
+            if (parameters.Count == 3)
+            {
+                // CXXXXXXX N1 N2 VALUE
+                var evalContext = context.Evaluator.GetEvaluationContext();
+
+                var something = parameters[2];
+                string expression = null;
+
+                if (something is AssignmentParameter asp)
+                {
+                    expression = $"({asp.Value}) * x";
+
+                }
+                else
+                {
+                    expression = $"({something.Image}) * x";
+                }
+
+                if (evalContext.HaveSpiceProperties(expression) || evalContext.HaveFunctions(expression))
+                {
+                    BehavioralCapacitor behavioralCapacitor = new BehavioralCapacitor(name);
+                    context.CreateNodes(behavioralCapacitor, parameters.Take(BehavioralCapacitor.BehavioralCapacitorPinCount));
+
+                    behavioralCapacitor.Parameters.Expression = expression;
+                    behavioralCapacitor.Parameters.ParseAction = (expression) =>
+                    {
+                        var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
+                        return parser.Resolve(expression);
+                    };
+
+                    evalContext.Parameters.Add("x", new SpiceSharpParser.Common.Evaluation.Expressions.ConstantExpression(1));
+
+                    if (evalContext.HaveFunctions(expression))
+                    {
+                        context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
+                        {
+                            behavioralCapacitor.Parameters.Expression = expression.ToString();
+
+                            behavioralCapacitor.Parameters.ParseAction = (expression) =>
+                            {
+                                var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(simulation), false, context.CaseSensitivity);
+                                return parser.Resolve(expression);
+                            };
+                        });
+                    }
+
+                    evalContext.Parameters.Remove("x");
+
+                    return behavioralCapacitor;
+                }
+            }
+
             var capacitor = new Capacitor(name);
             context.CreateNodes(capacitor, parameters);
 
@@ -129,9 +181,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             if (parameters.Count == 3)
             {
                 // CXXXXXXX N1 N2 VALUE
-                if (parameters[2] is ExpressionParameter || parameters[2] is ValueParameter)
+                if (parameters[2] is ValueParameter)
                 {
-                    context.SetParameter(capacitor, "capacitance", parameters.Get(2));
+                    context.SetParameter(capacitor, "capacitance", parameters.Get(2), true, false);
                 }
                 else
                 {
@@ -152,9 +204,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 // CMOD 3 7 CMODEL L = 10u W = 1u
                 // CMOD 3 7 CMODEL L = 10u W = 1u IC=1
                 // CMOD 3 7 1.3 IC=1
-                if (parameters[2] is ExpressionParameter || parameters[2] is ValueParameter)
+                if (parameters[2] is ValueParameter)
                 {
-                    context.SetParameter(capacitor, "capacitance", parameters.Get(2));
+                    context.SetParameter(capacitor, "capacitance", parameters.Get(2), true, false);
                 }
                 else
                 {
@@ -208,8 +260,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                     if (tcParameterAssignment.Values.Count == 2)
                     {
-                        context.SetParameter(model, "tc1", tcParameterAssignment.Values[0]);
-                        context.SetParameter(model, "tc2", tcParameterAssignment.Values[1]);
+                        context.SetParameter(model, "tc1", tcParameterAssignment.Values[0], true, false);
+                        context.SetParameter(model, "tc2", tcParameterAssignment.Values[1], true, false);
                     }
                     else
                     {
@@ -224,8 +276,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     var model = new CapacitorModel(capacitor.Name + "_default_model");
                     if (tcParameterAssignment.Values.Count == 2)
                     {
-                        context.SetParameter(model, "tc1", tcParameterAssignment.Values[0]);
-                        context.SetParameter(model, "tc2", tcParameterAssignment.Values[1]);
+                        context.SetParameter(model, "tc1", tcParameterAssignment.Values[0], true, false);
+                        context.SetParameter(model, "tc2", tcParameterAssignment.Values[1], true, false);
                     }
                     else
                     {
@@ -281,10 +333,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </returns>
         protected IEntity GenerateRes(string name, ParameterCollection parameters, ICircuitContext context)
         {
-            var evalContext = context.Evaluator.GetEvaluationContext();
-
             if (parameters.Count == 3)
             {
+                var evalContext = context.Evaluator.GetEvaluationContext();
+
                 // RName Node1 Node2 something
 
                 var something = parameters[2];
@@ -313,7 +365,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     };
 
                     
-                    if (evalContext.HaveFunctions(expression))
+                    if (evalContext.HaveFunctions(expression)) 
                     {
                         context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
                         {
