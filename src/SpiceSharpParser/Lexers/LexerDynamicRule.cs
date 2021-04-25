@@ -42,6 +42,7 @@ namespace SpiceSharpParser.Lexers
                 return _regex;
             }
         }
+
         public Func<string, LexerState, Tuple<string, int>> Action { get; }
 
         public int[] PreviousReturnedTokenTypes { get; }

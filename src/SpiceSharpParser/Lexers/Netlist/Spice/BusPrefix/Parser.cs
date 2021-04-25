@@ -91,16 +91,16 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.BusPrefix
 
             return result;
         }
+
         private int ParseNumber(Lexer lexer)
         {
             var numberString = ReadToken(lexer, TokenType.Digit);
             return int.Parse(numberString);
         }
 
-
         private static string ReadToken(Lexer lexer, TokenType type)
         {
-            string result = "";
+            string result = string.Empty;
             while (lexer.Token == type)
             {
                 result += lexer.Current;

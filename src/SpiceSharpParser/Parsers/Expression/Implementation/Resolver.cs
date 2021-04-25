@@ -75,15 +75,15 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
                             var functionBodyResolved = Resolve(staticResolverFunction.GetBody());
                             return functionBodyResolved;
                         }
+
                         if (function is DynamicResolverFunction dynamicResolverFunction)
                         {
                             var functionBodyResolved = dynamicResolverFunction.GetBody(args);
                             return functionBodyResolved;
                         }
-
                     }
+
                     return funtionUpdated;
-                    
                 case ConstantNode cn:
                     return cn;
 

@@ -83,21 +83,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
         private List<string> GetSuffixes(List<Lexers.Netlist.Spice.BusSuffix.SufixDimension> dimensions)
         {
-            // <1:2><3:4><11:10>
-
-            // <11>
-            // <10>
-
-            // <3><11>
-            // <4><11>
-            // <3><10>
-            // <4><10>
-
-
-            // <1><3><11>
-            // <2><3><11>
-
-
             var result = new List<string>();
 
             for (var dimensionIndex = dimensions.Count - 1; dimensionIndex >= 0; dimensionIndex--)
@@ -123,7 +108,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             return result;
         }
 
-        private static List<string> GetSuffixes(SufixDimension dimension, string suffix)
+        private List<string> GetSuffixes(SufixDimension dimension, string suffix)
         {
             var result = new List<string>();
 
@@ -174,12 +159,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             for (var i = 0; i < dimensions.Count; i++)
             {
                 var dimensionCount = 0;
-                
-                foreach(var node in dimensions[0].Nodes)
+
+                foreach (var node in dimensions[0].Nodes)
                 {
                     if (node is RangeNode range)
                     {
-                        dimensionCount += (System.Math.Abs(range.Start - range.Stop) + 1 / (range.Step ?? 1)) * (range.Multiply ?? 1);
+                        dimensionCount += ((System.Math.Abs(range.Start - range.Stop) + 1) / (range.Step ?? 1)) * (range.Multiply ?? 1);
                     }
                     else
                     {
@@ -236,7 +221,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
                 if (suffixNode.Dimensions.Count == componentDimensions)
                 {
                     // case 1 => return one parameter
-
                     var totalNumberOfNodes = CalculateTotal(suffixNode.Dimensions);
 
                     if (totalNumberOfNodes != total)
@@ -253,7 +237,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
                     {
                         // case 2:
                         // X<1:2><4:2>  input<4:5><6:8><1:10><3:50> my_subckt
-                        // X<1><4>  input<4><6><1:10><3:50> => X<1><4> input<4><6><1><3> 
+                        // X<1><4>  input<4><6><1:10><3:50> => X<1><4> input<4><6><1><3>
                         var allPrefixes = GetSuffixes(suffixNode.Dimensions.Take(componentDimensions.Value).ToList());
                         var prefix = allPrefixes[componentIndex.Value];
 
@@ -273,6 +257,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
                         {
                             throw new System.Exception("Wrong syntax for bus nodes. Mismatch.");
                         }
+
                         var allSuffixes = GetSuffixes(suffixNode.Dimensions);
                         result.Add(new WordParameter(allSuffixes[componentIndex.Value]));
                     }

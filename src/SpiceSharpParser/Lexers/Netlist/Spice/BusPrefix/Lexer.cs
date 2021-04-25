@@ -11,6 +11,15 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.BusPrefix
         private readonly string _expression;
         private int _index;
 
+        /// Initializes a new instance of the <see cref="Lexer"/> class.
+        /// </summary>
+        /// <param name="expression">The expression.</param>
+        public Lexer(string expression)
+        {
+            _expression = expression;
+            _index = -1;
+        }
+
         /// <summary>
         /// Gets the current character.
         /// </summary>
@@ -32,28 +41,22 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.BusPrefix
         /// The type.
         /// </value>
         public TokenType Token { get; private set; }
-     
+
         public int Index { get => _index; set => _index = value; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Lexer"/> class.
-        /// </summary>
-        /// <param name="expression">The expression.</param>
-        public Lexer(string expression)
-        {
-            _expression = expression;
-            _index = -1;
-        }
-
         /// <summary>
         /// Reads the next token.
         /// </summary>
         public void ReadToken(bool skipSpaces = true)
         {
             _index++;
+
             // Skip spaces
             while (Current == ' ' && skipSpaces)
+            {
                 _index++;
+            }
 
             // Nothing left to read!
             if (Current == '\0' || Current == '\r' || Current == '\n')
@@ -73,7 +76,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.BusPrefix
                 '(' => TokenType.LeftParenthesis,
                 ')' => TokenType.RightParenthesis,
                 char mc when mc >= '0' && mc <= '9' => TokenType.Digit,
-                char mc when mc >= 'a' && mc <= 'z' || mc >= 'A' && mc <= 'Z' || mc == '_' || mc == '$' => TokenType.Letter,
+                char mc when (mc >= 'a' && mc <= 'z') || (mc >= 'A' && mc <= 'Z') || mc == '_' || mc == '$' => TokenType.Letter,
                 _ => throw new Exception("Unrecognized character found: {0} at position {1}".FormatString(Current, _index)),
             };
         }
@@ -101,6 +104,6 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.BusPrefix
         Space,
         LeftParenthesis,
         RightParenthesis,
-        Comma
+        Comma,
     }
 }

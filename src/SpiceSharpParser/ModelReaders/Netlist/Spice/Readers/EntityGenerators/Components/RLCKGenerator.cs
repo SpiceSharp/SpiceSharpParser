@@ -196,7 +196,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         new ValidationEntry(
                             ValidationEntrySource.Reader,
                             ValidationEntryLevel.Warning,
-                            $"TC needs to be assignment parameter", 
+                            $"TC needs to be assignment parameter",
                             parameters.LineInfo));
                     return null;
                 }

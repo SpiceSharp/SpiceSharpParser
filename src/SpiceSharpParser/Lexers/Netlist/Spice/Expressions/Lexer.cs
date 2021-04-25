@@ -15,6 +15,16 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
         private int _index;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Lexer"/> class.
+        /// </summary>
+        /// <param name="expression">The expression.</param>
+        public Lexer(string expression)
+        {
+            _expression = expression;
+            _index = 0;
+        }
+
+        /// <summary>
         /// Gets the current character.
         /// </summary>
         /// <value>
@@ -53,17 +63,8 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
         public string Content => _builder.ToString();
 
         public int Index { get => _index; set => _index = value; }
-        public int BuilderLength => _builder.Length;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Lexer"/> class.
-        /// </summary>
-        /// <param name="expression">The expression.</param>
-        public Lexer(string expression)
-        {
-            _expression = expression;
-            _index = 0;
-        }
+        public int BuilderLength => _builder.Length;
 
         /// <summary>
         /// Reads the next token.
@@ -75,7 +76,9 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
 
             // Skip spaces
             while (Current == ' ')
+            {
                 _index++;
+            }
 
             // Nothing left to read!
             if (Current == '\0')
@@ -116,7 +119,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
                 '&' => TokenType.And,
                 '|' => TokenType.Or,
                 char mc when mc >= '0' && mc <= '9' => TokenType.Number,
-                char mc when mc >= 'a' && mc <= 'z' || mc >= 'A' && mc <= 'Z' || mc == '_' => TokenType.Identifier,
+                char mc when (mc >= 'a' && mc <= 'z') || (mc >= 'A' && mc <= 'Z') || mc == '_' => TokenType.Identifier,
                 _ => throw new Exception("Unrecognized character found: {0} at position {1}".FormatString(Current, _index)),
             };
             _index++; // Consume the character
@@ -156,6 +159,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
                         Consume();
                         Any(char.IsDigit); // Fraction
                     }
+
                     if (One(c => c == 'e' || c == 'E')) // Exponential notation (possibly)
                     {
                         // If a +/- is specified, then digits HAVE to follow because it has to be an exponential notation
@@ -164,6 +168,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
                         else
                             Any(char.IsDigit);
                     }
+
                     Any(char.IsLetter); // Trailing letters are included
                     break;
                 case TokenType.Identifier:
@@ -233,6 +238,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
                 _index++;
                 result = true;
             }
+
             return result;
         }
 
@@ -247,13 +253,17 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
         {
             var c = Current;
             if (c == '\0')
+            {
                 return false;
+            }
+
             if (predicate(c))
             {
                 _builder.Append(c);
                 _index++;
                 return true;
             }
+
             return false;
         }
 
@@ -425,6 +435,6 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
         /// <summary>
         /// The end of the expression.
         /// </summary>
-        EndOfExpression
+        EndOfExpression,
     }
 }

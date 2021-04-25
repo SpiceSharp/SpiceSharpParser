@@ -1,5 +1,4 @@
-﻿using SpiceSharpBehavioral.Parsers.Nodes;
-namespace SpiceSharpParser.Parsers.Expression.Implementation
+﻿namespace SpiceSharpParser.Parsers.Expression.Implementation
 {
     public abstract class ResolverFunction
     {

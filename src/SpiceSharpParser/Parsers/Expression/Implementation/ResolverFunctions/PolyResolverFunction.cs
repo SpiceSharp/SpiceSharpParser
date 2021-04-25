@@ -32,6 +32,7 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation.ResolverFunctions
             {
                 variables.Add(args[i]);
             }
+
             List<Node> coefficients = new List<Node>();
 
             for (var i = dimension + 1; i < args.Length; i++)
@@ -43,6 +44,7 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation.ResolverFunctions
             {
                 return 0;
             }
+
             return GetExpression(coefficients, dimension, variables);
         }
 

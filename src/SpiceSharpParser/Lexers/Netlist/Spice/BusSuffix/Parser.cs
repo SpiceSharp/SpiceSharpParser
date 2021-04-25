@@ -51,7 +51,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.BusSuffix
                 // A<(
                 lexer.ReadToken();
                 var start = ParseNumber(lexer);
-                
+
                 if (lexer.Token != TokenType.Colon)
                 {
                     throw new Exception("Wrong suffix");
@@ -59,8 +59,8 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.BusSuffix
 
                 lexer.ReadToken();
                 var stop = ParseNumber(lexer);
-                // A<(1:2
 
+                // A<(1:2
                 int? step = null;
                 if (lexer.Token == TokenType.Colon)
                 {
@@ -75,7 +75,6 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.BusSuffix
                         throw new Exception("Wrong suffix");
                     }
                 }
-
 
                 lexer.ReadToken();
 
@@ -103,6 +102,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.BusSuffix
                     if (lexer.Token == TokenType.Colon)
                     {
                         lexer.ReadToken();
+
                         // start:stop:step
                         var step = ParseNumber(lexer);
                         return new RangeNode() { Start = start, Stop = stop, Step = step };
@@ -131,7 +131,6 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.BusSuffix
                         return new NumberNode() { Node = start };
                     }
                 }
-                
             }
         }
 
@@ -143,7 +142,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.BusSuffix
 
         private static string ReadToken(Lexer lexer, TokenType type)
         {
-            string result = "";
+            string result = string.Empty;
             while (lexer.Token == type)
             {
                 result += lexer.Current;

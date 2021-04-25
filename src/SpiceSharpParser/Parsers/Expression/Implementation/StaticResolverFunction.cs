@@ -11,6 +11,7 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
             Body = body;
             Arguments = arguments;
         }
+
         public IReadOnlyList<VariableNode> Arguments { get; set; }
 
         public Node Body { get; }

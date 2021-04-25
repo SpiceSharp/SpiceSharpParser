@@ -12,7 +12,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
             {
                 HasTitle = hasTitle,
                 IsDotStatementNameCaseSensitive = isDotStatementCaseSensitive,
-                EnableBusSyntax = enableBusSyntax
+                EnableBusSyntax = enableBusSyntax,
             });
         }
 

@@ -18,7 +18,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
         /// </summary>
         /// <param name="lexer">The lexer.</param>
         /// <returns>The value of the lexed expression.</returns>
-        /// <exception cref="Exception">Invalid expression</exception>
+        /// <exception cref="Exception">Invalid expression.</exception>
         public Node Parse(Lexer lexer)
         {
             lexer.ReadToken();

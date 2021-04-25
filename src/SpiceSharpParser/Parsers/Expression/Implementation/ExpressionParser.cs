@@ -44,7 +44,7 @@ namespace SpiceSharpParser.Parsers.Expression
             {
                 DoubleBuilder.Build(node);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 if (ThrowOnErrors)
                 {
@@ -68,7 +68,7 @@ namespace SpiceSharpParser.Parsers.Expression
             {
                 DoubleBuilder.Build(node);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 if (ThrowOnErrors)
                 {
@@ -114,9 +114,9 @@ namespace SpiceSharpParser.Parsers.Expression
             }
 
             // TIME variable is handled well in SpiceSharpBehavioral
-            resolver.VariableMap.Remove(VariableNode.Variable("TIME")); 
+            resolver.VariableMap.Remove(VariableNode.Variable("TIME"));
             resolver.FunctionMap = CreateFunctions();
-            
+
             var resolved = resolver.Resolve(node);
 
             return resolved;
@@ -134,8 +134,8 @@ namespace SpiceSharpParser.Parsers.Expression
                     var bodyNode = InternalParser.Parse(body);
 
                     result[functionName] = new StaticResolverFunction(
-                        functionName, 
-                        bodyNode, 
+                        functionName,
+                        bodyNode,
                         Context.FunctionArguments[functionName].Select(a => Node.Variable(a)).ToList());
                 }
             }

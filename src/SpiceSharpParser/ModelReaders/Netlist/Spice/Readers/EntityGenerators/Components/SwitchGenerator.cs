@@ -57,13 +57,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 double vOn = vSwitchModelParameters.OnVoltage;
                 double rOn = vSwitchModelParameters.OnResistance;
 
-                string vc = $"v({ parameters.Get(2)}, {parameters.Get(3)})";
+                string vc = $"v({parameters.Get(2)}, {parameters.Get(3)})";
                 double lm = Math.Log(Math.Sqrt(rOn * rOff));
                 double lr = Math.Log(rOn / rOff);
                 double vm = (vOn + vOff) / 2.0;
                 double vd = vOn - vOff;
                 string resExpression = GetVSwitchExpression(vOff, rOff, vOn, rOn, vc, lm, lr, vm, vd);
-
 
                 resistor.Parameters.Expression = resExpression;
                 resistor.Parameters.ParseAction = (expression) =>
@@ -84,6 +83,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                                 stochasticModelsRegistry.RegisterModelInstance(resistorModel);
                             }
                         }
+
                         vOff = vSwitchModelParameters.OffVoltage;
                         rOff = vSwitchModelParameters.OffResistance;
                         vOn = vSwitchModelParameters.OnVoltage;
@@ -144,7 +144,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return vsw;
         }
 
-
         private static string GetISwitchExpression(double iOff, double rOff, double iOn, double rOn, string ic, double lm, double lr, double im, double id)
         {
             string resExpression;
@@ -184,7 +183,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of current switch.
         /// </returns>
-        protected IEntity GenerateCurrentSwitch(string name, ParameterCollection parameters, ICircuitContext context)
+        private IEntity GenerateCurrentSwitch(string name, ParameterCollection parameters, ICircuitContext context)
         {
             if (parameters.Count < 4)
             {
@@ -207,7 +206,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 double iOn = iswitchModelParameters.OnCurrent;
                 double rOn = iswitchModelParameters.OnResistance;
 
-
                 double lm = Math.Log(Math.Sqrt(rOn * rOff));
                 double lr = Math.Log(rOn / rOff);
                 double im = (iOn + iOff) / 2.0;
@@ -219,7 +217,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
                     return parser.Resolve(expression);
                 };
-
 
                 context.SimulationPreparations.ExecuteActionAfterSetup(
                     (simulation) =>
@@ -233,7 +230,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                                 stochasticModelsRegistry.RegisterModelInstance(resistorModel);
                             }
                         }
-
 
                         iOff = iswitchModelParameters.OffCurrent;
                         rOff = iswitchModelParameters.OffResistance;
@@ -251,7 +247,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(simulation), false, context.CaseSensitivity);
                             return parser.Resolve(expression);
                         };
-
                     });
                 return resistor;
             }

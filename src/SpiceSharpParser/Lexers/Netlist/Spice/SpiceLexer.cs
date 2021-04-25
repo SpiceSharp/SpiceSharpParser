@@ -66,7 +66,8 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 (int)SpiceTokenType.WHITESPACE,
                 "A whitespace characters that will be ignored",
                 @"[\t 	]+",
-                (SpiceLexerState state, string lexem) => LexerRuleReturnDecision.IgnoreToken, topRule: true));
+                (SpiceLexerState state, string lexem) => LexerRuleReturnDecision.IgnoreToken, 
+                topRule: true));
 
             builder.AddRegexRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.CONTINUATION_CURRENT_LINE,
@@ -229,7 +230,6 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                   {
                       return LexerRuleUseDecision.Use;
                   }));
-
 
                 builder.AddDynamicRule(new LexerDynamicRule(
                    (int)SpiceTokenType.PREFIX_COMPLEX,

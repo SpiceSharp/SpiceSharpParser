@@ -400,7 +400,6 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                     break;
             }
 
-
             return component;
         }
 
