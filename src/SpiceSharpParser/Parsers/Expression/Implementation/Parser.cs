@@ -1,9 +1,9 @@
-﻿using System;
+﻿using SpiceSharpBehavioral.Parsers.Nodes;
+using SpiceSharpParser.Lexers.Expressions;
+using System;
 using System.Collections.Generic;
-using SpiceSharpBehavioral.Parsers;
-using SpiceSharpBehavioral.Parsers.Nodes;
 
-namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
+namespace SpiceSharpParser.Parsers.Expression.Implementation
 {
     /// <summary>
     /// A parser that parses Spice expressions.
@@ -26,6 +26,17 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
             return result;
         }
 
+        /// <summary>
+        /// Parses the expression.
+        /// </summary>
+        /// <param name="text">The text to parse.</param>
+        /// <returns>The value of the lexed expression.</returns>
+        /// <exception cref="Exception">Invalid expression.</exception>
+        public Node Parse(string text)
+        {
+            return Parse(new Lexer(text));
+        }
+
         private Node ParseConditional(Lexer lexer)
         {
             var result = ParseConditionalOr(lexer);
@@ -34,11 +45,15 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
                 lexer.ReadToken();
                 var ifTrue = ParseConditional(lexer);
                 if (lexer.Token != TokenType.Colon)
+                {
                     throw new Exception("Invalid conditional");
+                }
+
                 lexer.ReadToken();
                 var ifFalse = ParseConditional(lexer);
                 result = Node.Conditional(result, ifTrue, ifFalse);
             }
+
             return result;
         }
 
@@ -51,6 +66,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
                 var right = ParseConditionalAnd(lexer);
                 result = Node.Or(result, right);
             }
+
             return result;
         }
 
@@ -63,6 +79,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
                 var right = ParseEquality(lexer);
                 result = Node.And(result, right);
             }
+
             return result;
         }
 
@@ -86,6 +103,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
                         break;
                 }
             }
+
             return result;
         }
 
@@ -122,6 +140,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
                 }
             }
         }
+
         private Node ParseAdditive(Lexer lexer)
         {
             var result = ParseMultiplicative(lexer);
@@ -145,6 +164,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
                 }
             }
         }
+
         private Node ParseMultiplicative(Lexer lexer)
         {
             var result = ParseUnary(lexer);
@@ -173,6 +193,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
                 }
             }
         }
+
         private Node ParseUnary(Lexer lexer)
         {
             Node argument;
@@ -197,6 +218,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
                     return ParsePower(lexer);
             }
         }
+
         private Node ParsePower(Lexer lexer)
         {
             var result = ParseTerminal(lexer);
@@ -206,8 +228,10 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
                 var right = ParsePower(lexer);
                 result = Node.Power(result, right);
             }
+
             return result;
         }
+
         private Node ParseTerminal(Lexer lexer)
         {
             Node result;
@@ -218,13 +242,16 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
                     lexer.ReadToken();
                     result = ParseConditional(lexer);
                     if (lexer.Token != TokenType.RightParenthesis)
+                    {
                         throw new Exception("Unclosed parenthesis");
+                    }
+
                     lexer.ReadToken();
                     break;
 
                 // A number
                 case TokenType.Number:
-                    result = Node.Constant(SpiceHelper.ParseNumber(lexer.Content));
+                    result = Node.Constant(SpiceSharpBehavioral.Parsers.SpiceHelper.ParseNumber(lexer.Content));
                     lexer.ReadToken();
                     break;
 
@@ -259,11 +286,14 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
                                     result = Node.Subtract(result, Node.Voltage(lexer.Content));
                                     lexer.ReadToken();
                                 }
+
                                 if (lexer.Token != TokenType.RightParenthesis)
+                                {
                                     throw new Exception("Invalid voltage specifier");
+                                }
+
                                 lexer.ReadToken();
                                 break;
-
                             case "ir":
                                 function = "real"; goto case "i";
                             case "ii":
@@ -280,7 +310,10 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
                                 result = Node.Current(lexer.Content);
                                 lexer.ReadToken();
                                 if (lexer.Token != TokenType.RightParenthesis)
+                                {
                                     throw new Exception("Invalid current specifier");
+                                }
+
                                 lexer.ReadToken();
                                 break;
 
@@ -296,22 +329,30 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
 
                                     // Continue with another argument
                                     if (lexer.Token == TokenType.Comma)
+                                    {
                                         lexer.ReadToken();
+                                    }
                                     else if (lexer.Token != TokenType.RightParenthesis)
+                                    {
                                         throw new Exception("Invalid function call");
+                                    }
                                 }
+
                                 result = Node.Function(name, arguments);
                                 lexer.ReadToken();
                                 break;
                         }
+
                         if (function != null)
+                        {
                             result = Node.Function(function, new[] { result });
+                        }
                     }
                     else
                     {
                         result = Node.Variable(name);
-                        // We already read the next token, no need to do it here again...
                     }
+
                     break;
 
                 case TokenType.At:
@@ -319,12 +360,18 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
                     name = lexer.Content;
                     lexer.ReadToken();
                     if (lexer.Token != TokenType.LeftIndex)
+                    {
                         throw new Exception("Invalid property identifier");
+                    }
+
                     lexer.ReadNode();
                     result = Node.Property(name, lexer.Content);
                     lexer.ReadToken();
                     if (lexer.Token != TokenType.RightIndex)
+                    {
                         throw new Exception("Invalid property identifier");
+                    }
+
                     lexer.ReadToken();
                     break;
 
@@ -332,6 +379,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
                 default:
                     throw new Exception("Invalid value");
             }
+
             return result;
         }
     }

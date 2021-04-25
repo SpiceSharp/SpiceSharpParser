@@ -62,7 +62,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                                         ValidationEntrySource.Reader,
                                         ValidationEntryLevel.Warning,
                                         $"Problem with setting param `{assignmentParameter.Name}` with expression =`{assignmentParameter.Value}`",
-                                        statement.LineInfo));
+                                        statement.LineInfo,
+                                        exception: e));
                             }
                         }
                     }

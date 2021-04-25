@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using SpiceSharpBehavioral.Builders.Direct;
-using SpiceSharpBehavioral.Parsers;
 using SpiceSharpBehavioral.Parsers.Nodes;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
@@ -21,7 +20,7 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
 
         private readonly ISpiceNetlistCaseSensitivitySettings _caseSettings;
 
-        public CustomRealBuilder(EvaluationContext context, SpiceSharpBehavioral.Parsers.Parser parser, ISpiceNetlistCaseSensitivitySettings caseSettings)
+        public CustomRealBuilder(EvaluationContext context, Parser parser, ISpiceNetlistCaseSensitivitySettings caseSettings)
         {
             _caseSettings = caseSettings;
 

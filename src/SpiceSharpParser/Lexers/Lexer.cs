@@ -1,8 +1,7 @@
-﻿using System;
+﻿using SpiceSharpParser.Models.Netlist.Spice;
+using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-using SpiceSharpParser.Lexers.Netlist.Spice;
-using SpiceSharpParser.Models.Netlist.Spice;
 
 namespace SpiceSharpParser.Lexers
 {
@@ -174,6 +173,7 @@ namespace SpiceSharpParser.Lexers
                     }
                 }
             }
+
             return !string.IsNullOrEmpty(bestMatch);
         }
     }

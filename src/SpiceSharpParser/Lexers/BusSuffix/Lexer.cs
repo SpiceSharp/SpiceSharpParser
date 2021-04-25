@@ -93,22 +93,4 @@ namespace SpiceSharpParser.Lexers.BusSuffix
             _index = 0;
         }
     }
-
-    /// <summary>
-    /// The token types (also function as a state).
-    /// </summary>
-    public enum TokenType
-    {
-        EndOfExpression,
-        LessThan,
-        GreaterThan,
-        Times,
-        Digit,
-        Letter,
-        Space,
-        LeftParenthesis,
-        RightParenthesis,
-        Comma,
-        Colon,
-    }
 }

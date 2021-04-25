@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SpiceSharpParser.Parsers.BusSuffix
+﻿namespace SpiceSharpParser.Parsers.BusSuffix
 {
     public class RangeNode : Node
     {
@@ -14,5 +10,4 @@ namespace SpiceSharpParser.Parsers.BusSuffix
 
         public int? Multiply { get; set; }
     }
-
 }

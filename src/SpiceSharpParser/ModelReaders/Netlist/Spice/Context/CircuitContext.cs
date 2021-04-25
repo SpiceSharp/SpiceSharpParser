@@ -240,7 +240,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
             catch (Exception e)
             {
-                Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Problem with setting parameter = {parameterName} with value = {value}"));
+                Result.Validation.Add(
+                    new ValidationEntry(
+                        ValidationEntrySource.Reader,
+                        ValidationEntryLevel.Warning,
+                        $"Problem with setting parameter = {parameterName} with value = {value}",
+                        exception: e));
             }
         }
 

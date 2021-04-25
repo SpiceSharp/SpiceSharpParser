@@ -141,7 +141,7 @@ namespace SpiceSharpParser.Parsers.BusSuffix
             return int.Parse(numberString);
         }
 
-        private static string ReadToken(Lexer lexer, TokenType type)
+        private string ReadToken(Lexer lexer, TokenType type)
         {
             string result = string.Empty;
             while (lexer.Token == type)

@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using SpiceSharpParser.Lexers.Netlist.Spice.Expressions;
+using SpiceSharpParser.Lexers.Expressions;
 using SpiceSharpParser.Models.Netlist.Spice;
+using SpiceSharpParser.Parsers.Expression.Implementation;
 
 namespace SpiceSharpParser.Lexers.Netlist.Spice
 {
@@ -66,7 +67,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 (int)SpiceTokenType.WHITESPACE,
                 "A whitespace characters that will be ignored",
                 @"[\t 	]+",
-                (SpiceLexerState state, string lexem) => LexerRuleReturnDecision.IgnoreToken, 
+                (SpiceLexerState state, string lexem) => LexerRuleReturnDecision.IgnoreToken,
                 topRule: true));
 
             builder.AddRegexRule(new LexerTokenRule<SpiceLexerState>(
@@ -195,7 +196,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
 
                         if (lexer.Current == ' ')
                         {
-                            length--; 
+                            length--;
                         }
 
                         var expression = textToLex.Substring(0, length);
@@ -206,7 +207,6 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                     {
                         return new Tuple<string, int>(string.Empty, 0);
                     }
-
                 }, new int[] { (int)SpiceTokenType.EQUAL }));
 
             if (_options.EnableBusSyntax)

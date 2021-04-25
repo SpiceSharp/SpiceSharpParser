@@ -121,7 +121,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 if (something is AssignmentParameter asp)
                 {
                     expression = $"({asp.Value}) * x";
-
                 }
                 else
                 {
@@ -338,14 +337,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var evalContext = context.Evaluator.GetEvaluationContext();
 
                 // RName Node1 Node2 something
-
                 var something = parameters[2];
                 string expression = null;
 
                 if (something is AssignmentParameter asp)
                 {
                     expression = asp.Value;
-                    
                 }
                 else
                 {
@@ -364,8 +361,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         return parser.Resolve(expression);
                     };
 
-                    
-                    if (evalContext.HaveFunctions(expression)) 
+                    if (evalContext.HaveFunctions(expression))
                     {
                         context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
                         {
@@ -378,6 +374,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             };
                         });
                     }
+
                     return behavioralResistor;
                 }
             }
@@ -558,9 +555,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             context.Result.Validation.Add(
                                 new ValidationEntry(
                                     ValidationEntrySource.Reader,
-                                    ValidationEntryLevel.Warning,
+                                    ValidationEntryLevel.Error,
                                     $"Can't set parameter for resistor: '{parameter.Image}'",
-                                    parameters.LineInfo));
+                                    parameters.LineInfo,
+                                    exception: e));
+
                             return null;
                         }
                     }
@@ -569,9 +568,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         context.Result.Validation.Add(
                             new ValidationEntry(
                                 ValidationEntrySource.Reader,
-                                ValidationEntryLevel.Warning,
+                                ValidationEntryLevel.Error,
                                 $"Invalid parameter for resistor: '{parameter.Image}'",
                                 parameters.LineInfo));
+
                         return null;
                     }
                 }

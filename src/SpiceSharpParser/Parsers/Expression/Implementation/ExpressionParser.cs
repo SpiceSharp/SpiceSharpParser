@@ -8,6 +8,7 @@ using SpiceSharpParser.Parsers.Expression.Implementation.ResolverFunctions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Parser = SpiceSharpParser.Parsers.Expression.Implementation.Parser;
 
 namespace SpiceSharpParser.Parsers.Expression
 {

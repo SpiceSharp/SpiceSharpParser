@@ -2,10 +2,10 @@
 using System;
 using System.Text;
 
-namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
+namespace SpiceSharpParser.Lexers.Expressions
 {
     /// <summary>
-    /// A lexer that will tokenize Spice expressions.
+    /// A lexer that will tokenize expressions.
     /// </summary>
     public class Lexer
     {
@@ -62,8 +62,14 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
         /// </value>
         public string Content => _builder.ToString();
 
+        /// <summary>
+        /// Gets or sets the index.
+        /// </summary>
         public int Index { get => _index; set => _index = value; }
 
+        /// <summary>
+        /// Gets the builder length.
+        /// </summary>
         public int BuilderLength => _builder.Length;
 
         /// <summary>
@@ -130,29 +136,47 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
             {
                 case TokenType.Bang:
                     if (One(c => c == '='))
+                    {
                         Token = TokenType.NotEquals;
+                    }
+
                     break;
                 case TokenType.LessThan:
                     if (One(c => c == '='))
+                    {
                         Token = TokenType.LessEqual;
+                    }
+
                     break;
                 case TokenType.GreaterThan:
                     if (One(c => c == '='))
+                    {
                         Token = TokenType.GreaterEqual;
+                    }
+
                     break;
                 case TokenType.Assign:
                     if (One(c => c == '='))
+                    {
                         Token = TokenType.Equals;
+                    }
+
                     break;
                 case TokenType.And:
                     if (!One(c => c == '&'))
+                    {
                         throw new Exception("Invalid AND operator at position {0}".FormatString(_index));
+                    }
+
                     break;
                 case TokenType.Or:
                     if (!One(c => c == '|'))
+                    {
                         throw new Exception("Invalid OR operator at position {0}".FormatString(_index));
+                    }
+
                     break;
-                case TokenType.Number: 
+                case TokenType.Number:
                     Any(char.IsDigit); // whole number part
                     if (Current == '.')
                     {
@@ -160,13 +184,18 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
                         Any(char.IsDigit); // Fraction
                     }
 
-                    if (One(c => c == 'e' || c == 'E')) // Exponential notation (possibly)
+                    if (One(c => c == 'e' || c == 'E'))
                     {
+                        // Exponential notation (possibly)
                         // If a +/- is specified, then digits HAVE to follow because it has to be an exponential notation
                         if (One(c => c == '+' || Current == '-') && !Any(char.IsDigit))
+                        {
                             throw new Exception("Invalid exponential notation at position {0}".FormatString(_index));
+                        }
                         else
+                        {
                             Any(char.IsDigit);
+                        }
                     }
 
                     Any(char.IsLetter); // Trailing letters are included
@@ -175,6 +204,15 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
                     Any(c => char.IsLetterOrDigit(c) || c == '_');
                     break;
             }
+        }
+
+        /// <summary>
+        /// Resets the lexer to the start of the input.
+        /// </summary>
+        public void Reset()
+        {
+            _index = 0;
+            _builder.Clear();
         }
 
         /// <summary>
@@ -187,7 +225,9 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
 
             // Skip spaces
             while (Current == ' ')
+            {
                 _index++;
+            }
 
             // Nothing left to read!
             if (Current == '\0')
@@ -275,166 +315,5 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice.Expressions
             _builder.Append(Current);
             _index++;
         }
-
-        /// <summary>
-        /// Resets the lexer to the start of the input.
-        /// </summary>
-        public void Reset()
-        {
-            _index = 0;
-            _builder.Clear();
-
-        }
-    }
-
-    /// <summary>
-    /// The token types (also function as a state).
-    /// </summary>
-    public enum TokenType
-    {
-        /// <summary>
-        /// A node identifier.
-        /// </summary>
-        Node,
-
-        /// <summary>
-        /// An identifier.
-        /// </summary>
-        Identifier,
-
-        /// <summary>
-        /// A number.
-        /// </summary>
-        Number,
-
-        /// <summary>
-        /// A comma.
-        /// </summary>
-        Comma,
-
-        /// <summary>
-        /// A plus sign.
-        /// </summary>
-        Plus,
-
-        /// <summary>
-        /// A minus sign.
-        /// </summary>
-        Minus,
-
-        /// <summary>
-        /// An asterisk (multiplication).
-        /// </summary>
-        Times,
-
-        /// <summary>
-        /// A forward slash (division).
-        /// </summary>
-        Divide,
-
-        /// <summary>
-        /// A percent (modulo).
-        /// </summary>
-        Mod,
-
-        /// <summary>
-        /// A power sign.
-        /// </summary>
-        Power,
-
-        /// <summary>
-        /// An equality (==).
-        /// </summary>
-        Equals,
-
-        /// <summary>
-        /// An inequality (!=)
-        /// </summary>
-        NotEquals,
-
-        /// <summary>
-        /// Less than.
-        /// </summary>
-        LessThan,
-
-        /// <summary>
-        /// Greater than.
-        /// </summary>
-        GreaterThan,
-
-        /// <summary>
-        /// Less or equal than.
-        /// </summary>
-        LessEqual,
-
-        /// <summary>
-        /// Greater or equal than.
-        /// </summary>
-        GreaterEqual,
-
-        /// <summary>
-        /// Or.
-        /// </summary>
-        Or,
-
-        /// <summary>
-        /// And.
-        /// </summary>
-        And,
-
-        /// <summary>
-        /// A bang (exclamation mark).
-        /// </summary>
-        Bang,
-
-        /// <summary>
-        /// A question mark.
-        /// </summary>
-        Huh,
-
-        /// <summary>
-        /// A colon.
-        /// </summary>
-        Colon,
-
-        /// <summary>
-        /// The at-sign.
-        /// </summary>
-        At,
-
-        /// <summary>
-        /// An assignment (=).
-        /// </summary>
-        Assign,
-
-        /// <summary>
-        /// A dot.
-        /// </summary>
-        Dot,
-
-        /// <summary>
-        /// The left parenthesis.
-        /// </summary>
-        LeftParenthesis,
-
-        /// <summary>
-        /// The right parenthesis.
-        /// </summary>
-        RightParenthesis,
-
-        /// <summary>
-        /// The left square bracket.
-        /// </summary>
-        LeftIndex,
-
-        /// <summary>
-        /// The right square bracket.
-        /// </summary>
-        RightIndex,
-
-        /// <summary>
-        /// The end of the expression.
-        /// </summary>
-        EndOfExpression,
     }
 }
