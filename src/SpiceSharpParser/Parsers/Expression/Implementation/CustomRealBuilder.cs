@@ -67,7 +67,7 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
                 var propertyName = propertyNode.PropertyName;
                 string key = $"{Context.Name}_@_{modelName}_{propertyName}";
 
-                if (_exporterInstances.TryGetValue(key, out Export cachedExport))
+                if (_exporterInstances.TryGetValue(key, out Export cachedExport) && cachedExport.Simulation != null)
                 {
                     return cachedExport.Extract();
                 }

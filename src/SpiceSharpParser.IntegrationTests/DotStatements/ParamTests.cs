@@ -104,7 +104,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             EqualsWithTol(new double[] { export }, references);
         }
 
-        [Fact]
+        [Fact(Skip = "Resolver doesn't support recursive function yet")]
         public void ParamFunctionFactRecursiveFunctionCleanSyntax()
         {
             var netlist = ParseNetlist(

@@ -53,10 +53,5 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// Gets the Monte Carlo Analysis configuration.
         /// </summary>
         public MonteCarloConfiguration MonteCarloConfiguration { get; } = new MonteCarloConfiguration();
-
-        /// <summary>
-        /// Gets or sets a value indicating whether resistors are dynamic by default.
-        /// </summary>
-        public bool DynamicResistors { get; set; } = false;
     }
 }

@@ -9,7 +9,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         {
             var netlist = ParseNetlist(
                 "DC Sweep - Current",
-                "V1 0 in 0",
+                "V1 0 in 1",
                 "R1 in 0 {R}",
                 "R2 in 0 {R}",
                 "R3 in 0 {K}",
@@ -17,10 +17,10 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".OP",
                 ".PARAM R = {random() * 10 + 5}",
                 ".SPARAM K = {random() * 10 + 5}",
-                ".SAVE @R1[resistance] @R2[resistance] @R3[resistance] @R4[resistance]",
+                ".SAVE @R1[i] @R2[i] @R3[i] @R4[i]",
                 ".END");
 
-            var exports = RunOpSimulation(netlist, "@R1[resistance]", "@R2[resistance]", "@R3[resistance]", "@R4[resistance]");
+            var exports = RunOpSimulation(netlist, "@R1[i]", "@R2[i]", "@R3[i]", "@R4[i]");
 
             Assert.NotEqual(exports[0], exports[1]);
             Assert.Equal(exports[2], exports[3]);

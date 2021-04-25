@@ -124,19 +124,17 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         {
             var netlist = ParseNetlist(
                 "FUNC user function test",
-                "V1 OUT 0 10.0",
-                "R1 OUT 0 {somefunction(1)}",
-                "V2 1 0 17",
+                "V1 1 0 10.0",
+                "R1 1 0 {somefunction(1)}",
                 ".OP",
-                ".SAVE V(OUT) @R1[i]",
-                ".OPTIONS dynamic-resistors",
-                ".FUNC somefunction(x) = {V(x,0) + V(OUT)}",
+                ".SAVE V(1) @R1[i]",
+                ".FUNC somefunction(x) = {V(x) + 10.0}",
                 ".END");
 
-            double[] export = RunOpSimulation(netlist, new string[] { "V(OUT)", "@R1[i]" });
+            double[] export = RunOpSimulation(netlist, new string[] { "V(1)", "@R1[i]" });
 
             Assert.Equal(10.0, export[0]);
-            Assert.Equal(10.0 / 27.0, export[1]);
+            Assert.Equal(10.0 / 20.0, export[1]);
         }
 
         [Fact]
@@ -147,10 +145,10 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 "V1 OUT 0 10.0",
                 "R1 OUT 0 {somefunction()}",
                 "V2 1 0 17",
+                "R2 1 0 100",
                 ".OP",
                 ".SAVE V(OUT) @R1[i]",
-                ".OPTIONS dynamic-resistors",
-                ".FUNC somefunction() = {V(1) + V(OUT)}",
+                ".FUNC somefunction() = {V(1) + 10.0}",
                 ".END");
 
             double[] export = RunOpSimulation(netlist, new string[] { "V(OUT)", "@R1[i]" });

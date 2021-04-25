@@ -9,6 +9,8 @@ namespace SpiceSharpParser.Parsers.Expression
 
         bool HaveFunctions(string expression, EvaluationContext context);
 
+        bool HaveFunction(string expression, string functionName, EvaluationContext context);
+
         IEnumerable<string> GetParameters(string expression, EvaluationContext context, bool @throw = true);
     }
 }

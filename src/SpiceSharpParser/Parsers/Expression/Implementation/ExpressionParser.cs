@@ -1,8 +1,8 @@
 ﻿using SpiceSharpBehavioral.Parsers;
 using SpiceSharpBehavioral.Parsers.Nodes;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.Parsers.Expression.Implementation;
 using SpiceSharpParser.Parsers.Expression.Implementation.ResolverFunctions;
 using System;
@@ -88,24 +88,27 @@ namespace SpiceSharpParser.Parsers.Expression
         public Node Resolve(string expression)
         {
             var node = InternalParser.Parse(expression);
-
             var resolver = new Resolver();
 
-            if (Context.NameGenerator?.NodeNameGenerator is SubcircuitNodeNameGenerator sng)
+            resolver.UnknownVariableFound += (sender, args) =>
             {
-                resolver.UnknownVariableFound += (sender, args) =>
+                if (args.Node.NodeType == NodeTypes.Voltage)
                 {
-                    if (args.Node.NodeType == NodeTypes.Voltage)
+                    if (resolver.VariableMap.Any(v => v.Key.Name == args.Node.Name))
+                    {
+                        args.Result = VariableNode.Voltage(resolver.VariableMap.First(v => v.Key.Name == args.Node.Name).Value.ToString());
+                    }
+                    else
                     {
                         args.Result = VariableNode.Voltage(Context.NameGenerator.ParseNodeName(args.Node.Name));
                     }
+                }
 
-                    if (args.Node.NodeType == NodeTypes.Current)
-                    {
-                        args.Result = VariableNode.Current(Context.NameGenerator.GenerateObjectName(args.Node.Name));
-                    }
-                };
-            }
+                if (args.Node.NodeType == NodeTypes.Current)
+                {
+                    args.Result = VariableNode.Current(Context.NameGenerator.GenerateObjectName(args.Node.Name));
+                }
+            };
 
             resolver.VariableMap = new Dictionary<VariableNode, Node>();
             foreach (var variable in DoubleBuilder.Variables)
@@ -124,7 +127,7 @@ namespace SpiceSharpParser.Parsers.Expression
 
         public Dictionary<string, ResolverFunction> CreateFunctions()
         {
-            var result = new Dictionary<string, ResolverFunction>();
+            var result = new Dictionary<string, ResolverFunction>(StringComparerProvider.Get(Context.CaseSettings.IsFunctionNameCaseSensitive));
 
             foreach (var functionName in Context.FunctionsBody.Keys)
             {
@@ -142,6 +145,8 @@ namespace SpiceSharpParser.Parsers.Expression
 
             result["poly"] = new PolyResolverFunction();
             result["if"] = new IfResolverFunction();
+            result["max"] = new MaxResolverFunction();
+            result["random"] = new RandomResolverFunction(Context);
 
             return result;
         }

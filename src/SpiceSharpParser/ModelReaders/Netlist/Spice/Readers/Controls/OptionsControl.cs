@@ -131,11 +131,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     {
                         context.Result.SimulationConfiguration.KeepOpInfo = true;
                     }
-
-                    if (w.Image.ToLower() == "dynamic-resistors")
-                    {
-                        context.Result.SimulationConfiguration.DynamicResistors = true;
-                    }
                 }
             }
         }

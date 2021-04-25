@@ -71,6 +71,11 @@ namespace SpiceSharpParser.Common.Evaluation
         public IRandomizer Randomizer { get; set; }
 
         /// <summary>
+        /// Gets the case settings.
+        /// </summary>
+        public ISpiceNetlistCaseSensitivitySettings CaseSettings => _caseSettings;
+
+        /// <summary>
         /// Gets or sets the parameters.
         /// </summary>
         public Dictionary<string, Expression> Parameters { get; protected set; }
@@ -262,6 +267,8 @@ namespace SpiceSharpParser.Common.Evaluation
             child.ExpressionRegistry = ExpressionRegistry.Clone();
             child.Seed = Seed;
             child.Randomizer = Randomizer;
+            child.FunctionArguments = FunctionArguments.ToDictionary(d => d.Key, d => d.Value?.ToList());
+            child.FunctionsBody = FunctionsBody.ToDictionary(d => d.Key, d => d.Value);
 
             if (addToChildren)
             {
@@ -290,6 +297,8 @@ namespace SpiceSharpParser.Common.Evaluation
             context.Seed = Seed;
             context.Simulation = Simulation;
             context.Randomizer = Randomizer.Clone();
+            context.FunctionArguments = FunctionArguments.ToDictionary(d => d.Key, d => d.Value?.ToList());
+            context.FunctionsBody = FunctionsBody.ToDictionary(d => d.Key, d => d.Value);
 
             return context;
         }
@@ -391,6 +400,11 @@ namespace SpiceSharpParser.Common.Evaluation
         public bool HaveFunctions(string expression)
         {
             return ExpressionFeaturesReader.HaveFunctions(expression, this);
+        }
+
+        public bool HaveFunction(string expression, string functionName)
+        {
+            return ExpressionFeaturesReader.HaveFunction(expression, functionName, this);
         }
 
         public List<string> GetExpressionParameters(string expression, bool b)

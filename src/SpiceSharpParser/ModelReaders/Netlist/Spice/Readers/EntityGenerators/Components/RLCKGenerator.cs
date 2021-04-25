@@ -8,6 +8,7 @@ using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using SpiceSharpParser.Parsers.Expression;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
 {
@@ -280,21 +281,56 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </returns>
         protected IEntity GenerateRes(string name, ParameterCollection parameters, ICircuitContext context)
         {
+            var evalContext = context.Evaluator.GetEvaluationContext();
+
+            if (parameters.Count == 3)
+            {
+                // RName Node1 Node2 something
+
+                var something = parameters[2];
+                string expression = null;
+
+                if (something is AssignmentParameter asp)
+                {
+                    expression = asp.Value;
+                    
+                }
+                else
+                {
+                    expression = something.Image;
+                }
+
+                if (evalContext.HaveSpiceProperties(expression) || evalContext.HaveFunctions(expression))
+                {
+                    BehavioralResistor behavioralResistor = new BehavioralResistor(name);
+                    context.CreateNodes(behavioralResistor, parameters.Take(BehavioralResistor.BehavioralResistorPinCount));
+
+                    behavioralResistor.Parameters.Expression = expression;
+                    behavioralResistor.Parameters.ParseAction = (expression) =>
+                    {
+                        var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
+                        return parser.Resolve(expression);
+                    };
+
+                    
+                    if (evalContext.HaveFunctions(expression))
+                    {
+                        context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
+                        {
+                            behavioralResistor.Parameters.Expression = expression.ToString();
+
+                            behavioralResistor.Parameters.ParseAction = (expression) =>
+                            {
+                                var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(simulation), false, context.CaseSensitivity);
+                                return parser.Resolve(expression);
+                            };
+                        });
+                    }
+                    return behavioralResistor;
+                }
+            }
+
             Resistor res = new Resistor(name);
-
-            var dynamicParameter = parameters.FirstOrDefault(p => p.Image == "dynamic");
-            if (dynamicParameter != null)
-            {
-                parameters.Remove(dynamicParameter);
-            }
-
-            bool isDynamic = dynamicParameter != null || context.Result?.SimulationConfiguration?.DynamicResistors == true;
-
-            if (isDynamic)
-            {
-                context.SimulationPreparations.ExecuteTemperatureBehaviorBeforeLoad(res);
-            }
-
             context.CreateNodes(res, parameters);
 
             if (parameters.Count == 3)
@@ -336,11 +372,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 // Set resistance
                 if (something is AssignmentParameter asp)
                 {
-                    context.SetParameter(res, "resistance", asp, true, isDynamic);
+                    context.SetParameter(res, "resistance", asp, true, false);
                 }
                 else
                 {
-                    context.SetParameter(res, "resistance", something, true, isDynamic);
+                    context.SetParameter(res, "resistance", something, true, false);
                 }
             }
             else
@@ -403,7 +439,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                                                          || resistorParameters[0] is ValueParameter
                                                          || resistorParameters[0] is ExpressionParameter))
                     {
-                        context.SetParameter(res, "resistance", resistorParameters[0].Image, true);
+                        context.SetParameter(res, "resistance", resistorParameters[0].Image, true, false);
                         resistorParameters.RemoveAt(0);
                     }
                 }
@@ -447,11 +483,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                     if (resistanceParameter is AssignmentParameter asp)
                     {
-                        context.SetParameter(res, "resistance", asp.Value, true, isDynamic);
+                        context.SetParameter(res, "resistance", asp.Value, true, false);
                     }
                     else
                     {
-                        context.SetParameter(res, "resistance", resistanceParameter.Image, true, isDynamic);
+                        context.SetParameter(res, "resistance", resistanceParameter.Image, true, false);
                     }
 
                     resistorParameters.RemoveAt(0);

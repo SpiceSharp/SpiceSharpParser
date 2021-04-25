@@ -24,12 +24,14 @@ namespace SpiceSharpParser.Parsers.Expression
 
             foreach (var variable in variables)
             {
-                if (currentExportFactory.CreatedTypes.Contains(variable.ToLower()))
+                var variableName = variable.ToLower();
+
+                if (currentExportFactory.CreatedTypes.Any(type => variableName.StartsWith(type)))
                 {
                     return true;
                 }
 
-                if (voltageExportFactory.CreatedTypes.Contains(variable.ToLower()))
+                if (voltageExportFactory.CreatedTypes.Any(type => variableName.StartsWith(type)))
                 {
                     return true;
                 }
@@ -49,6 +51,13 @@ namespace SpiceSharpParser.Parsers.Expression
         {
             var parser = _factory.Create(context, @throw);
             return parser.GetVariables(expression);
+        }
+
+        public bool HaveFunction(string expression, string functionName, EvaluationContext context)
+        {
+            var parser = _factory.Create(context, false);
+            var functions = parser.GetFunctions(expression);
+            return functions.Any(function => function.ToLower() == functionName.ToLower());
         }
     }
 }

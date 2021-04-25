@@ -32,7 +32,7 @@ namespace SpiceSharpParser.IntegrationTests.MultiThreading
                 "R1 1 0 {R}",
                 ".OP",
                 ".PARAM R={random()*1000}",
-                ".LET power {@R1[resistance]}",
+                ".LET power {@R1[i]}",
                 ".SAVE power",
                 ".MC 1000 OP power MAX",
                 ".END");
