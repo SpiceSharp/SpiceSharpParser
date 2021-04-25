@@ -332,7 +332,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                         return new ExpressionParameter(lexemValue, new SpiceLineInfo(t.Token));
 
                     case SpiceTokenType.EXPRESSION_BRACKET:
-                        return new ExpressionParameter(lexemValue.Trim('{', '}'), new SpiceLineInfo(t.Token));
+                        return new ExpressionParameter(lexemValue.Replace("}", string.Empty).Replace("{", string.Empty), new SpiceLineInfo(t.Token));
 
                     case SpiceTokenType.EXPRESSION_SINGLE_QUOTES:
                         return new ExpressionParameter(lexemValue.Trim('\''), new SpiceLineInfo(t.Token));

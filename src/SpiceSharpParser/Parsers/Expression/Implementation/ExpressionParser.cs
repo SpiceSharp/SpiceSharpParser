@@ -1,8 +1,8 @@
-﻿using SpiceSharpBehavioral.Parsers;
-using SpiceSharpBehavioral.Parsers.Nodes;
+﻿using SpiceSharpBehavioral.Parsers.Nodes;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.Parsers.Expression.Implementation;
 using SpiceSharpParser.Parsers.Expression.Implementation.ResolverFunctions;
 using System;
@@ -17,16 +17,19 @@ namespace SpiceSharpParser.Parsers.Expression
         public ExpressionParser(EvaluationContext context, bool throwOnErrors, ISpiceNetlistCaseSensitivitySettings caseSettings)
         {
             InternalParser = new Parser();
-            DoubleBuilder = new CustomRealBuilder(context, InternalParser, caseSettings);
+            DoubleBuilder = new CustomRealBuilder(context, InternalParser, caseSettings, throwOnErrors);
 
             Context = context;
             ThrowOnErrors = throwOnErrors;
+            CaseSettings = caseSettings;
         }
 
         public EvaluationContext Context { get; }
 
         public bool ThrowOnErrors { get; }
 
+        public ISpiceNetlistCaseSensitivitySettings CaseSettings { get; }
+        
         protected CustomRealBuilder DoubleBuilder { get; }
 
         protected Parser InternalParser { get; }
@@ -89,41 +92,88 @@ namespace SpiceSharpParser.Parsers.Expression
         public Node Resolve(string expression)
         {
             var node = InternalParser.Parse(expression);
-            var resolver = new Resolver();
-
-            resolver.UnknownVariableFound += (sender, args) =>
+            try
             {
-                if (args.Node.NodeType == NodeTypes.Voltage)
+                var resolver = new Resolver();
+                var comparer = StringComparerProvider.Get(CaseSettings.IsParameterNameCaseSensitive);
+
+                if (Context.NameGenerator.NodeNameGenerator is SubcircuitNodeNameGenerator)
                 {
-                    if (resolver.VariableMap.Any(v => v.Key.Name == args.Node.Name))
+                    resolver.UnknownVariableFound += (sender, args) =>
                     {
-                        args.Result = VariableNode.Voltage(resolver.VariableMap.First(v => v.Key.Name == args.Node.Name).Value.ToString());
+                        if (args.Node.NodeType == NodeTypes.Voltage)
+                        {
+                            if (resolver.VariableMap.Any(v => comparer.Equals(v.Key, args.Node.Name)))
+                            {
+                                var node = resolver.VariableMap.First(v => comparer.Equals(v.Key, args.Node.Name)).Value;
+                                args.Result = VariableNode.Voltage(node.ToString());
+                            }
+                            else
+                            {
+                                args.Result = VariableNode.Voltage(Context.NameGenerator.ParseNodeName(args.Node.Name));
+                            }
+                        }
+
+                        if (args.Node.NodeType == NodeTypes.Current)
+                        {
+                            args.Result = VariableNode.Current(Context.NameGenerator.GenerateObjectName(args.Node.Name));
+                        }
+                    };
+                }
+                else
+                {
+                    resolver.UnknownVariableFound += (sender, args) =>
+                    {
+                        if (args.Node.NodeType == NodeTypes.Voltage)
+                        {
+                            if (resolver.VariableMap.Any(v => comparer.Equals(v.Key, args.Node.Name)))
+                            {
+                                var node = resolver.VariableMap.First(v => comparer.Equals(v.Key, args.Node.Name)).Value;
+                                args.Result = VariableNode.Voltage(node.ToString());
+                            }
+                            else
+                            {
+                                args.Result = VariableNode.Voltage(args.Node.Name);
+                            }
+                        }
+
+                        if (args.Node.NodeType == NodeTypes.Current)
+                        {
+                            args.Result = VariableNode.Current(args.Node.Name);
+                        }
+                    };
+                }
+
+                resolver.FunctionMap = CreateFunctions();
+                resolver.VariableMap = new Dictionary<string, Node>(StringComparerProvider.Get(CaseSettings.IsParameterNameCaseSensitive));
+               
+                foreach (var variable in DoubleBuilder.Variables)
+                {
+                    if (variable.Constant)
+                    {
+                        resolver.VariableMap[variable.Name] = variable.Value();
                     }
                     else
                     {
-                        args.Result = VariableNode.Voltage(Context.NameGenerator.ParseNodeName(args.Node.Name));
+                        resolver.VariableMap[variable.Name] = variable.VariableNode;
                     }
                 }
 
-                if (args.Node.NodeType == NodeTypes.Current)
-                {
-                    args.Result = VariableNode.Current(Context.NameGenerator.GenerateObjectName(args.Node.Name));
-                }
-            };
+                // TIME variable is handled well in SpiceSharpBehavioral
+                resolver.VariableMap.Remove("TIME");
 
-            resolver.VariableMap = new Dictionary<VariableNode, Node>();
-            foreach (var variable in DoubleBuilder.Variables)
+                var resolved = resolver.Resolve(node);
+                return resolved;
+            }
+            catch (Exception)
             {
-                resolver.VariableMap[VariableNode.Variable(variable.Name)] = variable.Value();
+                if (ThrowOnErrors)
+                {
+                    throw;
+                }
             }
 
-            // TIME variable is handled well in SpiceSharpBehavioral
-            resolver.VariableMap.Remove(VariableNode.Variable("TIME"));
-            resolver.FunctionMap = CreateFunctions();
-
-            var resolved = resolver.Resolve(node);
-
-            return resolved;
+            return node;
         }
 
         public Dictionary<string, ResolverFunction> CreateFunctions()
@@ -148,6 +198,7 @@ namespace SpiceSharpParser.Parsers.Expression
             result["if"] = new IfResolverFunction();
             result["max"] = new MaxResolverFunction();
             result["random"] = new RandomResolverFunction(Context);
+            result["gauss"] = new GaussResolverFunction(Context);
 
             return result;
         }

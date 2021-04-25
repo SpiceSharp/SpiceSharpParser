@@ -8,7 +8,7 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
     {
         public event EventHandler<VariableFoundEventArgs<VariableNode>> UnknownVariableFound;
 
-        public Dictionary<VariableNode, Node> VariableMap { get; set; }
+        public Dictionary<string, Node> VariableMap { get; set; }
 
         public Dictionary<string, ResolverFunction> FunctionMap { get; set; }
 
@@ -68,7 +68,7 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
                             var i = 0;
                             foreach (VariableNode argument in staticResolverFunction.Arguments)
                             {
-                                VariableMap[argument] = args[i];
+                                VariableMap[argument.Name] = args[i];
                                 i++;
                             }
 
@@ -88,9 +88,9 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
                     return cn;
 
                 case VariableNode vn:
-                    if (VariableMap != null && VariableMap.TryGetValue(vn, out var mapped))
+                    if (VariableMap != null && vn.NodeType == NodeTypes.Variable && VariableMap.TryGetValue(vn.Name, out var mapped))
                     {
-                        return mapped;
+                        return Resolve(mapped);
                     }
                     else
                     {

@@ -191,6 +191,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
                 }
             }
 
+            if (parts[0] == RootName)
+            {
+                string restOfPath = string.Join(".", parts.Skip(1));
+                return restOfPath;
+            }
+
             return null;
         }
 

@@ -1,5 +1,6 @@
 ﻿using SpiceSharp.Simulations;
 using SpiceSharp.Simulations.Variables;
+using SpiceSharpBehavioral.Parsers.Nodes;
 
 namespace SpiceSharpParser.Common.Evaluation
 {
@@ -10,5 +11,8 @@ namespace SpiceSharpParser.Common.Evaluation
         public string Name { get; set; }
 
         public IUnit Unit { get; set; }
+
+        public bool Constant { get; set; }
+        public Node VariableNode { get; internal set; }
     }
 }

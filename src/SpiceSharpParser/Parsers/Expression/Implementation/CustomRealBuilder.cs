@@ -20,7 +20,7 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
 
         private readonly ISpiceNetlistCaseSensitivitySettings _caseSettings;
 
-        public CustomRealBuilder(EvaluationContext context, Parser parser, ISpiceNetlistCaseSensitivitySettings caseSettings)
+        public CustomRealBuilder(EvaluationContext context, Parser parser, ISpiceNetlistCaseSensitivitySettings caseSettings, bool throwOnErrors)
         {
             _caseSettings = caseSettings;
 
@@ -33,23 +33,27 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
             // setup variables
             foreach (var variable in Context.Arguments)
             {
-                var variableNode = VariableNode.Variable(variable.Key);
-                Variables.Add(new CustomVariable<Func<double>>() { Name = variable.Key, Value = () => this.Build(Parser.Parse(variable.Value.ValueExpression)) });
+                var variableNode = Parser.Parse(variable.Value.ValueExpression);
+
+                Variables.Add(
+                    new CustomVariable<Func<double>>() { Name = variable.Key, VariableNode = variableNode, Value = () => this.Build(variableNode) });
             }
 
             foreach (var variable in context.Parameters)
             {
-                var variableNode = VariableNode.Variable(variable.Key);
 
                 if (variable.Value is ConstantExpression ce)
                 {
-                    Variables.Add(new CustomVariable<Func<double>>() { Name = variable.Key, Value = () => ce.Value });
+                    Variables.Add(new CustomVariable<Func<double>>() { Name = variable.Key, Value = () => ce.Value, Constant = true });
                 }
                 else
                 {
-                    Variables.Add(new CustomVariable<Func<double>>() { Name = variable.Key, Value = () => Build(Parser.Parse(variable.Value.ValueExpression)) });
+                    var variableNode = Parser.Parse(variable.Value.ValueExpression);
+                    Variables.Add(new CustomVariable<Func<double>>() { Name = variable.Key, VariableNode = variableNode, Value = () => Build(variableNode) });
                 }
             }
+
+            ThrowOnErrors = throwOnErrors;
         }
 
         public EvaluationContext Context { get; }
@@ -57,6 +61,7 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
         public Parser Parser { get; }
 
         public List<CustomVariable<Func<double>>> Variables { get; set; } = new List<Common.Evaluation.CustomVariable<Func<double>>>();
+        public bool ThrowOnErrors { get; }
 
         protected override double BuildNode(Node node)
         {
@@ -191,7 +196,19 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
 
                             _exporterInstances[key] = export;
 
-                            e.Result = export.Extract();
+                            try
+                            {
+                                e.Result = export.Extract();
+                            }
+                            catch (Exception ex)
+                            {
+                                if (ThrowOnErrors)
+                                {
+                                    throw;
+                                }
+
+                                e.Result = 0;
+                            }
                         }
                     }
                 }

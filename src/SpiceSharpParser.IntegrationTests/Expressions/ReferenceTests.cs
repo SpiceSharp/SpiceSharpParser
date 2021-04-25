@@ -18,7 +18,7 @@ namespace SpiceSharpParser.IntegrationTests.Expressions
                 ".MC 1000 OP power MAX",
                 ".END");
 
-            var exports = RunSimulationsAndReturnExports(result);
+            RunSimulationsAndReturnExports(result);
         }
 
         [Fact]

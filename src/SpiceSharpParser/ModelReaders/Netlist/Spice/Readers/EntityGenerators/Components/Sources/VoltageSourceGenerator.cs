@@ -125,10 +125,62 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </returns>
         protected IEntity GenerateVoltageSource(string name, ParameterCollection parameters, ICircuitContext context)
         {
+            var evalContext = context.Evaluator.GetEvaluationContext();
+
+            if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
+            {
+                var valueParameter = (AssignmentParameter)parameters.Single(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");
+                string expression = valueParameter.Value;
+                if (evalContext.HaveSpiceProperties(expression) || evalContext.HaveFunctions(expression))
+                {
+                    BehavioralVoltageSource entity = CreateBehavioralVoltageSource(name, parameters, context, evalContext, expression);
+                    return entity;
+                }
+            }
+
+            if (parameters.Any(p => p is ExpressionParameter ep))
+            {
+                var expressionParameter = (ExpressionParameter)parameters.Single(p => p is ExpressionParameter);
+                string expression = expressionParameter.Image;
+
+                if (evalContext.HaveSpiceProperties(expressionParameter.Image) || evalContext.HaveFunctions(expressionParameter.Image))
+                {
+                    BehavioralVoltageSource entity = CreateBehavioralVoltageSource(name, parameters, context, evalContext, expression);
+                    return entity;
+                }
+            }
+
             var vs = new VoltageSource(name);
             context.CreateNodes(vs, parameters);
             SetSourceParameters(parameters, context, vs);
             return vs;
+        }
+
+        private static BehavioralVoltageSource CreateBehavioralVoltageSource(string name, ParameterCollection parameters, ICircuitContext context, Common.Evaluation.EvaluationContext evalContext, string expression)
+        {
+            var entity = new BehavioralVoltageSource(name);
+            context.CreateNodes(entity, parameters.Take(BehavioralVoltageSource.BehavioralVoltageSourcePinCount));
+            entity.Parameters.Expression = expression;
+            entity.Parameters.ParseAction = (expression) =>
+            {
+                var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
+                return parser.Resolve(expression);
+            };
+
+            if (evalContext.HaveFunctions(expression))
+            {
+                context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
+                {
+                    entity.Parameters.Expression = expression.ToString();
+                    entity.Parameters.ParseAction = (expression) =>
+                    {
+                        var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(simulation), false, context.CaseSensitivity);
+                        return parser.Resolve(expression);
+                    };
+                });
+            }
+
+            return entity;
         }
 
         protected IEntity CreateCustomVoltageSource(
@@ -137,49 +189,32 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             ICircuitContext context,
             bool isVoltageControlled)
         {
+            var evalContext = context.Evaluator.GetEvaluationContext();
+
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
             {
-                var entity = new BehavioralVoltageSource(name);
-                context.CreateNodes(entity, parameters);
                 var valueParameter = (AssignmentParameter)parameters.Single(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");
-                entity.Parameters.Expression = valueParameter.Value;
-                entity.Parameters.ParseAction = (expression) =>
-                {
-                    var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
-                    return parser.Resolve(expression);
-                };
-
+                
+                BehavioralVoltageSource entity = CreateBehavioralVoltageSource(name, parameters, context, evalContext, valueParameter.Value);
                 return entity;
             }
 
             if (parameters.Any(p => p is WordParameter ap && ap.Image.ToLower() == "value"))
             {
-                var entity = new BehavioralVoltageSource(name);
-                context.CreateNodes(entity, parameters);
-
                 var expressionParameter = parameters.FirstOrDefault(p => p is ExpressionParameter);
                 if (expressionParameter != null)
                 {
-                    entity.Parameters.Expression = expressionParameter.Image;
-                    entity.Parameters.ParseAction = (expression) =>
-                    {
-                        var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
-                        return parser.Resolve(expression);
-                    };
+                    BehavioralVoltageSource entity = CreateBehavioralVoltageSource(name, parameters, context, evalContext, expressionParameter.Image);
+                    return entity;
                 }
-
-                return entity;
             }
 
             if (parameters.Any(p => p is WordParameter bp && bp.Image.ToLower() == "poly"))
             {
-                var entity = new VoltageSource(name);
-                context.CreateNodes(entity, parameters);
-                parameters = parameters.Skip(VoltageSource.PinCount);
+                var polyParameters = parameters.Skip(VoltageSource.PinCount);
                 var dimension = 1;
-                var expression = CreatePolyExpression(dimension, parameters.Skip(1), isVoltageControlled, context.Evaluator.GetEvaluationContext());
-                context.SetParameter(entity, "dc", expression);
-
+                var expression = CreatePolyExpression(dimension, polyParameters.Skip(1), isVoltageControlled, context.Evaluator.GetEvaluationContext());
+                BehavioralVoltageSource entity = CreateBehavioralVoltageSource(name, parameters, context, evalContext, expression);
                 return entity;
             }
 
@@ -191,20 +226,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "poly expects one argument => dimension", polyParameter.LineInfo));
                 }
-
-                var entity = new BehavioralVoltageSource(name);
-                context.CreateNodes(entity, parameters);
-
-                parameters = parameters.Skip(VoltageSource.PinCount);
+                
+                var polyParameters = parameters.Skip(VoltageSource.PinCount);
                 var dimension = (int)context.Evaluator.EvaluateDouble(polyParameter.Parameters[0].Image);
-                var expression = CreatePolyExpression(dimension, parameters.Skip(1), isVoltageControlled, context.Evaluator.GetEvaluationContext());
-                entity.Parameters.Expression = expression;
-                entity.Parameters.ParseAction = (exp) =>
-                {
-                    var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
-                    return parser.Resolve(exp);
-                };
-
+                var expression = CreatePolyExpression(dimension, polyParameters.Skip(1), isVoltageControlled, context.Evaluator.GetEvaluationContext());
+                
+                BehavioralVoltageSource entity = CreateBehavioralVoltageSource(name, parameters, context, evalContext, expression);
                 return entity;
             }
 
@@ -221,14 +248,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (nextParameter is ExpressionEqualParameter eep)
                 {
-                    var entity = new BehavioralVoltageSource(name);
-                    context.CreateNodes(entity, parameters);
-                    entity.Parameters.Expression = ExpressionFactory.CreateTableExpression(eep.Expression, eep.Points);
-                    entity.Parameters.ParseAction = (exp) =>
-                    {
-                        var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
-                        return parser.Resolve(exp);
-                    };
+                    var expression = ExpressionFactory.CreateTableExpression(eep.Expression, eep.Points);
+
+                    BehavioralVoltageSource entity = CreateBehavioralVoltageSource(name, parameters, context, evalContext, expression);
                     return entity;
                 }
                 else
