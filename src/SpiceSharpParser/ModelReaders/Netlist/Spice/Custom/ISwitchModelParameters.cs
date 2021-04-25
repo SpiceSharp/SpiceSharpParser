@@ -1,8 +1,10 @@
-﻿using SpiceSharp.ParameterSets;
+﻿using SpiceSharp.Attributes;
+using SpiceSharp.ParameterSets;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Custom
 {
-    public class ISwitchModelParameters : ParameterSet
+    [GeneratedParameters]
+    public partial class ISwitchModelParameters : ParameterSet<ISwitchModelParameters>
     {
         [ParameterName("ron")]
         [ParameterInfo("Resistance when closed/on")]

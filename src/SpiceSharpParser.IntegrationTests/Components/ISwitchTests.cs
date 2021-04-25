@@ -9,18 +9,18 @@ namespace SpiceSharpParser.IntegrationTests.Components
         {
             var netlist = ParseNetlist(
                 "ISwitch test",
-                "W1 1 0 R1 imodel",
+                "W1 1 0 V1 imodel",
                 "V2 1 0 10",
-                "V1 2 0 1",
+                "V1 2 0 -1",
                 "R1 2 0 1",
-                ".model imodel ISWITCH (roff=1000000 ron=10 ioff = 0 ion = 2)",
+                ".model imodel ISWITCH (roff=100 ron=10 ioff = 0 ion = 2)",
                 ".OP",
                 ".SAVE I(V2)",
                 ".END");
 
             var export = RunOpSimulation(netlist, "I(V2)");
             Assert.NotNull(netlist);
-            EqualsWithTol(-1.9999800002E-05, export);
+            EqualsWithTol(-0.316228, export);
         }
 
         [Fact]

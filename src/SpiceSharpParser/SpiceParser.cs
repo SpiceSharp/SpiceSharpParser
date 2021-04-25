@@ -43,8 +43,6 @@ namespace SpiceSharpParser
             Settings = settings ?? throw new ArgumentNullException(nameof(settings));
             SingleNetlistParser = new SingleSpiceNetlistParser(Settings.Parsing);
 
-            ReflectionHelper.Comparer = StringComparerProvider.Get(false);
-
             TokenProviderPool = new SpiceTokenProviderPool();
             var includesPreprocessor = new IncludesPreprocessor(
                 new FileReader(),

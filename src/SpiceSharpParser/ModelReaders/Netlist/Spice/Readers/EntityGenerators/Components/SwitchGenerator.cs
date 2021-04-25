@@ -50,11 +50,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 BehavioralResistor resistor = new BehavioralResistor(name);
                 Model resistorModel = model;
                 context.CreateNodes(resistor, parameters.Take(BehavioralResistor.BehavioralResistorPinCount));
+                var vSwitchModelParameters = resistorModel.Parameters as VSwitchModelParameters;
 
-                double vOff = resistorModel.Parameters.GetProperty<double>("voff");
-                double rOff = resistorModel.Parameters.GetProperty<double>("roff");
-                double vOn = resistorModel.Parameters.GetProperty<double>("von");
-                double rOn = resistorModel.Parameters.GetProperty<double>("ron");
+                double vOff = vSwitchModelParameters.OffVoltage;
+                double rOff = vSwitchModelParameters.OffResistance;
+                double vOn = vSwitchModelParameters.OnVoltage;
+                double rOn = vSwitchModelParameters.OnResistance;
 
                 string vc = $"v({ parameters.Get(2)}, {parameters.Get(3)})";
                 double lm = Math.Log(Math.Sqrt(rOn * rOff));
@@ -83,10 +84,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                                 stochasticModelsRegistry.RegisterModelInstance(resistorModel);
                             }
                         }
-                        vOff = resistorModel.Parameters.GetProperty<double>("voff");
-                        rOff = resistorModel.Parameters.GetProperty<double>("roff");
-                        vOn = resistorModel.Parameters.GetProperty<double>("von");
-                        rOn = resistorModel.Parameters.GetProperty<double>("ron");
+                        vOff = vSwitchModelParameters.OffVoltage;
+                        rOff = vSwitchModelParameters.OffResistance;
+                        vOn = vSwitchModelParameters.OnVoltage;
+                        rOn = vSwitchModelParameters.OnResistance;
                         lm = Math.Log(Math.Sqrt(rOn * rOff));
                         lr = Math.Log(rOn / rOff);
                         vm = (vOn + vOff) / 2.0;
@@ -143,6 +144,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return vsw;
         }
 
+
+        private static string GetISwitchExpression(double iOff, double rOff, double iOn, double rOn, string ic, double lm, double lr, double im, double id)
+        {
+            string resExpression;
+            if (iOn >= iOff)
+            {
+                resExpression = $"{ic} >= {iOn} ? {rOn} : ({ic} <= {iOff} ? {rOff} : (exp({lm} + 3 * {lr} * ({ic}-{im})/(2*{id}) - 2 * {lr} * pow({ic}-{im}, 3)/(pow({id},3)))))";
+            }
+            else
+            {
+                resExpression = $"{ic} < {iOn} ? {rOn} : ({ic} > {iOff} ? {rOff} : (exp({lm} - 3 * {lr} * ({ic}-{im})/(2*{id}) + 2 * {lr} * pow({ic}-{im}, 3)/(pow({id},3)))))";
+            }
+
+            return resExpression;
+        }
+
         private static string GetVSwitchExpression(double vOff, double rOff, double vOn, double rOn, string vc, double lm, double lr, double vm, double vd)
         {
             string resExpression;
@@ -179,10 +196,30 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             var model = context.ModelsRegistry.FindModel(modelName);
             if (model.Entity is ISwitchModel)
             {
-                Resistor resistor = new Resistor(name);
+                BehavioralResistor resistor = new BehavioralResistor(name);
                 Model resistorModel = model;
                 context.CreateNodes(resistor, parameters.Take(2));
-                context.SimulationPreparations.ExecuteTemperatureBehaviorBeforeLoad(resistor);
+                var ic = $"i({parameters.Get(2)})";
+                var iswitchModelParameters = resistorModel.Parameters as ISwitchModelParameters;
+
+                double iOff = iswitchModelParameters.OffCurrent;
+                double rOff = iswitchModelParameters.OffResistance;
+                double iOn = iswitchModelParameters.OnCurrent;
+                double rOn = iswitchModelParameters.OnResistance;
+
+
+                double lm = Math.Log(Math.Sqrt(rOn * rOff));
+                double lr = Math.Log(rOn / rOff);
+                double im = (iOn + iOff) / 2.0;
+                double id = iOn - iOff;
+                var resExpression = GetISwitchExpression(iOff, rOff, iOn, rOn, ic, lm, lr, im, id);
+                resistor.Parameters.Expression = resExpression;
+                resistor.Parameters.ParseAction = (expression) =>
+                {
+                    var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
+                    return parser.Resolve(expression);
+                };
+
 
                 context.SimulationPreparations.ExecuteActionAfterSetup(
                     (simulation) =>
@@ -197,9 +234,24 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             }
                         }
 
-                        double rOff = resistorModel.Parameters.GetProperty<double>("roff");
-                        string resExpression = $"table(i({parameters.Get(2)}), @{resistorModel.Name}[ioff], @{resistorModel.Name}[roff] , @{resistorModel.Name}[ion], @{resistorModel.Name}[ron])";
-                        context.SetParameter(resistor, "resistance", resExpression, beforeTemperature: true, onload: true, simulation);
+
+                        iOff = iswitchModelParameters.OffCurrent;
+                        rOff = iswitchModelParameters.OffResistance;
+                        iOn = iswitchModelParameters.OnCurrent;
+                        rOn = iswitchModelParameters.OnResistance;
+
+                        lm = Math.Log(Math.Sqrt(rOn * rOff));
+                        lr = Math.Log(rOn / rOff);
+                        im = (iOn + iOff) / 2.0;
+                        id = iOn - iOff;
+                        resExpression = GetISwitchExpression(iOff, rOff, iOn, rOn, ic, lm, lr, im, id);
+                        resistor.Parameters.Expression = resExpression;
+                        resistor.Parameters.ParseAction = (expression) =>
+                        {
+                            var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(simulation), false, context.CaseSensitivity);
+                            return parser.Resolve(expression);
+                        };
+
                     });
                 return resistor;
             }

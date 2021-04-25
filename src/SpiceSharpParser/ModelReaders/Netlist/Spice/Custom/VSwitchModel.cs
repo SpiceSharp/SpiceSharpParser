@@ -1,16 +1,17 @@
-﻿using SpiceSharp.Components;
-using SpiceSharp.Entities;
-using SpiceSharp.ParameterSets;
+﻿using SpiceSharp.Entities;
+using SpiceSharp.Simulations;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Custom
 {
-    public class VSwitchModel : Entity<BindingContext>, IParameterized<VSwitchModelParameters>
-    {
+    public partial class VSwitchModel : Entity<VSwitchModelParameters>
+    { 
         public VSwitchModel(string name)
             : base(name)
         {
         }
 
-        public VSwitchModelParameters Parameters { get; } = new VSwitchModelParameters();
+        public override void CreateBehaviors(ISimulation simulation)
+        {
+        }
     }
 }

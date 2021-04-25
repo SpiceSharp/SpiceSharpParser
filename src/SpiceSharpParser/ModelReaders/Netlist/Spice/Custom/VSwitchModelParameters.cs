@@ -4,7 +4,8 @@ using SpiceSharp.ParameterSets;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Custom
 {
-    public class VSwitchModelParameters : ParameterSet
+    [GeneratedParameters]
+    public partial class VSwitchModelParameters : ParameterSet<VSwitchModelParameters>
     {
         [ParameterName("ron")]
         [ParameterInfo("Resistance when closed/on")]
