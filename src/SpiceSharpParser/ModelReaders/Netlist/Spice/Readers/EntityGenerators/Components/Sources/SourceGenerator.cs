@@ -12,7 +12,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
     public abstract class SourceGenerator : ComponentGenerator
     {
         protected void SetSourceParameters(
-            string name,
             ParameterCollection parameters,
             ICircuitContext context,
             Component component)

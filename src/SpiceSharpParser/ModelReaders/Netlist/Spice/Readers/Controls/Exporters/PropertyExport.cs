@@ -17,8 +17,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <param name="simulation">A simulation.</param>
         /// <param name="source">A identifier of component.</param>
         /// <param name="property">Name of property for export.</param>
-        /// <param name="comparer">Entity property name comparer.</param>
-        public PropertyExport(string name, Simulation simulation, string source, string property, IEqualityComparer<string> comparer)
+        public PropertyExport(string name, Simulation simulation, string source, string property)
             : base(simulation)
         {
             Name = name ?? throw new NullReferenceException(nameof(name));

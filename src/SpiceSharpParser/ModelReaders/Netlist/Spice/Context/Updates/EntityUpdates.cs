@@ -290,18 +290,5 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
             var context = Contexts.GetContext(simulation).Find(contextName);
             return context;
         }
-
-        private double GetEntitySimulationParameter(string paramName, IEntity @object, Simulation simulation, IEqualityComparer<string> comparer)
-        {
-            string key = $"{simulation.Name}_{@object.Name}_{paramName}_{(comparer != null ? comparer.ToString() : "null")}";
-
-            if (!SimulationEntityParametersCache.TryGetValue(key, out var result))
-            {
-                result = simulation.EntityBehaviors[@object.Name].GetProperty<double>(paramName);
-                SimulationEntityParametersCache[key] = result;
-            }
-
-            return result;
-        }
     }
 }

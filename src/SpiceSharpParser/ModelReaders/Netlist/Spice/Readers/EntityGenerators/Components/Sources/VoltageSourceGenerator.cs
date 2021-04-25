@@ -127,7 +127,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             var vs = new VoltageSource(name);
             context.CreateNodes(vs, parameters);
-            SetSourceParameters(name, parameters, context, vs);
+            SetSourceParameters(parameters, context, vs);
             return vs;
         }
 

@@ -38,7 +38,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                             Dictionary<Parameter, ParameterRandomness> stochasticDevParameters = modelsRegistry.GetStochasticModelDevParameters(baseModel);
                             if (stochasticDevParameters != null)
                             {
-                                SetModelDevModelParameters(simulation, baseModel, componentModel.Entity, stochasticDevParameters);
+                                SetModelDevModelParameters(simulation, componentModel.Entity, stochasticDevParameters);
                             }
 
                             Dictionary<Parameter, ParameterRandomness> stochasticLotParameters = modelsRegistry.GetStochasticModelLotParameters(baseModel);
@@ -74,9 +74,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             }
         }
 
-        private void SetModelDevModelParameters(Simulation simulation, string baseModel, IEntity componentModel, Dictionary<Parameter, ParameterRandomness> stochasticDevParameters)
+        private void SetModelDevModelParameters(Simulation simulation, IEntity componentModel, Dictionary<Parameter, ParameterRandomness> stochasticDevParameters)
         {
-            var comparer = StringComparerProvider.Get(false);
             foreach (var stochasticParameter in stochasticDevParameters)
             {
                 var parameter = stochasticParameter.Key;

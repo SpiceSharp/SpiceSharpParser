@@ -116,7 +116,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             CurrentSource cs = new CurrentSource(name);
             context.CreateNodes(cs, parameters);
-            SetSourceParameters(name, parameters, context, cs);
+            SetSourceParameters(parameters, context, cs);
             return cs;
         }
 

@@ -54,7 +54,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                 if (entityName.Contains("#"))
                 {
                     string objectName = $"{context.NameGenerator.GenerateObjectName(entityName)}_{context.Simulation.Name}";
-                    return new PropertyExport(name, context.Simulation, objectName, propertyName, comparer);
+                    return new PropertyExport(name, context.Simulation, objectName, propertyName);
                 }
                 else
                 {
@@ -62,11 +62,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
 
                     if (context.ResultService.FindObject(objectName, out _))
                     {
-                        return new PropertyExport(name, context.Simulation, objectName, propertyName, comparer);
+                        return new PropertyExport(name, context.Simulation, objectName, propertyName);
                     }
                     else
                     {
-                        return new PropertyExport(name, context.Simulation, entityName, propertyName, comparer);
+                        return new PropertyExport(name, context.Simulation, entityName, propertyName);
                     }
                 }
             }
