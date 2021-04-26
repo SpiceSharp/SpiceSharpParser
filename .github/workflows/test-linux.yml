@@ -22,7 +22,9 @@ jobs:
         dotnet-version: '5.0.100'
     
     - name: Restore dependencies
-      run: dotnet restore
+      run: 
+        cd src
+        dotnet restore
 
     - name: Compile SpiceParser
       run: 
