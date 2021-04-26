@@ -4,7 +4,6 @@
     <ProjectGuid>{DF3DD787-71CC-4C89-9E33-DC4536A52278}</ProjectGuid>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <Authors>SpiceSharp</Authors>
-    <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/SpiceSharp/SpiceSharpParser</PackageProjectUrl>
     <Copyright>Copyright 2021</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
