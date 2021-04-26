@@ -4,11 +4,10 @@
 [![Linux](https://travis-ci.org/SpiceSharp/SpiceSharpParser.svg?branch=master)](https://travis-ci.org/SpiceSharp/SpiceSharpParser?branch=master)
 [![codecov](https://codecov.io/gh/SpiceSharp/SpiceSharpParser/branch/master/graph/badge.svg)](https://codecov.io/gh/SpiceSharp/SpiceSharpParser)
 [![CodeFactor](https://www.codefactor.io/repository/github/spicesharp/spicesharpparser/badge)](https://www.codefactor.io/repository/github/spicesharp/spicesharpparser)
-[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=SpiceSharpParser&metric=alert_status)](https://sonarcloud.io/dashboard?id=SpiceSharpParser)
-[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=SpiceSharpParser&metric=bugs)](https://sonarcloud.io/dashboard?id=SpiceSharpParser)
-[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=SpiceSharpParser&metric=code_smells)](https://sonarcloud.io/dashboard?id=SpiceSharpParser)
-[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=SpiceSharpParser&metric=ncloc)](https://sonarcloud.io/dashboard?id=SpiceSharpParser)
-[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=SpiceSharpParser&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=SpiceSharpParser)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=SpiceSharp_SpiceSharpParser&metric=ncloc)](https://sonarcloud.io/dashboard?id=SpiceSharp_SpiceSharpParser)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=SpiceSharp_SpiceSharpParser&metric=code_smells)](https://sonarcloud.io/dashboard?id=SpiceSharp_SpiceSharpParser)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=SpiceSharp_SpiceSharpParser&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=SpiceSharp_SpiceSharpParser)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=SpiceSharp_SpiceSharpParser&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=SpiceSharp_SpiceSharpParser)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmarcin-golebiowski%2FSpiceSharpParser.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmarcin-golebiowski%2FSpiceSharpParser?ref=badge_shield)
 
 
