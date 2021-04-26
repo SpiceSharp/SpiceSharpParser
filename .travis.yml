@@ -2,18 +2,8 @@ language: csharp
 sudo: required
 mono: none
 dist: trusty
-dotnet: 2.0.0
-addons:
-  sonarcloud:
-    organization: "marcin-golebiowski"
-    
-before_install:
-- bash ./tools/travis-ci-install-sonar.sh
-
+dotnet: 5.0.0
 install:
 - dotnet restore src
-
 script:
  - bash ./tools/travis-ci-build.sh
-
- 
