@@ -1,0 +1,35 @@
+name: Linux Tests
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@master
+    
+    - name: Setup dotnet tooling
+      uses: actions/setup-dotnet@master
+      with:
+        dotnet-version: '5.0.100'
+    
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Compile SpiceParser
+      run: 
+        cd src
+        dotnet build --configuration Debug --no-restore
+
+    - name: Run Tests
+      run:
+        cd src
+        dotnet test -configuration Debug --no-restore
