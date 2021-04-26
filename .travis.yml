@@ -1,9 +1,0 @@
-language: csharp
-sudo: required
-mono: none
-dist: trusty
-dotnet: 5.0.2
-install:
-- dotnet restore src
-script:
- - bash ./tools/travis-ci-build.sh
