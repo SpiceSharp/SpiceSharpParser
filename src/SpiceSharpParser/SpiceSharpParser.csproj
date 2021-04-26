@@ -6,8 +6,7 @@
     <Authors>SpiceSharp</Authors>
     <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/SpiceSharp/SpiceSharpParser</PackageProjectUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/SpiceSharp/SpiceSharp/master/api/images/logo_full.svg?sanitize=true</PackageIconUrl>
-    <Copyright>Copyright 2019</Copyright>
+    <Copyright>Copyright 2021</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/SpiceSharp/SpiceSharpParser</RepositoryUrl>
     <RepositoryType></RepositoryType>
@@ -31,14 +30,6 @@
     <DocumentationFile></DocumentationFile>
     <NoWarn>1701;1702;</NoWarn>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Common\Evaluation\EvaluationParameter.cs" />
-    <Compile Remove="ModelReaders\Netlist\Spice\Custom\ISwitchModelBehavior.cs" />
-    <Compile Remove="ModelReaders\Netlist\Spice\Custom\VSwitchModelBehavior.cs" />
-    <Compile Remove="ModelReaders\Netlist\Spice\Evaluation\Functions\Math\TableFunction.cs" />
-    <Compile Remove="Parsers\Expression\ExpressionParser - Copy.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="SpiceSharp" Version="3.1.1" />
