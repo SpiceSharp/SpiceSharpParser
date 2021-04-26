@@ -37,4 +37,4 @@ jobs:
       run:
         cd src
         
-        dotnet test -configuration Debug --no-restore
+        dotnet test
