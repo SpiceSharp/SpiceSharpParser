@@ -24,14 +24,17 @@ jobs:
     - name: Restore dependencies
       run: 
         cd src
+        
         dotnet restore
 
     - name: Compile SpiceParser
       run: 
         cd src
+        
         dotnet build --configuration Debug --no-restore
 
     - name: Run Tests
       run:
         cd src
+        
         dotnet test -configuration Debug --no-restore
