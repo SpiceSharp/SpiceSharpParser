@@ -21,7 +21,6 @@
     <OutputType>Library</OutputType>
     <StartupObject />
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageLicenseUrl Condition="'$(OS)' != 'Windows_NT'">https://github.com/SpiceSharp/SpiceSharpParser/blob/master/LICENSE</PackageLicenseUrl>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
