@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class SpiceToken
    ">
-    <meta name="generator" content="docfx 2.40.10.0">
+    <meta name="generator" content="docfx 2.57.2.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -82,6 +82,10 @@
     <div class="level1"><a class="xref" href="SpiceSharpParser.Lexers.Token.html">Token</a></div>
     <div class="level2"><span class="xref">SpiceToken</span></div>
   </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="SpiceSharpParser.Common.ILocationProvider.html">ILocationProvider</a></div>
+  </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
@@ -91,19 +95,22 @@
       <a class="xref" href="SpiceSharpParser.Lexers.Token.html#SpiceSharpParser_Lexers_Token_LineNumber">Token.LineNumber</a>
     </div>
     <div>
-      <a class="xref" href="SpiceSharpParser.Lexers.Token.html#SpiceSharpParser_Lexers_Token_Lexem">Token.Lexem</a>
+      <a class="xref" href="SpiceSharpParser.Lexers.Token.html#SpiceSharpParser_Lexers_Token_StartColumnIndex">Token.StartColumnIndex</a>
     </div>
     <div>
-      <span class="xref">System.Object.ToString()</span>
+      <a class="xref" href="SpiceSharpParser.Lexers.Token.html#SpiceSharpParser_Lexers_Token_EndColumnIndex">Token.EndColumnIndex</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Lexers.Token.html#SpiceSharpParser_Lexers_Token_FileName">Token.FileName</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Lexers.Token.html#SpiceSharpParser_Lexers_Token_Lexem">Token.Lexem</a>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.GetHashCode()</span>
@@ -114,30 +121,36 @@
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="SpiceSharpParser.Lexers.Netlist.Spice.html">SpiceSharpParser.Lexers.Netlist.Spice</a></h6>
   <h6><strong>Assembly</strong>: SpiceSharpParser.dll</h6>
   <h5 id="SpiceSharpParser_Lexers_Netlist_Spice_SpiceToken_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class SpiceToken : Token</code></pre>
+    <pre><code class="lang-csharp hljs">public class SpiceToken : Token, ILocationProvider</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_Netlist_Spice_SpiceToken__ctor_SpiceSharpParser_Lexers_Netlist_Spice_SpiceTokenType_System_String_System_Int32_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken.%23ctor(SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType%2CSystem.String%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_Netlist_Spice_SpiceToken__ctor_SpiceSharpParser_Lexers_Netlist_Spice_SpiceTokenType_System_String_System_Int32_System_Int32_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken.%23ctor(SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType%2CSystem.String%2CSystem.Int32%2CSystem.Int32%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceToken.cs/#L11">View Source</a>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceToken.cs/#L11">View Source</a>
   </span>
   <a id="SpiceSharpParser_Lexers_Netlist_Spice_SpiceToken__ctor_" data-uid="SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken.#ctor*"></a>
-  <h4 id="SpiceSharpParser_Lexers_Netlist_Spice_SpiceToken__ctor_SpiceSharpParser_Lexers_Netlist_Spice_SpiceTokenType_System_String_System_Int32_" data-uid="SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken.#ctor(SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType,System.String,System.Int32)">SpiceToken(SpiceTokenType, String, Int32)</h4>
+  <h4 id="SpiceSharpParser_Lexers_Netlist_Spice_SpiceToken__ctor_SpiceSharpParser_Lexers_Netlist_Spice_SpiceTokenType_System_String_System_Int32_System_Int32_System_String_" data-uid="SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken.#ctor(SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenType,System.String,System.Int32,System.Int32,System.String)">SpiceToken(SpiceTokenType, String, Int32, Int32, String)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken.html">SpiceToken</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SpiceToken(SpiceTokenType tokenType, string lexem, int lineNumber = 0)</code></pre>
+    <pre><code class="lang-csharp hljs">public SpiceToken(SpiceTokenType tokenType, string lexem, int lineNumber = 0, int startColumnIndex = 0, string fileName = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -164,16 +177,26 @@
         <td><span class="parametername">lineNumber</span></td>
         <td></td>
       </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">startColumnIndex</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">fileName</span></td>
+        <td></td>
+      </tr>
     </tbody>
   </table>
   <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_Netlist_Spice_SpiceToken_SpiceTokenType.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken.SpiceTokenType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_Netlist_Spice_SpiceToken_SpiceTokenType.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken.SpiceTokenType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceToken.cs/#L20">View Source</a>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceToken.cs/#L20">View Source</a>
   </span>
   <a id="SpiceSharpParser_Lexers_Netlist_Spice_SpiceToken_SpiceTokenType_" data-uid="SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken.SpiceTokenType*"></a>
   <h4 id="SpiceSharpParser_Lexers_Netlist_Spice_SpiceToken_SpiceTokenType" data-uid="SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken.SpiceTokenType">SpiceTokenType</h4>
@@ -199,6 +222,10 @@
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="SpiceSharpParser.Common.ILocationProvider.html">ILocationProvider</a>
+  </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="SpiceSharpParser.Lexers.Netlist.Spice.SpiceTokenExtensions.html#SpiceSharpParser_Lexers_Netlist_Spice_SpiceTokenExtensions_Is_SpiceSharpParser_Lexers_Netlist_Spice_SpiceToken_SpiceSharpParser_Lexers_Netlist_Spice_SpiceTokenType_">SpiceTokenExtensions.Is(SpiceToken, SpiceTokenType)</a>
@@ -214,15 +241,16 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_Netlist_Spice_SpiceToken.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_Netlist_Spice_SpiceToken.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.Netlist.Spice.SpiceToken%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceToken.cs/#L6" class="contribution-link">View Source</a>
+                    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/Netlist/Spice/SpiceToken.cs/#L6" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class VSwitchModel
    ">
-    <meta name="generator" content="docfx 2.40.10.0">
+    <meta name="generator" content="docfx 2.57.2.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -78,73 +78,69 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">SpiceSharp.Circuits.Entity</span></div>
-    <div class="level2"><span class="xref">SpiceSharp.Components.Model</span></div>
-    <div class="level3"><span class="xref">VSwitchModel</span></div>
+    <div class="level1"><span class="xref">SpiceSharp.ParameterSets.ParameterSet</span></div>
+    <div class="level2"><span class="xref">SpiceSharp.ParameterSets.ParameterSetCollection</span></div>
+    <div class="level3"><span class="xref">SpiceSharp.Entities.Entity</span></div>
+    <div class="level4"><span class="xref">SpiceSharp.Entities.Entity</span>&lt;<a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.VSwitchModelParameters.html">VSwitchModelParameters</a>&gt;</div>
+    <div class="level5"><span class="xref">VSwitchModel</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><span class="xref">SpiceSharp.ICloneable</span></div>
-    <div><span class="xref">SpiceSharp.ICloneable</span>&lt;<span class="xref">SpiceSharp.Circuits.Entity</span>&gt;</div>
+    <div><span class="xref">SpiceSharp.Entities.IEntity</span></div>
+    <div><span class="xref">SpiceSharp.ParameterSets.IParameterSetCollection</span></div>
+    <div><span class="xref">SpiceSharp.ParameterSets.IParameterSet</span></div>
+    <div><span class="xref">SpiceSharp.ICloneable</span>&lt;<span class="xref">SpiceSharp.Entities.IEntity</span>&gt;</div>
+    <div><span class="xref">SpiceSharp.ParameterSets.IParameterized</span>&lt;<a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.VSwitchModelParameters.html">VSwitchModelParameters</a>&gt;</div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <span class="xref">SpiceSharp.Circuits.Entity.RegisterBehaviorFactory(System.Type, SpiceSharp.Behaviors.BehaviorFactoryDictionary)</span>
+      <span class="xref">SpiceSharp.Entities.Entity&lt;SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.VSwitchModelParameters&gt;.Clone()</span>
     </div>
     <div>
-      <span class="xref">SpiceSharp.Circuits.Entity.SetPrincipalParameter&lt;T&gt;(T)</span>
+      <span class="xref">SpiceSharp.Entities.Entity&lt;SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.VSwitchModelParameters&gt;.Parameters</span>
     </div>
     <div>
-      <span class="xref">SpiceSharp.Circuits.Entity.SetParameter(System.String, System.Collections.Generic.IEqualityComparer&lt;System.String&gt;)</span>
+      <span class="xref">SpiceSharp.Entities.Entity.SetParameter&lt;P&gt;(System.String, P)</span>
     </div>
     <div>
-      <span class="xref">SpiceSharp.Circuits.Entity.SetParameter&lt;T&gt;(System.String, T, System.Collections.Generic.IEqualityComparer&lt;System.String&gt;)</span>
+      <span class="xref">SpiceSharp.Entities.Entity.ToString()</span>
     </div>
     <div>
-      <span class="xref">SpiceSharp.Circuits.Entity.GetPrincipalParameter&lt;T&gt;()</span>
+      <span class="xref">SpiceSharp.Entities.Entity.LinkParameters</span>
     </div>
     <div>
-      <span class="xref">SpiceSharp.Circuits.Entity.GetParameter&lt;T&gt;(System.String, System.Collections.Generic.IEqualityComparer&lt;System.String&gt;)</span>
+      <span class="xref">SpiceSharp.Entities.Entity.Name</span>
     </div>
     <div>
-      <span class="xref">SpiceSharp.Circuits.Entity.CreateBehaviors(System.Type[], SpiceSharp.Simulations.Simulation, SpiceSharp.Circuits.EntityCollection)</span>
+      <span class="xref">SpiceSharp.ParameterSets.ParameterSetCollection.GetParameterSet&lt;P&gt;()</span>
     </div>
     <div>
-      <span class="xref">SpiceSharp.Circuits.Entity.BindBehavior(SpiceSharp.Behaviors.IBehavior, SpiceSharp.Simulations.Simulation)</span>
+      <span class="xref">SpiceSharp.ParameterSets.ParameterSetCollection.TryGetParameterSet&lt;P&gt;(P)</span>
     </div>
     <div>
-      <span class="xref">SpiceSharp.Circuits.Entity.Clone()</span>
+      <span class="xref">SpiceSharp.ParameterSets.ParameterSetCollection.TrySetParameter&lt;P&gt;(System.String, P)</span>
     </div>
     <div>
-      <span class="xref">SpiceSharp.Circuits.Entity.Clone(SpiceSharp.Circuits.InstanceData)</span>
+      <span class="xref">SpiceSharp.ParameterSets.ParameterSetCollection.GetProperty&lt;P&gt;(System.String)</span>
     </div>
     <div>
-      <span class="xref">SpiceSharp.Circuits.Entity.SpiceSharp.ICloneable.Clone()</span>
+      <span class="xref">SpiceSharp.ParameterSets.ParameterSetCollection.TryGetProperty&lt;P&gt;(System.String, P)</span>
     </div>
     <div>
-      <span class="xref">SpiceSharp.Circuits.Entity.CopyFrom(SpiceSharp.Circuits.Entity)</span>
+      <span class="xref">SpiceSharp.ParameterSets.ParameterSetCollection.CreateParameterSetter&lt;P&gt;(System.String)</span>
     </div>
     <div>
-      <span class="xref">SpiceSharp.Circuits.Entity.SpiceSharp.ICloneable.CopyFrom(SpiceSharp.ICloneable)</span>
+      <span class="xref">SpiceSharp.ParameterSets.ParameterSetCollection.CreatePropertyGetter&lt;P&gt;(System.String)</span>
     </div>
     <div>
-      <span class="xref">SpiceSharp.Circuits.Entity.ParameterSets</span>
-    </div>
-    <div>
-      <span class="xref">SpiceSharp.Circuits.Entity.Name</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
+      <span class="xref">SpiceSharp.ParameterSets.ParameterSetCollection.ParameterSets</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.GetHashCode()</span>
@@ -155,21 +151,24 @@
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.html">SpiceSharpParser.ModelReaders.Netlist.Spice.Custom</a></h6>
   <h6><strong>Assembly</strong>: SpiceSharpParser.dll</h6>
   <h5 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Custom_VSwitchModel_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class VSwitchModel : Model, ICloneable, ICloneable&lt;Entity&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public class VSwitchModel : Entity&lt;VSwitchModelParameters&gt;, IEntity, IParameterSetCollection, IParameterSet, ICloneable&lt;IEntity&gt;, IParameterized&lt;VSwitchModelParameters&gt;</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Custom_VSwitchModel__ctor_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.VSwitchModel.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Custom_VSwitchModel__ctor_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.VSwitchModel.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Custom/VSwitchModel.cs/#L7">View Source</a>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Custom/VSwitchModel.cs/#L8">View Source</a>
   </span>
   <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Custom_VSwitchModel__ctor_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.VSwitchModel.#ctor*"></a>
   <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Custom_VSwitchModel__ctor_System_String_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.VSwitchModel.#ctor(System.String)">VSwitchModel(String)</h4>
@@ -196,12 +195,57 @@
       </tr>
     </tbody>
   </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Custom_VSwitchModel_CreateBehaviors_SpiceSharp_Simulations_ISimulation_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.VSwitchModel.CreateBehaviors(SpiceSharp.Simulations.ISimulation)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Custom/VSwitchModel.cs/#L13">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Custom_VSwitchModel_CreateBehaviors_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.VSwitchModel.CreateBehaviors*"></a>
+  <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Custom_VSwitchModel_CreateBehaviors_SpiceSharp_Simulations_ISimulation_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.VSwitchModel.CreateBehaviors(SpiceSharp.Simulations.ISimulation)">CreateBehaviors(ISimulation)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void CreateBehaviors(ISimulation simulation)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">SpiceSharp.Simulations.ISimulation</span></td>
+        <td><span class="parametername">simulation</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">SpiceSharp.Entities.Entity.CreateBehaviors(SpiceSharp.Simulations.ISimulation)</span></div>
   <h3 id="implements">Implements</h3>
   <div>
-      <span class="xref">SpiceSharp.ICloneable</span>
+      <span class="xref">SpiceSharp.Entities.IEntity</span>
+  </div>
+  <div>
+      <span class="xref">SpiceSharp.ParameterSets.IParameterSetCollection</span>
+  </div>
+  <div>
+      <span class="xref">SpiceSharp.ParameterSets.IParameterSet</span>
   </div>
   <div>
       <span class="xref">SpiceSharp.ICloneable&lt;T&gt;</span>
+  </div>
+  <div>
+      <span class="xref">SpiceSharp.ParameterSets.IParameterized&lt;P&gt;</span>
   </div>
 </article>
           </div>
@@ -211,15 +255,16 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Custom_VSwitchModel.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.VSwitchModel%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Custom_VSwitchModel.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.VSwitchModel%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Custom/VSwitchModel.cs/#L5" class="contribution-link">View Source</a>
+                    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Custom/VSwitchModel.cs/#L6" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

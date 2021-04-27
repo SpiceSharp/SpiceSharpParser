@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class LexerDynamicRule
    ">
-    <meta name="generator" content="docfx 2.40.10.0">
+    <meta name="generator" content="docfx 2.57.2.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -83,16 +83,10 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-    <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.GetHashCode()</span>
@@ -102,6 +96,12 @@
     </div>
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="SpiceSharpParser.Lexers.html">SpiceSharpParser.Lexers</a></h6>
@@ -114,19 +114,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerDynamicRule__ctor_System_Int32_System_String_System_String_System_Func_System_String_System_Tuple_System_String_System_Int32___.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerDynamicRule.%23ctor(System.Int32%2CSystem.String%2CSystem.String%2CSystem.Func%7BSystem.String%2CSystem.Tuple%7BSystem.String%2CSystem.Int32%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerDynamicRule__ctor_System_Int32_System_String_System_String_System_Func_System_String_SpiceSharpParser_Lexers_LexerState_System_Tuple_System_String_System_Int32___System_Int32___.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerDynamicRule.%23ctor(System.Int32%2CSystem.String%2CSystem.String%2CSystem.Func%7BSystem.String%2CSpiceSharpParser.Lexers.LexerState%2CSystem.Tuple%7BSystem.String%2CSystem.Int32%7D%7D%2CSystem.Int32%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/LexerDynamicRule.cs/#L10">View Source</a>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/LexerDynamicRule.cs/#L13">View Source</a>
   </span>
   <a id="SpiceSharpParser_Lexers_LexerDynamicRule__ctor_" data-uid="SpiceSharpParser.Lexers.LexerDynamicRule.#ctor*"></a>
-  <h4 id="SpiceSharpParser_Lexers_LexerDynamicRule__ctor_System_Int32_System_String_System_String_System_Func_System_String_System_Tuple_System_String_System_Int32___" data-uid="SpiceSharpParser.Lexers.LexerDynamicRule.#ctor(System.Int32,System.String,System.String,System.Func{System.String,System.Tuple{System.String,System.Int32}})">LexerDynamicRule(Int32, String, String, Func&lt;String, Tuple&lt;String, Int32&gt;&gt;)</h4>
+  <h4 id="SpiceSharpParser_Lexers_LexerDynamicRule__ctor_System_Int32_System_String_System_String_System_Func_System_String_SpiceSharpParser_Lexers_LexerState_System_Tuple_System_String_System_Int32___System_Int32___" data-uid="SpiceSharpParser.Lexers.LexerDynamicRule.#ctor(System.Int32,System.String,System.String,System.Func{System.String,SpiceSharpParser.Lexers.LexerState,System.Tuple{System.String,System.Int32}},System.Int32[])">LexerDynamicRule(Int32, String, String, Func&lt;String, LexerState, Tuple&lt;String, Int32&gt;&gt;, Int32[])</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="SpiceSharpParser.Lexers.LexerDynamicRule.html">LexerDynamicRule</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public LexerDynamicRule(int tokenType, string ruleName, string prefix, Func&lt;string, Tuple&lt;string, int&gt;&gt; action)</code></pre>
+    <pre><code class="lang-csharp hljs">public LexerDynamicRule(int tokenType, string ruleName, string prefix, Func&lt;string, LexerState, Tuple&lt;string, int&gt;&gt; action, int[] previousReturnedTokenTypes = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -154,8 +154,13 @@
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Func</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Tuple</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Int32</span>&gt;&gt;</td>
+        <td><span class="xref">System.Func</span>&lt;<span class="xref">System.String</span>, <a class="xref" href="SpiceSharpParser.Lexers.LexerState.html">LexerState</a>, <span class="xref">System.Tuple</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Int32</span>&gt;&gt;</td>
         <td><span class="parametername">action</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span>[]</td>
+        <td><span class="parametername">previousReturnedTokenTypes</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -164,10 +169,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerDynamicRule_Action.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerDynamicRule.Action%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerDynamicRule_Action.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerDynamicRule.Action%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/LexerDynamicRule.cs/#L24">View Source</a>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/LexerDynamicRule.cs/#L46">View Source</a>
   </span>
   <a id="SpiceSharpParser_Lexers_LexerDynamicRule_Action_" data-uid="SpiceSharpParser.Lexers.LexerDynamicRule.Action*"></a>
   <h4 id="SpiceSharpParser_Lexers_LexerDynamicRule_Action" data-uid="SpiceSharpParser.Lexers.LexerDynamicRule.Action">Action</h4>
@@ -175,7 +180,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Func&lt;string, Tuple&lt;string, int&gt;&gt; Action { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Func&lt;string, LexerState, Tuple&lt;string, int&gt;&gt; Action { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -187,17 +192,17 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Func</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Tuple</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Int32</span>&gt;&gt;</td>
+        <td><span class="xref">System.Func</span>&lt;<span class="xref">System.String</span>, <a class="xref" href="SpiceSharpParser.Lexers.LexerState.html">LexerState</a>, <span class="xref">System.Tuple</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Int32</span>&gt;&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerDynamicRule_Prefix.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerDynamicRule.Prefix%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerDynamicRule_Prefix.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerDynamicRule.Prefix%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/LexerDynamicRule.cs/#L22">View Source</a>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/LexerDynamicRule.cs/#L26">View Source</a>
   </span>
   <a id="SpiceSharpParser_Lexers_LexerDynamicRule_Prefix_" data-uid="SpiceSharpParser.Lexers.LexerDynamicRule.Prefix*"></a>
   <h4 id="SpiceSharpParser_Lexers_LexerDynamicRule_Prefix" data-uid="SpiceSharpParser.Lexers.LexerDynamicRule.Prefix">Prefix</h4>
@@ -224,10 +229,71 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerDynamicRule_RuleName.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerDynamicRule.RuleName%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerDynamicRule_PrefixExpression.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerDynamicRule.PrefixExpression%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/LexerDynamicRule.cs/#L20">View Source</a>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/LexerDynamicRule.cs/#L31">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_Lexers_LexerDynamicRule_PrefixExpression_" data-uid="SpiceSharpParser.Lexers.LexerDynamicRule.PrefixExpression*"></a>
+  <h4 id="SpiceSharpParser_Lexers_LexerDynamicRule_PrefixExpression" data-uid="SpiceSharpParser.Lexers.LexerDynamicRule.PrefixExpression">PrefixExpression</h4>
+  <div class="markdown level1 summary"><p>Gets a regular expression of lexer rule.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Regex PrefixExpression { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Text.RegularExpressions.Regex</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerDynamicRule_PreviousReturnedTokenTypes.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerDynamicRule.PreviousReturnedTokenTypes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/LexerDynamicRule.cs/#L48">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_Lexers_LexerDynamicRule_PreviousReturnedTokenTypes_" data-uid="SpiceSharpParser.Lexers.LexerDynamicRule.PreviousReturnedTokenTypes*"></a>
+  <h4 id="SpiceSharpParser_Lexers_LexerDynamicRule_PreviousReturnedTokenTypes" data-uid="SpiceSharpParser.Lexers.LexerDynamicRule.PreviousReturnedTokenTypes">PreviousReturnedTokenTypes</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int[] PreviousReturnedTokenTypes { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerDynamicRule_RuleName.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerDynamicRule.RuleName%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/LexerDynamicRule.cs/#L24">View Source</a>
   </span>
   <a id="SpiceSharpParser_Lexers_LexerDynamicRule_RuleName_" data-uid="SpiceSharpParser.Lexers.LexerDynamicRule.RuleName*"></a>
   <h4 id="SpiceSharpParser_Lexers_LexerDynamicRule_RuleName" data-uid="SpiceSharpParser.Lexers.LexerDynamicRule.RuleName">RuleName</h4>
@@ -254,10 +320,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerDynamicRule_TokenType.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerDynamicRule.TokenType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerDynamicRule_TokenType.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerDynamicRule.TokenType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/LexerDynamicRule.cs/#L18">View Source</a>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/LexerDynamicRule.cs/#L22">View Source</a>
   </span>
   <a id="SpiceSharpParser_Lexers_LexerDynamicRule_TokenType_" data-uid="SpiceSharpParser.Lexers.LexerDynamicRule.TokenType*"></a>
   <h4 id="SpiceSharpParser_Lexers_LexerDynamicRule_TokenType" data-uid="SpiceSharpParser.Lexers.LexerDynamicRule.TokenType">TokenType</h4>
@@ -290,15 +356,16 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerDynamicRule.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerDynamicRule%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Lexers_LexerDynamicRule.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Lexers.LexerDynamicRule%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/LexerDynamicRule.cs/#L5" class="contribution-link">View Source</a>
+                    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Lexers/LexerDynamicRule.cs/#L6" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

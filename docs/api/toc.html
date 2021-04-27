@@ -4,6 +4,7 @@
     <div class="sidefilter">
       <form class="toc-filter">
         <span class="glyphicon glyphicon-filter filter-icon"></span>
+        <span class="glyphicon glyphicon-remove clear-icon" id="toc_filter_clear"></span>
         <input type="text" id="toc_filter_input" placeholder="Enter here to filter..." onkeypress="if(event.keyCode==13) {return false;}">
       </form>
     </div>
@@ -25,6 +26,9 @@
                           <li>
                               <a href="SpiceSharpParser.SpiceParserSettings.html" name="" title="SpiceParserSettings">SpiceParserSettings</a>
                           </li>
+                          <li>
+                              <a href="SpiceSharpParser.SpiceParserValidationResult.html" name="" title="SpiceParserValidationResult">SpiceParserValidationResult</a>
+                          </li>
                     </ul>
                 </li>
                 <li>
@@ -33,13 +37,16 @@
                     
                     <ul class="nav level2">
                           <li>
+                              <a href="SpiceSharpParser.Common.ILocationProvider.html" name="" title="ILocationProvider">ILocationProvider</a>
+                          </li>
+                          <li>
                               <a href="SpiceSharpParser.Common.NumberSystem.html" name="" title="NumberSystem">NumberSystem</a>
                           </li>
                           <li>
-                              <a href="SpiceSharpParser.Common.StringComparerProvider.html" name="" title="StringComparerProvider">StringComparerProvider</a>
+                              <a href="SpiceSharpParser.Common.SpiceSharpParserException.html" name="" title="SpiceSharpParserException">SpiceSharpParserException</a>
                           </li>
                           <li>
-                              <a href="SpiceSharpParser.Common.StringExtensions.html" name="" title="StringExtensions">StringExtensions</a>
+                              <a href="SpiceSharpParser.Common.StringComparerProvider.html" name="" title="StringComparerProvider">StringComparerProvider</a>
                           </li>
                     </ul>
                 </li>
@@ -49,10 +56,10 @@
                     
                     <ul class="nav level2">
                           <li>
-                              <a href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html" name="" title="EvaluationContext">EvaluationContext</a>
+                              <a href="SpiceSharpParser.Common.Evaluation.CustomVariable-1.html" name="" title="CustomVariable&lt;T&gt;">CustomVariable&lt;T&gt;</a>
                           </li>
                           <li>
-                              <a href="SpiceSharpParser.Common.Evaluation.EvaluationParameter.html" name="" title="EvaluationParameter">EvaluationParameter</a>
+                              <a href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html" name="" title="EvaluationContext">EvaluationContext</a>
                           </li>
                           <li>
                               <a href="SpiceSharpParser.Common.Evaluation.Expression.html" name="" title="Expression">Expression</a>
@@ -67,9 +74,6 @@
                               <a href="SpiceSharpParser.Common.Evaluation.FunctionFactory.html" name="" title="FunctionFactory">FunctionFactory</a>
                           </li>
                           <li>
-                              <a href="SpiceSharpParser.Common.Evaluation.IDerivativeFunction-2.html" name="" title="IDerivativeFunction&lt;TInputArgumentType, TOutputType&gt;">IDerivativeFunction&lt;TInputArgumentType, TOutputType&gt;</a>
-                          </li>
-                          <li>
                               <a href="SpiceSharpParser.Common.Evaluation.IFunction.html" name="" title="IFunction">IFunction</a>
                           </li>
                           <li>
@@ -77,9 +81,6 @@
                           </li>
                           <li>
                               <a href="SpiceSharpParser.Common.Evaluation.IFunctionFactory.html" name="" title="IFunctionFactory">IFunctionFactory</a>
-                          </li>
-                          <li>
-                              <a href="SpiceSharpParser.Common.Evaluation.UnknownParameterException.html" name="" title="UnknownParameterException">UnknownParameterException</a>
                           </li>
                     </ul>
                 </li>
@@ -109,9 +110,6 @@
                     <ul class="nav level2">
                           <li>
                               <a href="SpiceSharpParser.Common.Evaluation.Functions.ExpressionFunction.html" name="" title="ExpressionFunction">ExpressionFunction</a>
-                          </li>
-                          <li>
-                              <a href="SpiceSharpParser.Common.Evaluation.Functions.MathFunctions.html" name="" title="MathFunctions">MathFunctions</a>
                           </li>
                     </ul>
                 </li>
@@ -252,6 +250,25 @@
                 </li>
                 <li>
                     <span class="expand-stub"></span>
+                    <a href="SpiceSharpParser.Common.Validation.html" name="" title="SpiceSharpParser.Common.Validation">SpiceSharpParser.Common.Validation</a>
+                    
+                    <ul class="nav level2">
+                          <li>
+                              <a href="SpiceSharpParser.Common.Validation.ValidationEntry.html" name="" title="ValidationEntry">ValidationEntry</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.Common.Validation.ValidationEntryCollection.html" name="" title="ValidationEntryCollection">ValidationEntryCollection</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.Common.Validation.ValidationEntryLevel.html" name="" title="ValidationEntryLevel">ValidationEntryLevel</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.Common.Validation.ValidationEntrySource.html" name="" title="ValidationEntrySource">ValidationEntrySource</a>
+                          </li>
+                    </ul>
+                </li>
+                <li>
+                    <span class="expand-stub"></span>
                     <a href="SpiceSharpParser.Lexers.html" name="" title="SpiceSharpParser.Lexers">SpiceSharpParser.Lexers</a>
                     
                     <ul class="nav level2">
@@ -283,6 +300,9 @@
                               <a href="SpiceSharpParser.Lexers.LexerRegexRule.html" name="" title="LexerRegexRule">LexerRegexRule</a>
                           </li>
                           <li>
+                              <a href="SpiceSharpParser.Lexers.LexerResult.html" name="" title="LexerResult">LexerResult</a>
+                          </li>
+                          <li>
                               <a href="SpiceSharpParser.Lexers.LexerRuleReturnDecision.html" name="" title="LexerRuleReturnDecision">LexerRuleReturnDecision</a>
                           </li>
                           <li>
@@ -295,10 +315,52 @@
                               <a href="SpiceSharpParser.Lexers.LexerTokenRule-1.html" name="" title="LexerTokenRule&lt;TLexerState&gt;">LexerTokenRule&lt;TLexerState&gt;</a>
                           </li>
                           <li>
+                              <a href="SpiceSharpParser.Lexers.LexerValidationResult.html" name="" title="LexerValidationResult">LexerValidationResult</a>
+                          </li>
+                          <li>
                               <a href="SpiceSharpParser.Lexers.StringExtensions.html" name="" title="StringExtensions">StringExtensions</a>
                           </li>
                           <li>
                               <a href="SpiceSharpParser.Lexers.Token.html" name="" title="Token">Token</a>
+                          </li>
+                    </ul>
+                </li>
+                <li>
+                    <span class="expand-stub"></span>
+                    <a href="SpiceSharpParser.Lexers.BusPrefix.html" name="" title="SpiceSharpParser.Lexers.BusPrefix">SpiceSharpParser.Lexers.BusPrefix</a>
+                    
+                    <ul class="nav level2">
+                          <li>
+                              <a href="SpiceSharpParser.Lexers.BusPrefix.Lexer.html" name="" title="Lexer">Lexer</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.Lexers.BusPrefix.TokenType.html" name="" title="TokenType">TokenType</a>
+                          </li>
+                    </ul>
+                </li>
+                <li>
+                    <span class="expand-stub"></span>
+                    <a href="SpiceSharpParser.Lexers.BusSuffix.html" name="" title="SpiceSharpParser.Lexers.BusSuffix">SpiceSharpParser.Lexers.BusSuffix</a>
+                    
+                    <ul class="nav level2">
+                          <li>
+                              <a href="SpiceSharpParser.Lexers.BusSuffix.Lexer.html" name="" title="Lexer">Lexer</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.Lexers.BusSuffix.TokenType.html" name="" title="TokenType">TokenType</a>
+                          </li>
+                    </ul>
+                </li>
+                <li>
+                    <span class="expand-stub"></span>
+                    <a href="SpiceSharpParser.Lexers.Expressions.html" name="" title="SpiceSharpParser.Lexers.Expressions">SpiceSharpParser.Lexers.Expressions</a>
+                    
+                    <ul class="nav level2">
+                          <li>
+                              <a href="SpiceSharpParser.Lexers.Expressions.Lexer.html" name="" title="Lexer">Lexer</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.Lexers.Expressions.TokenType.html" name="" title="TokenType">TokenType</a>
                           </li>
                     </ul>
                 </li>
@@ -345,6 +407,9 @@
                     
                     <ul class="nav level2">
                           <li>
+                              <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceModel-2.html" name="" title="ISpiceModel&lt;TCircuit, TSimulation&gt;">ISpiceModel&lt;TCircuit, TSimulation&gt;</a>
+                          </li>
+                          <li>
                               <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.html" name="" title="ISpiceNetlistCaseSensitivitySettings">ISpiceNetlistCaseSensitivitySettings</a>
                           </li>
                           <li>
@@ -357,16 +422,19 @@
                               <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceStatementsReader.html" name="" title="ISpiceStatementsReader">ISpiceStatementsReader</a>
                           </li>
                           <li>
+                              <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceModel-2.html" name="" title="SpiceModel&lt;TCircuit, TSimulation&gt;">SpiceModel&lt;TCircuit, TSimulation&gt;</a>
+                          </li>
+                          <li>
                               <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistCaseSensitivitySettings.html" name="" title="SpiceNetlistCaseSensitivitySettings">SpiceNetlistCaseSensitivitySettings</a>
                           </li>
                           <li>
                               <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReader.html" name="" title="SpiceNetlistReader">SpiceNetlistReader</a>
                           </li>
                           <li>
-                              <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderResult.html" name="" title="SpiceNetlistReaderResult">SpiceNetlistReaderResult</a>
+                              <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderSettings.html" name="" title="SpiceNetlistReaderSettings">SpiceNetlistReaderSettings</a>
                           </li>
                           <li>
-                              <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistReaderSettings.html" name="" title="SpiceNetlistReaderSettings">SpiceNetlistReaderSettings</a>
+                              <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceNetlistValidationResult.html" name="" title="SpiceNetlistValidationResult">SpiceNetlistValidationResult</a>
                           </li>
                           <li>
                               <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.SpiceObjectMappings.html" name="" title="SpiceObjectMappings">SpiceObjectMappings</a>
@@ -429,6 +497,9 @@
                           </li>
                           <li>
                               <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.IStochasticModelsRegistry.html" name="" title="IStochasticModelsRegistry">IStochasticModelsRegistry</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.Model.html" name="" title="Model">Model</a>
                           </li>
                           <li>
                               <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.ParameterRandomness.html" name="" title="ParameterRandomness">ParameterRandomness</a>
@@ -519,13 +590,13 @@
                               <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.ISwitchModel.html" name="" title="ISwitchModel">ISwitchModel</a>
                           </li>
                           <li>
-                              <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.ISwitchModelBaseParameters.html" name="" title="ISwitchModelBaseParameters">ISwitchModelBaseParameters</a>
+                              <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.ISwitchModelParameters.html" name="" title="ISwitchModelParameters">ISwitchModelParameters</a>
                           </li>
                           <li>
                               <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.VSwitchModel.html" name="" title="VSwitchModel">VSwitchModel</a>
                           </li>
                           <li>
-                              <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.VSwitchModelBaseParameters.html" name="" title="VSwitchModelBaseParameters">VSwitchModelBaseParameters</a>
+                              <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Custom.VSwitchModelParameters.html" name="" title="VSwitchModelParameters">VSwitchModelParameters</a>
                           </li>
                     </ul>
                 </li>
@@ -634,15 +705,6 @@
                               <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.SgnFunction.html" name="" title="SgnFunction">SgnFunction</a>
                           </li>
                           <li>
-                              <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.html" name="" title="TableFunction">TableFunction</a>
-                          </li>
-                          <li>
-                              <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.LineDefinition.html" name="" title="TableFunction.LineDefinition">TableFunction.LineDefinition</a>
-                          </li>
-                          <li>
-                              <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.TableFunction.Point.html" name="" title="TableFunction.Point">TableFunction.Point</a>
-                          </li>
-                          <li>
                               <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math.UFunction.html" name="" title="UFunction">UFunction</a>
                           </li>
                           <li>
@@ -681,31 +743,6 @@
                           </li>
                           <li>
                               <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random.UnifFunction.html" name="" title="UnifFunction">UnifFunction</a>
-                          </li>
-                    </ul>
-                </li>
-                <li>
-                    <span class="expand-stub"></span>
-                    <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.html" name="" title="SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions">SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions</a>
-                    
-                    <ul class="nav level2">
-                          <li>
-                              <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.GeneralReaderException.html" name="" title="GeneralReaderException">GeneralReaderException</a>
-                          </li>
-                          <li>
-                              <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.ModelNotFoundException.html" name="" title="ModelNotFoundException">ModelNotFoundException</a>
-                          </li>
-                          <li>
-                              <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.UnknownComponentException.html" name="" title="UnknownComponentException">UnknownComponentException</a>
-                          </li>
-                          <li>
-                              <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.WrongParameterException.html" name="" title="WrongParameterException">WrongParameterException</a>
-                          </li>
-                          <li>
-                              <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.WrongParametersCountException.html" name="" title="WrongParametersCountException">WrongParametersCountException</a>
-                          </li>
-                          <li>
-                              <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Exceptions.WrongParameterTypeException.html" name="" title="WrongParameterTypeException">WrongParameterTypeException</a>
                           </li>
                     </ul>
                 </li>
@@ -759,6 +796,9 @@
                           </li>
                           <li>
                               <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.LibPreprocessor.html" name="" title="LibPreprocessor">LibPreprocessor</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.MacroPreprocessor.html" name="" title="MacroPreprocessor">MacroPreprocessor</a>
                           </li>
                           <li>
                               <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Processors.SweepsPreprocessor.html" name="" title="SweepsPreprocessor">SweepsPreprocessor</a>
@@ -1067,6 +1107,9 @@
                           <li>
                               <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations.SimulationConfiguration.html" name="" title="SimulationConfiguration">SimulationConfiguration</a>
                           </li>
+                          <li>
+                              <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations.TransientConfiguration.html" name="" title="TransientConfiguration">TransientConfiguration</a>
+                          </li>
                     </ul>
                 </li>
                 <li>
@@ -1142,9 +1185,6 @@
                           </li>
                           <li>
                               <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator.html" name="" title="SubCircuitGenerator">SubCircuitGenerator</a>
-                          </li>
-                          <li>
-                              <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SubCircuitGenerator.CustomComponentInstanceData.html" name="" title="SubCircuitGenerator.CustomComponentInstanceData">SubCircuitGenerator.CustomComponentInstanceData</a>
                           </li>
                           <li>
                               <a href="SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.SwitchGenerator.html" name="" title="SwitchGenerator">SwitchGenerator</a>
@@ -1261,6 +1301,9 @@
                     
                     <ul class="nav level2">
                           <li>
+                              <a href="SpiceSharpParser.Models.Netlist.Spice.SpiceLineInfo.html" name="" title="SpiceLineInfo">SpiceLineInfo</a>
+                          </li>
+                          <li>
                               <a href="SpiceSharpParser.Models.Netlist.Spice.SpiceNetlist.html" name="" title="SpiceNetlist">SpiceNetlist</a>
                           </li>
                           <li>
@@ -1335,6 +1378,9 @@
                               <a href="SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.PointValues.html" name="" title="PointValues">PointValues</a>
                           </li>
                           <li>
+                              <a href="SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.PrefixParameter.html" name="" title="PrefixParameter">PrefixParameter</a>
+                          </li>
+                          <li>
                               <a href="SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.ReferenceParameter.html" name="" title="ReferenceParameter">ReferenceParameter</a>
                           </li>
                           <li>
@@ -1342,6 +1388,9 @@
                           </li>
                           <li>
                               <a href="SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.StringParameter.html" name="" title="StringParameter">StringParameter</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.SuffixParameter.html" name="" title="SuffixParameter">SuffixParameter</a>
                           </li>
                           <li>
                               <a href="SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.ValueParameter.html" name="" title="ValueParameter">ValueParameter</a>
@@ -1356,17 +1405,133 @@
                 </li>
                 <li>
                     <span class="expand-stub"></span>
+                    <a href="SpiceSharpParser.Parsers.html" name="" title="SpiceSharpParser.Parsers">SpiceSharpParser.Parsers</a>
+                    
+                    <ul class="nav level2">
+                          <li>
+                              <a href="SpiceSharpParser.Parsers.ParsingValidationResult.html" name="" title="ParsingValidationResult">ParsingValidationResult</a>
+                          </li>
+                    </ul>
+                </li>
+                <li>
+                    <span class="expand-stub"></span>
+                    <a href="SpiceSharpParser.Parsers.BusPrefix.html" name="" title="SpiceSharpParser.Parsers.BusPrefix">SpiceSharpParser.Parsers.BusPrefix</a>
+                    
+                    <ul class="nav level2">
+                          <li>
+                              <a href="SpiceSharpParser.Parsers.BusPrefix.Node.html" name="" title="Node">Node</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.Parsers.BusPrefix.Parser.html" name="" title="Parser">Parser</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.Parsers.BusPrefix.Prefix.html" name="" title="Prefix">Prefix</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.Parsers.BusPrefix.PrefixNodeName.html" name="" title="PrefixNodeName">PrefixNodeName</a>
+                          </li>
+                    </ul>
+                </li>
+                <li>
+                    <span class="expand-stub"></span>
+                    <a href="SpiceSharpParser.Parsers.BusSuffix.html" name="" title="SpiceSharpParser.Parsers.BusSuffix">SpiceSharpParser.Parsers.BusSuffix</a>
+                    
+                    <ul class="nav level2">
+                          <li>
+                              <a href="SpiceSharpParser.Parsers.BusSuffix.Node.html" name="" title="Node">Node</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.Parsers.BusSuffix.NumberNode.html" name="" title="NumberNode">NumberNode</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.Parsers.BusSuffix.Parser.html" name="" title="Parser">Parser</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.Parsers.BusSuffix.RangeNode.html" name="" title="RangeNode">RangeNode</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.Parsers.BusSuffix.Suffix.html" name="" title="Suffix">Suffix</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.Parsers.BusSuffix.SuffixDimension.html" name="" title="SuffixDimension">SuffixDimension</a>
+                          </li>
+                    </ul>
+                </li>
+                <li>
+                    <span class="expand-stub"></span>
                     <a href="SpiceSharpParser.Parsers.Expression.html" name="" title="SpiceSharpParser.Parsers.Expression">SpiceSharpParser.Parsers.Expression</a>
                     
                     <ul class="nav level2">
                           <li>
+                              <a href="SpiceSharpParser.Parsers.Expression.ExpressionFeaturesReader.html" name="" title="ExpressionFeaturesReader">ExpressionFeaturesReader</a>
+                          </li>
+                          <li>
                               <a href="SpiceSharpParser.Parsers.Expression.ExpressionParser.html" name="" title="ExpressionParser">ExpressionParser</a>
                           </li>
                           <li>
-                              <a href="SpiceSharpParser.Parsers.Expression.IExpressionParser.html" name="" title="IExpressionParser">IExpressionParser</a>
+                              <a href="SpiceSharpParser.Parsers.Expression.ExpressionParserFactory.html" name="" title="ExpressionParserFactory">ExpressionParserFactory</a>
                           </li>
                           <li>
-                              <a href="SpiceSharpParser.Parsers.Expression.SimpleDerivativeParserExtended.html" name="" title="SimpleDerivativeParserExtended">SimpleDerivativeParserExtended</a>
+                              <a href="SpiceSharpParser.Parsers.Expression.ExpressionValueProvider.html" name="" title="ExpressionValueProvider">ExpressionValueProvider</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.Parsers.Expression.IExpressionFeaturesReader.html" name="" title="IExpressionFeaturesReader">IExpressionFeaturesReader</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.Parsers.Expression.IExpressionParserFactory.html" name="" title="IExpressionParserFactory">IExpressionParserFactory</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.Parsers.Expression.IExpressionValueProvider.html" name="" title="IExpressionValueProvider">IExpressionValueProvider</a>
+                          </li>
+                    </ul>
+                </li>
+                <li>
+                    <span class="expand-stub"></span>
+                    <a href="SpiceSharpParser.Parsers.Expression.Implementation.html" name="" title="SpiceSharpParser.Parsers.Expression.Implementation">SpiceSharpParser.Parsers.Expression.Implementation</a>
+                    
+                    <ul class="nav level2">
+                          <li>
+                              <a href="SpiceSharpParser.Parsers.Expression.Implementation.CustomRealBuilder.html" name="" title="CustomRealBuilder">CustomRealBuilder</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.Parsers.Expression.Implementation.DynamicResolverFunction.html" name="" title="DynamicResolverFunction">DynamicResolverFunction</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.Parsers.Expression.Implementation.Parser.html" name="" title="Parser">Parser</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.Parsers.Expression.Implementation.Resolver.html" name="" title="Resolver">Resolver</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.Parsers.Expression.Implementation.Resolver.VariableFoundEventArgs-1.html" name="" title="Resolver.VariableFoundEventArgs&lt;T&gt;">Resolver.VariableFoundEventArgs&lt;T&gt;</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.Parsers.Expression.Implementation.ResolverFunction.html" name="" title="ResolverFunction">ResolverFunction</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.Parsers.Expression.Implementation.StaticResolverFunction.html" name="" title="StaticResolverFunction">StaticResolverFunction</a>
+                          </li>
+                    </ul>
+                </li>
+                <li>
+                    <span class="expand-stub"></span>
+                    <a href="SpiceSharpParser.Parsers.Expression.Implementation.ResolverFunctions.html" name="" title="SpiceSharpParser.Parsers.Expression.Implementation.ResolverFunctions">SpiceSharpParser.Parsers.Expression.Implementation.ResolverFunctions</a>
+                    
+                    <ul class="nav level2">
+                          <li>
+                              <a href="SpiceSharpParser.Parsers.Expression.Implementation.ResolverFunctions.GaussResolverFunction.html" name="" title="GaussResolverFunction">GaussResolverFunction</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.Parsers.Expression.Implementation.ResolverFunctions.IfResolverFunction.html" name="" title="IfResolverFunction">IfResolverFunction</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.Parsers.Expression.Implementation.ResolverFunctions.MaxResolverFunction.html" name="" title="MaxResolverFunction">MaxResolverFunction</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.Parsers.Expression.Implementation.ResolverFunctions.PolyResolverFunction.html" name="" title="PolyResolverFunction">PolyResolverFunction</a>
+                          </li>
+                          <li>
+                              <a href="SpiceSharpParser.Parsers.Expression.Implementation.ResolverFunctions.RandomResolverFunction.html" name="" title="RandomResolverFunction">RandomResolverFunction</a>
                           </li>
                     </ul>
                 </li>

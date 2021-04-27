@@ -1,0 +1,411 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class CustomRealBuilder
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class CustomRealBuilder
+   ">
+    <meta name="generator" content="docfx 2.57.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="SpiceSharpParser.Parsers.Expression.Implementation.CustomRealBuilder">
+  
+  
+  <h1 id="SpiceSharpParser_Parsers_Expression_Implementation_CustomRealBuilder" data-uid="SpiceSharpParser.Parsers.Expression.Implementation.CustomRealBuilder" class="text-break">Class CustomRealBuilder
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">SpiceSharpBehavioral.Builders.Direct.RealBuilder</span></div>
+    <div class="level2"><span class="xref">CustomRealBuilder</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">SpiceSharpBehavioral.Builders.Direct.IDirectBuilder</span>&lt;<span class="xref">System.Double</span>&gt;</div>
+    <div><span class="xref">SpiceSharpBehavioral.Builders.IBuilder</span>&lt;<span class="xref">System.Double</span>&gt;</div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">SpiceSharpBehavioral.Builders.Direct.RealBuilder.Build(SpiceSharpBehavioral.Parsers.Nodes.Node)</span>
+    </div>
+    <div>
+      <span class="xref">SpiceSharpBehavioral.Builders.Direct.RealBuilder.OnFunctionFound(SpiceSharpBehavioral.Builders.Direct.FunctionFoundEventArgs&lt;System.Double&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">SpiceSharpBehavioral.Builders.Direct.RealBuilder.OnVariableFound(SpiceSharpBehavioral.Builders.Direct.VariableFoundEventArgs&lt;System.Double&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">SpiceSharpBehavioral.Builders.Direct.RealBuilder.RelativeTolerance</span>
+    </div>
+    <div>
+      <span class="xref">SpiceSharpBehavioral.Builders.Direct.RealBuilder.AbsoluteTolerance</span>
+    </div>
+    <div>
+      <span class="xref">SpiceSharpBehavioral.Builders.Direct.RealBuilder.FunctionFound</span>
+    </div>
+    <div>
+      <span class="xref">SpiceSharpBehavioral.Builders.Direct.RealBuilder.VariableFound</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="SpiceSharpParser.Parsers.Expression.Implementation.html">SpiceSharpParser.Parsers.Expression.Implementation</a></h6>
+  <h6><strong>Assembly</strong>: SpiceSharpParser.dll</h6>
+  <h5 id="SpiceSharpParser_Parsers_Expression_Implementation_CustomRealBuilder_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class CustomRealBuilder : RealBuilder, IDirectBuilder&lt;double&gt;, IBuilder&lt;double&gt;</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Parsers_Expression_Implementation_CustomRealBuilder__ctor_SpiceSharpParser_Common_Evaluation_EvaluationContext_SpiceSharpParser_Parsers_Expression_Implementation_Parser_SpiceSharpParser_ModelReaders_Netlist_Spice_ISpiceNetlistCaseSensitivitySettings_System_Boolean_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Parsers.Expression.Implementation.CustomRealBuilder.%23ctor(SpiceSharpParser.Common.Evaluation.EvaluationContext%2CSpiceSharpParser.Parsers.Expression.Implementation.Parser%2CSpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Parsers/Expression/Implementation/CustomRealBuilder.cs/#L23">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_Parsers_Expression_Implementation_CustomRealBuilder__ctor_" data-uid="SpiceSharpParser.Parsers.Expression.Implementation.CustomRealBuilder.#ctor*"></a>
+  <h4 id="SpiceSharpParser_Parsers_Expression_Implementation_CustomRealBuilder__ctor_SpiceSharpParser_Common_Evaluation_EvaluationContext_SpiceSharpParser_Parsers_Expression_Implementation_Parser_SpiceSharpParser_ModelReaders_Netlist_Spice_ISpiceNetlistCaseSensitivitySettings_System_Boolean_" data-uid="SpiceSharpParser.Parsers.Expression.Implementation.CustomRealBuilder.#ctor(SpiceSharpParser.Common.Evaluation.EvaluationContext,SpiceSharpParser.Parsers.Expression.Implementation.Parser,SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings,System.Boolean)">CustomRealBuilder(EvaluationContext, Parser, ISpiceNetlistCaseSensitivitySettings, Boolean)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CustomRealBuilder(EvaluationContext context, Parser parser, ISpiceNetlistCaseSensitivitySettings caseSettings, bool throwOnErrors)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html">EvaluationContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.Parsers.Expression.Implementation.Parser.html">Parser</a></td>
+        <td><span class="parametername">parser</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings.html">ISpiceNetlistCaseSensitivitySettings</a></td>
+        <td><span class="parametername">caseSettings</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">throwOnErrors</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Parsers_Expression_Implementation_CustomRealBuilder_Context.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Parsers.Expression.Implementation.CustomRealBuilder.Context%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Parsers/Expression/Implementation/CustomRealBuilder.cs/#L58">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_Parsers_Expression_Implementation_CustomRealBuilder_Context_" data-uid="SpiceSharpParser.Parsers.Expression.Implementation.CustomRealBuilder.Context*"></a>
+  <h4 id="SpiceSharpParser_Parsers_Expression_Implementation_CustomRealBuilder_Context" data-uid="SpiceSharpParser.Parsers.Expression.Implementation.CustomRealBuilder.Context">Context</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EvaluationContext Context { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html">EvaluationContext</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Parsers_Expression_Implementation_CustomRealBuilder_Parser.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Parsers.Expression.Implementation.CustomRealBuilder.Parser%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Parsers/Expression/Implementation/CustomRealBuilder.cs/#L60">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_Parsers_Expression_Implementation_CustomRealBuilder_Parser_" data-uid="SpiceSharpParser.Parsers.Expression.Implementation.CustomRealBuilder.Parser*"></a>
+  <h4 id="SpiceSharpParser_Parsers_Expression_Implementation_CustomRealBuilder_Parser" data-uid="SpiceSharpParser.Parsers.Expression.Implementation.CustomRealBuilder.Parser">Parser</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Parser Parser { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.Parsers.Expression.Implementation.Parser.html">Parser</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Parsers_Expression_Implementation_CustomRealBuilder_ThrowOnErrors.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Parsers.Expression.Implementation.CustomRealBuilder.ThrowOnErrors%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Parsers/Expression/Implementation/CustomRealBuilder.cs/#L64">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_Parsers_Expression_Implementation_CustomRealBuilder_ThrowOnErrors_" data-uid="SpiceSharpParser.Parsers.Expression.Implementation.CustomRealBuilder.ThrowOnErrors*"></a>
+  <h4 id="SpiceSharpParser_Parsers_Expression_Implementation_CustomRealBuilder_ThrowOnErrors" data-uid="SpiceSharpParser.Parsers.Expression.Implementation.CustomRealBuilder.ThrowOnErrors">ThrowOnErrors</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ThrowOnErrors { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Parsers_Expression_Implementation_CustomRealBuilder_Variables.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Parsers.Expression.Implementation.CustomRealBuilder.Variables%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Parsers/Expression/Implementation/CustomRealBuilder.cs/#L62">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_Parsers_Expression_Implementation_CustomRealBuilder_Variables_" data-uid="SpiceSharpParser.Parsers.Expression.Implementation.CustomRealBuilder.Variables*"></a>
+  <h4 id="SpiceSharpParser_Parsers_Expression_Implementation_CustomRealBuilder_Variables" data-uid="SpiceSharpParser.Parsers.Expression.Implementation.CustomRealBuilder.Variables">Variables</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;CustomVariable&lt;Func&lt;double&gt;&gt;&gt; Variables { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="SpiceSharpParser.Common.Evaluation.CustomVariable-1.html">CustomVariable</a>&lt;<span class="xref">System.Func</span>&lt;<span class="xref">System.Double</span>&gt;&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Parsers_Expression_Implementation_CustomRealBuilder_BuildNode_SpiceSharpBehavioral_Parsers_Nodes_Node_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Parsers.Expression.Implementation.CustomRealBuilder.BuildNode(SpiceSharpBehavioral.Parsers.Nodes.Node)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Parsers/Expression/Implementation/CustomRealBuilder.cs/#L66">View Source</a>
+  </span>
+  <a id="SpiceSharpParser_Parsers_Expression_Implementation_CustomRealBuilder_BuildNode_" data-uid="SpiceSharpParser.Parsers.Expression.Implementation.CustomRealBuilder.BuildNode*"></a>
+  <h4 id="SpiceSharpParser_Parsers_Expression_Implementation_CustomRealBuilder_BuildNode_SpiceSharpBehavioral_Parsers_Nodes_Node_" data-uid="SpiceSharpParser.Parsers.Expression.Implementation.CustomRealBuilder.BuildNode(SpiceSharpBehavioral.Parsers.Nodes.Node)">BuildNode(Node)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override double BuildNode(Node node)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">SpiceSharpBehavioral.Parsers.Nodes.Node</span></td>
+        <td><span class="parametername">node</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Double</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">SpiceSharpBehavioral.Builders.Direct.RealBuilder.BuildNode(SpiceSharpBehavioral.Parsers.Nodes.Node)</span></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">SpiceSharpBehavioral.Builders.Direct.IDirectBuilder&lt;T&gt;</span>
+  </div>
+  <div>
+      <span class="xref">SpiceSharpBehavioral.Builders.IBuilder&lt;T&gt;</span>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Parsers_Expression_Implementation_CustomRealBuilder.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Parsers.Expression.Implementation.CustomRealBuilder%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Parsers/Expression/Implementation/CustomRealBuilder.cs/#L17" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

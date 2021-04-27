@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class ParseException
    ">
-    <meta name="generator" content="docfx 2.40.10.0">
+    <meta name="generator" content="docfx 2.57.2.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -80,15 +80,18 @@
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">System.Exception</span></div>
-    <div class="level2"><span class="xref">ParseException</span></div>
+    <div class="level2"><a class="xref" href="SpiceSharpParser.Common.SpiceSharpParserException.html">SpiceSharpParserException</a></div>
+    <div class="level3"><span class="xref">ParseException</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
     <div><span class="xref">System.Runtime.Serialization.ISerializable</span></div>
-    <div><span class="xref">System.Runtime.InteropServices._Exception</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.SpiceSharpParserException.html#SpiceSharpParser_Common_SpiceSharpParserException_LineInfo">SpiceSharpParserException.LineInfo</a>
+    </div>
     <div>
       <span class="xref">System.Exception.GetBaseException()</span>
     </div>
@@ -99,28 +102,31 @@
       <span class="xref">System.Exception.GetType()</span>
     </div>
     <div>
-      <span class="xref">System.Exception.Message</span>
+      <span class="xref">System.Exception.ToString()</span>
     </div>
     <div>
       <span class="xref">System.Exception.Data</span>
     </div>
     <div>
+      <span class="xref">System.Exception.HelpLink</span>
+    </div>
+    <div>
+      <span class="xref">System.Exception.HResult</span>
+    </div>
+    <div>
       <span class="xref">System.Exception.InnerException</span>
     </div>
     <div>
-      <span class="xref">System.Exception.TargetSite</span>
-    </div>
-    <div>
-      <span class="xref">System.Exception.StackTrace</span>
-    </div>
-    <div>
-      <span class="xref">System.Exception.HelpLink</span>
+      <span class="xref">System.Exception.Message</span>
     </div>
     <div>
       <span class="xref">System.Exception.Source</span>
     </div>
     <div>
-      <span class="xref">System.Exception.HResult</span>
+      <span class="xref">System.Exception.StackTrace</span>
+    </div>
+    <div>
+      <span class="xref">System.Exception.TargetSite</span>
     </div>
     <div>
       <span class="xref">System.Exception.SerializeObjectState</span>
@@ -132,29 +138,29 @@
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
       <span class="xref">System.Object.GetHashCode()</span>
     </div>
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="SpiceSharpParser.Parsers.Netlist.html">SpiceSharpParser.Parsers.Netlist</a></h6>
   <h6><strong>Assembly</strong>: SpiceSharpParser.dll</h6>
   <h5 id="SpiceSharpParser_Parsers_Netlist_ParseException_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ParseException : Exception, ISerializable, _Exception</code></pre>
+    <pre><code class="lang-csharp hljs">public class ParseException : SpiceSharpParserException, ISerializable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Parsers_Netlist_ParseException__ctor_System_String_System_Int32_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Parsers.Netlist.ParseException.%23ctor(System.String%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Parsers_Netlist_ParseException__ctor_System_String_System_Int32_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Parsers.Netlist.ParseException.%23ctor(System.String%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Parsers/Netlist/ParseException.cs/#L15">View Source</a>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Parsers/Netlist/ParseException.cs/#L15">View Source</a>
   </span>
   <a id="SpiceSharpParser_Parsers_Netlist_ParseException__ctor_" data-uid="SpiceSharpParser.Parsers.Netlist.ParseException.#ctor*"></a>
   <h4 id="SpiceSharpParser_Parsers_Netlist_ParseException__ctor_System_String_System_Int32_" data-uid="SpiceSharpParser.Parsers.Netlist.ParseException.#ctor(System.String,System.Int32)">ParseException(String, Int32)</h4>
@@ -189,81 +195,9 @@
       </tr>
     </tbody>
   </table>
-  <h3 id="properties">Properties
-  </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Parsers_Netlist_ParseException_LineNumber.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Parsers.Netlist.ParseException.LineNumber%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Parsers/Netlist/ParseException.cs/#L24">View Source</a>
-  </span>
-  <a id="SpiceSharpParser_Parsers_Netlist_ParseException_LineNumber_" data-uid="SpiceSharpParser.Parsers.Netlist.ParseException.LineNumber*"></a>
-  <h4 id="SpiceSharpParser_Parsers_Netlist_ParseException_LineNumber" data-uid="SpiceSharpParser.Parsers.Netlist.ParseException.LineNumber">LineNumber</h4>
-  <div class="markdown level1 summary"><p>Gets the line number of SPICE netlist where exception occurs.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int LineNumber { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="methods">Methods
-  </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Parsers_Netlist_ParseException_ToString.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Parsers.Netlist.ParseException.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Parsers/Netlist/ParseException.cs/#L32">View Source</a>
-  </span>
-  <a id="SpiceSharpParser_Parsers_Netlist_ParseException_ToString_" data-uid="SpiceSharpParser.Parsers.Netlist.ParseException.ToString*"></a>
-  <h4 id="SpiceSharpParser_Parsers_Netlist_ParseException_ToString" data-uid="SpiceSharpParser.Parsers.Netlist.ParseException.ToString">ToString()</h4>
-  <div class="markdown level1 summary"><p>Gets the string representation of the exception.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><p>A string representation of the object.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.Exception.ToString()</span></div>
   <h3 id="implements">Implements</h3>
   <div>
       <span class="xref">System.Runtime.Serialization.ISerializable</span>
-  </div>
-  <div>
-      <span class="xref">System.Runtime.InteropServices._Exception</span>
   </div>
 </article>
           </div>
@@ -273,15 +207,16 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Parsers_Netlist_ParseException.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Parsers.Netlist.ParseException%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Parsers_Netlist_ParseException.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Parsers.Netlist.ParseException%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Parsers/Netlist/ParseException.cs/#L8" class="contribution-link">View Source</a>
+                    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Parsers/Netlist/ParseException.cs/#L8" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

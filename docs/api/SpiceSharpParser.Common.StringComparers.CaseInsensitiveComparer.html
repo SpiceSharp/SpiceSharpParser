@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class CaseInsensitiveComparer
    ">
-    <meta name="generator" content="docfx 2.40.10.0">
+    <meta name="generator" content="docfx 2.57.2.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -83,31 +83,25 @@
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><span class="xref">System.Collections.IEqualityComparer</span></div>
     <div><span class="xref">System.Collections.Generic.IEqualityComparer</span>&lt;<span class="xref">System.String</span>&gt;</div>
+    <div><span class="xref">System.Collections.IEqualityComparer</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <span class="xref">System.Collections.Generic.EqualityComparer&lt;System.String&gt;.System.Collections.IEqualityComparer.GetHashCode(System.Object)</span>
-    </div>
-    <div>
       <span class="xref">System.Collections.Generic.EqualityComparer&lt;System.String&gt;.System.Collections.IEqualityComparer.Equals(System.Object, System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Collections.Generic.EqualityComparer&lt;System.String&gt;.Default</span>
+      <span class="xref">System.Collections.Generic.EqualityComparer&lt;System.String&gt;.System.Collections.IEqualityComparer.GetHashCode(System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Object.ToString()</span>
+      <span class="xref">System.Collections.Generic.EqualityComparer&lt;System.String&gt;.Default</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.GetHashCode()</span>
@@ -118,21 +112,27 @@
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="SpiceSharpParser.Common.StringComparers.html">SpiceSharpParser.Common.StringComparers</a></h6>
   <h6><strong>Assembly</strong>: SpiceSharpParser.dll</h6>
   <h5 id="SpiceSharpParser_Common_StringComparers_CaseInsensitiveComparer_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class CaseInsensitiveComparer : EqualityComparer&lt;string&gt;, IEqualityComparer, IEqualityComparer&lt;string&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public class CaseInsensitiveComparer : EqualityComparer&lt;string&gt;, IEqualityComparer&lt;string&gt;, IEqualityComparer</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_StringComparers_CaseInsensitiveComparer_Equals_System_String_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.StringComparers.CaseInsensitiveComparer.Equals(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_StringComparers_CaseInsensitiveComparer_Equals_System_String_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.StringComparers.CaseInsensitiveComparer.Equals(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Common/StringComparers/CaseInsensitiveComparer.cs/#L16">View Source</a>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Common/StringComparers/CaseInsensitiveComparer.cs/#L16">View Source</a>
   </span>
   <a id="SpiceSharpParser_Common_StringComparers_CaseInsensitiveComparer_Equals_" data-uid="SpiceSharpParser.Common.StringComparers.CaseInsensitiveComparer.Equals*"></a>
   <h4 id="SpiceSharpParser_Common_StringComparers_CaseInsensitiveComparer_Equals_System_String_System_String_" data-uid="SpiceSharpParser.Common.StringComparers.CaseInsensitiveComparer.Equals(System.String,System.String)">Equals(String, String)</h4>
@@ -187,10 +187,10 @@
   <div><span class="xref">System.Collections.Generic.EqualityComparer&lt;System.String&gt;.Equals(System.String, System.String)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_StringComparers_CaseInsensitiveComparer_GetHashCode_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.StringComparers.CaseInsensitiveComparer.GetHashCode(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_StringComparers_CaseInsensitiveComparer_GetHashCode_System_String_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.StringComparers.CaseInsensitiveComparer.GetHashCode(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Common/StringComparers/CaseInsensitiveComparer.cs/#L29">View Source</a>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Common/StringComparers/CaseInsensitiveComparer.cs/#L29">View Source</a>
   </span>
   <a id="SpiceSharpParser_Common_StringComparers_CaseInsensitiveComparer_GetHashCode_" data-uid="SpiceSharpParser.Common.StringComparers.CaseInsensitiveComparer.GetHashCode*"></a>
   <h4 id="SpiceSharpParser_Common_StringComparers_CaseInsensitiveComparer_GetHashCode_System_String_" data-uid="SpiceSharpParser.Common.StringComparers.CaseInsensitiveComparer.GetHashCode(System.String)">GetHashCode(String)</h4>
@@ -239,10 +239,10 @@
   <div><span class="xref">System.Collections.Generic.EqualityComparer&lt;System.String&gt;.GetHashCode(System.String)</span></div>
   <h3 id="implements">Implements</h3>
   <div>
-      <span class="xref">System.Collections.IEqualityComparer</span>
+      <span class="xref">System.Collections.Generic.IEqualityComparer&lt;T&gt;</span>
   </div>
   <div>
-      <span class="xref">System.Collections.Generic.IEqualityComparer&lt;T&gt;</span>
+      <span class="xref">System.Collections.IEqualityComparer</span>
   </div>
 </article>
           </div>
@@ -252,15 +252,16 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_StringComparers_CaseInsensitiveComparer.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.StringComparers.CaseInsensitiveComparer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_Common_StringComparers_CaseInsensitiveComparer.md&amp;value=---%0Auid%3A%20SpiceSharpParser.Common.StringComparers.CaseInsensitiveComparer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/Common/StringComparers/CaseInsensitiveComparer.cs/#L6" class="contribution-link">View Source</a>
+                    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/Common/StringComparers/CaseInsensitiveComparer.cs/#L6" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>

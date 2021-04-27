@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class SpiceEvaluationContext
    ">
-    <meta name="generator" content="docfx 2.40.10.0">
+    <meta name="generator" content="docfx 2.57.2.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -93,6 +93,9 @@
       <a class="xref" href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html#SpiceSharpParser_Common_Evaluation_EvaluationContext_Randomizer">EvaluationContext.Randomizer</a>
     </div>
     <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html#SpiceSharpParser_Common_Evaluation_EvaluationContext_CaseSettings">EvaluationContext.CaseSettings</a>
+    </div>
+    <div>
       <a class="xref" href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html#SpiceSharpParser_Common_Evaluation_EvaluationContext_Parameters">EvaluationContext.Parameters</a>
     </div>
     <div>
@@ -100,6 +103,12 @@
     </div>
     <div>
       <a class="xref" href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html#SpiceSharpParser_Common_Evaluation_EvaluationContext_Functions">EvaluationContext.Functions</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html#SpiceSharpParser_Common_Evaluation_EvaluationContext_FunctionsBody">EvaluationContext.FunctionsBody</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html#SpiceSharpParser_Common_Evaluation_EvaluationContext_FunctionArguments">EvaluationContext.FunctionArguments</a>
     </div>
     <div>
       <a class="xref" href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html#SpiceSharpParser_Common_Evaluation_EvaluationContext_ExpressionRegistry">EvaluationContext.ExpressionRegistry</a>
@@ -117,7 +126,13 @@
       <a class="xref" href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html#SpiceSharpParser_Common_Evaluation_EvaluationContext_ResultService">EvaluationContext.ResultService</a>
     </div>
     <div>
-      <a class="xref" href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html#SpiceSharpParser_Common_Evaluation_EvaluationContext_Parser">EvaluationContext.Parser</a>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html#SpiceSharpParser_Common_Evaluation_EvaluationContext_ExpressionFeaturesReader">EvaluationContext.ExpressionFeaturesReader</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html#SpiceSharpParser_Common_Evaluation_EvaluationContext_ExpressionValueProvider">EvaluationContext.ExpressionValueProvider</a>
+    </div>
+    <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html#SpiceSharpParser_Common_Evaluation_EvaluationContext_ExpressionParserFactory">EvaluationContext.ExpressionParserFactory</a>
     </div>
     <div>
       <a class="xref" href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html#SpiceSharpParser_Common_Evaluation_EvaluationContext_SetParameter_System_String_System_Double_">EvaluationContext.SetParameter(String, Double)</a>
@@ -150,13 +165,7 @@
       <a class="xref" href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html#SpiceSharpParser_Common_Evaluation_EvaluationContext_Find_System_String_">EvaluationContext.Find(String)</a>
     </div>
     <div>
-      <a class="xref" href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html#SpiceSharpParser_Common_Evaluation_EvaluationContext_AddFunction_System_String_SpiceSharpParser_Common_Evaluation_IFunction_">EvaluationContext.AddFunction(String, IFunction)</a>
-    </div>
-    <div>
-      <a class="xref" href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html#SpiceSharpParser_Common_Evaluation_EvaluationContext_CreateCommonFunctions">EvaluationContext.CreateCommonFunctions()</a>
-    </div>
-    <div>
-      <a class="xref" href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html#SpiceSharpParser_Common_Evaluation_EvaluationContext_SetParameter_System_String_System_String_SpiceSharpParser_Common_Evaluation_Expression_">EvaluationContext.SetParameter(String, String, Expression)</a>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html#SpiceSharpParser_Common_Evaluation_EvaluationContext_AddFunction_System_String_System_String_System_Collections_Generic_List_System_String__SpiceSharpParser_Common_Evaluation_IFunction_">EvaluationContext.AddFunction(String, String, List&lt;String&gt;, IFunction)</a>
     </div>
     <div>
       <a class="xref" href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html#SpiceSharpParser_Common_Evaluation_EvaluationContext_Evaluate_System_String_">EvaluationContext.Evaluate(String)</a>
@@ -171,22 +180,22 @@
       <a class="xref" href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html#SpiceSharpParser_Common_Evaluation_EvaluationContext_HaveFunctions_System_String_">EvaluationContext.HaveFunctions(String)</a>
     </div>
     <div>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html#SpiceSharpParser_Common_Evaluation_EvaluationContext_HaveFunction_System_String_System_String_">EvaluationContext.HaveFunction(String, String)</a>
+    </div>
+    <div>
       <a class="xref" href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html#SpiceSharpParser_Common_Evaluation_EvaluationContext_GetExpressionParameters_System_String_System_Boolean_">EvaluationContext.GetExpressionParameters(String, Boolean)</a>
     </div>
     <div>
       <a class="xref" href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html#SpiceSharpParser_Common_Evaluation_EvaluationContext_GetDeriveParser_SpiceSharpParser_Common_Evaluation_EvaluationContext_">EvaluationContext.GetDeriveParser(EvaluationContext)</a>
     </div>
     <div>
-      <span class="xref">System.Object.ToString()</span>
+      <a class="xref" href="SpiceSharpParser.Common.Evaluation.EvaluationContext.html#SpiceSharpParser_Common_Evaluation_EvaluationContext_SetParameter_System_String_System_String_SpiceSharpParser_Common_Evaluation_Expression_">EvaluationContext.SetParameter(String, String, Expression)</a>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.GetHashCode()</span>
@@ -196,6 +205,12 @@
     </div>
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.html">SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation</a></h6>
@@ -208,18 +223,18 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_SpiceEvaluationContext__ctor_System_String_SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_SpiceExpressionMode_SpiceSharpParser_ModelReaders_Netlist_Spice_ISpiceNetlistCaseSensitivitySettings_SpiceSharpParser_Common_Mathematics_Probability_IRandomizer_SpiceSharpParser_Parsers_Expression_IExpressionParser_SpiceSharpParser_ModelReaders_Netlist_Spice_Context_INameGenerator_SpiceSharpParser_ModelReaders_Netlist_Spice_Context_IResultService_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext.%23ctor(System.String%2CSpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode%2CSpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings%2CSpiceSharpParser.Common.Mathematics.Probability.IRandomizer%2CSpiceSharpParser.Parsers.Expression.IExpressionParser%2CSpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator%2CSpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_SpiceEvaluationContext__ctor_System_String_SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_SpiceExpressionMode_SpiceSharpParser_ModelReaders_Netlist_Spice_ISpiceNetlistCaseSensitivitySettings_SpiceSharpParser_Common_Mathematics_Probability_IRandomizer_SpiceSharpParser_Parsers_Expression_IExpressionParserFactory_SpiceSharpParser_Parsers_Expression_IExpressionFeaturesReader_SpiceSharpParser_Parsers_Expression_IExpressionValueProvider_SpiceSharpParser_ModelReaders_Netlist_Spice_Context_INameGenerator_SpiceSharpParser_ModelReaders_Netlist_Spice_Context_IResultService_.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext.%23ctor(System.String%2CSpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode%2CSpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings%2CSpiceSharpParser.Common.Mathematics.Probability.IRandomizer%2CSpiceSharpParser.Parsers.Expression.IExpressionParserFactory%2CSpiceSharpParser.Parsers.Expression.IExpressionFeaturesReader%2CSpiceSharpParser.Parsers.Expression.IExpressionValueProvider%2CSpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator%2CSpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceEvaluationContext.cs/#L15">View Source</a>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceEvaluationContext.cs/#L15">View Source</a>
   </span>
   <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_SpiceEvaluationContext__ctor_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext.#ctor*"></a>
-  <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_SpiceEvaluationContext__ctor_System_String_SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_SpiceExpressionMode_SpiceSharpParser_ModelReaders_Netlist_Spice_ISpiceNetlistCaseSensitivitySettings_SpiceSharpParser_Common_Mathematics_Probability_IRandomizer_SpiceSharpParser_Parsers_Expression_IExpressionParser_SpiceSharpParser_ModelReaders_Netlist_Spice_Context_INameGenerator_SpiceSharpParser_ModelReaders_Netlist_Spice_Context_IResultService_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext.#ctor(System.String,SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode,SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings,SpiceSharpParser.Common.Mathematics.Probability.IRandomizer,SpiceSharpParser.Parsers.Expression.IExpressionParser,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)">SpiceEvaluationContext(String, SpiceExpressionMode, ISpiceNetlistCaseSensitivitySettings, IRandomizer, IExpressionParser, INameGenerator, IResultService)</h4>
+  <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_SpiceEvaluationContext__ctor_System_String_SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_SpiceExpressionMode_SpiceSharpParser_ModelReaders_Netlist_Spice_ISpiceNetlistCaseSensitivitySettings_SpiceSharpParser_Common_Mathematics_Probability_IRandomizer_SpiceSharpParser_Parsers_Expression_IExpressionParserFactory_SpiceSharpParser_Parsers_Expression_IExpressionFeaturesReader_SpiceSharpParser_Parsers_Expression_IExpressionValueProvider_SpiceSharpParser_ModelReaders_Netlist_Spice_Context_INameGenerator_SpiceSharpParser_ModelReaders_Netlist_Spice_Context_IResultService_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext.#ctor(System.String,SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceExpressionMode,SpiceSharpParser.ModelReaders.Netlist.Spice.ISpiceNetlistCaseSensitivitySettings,SpiceSharpParser.Common.Mathematics.Probability.IRandomizer,SpiceSharpParser.Parsers.Expression.IExpressionParserFactory,SpiceSharpParser.Parsers.Expression.IExpressionFeaturesReader,SpiceSharpParser.Parsers.Expression.IExpressionValueProvider,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.INameGenerator,SpiceSharpParser.ModelReaders.Netlist.Spice.Context.IResultService)">SpiceEvaluationContext(String, SpiceExpressionMode, ISpiceNetlistCaseSensitivitySettings, IRandomizer, IExpressionParserFactory, IExpressionFeaturesReader, IExpressionValueProvider, INameGenerator, IResultService)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SpiceEvaluationContext(string name, SpiceExpressionMode mode, ISpiceNetlistCaseSensitivitySettings caseSetting, IRandomizer randomizer, IExpressionParser parser, INameGenerator nameGenerator, IResultService resultService)</code></pre>
+    <pre><code class="lang-csharp hljs">public SpiceEvaluationContext(string name, SpiceExpressionMode mode, ISpiceNetlistCaseSensitivitySettings caseSetting, IRandomizer randomizer, IExpressionParserFactory expressionParserFactory, IExpressionFeaturesReader expressionFeaturesReader, IExpressionValueProvider expressionValueProvider, INameGenerator nameGenerator, IResultService resultService)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -252,8 +267,18 @@
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="SpiceSharpParser.Parsers.Expression.IExpressionParser.html">IExpressionParser</a></td>
-        <td><span class="parametername">parser</span></td>
+        <td><a class="xref" href="SpiceSharpParser.Parsers.Expression.IExpressionParserFactory.html">IExpressionParserFactory</a></td>
+        <td><span class="parametername">expressionParserFactory</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.Parsers.Expression.IExpressionFeaturesReader.html">IExpressionFeaturesReader</a></td>
+        <td><span class="parametername">expressionFeaturesReader</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="SpiceSharpParser.Parsers.Expression.IExpressionValueProvider.html">IExpressionValueProvider</a></td>
+        <td><span class="parametername">expressionValueProvider</span></td>
         <td></td>
       </tr>
       <tr>
@@ -272,10 +297,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_SpiceEvaluationContext_Mode.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext.Mode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_SpiceEvaluationContext_Mode.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext.Mode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceEvaluationContext.cs/#L32">View Source</a>
+    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceEvaluationContext.cs/#L41">View Source</a>
   </span>
   <a id="SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_SpiceEvaluationContext_Mode_" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext.Mode*"></a>
   <h4 id="SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_SpiceEvaluationContext_Mode" data-uid="SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext.Mode">Mode</h4>
@@ -308,15 +333,16 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_SpiceEvaluationContext.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/SpiceSharp/SpiceSharpParser/new/master/apiSpec/new?filename=SpiceSharpParser_ModelReaders_Netlist_Spice_Evaluation_SpiceEvaluationContext.md&amp;value=---%0Auid%3A%20SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/marcin-golebiowski/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceEvaluationContext.cs/#L13" class="contribution-link">View Source</a>
+                    <a href="https://github.com/SpiceSharp/SpiceSharpParser/blob/master/src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/SpiceEvaluationContext.cs/#L13" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+                <h5>In This Article</h5>
+                <div></div>
               </nav>
             </div>
           </div>
