@@ -11,12 +11,20 @@
         }
 
         /// <summary>
+        /// Gets the string representation of the point.
+        /// </summary>
+        public override string ToString()
+        {
+            return @$"""{Value}""";
+        }
+
+        /// <summary>
         /// Clones the object.
         /// </summary>
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
-            return new StringParameter(Image, LineInfo);
+            return new StringParameter(Value, LineInfo);
         }
     }
 }

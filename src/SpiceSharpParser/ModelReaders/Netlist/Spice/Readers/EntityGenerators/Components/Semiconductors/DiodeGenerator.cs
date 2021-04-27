@@ -35,11 +35,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 if (parameters[i] is WordParameter w)
                 {
-                    if (w.Image.ToLower() == "on")
+                    if (w.Value.ToLower() == "on")
                     {
                         diode.SetParameter("off", false);
                     }
-                    else if (w.Image.ToLower() == "off")
+                    else if (w.Value.ToLower() == "off")
                     {
                         diode.SetParameter("off", true);
                     }

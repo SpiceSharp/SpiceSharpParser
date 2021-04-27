@@ -34,7 +34,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     && (param is Models.Netlist.Spice.Objects.Parameters.ValueParameter
                         || param is Models.Netlist.Spice.Objects.Parameters.ExpressionParameter))
                 {
-                    context.Result.SimulationConfiguration.TemperaturesInKelvins.Add(context.Evaluator.EvaluateDouble(param.Image) + Constants.CelsiusKelvin);
+                    context.Result.SimulationConfiguration.TemperaturesInKelvins.Add(context.Evaluator.EvaluateDouble(param.Value) + Constants.CelsiusKelvin);
                 }
                 else
                 {

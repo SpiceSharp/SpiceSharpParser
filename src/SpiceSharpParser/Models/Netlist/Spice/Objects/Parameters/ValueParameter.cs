@@ -21,7 +21,7 @@
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
-            return new ValueParameter(Image, LineInfo);
+            return new ValueParameter(Value, LineInfo);
         }
     }
 }

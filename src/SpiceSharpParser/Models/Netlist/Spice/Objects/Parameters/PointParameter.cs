@@ -18,15 +18,14 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
         /// </summary>
         public PointValues Values { get; }
 
+        public override string Value { get => ToString(); }
+
         /// <summary>
         /// Gets the string representation of the point.
         /// </summary>
-        public override string Image
+        public override string ToString()
         {
-            get
-            {
-                return $"({string.Join(",", Values.Items.Select(v => v.Image).ToArray())})";
-            }
+            return $"({string.Join(",", Values.Items.Select(v => v.ToString()).ToArray())})";
         }
 
         /// <summary>

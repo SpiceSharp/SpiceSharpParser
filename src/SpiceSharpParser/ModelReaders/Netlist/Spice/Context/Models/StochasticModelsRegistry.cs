@@ -234,7 +234,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 
         public void SetModel(Entity entity, Simulation simulation, Parameter modelNameParameter, string exceptionMessage, Action<Context.Models.Model> setModelAction, IResultService result)
         {
-            var model = FindModelEntity(modelNameParameter.Image);
+            var model = FindModelEntity(modelNameParameter.Value);
 
             if (model == null)
             {

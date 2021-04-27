@@ -115,7 +115,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         private void ReadSingleInclude(Statements statements, string currentDirectoryPath, Control include)
         {
             // get full path of .include
-            string includePath = include.Parameters.Get(0).Image;
+            string includePath = include.Parameters.Get(0).Value;
 
             includePath = PathConverter.Convert(includePath);
 

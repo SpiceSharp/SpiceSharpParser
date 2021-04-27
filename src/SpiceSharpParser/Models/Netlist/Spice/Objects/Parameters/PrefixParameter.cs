@@ -5,13 +5,13 @@
     /// </summary>
     public class PrefixParameter : SingleParameter
     {
-        public PrefixParameter(string word, SpiceLineInfo lineInfo)
-            : base(word, lineInfo)
+        public PrefixParameter(string prefix, SpiceLineInfo lineInfo)
+            : base(prefix, lineInfo)
         {
         }
 
-        public PrefixParameter(string word)
-            : base(word, null)
+        public PrefixParameter(string prefix)
+            : base(prefix, null)
         {
         }
 
@@ -21,7 +21,7 @@
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
-            return new PrefixParameter(Image, LineInfo);
+            return new PrefixParameter(Value, LineInfo);
         }
     }
 }

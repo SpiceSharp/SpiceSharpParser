@@ -86,7 +86,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
                 if (statement.Parameters[0] is SingleParameter parameter)
                 {
-                    var type = parameter.Image;
+                    var type = parameter.Value;
 
                     if (!Mapper.TryGetValue(type, context.CaseSensitivity.IsModelTypeCaseSensitive, out var generator))
                     {

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.Models.Netlist.Spice.Objects
@@ -26,6 +27,9 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// </summary>
         public int Count => _list.Count;
 
+        /// <summary>
+        /// Gets the line info.
+        /// </summary>
         public override SpiceLineInfo LineInfo => _list.FirstOrDefault()?.LineInfo;
 
         /// <summary>
@@ -184,6 +188,21 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
             }
 
             return clone;
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>A string that represents the current object.</returns>
+        public override string ToString()
+        {
+            var builder = new StringBuilder();
+            foreach (Statement statement in _list)
+            {
+                builder.AppendLine(statement.ToString());
+            }
+
+            return builder.ToString();
         }
     }
 }

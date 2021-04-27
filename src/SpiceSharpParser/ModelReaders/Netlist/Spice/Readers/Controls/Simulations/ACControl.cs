@@ -49,7 +49,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
             AC ac;
 
-            string type = statement.Parameters.Get(0).Image.ToLower();
+            string type = statement.Parameters.Get(0).Value.ToLower();
             var numberSteps = context.Evaluator.EvaluateDouble(statement.Parameters.Get(1));
             var start = context.Evaluator.EvaluateDouble(statement.Parameters.Get(2));
             var stop = context.Evaluator.EvaluateDouble(statement.Parameters.Get(3));

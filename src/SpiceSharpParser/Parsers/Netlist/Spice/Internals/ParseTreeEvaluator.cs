@@ -485,7 +485,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 if (mode)
                 {
                     // After this, only parameters will follow
-                    if (parameter is SingleParameter s && s.Image.ToLower() == "params:")
+                    if (parameter is SingleParameter s && s.Value.ToLower() == "params:")
                     {
                         mode = false;
                     }
@@ -504,7 +504,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                             || s2 is IdentifierParameter
                             || s2 is PrefixParameter
                             || s2 is SuffixParameter
-                            || int.TryParse(s2.Image, out _))
+                            || int.TryParse(s2.Value, out _))
                         {
                             subCkt.Pins.Add(s2);
                         }
@@ -712,7 +712,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 var assignmentParameter = new AssignmentParameter(
                     values.GetLexem(0),
                     new List<string>(),
-                    new List<string>() { singleParameter.Image },
+                    new List<string>() { singleParameter.Value },
                     false,
                     singleParameter.LineInfo);
 
@@ -782,32 +782,32 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                     {
                         foreach (SingleParameter parameter in vp.Elements)
                         {
-                            assignmentParameter.Arguments.Add(parameter.Image);
+                            assignmentParameter.Arguments.Add(parameter.Value);
                         }
 
                         assignmentParameter.HasFunctionSyntax = true;
                     }
                     else
                     {
-                        assignmentParameter.Arguments.Add(values.GetSpiceObject<SingleParameter>(2).Image);
+                        assignmentParameter.Arguments.Add(values.GetSpiceObject<SingleParameter>(2).Value);
                         assignmentParameter.HasFunctionSyntax = true;
                     }
 
                     var valueParameter = values.GetSpiceObject<SingleParameter>(5);
-                    assignmentParameter.Values = new List<string>() { valueParameter.Image };
+                    assignmentParameter.Values = new List<string>() { valueParameter.Value };
                     return assignmentParameter;
                 }
                 else if (values.Count == 5)
                 {
                     assignmentParameter.HasFunctionSyntax = true;
                     var valueParameter = values.GetSpiceObject<SingleParameter>(4);
-                    assignmentParameter.Values = new List<string>() { valueParameter.Image };
+                    assignmentParameter.Values = new List<string>() { valueParameter.Value };
                     return assignmentParameter;
                 }
                 else if (values.Count == 3)
                 {
                     var valueParameter = values.GetSpiceObject<VectorParameter>(2);
-                    assignmentParameter.Values = valueParameter.Elements.Select(e => e.Image).ToList();
+                    assignmentParameter.Values = valueParameter.Elements.Select(e => e.Value).ToList();
                     return assignmentParameter;
                 }
 

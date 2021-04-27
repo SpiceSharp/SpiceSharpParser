@@ -46,8 +46,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
 
             var comparer = StringComparerProvider.Get(false);
 
-            var entityName = (parameters[0] as VectorParameter)?.Elements[0].Image;
-            var propertyName = (parameters[0] as VectorParameter)?.Elements[1].Image;
+            var entityName = (parameters[0] as VectorParameter)?.Elements[0].Value;
+            var propertyName = (parameters[0] as VectorParameter)?.Elements[1].Value;
 
             if (entityName != null && propertyName != null)
             {

@@ -48,9 +48,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 throw new ArgumentNullException(nameof(statement));
             }
 
-            string type = statement.Parameters.Count > 0 ? statement.Parameters[0].Image.ToLower() : null;
+            string type = statement.Parameters.Count > 0 ? statement.Parameters[0].Value.ToLower() : null;
             string plotImage = $"{statement.Name}:{statement.Parameters}";
-            bool merge = statement.Parameters.Any(p => p.Image.ToLower() == "merge");
+            bool merge = statement.Parameters.Any(p => p.Value.ToLower() == "merge");
 
             if (merge)
             {

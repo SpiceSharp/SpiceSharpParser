@@ -22,7 +22,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                       || sp is Models.Netlist.Spice.Objects.Parameters.IdentifierParameter
                       || sp is Models.Netlist.Spice.Objects.Parameters.ValueParameter))
                 {
-                    context.NameGenerator.SetGlobal(sp.Image);
+                    context.NameGenerator.SetGlobal(sp.Value);
                 }
             }
         }

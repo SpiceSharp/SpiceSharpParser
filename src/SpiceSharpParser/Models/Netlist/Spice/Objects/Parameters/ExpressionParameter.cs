@@ -16,7 +16,12 @@
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
-            return new ExpressionParameter(Image, LineInfo);
+            return new ExpressionParameter(Value, LineInfo);
+        }
+
+        public override string ToString()
+        {
+            return "{" + base.ToString() + "}";
         }
     }
 }

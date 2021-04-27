@@ -122,12 +122,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             // first step is to find subcircuit name in parameters, a=b parameters needs to be skipped
             int skipCount = 0;
-            while (parameters[parameters.Count - skipCount - 1] is AssignmentParameter || parameters[parameters.Count - skipCount - 1].Image.ToLower() == "params:")
+            while (parameters[parameters.Count - skipCount - 1] is AssignmentParameter || parameters[parameters.Count - skipCount - 1].Value.ToLower() == "params:")
             {
                 skipCount++;
             }
 
-            string subCircuitDefinitionName = parameters.Get(parameters.Count - skipCount - 1).Image;
+            string subCircuitDefinitionName = parameters.Get(parameters.Count - skipCount - 1).Value;
             var result = context.AvailableSubcircuits.ToList().Find(subCkt => subCkt.Name == subCircuitDefinitionName);
 
             if (result == null)
@@ -157,7 +157,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             var subCktParameters = new List<AssignmentParameter>();
             while (true)
             {
-                if (parameters[parameters.Count - parameterParameters - 1].Image.ToLower() == "params:")
+                if (parameters[parameters.Count - parameterParameters - 1].Value.ToLower() == "params:")
                 {
                     parameterParameters++;
                 }
@@ -179,7 +179,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             var pinInstanceIdentifiers = new List<string>();
             for (var i = 0; i < parameters.Count - parameterParameters - 1; i++)
             {
-                var nodeName = parameters.Get(i).Image;
+                var nodeName = parameters.Get(i).Value;
                 var pinInstanceName = context.NameGenerator.GenerateNodeName(nodeName);
                 pinInstanceIdentifiers.Add(pinInstanceName);
             }

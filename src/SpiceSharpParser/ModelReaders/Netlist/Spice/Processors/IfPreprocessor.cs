@@ -118,7 +118,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
                 elseIfControl = result[elseIfControlIndex] as Control;
             }
 
-            if (EvaluationContext.Evaluate(ifCondition.Image) >= 1.0)
+            if (EvaluationContext.Evaluate(ifCondition.Value) >= 1.0)
             {
                 if (elseIfControl != null)
                 {

@@ -11,10 +11,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
     public class LetControl : BaseControl
     {
         /// <summary>
-        /// Reads <see cref="Control"/> statement and modifies the context
+        /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>
-        /// <param name="statement">A statement to process</param>
-        /// <param name="context">A context to modify</param>
+        /// <param name="statement">A statement to process.</param>
+        /// <param name="context">A context to modify.</param>
         public override void Read(Control statement, ICircuitContext context)
         {
             if (statement.Parameters.Count != 2)
@@ -29,7 +29,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 return;
             }
 
-            string expressionName = statement.Parameters[0].Image;
+            string expressionName = statement.Parameters[0].Value;
 
             if (!(statement.Parameters[1] is ExpressionParameter) && !(statement.Parameters[1] is StringParameter))
             {
@@ -37,7 +37,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 return;
             }
 
-            string expression = statement.Parameters.Get(1).Image;
+            string expression = statement.Parameters.Get(1).Value;
             context.Evaluator.SetNamedExpression(expressionName, expression);
         }
     }

@@ -51,20 +51,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
                         if (bracketParameter.Parameters[0] is VectorParameter vp)
                         {
-                            arguments.AddRange(vp.Elements.Select(element => element.Image));
+                            arguments.AddRange(vp.Elements.Select(element => element.Value));
                         }
                         else
                         {
                             if (bracketParameter.Parameters.Count != 0)
                             {
-                                arguments.Add(bracketParameter.Parameters[0].Image);
+                                arguments.Add(bracketParameter.Parameters[0].Value);
                             }
                         }
 
                         context.Evaluator.AddFunction(
                             bracketParameter.Name,
                             arguments,
-                            statement.Parameters[i + 1].Image);
+                            statement.Parameters[i + 1].Value);
 
                         i++;
                     }

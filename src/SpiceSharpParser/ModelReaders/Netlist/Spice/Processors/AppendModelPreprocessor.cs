@@ -83,14 +83,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
         private void ReadAppendModelWithTwoParameters(Statements statements, Control appendModel)
         {
-            string sourceModel = appendModel.Parameters.Get(0).Image;
+            string sourceModel = appendModel.Parameters.Get(0).Value;
             var sourceModelObj = (Model)statements.FirstOrDefault(s => s is Model m && m.Name == sourceModel);
             if (sourceModelObj == null)
             {
                 throw new SpiceSharpParserException("Could not find source model for .APPENDMODEL");
             }
 
-            string destinationModel = appendModel.Parameters.Get(1).Image;
+            string destinationModel = appendModel.Parameters.Get(1).Value;
             if (destinationModel == "*")
             {
                 var destinationModelsObj = statements
@@ -116,9 +116,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
         private void ReadAppendModelWithFourParameters(Statements statements, Control appendModel)
         {
-            string sourceModel = appendModel.Parameters.Get(0).Image;
-            string destinationModel = appendModel.Parameters.Get(2).Image;
-            string destinationModelType = appendModel.Parameters.Get(3).Image;
+            string sourceModel = appendModel.Parameters.Get(0).Value;
+            string destinationModel = appendModel.Parameters.Get(2).Value;
+            string destinationModelType = appendModel.Parameters.Get(3).Value;
 
             var sourceModelObj = (Model)statements.FirstOrDefault(s => s is Model m && m.Name == sourceModel);
 
@@ -213,7 +213,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
             if (model.Parameters[0] is StringParameter s)
             {
-                return s.Image;
+                return s.Value;
             }
 
             return null;

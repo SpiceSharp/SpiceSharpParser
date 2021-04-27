@@ -34,7 +34,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// <param name="statement">Statement.</param>
         /// <param name="context">Context.</param>
         /// <param name="createSimulation">Create simulation factory.</param>
-        /// <returns></returns>
         public List<Simulation> CreateSimulations(Control statement, ICircuitContext context, Func<string, Control, ICircuitContext, Simulation> createSimulation)
         {
             var result = new List<Simulation>();
@@ -95,7 +94,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
             for (var i = 0; i < parameterValues.Count; i++)
             {
-                result += $"{parameterValues[i].Key.Image}={parameterValues[i].Value}";
+                result += $"{parameterValues[i].Key.Value}={parameterValues[i].Value}";
 
                 if (i != parameterValues.Count - 1)
                 {
@@ -123,7 +122,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
         protected void ProcessTempParameterSweep(ICircuitContext context)
         {
-            var tempSweep = context.Result.SimulationConfiguration.ParameterSweeps.SingleOrDefault(sweep => sweep.Parameter.Image == "TEMP");
+            var tempSweep = context.Result.SimulationConfiguration.ParameterSweeps.SingleOrDefault(sweep => sweep.Parameter.Value == "TEMP");
 
             if (tempSweep != null)
             {

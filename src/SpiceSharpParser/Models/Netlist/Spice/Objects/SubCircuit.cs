@@ -1,5 +1,7 @@
 ﻿using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace SpiceSharpParser.Models.Netlist.Spice.Objects
 {
@@ -52,6 +54,40 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
             }
 
             return clone;
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>A string that represents the current object.</returns>
+        public override string ToString()
+        {
+            var builder = new StringBuilder();
+
+            builder.Append($".SUBCKT {Name} {Pins} params: ");
+
+            foreach (var defaultParameter in DefaultParameters)
+            {
+                if (DefaultParameters.IndexOf(defaultParameter) != 0)
+                {
+                    builder.Append($", {defaultParameter}");
+                }
+                else
+                {
+                    builder.Append($" {defaultParameter}");
+                }
+            }
+
+            builder.AppendLine();
+
+            foreach (Statement statement in Statements)
+            {
+                builder.AppendLine(statement.ToString());
+            }
+
+            builder.AppendLine($".ENDS {Name}");
+
+            return builder.ToString();
         }
     }
 }

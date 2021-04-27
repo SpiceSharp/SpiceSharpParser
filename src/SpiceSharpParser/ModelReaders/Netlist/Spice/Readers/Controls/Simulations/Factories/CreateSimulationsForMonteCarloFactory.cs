@@ -40,15 +40,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// <summary>
         /// Creates simulations for Monte Carlo simulation.
         /// </summary>
-        /// <param name="statement">Statement/</param>
+        /// <param name="statement">Statement.</param>
         /// <param name="context">Context.</param>
         /// <param name="createSimulation">Simulation factory.</param>
-        /// <returns></returns>
         public List<Simulation> Create(Control statement, ICircuitContext context, Func<string, Control, ICircuitContext, Simulation> createSimulation)
         {
             context.Result.MonteCarlo.Enabled = true;
             context.Result.MonteCarlo.Seed = context.Result.SimulationConfiguration.MonteCarloConfiguration.Seed;
-            context.Result.MonteCarlo.OutputVariable = context.Result.SimulationConfiguration.MonteCarloConfiguration.OutputVariable.Image;
+            context.Result.MonteCarlo.OutputVariable = context.Result.SimulationConfiguration.MonteCarloConfiguration.OutputVariable.Value;
             context.Result.MonteCarlo.Function = context.Result.SimulationConfiguration.MonteCarloConfiguration.Function;
 
             var result = new List<Simulation>();
@@ -77,7 +76,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
             simulation.BeforeSetup += (sender, args) =>
             {
-                Export export = context.Result.Exports.FirstOrDefault(e => e.Simulation == simulation && e.Name == exportParam.Image);
+                Export export = context.Result.Exports.FirstOrDefault(e => e.Simulation == simulation && e.Name == exportParam.Value);
 
                 if (export == null)
                 {

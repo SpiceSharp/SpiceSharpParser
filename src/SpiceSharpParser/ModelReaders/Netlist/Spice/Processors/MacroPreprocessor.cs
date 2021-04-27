@@ -31,7 +31,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             {
                 if (component.NameParameter is SuffixParameter nameSuffixParameter)
                 {
-                    var lexer = new Lexer(nameSuffixParameter.Image);
+                    var lexer = new Lexer(nameSuffixParameter.Value);
                     var parser = new Parser();
                     var suffixNode = parser.Parse(lexer);
                     var dimensionsCount = suffixNode.Dimensions.Count;
@@ -203,7 +203,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
         private void ResolveSuffix(SuffixParameter suffix, ParameterCollection result, int? componentIndex = null, int? total = null, int? componentDimensions = null)
         {
-            var lexer = new Lexer(suffix.Image);
+            var lexer = new Lexer(suffix.Value);
             var parser = new Parser();
             var suffixNode = parser.Parse(lexer);
 
@@ -267,7 +267,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
         private void ResolvePrefix(PrefixParameter prefix, ParameterCollection result)
         {
-            var lexer = new Lexers.BusPrefix.Lexer(prefix.Image);
+            var lexer = new Lexers.BusPrefix.Lexer(prefix.Value);
             var parser = new Parsers.BusPrefix.Parser();
             var node = parser.Parse(lexer);
 

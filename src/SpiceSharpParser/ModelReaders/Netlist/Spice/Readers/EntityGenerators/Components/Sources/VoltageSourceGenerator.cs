@@ -99,13 +99,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             if (parameters.Count == 4
                 && parameters.IsValueString(0)
                 && parameters.IsValueString(1)
-                && parameters.IsValueString(2) && parameters[2].Image.ToLower() != "value"
+                && parameters.IsValueString(2) && parameters[2].Value.ToLower() != "value"
                 && parameters.IsValueString(3))
             {
                 var ccvs = new CurrentControlledVoltageSource(name);
                 context.CreateNodes(ccvs, parameters);
-                ccvs.ControllingSource = context.NameGenerator.GenerateObjectName(parameters.Get(2).Image);
-                context.SetParameter(ccvs, "gain", parameters.Get(3).Image);
+                ccvs.ControllingSource = context.NameGenerator.GenerateObjectName(parameters.Get(2).Value);
+                context.SetParameter(ccvs, "gain", parameters.Get(3).Value);
                 return ccvs;
             }
             else
@@ -141,9 +141,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             if (parameters.Any(p => p is ExpressionParameter ep))
             {
                 var expressionParameter = (ExpressionParameter)parameters.Single(p => p is ExpressionParameter);
-                string expression = expressionParameter.Image;
+                string expression = expressionParameter.Value;
 
-                if (evalContext.HaveSpiceProperties(expressionParameter.Image) || evalContext.HaveFunctions(expressionParameter.Image))
+                if (evalContext.HaveSpiceProperties(expressionParameter.Value) || evalContext.HaveFunctions(expressionParameter.Value))
                 {
                     BehavioralVoltageSource entity = CreateBehavioralVoltageSource(name, parameters, context, evalContext, expression);
                     return entity;
@@ -156,7 +156,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return vs;
         }
 
-        private static BehavioralVoltageSource CreateBehavioralVoltageSource(string name, ParameterCollection parameters, ICircuitContext context, Common.Evaluation.EvaluationContext evalContext, string expression)
+        protected static BehavioralVoltageSource CreateBehavioralVoltageSource(string name, ParameterCollection parameters, ICircuitContext context, Common.Evaluation.EvaluationContext evalContext, string expression)
         {
             var entity = new BehavioralVoltageSource(name);
             context.CreateNodes(entity, parameters.Take(BehavioralVoltageSource.BehavioralVoltageSourcePinCount));
@@ -194,22 +194,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
             {
                 var valueParameter = (AssignmentParameter)parameters.Single(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");
-                
+
                 BehavioralVoltageSource entity = CreateBehavioralVoltageSource(name, parameters, context, evalContext, valueParameter.Value);
                 return entity;
             }
 
-            if (parameters.Any(p => p is WordParameter ap && ap.Image.ToLower() == "value"))
+            if (parameters.Any(p => p is WordParameter ap && ap.Value.ToLower() == "value"))
             {
                 var expressionParameter = parameters.FirstOrDefault(p => p is ExpressionParameter);
                 if (expressionParameter != null)
                 {
-                    BehavioralVoltageSource entity = CreateBehavioralVoltageSource(name, parameters, context, evalContext, expressionParameter.Image);
+                    BehavioralVoltageSource entity = CreateBehavioralVoltageSource(name, parameters, context, evalContext, expressionParameter.Value);
                     return entity;
                 }
             }
 
-            if (parameters.Any(p => p is WordParameter bp && bp.Image.ToLower() == "poly"))
+            if (parameters.Any(p => p is WordParameter bp && bp.Value.ToLower() == "poly"))
             {
                 var polyParameters = parameters.Skip(VoltageSource.PinCount);
                 var dimension = 1;
@@ -226,16 +226,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "poly expects one argument => dimension", polyParameter.LineInfo));
                 }
-                
+
                 var polyParameters = parameters.Skip(VoltageSource.PinCount);
-                var dimension = (int)context.Evaluator.EvaluateDouble(polyParameter.Parameters[0].Image);
+                var dimension = (int)context.Evaluator.EvaluateDouble(polyParameter.Parameters[0].Value);
                 var expression = CreatePolyExpression(dimension, polyParameters.Skip(1), isVoltageControlled, context.Evaluator.GetEvaluationContext());
-                
+
                 BehavioralVoltageSource entity = CreateBehavioralVoltageSource(name, parameters, context, evalContext, expression);
                 return entity;
             }
 
-            var tableParameter = parameters.FirstOrDefault(p => p.Image.ToLower() == "table");
+            var tableParameter = parameters.FirstOrDefault(p => p.Value.ToLower() == "table");
             if (tableParameter != null)
             {
                 int tableParameterPosition = parameters.IndexOf(tableParameter);

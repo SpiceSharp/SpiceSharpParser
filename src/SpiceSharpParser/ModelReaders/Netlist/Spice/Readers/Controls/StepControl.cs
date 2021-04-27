@@ -36,7 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         statement.LineInfo));
             }
 
-            string firstParam = statement.Parameters[0].Image;
+            string firstParam = statement.Parameters[0].Value;
 
             switch (firstParam.ToLower())
             {
@@ -65,7 +65,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         private void ReadParam(ParameterCollection parameters, ICircuitContext context)
         {
             var variableParameter = parameters[0];
-            string type = parameters[1].Image;
+            string type = parameters[1].Value;
 
             switch (type.ToLower())
             {
@@ -96,7 +96,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             bool list = false;
             for (var i = 0; i <= 2; i++)
             {
-                if (parameters[i].Image.ToLower() == "list")
+                if (parameters[i].Value.ToLower() == "list")
                 {
                     list = true;
                 }
@@ -169,9 +169,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 Parameter = variableParameter,
                 Sweep = new DecadeSweep(
-                    context.Evaluator.EvaluateDouble(parameters[0].Image),
-                    context.Evaluator.EvaluateDouble(parameters[1].Image),
-                    (int)context.Evaluator.EvaluateDouble(parameters[2].Image)),
+                    context.Evaluator.EvaluateDouble(parameters[0].Value),
+                    context.Evaluator.EvaluateDouble(parameters[1].Value),
+                    (int)context.Evaluator.EvaluateDouble(parameters[2].Value)),
             };
 
             context.Result.SimulationConfiguration.ParameterSweeps.Add(pSweep);
@@ -183,9 +183,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 Parameter = variableParameter,
                 Sweep = new OctaveSweep(
-                    context.Evaluator.EvaluateDouble(parameters[0].Image),
-                    context.Evaluator.EvaluateDouble(parameters[1].Image),
-                    (int)context.Evaluator.EvaluateDouble(parameters[2].Image)),
+                    context.Evaluator.EvaluateDouble(parameters[0].Value),
+                    context.Evaluator.EvaluateDouble(parameters[1].Value),
+                    (int)context.Evaluator.EvaluateDouble(parameters[2].Value)),
             };
 
             context.Result.SimulationConfiguration.ParameterSweeps.Add(pSweep);
@@ -208,7 +208,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     continue;
                 }
 
-                values.Add(context.Evaluator.EvaluateDouble(parameter.Image));
+                values.Add(context.Evaluator.EvaluateDouble(parameter.Value));
             }
 
             context.Result.SimulationConfiguration.ParameterSweeps.Add(
@@ -225,9 +225,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 Parameter = variableParameter,
                 Sweep = new LinearSweep(
-                    context.Evaluator.EvaluateDouble(parameters[0].Image),
-                    context.Evaluator.EvaluateDouble(parameters[1].Image),
-                    context.Evaluator.EvaluateDouble(parameters[2].Image)),
+                    context.Evaluator.EvaluateDouble(parameters[0].Value),
+                    context.Evaluator.EvaluateDouble(parameters[1].Value),
+                    context.Evaluator.EvaluateDouble(parameters[2].Value)),
             };
 
             context.Result.SimulationConfiguration.ParameterSweeps.Add(pSweep);

@@ -41,7 +41,6 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
 
             foreach (var variable in context.Parameters)
             {
-
                 if (variable.Value is ConstantExpression ce)
                 {
                     Variables.Add(new CustomVariable<Func<double>>() { Name = variable.Key, Value = () => ce.Value, Constant = true });
@@ -61,6 +60,7 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
         public Parser Parser { get; }
 
         public List<CustomVariable<Func<double>>> Variables { get; set; } = new List<Common.Evaluation.CustomVariable<Func<double>>>();
+
         public bool ThrowOnErrors { get; }
 
         protected override double BuildNode(Node node)
@@ -200,7 +200,7 @@ namespace SpiceSharpParser.Parsers.Expression.Implementation
                             {
                                 e.Result = export.Extract();
                             }
-                            catch (Exception ex)
+                            catch (Exception)
                             {
                                 if (ThrowOnErrors)
                                 {

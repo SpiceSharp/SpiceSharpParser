@@ -21,10 +21,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
 
             context.Result.SimulationConfiguration.MonteCarloConfiguration.Enabled = true;
-            context.Result.SimulationConfiguration.MonteCarloConfiguration.Runs = int.Parse(statement.Parameters.Get(0).Image);
-            context.Result.SimulationConfiguration.MonteCarloConfiguration.SimulationType = statement.Parameters.Get(1).Image.ToLower();
+            context.Result.SimulationConfiguration.MonteCarloConfiguration.Runs = int.Parse(statement.Parameters.Get(0).Value);
+            context.Result.SimulationConfiguration.MonteCarloConfiguration.SimulationType = statement.Parameters.Get(1).Value.ToLower();
             context.Result.SimulationConfiguration.MonteCarloConfiguration.OutputVariable = statement.Parameters[2];
-            context.Result.SimulationConfiguration.MonteCarloConfiguration.Function = statement.Parameters.Get(3).Image;
+            context.Result.SimulationConfiguration.MonteCarloConfiguration.Function = statement.Parameters.Get(3).Value;
 
             if (statement.Parameters.Count > 4 && statement.Parameters[4] is Models.Netlist.Spice.Objects.Parameters.AssignmentParameter a)
             {

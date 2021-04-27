@@ -12,7 +12,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
     {
         public static string CreateTableExpression(string tableParameter, IEnumerable<PointParameter> points)
         {
-            var expression = $"table({tableParameter},{string.Join(",", points.Select(v => string.Join(", ", v.Values.Select(a => a.Image).ToArray())).ToArray())})";
+            var expression = $"table({tableParameter},{string.Join(",", points.Select(v => string.Join(", ", v.Values.Select(a => a.Value).ToArray())).ToArray())})";
             return expression;
         }
 
@@ -40,7 +40,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
 
                 var variablesList = variables.Select(v =>
-                        $"v({((PointParameter)v).Values.Items[0].Image},{((PointParameter)v).Values.Items[1].Image})")
+                        $"v({((PointParameter)v).Values.Items[0].Value},{((PointParameter)v).Values.Items[1].Value})")
                     .ToList();
 
                 var coefficients = polyArguments.Skip(dimension);
@@ -63,7 +63,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var voltages = new List<string>();
                 for (var i = 0; i < dimension; i++)
                 {
-                    string voltage = $"v({variables[2 * i].Image},{variables[(2 * i) + 1].Image})";
+                    string voltage = $"v({variables[2 * i].Value},{variables[(2 * i) + 1].Value})";
                     voltages.Add(voltage);
                 }
 
@@ -79,7 +79,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             var voltages = new List<string>();
             for (var i = 0; i < dimension; i++)
             {
-                string voltage = $"i({variables[i].Image})";
+                string voltage = $"i({variables[i].Value})";
                 voltages.Add(voltage);
             }
 
@@ -98,7 +98,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 var result = PolyFunction.GetExpression(
                     dimension,
-                    pp.Values.Items.Select(c => context.Evaluate(c.Image)).ToList(),
+                    pp.Values.Items.Select(c => context.Evaluate(c.Value)).ToList(),
                     variables);
                 return result;
             }
@@ -106,7 +106,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 var result = PolyFunction.GetExpression(
                     dimension,
-                    coefficients.Select(c => context.Evaluate(c.Image)).ToList(),
+                    coefficients.Select(c => context.Evaluate(c.Value)).ToList(),
                     variables);
 
                 return result;

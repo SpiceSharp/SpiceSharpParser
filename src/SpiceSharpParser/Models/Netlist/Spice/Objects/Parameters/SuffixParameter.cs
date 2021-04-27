@@ -5,13 +5,13 @@
     /// </summary>
     public class SuffixParameter : SingleParameter
     {
-        public SuffixParameter(string word, SpiceLineInfo lineInfo)
-            : base(word, lineInfo)
+        public SuffixParameter(string suffix, SpiceLineInfo lineInfo)
+            : base(suffix, lineInfo)
         {
         }
 
-        public SuffixParameter(string word)
-            : base(word, null)
+        public SuffixParameter(string suffix)
+            : base(suffix, null)
         {
         }
 
@@ -21,7 +21,7 @@
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
-            return new SuffixParameter(Image, LineInfo);
+            return new SuffixParameter(Value, LineInfo);
         }
     }
 }

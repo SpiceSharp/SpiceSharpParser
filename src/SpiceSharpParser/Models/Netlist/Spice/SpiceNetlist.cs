@@ -1,4 +1,5 @@
 ﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using System;
 
 namespace SpiceSharpParser.Models.Netlist.Spice
 {
@@ -30,6 +31,15 @@ namespace SpiceSharpParser.Models.Netlist.Spice
         public override SpiceObject Clone()
         {
             return new SpiceNetlist(Title, (Statements)Statements.Clone());
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>A string that represents the current object.</returns>
+        public override string ToString()
+        {
+            return $"{Title}{Environment.NewLine}{Statements}{Environment.NewLine}.END";
         }
     }
 }

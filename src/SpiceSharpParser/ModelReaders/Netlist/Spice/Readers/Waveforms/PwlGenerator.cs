@@ -81,12 +81,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             {
                 if (parameters[i] is VectorParameter vp2 && vp2.Elements.Count == 2)
                 {
-                    values.Add(context.Evaluator.EvaluateDouble(vp2.Elements[0].Image));
-                    values.Add(context.Evaluator.EvaluateDouble(vp2.Elements[1].Image));
+                    values.Add(context.Evaluator.EvaluateDouble(vp2.Elements[0].Value));
+                    values.Add(context.Evaluator.EvaluateDouble(vp2.Elements[1].Value));
                 }
                 else
                 {
-                    values.Add(context.Evaluator.EvaluateDouble(parameters[i].Image));
+                    values.Add(context.Evaluator.EvaluateDouble(parameters[i].Value));
                 }
             }
 

@@ -50,7 +50,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
                 if (i == 0)
                 {
-                    switch (parameter.Image.ToLower())
+                    switch (parameter.Value.ToLower())
                     {
                         case "op":
                             simulationType = typeof(OP);
@@ -177,7 +177,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 var series = new Series(export.Simulation.Name)
                 {
-                    XUnit = firstParameterSweep.Parameter.Image,
+                    XUnit = firstParameterSweep.Parameter.Value,
                     YUnit = export.QuantityUnit,
                 };
                 AddOpPointToSeries(firstParameterSweep, export, context, series);
@@ -231,7 +231,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             export.Simulation.ExportSimulationData += (object sender, ExportDataEventArgs e) =>
             {
                 var expressionContext = context.Evaluator.GetEvaluationContext(export.Simulation);
-                var firstParameterSweepParameter = expressionContext.Parameters[firstParameterSweep.Parameter.Image];
+                var firstParameterSweepParameter = expressionContext.Parameters[firstParameterSweep.Parameter.Value];
 
                 var value = context.Evaluator.GetEvaluationContext(export.Simulation).Evaluate(firstParameterSweepParameter);
                 series.Points.Add(new Point() { X = value, Y = export.Extract() });
@@ -319,7 +319,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
         private void AddLetExport(ICircuitContext context, Type simulationType, SingleParameter parameter)
         {
-            string expressionName = parameter.Image;
+            string expressionName = parameter.Value;
             var expressionNames = context.Evaluator.GetExpressionNames();
 
             if (expressionNames.Contains(expressionName))

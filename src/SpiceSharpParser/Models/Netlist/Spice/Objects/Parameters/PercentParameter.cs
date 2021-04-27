@@ -10,13 +10,18 @@
         {
         }
 
+        public override string ToString()
+        {
+            return $"{Value} %";
+        }
+
         /// <summary>
         /// Clones the object.
         /// </summary>
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
-            return new PercentParameter(Image, LineInfo);
+            return new PercentParameter(Value, LineInfo);
         }
     }
 }

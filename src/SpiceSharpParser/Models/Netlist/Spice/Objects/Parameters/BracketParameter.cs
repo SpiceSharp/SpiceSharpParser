@@ -28,34 +28,33 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
         /// </summary>
         public ParameterCollection Parameters { get; set; }
 
+        public override string Value { get => ToString(); }
+
         /// <summary>
         /// Gets the string representation of the bracket parameter.
         /// </summary>
-        public override string Image
+        public override string ToString()
         {
-            get
+            StringBuilder builder = new StringBuilder();
+
+            if (Parameters.Count > 0)
             {
-                StringBuilder builder = new StringBuilder();
+                builder.Append(Name + "(");
 
-                if (Parameters.Count > 0)
+                for (var i = 0; i < Parameters.Count; i++)
                 {
-                    builder.Append(Name + "(");
+                    builder.Append(Parameters[i].ToString());
 
-                    for (var i = 0; i < Parameters.Count; i++)
+                    if (i != Parameters.Count - 1)
                     {
-                        builder.Append(Parameters[i].Image);
-
-                        if (i != Parameters.Count - 1)
-                        {
-                            builder.Append(",");
-                        }
+                        builder.Append(",");
                     }
-
-                    builder.Append(")");
                 }
 
-                return builder.ToString();
+                builder.Append(")");
             }
+
+            return builder.ToString();
         }
 
         /// <summary>

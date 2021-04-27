@@ -26,27 +26,26 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
         /// </summary>
         public List<SingleParameter> Elements { get; }
 
+        public override string Value { get => ToString(); }
+
         /// <summary>
         /// Gets the string representation of the vector.
         /// </summary>
-        public override string Image
+        public override string ToString()
         {
-            get
+            StringBuilder builder = new StringBuilder();
+
+            foreach (var parameter in Elements)
             {
-                StringBuilder builder = new StringBuilder();
-
-                foreach (var parameter in Elements)
+                if (builder.Length != 0)
                 {
-                    if (builder.Length != 0)
-                    {
-                        builder.Append(",");
-                    }
-
-                    builder.Append(parameter.Image);
+                    builder.Append(",");
                 }
 
-                return builder.ToString();
+                builder.Append(parameter.ToString());
             }
+
+            return builder.ToString();
         }
 
         /// <summary>

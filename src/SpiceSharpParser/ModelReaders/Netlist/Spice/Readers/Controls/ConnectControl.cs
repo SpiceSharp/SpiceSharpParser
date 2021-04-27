@@ -23,8 +23,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 return;
             }
 
-            string nodeA = statement.Parameters.Get(0).Image;
-            string nodeB = statement.Parameters.Get(1).Image;
+            string nodeA = statement.Parameters.Get(0).Value;
+            string nodeB = statement.Parameters.Get(1).Value;
 
             var vs = new VoltageSource($"Voltage connector: {nodeA} <-> {nodeB}");
             context.CreateNodes(vs, statement.Parameters);

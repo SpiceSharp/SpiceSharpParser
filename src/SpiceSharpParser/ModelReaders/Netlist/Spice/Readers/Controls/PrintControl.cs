@@ -49,7 +49,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 throw new ArgumentNullException(nameof(statement));
             }
 
-            string type = statement.Parameters.Count > 0 ? statement.Parameters[0].Image.ToLower() : null;
+            string type = statement.Parameters.Count > 0 ? statement.Parameters[0].Value.ToLower() : null;
             string printImage = statement.Name + ":" + statement.Parameters.ToString();
             if (type != null && SupportedPrintTypes.Contains(type))
             {

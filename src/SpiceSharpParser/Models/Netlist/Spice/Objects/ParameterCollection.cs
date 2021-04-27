@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace SpiceSharpParser.Models.Netlist.Spice.Objects
 {
@@ -270,7 +271,23 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
 
         public override string ToString()
         {
-            return string.Join(",", Values.Select(v => v.Image));
+            if (Values.Any(v => v.ToString().ToLower() == "params:"))
+            {
+                var paramsIndex = Values.IndexOf(Values.First(v => v.ToString().ToLower() == "params:"));
+                var resultBuilder = new StringBuilder();
+                for (var i = 0; i < Values.Count; i++)
+                {
+                    if (i > paramsIndex + 1)
+                    {
+                        resultBuilder.Append(", ");
+                    }
+                    resultBuilder.Append($" {Values[i].ToString()}");
+                }
+
+                return resultBuilder.ToString();
+            }
+
+            return string.Join(" ", Values.Select(v => v.ToString()));
         }
 
         public int IndexOf(Parameter parameter)

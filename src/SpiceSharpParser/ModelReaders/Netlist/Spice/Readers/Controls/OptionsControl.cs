@@ -127,7 +127,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
                 if (param is Models.Netlist.Spice.Objects.Parameters.WordParameter w)
                 {
-                    if (w.Image.ToLower() == "keepopinfo")
+                    if (w.Value.ToLower() == "keepopinfo")
                     {
                         context.Result.SimulationConfiguration.KeepOpInfo = true;
                     }

@@ -30,5 +30,14 @@
         {
             return new Model(Name, (ParameterCollection)Parameters.Clone(), LineInfo);
         }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>A string that represents the current object.</returns>
+        public override string ToString()
+        {
+            return $".MODEL {Name} {Parameters}";
+        }
     }
 }

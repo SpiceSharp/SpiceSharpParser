@@ -41,12 +41,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             if (parameters.Count == 4
                 && parameters.IsValueString(0)
                 && parameters.IsValueString(1)
-                && parameters.IsValueString(2) && parameters[2].Image.ToLower() != "value"
+                && parameters.IsValueString(2) && parameters[2].Value.ToLower() != "value"
                 && parameters.IsValueString(3))
             {
                 var cccs = new CurrentControlledCurrentSource(name);
                 context.CreateNodes(cccs, parameters);
-                cccs.ControllingSource = context.NameGenerator.GenerateObjectName(parameters.Get(2).Image);
+                cccs.ControllingSource = context.NameGenerator.GenerateObjectName(parameters.Get(2).Value);
                 context.SetParameter(cccs, "gain", parameters.Get(3));
                 return cccs;
             }
@@ -137,14 +137,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 return entity;
             }
 
-            if (parameters.Any(p => p is WordParameter ap && ap.Image.ToLower() == "value"))
+            if (parameters.Any(p => p is WordParameter ap && ap.Value.ToLower() == "value"))
             {
                 var expressionParameter = parameters.FirstOrDefault(p => p is ExpressionParameter);
                 if (expressionParameter != null)
                 {
                     var entity = new BehavioralCurrentSource(name);
                     context.CreateNodes(entity, parameters);
-                    entity.Parameters.Expression = expressionParameter.Image;
+                    entity.Parameters.Expression = expressionParameter.Value;
                     entity.Parameters.ParseAction = (expression) =>
                     {
                         var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
@@ -154,7 +154,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
             }
 
-            if (parameters.Any(p => p is WordParameter bp && bp.Image.ToLower() == "poly"))
+            if (parameters.Any(p => p is WordParameter bp && bp.Value.ToLower() == "poly"))
             {
                 var entity = new CurrentSource(name);
                 context.CreateNodes(entity, parameters);
@@ -179,14 +179,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     return null;
                 }
 
-                var dimension = (int)context.Evaluator.EvaluateDouble(polyParameter.Parameters[0].Image);
+                var dimension = (int)context.Evaluator.EvaluateDouble(polyParameter.Parameters[0].Value);
                 var expression = CreatePolyExpression(dimension, parameters.Skip(1), isVoltageControlled, context.Evaluator.GetEvaluationContext());
 
                 context.SetParameter(entity, "dc", expression);
                 return entity;
             }
 
-            var tableParameter = parameters.FirstOrDefault(p => p.Image.ToLower() == "table");
+            var tableParameter = parameters.FirstOrDefault(p => p.Value.ToLower() == "table");
             if (tableParameter != null)
             {
                 int tableParameterPosition = parameters.IndexOf(tableParameter);

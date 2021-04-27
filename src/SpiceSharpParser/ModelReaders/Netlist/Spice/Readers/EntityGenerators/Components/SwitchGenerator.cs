@@ -42,7 +42,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 return null;
             }
 
-            string modelName = parameters.Get(4).Image;
+            string modelName = parameters.Get(4).Value;
 
             var model = context.ModelsRegistry.FindModel(modelName);
             if (model.Entity is VSwitchModel)
@@ -120,7 +120,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             // Optional ON or OFF
             if (parameters.Count == 6)
             {
-                switch (parameters.Get(5).Image.ToLower())
+                switch (parameters.Get(5).Value.ToLower())
                 {
                     case "on":
                         vsw.SetParameter("on", true);
@@ -191,7 +191,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 return null;
             }
 
-            string modelName = parameters.Get(3).Image;
+            string modelName = parameters.Get(3).Value;
             var model = context.ModelsRegistry.FindModel(modelName);
             if (model.Entity is ISwitchModel)
             {
@@ -257,7 +257,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             // Get the controlling voltage source
             if (parameters[2] is WordParameter || parameters[2] is IdentifierParameter)
             {
-                csw.ControllingSource = context.NameGenerator.GenerateObjectName(parameters.Get(2).Image);
+                csw.ControllingSource = context.NameGenerator.GenerateObjectName(parameters.Get(2).Value);
             }
             else
             {
@@ -280,7 +280,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             // Optional on or off
             if (parameters.Count > 4)
             {
-                switch (parameters.Get(4).Image.ToLower())
+                switch (parameters.Get(4).Value.ToLower())
                 {
                     case "on":
                         csw.SetParameter("on", true);

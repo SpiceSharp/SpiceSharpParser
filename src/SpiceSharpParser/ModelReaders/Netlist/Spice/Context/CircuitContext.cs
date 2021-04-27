@@ -179,7 +179,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             string[] nodes = new string[component.Nodes.Count];
             for (var i = 0; i < component.Nodes.Count; i++)
             {
-                string pinName = parameters.Get(i).Image;
+                string pinName = parameters.Get(i).Value;
                 nodes[i] = NameGenerator.GenerateNodeName(pinName);
             }
 
@@ -270,7 +270,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             if (parameter is SingleParameter sp)
             {
-                expression = sp.Image;
+                expression = sp.Value;
             }
 
             if (parameter is AssignmentParameter asg)

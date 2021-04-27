@@ -44,7 +44,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             bool useIc = false;
             var clonedParameters = (ParameterCollection)statement.Parameters.Clone();
             var lastParameter = clonedParameters[clonedParameters.Count - 1];
-            if (lastParameter is WordParameter w && w.Image.ToLower() == "uic")
+            if (lastParameter is WordParameter w && w.Value.ToLower() == "uic")
             {
                 useIc = true;
                 clonedParameters.RemoveAt(clonedParameters.Count - 1);
@@ -61,14 +61,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             switch (clonedParameters.Count)
             {
                 case 2:
-                    step = context.Evaluator.EvaluateDouble(clonedParameters[0].Image);
-                    final = context.Evaluator.EvaluateDouble(clonedParameters[1].Image);
+                    step = context.Evaluator.EvaluateDouble(clonedParameters[0].Value);
+                    final = context.Evaluator.EvaluateDouble(clonedParameters[1].Value);
                     args = new double[] { step.Value, final.Value };
                     break;
                 case 3:
-                    step = context.Evaluator.EvaluateDouble(clonedParameters[0].Image);
-                    final = context.Evaluator.EvaluateDouble(clonedParameters[1].Image);
-                    maxStep = context.Evaluator.EvaluateDouble(clonedParameters[2].Image);
+                    step = context.Evaluator.EvaluateDouble(clonedParameters[0].Value);
+                    final = context.Evaluator.EvaluateDouble(clonedParameters[1].Value);
+                    maxStep = context.Evaluator.EvaluateDouble(clonedParameters[2].Value);
                     args = new double[] { step.Value, final.Value, maxStep.Value };
                     break;
                 default:

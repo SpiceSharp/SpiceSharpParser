@@ -34,7 +34,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 if (parameters[i] is WordParameter w)
                 {
-                    if (w.Image.ToLower() == "off")
+                    if (w.Value.ToLower() == "off")
                     {
                         jfet.SetParameter("off", true);
                     }
@@ -71,7 +71,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (parameters[i] is ValueParameter || parameters[i] is ExpressionParameter)
                 {
-                    context.SetParameter(jfet, "area", parameters[i].Image);
+                    context.SetParameter(jfet, "area", parameters[i].Value);
                 }
             }
 

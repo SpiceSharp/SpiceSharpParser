@@ -87,11 +87,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             try
             {
-                return ParsingContext.Evaluate(parameter.Image);
+                return ParsingContext.Evaluate(parameter.Value);
             }
             catch (Exception ex)
             {
-                throw new SpiceSharpParserException($"Exception during evaluation of parameter: {parameter.Image}", ex);
+                throw new SpiceSharpParserException($"Exception during evaluation of parameter: {parameter.Value}", ex);
             }
         }
 
@@ -107,7 +107,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         public void SetParameter(string parameterName, Parameter parameter)
         {
-            ParsingContext.SetParameter(parameterName, parameter.Image);
+            ParsingContext.SetParameter(parameterName, parameter.Value);
         }
 
         public void SetParameter(string parameterName, string parameterExpression)

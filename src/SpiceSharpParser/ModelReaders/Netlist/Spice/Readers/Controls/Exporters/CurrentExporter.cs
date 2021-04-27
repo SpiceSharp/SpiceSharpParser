@@ -27,7 +27,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                     case 0:
                         throw new SpiceSharpParserException("Node expected", parameters.LineInfo);
                     case 1:
-                        componentIdentifier = context.NameGenerator.GenerateObjectName(vector.Elements[0].Image);
+                        componentIdentifier = context.NameGenerator.GenerateObjectName(vector.Elements[0].Value);
                         break;
 
                     default:
@@ -36,7 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             }
             else
             {
-                componentIdentifier = context.NameGenerator.GenerateObjectName(parameters.Get(0).Image);
+                componentIdentifier = context.NameGenerator.GenerateObjectName(parameters.Get(0).Value);
             }
 
             Export export = null;

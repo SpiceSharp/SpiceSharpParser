@@ -23,12 +23,20 @@
         public string Argument { get; }
 
         /// <summary>
+        /// Gets the string representation of the point.
+        /// </summary>
+        public override string ToString()
+        {
+            return $"@{Name}[{Argument}]";
+        }
+
+        /// <summary>
         /// Clones the object.
         /// </summary>
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
-            return new ReferenceParameter(Image, LineInfo);
+            return new ReferenceParameter(Value, LineInfo);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             BipolarJunctionTransistor bjt = new BipolarJunctionTransistor(componentIdentifier);
 
             // If the component is of the format QXXX NC NB NE MNAME off we will insert NE again before the model name
-            if (parameters.Count == 5 && parameters[4] is WordParameter w && w.Image == "off")
+            if (parameters.Count == 5 && parameters[4] is WordParameter w && w.Value == "off")
             {
                 parameters.Insert(3, parameters[2]);
             }
@@ -52,7 +52,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     if (s is WordParameter)
                     {
-                        switch (s.Image.ToLower())
+                        switch (s.Value.ToLower())
                         {
                             case "on": bjt.SetParameter("off", false); break;
                             case "off": bjt.SetParameter("on", false); break;
@@ -65,12 +65,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         var bp = bjt.Parameters;
                         if (bp.Area == 0.0)
                         {
-                            bp.Area = context.Evaluator.EvaluateDouble(s.Image);
+                            bp.Area = context.Evaluator.EvaluateDouble(s.Value);
                         }
 
                         if (!bp.Temperature.Given)
                         {
-                            bp.Temperature = context.Evaluator.EvaluateDouble(s.Image);
+                            bp.Temperature = context.Evaluator.EvaluateDouble(s.Value);
                         }
                     }
                 }

@@ -15,7 +15,10 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
 
         public Points Points { get; }
 
-        public override string Image => Expression + " = (" + string.Join(",", Points.Select(p => p.Image)) + ")";
+        public override string ToString()
+        {
+            return $"{Expression} = ({string.Join(",", Points.Select(p => p.ToString()))})";
+        }
 
         public override SpiceObject Clone()
         {

@@ -19,7 +19,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             var curve = new Curve();
 
-            var distributionName = statement.Parameters.First().Image;
+            var distributionName = statement.Parameters.First().Value;
 
             foreach (var param in statement.Parameters.Skip(1))
             {
@@ -28,7 +28,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     var x = pp.Values.Items[0];
                     var y = pp.Values.Items[1];
 
-                    curve.Add(new Point(context.Evaluator.EvaluateDouble(x.Image), context.Evaluator.EvaluateDouble(y.Image)));
+                    curve.Add(new Point(context.Evaluator.EvaluateDouble(x.Value), context.Evaluator.EvaluateDouble(y.Value)));
                 }
             }
 

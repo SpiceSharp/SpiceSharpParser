@@ -41,7 +41,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
 
             for (var i = 0; i < SubCircuit.Pins.Count; i++)
             {
-                var pinIdentifier = SubCircuit.Pins[i].Image;
+                var pinIdentifier = SubCircuit.Pins[i].Value;
                 var pinInstanceIdentifier = PinInstanceNames[i];
                 _pinMap[pinIdentifier] = pinInstanceIdentifier;
             }

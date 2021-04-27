@@ -64,7 +64,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 var start = context.Evaluator.EvaluateDouble(statement.Parameters.Get((4 * i) + 1));
                 var stop = context.Evaluator.EvaluateDouble(statement.Parameters.Get((4 * i) + 2));
                 var step = context.Evaluator.EvaluateDouble(statement.Parameters.Get((4 * i) + 3));
-                ParameterSweep sweep = new ParameterSweep(statement.Parameters.Get(4 * i).Image, Enumerable.Range(0, (int)((stop - start) / step) + 1).Select(index => start + (index * step)));
+                ParameterSweep sweep = new ParameterSweep(statement.Parameters.Get(4 * i).Value, Enumerable.Range(0, (int)((stop - start) / step) + 1).Select(index => start + (index * step)));
 
                 sweeps.Add(sweep);
             }

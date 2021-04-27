@@ -22,10 +22,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         }
 
         /// <summary>
-        /// Reads <see cref="Control"/> statement and modifies the context
+        /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>
-        /// <param name="statement">A statement to process</param>
-        /// <param name="context">A context to modify</param>
+        /// <param name="statement">A statement to process.</param>
+        /// <param name="context">A context to modify.</param>
         public override void Read(Control statement, ICircuitContext context)
         {
             CreateSimulations(statement, context, CreateNoiseSimulation);
@@ -65,7 +65,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     return null;
             }
 
-            string type = statement.Parameters.Get(2).Image;
+            string type = statement.Parameters.Get(2).Value;
             var numberSteps = context.Evaluator.EvaluateDouble(statement.Parameters.Get(3));
             var start = context.Evaluator.EvaluateDouble(statement.Parameters.Get(4));
             var stop = context.Evaluator.EvaluateDouble(statement.Parameters.Get(5));
@@ -92,15 +92,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                         case 1:
                             if (bracket.Parameters[0] is VectorParameter v && v.Elements.Count == 2)
                             {
-                                var output = v.Elements[0].Image;
-                                var reference = v.Elements[1].Image;
-                                var input = statement.Parameters[2].Image;
+                                var output = v.Elements[0].Value;
+                                var reference = v.Elements[1].Value;
+                                var input = statement.Parameters[2].Value;
                                 noise = new Noise(name, output, reference, sweep);
                             }
                             else if (bracket.Parameters[0] is SingleParameter s)
                             {
-                                var output = s.Image;
-                                var input = statement.Parameters[1].Image;
+                                var output = s.Value;
+                                var input = statement.Parameters[1].Value;
                                 noise = new Noise(name, output, input, sweep);
                             }
 

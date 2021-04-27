@@ -5,6 +5,17 @@
     /// </summary>
     public abstract class Parameter : SpiceObject
     {
+        protected Parameter(string value, SpiceLineInfo lineInfo)
+            : base(lineInfo)
+        {
+            Value = value;
+        }
+
+        protected Parameter(string value)
+        {
+            Value = value;
+        }
+
         protected Parameter(SpiceLineInfo lineInfo)
             : base(lineInfo)
         {
@@ -14,13 +25,7 @@
         {
         }
 
-        /// <summary>
-        /// Gets the text representation of the parameter.
-        /// </summary>
-        public abstract string Image
-        {
-            get;
-        }
+        public virtual string Value { get; set; }
 
         /// <summary>
         /// Gets the string representation of the parameter.
@@ -28,7 +33,7 @@
         /// <returns>String representation of the parameter.</returns>
         public override string ToString()
         {
-            return Image;
+            return Value;
         }
     }
 }

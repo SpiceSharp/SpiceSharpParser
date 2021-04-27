@@ -43,13 +43,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                     case 0:
                         throw new SpiceSharpParserException("No nodes for voltage export. Node expected", vector.LineInfo);
                     case 2:
-                        referencePath = vector.Elements[1].Image;
+                        referencePath = vector.Elements[1].Value;
                         reference = context.NameGenerator.ParseNodeName(referencePath);
-                        nodePath = vector.Elements[0].Image;
+                        nodePath = vector.Elements[0].Value;
                         node = context.NameGenerator.ParseNodeName(nodePath);
                         break;
                     case 1:
-                        nodePath = vector.Elements[0].Image;
+                        nodePath = vector.Elements[0].Value;
                         node = context.NameGenerator.ParseNodeName(nodePath);
                         break;
 
@@ -59,7 +59,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             }
             else
             {
-                nodePath = parameters.Get(0).Image;
+                nodePath = parameters.Get(0).Value;
                 node = context.NameGenerator.ParseNodeName(nodePath);
             }
 

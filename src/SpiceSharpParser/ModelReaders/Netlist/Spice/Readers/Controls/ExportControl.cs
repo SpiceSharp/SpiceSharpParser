@@ -112,7 +112,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 }
                 else
                 {
-                    string expressionName = parameter.Image;
+                    string expressionName = parameter.Value;
                     var expressionNames = context.Evaluator.GetExpressionNames();
 
                     if (expressionNames.Contains(expressionName))

@@ -13,7 +13,7 @@
         }
 
         /// <summary>
-        /// Gets the name of component.
+        /// Gets or sets the name of component.
         /// </summary>
         public string Name { get; set; }
 
@@ -23,7 +23,7 @@
         public Parameter NameParameter { get; set; }
 
         /// <summary>
-        /// Gets pins and components parameters.
+        /// Gets or sets pins and components parameters.
         /// </summary>
         public ParameterCollection PinsAndParameters { get; set; }
 
@@ -36,6 +36,15 @@
             var clone = new Component(Name, (ParameterCollection)PinsAndParameters.Clone(), LineInfo);
             clone.NameParameter = (Parameter)NameParameter.Clone();
             return clone;
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>A string that represents the current object.</returns>
+        public override string ToString()
+        {
+            return $"{Name} {PinsAndParameters}";
         }
     }
 }

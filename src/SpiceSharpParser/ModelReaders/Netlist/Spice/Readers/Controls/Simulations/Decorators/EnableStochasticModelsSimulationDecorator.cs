@@ -66,7 +66,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 {
                     var parameterName = asg.Name;
                     var currentValue = simulation.EntityBehaviors[componentModel.Name].GetProperty<double>(parameterName);
-                    var percentValue = _context.Evaluator.EvaluateDouble(parameterPercent.Tolerance.Image, simulation);
+                    var percentValue = _context.Evaluator.EvaluateDouble(parameterPercent.Tolerance.Value, simulation);
                     double newValue = GetValueForLotParameter(_context.Evaluator.GetEvaluationContext(simulation), baseModel, parameterName, currentValue, percentValue, parameterPercent.RandomDistributionName, comparer);
 
                     _context.SimulationPreparations.SetParameter(componentModel, simulation, parameterName, newValue, true, false);
@@ -85,7 +85,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 {
                     var parameterName = assignmentParameter.Name;
                     var currentValue = simulation.EntityBehaviors[componentModel.Name].GetProperty<double>(parameterName);
-                    var percentValue = _context.Evaluator.EvaluateDouble(parameterPercent.Tolerance.Image, simulation);
+                    var percentValue = _context.Evaluator.EvaluateDouble(parameterPercent.Tolerance.Value, simulation);
 
                     var random = _context.Evaluator.GetEvaluationContext(simulation).Randomizer.GetRandomProvider(parameterPercent.RandomDistributionName);
                     var r = random.NextSignedDouble();

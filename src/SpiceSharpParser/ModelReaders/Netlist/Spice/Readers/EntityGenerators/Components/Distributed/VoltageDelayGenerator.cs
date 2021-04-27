@@ -45,7 +45,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else
                 {
-                    context.SetParameter(vd, "delay", parameter.Image);
+                    context.SetParameter(vd, "delay", parameter.Value);
                 }
             }
 

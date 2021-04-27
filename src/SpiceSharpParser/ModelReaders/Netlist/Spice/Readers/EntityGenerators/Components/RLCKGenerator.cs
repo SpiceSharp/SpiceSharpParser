@@ -91,8 +91,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 return null;
             }
 
-            mut.InductorName1 = parameters.Get(0).Image;
-            mut.InductorName2 = parameters.Get(1).Image;
+            mut.InductorName1 = parameters.Get(0).Value;
+            mut.InductorName2 = parameters.Get(1).Value;
 
             context.SetParameter(mut, "k", parameters.Get(2));
 
@@ -124,7 +124,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else
                 {
-                    expression = $"({something.Image}) * x";
+                    expression = $"({something.Value}) * x";
                 }
 
                 if (evalContext.HaveSpiceProperties(expression) || evalContext.HaveFunctions(expression))
@@ -255,7 +255,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (modelBased)
                 {
-                    var model = context.ModelsRegistry.FindModelEntity(parameters.Get(2).Image);
+                    var model = context.ModelsRegistry.FindModelEntity(parameters.Get(2).Value);
 
                     if (tcParameterAssignment.Values.Count == 2)
                     {
@@ -346,7 +346,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else
                 {
-                    expression = something.Image;
+                    expression = something.Value;
                 }
 
                 if (evalContext.HaveSpiceProperties(expression) || evalContext.HaveFunctions(expression))
@@ -389,7 +389,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 // Check if something is a model name
                 if ((something is WordParameter || something is IdentifierParameter)
-                    && context.ModelsRegistry.FindModel(parameters.Get(2).Image) != null)
+                    && context.ModelsRegistry.FindModel(parameters.Get(2).Value) != null)
                 {
                     // RName Node1 Node2 modelName
                     context.Result.Validation.Add(
@@ -448,7 +448,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 // Check if something is a model name
                 bool hasModelSyntax = (something is WordParameter || something is IdentifierParameter)
-                                      && context.ModelsRegistry.FindModel(something.Image) != null;
+                                      && context.ModelsRegistry.FindModel(something.Value) != null;
                 bool hasTcParameter = parameters.Any(
                     p => p is AssignmentParameter ap && ap.Name.Equals(
                              "tc",
@@ -488,7 +488,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                                                          || resistorParameters[0] is ValueParameter
                                                          || resistorParameters[0] is ExpressionParameter))
                     {
-                        context.SetParameter(res, "resistance", resistorParameters[0].Image, true, false);
+                        context.SetParameter(res, "resistance", resistorParameters[0].Value, true, false);
                         resistorParameters.RemoveAt(0);
                     }
                 }
@@ -536,7 +536,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     }
                     else
                     {
-                        context.SetParameter(res, "resistance", resistanceParameter.Image, true, false);
+                        context.SetParameter(res, "resistance", resistanceParameter.Value, true, false);
                     }
 
                     resistorParameters.RemoveAt(0);
@@ -556,7 +556,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                                 new ValidationEntry(
                                     ValidationEntrySource.Reader,
                                     ValidationEntryLevel.Error,
-                                    $"Can't set parameter for resistor: '{parameter.Image}'",
+                                    $"Can't set parameter for resistor: '{parameter}'",
                                     parameters.LineInfo,
                                     exception: e));
 
@@ -569,7 +569,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             new ValidationEntry(
                                 ValidationEntrySource.Reader,
                                 ValidationEntryLevel.Error,
-                                $"Invalid parameter for resistor: '{parameter.Image}'",
+                                $"Invalid parameter for resistor: '{parameter}'",
                                 parameters.LineInfo));
 
                         return null;

@@ -96,7 +96,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
         {
             for (var i = 0; i < parameters.Count; i++)
             {
-                var parameter = parameters[i].Image;
+                var parameter = parameters[i].Value;
                 string distribution = null;
 
                 if (parameter.Contains("/"))
@@ -140,7 +140,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
 
             for (var i = 0; i < parameters.Count; i++)
             {
-                var parameter = parameters[i].Image.ToUpper();
+                var parameter = parameters[i].Value.ToUpper();
 
                 if (parameter.Contains("DEV"))
                 {

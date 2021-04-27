@@ -25,7 +25,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
                 if (mapper.TryGetValue(type, context.CaseSensitivity.IsFunctionNameCaseSensitive, out var exporter))
                 {
                     return exporter.CreateExport(
-                        exportParameter.Image,
+                        exportParameter.Value,
                         type,
                         bp.Parameters,
                         context.Evaluator.GetEvaluationContext(simulation),
@@ -50,7 +50,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
                 if (mapper.TryGetValue(type, true, out var exporter))
                 {
                     return exporter.CreateExport(
-                        exportParameter.Image,
+                        exportParameter.Value,
                         type,
                         parameters,
                         context.Evaluator.GetEvaluationContext(simulation),
@@ -60,7 +60,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
 
             if (exportParameter is SingleParameter s)
             {
-                string expressionName = s.Image;
+                string expressionName = s.Value;
                 var expressionNames = context.Evaluator.GetExpressionNames();
 
                 if (expressionNames.Any(e => e == expressionName))
@@ -79,7 +79,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
                 }
             }
 
-            context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Unsupported export: {exportParameter.Image}", exportParameter.LineInfo));
+            context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Unsupported export: {exportParameter}", exportParameter.LineInfo));
             return null;
         }
     }

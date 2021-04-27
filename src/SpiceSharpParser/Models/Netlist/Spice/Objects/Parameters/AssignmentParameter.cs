@@ -43,7 +43,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
         /// <summary>
         /// Gets or sets the value of assignment parameter.
         /// </summary>
-        public string Value
+        public override string Value
         {
             get => Values[0];
 
@@ -61,23 +61,20 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
         /// <summary>
         /// Gets the string representation of the parameter.
         /// </summary>
-        public override string Image
+        public override string ToString()
         {
-            get
+            if (Arguments.Count > 0)
             {
-                if (Arguments.Count > 0)
+                return Name + "(" + string.Join(",", Arguments) + ") =" + Value;
+            }
+            else
+            {
+                if (HasFunctionSyntax)
                 {
-                    return Name + "(" + string.Join(",", Arguments) + ") =" + Value;
+                    return Name + "() = " + Values;
                 }
-                else
-                {
-                    if (HasFunctionSyntax)
-                    {
-                        return Name + "() = " + Values;
-                    }
 
-                    return Name + "=" + string.Join(",", Values.ToArray());
-                }
+                return Name + "=" + string.Join(",", Values.ToArray());
             }
         }
 

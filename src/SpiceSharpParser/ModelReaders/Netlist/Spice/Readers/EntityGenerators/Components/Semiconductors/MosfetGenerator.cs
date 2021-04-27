@@ -72,14 +72,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             // Get the model and generate a component for it
             SpiceSharp.Components.Component mosfet = null;
             var modelNameParameter = parameters.Get(4);
-            var model = context.ModelsRegistry.FindModel(modelNameParameter.Image);
+            var model = context.ModelsRegistry.FindModel(modelNameParameter.Value);
             if (model == null)
             {
                 context.Result.Validation.Add(
                     new ValidationEntry(
                         ValidationEntrySource.Reader,
                         ValidationEntryLevel.Error,
-                        $"Could not find model {modelNameParameter.Image} for mosfet {originalName}",
+                        $"Could not find model {modelNameParameter} for mosfet {originalName}",
                         parameters.LineInfo));
 
                 return null;
@@ -96,7 +96,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         mosfetDetails.Mosfet,
                         simulation,
                         modelNameParameter,
-                        $"Could not find model {modelNameParameter.Image} for mosfet {componentIdentifier}",
+                        $"Could not find model {modelNameParameter} for mosfet {componentIdentifier}",
                         mosfetDetails.SetModelAction,
                         context.Result);
                 });

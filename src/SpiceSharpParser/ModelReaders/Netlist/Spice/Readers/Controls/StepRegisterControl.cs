@@ -32,7 +32,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         statement.LineInfo));
             }
 
-            string firstParam = statement.Parameters[0].Image;
+            string firstParam = statement.Parameters[0].Value;
 
             switch (firstParam.ToLower())
             {
@@ -108,7 +108,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
         private void RegisterParameter(Parameter variableParameter, ICircuitContext context)
         {
-            context.Evaluator.SetParameter(variableParameter.Image, 0);
+            context.Evaluator.SetParameter(variableParameter.Value, 0);
         }
     }
 }

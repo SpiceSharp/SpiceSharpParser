@@ -44,7 +44,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
             {
                 if (paramToSet.Key is WordParameter || paramToSet.Key is IdentifierParameter)
                 {
-                    if (context.Result.FindObject(paramToSet.Key.Image, out IEntity @object))
+                    if (context.Result.FindObject(paramToSet.Key.Value, out IEntity @object))
                     {
                         SetIndependentSource(@object, simulation, context, paramToSet);
                     }
@@ -77,7 +77,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
         protected void SetModelParameter(Simulation simulation, ICircuitContext context, KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, double> paramToSet, BracketParameter bp)
         {
             string modelName = bp.Name;
-            string paramName = bp.Parameters[0].Image;
+            string paramName = bp.Parameters[0].Value;
             if (context.Result.FindObject(modelName, out IEntity @model))
             {
                 context
@@ -96,7 +96,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
         {
             simulation.BeforeSetup += (object sender, EventArgs args) =>
             {
-                context.Evaluator.SetParameter(simulation, paramToSet.Key.Image, paramToSet.Value);
+                context.Evaluator.SetParameter(simulation, paramToSet.Key.Value, paramToSet.Value);
             };
         }
 
