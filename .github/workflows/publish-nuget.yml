@@ -20,7 +20,9 @@ jobs:
         dotnet-version: '5.0.100'
     
     - name: Restore dependencies
-      run: dotnet restore
+      run: 
+          cd src
+          dotnet restore
 
     - name: Compile Spice#
       run: dotnet build src\SpiceSharpParser\SpiceSharpParser.csproj --configuration Release --no-restore
@@ -28,5 +30,5 @@ jobs:
     - name: Publish to NuGet
       env:
         APIKEY: ${{ secrets.NUGET_APIKEY }}
-      run: dotnet nuget push .\SpiceSharp\bin\Release\SpiceSharp.*.nupkg -k $env:APIKEY -s "https://api.nuget.org/v3/index.json"
+      run: dotnet nuget push src\SpiceSharpParser\bin\Release\SpiceSharpParser.*.nupkg -k $env:APIKEY -s "https://api.nuget.org/v3/index.json"
       
