@@ -22,6 +22,7 @@ jobs:
     - name: Restore dependencies
       run: 
           cd src
+          
           dotnet restore
 
     - name: Compile Spice#
