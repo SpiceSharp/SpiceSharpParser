@@ -1,0 +1,30 @@
+name: Publish to NuGet
+
+on:
+  release:
+    branches: [ master ]
+    types: [ published ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@master
+    
+    - name: Setup dotnet tooling
+      uses: actions/setup-dotnet@master
+      with:
+        dotnet-version: '5.0.100'
+    
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Compile Spice#
+      run: dotnet build src\SpiceSharpParser\SpiceSharpParser.csproj --configuration Release --no-restore
+
+    - name: Publish to NuGet
+      env:
+        APIKEY: ${{ secrets.NUGET_APIKEY }}
+      run: dotnet nuget push .\SpiceSharp\bin\Release\SpiceSharp.*.nupkg -k $env:APIKEY -s "https://api.nuget.org/v3/index.json"
+      
