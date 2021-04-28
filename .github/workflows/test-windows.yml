@@ -46,5 +46,16 @@ jobs:
           cd src
           ..\.sonar\scanner\dotnet-sonarscanner begin /k:"SpiceSharp_SpiceSharpParser" /o:"spicesharp" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet build
-          dotnet test --blame --no-restore --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
-          ..\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          dotnet test --blame --no-restore --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=opencover.xml
+          ..\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"  
+      - name: dotnet-sonarcloud-analysis
+        uses: spoland/dotnet-sonarcloud-analysis@v1.0
+        with:
+          # Specifies the key of the analyzed project in SonarCloud
+          project-key: "SpiceSharp_SpiceSharpParser"
+          # Specifies the SonarCloud organization
+          sonar-organization: "spicesharp"
+          # Specifies the access token to authenticate with to SonarCloud
+          sonar-host-url: "https://sonarcloud.io"
+          # Path to OpenCover "https://sonarcloud.io" coverage reports
+          opencover-reports-paths: "**/*.opencover.xml"
