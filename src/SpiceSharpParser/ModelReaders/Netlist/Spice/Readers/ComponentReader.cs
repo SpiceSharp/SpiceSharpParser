@@ -6,6 +6,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
 using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 {
@@ -46,14 +47,40 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
             }
 
             string componentName = statement.Name;
-
             IComponentGenerator generator = GetComponentGenerator(context, componentName, statement.LineInfo, out string componentType);
+
+            var statementClone = statement.Clone() as Component;
+            if (context.Parent != null)
+            {
+                // entity is part of subcircuit
+
+                var evalContext = context.Evaluator.GetEvaluationContext();
+
+                if (evalContext.Parameters.ContainsKey("m"))
+                {
+                    var mParameter = evalContext.Parameters["m"];
+                    if (mParameter != null)
+                    {
+                        statementClone.PinsAndParameters.Add(new AssignmentParameter() { Name = "m", Value = mParameter.ValueExpression });
+                    }
+                }
+
+                if (evalContext.Parameters.ContainsKey("n"))
+                {
+                    var nParameter = evalContext.Parameters["n"];
+
+                    if (nParameter != null)
+                    {
+                        statementClone.PinsAndParameters.Add(new AssignmentParameter() { Name = "n", Value = nParameter.ValueExpression });
+                    }
+                }
+            }
 
             IEntity entity = generator?.Generate(
                 context.NameGenerator.GenerateObjectName(componentName),
                 componentName,
                 componentType,
-                statement.PinsAndParameters,
+                statementClone.PinsAndParameters,
                 context);
 
             if (entity != null)
