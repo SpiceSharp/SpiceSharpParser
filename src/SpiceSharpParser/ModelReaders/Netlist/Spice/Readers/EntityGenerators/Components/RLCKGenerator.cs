@@ -186,7 +186,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             if (parameters.Count == 3)
             {
                 // CXXXXXXX N1 N2 VALUE
-                if (parameters[2] is ValueParameter)
+                if (parameters[2] is ValueParameter || parameters[2] is ExpressionParameter || parameters[2] is WordParameter)
                 {
                     context.SetParameter(capacitor, "capacitance", parameters.Get(2), true, false);
                 }
@@ -322,7 +322,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
             var inductor = new Inductor(name);
             context.CreateNodes(inductor, parameters.Take(Inductor.InductorPinCount));
-            context.SetParameter(inductor, "inductance", parameters.Get(2));
+            context.SetParameter(inductor, "inductance", parameters.Get(2), true, false);
             SetParameters(context, inductor, parameters.Skip(Inductor.InductorPinCount + 1), false);
 
             return inductor;
@@ -423,7 +423,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     context.SetParameter(res, "resistance", something, true, false);
                     return res;
                 }
-                
+
                 if (modelBased)
                 {
                     context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
