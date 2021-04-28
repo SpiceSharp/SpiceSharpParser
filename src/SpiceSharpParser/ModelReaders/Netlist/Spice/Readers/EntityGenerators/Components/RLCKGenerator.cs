@@ -110,7 +110,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </returns>
         protected SpiceSharp.Components.IComponent GenerateCap(string name, ParameterCollection parameters, ICircuitContext context)
         {
-            if (parameters.Count == 3)
+            if (parameters.Count >= 3)
             {
                 // CXXXXXXX N1 N2 VALUE
                 var evalContext = context.Evaluator.GetEvaluationContext();
@@ -131,6 +131,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     BehavioralCapacitor behavioralCapacitor = new BehavioralCapacitor(name);
                     context.CreateNodes(behavioralCapacitor, parameters.Take(BehavioralCapacitor.BehavioralCapacitorPinCount));
+                    
+                    var mParameter = parameters.FirstOrDefault(p => p is AssignmentParameter p1 && p1.Name.ToLower() == "m");
+                    var nParameter = parameters.FirstOrDefault(p => p is AssignmentParameter p1 && p1.Name.ToLower() == "n");
+
+                    // the reverse order is intended. Expression defines the capacitance.
+                    expression = MultiplyIfNeeded(expression, ((AssignmentParameter)nParameter)?.Value, ((AssignmentParameter)mParameter)?.Value);
 
                     behavioralCapacitor.Parameters.Expression = expression;
                     behavioralCapacitor.Parameters.ParseAction = (expression) =>
