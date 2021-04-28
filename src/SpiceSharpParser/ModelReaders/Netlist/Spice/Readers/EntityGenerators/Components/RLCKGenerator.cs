@@ -303,20 +303,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </returns>
         protected IEntity GenerateInd(string name, ParameterCollection parameters, ICircuitContext context)
         {
-            if (parameters.Count != 3)
+            if (parameters.Count < 3)
             {
                 context.Result.Validation.Add(
                     new ValidationEntry(
                         ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Warning,
-                        $"Inductor expects 3 parameters/pins",
+                        ValidationEntryLevel.Error,
+                        $"Inductor expects at least 3 parameters",
                         parameters.LineInfo));
+
                 return null;
             }
-
             var inductor = new Inductor(name);
-            context.CreateNodes(inductor, parameters);
+            context.CreateNodes(inductor, parameters.Take(Inductor.InductorPinCount));
             context.SetParameter(inductor, "inductance", parameters.Get(2));
+            SetParameters(context, inductor, parameters.Skip(Inductor.InductorPinCount + 1), false);
 
             return inductor;
         }
