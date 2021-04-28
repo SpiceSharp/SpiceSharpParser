@@ -380,52 +380,65 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
 
             Resistor res = new Resistor(name);
-            context.CreateNodes(res, parameters);
+            context.CreateNodes(res, parameters.Take(Resistor.ResistorPinCount));
 
             if (parameters.Count == 3)
             {
                 // RName Node1 Node2 something
                 var something = parameters[2];
 
+                bool modelBased = false;
+                bool resistanceBased = false;
                 // Check if something is a model name
                 if ((something is WordParameter || something is IdentifierParameter)
-                    && context.ModelsRegistry.FindModel(parameters.Get(2).Value) != null)
+                    && context.ModelsRegistry.FindModel(something.Value) != null)
                 {
-                    // RName Node1 Node2 modelName
-                    context.Result.Validation.Add(
-                        new ValidationEntry(
-                            ValidationEntrySource.Reader,
-                            ValidationEntryLevel.Warning,
-                            $"R parameter needs to be specified",
-                            parameters.LineInfo));
-                    return null;
+                    modelBased = true;
                 }
 
                 // Check if something can be resistance
-                if (!(something is WordParameter
+                if (!modelBased && (something is WordParameter
                      || something is IdentifierParameter
                      || something is ValueParameter
                      || something is ExpressionParameter
                      || (something is AssignmentParameter ap && (ap.Name.ToLower() == "r" || ap.Name.ToLower() == "resistance"))))
                 {
+                    resistanceBased = true;
+                }
+
+                if (resistanceBased)
+                {
+                    context.SetParameter(res, "resistance", something, true, false);
+                    return res;
+                }
+                
+                if (modelBased)
+                {
+                    context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
+                    {
+                        context.ModelsRegistry.SetModel(
+                            res,
+                            simulation,
+                            something,
+                            $"Could not find model {something} for resistor {name}",
+                            (Context.Models.Model model) => res.Model = model.Name,
+                            context.Result);
+                    });
+
+                    return res;
+                }
+
+                if (!modelBased && !resistanceBased)
+                {
+                    // RName Node1 Node2 something
                     context.Result.Validation.Add(
                         new ValidationEntry(
                             ValidationEntrySource.Reader,
                             ValidationEntryLevel.Warning,
-                            $"Third parameter needs to represent resistance of resistor",
+                            $"Resistancee or model name needs to be specified for resistor",
                             parameters.LineInfo));
 
                     return null;
-                }
-
-                // Set resistance
-                if (something is AssignmentParameter asp)
-                {
-                    context.SetParameter(res, "resistance", asp, true, false);
-                }
-                else
-                {
-                    context.SetParameter(res, "resistance", something, true, false);
                 }
             }
             else

@@ -16,6 +16,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".OP",
                 ".END");
 
+            Assert.NotNull(result);
             Assert.True(result.ValidationResult.HasWarning);
         }
 
@@ -30,9 +31,26 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".OP",
                 ".END");
 
-            var export = RunOpSimulation(netlist, "I(R1)");
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
             Assert.Equal(15, export);
+        }
+
+
+        [Fact]
+        public void When_SimplestFormatWithMultiply_Expect_Reference()
+        {
+            var netlist = ParseNetlist(
+                "Resistor circuit",
+                "V1 1 0 100",
+                "R1 1 0 10 m=10", // parallel
+                ".SAVE I(R1)",
+                ".OP",
+                ".END");
+
+            Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
+            Assert.Equal(100.0, export);
         }
 
         [Fact]
@@ -46,9 +64,25 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".OP",
                 ".END");
 
-            var export = RunOpSimulation(netlist, "I(R1)");
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
             Assert.Equal(15, export);
+        }
+
+        [Fact]
+        public void When_NgSpiceFirstFormatWithMultiply_Expect_Reference()
+        {
+            var netlist = ParseNetlist(
+                "Resistor circuit",
+                "V1 1 0 150",
+                "R1 1 0 r=10 m=2",
+                ".SAVE I(R1)",
+                ".OP",
+                ".END");
+
+            Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
+            Assert.Equal(15*2, export);
         }
 
         [Fact]
@@ -62,9 +96,26 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".OP",
                 ".END");
 
-            var export = RunOpSimulation(netlist, "I(R1)");
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
             Assert.Equal(15, export);
+        }
+
+
+        [Fact]
+        public void When_NgSpiceSecondFormatWithMultiply_Expect_Reference()
+        {
+            var netlist = ParseNetlist(
+                "Resistor circuit",
+                "V1 1 0 150",
+                "R1 1 0 resistance=10 m = 2",
+                ".SAVE I(R1)",
+                ".OP",
+                ".END");
+
+            Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
+            Assert.Equal(15 * 2, export);
         }
 
         [Fact]
@@ -79,9 +130,26 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".OP",
                 ".END");
 
-            var export = RunOpSimulation(netlist, "I(R1)");
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
             Assert.Equal(15, export);
+        }
+
+        [Fact]
+        public void When_SimplestFormatWithParameterWithoutExpressionWithMultiply_Expect_Reference()
+        {
+            var netlist = ParseNetlist(
+                "Resistor circuit",
+                "V1 1 0 150",
+                "R1 1 0 a m = 2",
+                ".SAVE I(R1)",
+                ".PARAM a = 10",
+                ".OP",
+                ".END");
+
+            Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
+            Assert.Equal(15 * 2, export);
         }
 
         [Fact]
@@ -96,10 +164,28 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".OP",
                 ".END");
 
-            var export = RunOpSimulation(netlist, "I(R1)");
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
             Assert.Equal(15, export);
         }
+
+        [Fact]
+        public void When_SimplestFormatWithParameterWithoutExpressionForNgSpiceFirstFormatWithMultiply_Expect_Reference()
+        {
+            var netlist = ParseNetlist(
+                "Resistor circuit",
+                "V1 1 0 150",
+                "R1 1 0 r=a m = 2",
+                ".SAVE I(R1)",
+                ".PARAM a = 10",
+                ".OP",
+                ".END");
+
+            Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
+            Assert.Equal(15 * 2, export);
+        }
+
 
         [Fact]
         public void When_SimplestFormatWithParameterWithoutExpressionForNgSpiceSecondFormat_Expect_Reference()
@@ -113,9 +199,26 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".OP",
                 ".END");
 
-            var export = RunOpSimulation(netlist, "I(R1)");
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
             Assert.Equal(15, export);
+        }
+
+        [Fact]
+        public void When_SimplestFormatWithParameterWithoutExpressionForNgSpiceSecondFormatWithMultiply_Expect_Reference()
+        {
+            var netlist = ParseNetlist(
+                "Resistor circuit",
+                "V1 1 0 150",
+                "R1 1 0 resistance=a m =2",
+                ".SAVE I(R1)",
+                ".PARAM a = 10",
+                ".OP",
+                ".END");
+
+            Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
+            Assert.Equal(15*2, export);
         }
 
         [Fact]
@@ -130,9 +233,26 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".OP",
                 ".END");
 
-            var export = RunOpSimulation(netlist, "I(R1)");
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
             EqualsWithTol(300.0, export);
+        }
+
+        [Fact]
+        public void When_ModelFormatWithMultiply_Expect_Reference()
+        {
+            var netlist = ParseNetlist(
+                "Resistor circuit",
+                "V1 1 0 150",
+                "R1 1 0 myresistor L=10u W=2u m=2",
+                ".MODEL myresistor R RSH=0.1",
+                ".SAVE I(R1)",
+                ".OP",
+                ".END");
+
+            Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
+            EqualsWithTol(300.0 * 2.0, export);
         }
 
         [Fact]
@@ -147,9 +267,26 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".OP",
                 ".END");
 
-            var export = RunOpSimulation(netlist, "I(R1)");
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
             EqualsWithTol(300.0, export);
+        }
+
+        [Fact]
+        public void When_ModelFormatWithoutWidthWithMultiply_Expect_Reference()
+        {
+            var netlist = ParseNetlist(
+                "Resistor circuit",
+                "V1 1 0 150",
+                "R1 1 0 myresistor L=10u m=2",
+                ".MODEL myresistor R RSH=0.1 defw=2u",
+                ".SAVE I(R1)",
+                ".OP",
+                ".END");
+
+            Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
+            EqualsWithTol(300.0*2, export);
         }
 
         [Fact]
@@ -166,6 +303,27 @@ namespace SpiceSharpParser.IntegrationTests.Components
                     ".END");
 
             Assert.False(result.ValidationResult.HasError);
+            var export = RunOpSimulation(result, "I(R1)");
+            EqualsWithTol(0.15, export);
+        }
+
+        [Fact]
+        public void When_ModelFormatWithoutWidthAndLengthWithMultiply_Expect_Reference()
+        {
+            var result =
+                ParseNetlist(
+                    "Resistor circuit",
+                    "V1 1 0 150",
+                    "R1 1 0 myresistor m = 4",
+                    ".MODEL myresistor R RSH=0.1 defw=2u",
+                    ".SAVE I(R1)",
+                    ".OP",
+                    ".END");
+
+            Assert.NotNull(result);
+            Assert.False(result.ValidationResult.HasError);
+            var export = RunOpSimulation(result, "I(R1)");
+            EqualsWithTol(0.6, export);
         }
 
         [Fact]
@@ -180,9 +338,26 @@ namespace SpiceSharpParser.IntegrationTests.Components
                     ".OP",
                     ".END");
 
-            var export = RunOpSimulation(netlist, "I(R1)");
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
             EqualsWithTol(300.0, export);
+        }
+
+        [Fact]
+        public void When_ModelFormatWithoutWidthAndLengthAndWithResistanceWithMultiply_Expect_Reference()
+        {
+            var netlist = ParseNetlist(
+                    "Resistor circuit",
+                    "V1 1 0 150",
+                    "R1 1 0 myresistor 0.5 m = 2",
+                    ".MODEL myresistor R RSH=0.1 defw=2u",
+                    ".SAVE I(R1)",
+                    ".OP",
+                    ".END");
+
+            Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
+            EqualsWithTol(300.0 * 2.0, export);
         }
 
         [Fact]
@@ -197,9 +372,26 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".OPTIONS TEMP=10",
                 ".END");
 
-            var export = RunOpSimulation(netlist, "I(R1)");
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
             Assert.Equal(15, export);
+        }
+
+        [Fact]
+        public void When_TCParameterFormatWithZeroValuesWithMultiply_Expect_Reference()
+        {
+            var netlist = ParseNetlist(
+                "Resistor circuit",
+                "V1 1 0 150",
+                "R1 1 0 10 TC = 0,0 m = 2",
+                ".SAVE I(R1)",
+                ".OP",
+                ".OPTIONS TEMP=10",
+                ".END");
+
+            Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
+            Assert.Equal(15*2, export);
         }
 
         [Fact]
@@ -214,9 +406,26 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".OPTIONS TEMP=10",
                 ".END");
 
-            var export = RunOpSimulation(netlist, "I(R1)");
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
             Assert.NotEqual(15, export);
+        }
+
+        [Fact]
+        public void When_TCParameterFormatWithNonZeroValuesWithMultiply_Expect_Reference()
+        {
+            var netlist = ParseNetlist(
+                "Resistor circuit",
+                "V1 1 0 150",
+                "R1 1 0 10 TC = 0,0.01 m = 2",
+                ".SAVE I(R1)",
+                ".OP",
+                ".OPTIONS TEMP=10",
+                ".END");
+
+            Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
+            Assert.NotEqual(15*2, export);
         }
 
         [Fact]
@@ -231,9 +440,26 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".OPTIONS TEMP=10",
                 ".END");
 
-            var export = RunOpSimulation(netlist, "I(R1)");
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
             EqualsWithTol(18.0722891566265, export);
+        }
+
+        [Fact]
+        public void When_TCParameterFormatWithZeroValueWithMultiply_Expect_Reference()
+        {
+            var netlist = ParseNetlist(
+                "Resistor circuit",
+                "V1 1 0 150",
+                "R1 1 0 10 TC = 0.01 m=2",
+                ".SAVE I(R1)",
+                ".OP",
+                ".OPTIONS TEMP=10",
+                ".END");
+
+            Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
+            EqualsWithTol(18.0722891566265*2, export);
         }
 
         [Fact]
@@ -249,9 +475,27 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".OPTIONS TEMP=10",
                 ".END");
 
-            var export = RunOpSimulation(netlist, "I(R1)");
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
             EqualsWithTol(300, export);
+        }
+
+        [Fact]
+        public void When_ModelFormatWithTC1TC2ZeroValuesWithMultiply_Expect_Reference()
+        {
+            var netlist = ParseNetlist(
+                "Resistor circuit",
+                "V1 1 0 150",
+                "R1 1 0 myresistor L=10u W=2u M = 2",
+                ".MODEL myresistor R rsh=0.1 tc1=0 tc2=0",
+                ".SAVE I(R1)",
+                ".OP",
+                ".OPTIONS TEMP=10",
+                ".END");
+
+            Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
+            EqualsWithTol(300*2, export);
         }
 
         [Fact]
@@ -267,9 +511,27 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".OPTIONS TEMP=10",
                 ".END");
 
-            var export = RunOpSimulation(netlist, "I(R1)");
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
             EqualsWithTol(10.0334448160535, export);
+        }
+
+        [Fact]
+        public void When_ModelFormatWithTC2NonZeroValueWithMultiply_Expect_Reference()
+        {
+            var netlist = ParseNetlist(
+                "Resistor circuit",
+                "V1 1 0 150",
+                "R1 1 0 myresistor L=10u W=2u m = 2",
+                ".MODEL myresistor R RSH=0.1 TC1=0.0 TC2=0.1",
+                ".SAVE I(R1)",
+                ".OP",
+                ".OPTIONS TEMP=10",
+                ".END");
+
+            Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
+            EqualsWithTol(10.0334448160535 * 2, export);
         }
 
         [Fact]
@@ -284,9 +546,26 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".OP",
                 ".END");
 
-            var export = RunOpSimulation(netlist, "I(R1)");
             Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
             EqualsWithTol(10.0334448160535, export);
+        }
+
+        [Fact]
+        public void When_ModelFormatWithTC2NonZeroValueWithTempParameterWithMultiply_Expect_Reference()
+        {
+            var netlist = ParseNetlist(
+                "Resistor circuit",
+                "V1 1 0 150",
+                "R1 1 0 myresistor L=10u W=2u Temp=10 M = 2",
+                ".MODEL myresistor R RSH=0.1 TC1=0.0 TC2=0.1",
+                ".SAVE I(R1)",
+                ".OP",
+                ".END");
+
+            Assert.NotNull(netlist);
+            var export = RunOpSimulation(netlist, "I(R1)");
+            EqualsWithTol(10.0334448160535 * 2, export);
         }
 
         [Fact]
@@ -325,6 +604,25 @@ namespace SpiceSharpParser.IntegrationTests.Components
             EqualsWithTol(10.0908173562059, export);
         }
 
+
+        [Fact]
+        public void When_ModelFormatWithTC1TC2NonZeroValuesAndTC1TC2OnResistorWithMultiply_Expect_Reference()
+        {
+            var netlist = ParseNetlist(
+                "Resistor circuit",
+                "V1 1 0 150",
+                "R1 1 0 myresistor L=10u W=2u tc=0.2, 0.3 m = 2",
+                ".MODEL myresistor R RSH=0.1 TC1=0.01 TC2=0.1",
+                ".SAVE I(R1)",
+                ".OP",
+                ".OPTIONS TEMP=10",
+                ".END");
+
+            var export = RunOpSimulation(netlist, "I(R1)");
+            Assert.NotNull(netlist);
+            EqualsWithTol(10.0908173562059 * 2.0, export);
+        }
+
         [Fact]
         public void When_ModelFormatWithTC1TC2NonZeroValuesAndTC1OnResistor_Expect_Reference()
         {
@@ -341,6 +639,24 @@ namespace SpiceSharpParser.IntegrationTests.Components
             var export = RunOpSimulation(netlist, "I(R1)");
             Assert.NotNull(netlist);
             EqualsWithTol(10.0908173562059, export);
+        }
+
+        [Fact]
+        public void When_ModelFormatWithTC1TC2NonZeroValuesAndTC1OnResistorWithMultiply_Expect_Reference()
+        {
+            var netlist = ParseNetlist(
+                "Resistor circuit",
+                "V1 1 0 150",
+                "R1 1 0 myresistor L=10u W=2u tc=.1 m = 2",
+                ".MODEL myresistor R RSH=0.1 TC1=0.01 TC2=0.1",
+                ".SAVE I(R1)",
+                ".OP",
+                ".OPTIONS TEMP=10",
+                ".END");
+
+            var export = RunOpSimulation(netlist, "I(R1)");
+            Assert.NotNull(netlist);
+            EqualsWithTol(10.0908173562059 * 2.0, export);
         }
 
         [Fact]
