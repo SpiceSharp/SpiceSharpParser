@@ -1,12 +1,12 @@
 # <img src="https://spicesharp.github.io/SpiceSharp/api/images/logo_full.svg" width="45px" /> Spice#/SpiceSharpParser
  [<img src="https://img.shields.io/nuget/vpre/SpiceSharp-Parser.svg">]( https://www.nuget.org/packages/SpiceSharp-Parser)
 [![Windows](https://ci.appveyor.com/api/projects/status/d8tpj2hm3hcullmw/branch/master?svg=true)](https://ci.appveyor.com/project/marcin-golebiowski/spicesharpparser/branch/master)
-[![codecov](https://codecov.io/gh/SpiceSharp/SpiceSharpParser/branch/master/graph/badge.svg)](https://codecov.io/gh/SpiceSharp/SpiceSharpParser)
 [![CodeFactor](https://www.codefactor.io/repository/github/spicesharp/spicesharpparser/badge)](https://www.codefactor.io/repository/github/spicesharp/spicesharpparser)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=SpiceSharp_SpiceSharpParser&metric=ncloc)](https://sonarcloud.io/dashboard?id=SpiceSharp_SpiceSharpParser)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=SpiceSharp_SpiceSharpParser&metric=code_smells)](https://sonarcloud.io/dashboard?id=SpiceSharp_SpiceSharpParser)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=SpiceSharp_SpiceSharpParser&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=SpiceSharp_SpiceSharpParser)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=SpiceSharp_SpiceSharpParser&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=SpiceSharp_SpiceSharpParser)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=SpiceSharp_SpiceSharpParser&metric=coverage)](https://sonarcloud.io/dashboard?id=SpiceSharp_SpiceSharpParser)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmarcin-golebiowski%2FSpiceSharpParser.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmarcin-golebiowski%2FSpiceSharpParser?ref=badge_shield)
 
 
