@@ -25,11 +25,11 @@ jobs:
           
           dotnet restore
 
-    - name: Compile Spice#
+    - name: Compile SpiceSharpParser
       run: dotnet build src\SpiceSharpParser\SpiceSharpParser.csproj --configuration Release --no-restore
 
     - name: Publish to NuGet
       env:
         APIKEY: ${{ secrets.NUGET_APIKEY }}
-      run: dotnet nuget push src\SpiceSharpParser\bin\Release\SpiceSharpParser.*.nupkg -k $env:APIKEY -s "https://api.nuget.org/v3/index.json"
+      run: dotnet nuget push src\SpiceSharpParser\bin\Release\SpiceSharp-Parser.*.nupkg -k $env:APIKEY -s "https://api.nuget.org/v3/index.json"
       
