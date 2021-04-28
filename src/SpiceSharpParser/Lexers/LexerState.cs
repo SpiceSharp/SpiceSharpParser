@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace SpiceSharpParser.Lexers
 {
@@ -11,6 +12,11 @@ namespace SpiceSharpParser.Lexers
         /// Gets or sets type of previously returned token by lexer.
         /// </summary>
         public int PreviousReturnedTokenType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of token types for current line.
+        /// </summary>
+        public List<int> CurrentLineTokenTypes { get; set; } = new List<int>();
 
         /// <summary>
         /// Gets or sets a value indicating whether lexem is a full match.

@@ -454,7 +454,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
             builder.AddRegexRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.COMMENT,
                 "A full line comment",
-                @"\*[^\r\n]*",
+                @"\w*\*[^\r\n]*",
                 null,
                 (SpiceLexerState state, string lexem) =>
                 {
@@ -463,7 +463,9 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                         return LexerRuleUseDecision.Next;
                     }
 
-                    if (state.NewLine)
+                    if (state.NewLine
+                        || state.CurrentLineTokenTypes.All(t => t == (int)SpiceTokenType.WHITESPACE)
+                        || !state.CurrentLineTokenTypes.Any())
                     {
                         return LexerRuleUseDecision.Use;
                     }

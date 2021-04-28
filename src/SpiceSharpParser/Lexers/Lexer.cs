@@ -59,10 +59,20 @@ namespace SpiceSharpParser.Lexers
                         state.NewLine = state.LineNumber != currentLineIndex;
                         state.LineNumber = currentLineIndex;
                         state.StartColumnIndex = lineProvider.GetColumnForIndex(currentTokenIndex);
+
+                        if (state.NewLine)
+                        {
+                            state.CurrentLineTokenTypes = new System.Collections.Generic.List<int>();
+                        }
                     }
 
                     if (FindBestRule(text, currentTokenIndex, state, out var tokenType, out var returnToken, out var bestMatch, out var length))
                     {
+                        if (state != null)
+                        {
+                            state.CurrentLineTokenTypes.Add(tokenType);
+                        }
+
                         if (returnToken)
                         {
                             if (state != null)
@@ -139,10 +149,15 @@ namespace SpiceSharpParser.Lexers
                             bestMatchTotalLength = bestMatch.Length;
                             returnToken = tokenRule.ReturnDecisionProvider(state, bestMatch) == LexerRuleReturnDecision.ReturnToken;
                             tokenType = tokenRule.TokenType;
-                            if (state.FullMatch || tokenRule.TopRule)
+                            if (state.FullMatch)
                             {
                                 skipDynamic = true;
                                 break;
+                            }
+
+                            if (tokenRule.TopRule)
+                            {
+                                skipDynamic = true;
                             }
                         }
                     }
