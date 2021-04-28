@@ -17,7 +17,8 @@ namespace SpiceSharpParser.Parsers.Expression
         public bool HaveSpiceProperties(string expression, EvaluationContext context)
         {
             var parser = _factory.Create(context, false);
-            var variables = parser.GetVariables(expression);
+            var node = parser.Resolve(expression);
+            var variables = parser.GetVariables(node);
 
             var voltageExportFactory = new VoltageExporter();
             var currentExportFactory = new CurrentExporter();

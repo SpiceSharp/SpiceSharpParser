@@ -127,11 +127,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     expression = $"({something.Value}) * x";
                 }
 
-                if (evalContext.HaveSpiceProperties(expression) || evalContext.HaveFunctions(expression))
+                if (evalContext.HaveSpiceProperties(expression))
                 {
                     BehavioralCapacitor behavioralCapacitor = new BehavioralCapacitor(name);
                     context.CreateNodes(behavioralCapacitor, parameters.Take(BehavioralCapacitor.BehavioralCapacitorPinCount));
-                    
+
                     var mParameter = parameters.FirstOrDefault(p => p is AssignmentParameter p1 && p1.Name.ToLower() == "m");
                     var nParameter = parameters.FirstOrDefault(p => p is AssignmentParameter p1 && p1.Name.ToLower() == "n");
 
@@ -356,7 +356,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     expression = something.Value;
                 }
 
-                if (evalContext.HaveSpiceProperties(expression) || evalContext.HaveFunctions(expression))
+                if (evalContext.HaveSpiceProperties(expression))
                 {
                     BehavioralResistor behavioralResistor = new BehavioralResistor(name);
                     context.CreateNodes(behavioralResistor, parameters.Take(BehavioralResistor.BehavioralResistorPinCount));

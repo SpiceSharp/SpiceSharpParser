@@ -29,7 +29,7 @@ namespace SpiceSharpParser.Parsers.Expression
         public bool ThrowOnErrors { get; }
 
         public ISpiceNetlistCaseSensitivitySettings CaseSettings { get; }
-        
+
         protected CustomRealBuilder DoubleBuilder { get; }
 
         protected Parser InternalParser { get; }
@@ -61,8 +61,14 @@ namespace SpiceSharpParser.Parsers.Expression
 
         public IEnumerable<string> GetVariables(string expression)
         {
-            var list = new List<string>();
             var node = InternalParser.Parse(expression);
+            return GetVariables(node);
+        }
+
+        public IEnumerable<string> GetVariables(Node node)
+        {
+            var list = new List<string>();
+
             DoubleBuilder.VariableFound += (o, e) =>
             {
                 list.Add(e.Node.ToString());
@@ -146,7 +152,7 @@ namespace SpiceSharpParser.Parsers.Expression
 
                 resolver.FunctionMap = CreateFunctions();
                 resolver.VariableMap = new Dictionary<string, Node>(StringComparerProvider.Get(CaseSettings.IsParameterNameCaseSensitive));
-               
+
                 foreach (var variable in DoubleBuilder.Variables)
                 {
                     if (variable.Constant)

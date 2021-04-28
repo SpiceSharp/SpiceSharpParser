@@ -143,7 +143,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var expressionParameter = (ExpressionParameter)parameters.Single(p => p is ExpressionParameter);
                 string expression = expressionParameter.Value;
 
-                if (evalContext.HaveSpiceProperties(expressionParameter.Value) || evalContext.HaveFunctions(expressionParameter.Value))
+                if (evalContext.HaveSpiceProperties(expressionParameter.Value))
                 {
                     BehavioralVoltageSource entity = CreateBehavioralVoltageSource(name, parameters, context, evalContext, expression);
                     return entity;
