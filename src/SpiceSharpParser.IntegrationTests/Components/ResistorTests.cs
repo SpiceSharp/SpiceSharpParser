@@ -677,5 +677,63 @@ namespace SpiceSharpParser.IntegrationTests.Components
             Func<double, double> reference = sweep => 10.0 / Math.Max(1e-3, (sweep));
             EqualsWithTol(exports, reference);
         }
+
+        [Fact]
+        public void When_DynamicResistorsIsSpecifiedWithMultiply_Expect_DynamicResistors()
+        {
+            var netlist = ParseNetlist(
+                "DC Sweep - dynamic resistors",
+                "V1 in 0 0",
+                "V2 out 0 10",
+                "R1 out 0 {max(V(in), 1e-3)} m = 2",
+                ".DC V1 0 10 1e-3",
+                ".SAVE I(R1)",
+                ".END");
+
+            var exports = RunDCSimulation(netlist, "I(R1)");
+
+            // Get references
+            Func<double, double> reference = sweep => 10.0 / ((0.5) * Math.Max(1e-3, (sweep)));
+            EqualsWithTol(exports, reference);
+        }
+
+
+        [Fact]
+        public void When_StaticResistorsIsSpecifiedWithMultiply_Expect_DynamicResistors()
+        {
+            var netlist = ParseNetlist(
+                "DC Sweep - dynamic resistors",
+                "V1 in 0 0",
+                "V2 out 0 10",
+                "R1 out 0 {max(1e-4, 1e-3)} m = 2",
+                ".DC V1 0 10 1e-3",
+                ".SAVE I(R1)",
+                ".END");
+
+            var exports = RunDCSimulation(netlist, "I(R1)");
+
+            // Get references
+            Func<double, double> reference = sweep => 10.0 / ((0.5) * Math.Max(1e-3, 1e-4));
+            EqualsWithTol(exports, reference);
+        }
+
+        [Fact]
+        public void When_StaticResistorsIsSpecifiedWithMultiplyMandN_Expect_DynamicResistors()
+        {
+            var netlist = ParseNetlist(
+                "DC Sweep - dynamic resistors",
+                "V1 in 0 0",
+                "V2 out 0 10",
+                "R1 out 0 {max(1e-4, 1e-3)} m = 2 n = 3",
+                ".DC V1 0 10 1e-3",
+                ".SAVE I(R1)",
+                ".END");
+
+            var exports = RunDCSimulation(netlist, "I(R1)");
+
+            // Get references
+            Func<double, double> reference = sweep => 10.0 / ((0.5) * 3.0 * Math.Max(1e-3, 1e-4));
+            EqualsWithTol(exports, reference);
+        }
     }
 }

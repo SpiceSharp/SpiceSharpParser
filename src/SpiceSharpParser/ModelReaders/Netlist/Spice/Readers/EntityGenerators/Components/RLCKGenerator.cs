@@ -333,7 +333,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </returns>
         protected IEntity GenerateRes(string name, ParameterCollection parameters, ICircuitContext context)
         {
-            if (parameters.Count == 3)
+            if (parameters.Count >= 3)
             {
                 var evalContext = context.Evaluator.GetEvaluationContext();
 
@@ -354,6 +354,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     BehavioralResistor behavioralResistor = new BehavioralResistor(name);
                     context.CreateNodes(behavioralResistor, parameters.Take(BehavioralResistor.BehavioralResistorPinCount));
+
+                    var mParameter = parameters.FirstOrDefault(p => p is AssignmentParameter p1 && p1.Name.ToLower() == "m");
+                    var nParameter = parameters.FirstOrDefault(p => p is AssignmentParameter p1 && p1.Name.ToLower() == "n");
+
+                    expression = MultiplyIfNeeded(expression, ((AssignmentParameter)mParameter)?.Value, ((AssignmentParameter)nParameter)?.Value);
 
                     behavioralResistor.Parameters.Expression = expression;
                     behavioralResistor.Parameters.ParseAction = (expression) =>
@@ -592,6 +597,25 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
 
             return res;
+        }
+
+        private string MultiplyIfNeeded(string expression, string mExpression, string nExpression)
+        {
+            if (!string.IsNullOrEmpty(mExpression) && !string.IsNullOrEmpty(nExpression))
+            {
+                return $"({expression} / {mExpression}) * {nExpression}";
+            }
+
+            if (!string.IsNullOrEmpty(mExpression))
+            {
+                return $"({expression} / {mExpression})";
+            }
+            if (!string.IsNullOrEmpty(nExpression))
+            {
+                return $"({expression} * {nExpression})";
+            }
+
+            return expression;
         }
     }
 }
