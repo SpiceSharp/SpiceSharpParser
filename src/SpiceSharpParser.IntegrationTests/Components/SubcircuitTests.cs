@@ -11,7 +11,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             var netlist = ParseNetlist(
                 "Subcircuit - ComplexSubcircuitWithParams",
                 "V1 IN 0 4.0",
-                "X1 IN 0 twoResistorsInSeries M = 10 N = 3",
+                "X1 IN 0 twoResistorsInSeries M = 10",
                 ".SUBCKT resistor input output params: R=1",
                 "R1 input output {R}",
                 ".ENDS resistor",
@@ -26,7 +26,33 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double export = RunOpSimulation(netlist, "I(V1)");
 
             // Get references
-            double[] references = { -4.0 / ((10.0 + 20.0) * 3.0 / 10.0) };
+            double[] references = { -4.0 / ((10.0 + 20.0) / 10.0) };
+
+            EqualsWithTol(new double[] { export }, references);
+        }
+
+        [Fact]
+        public void ComplexSubcircuitWithParamsAndMultiplyExisting()
+        {
+            var netlist = ParseNetlist(
+                "Subcircuit",
+                "V1 IN 0 4.0",
+                "XX IN 0 twoResistorsInSeries M = 10",
+                ".SUBCKT resistor input output params: R=1",
+                "R1 input output {R} m = 3",
+                ".ENDS resistor",
+                ".SUBCKT twoResistorsInSeries input output params: R1=10 R2=20",
+                "X1 input 1 resistor R=R1",
+                "X2 1 output resistor R=R2",
+                ".ENDS twoResistorsInSeries",
+                ".OP",
+                ".SAVE I(V1)",
+                ".END");
+
+            double export = RunOpSimulation(netlist, "I(V1)");
+
+            // Get references
+            double[] references = { -4.0 / ( (10.0 + 20.0) / 30.0) };
 
             EqualsWithTol(new double[] { export }, references);
         }
@@ -38,7 +64,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 "Using M and N parameters for subcircuits",
                 
                 "V1 IN 0 10",
-                "X1 IN 0 twoResistorsInSeries R1=1 R2=2 M = 10 N = 3",
+                "X1 IN 0 twoResistorsInSeries R1=1 R2=2 M = 10",
                 
                 ".SUBCKT twoResistorsInSeries input output R1=10 R2=100",
                 "R1 input 1 {R1}",
@@ -51,7 +77,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
 
             double export = RunOpSimulation(netlist, "I(V1)");
 
-            double[] references = { -10.0 / (((1.0 + 2.0) / 10.0) * 3.0) };
+            double[] references = { -10.0 / (((1.0 + 2.0) / 10.0)) };
 
             EqualsWithTol(new double[] { export }, references);
         }

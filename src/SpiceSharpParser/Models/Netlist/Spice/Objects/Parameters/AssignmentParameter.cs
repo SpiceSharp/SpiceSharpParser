@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
 {
@@ -63,7 +64,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
         /// </summary>
         public override string ToString()
         {
-            if (Arguments.Count > 0)
+            if (Arguments?.Count > 0)
             {
                 return Name + "(" + string.Join(",", Arguments) + ") =" + Value;
             }
@@ -84,7 +85,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
-            return new AssignmentParameter(Name, Arguments, Values, HasFunctionSyntax, LineInfo);
+            return new AssignmentParameter(Name, Arguments?.ToList(), Values?.ToList(), HasFunctionSyntax, LineInfo);
         }
     }
 }

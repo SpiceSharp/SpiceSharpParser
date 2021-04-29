@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using SpiceSharp.Entities;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
@@ -53,7 +54,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
             if (context.Parent != null)
             {
                 // entity is part of subcircuit
-
                 var evalContext = context.Evaluator.GetEvaluationContext();
 
                 if (evalContext.Parameters.ContainsKey("m"))
@@ -61,17 +61,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
                     var mParameter = evalContext.Parameters["m"];
                     if (mParameter != null)
                     {
-                        statementClone.PinsAndParameters.Add(new AssignmentParameter() { Name = "m", Value = mParameter.ValueExpression });
-                    }
-                }
+                        var existingParameter = statementClone.PinsAndParameters.FirstOrDefault(p => p is AssignmentParameter ap && ap.Name.ToLower() == "m");
 
-                if (evalContext.Parameters.ContainsKey("n"))
-                {
-                    var nParameter = evalContext.Parameters["n"];
-
-                    if (nParameter != null)
-                    {
-                        statementClone.PinsAndParameters.Add(new AssignmentParameter() { Name = "n", Value = nParameter.ValueExpression });
+                        if (existingParameter != null)
+                        {
+                            existingParameter.Value = $"({mParameter.ValueExpression}) * {existingParameter.Value}";
+                        }
+                        else
+                        {
+                            statementClone.PinsAndParameters.Add(new AssignmentParameter() { Name = "m", Value = mParameter.ValueExpression });
+                        }
                     }
                 }
             }
