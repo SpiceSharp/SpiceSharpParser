@@ -328,7 +328,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                ".PARAM r_global = 2",
                ".END");
 
-            Assert.Equal(2, spiceSharpModel.Circuit.Count);
+            Assert.Equal(1, spiceSharpModel.Circuit.Count);
         }
     }
 }

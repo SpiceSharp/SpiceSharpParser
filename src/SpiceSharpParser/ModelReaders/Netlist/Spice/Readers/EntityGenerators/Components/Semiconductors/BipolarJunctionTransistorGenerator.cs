@@ -41,7 +41,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     parameters.Get(4),
                     $"Could not find model {parameters.Get(4)} for BJT {originalName}",
                     (Context.Models.Model model) => bjt.Model = model.Name,
-                    context.Result);
+                    context.Result,
+                    context);
             });
 
             for (int i = 5; i < parameters.Count; i++)

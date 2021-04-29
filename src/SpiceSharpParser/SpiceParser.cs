@@ -184,8 +184,7 @@ namespace SpiceSharpParser
                 expressionParserFactory,
                 new ExpressionFeaturesReader(expressionParserFactory),
                 new ExpressionValueProvider(expressionParserFactory),
-                nameGenerator,
-                null);
+                nameGenerator);
             return preprocessorContext;
         }
     }

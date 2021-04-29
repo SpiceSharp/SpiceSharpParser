@@ -20,8 +20,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             IExpressionParserFactory expressionParserFactory,
             IExpressionFeaturesReader expressionFeaturesReader,
             IExpressionValueProvider expressionValueProvider,
-            INameGenerator nameGenerator,
-            IResultService resultService)
+            INameGenerator nameGenerator)
 
         : base(
               name,
@@ -30,8 +29,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
               expressionParserFactory,
               expressionFeaturesReader,
               expressionValueProvider,
-              nameGenerator,
-              resultService)
+              nameGenerator)
         {
             Mode = mode;
             CreateSpiceFunctions();

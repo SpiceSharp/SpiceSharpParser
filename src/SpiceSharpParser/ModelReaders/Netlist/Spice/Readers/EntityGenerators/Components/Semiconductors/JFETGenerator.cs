@@ -26,7 +26,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     parameters.Get(3),
                     $"Could not find model {parameters.Get(3)} for JFET {originalName}",
                     (Context.Models.Model model) => jfet.Model = model.Name,
-                    context.Result);
+                    context.Result,
+                    context);
             });
 
             // Read the rest of the parameters

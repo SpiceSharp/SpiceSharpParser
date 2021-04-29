@@ -96,7 +96,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.Equal(1001, export);
         }
 
-        [Fact]
+        [Fact(Skip = "Find out how to use property export for subcircuits")]
         public void ReferenceInLet()
         {
             var netlist = ParseNetlist(
@@ -126,7 +126,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.Equal(4, export[2]);
         }
 
-        [Fact]
+        [Fact(Skip = "Find out how to use property export for subcircuits")]
         public void ReferenceAsArgumentInLet()
         {
             var netlist = ParseNetlist(

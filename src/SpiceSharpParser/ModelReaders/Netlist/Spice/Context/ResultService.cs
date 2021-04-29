@@ -17,52 +17,47 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Initializes a new instance of the <see cref="ResultService"/> class.
         /// </summary>
-        /// <param name="result">A SPICE model reader result.</param>
-        public ResultService(SpiceModel<Circuit, Simulation> result)
+        /// <param name="model">A SPICE model reader result.</param>
+        public ResultService(SpiceModel<Circuit, Simulation> model)
         {
-            Result = result ?? throw new ArgumentNullException(nameof(result));
+            Model = model ?? throw new ArgumentNullException(nameof(model));
         }
 
         /// <summary>
         /// Gets simulation configuration.
         /// </summary>
-        public SimulationConfiguration SimulationConfiguration => Result.SimulationConfiguration;
+        public SimulationConfiguration SimulationConfiguration => Model.SimulationConfiguration;
 
         /// <summary>
         /// Gets all simulations.
         /// </summary>
-        public IEnumerable<Simulation> Simulations => Result.Simulations;
+        public IEnumerable<Simulation> Simulations => Model.Simulations;
 
         /// <summary>
         /// Gets all exports.
         /// </summary>
-        public IEnumerable<Export> Exports => Result.Exports;
-
-        /// <summary>
-        /// Gets the circuit.
-        /// </summary>
-        public Circuit Circuit => Result.Circuit;
+        public IEnumerable<Export> Exports => Model.Exports;
 
         /// <summary>
         /// Gets the Monte Carlo result.
         /// </summary>
-        public MonteCarloResult MonteCarlo => Result.MonteCarloResult;
+        public MonteCarloResult MonteCarlo => Model.MonteCarloResult;
 
         /// <summary>
         /// Gets or sets used random seed.
         /// </summary>
         public int? Seed
         {
-            get => Result.Seed;
-            set => Result.Seed = value;
+            get => Model.Seed;
+            set => Model.Seed = value;
         }
 
-        public SpiceNetlistValidationResult Validation => Result.ValidationResult;
+        public SpiceNetlistValidationResult Validation => Model.ValidationResult;
 
         /// <summary>
         /// Gets the result where things are added.
         /// </summary>
-        private SpiceModel<Circuit, Simulation> Result { get; }
+        private SpiceModel<Circuit, Simulation> Model { get; }
 
         /// <summary>
         /// Adds comment.
@@ -75,7 +70,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(statement));
             }
 
-            Result.Comments.Add(statement.Text);
+            Model.Comments.Add(statement.Text);
         }
 
         /// <summary>
@@ -89,7 +84,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(export));
             }
 
-            Result.Exports.Add(export);
+            Model.Exports.Add(export);
         }
 
         /// <summary>
@@ -103,7 +98,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(plot));
             }
 
-            Result.XyPlots.Add(plot);
+            Model.XyPlots.Add(plot);
         }
 
         /// <summary>
@@ -117,21 +112,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(print));
             }
 
-            Result.Prints.Add(print);
-        }
-
-        /// <summary>
-        /// Adds entity to netlist.
-        /// </summary>
-        /// <param name="entity">Entity to add.</param>
-        public void AddEntity(IEntity entity)
-        {
-            if (entity == null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-
-            Result.Circuit.Add(entity);
+            Model.Prints.Add(print);
         }
 
         /// <summary>
@@ -145,25 +126,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(simulation));
             }
 
-            Result.Simulations.Add(simulation);
-        }
-
-        /// <summary>
-        /// Finds the object in the result.
-        /// </summary>
-        /// <param name="objectId">The object id.</param>
-        /// <param name="entity">The found entity.</param>
-        /// <returns>
-        /// True if found.
-        /// </returns>
-        public bool FindObject(string objectId, out IEntity entity)
-        {
-            if (objectId == null)
-            {
-                throw new ArgumentNullException(nameof(objectId));
-            }
-
-            return Result.Circuit.TryGetEntity(objectId, out entity);
+            Model.Simulations.Add(simulation);
         }
     }
 }

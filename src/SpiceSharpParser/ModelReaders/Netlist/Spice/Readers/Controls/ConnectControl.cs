@@ -28,7 +28,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
             var vs = new VoltageSource($"Voltage connector: {nodeA} <-> {nodeB}");
             context.CreateNodes(vs, statement.Parameters);
-            context.Result.AddEntity(vs);
+            context.ContextEntities.Add(vs);
         }
     }
 }

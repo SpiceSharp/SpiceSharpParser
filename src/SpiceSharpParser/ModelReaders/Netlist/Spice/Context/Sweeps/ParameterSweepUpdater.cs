@@ -44,7 +44,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
             {
                 if (paramToSet.Key is WordParameter || paramToSet.Key is IdentifierParameter)
                 {
-                    if (context.Result.FindObject(paramToSet.Key.Value, out IEntity @object))
+                    if (context.FindObject(paramToSet.Key.Value, out IEntity @object))
                     {
                         SetIndependentSource(@object, simulation, context, paramToSet);
                     }
@@ -68,7 +68,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
         {
             string objectName = rp.Name;
             string paramName = rp.Argument;
-            if (context.Result.FindObject(objectName, out IEntity @object))
+            if (context.FindObject(objectName, out IEntity @object))
             {
                 context.SimulationPreparations.SetParameter(@object, simulation, paramName, paramToSet.Value, true, false);
             }
@@ -78,7 +78,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
         {
             string modelName = bp.Name;
             string paramName = bp.Parameters[0].Value;
-            if (context.Result.FindObject(modelName, out IEntity @model))
+            if (context.FindObject(modelName, out IEntity @model))
             {
                 context
                     .SimulationPreparations

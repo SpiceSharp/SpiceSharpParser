@@ -21,8 +21,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         IEnumerable<Export> Exports { get; }
 
-        Circuit Circuit { get; }
-
         int? Seed { get; set; }
 
         SpiceNetlistValidationResult Validation { get; }
@@ -33,11 +31,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         void AddPlot(XyPlot plot);
 
-        void AddEntity(IEntity entity);
-
         void AddSimulation(Simulation simulation);
-
-        bool FindObject(string objectId, out IEntity entity);
 
         void AddPrint(Print print);
     }

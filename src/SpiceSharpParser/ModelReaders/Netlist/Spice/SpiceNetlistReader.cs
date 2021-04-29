@@ -67,7 +67,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             IExpressionFeaturesReader expressionFeaturesReader = new ExpressionFeaturesReader(expressionParserFactory);
             IExpressionValueProvider expressionValueProvider = new ExpressionValueProvider(expressionParserFactory);
 
-            EvaluationContext expressionContext = new SpiceEvaluationContext(
+            EvaluationContext evaluationContext = new SpiceEvaluationContext(
                 string.Empty,
                 Settings.EvaluatorMode,
                 Settings.CaseSensitivity,
@@ -75,15 +75,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 expressionParserFactory,
                 expressionFeaturesReader,
                 expressionValueProvider,
-                nameGenerator,
-                resultService);
+                nameGenerator);
 
-            var simulationEvaluationContexts = new SimulationEvaluationContexts(expressionContext);
+            var simulationEvaluationContexts = new SimulationEvaluationContexts(evaluationContext);
             ISimulationPreparations simulationPreparations = new SimulationPreparations(
                 new EntityUpdates(Settings.CaseSensitivity.IsParameterNameCaseSensitive, simulationEvaluationContexts),
                 new SimulationsUpdates(simulationEvaluationContexts));
 
-            ICircuitEvaluator circuitEvaluator = new CircuitEvaluator(simulationEvaluationContexts, expressionContext);
+            ICircuitEvaluator circuitEvaluator = new CircuitEvaluator(simulationEvaluationContexts, evaluationContext);
             ISpiceStatementsReader statementsReader = new SpiceStatementsReader(
                 Settings.Mappings.Controls,
                 Settings.Mappings.Models,
@@ -105,13 +104,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 
             // Set initial seed
             circuitContext.Evaluator.Seed = Settings.Seed;
+            circuitContext.Evaluator.SetEntites(circuitContext.ContextEntities);
+            evaluationContext.CircuitContext = circuitContext;
 
             // Read statements form input netlist using created context
             circuitContext.Read(netlist.Statements, Settings.Orderer);
 
             // Set final seed
             result.Seed = circuitContext.Evaluator.Seed;
-
+            result.Circuit = circuitContext.ContextEntities;
             return result;
         }
     }

@@ -223,7 +223,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             parameters.Get(2),
                             $"Could not find model {parameters.Get(2)} for capacitor {name}",
                             (Context.Models.Model model) => capacitor.Model = model.Name,
-                            context.Result);
+                            context.Result,
+                            context);
                     });
 
                     modelBased = true;
@@ -273,7 +274,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         context.SetParameter(model, "tc1", tcParameterAssignment.Value);
                     }
 
-                    context.Result.AddEntity(model);
+                    context.ContextEntities.Add(model);
                     capacitor.Model = model.Name;
                 }
                 else
@@ -290,7 +291,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     }
 
                     context.ModelsRegistry.RegisterModelInstance(new Context.Models.Model(model.Name, model, model.Parameters));
-                    context.Result.AddEntity(model);
+                    context.ContextEntities.Add(model);
                     capacitor.Model = model.Name;
                 }
             }
@@ -434,7 +435,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             something,
                             $"Could not find model {something} for resistor {name}",
                             (Context.Models.Model model) => res.Model = model.Name,
-                            context.Result);
+                            context.Result,
+                            context);
                     });
 
                     return res;
@@ -503,7 +505,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             modelNameParameter,
                             $"Could not find model {modelNameParameter} for resistor {name}",
                             (Context.Models.Model model) => res.Model = model.Name,
-                            context.Result);
+                            context.Result,
+                            context);
                     });
 
                     resistorParameters.RemoveAt(0);
@@ -534,7 +537,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                         context.ModelsRegistry.RegisterModelInstance(new Context.Models.Model(model.Name, model, model.Parameters));
                         res.Model = model.Name;
-                        context.Result.AddEntity(model);
+                        context.ContextEntities.Add(model);
                     }
 
                     // Check if something can be resistance

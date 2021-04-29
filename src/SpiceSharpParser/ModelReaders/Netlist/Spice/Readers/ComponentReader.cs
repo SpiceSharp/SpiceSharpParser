@@ -76,7 +76,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
             }
 
             IEntity entity = generator?.Generate(
-                context.NameGenerator.GenerateObjectName(componentName),
+                componentName,
                 componentName,
                 componentType,
                 statementClone.PinsAndParameters,
@@ -84,7 +84,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
             if (entity != null)
             {
-                context.Result.AddEntity(entity);
+                context.ContextEntities.Add(entity);
             }
         }
 

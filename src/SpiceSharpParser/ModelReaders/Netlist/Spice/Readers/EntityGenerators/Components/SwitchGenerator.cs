@@ -78,7 +78,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         {
                             resistorModel = stochasticModelsRegistry.ProvideStochasticModel(name, simulation, model);
 
-                            if (!context.Result.FindObject(resistorModel.Name, out _))
+                            if (!context.FindObject(resistorModel.Name, out _))
                             {
                                 stochasticModelsRegistry.RegisterModelInstance(resistorModel);
                             }
@@ -114,7 +114,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     parameters.Get(4),
                     $"Could not find model {parameters.Get(4)} for voltage switch {name}",
                     (Context.Models.Model model2) => { vsw.Model = model2.Name; },
-                    context.Result);
+                    context.Result,
+                    context);
             });
 
             // Optional ON or OFF
@@ -225,7 +226,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         {
                             resistorModel = stochasticModelsRegistry.ProvideStochasticModel(name, simulation, model);
 
-                            if (!context.Result.FindObject(resistorModel.Name, out _))
+                            if (!context.FindObject(resistorModel.Name, out _))
                             {
                                 stochasticModelsRegistry.RegisterModelInstance(resistorModel);
                             }
@@ -274,7 +275,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     parameters.Get(3),
                     $"Could not find model {parameters.Get(3)} for current switch {name}",
                     (Context.Models.Model switchModel) => csw.Model = switchModel.Name,
-                    context.Result);
+                    context.Result,
+                    context);
             });
 
             // Optional on or off

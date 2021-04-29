@@ -41,7 +41,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
             Assert.True(netlist.Statements[4].LineInfo.LineNumber == 8);
         }
 
-        [Fact(Skip = "Will be fixed in new release")]
+        [Fact]
         public void When_BugInExpression_Expect_Reference()
         {
             var result = ParseNetlist(

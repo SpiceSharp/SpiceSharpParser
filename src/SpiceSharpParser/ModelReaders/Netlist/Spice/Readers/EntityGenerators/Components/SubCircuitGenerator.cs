@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using SpiceSharp.Components;
 using SpiceSharp.Entities;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Validation;
@@ -38,11 +39,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             ReadSubcircuits(subCircuitDefinition, subCircuitContext);
             CreateSubcircuitModels(subCircuitDefinition, subCircuitContext); // TODO: Share models someday between instances of subcircuits
             CreateSubcircuitComponents(subCircuitDefinition, subCircuitContext);
-
+            subCircuitContext.Evaluator.SetEntites(subCircuitContext.ContextEntities);
             context.Children.Add(subCircuitContext);
 
-            // null is intentional
-            return null;
+            var def = new SubcircuitDefinition(subCircuitContext.ContextEntities, subCircuitDefinition.Pins.Select(p => p.ToString()).ToArray());
+
+            var pinNames = GetPinNames(parameters, subCircuitDefinition, context);
+            var subCircuit = new Subcircuit(componentIdentifier, def);
+            subCircuit.Connect(pinNames.ToArray());
+            return subCircuit;
         }
 
         /// <summary>
@@ -138,23 +143,29 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return result;
         }
 
-        /// <summary>
-        /// Creates subcircuit context.
-        /// </summary>
-        /// <param name="subcircuitFullName">Subcircuit full name.</param>
-        /// <param name="subcircuitName">Subcircuit name.</param>
-        /// <param name="subCircuitDefinition">Subcircuit definition.</param>
-        /// <param name="parameters">Parameters and pins for subcircuit.</param>
-        /// <param name="context">Parent reading context.</param>
-        /// <returns>
-        /// A new instance of reading context.
-        /// </returns>
-        private CircuitContext CreateSubcircuitContext(string subcircuitFullName, string subcircuitName, SubCircuit subCircuitDefinition, ParameterCollection parameters, ICircuitContext context)
+        private List<string> GetPinNames(ParameterCollection parameters, SubCircuit subCircuitDefinition, ICircuitContext context)
         {
-            int parameterParameters = 0;
+            var result = new List<string>();
 
             // setting evaluator
-            var subCktParameters = new List<AssignmentParameter>();
+            var parameterParameters = GetAssigmentParametersCount(parameters, out _);
+
+            // setting node name generator
+            var pinInstanceIdentifiers = new List<string>();
+            for (var i = 0; i < parameters.Count - parameterParameters - 1; i++)
+            {
+                var nodeName = parameters.Get(i).Value;
+
+                result.Add(nodeName);
+            }
+
+            return result;
+        }
+
+        private static int GetAssigmentParametersCount(ParameterCollection parameters, out List<AssignmentParameter> subCktParameters)
+        {
+            var parameterParameters = 0;
+            subCktParameters = new List<AssignmentParameter>();
             while (true)
             {
                 if (parameters[parameters.Count - parameterParameters - 1].Value.ToLower() == "params:")
@@ -173,17 +184,35 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
             }
 
-            var subcircuitParameters = CreateSubcircuitParameters(subCircuitDefinition, subCktParameters, context);
+            return parameterParameters;
+        }
+
+        /// <summary>
+        /// Creates subcircuit context.
+        /// </summary>
+        /// <param name="subcircuitFullName">Subcircuit full name.</param>
+        /// <param name="subcircuitName">Subcircuit name.</param>
+        /// <param name="subCircuitDefinition">Subcircuit definition.</param>
+        /// <param name="parameters">Parameters and pins for subcircuit.</param>
+        /// <param name="context">Parent reading context.</param>
+        /// <returns>
+        /// A new instance of reading context.
+        /// </returns>
+        private CircuitContext CreateSubcircuitContext(string subcircuitFullName, string subcircuitName, SubCircuit subCircuitDefinition, ParameterCollection parameters, ICircuitContext context)
+        {
+            var pinNames = GetPinNames(parameters, subCircuitDefinition, context);
 
             // setting node name generator
             var pinInstanceIdentifiers = new List<string>();
-            for (var i = 0; i < parameters.Count - parameterParameters - 1; i++)
+            for (var i = 0; i < pinNames.Count; i++)
             {
-                var nodeName = parameters.Get(i).Value;
+                var nodeName = pinNames[i];
                 var pinInstanceName = context.NameGenerator.GenerateNodeName(nodeName);
                 pinInstanceIdentifiers.Add(pinInstanceName);
             }
 
+            GetAssigmentParametersCount(parameters, out var subCktParameters);
+            var subcircuitParameters = CreateSubcircuitParameters(subCircuitDefinition, subCktParameters, context);
             var subcircuitNodeNameGenerator = new SubcircuitNodeNameGenerator(subcircuitFullName, subcircuitName, subCircuitDefinition, pinInstanceIdentifiers, context.NameGenerator.Globals, context.CaseSensitivity.IsEntityNamesCaseSensitive);
             var subcircuitObjectNameGenerator = context.NameGenerator.CreateChildNameGenerator(subcircuitName);
             var subcircuitNameGenerator = new NameGenerator(subcircuitNodeNameGenerator, subcircuitObjectNameGenerator);
@@ -200,12 +229,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 subcircuitEvaluator,
                 context.SimulationPreparations,
                 context.Result,
-                subcircuitNameGenerator,
+                context.NameGenerator,
                 context.StatementsReader,
                 context.WaveformReader,
                 context.CaseSensitivity,
                 context.Exporters,
                 context.WorkingDirectory);
+
+            subcircuitEvaluationContext.CircuitContext = subcircuitContext;
 
             return subcircuitContext;
         }

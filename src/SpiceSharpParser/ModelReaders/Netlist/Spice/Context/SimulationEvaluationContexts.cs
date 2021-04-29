@@ -1,4 +1,5 @@
-﻿using SpiceSharp.Simulations;
+﻿using SpiceSharp;
+using SpiceSharp.Simulations;
 using SpiceSharpParser.Common.Evaluation;
 using System;
 using System.Collections.Generic;
@@ -62,6 +63,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 _cacheLock.ExitUpgradeableReadLock();
             }
+        }
+
+        public void SetEntites(Circuit contextEntities)
+        {
+            SourceContext.ContextEntities = contextEntities;
         }
     }
 }

@@ -261,7 +261,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 var nodes = new List<string>();
 
-                foreach (IEntity entity in context.Result.Circuit)
+                foreach (IEntity entity in context.ContextEntities)
                 {
                     if (entity is SpiceSharp.Components.Component c)
                     {

@@ -80,7 +80,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
                     if (model != null)
                     {
-                        context.Result.AddEntity(model.Entity);
+                        context.ContextEntities.Add(model.Entity);
                     }
                 }
 
@@ -102,7 +102,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
                     var model = ModelsGenerator.GenerateModel(
                         generator,
-                        context.NameGenerator.GenerateObjectName(name),
+                        name,
                         name,
                         type,
                         statement.Parameters.Skip(1),
@@ -110,7 +110,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
                     if (model != null)
                     {
-                        context.Result.AddEntity(model.Entity);
+                        context.ContextEntities.Add(model.Entity);
                     }
                 }
             }

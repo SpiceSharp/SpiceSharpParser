@@ -98,7 +98,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         modelNameParameter,
                         $"Could not find model {modelNameParameter} for mosfet {componentIdentifier}",
                         mosfetDetails.SetModelAction,
-                        context.Result);
+                        context.Result,
+                        context);
                 });
             }
             else

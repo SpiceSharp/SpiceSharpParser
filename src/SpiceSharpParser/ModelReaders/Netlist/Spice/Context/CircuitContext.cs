@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharp;
 using SpiceSharp.Entities;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
@@ -61,6 +62,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             ModelsRegistry = CreateModelsRegistry();
             Exporters = exporters;
             WorkingDirectory = workingDirectory;
+            ContextEntities = new Circuit(new EntityCollection(StringComparerProvider.Get(caseSettings.IsEntityNamesCaseSensitive)));
         }
 
         /// <summary>
@@ -133,6 +135,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         public ISpiceNetlistCaseSensitivitySettings CaseSensitivity { get; }
 
+        public Circuit ContextEntities { get; set; }
+
         /// <summary>
         /// Sets voltage initial condition for node.
         /// </summary>
@@ -180,10 +184,28 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             for (var i = 0; i < component.Nodes.Count; i++)
             {
                 string pinName = parameters.Get(i).Value;
-                nodes[i] = NameGenerator.GenerateNodeName(pinName);
+                nodes[i] = pinName;
             }
 
             component.Connect(nodes);
+        }
+
+        /// <summary>
+        /// Finds the object in the result.
+        /// </summary>
+        /// <param name="objectId">The object id.</param>
+        /// <param name="entity">The found entity.</param>
+        /// <returns>
+        /// True if found.
+        /// </returns>
+        public bool FindObject(string objectId, out IEntity entity)
+        {
+            if (objectId == null)
+            {
+                throw new ArgumentNullException(nameof(objectId));
+            }
+
+            return ContextEntities.TryGetEntity(objectId, out entity);
         }
 
         public virtual void Read(Statements statements, ISpiceStatementsOrderer orderer)

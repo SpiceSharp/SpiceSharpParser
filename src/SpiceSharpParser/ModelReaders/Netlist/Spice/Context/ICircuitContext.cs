@@ -1,4 +1,5 @@
-﻿using SpiceSharp.Entities;
+﻿using SpiceSharp;
+using SpiceSharp.Entities;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
@@ -45,6 +46,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Gets the result service for the context.
         /// </summary>
         IResultService Result { get; }
+
+        Circuit ContextEntities { get; set; } 
 
         /// <summary>
         /// Gets or set name generator.
@@ -116,5 +119,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="statements">Statements.</param>
         /// <param name="orderer">Orderer of statements.</param>
         void Read(Statements statements, ISpiceStatementsOrderer orderer);
+
+        bool FindObject(string objectId, out IEntity entity);
     }
 }

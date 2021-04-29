@@ -103,7 +103,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
                             foreach (var entityUpdate in beforeTemperature)
                             {
-                                Common.Evaluation.EvaluationContext context = GetEntityContext(simulation, entityPair.Key);
+                                Common.Evaluation.EvaluationContext context = GetEntityContext(simulation, entityPair.Key.Name);
 
                                 var value = entityUpdate.GetValue(context);
                                 if (!double.IsNaN(value))
@@ -280,14 +280,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
         private Common.Evaluation.EvaluationContext GetEntityContext(Simulation simulation, IEntity entity)
         {
-            var contextName = string.Empty;
-            var dotIndex = entity.Name.LastIndexOf('.');
-            if (dotIndex >= 0)
-            {
-                contextName = entity.Name.Substring(0, dotIndex);
-            }
+            var context = Contexts.GetContext(simulation).Find(entity);
+            return context;
+        }
 
-            var context = Contexts.GetContext(simulation).Find(contextName);
+
+        private Common.Evaluation.EvaluationContext GetEntityContext(Simulation simulation, string name)
+        {
+            var context = Contexts.GetContext(simulation).Find(name);
             return context;
         }
     }

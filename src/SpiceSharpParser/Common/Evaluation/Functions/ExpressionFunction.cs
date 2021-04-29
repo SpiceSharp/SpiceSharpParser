@@ -35,6 +35,7 @@ namespace SpiceSharpParser.Common.Evaluation.Functions
             }
 
             var childContext = context.CreateChildContext(string.Empty, false);
+            childContext.CircuitContext = context.CircuitContext;
             for (var i = 0; i < Arguments.Count; i++)
             {
                 childContext.SetParameter(Arguments[i], args[i]);

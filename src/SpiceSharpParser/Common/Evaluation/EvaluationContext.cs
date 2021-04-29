@@ -1,4 +1,6 @@
-﻿using SpiceSharp.Simulations;
+﻿using SpiceSharp;
+using SpiceSharp.Entities;
+using SpiceSharp.Simulations;
 using SpiceSharpBehavioral.Parsers;
 using SpiceSharpBehavioral.Parsers.Nodes;
 using SpiceSharpParser.Common.Evaluation.Expressions;
@@ -25,15 +27,13 @@ namespace SpiceSharpParser.Common.Evaluation
             IExpressionParserFactory expressionParserFactory,
             IExpressionFeaturesReader expressionFeaturesReader,
             IExpressionValueProvider expressionValueProvider,
-            INameGenerator nameGenerator,
-            IResultService resultService)
+            INameGenerator nameGenerator)
         {
             _caseSettings = caseSettings;
             ExpressionParserFactory = expressionParserFactory;
             ExpressionFeaturesReader = expressionFeaturesReader;
             ExpressionValueProvider = expressionValueProvider;
             NameGenerator = nameGenerator;
-            ResultService = resultService;
             Name = name;
             Parameters = new Dictionary<string, Expression>(StringComparerProvider.Get(caseSettings.IsParameterNameCaseSensitive));
             Arguments = new Dictionary<string, Expression>(StringComparerProvider.Get(caseSettings.IsParameterNameCaseSensitive));
@@ -119,13 +119,15 @@ namespace SpiceSharpParser.Common.Evaluation
 
         public INameGenerator NameGenerator { get; set; }
 
-        public IResultService ResultService { get; }
-
         public IExpressionFeaturesReader ExpressionFeaturesReader { get; }
 
         public IExpressionValueProvider ExpressionValueProvider { get; }
 
         protected IExpressionParserFactory ExpressionParserFactory { get; }
+
+        public Circuit ContextEntities { get; set; }
+
+        public ICircuitContext CircuitContext { get; set; }
 
         /// <summary>
         /// Sets the parameter.
@@ -259,7 +261,7 @@ namespace SpiceSharpParser.Common.Evaluation
                 throw new ArgumentNullException(nameof(name));
             }
 
-            var child = new EvaluationContext(name, _caseSettings, Randomizer, ExpressionParserFactory, ExpressionFeaturesReader, ExpressionValueProvider, NameGenerator, ResultService);
+            var child = new EvaluationContext(name, _caseSettings, Randomizer, ExpressionParserFactory, ExpressionFeaturesReader, ExpressionValueProvider, NameGenerator);
 
             child.Parameters = new Dictionary<string, Expression>(Parameters, StringComparerProvider.Get(_caseSettings.IsParameterNameCaseSensitive));
             child.Simulation = Simulation;
@@ -280,7 +282,7 @@ namespace SpiceSharpParser.Common.Evaluation
 
         public virtual EvaluationContext Clone()
         {
-            EvaluationContext context = new EvaluationContext(Name, _caseSettings, Randomizer, ExpressionParserFactory, ExpressionFeaturesReader, ExpressionValueProvider, NameGenerator, ResultService);
+            EvaluationContext context = new EvaluationContext(Name, _caseSettings, Randomizer, ExpressionParserFactory, ExpressionFeaturesReader, ExpressionValueProvider, NameGenerator);
             context.ExpressionRegistry = ExpressionRegistry.Clone();
             context.Functions = new Dictionary<string, List<IFunction>>(Functions, StringComparerProvider.Get(_caseSettings.IsFunctionNameCaseSensitive));
 
@@ -299,6 +301,8 @@ namespace SpiceSharpParser.Common.Evaluation
             context.Randomizer = Randomizer.Clone();
             context.FunctionArguments = FunctionArguments.ToDictionary(d => d.Key, d => d.Value?.ToList());
             context.FunctionsBody = FunctionsBody.ToDictionary(d => d.Key, d => d.Value);
+            context.ContextEntities = ContextEntities;
+            context.CircuitContext = CircuitContext;
 
             return context;
         }
@@ -316,21 +320,36 @@ namespace SpiceSharpParser.Common.Evaluation
             }
         }
 
-        public EvaluationContext Find(string name)
+        public EvaluationContext Find(IEntity entity)
         {
-            if (name == null)
-            {
-                throw new ArgumentNullException(nameof(name));
-            }
-
-            if (Name == name)
+            if (ContextEntities.Contains(entity))
             {
                 return this;
             }
 
             foreach (var child in Children)
             {
-                var res = child.Find(name);
+                var res = child.Find(entity);
+
+                if (res != null)
+                {
+                    return res;
+                }
+            }
+
+            return null;
+        }
+
+        public EvaluationContext Find(string entityName)
+        {
+            if (ContextEntities.Any(entity => entity.Name == entityName))
+            {
+                return this;
+            }
+
+            foreach (var child in Children)
+            {
+                var res = child.Find(entityName);
 
                 if (res != null)
                 {

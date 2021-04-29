@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SpiceSharp;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
@@ -189,6 +190,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public IEnumerable<string> GetExpressionNames()
         {
             return ParsingContext.GetExpressionNames();
+        }
+
+        public void SetEntites(Circuit contextEntities)
+        {
+            ParsingContext.ContextEntities = contextEntities;
+            SimulationContexts.SetEntites(contextEntities);
         }
     }
 }

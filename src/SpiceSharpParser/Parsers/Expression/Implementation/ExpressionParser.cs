@@ -116,13 +116,13 @@ namespace SpiceSharpParser.Parsers.Expression
                             }
                             else
                             {
-                                args.Result = VariableNode.Voltage(Context.NameGenerator.ParseNodeName(args.Node.Name));
+                                args.Result = args.Node;
                             }
                         }
 
                         if (args.Node.NodeType == NodeTypes.Current)
                         {
-                            args.Result = VariableNode.Current(Context.NameGenerator.GenerateObjectName(args.Node.Name));
+                            args.Result = args.Node;
                         }
                     };
                 }

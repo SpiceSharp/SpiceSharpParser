@@ -232,7 +232,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
             return null;
         }
 
-        public void SetModel(Entity entity, Simulation simulation, Parameter modelNameParameter, string exceptionMessage, Action<Context.Models.Model> setModelAction, IResultService result)
+        public void SetModel(Entity entity, Simulation simulation, Parameter modelNameParameter, string exceptionMessage, Action<Context.Models.Model> setModelAction, IResultService result, ICircuitContext context)
         {
             var model = FindModelEntity(modelNameParameter.Value);
 
@@ -247,9 +247,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 
             if (stochasticModel != null)
             {
-                if (!result.Circuit.Contains(stochasticModel.Name))
+                if (!context.ContextEntities.Any(e => e.Name == stochasticModel.Name))
                 {
-                    result.Circuit.Add(stochasticModel.Entity);
+                    context.ContextEntities.Add(stochasticModel.Entity);
                 }
             }
         }
