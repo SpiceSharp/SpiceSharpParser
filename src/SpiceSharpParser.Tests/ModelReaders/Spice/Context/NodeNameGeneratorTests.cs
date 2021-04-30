@@ -10,7 +10,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
         [Fact]
         public void GenerateNoSubcircuit()
         {
-            var generator = new MainCircuitNodeNameGenerator(new string[] { "0" }, true);
+            var generator = new MainCircuitNodeNameGenerator(new string[] { "0" }, true, ".");
 
             // ground nodes
             Assert.Equal("0", generator.Generate("0"));
@@ -46,7 +46,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Context
                     },
                 };
 
-            var generator = new SubcircuitNodeNameGenerator("x1", "x1", subcircuit, new System.Collections.Generic.List<string>() { "net2", "net3" }, new string[] { "0" }, true);
+            var generator = new SubcircuitNodeNameGenerator("x1", "x1", subcircuit, new System.Collections.Generic.List<string>() { "net2", "net3" }, new string[] { "0" }, true, ".");
 
             // ground nodes
             Assert.Equal("0", generator.Generate("0"));

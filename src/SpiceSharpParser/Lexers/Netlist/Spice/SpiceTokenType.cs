@@ -205,5 +205,7 @@
         PREFIX_COMPLEX = 40,
 
         SUFFIX = 41,
+
+        ENDP = 42,
     }
 }

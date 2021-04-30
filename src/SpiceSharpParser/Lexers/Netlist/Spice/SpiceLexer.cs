@@ -394,6 +394,12 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                ignoreCase: !_options.IsDotStatementNameCaseSensitive));
 
             builder.AddRegexRule(new LexerTokenRule<SpiceLexerState>(
+               (int)SpiceTokenType.ENDP,
+               ".ENDP keyword",
+               "\\.ENDP",
+               ignoreCase: !_options.IsDotStatementNameCaseSensitive));
+
+            builder.AddRegexRule(new LexerTokenRule<SpiceLexerState>(
               (int)SpiceTokenType.IF,
               ".IF keyword",
               "\\.IF",

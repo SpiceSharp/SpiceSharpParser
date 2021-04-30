@@ -35,5 +35,8 @@
         public static readonly string PointValues = "POINT-VALUES";
         public static readonly string ExpressionEqual = "EXPRESSION-EQUAL";
         public static readonly string Distribution = "DISTRIBUTION";
+        public static readonly string Parallel = "PARALLEL";
+        public static readonly string ParallelEnding = "PARALLEL-ENDING";
+
     }
 }

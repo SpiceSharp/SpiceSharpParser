@@ -56,6 +56,8 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             evaluators.Add(Symbols.ParameterSingle, (ParseTreeNodeEvaluationValues nt) => CreateParameterSingle(nt));
             evaluators.Add(Symbols.Subckt, (ParseTreeNodeEvaluationValues nt) => CreateSubCircuit(nt));
             evaluators.Add(Symbols.SubcktEnding, (ParseTreeNodeEvaluationValues nt) => null);
+            evaluators.Add(Symbols.ParallelEnding, (ParseTreeNodeEvaluationValues nt) => null);
+            evaluators.Add(Symbols.Parallel, (ParseTreeNodeEvaluationValues nt) => CreateParallel(nt));
             evaluators.Add(Symbols.CommentLine, (ParseTreeNodeEvaluationValues nt) => CreateComment(nt));
             evaluators.Add(Symbols.NewLine, (ParseTreeNodeEvaluationValues nt) => null);
             evaluators.Add(Symbols.NewLines, (ParseTreeNodeEvaluationValues nt) => null);
@@ -531,6 +533,29 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             }
 
             return subCkt;
+        }
+
+        // <summary>
+        /// Returns new instance of <see cref="Parallel"/>
+        /// from the values of children nodes of <see cref="Symbols.Parallel"/> parse tree node.
+        /// </summary>
+        /// <returns>
+        /// A new instance of <see cref="Parallel"/>.
+        /// </returns>
+        private SpiceObject CreateParallel(ParseTreeNodeEvaluationValues values)
+        {
+            if (values.Count == 5)
+            {
+                var parallel = new Parallel(string.Empty, new Statements(), new SpiceLineInfo(values));
+                parallel.Statements = values.GetSpiceObject<Statements>(3);
+                return parallel;
+            }
+            else
+            {
+                var parallel = new Parallel(values.GetLexem(2), new Statements(), new SpiceLineInfo(values));
+                parallel.Statements = values.GetSpiceObject<Statements>(4);
+                return parallel;
+            }
         }
 
         /// <summary>

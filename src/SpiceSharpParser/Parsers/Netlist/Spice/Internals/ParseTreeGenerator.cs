@@ -27,6 +27,8 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
             _parsers.Add(Symbols.CommentLine, ReadCommentLine);
             _parsers.Add(Symbols.Subckt, ReadSubckt);
             _parsers.Add(Symbols.SubcktEnding, ReadSubcktEnding);
+            _parsers.Add(Symbols.Parallel, ReadParallel);
+            _parsers.Add(Symbols.ParallelEnding, ReadParallelEnding);
             _parsers.Add(Symbols.Component, ReadComponent);
             _parsers.Add(Symbols.Control, ReadControl);
             _parsers.Add(Symbols.Model, ReadModel);
@@ -185,6 +187,30 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
             else
             {
                 throw new ParseException("Error during parsing subcircuit. Expected .ENDS. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
+            }
+        }
+
+        /// <summary>
+        /// Reads <see cref="Symbols.ParallelEnding"/> non-terminal node
+        /// Pushes tree nodes to the stack based on the grammar.
+        /// </summary>
+        /// <param name="stack">A stack where the production is pushed.</param>
+        /// <param name="currentNode">A reference to the current node.</param>
+        /// <param name="tokens">A reference to the array of tokens.</param>
+        /// <param name="currentTokenIndex">A index of the current token.</param>
+        private void ReadParallelEnding(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
+        {
+            var currentToken = tokens[currentTokenIndex];
+
+            if (currentToken.Is(SpiceTokenType.ENDP))
+            {
+                PushProductionExpression(
+                    stack,
+                    CreateTerminalNode(currentToken.SpiceTokenType, currentNode, currentToken.Lexem));
+            }
+            else
+            {
+                throw new ParseException("Error during parsing subcircuit. Expected .endp. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
             }
         }
 
@@ -426,6 +452,10 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
             {
                 // follow - do nothing
             }
+            else if (currentToken.Is(SpiceTokenType.ENDP))
+            {
+                // follow - do nothing
+            }
             else
             {
                 throw new ParseException(
@@ -469,6 +499,13 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
                         PushProductionExpression(
                             stack,
                             CreateNonTerminalNode(Symbols.Distribution, current),
+                            CreateTerminalNode(SpiceTokenType.NEWLINE, current));
+                    }
+                    else if (nextToken.Equal("PARALLEL", IsDotStatementNameCaseSensitive))
+                    {
+                        PushProductionExpression(
+                            stack,
+                            CreateNonTerminalNode(Symbols.Parallel, current),
                             CreateTerminalNode(SpiceTokenType.NEWLINE, current));
                     }
                     else
@@ -801,6 +838,50 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
             else
             {
                 throw new ParseException("Error during parsing a subcircuit. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
+            }
+        }
+
+        /// <summary>
+        /// Reads <see cref="Symbols.Parallel"/> non-terminal node
+        /// Pushes tree nodes to the stack based on the grammar.
+        /// </summary>
+        /// <param name="stack">A stack where the production is pushed.</param>
+        /// <param name="current">A reference to the non-terminal node.</param>
+        /// <param name="tokens">A reference to the array of tokens.</param>
+        /// <param name="currentTokenIndex">A index of the current token.</param>
+        private void ReadParallel(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
+        {
+            var currentToken = tokens[currentTokenIndex];
+            var nextToken = tokens[currentTokenIndex + 1];
+            var nextNextToken = tokens[currentTokenIndex + 2];
+
+            if (currentToken.Is(SpiceTokenType.DOT) && (nextToken.Is(SpiceTokenType.WORD) && nextToken.Equal("PARALLEL", IsDotStatementNameCaseSensitive)))
+            {
+                if (nextNextToken.Is(SpiceTokenType.IDENTIFIER) || nextNextToken.Is(SpiceTokenType.WORD))
+                {
+                    PushProductionExpression(
+                        stack,
+                        CreateTerminalNode(currentToken.SpiceTokenType, current, currentToken.Lexem),
+                        CreateTerminalNode(nextToken.SpiceTokenType, current, nextToken.Lexem),
+                        CreateTerminalNode(nextNextToken.SpiceTokenType, current, nextNextToken.Lexem),
+                        CreateTerminalNode(SpiceTokenType.NEWLINE, current),
+                        CreateNonTerminalNode(Symbols.Statements, current),
+                        CreateNonTerminalNode(Symbols.ParallelEnding, current));
+                }
+                else
+                {
+                    PushProductionExpression(
+                        stack,
+                        CreateTerminalNode(currentToken.SpiceTokenType, current, currentToken.Lexem),
+                        CreateTerminalNode(nextToken.SpiceTokenType, current, nextToken.Lexem),
+                        CreateTerminalNode(SpiceTokenType.NEWLINE, current),
+                        CreateNonTerminalNode(Symbols.Statements, current),
+                        CreateNonTerminalNode(Symbols.ParallelEnding, current));
+                }
+            }
+            else
+            {
+                throw new ParseException("Error during parsing a parallel. Unexpected token: '" + currentToken.Lexem + "'" + " line=" + currentToken.LineNumber, currentToken.LineNumber);
             }
         }
 

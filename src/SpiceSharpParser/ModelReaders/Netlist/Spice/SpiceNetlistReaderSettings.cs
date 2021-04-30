@@ -74,7 +74,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// <summary>
         /// Gets a value indicating whether subcircuts should be expaned.
         /// </summary>
-        public bool ExpandSubcircuits { get; }
+        public bool ExpandSubcircuits { get; set; }
 
         /// <summary>
         /// Gets working directory.

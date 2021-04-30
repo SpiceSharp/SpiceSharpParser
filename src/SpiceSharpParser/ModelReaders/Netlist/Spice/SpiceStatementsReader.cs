@@ -22,12 +22,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             var controlReader = new ControlReader(controlMapper);
             var subcircuitDefinitionReader = new SubcircuitDefinitionReader();
             var commentReader = new CommentReader();
+            var parallelReader = new ParallelReader(this);
 
             Readers[typeof(Component)] = componentReader;
             Readers[typeof(Model)] = modelReader;
             Readers[typeof(Control)] = controlReader;
             Readers[typeof(SubCircuit)] = subcircuitDefinitionReader;
             Readers[typeof(CommentLine)] = commentReader;
+            Readers[typeof(Parallel)] = parallelReader;
         }
 
         /// <summary>
