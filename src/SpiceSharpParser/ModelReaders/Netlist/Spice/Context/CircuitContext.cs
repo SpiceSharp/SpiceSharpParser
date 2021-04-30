@@ -46,7 +46,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             IWaveformReader waveformReader,
             ISpiceNetlistCaseSensitivitySettings caseSettings,
             IMapper<Exporter> exporters,
-            string workingDirectory)
+            string workingDirectory,
+            bool expandSubcircuits)
         {
             Name = contextName ?? throw new ArgumentNullException(nameof(contextName));
             Evaluator = evaluator;
@@ -63,6 +64,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             Exporters = exporters;
             WorkingDirectory = workingDirectory;
             ContextEntities = new Circuit(new EntityCollection(StringComparerProvider.Get(caseSettings.IsEntityNamesCaseSensitive)));
+            ExpandSubcircuits = expandSubcircuits;
         }
 
         /// <summary>
@@ -136,6 +138,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public ISpiceNetlistCaseSensitivitySettings CaseSensitivity { get; }
 
         public Circuit ContextEntities { get; set; }
+        public bool ExpandSubcircuits { get; }
 
         /// <summary>
         /// Sets voltage initial condition for node.
@@ -184,7 +187,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             for (var i = 0; i < component.Nodes.Count; i++)
             {
                 string pinName = parameters.Get(i).Value;
-                nodes[i] = pinName;
+                if (ExpandSubcircuits)
+                {
+                    nodes[i] = NameGenerator.GenerateNodeName(pinName);
+                }
+                else
+                {
+                    nodes[i] = pinName;
+                }
             }
 
             component.Connect(nodes);

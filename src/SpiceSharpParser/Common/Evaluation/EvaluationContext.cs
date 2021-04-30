@@ -10,6 +10,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Parsers.Expression;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,6 +20,7 @@ namespace SpiceSharpParser.Common.Evaluation
     {
         private readonly ISpiceNetlistCaseSensitivitySettings _caseSettings;
         private Simulation _simulation;
+        private ConcurrentDictionary<string, EvaluationContext> _cache;
 
         public EvaluationContext(
             string name,
@@ -43,6 +45,8 @@ namespace SpiceSharpParser.Common.Evaluation
             FunctionsBody = new Dictionary<string, string>();
             FunctionArguments = new Dictionary<string, List<string>>();
             Randomizer = randomizer;
+
+            _cache = new ConcurrentDictionary<string, EvaluationContext>(StringComparerProvider.Get(caseSettings.IsEntityNamesCaseSensitive));
         }
 
         /// <summary>
@@ -320,31 +324,11 @@ namespace SpiceSharpParser.Common.Evaluation
             }
         }
 
-        public EvaluationContext Find(IEntity entity)
-        {
-            if (ContextEntities.Contains(entity))
-            {
-                return this;
-            }
-
-            foreach (var child in Children)
-            {
-                var res = child.Find(entity);
-
-                if (res != null)
-                {
-                    return res;
-                }
-            }
-
-            return null;
-        }
-
         public EvaluationContext Find(string entityName)
         {
-            if (ContextEntities.Any(entity => entity.Name == entityName))
+            if (_cache.TryGetValue(entityName, out var context))
             {
-                return this;
+                return context;
             }
 
             foreach (var child in Children)
@@ -353,8 +337,14 @@ namespace SpiceSharpParser.Common.Evaluation
 
                 if (res != null)
                 {
+                    _cache.TryAdd(entityName, res);
                     return res;
                 }
+            }
+
+            if (ContextEntities.Any(entity => entity.Name == entityName))
+            {
+                return this;
             }
 
             return null;

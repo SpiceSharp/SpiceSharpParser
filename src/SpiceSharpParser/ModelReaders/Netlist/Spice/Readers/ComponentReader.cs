@@ -76,7 +76,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
             }
 
             IEntity entity = generator?.Generate(
-                componentName,
+                context.ExpandSubcircuits ? context.NameGenerator.GenerateObjectName(componentName) : componentName,
                 componentName,
                 componentType,
                 statementClone.PinsAndParameters,

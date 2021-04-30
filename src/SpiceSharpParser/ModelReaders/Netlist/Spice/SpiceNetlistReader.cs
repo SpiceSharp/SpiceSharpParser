@@ -11,6 +11,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.Parsers.Expression;
+using System;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
@@ -51,6 +52,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             var result = new SpiceModel<Circuit, Simulation>(
                 new Circuit(new EntityCollection(StringComparerProvider.Get(Settings.CaseSensitivity.IsEntityNamesCaseSensitive))),
                 netlist.Title);
+
+            // Set the separator.
+            Utility.Separator = Settings.Separator;
 
             // Get reading context
             var resultService = new ResultService(result);
@@ -100,7 +104,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 waveformReader,
                 Settings.CaseSensitivity,
                 Settings.Mappings.Exporters,
-                Settings.WorkingDirectory);
+                Settings.WorkingDirectory,
+                Settings.ExpandSubcircuits);
 
             // Set initial seed
             circuitContext.Evaluator.Seed = Settings.Seed;
@@ -113,6 +118,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             // Set final seed
             result.Seed = circuitContext.Evaluator.Seed;
             result.Circuit = circuitContext.ContextEntities;
+
             return result;
         }
     }

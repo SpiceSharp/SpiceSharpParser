@@ -79,6 +79,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         string WorkingDirectory { get; }
 
+        bool ExpandSubcircuits { get; }
+
         /// <summary>
         /// Sets parameter of entity to value of expression.
         /// </summary>

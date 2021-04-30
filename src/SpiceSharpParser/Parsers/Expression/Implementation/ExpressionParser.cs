@@ -116,7 +116,14 @@ namespace SpiceSharpParser.Parsers.Expression
                             }
                             else
                             {
-                                args.Result = args.Node;
+                                if (Context.CircuitContext.ExpandSubcircuits)
+                                {
+                                    args.Result = VariableNode.Voltage(Context.NameGenerator.ParseNodeName(args.Node.Name));
+                                }
+                                else
+                                {
+                                    args.Result = args.Node;
+                                }
                             }
                         }
 
@@ -139,7 +146,14 @@ namespace SpiceSharpParser.Parsers.Expression
                             }
                             else
                             {
-                                args.Result = VariableNode.Voltage(args.Node.Name);
+                                if (Context.CircuitContext.ExpandSubcircuits)
+                                {
+                                    args.Result = VariableNode.Voltage(Context.NameGenerator.ParseNodeName(args.Node.Name));
+                                }
+                                else
+                                {
+                                    args.Result = VariableNode.Voltage(args.Node.Name);
+                                }
                             }
                         }
 

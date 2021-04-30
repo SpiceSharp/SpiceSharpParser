@@ -42,12 +42,23 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             subCircuitContext.Evaluator.SetEntites(subCircuitContext.ContextEntities);
             context.Children.Add(subCircuitContext);
 
-            var def = new SubcircuitDefinition(subCircuitContext.ContextEntities, subCircuitDefinition.Pins.Select(p => p.ToString()).ToArray());
+            if (context.ExpandSubcircuits)
+            {
+                foreach (var entity in subCircuitContext.ContextEntities)
+                {
+                    context.ContextEntities.Add(entity);
+                }
 
-            var pinNames = GetPinNames(parameters, subCircuitDefinition, context);
-            var subCircuit = new Subcircuit(componentIdentifier, def);
-            subCircuit.Connect(pinNames.ToArray());
-            return subCircuit;
+                return null;
+            }
+            else
+            {
+                var def = new SubcircuitDefinition(subCircuitContext.ContextEntities, subCircuitDefinition.Pins.Select(p => p.ToString()).ToArray());
+                var pinNames = GetPinNames(parameters, subCircuitDefinition, context);
+                var subCircuit = new Subcircuit(componentIdentifier, def);
+                subCircuit.Connect(pinNames.ToArray());
+                return subCircuit;
+            }
         }
 
         /// <summary>
@@ -229,12 +240,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 subcircuitEvaluator,
                 context.SimulationPreparations,
                 context.Result,
-                context.NameGenerator,
+                subcircuitNameGenerator,
                 context.StatementsReader,
                 context.WaveformReader,
                 context.CaseSensitivity,
                 context.Exporters,
-                context.WorkingDirectory);
+                context.WorkingDirectory,
+                context.ExpandSubcircuits);
 
             subcircuitEvaluationContext.CircuitContext = subcircuitContext;
 

@@ -19,9 +19,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// <param name="workingDirectoryProvider">
         /// Working directory provider.
         /// </param>
+        /// <param name="separator">
+        /// Separator for node and object names.
+        /// </param>
+        /// <param name="expandSubcircuits">
+        /// Expand subcircuits.
+        /// </param>
         public SpiceNetlistReaderSettings(
             ISpiceNetlistCaseSensitivitySettings caseSensitivitySettings,
-            Func<string> workingDirectoryProvider)
+            Func<string> workingDirectoryProvider,
+            string separator = ".",
+            bool expandSubcircuits = true)
         {
             EvaluatorMode = SpiceExpressionMode.Spice3f5;
             Mappings = new SpiceObjectMappings();
@@ -29,6 +37,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 
             CaseSensitivity = caseSensitivitySettings ?? throw new ArgumentNullException(nameof(caseSensitivitySettings));
             _workingDirectoryProvider = workingDirectoryProvider ?? throw new ArgumentNullException(nameof(workingDirectoryProvider));
+            Separator = separator;
+            ExpandSubcircuits = expandSubcircuits;
         }
 
         /// <summary>
@@ -55,6 +65,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// Gets the case-sensitivity settings.
         /// </summary>
         public ISpiceNetlistCaseSensitivitySettings CaseSensitivity { get; }
+        
+        /// <summary>
+        /// Gets the separator for object and node names.
+        /// </summary>
+        public string Separator { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether subcircuts should be expaned.
+        /// </summary>
+        public bool ExpandSubcircuits { get; }
 
         /// <summary>
         /// Gets working directory.

@@ -72,7 +72,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
                     var model = ModelsGenerator.GenerateModel(
                         generator,
-                        context.NameGenerator.GenerateObjectName(name),
+                        context.ExpandSubcircuits ? context.NameGenerator.GenerateObjectName(name) : name,
                         name,
                         type,
                         bracketParameter.Parameters,
@@ -102,7 +102,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
                     var model = ModelsGenerator.GenerateModel(
                         generator,
-                        name,
+                        context.ExpandSubcircuits ? context.NameGenerator.GenerateObjectName(name) : name,
                         name,
                         type,
                         statement.Parameters.Skip(1),

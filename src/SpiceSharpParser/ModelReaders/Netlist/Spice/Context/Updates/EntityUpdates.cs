@@ -1,7 +1,6 @@
 ﻿using SpiceSharp;
 using SpiceSharp.Entities;
 using SpiceSharp.Simulations;
-using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation.Expressions;
 using System;
 using System.Collections.Concurrent;
@@ -47,12 +46,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
                         foreach (var entityUpdate in beforeLoads)
                         {
-                            Common.Evaluation.EvaluationContext context = GetEntityContext(simulation, entity);
+                            Common.Evaluation.EvaluationContext context = GetEntityContext(simulation, entity.Name);
 
-                            var value = entityUpdate.GetValue(context);
-                            if (!double.IsNaN(value))
+                            if (context != null)
                             {
-                                entity.CreateParameterSetter<double>(entityUpdate.ParameterName)?.Invoke(value);
+                                var value = entityUpdate.GetValue(context);
+                                if (!double.IsNaN(value))
+                                {
+                                    entity.CreateParameterSetter<double>(entityUpdate.ParameterName)?.Invoke(value);
+                                }
                             }
                         }
                     }
@@ -65,12 +67,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
                             foreach (var entityUpdate in beforeLoads)
                             {
-                                Common.Evaluation.EvaluationContext context = GetEntityContext(simulation, entityPair.Key);
-
-                                var value = entityUpdate.GetValue(context);
-                                if (!double.IsNaN(value))
+                                Common.Evaluation.EvaluationContext context = GetEntityContext(simulation, entityPair.Key.Name);
+                                if (context != null)
                                 {
-                                    entityPair.Key.CreateParameterSetter<double>(entityUpdate.ParameterName)?.Invoke(value);
+                                    var value = entityUpdate.GetValue(context);
+                                    if (!double.IsNaN(value))
+                                    {
+                                        entityPair.Key.CreateParameterSetter<double>(entityUpdate.ParameterName)?.Invoke(value);
+                                    }
                                 }
                             }
                         }
@@ -85,12 +89,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
                         foreach (var entityUpdate in beforeTemperature)
                         {
-                            Common.Evaluation.EvaluationContext context = GetEntityContext(simulation, entity);
-
-                            var value = entityUpdate.GetValue(context);
-                            if (!double.IsNaN(value))
+                            Common.Evaluation.EvaluationContext context = GetEntityContext(simulation, entity.Name);
+                            if (context != null)
                             {
-                                entity.CreateParameterSetter<double>(entityUpdate.ParameterName)?.Invoke(value);
+                                var value = entityUpdate.GetValue(context);
+                                if (!double.IsNaN(value))
+                                {
+                                    entity.CreateParameterSetter<double>(entityUpdate.ParameterName)?.Invoke(value);
+                                }
                             }
                         }
                     }
@@ -104,11 +110,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                             foreach (var entityUpdate in beforeTemperature)
                             {
                                 Common.Evaluation.EvaluationContext context = GetEntityContext(simulation, entityPair.Key.Name);
-
-                                var value = entityUpdate.GetValue(context);
-                                if (!double.IsNaN(value))
+                                if (context != null)
                                 {
-                                    entityPair.Key.CreateParameterSetter<double>(entityUpdate.ParameterName)?.Invoke(value);
+                                    var value = entityUpdate.GetValue(context);
+                                    if (!double.IsNaN(value))
+                                    {
+                                        entityPair.Key.CreateParameterSetter<double>(entityUpdate.ParameterName)?.Invoke(value);
+                                    }
                                 }
                             }
                         }
@@ -278,16 +286,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
             }
         }
 
-        private Common.Evaluation.EvaluationContext GetEntityContext(Simulation simulation, IEntity entity)
+        private Common.Evaluation.EvaluationContext GetEntityContext(Simulation simulation, string entityName)
         {
-            var context = Contexts.GetContext(simulation).Find(entity);
-            return context;
-        }
-
-
-        private Common.Evaluation.EvaluationContext GetEntityContext(Simulation simulation, string name)
-        {
-            var context = Contexts.GetContext(simulation).Find(name);
+            var context = Contexts.GetContext(simulation).Find(entityName);
             return context;
         }
     }
