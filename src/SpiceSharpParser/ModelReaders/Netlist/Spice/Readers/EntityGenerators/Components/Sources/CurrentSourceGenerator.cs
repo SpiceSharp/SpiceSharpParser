@@ -114,26 +114,75 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </returns>
         protected IEntity GenerateCurrentSource(string name, ParameterCollection parameters, ICircuitContext context)
         {
-            CurrentSource cs = new CurrentSource(name);
+            var evalContext = context.Evaluator.GetEvaluationContext();
+
+            if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
+            {
+                var valueParameter = (AssignmentParameter)parameters.Single(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");
+                string expression = valueParameter.Value;
+                if (evalContext.HaveSpiceProperties(expression) || evalContext.HaveFunctions(expression))
+                {
+                    BehavioralCurrentSource entity = CreateBehavioralCurrentSource(name, parameters, context, evalContext, expression);
+                    return entity;
+                }
+            }
+
+            if (parameters.Any(p => p is ExpressionParameter ep))
+            {
+                var expressionParameter = (ExpressionParameter)parameters.Single(p => p is ExpressionParameter);
+                string expression = expressionParameter.Value;
+
+                if (evalContext.HaveSpiceProperties(expressionParameter.Value))
+                {
+                    BehavioralCurrentSource entity = CreateBehavioralCurrentSource(name, parameters, context, evalContext, expression);
+                    return entity;
+                }
+            }
+
+            var cs = new CurrentSource(name);
             context.CreateNodes(cs, parameters);
             SetSourceParameters(parameters, context, cs);
             return cs;
         }
 
+
+        protected static BehavioralCurrentSource CreateBehavioralCurrentSource(string name, ParameterCollection parameters, ICircuitContext context, Common.Evaluation.EvaluationContext evalContext, string expression)
+        {
+            var entity = new BehavioralCurrentSource(name);
+            context.CreateNodes(entity, parameters.Take(BehavioralCurrentSource.BehavioralCurrentSourcePinCount));
+            entity.Parameters.Expression = expression;
+            entity.Parameters.ParseAction = (expression) =>
+            {
+                var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
+                return parser.Resolve(expression);
+            };
+
+            if (evalContext.HaveFunctions(expression))
+            {
+                context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
+                {
+                    entity.Parameters.Expression = expression.ToString();
+                    entity.Parameters.ParseAction = (expression) =>
+                    {
+                        var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(simulation), false, context.CaseSensitivity);
+                        return parser.Resolve(expression);
+                    };
+                });
+            }
+
+            return entity;
+        }
+
         private IEntity CreateCustomCurrentSource(string name, ParameterCollection parameters, ICircuitContext context, bool isVoltageControlled)
         {
+            var evalContext = context.Evaluator.GetEvaluationContext();
+
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
             {
                 var valueParameter = (AssignmentParameter)parameters.Single(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");
+                string expression = valueParameter.Value;
 
-                var entity = new BehavioralCurrentSource(name);
-                context.CreateNodes(entity, parameters);
-                entity.Parameters.Expression = valueParameter.Value;
-                entity.Parameters.ParseAction = (expression) =>
-                {
-                    var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
-                    return parser.Resolve(expression);
-                };
+                BehavioralCurrentSource entity = CreateBehavioralCurrentSource(name, parameters, context, evalContext, expression);
                 return entity;
             }
 
@@ -142,14 +191,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var expressionParameter = parameters.FirstOrDefault(p => p is ExpressionParameter);
                 if (expressionParameter != null)
                 {
-                    var entity = new BehavioralCurrentSource(name);
-                    context.CreateNodes(entity, parameters);
-                    entity.Parameters.Expression = expressionParameter.Value;
-                    entity.Parameters.ParseAction = (expression) =>
-                    {
-                        var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
-                        return parser.Resolve(expression);
-                    };
+                    var expression = expressionParameter.Value;
+
+                    BehavioralCurrentSource entity = CreateBehavioralCurrentSource(name, parameters, context, evalContext, expression);
                     return entity;
                 }
             }
@@ -200,15 +244,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (nextParameter is ExpressionEqualParameter eep)
                 {
-                    var entity = new BehavioralCurrentSource(name);
-                    context.CreateNodes(entity, parameters);
-                    entity.Parameters.Expression = ExpressionFactory.CreateTableExpression(eep.Expression, eep.Points);
-                    entity.Parameters.ParseAction = (expression) =>
-                    {
-                        var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
-                        return parser.Resolve(expression);
-                    };
+                    var expression = ExpressionFactory.CreateTableExpression(eep.Expression, eep.Points);
 
+                    BehavioralCurrentSource entity = CreateBehavioralCurrentSource(name, parameters, context, evalContext, expression);
                     return entity;
                 }
                 else
