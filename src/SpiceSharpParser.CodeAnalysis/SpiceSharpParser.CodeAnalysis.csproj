@@ -15,6 +15,10 @@
   <ItemGroup>
     <Compile Remove="..\SpiceSharpParser\obj\**\*.*" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="..\SpiceSharpParser\ModelReaders\Netlist\Spice\Context\ResultService.cs" />
+  </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>

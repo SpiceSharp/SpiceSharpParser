@@ -26,7 +26,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
                 throw new ArgumentNullException(nameof(context));
             }
 
-            context.Result.AddComment(statement);
+            context.Result.Comments.Add(statement.Text);
         }
     }
 }

@@ -41,24 +41,24 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             {
                 var biasingParameters = bs.BiasingParameters;
 
-                if (context.Result.SimulationConfiguration.Gmin.HasValue)
+                if (context.SimulationConfiguration.Gmin.HasValue)
                 {
-                    biasingParameters.Gmin = context.Result.SimulationConfiguration.Gmin.Value;
+                    biasingParameters.Gmin = context.SimulationConfiguration.Gmin.Value;
                 }
 
-                if (context.Result.SimulationConfiguration.AbsoluteTolerance.HasValue)
+                if (context.SimulationConfiguration.AbsoluteTolerance.HasValue)
                 {
-                    biasingParameters.AbsoluteTolerance = context.Result.SimulationConfiguration.AbsoluteTolerance.Value;
+                    biasingParameters.AbsoluteTolerance = context.SimulationConfiguration.AbsoluteTolerance.Value;
                 }
 
-                if (context.Result.SimulationConfiguration.RelTolerance.HasValue)
+                if (context.SimulationConfiguration.RelTolerance.HasValue)
                 {
-                    biasingParameters.RelativeTolerance = context.Result.SimulationConfiguration.RelTolerance.Value;
+                    biasingParameters.RelativeTolerance = context.SimulationConfiguration.RelTolerance.Value;
                 }
 
-                if (context.Result.SimulationConfiguration.DCMaxIterations.HasValue)
+                if (context.SimulationConfiguration.DCMaxIterations.HasValue)
                 {
-                    biasingParameters.DcMaxIterations = context.Result.SimulationConfiguration.DCMaxIterations.Value;
+                    biasingParameters.DcMaxIterations = context.SimulationConfiguration.DCMaxIterations.Value;
                 }
             }
 

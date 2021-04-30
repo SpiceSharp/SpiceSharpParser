@@ -28,7 +28,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
             if (statement.Parameters.Count < 3)
             {
-                context.Result.Validation.Add(
+                context.Result.ValidationResult.Add(
                     new ValidationEntry(
                         ValidationEntrySource.Reader,
                         ValidationEntryLevel.Warning,
@@ -74,7 +74,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     context.Evaluator.EvaluateDouble(parameters[3].Value)),
             };
 
-            context.Result.SimulationConfiguration.ParameterSweeps.Add(pSweep);
+            context.SimulationConfiguration.ParameterSweeps.Add(pSweep);
         }
 
         private void ReadDec(ParameterCollection parameters, ICircuitContext context)
@@ -89,7 +89,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     (int)context.Evaluator.EvaluateDouble(parameters[3].Value)),
             };
 
-            context.Result.SimulationConfiguration.ParameterSweeps.Add(pSweep);
+            context.SimulationConfiguration.ParameterSweeps.Add(pSweep);
         }
 
         private void ReadOct(ParameterCollection parameters, ICircuitContext context)
@@ -104,7 +104,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     (int)context.Evaluator.EvaluateDouble(parameters[3].Value)),
             };
 
-            context.Result.SimulationConfiguration.ParameterSweeps.Add(pSweep);
+            context.SimulationConfiguration.ParameterSweeps.Add(pSweep);
         }
 
         private void ReadList(ParameterCollection parameters, ICircuitContext context)
@@ -116,7 +116,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 if (!(parameter is SingleParameter))
                 {
-                    context.Result.Validation.Add(
+                    context.Result.ValidationResult.Add(
                         new ValidationEntry(
                             ValidationEntrySource.Reader,
                             ValidationEntryLevel.Warning,
@@ -128,7 +128,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 values.Add(context.Evaluator.EvaluateDouble(parameter.Value));
             }
 
-            context.Result.SimulationConfiguration.ParameterSweeps.Add(
+            context.SimulationConfiguration.ParameterSweeps.Add(
                 new ParameterSweep()
                 {
                     Parameter = variableParameter,

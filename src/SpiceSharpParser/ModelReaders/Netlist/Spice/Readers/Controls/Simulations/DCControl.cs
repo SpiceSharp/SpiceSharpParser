@@ -37,22 +37,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 case 0:
                     if (statement.Parameters.Count == 0)
                     {
-                        context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".dc - Source Name expected", statement.LineInfo));
+                        context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".dc - Source Name expected", statement.LineInfo));
                         return null;
                     }
 
                     break;
 
                 case 1:
-                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".dc - Start value expected", statement.LineInfo));
+                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".dc - Start value expected", statement.LineInfo));
                     return null;
 
                 case 2:
-                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".dc - Stop value expected", statement.LineInfo));
+                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".dc - Stop value expected", statement.LineInfo));
                     return null;
 
                 case 3:
-                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".dc - Step value expected", statement.LineInfo));
+                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".dc - Step value expected", statement.LineInfo));
                     return null;
             }
 
@@ -85,16 +85,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             ConfigureCommonSettings(dc, context);
             ConfigureDcSettings(dc.DCParameters, context);
 
-            context.Result.AddSimulation(dc);
+            context.Result.Simulations.Add(dc);
 
             return dc;
         }
 
         private void ConfigureDcSettings(DCParameters dCConfiguration, ICircuitContext context)
         {
-            if (context.Result.SimulationConfiguration.SweepMaxIterations.HasValue)
+            if (context.SimulationConfiguration.SweepMaxIterations.HasValue)
             {
-                dCConfiguration.SweepMaxIterations = context.Result.SimulationConfiguration.SweepMaxIterations.Value;
+                dCConfiguration.SweepMaxIterations = context.SimulationConfiguration.SweepMaxIterations.Value;
             }
         }
     }

@@ -42,7 +42,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             switch (parameters.Count)
             {
                 case 0:
-                    context.Result.Validation.Add(
+                    context.Result.ValidationResult.Add(
                         new ValidationEntry(
                             ValidationEntrySource.Reader,
                             ValidationEntryLevel.Error,
@@ -52,7 +52,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 case 1:
                 case 2:
                 case 3:
-                    context.Result.Validation.Add(
+                    context.Result.ValidationResult.Add(
                         new ValidationEntry(
                             ValidationEntrySource.Reader,
                             ValidationEntryLevel.Error,
@@ -60,7 +60,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             parameters.LineInfo));
                     return null;
                 case 4:
-                    context.Result.Validation.Add(
+                    context.Result.ValidationResult.Add(
                         new ValidationEntry(
                             ValidationEntrySource.Reader,
                             ValidationEntryLevel.Error,
@@ -75,7 +75,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             var model = context.ModelsRegistry.FindModel(modelNameParameter.Value);
             if (model == null)
             {
-                context.Result.Validation.Add(
+                context.Result.ValidationResult.Add(
                     new ValidationEntry(
                         ValidationEntrySource.Reader,
                         ValidationEntryLevel.Error,
@@ -98,13 +98,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         modelNameParameter,
                         $"Could not find model {modelNameParameter} for mosfet {componentIdentifier}",
                         mosfetDetails.SetModelAction,
-                        context.Result,
                         context);
                 });
             }
             else
             {
-                context.Result.Validation.Add(
+                context.Result.ValidationResult.Add(
                     new ValidationEntry(
                         ValidationEntrySource.Reader,
                         ValidationEntryLevel.Error,

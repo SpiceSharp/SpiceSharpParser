@@ -60,7 +60,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 }
                 catch (Exception e)
                 {
-                    circuitContext.Result.Validation.Add(
+                    circuitContext.Result.ValidationResult.Add(
                         new ValidationEntry(
                             ValidationEntrySource.Reader,
                             ValidationEntryLevel.Warning,
@@ -70,7 +70,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             }
             else
             {
-                circuitContext.Result.Validation.Add(
+                circuitContext.Result.ValidationResult.Add(
                     new ValidationEntry(
                         ValidationEntrySource.Reader,
                         ValidationEntryLevel.Warning,

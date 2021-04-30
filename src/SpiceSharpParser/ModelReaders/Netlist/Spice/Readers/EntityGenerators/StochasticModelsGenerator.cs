@@ -57,7 +57,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
 
             if (!(context.ModelsRegistry is IStochasticModelsRegistry stochasticModelRegistry))
             {
-                context.Result.Validation.Add(
+                context.Result.ValidationResult.Add(
                     new ValidationEntry(
                         ValidationEntrySource.Reader,
                         ValidationEntryLevel.Warning,
@@ -71,7 +71,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
             var model = modelGenerator.Generate(id, type, filteredParameters, context);
             if (model == null)
             {
-                context.Result.Validation.Add(
+                context.Result.ValidationResult.Add(
                     new ValidationEntry(
                         ValidationEntrySource.Reader,
                         ValidationEntryLevel.Warning,

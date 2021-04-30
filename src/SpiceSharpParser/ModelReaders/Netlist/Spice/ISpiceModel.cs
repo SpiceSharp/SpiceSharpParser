@@ -45,11 +45,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         MonteCarloResult MonteCarloResult { get; }
 
         /// <summary>
-        /// Gets the simulation configuration.
-        /// </summary>
-        SimulationConfiguration SimulationConfiguration { get; }
-
-        /// <summary>
         /// Gets the list of generated prints.
         /// </summary>
         List<Print> Prints { get; }

@@ -32,18 +32,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             switch (statement.Parameters.Count)
             {
                 case 0:
-                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "LIN, DEC or OCT expected", statement.LineInfo));
+                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "LIN, DEC or OCT expected", statement.LineInfo));
                     return null;
                 case 1:
-                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Number of points expected", statement.LineInfo));
+                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Number of points expected", statement.LineInfo));
                     return null;
 
                 case 2:
-                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Starting frequency expected", statement.LineInfo));
+                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Starting frequency expected", statement.LineInfo));
                     return null;
 
                 case 3:
-                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Stopping frequency expected", statement.LineInfo));
+                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Stopping frequency expected", statement.LineInfo));
                     return null;
             }
 
@@ -60,7 +60,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 case "oct": ac = new AC(name, new OctaveSweep(start, stop, (int)numberSteps)); break;
                 case "dec": ac = new AC(name, new DecadeSweep(start, stop, (int)numberSteps)); break;
                 default:
-                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "LIN, DEC or OCT expected", statement.LineInfo));
+                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "LIN, DEC or OCT expected", statement.LineInfo));
                     return null;
             }
 
@@ -77,15 +77,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 };*/
 
             // TODO
-            context.Result.AddSimulation(ac);
+            context.Result.Simulations.Add(ac);
             return ac;
         }
 
         private void ConfigureAcSettings(FrequencyParameters frequencyConfiguration, ICircuitContext context)
         {
-            if (context.Result.SimulationConfiguration.KeepOpInfo.HasValue)
+            if (context.SimulationConfiguration.KeepOpInfo.HasValue)
             {
-                frequencyConfiguration.KeepOpInfo = context.Result.SimulationConfiguration.KeepOpInfo.Value;
+                frequencyConfiguration.KeepOpInfo = context.SimulationConfiguration.KeepOpInfo.Value;
             }
         }
     }

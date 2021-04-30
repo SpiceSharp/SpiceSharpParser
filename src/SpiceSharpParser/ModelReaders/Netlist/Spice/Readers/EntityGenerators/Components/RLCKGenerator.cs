@@ -43,7 +43,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             switch (parameters.Count)
             {
                 case 0:
-                    context.Result.Validation.Add(
+                    context.Result.ValidationResult.Add(
                         new ValidationEntry(
                             ValidationEntrySource.Reader,
                             ValidationEntryLevel.Warning,
@@ -51,7 +51,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             parameters.LineInfo));
                     return null;
                 case 1:
-                    context.Result.Validation.Add(
+                    context.Result.ValidationResult.Add(
                         new ValidationEntry(
                             ValidationEntrySource.Reader,
                             ValidationEntryLevel.Warning,
@@ -60,7 +60,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     return null;
 
                 case 2:
-                    context.Result.Validation.Add(
+                    context.Result.ValidationResult.Add(
                         new ValidationEntry(
                             ValidationEntrySource.Reader,
                             ValidationEntryLevel.Warning,
@@ -71,7 +71,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             if (!(parameters[0] is SingleParameter))
             {
-                context.Result.Validation.Add(
+                context.Result.ValidationResult.Add(
                     new ValidationEntry(
                         ValidationEntrySource.Reader,
                         ValidationEntryLevel.Warning,
@@ -82,7 +82,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             if (!(parameters[1] is SingleParameter))
             {
-                context.Result.Validation.Add(
+                context.Result.ValidationResult.Add(
                     new ValidationEntry(
                         ValidationEntrySource.Reader,
                         ValidationEntryLevel.Warning,
@@ -192,7 +192,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else
                 {
-                    context.Result.Validation.Add(
+                    context.Result.ValidationResult.Add(
                         new ValidationEntry(
                             ValidationEntrySource.Reader,
                             ValidationEntryLevel.Warning,
@@ -223,7 +223,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             parameters.Get(2),
                             $"Could not find model {parameters.Get(2)} for capacitor {name}",
                             (Context.Models.Model model) => capacitor.Model = model.Name,
-                            context.Result,
                             context);
                     });
 
@@ -251,7 +250,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (tcParameterAssignment == null)
                 {
-                    context.Result.Validation.Add(
+                    context.Result.ValidationResult.Add(
                         new ValidationEntry(
                             ValidationEntrySource.Reader,
                             ValidationEntryLevel.Warning,
@@ -312,7 +311,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             if (parameters.Count < 3)
             {
-                context.Result.Validation.Add(
+                context.Result.ValidationResult.Add(
                     new ValidationEntry(
                         ValidationEntrySource.Reader,
                         ValidationEntryLevel.Error,
@@ -435,7 +434,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             something,
                             $"Could not find model {something} for resistor {name}",
                             (Context.Models.Model model) => res.Model = model.Name,
-                            context.Result,
                             context);
                     });
 
@@ -445,7 +443,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 if (!modelBased && !resistanceBased)
                 {
                     // RName Node1 Node2 something
-                    context.Result.Validation.Add(
+                    context.Result.ValidationResult.Add(
                         new ValidationEntry(
                             ValidationEntrySource.Reader,
                             ValidationEntryLevel.Warning,
@@ -462,7 +460,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 // RName Node1 Node2 something param1 ...
                 if (resistorParameters.Count == 0)
                 {
-                    context.Result.Validation.Add(
+                    context.Result.ValidationResult.Add(
                         new ValidationEntry(
                             ValidationEntrySource.Reader,
                             ValidationEntryLevel.Warning,
@@ -505,7 +503,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             modelNameParameter,
                             $"Could not find model {modelNameParameter} for resistor {name}",
                             (Context.Models.Model model) => res.Model = model.Name,
-                            context.Result,
                             context);
                     });
 
@@ -549,7 +546,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                          || resistanceParameter is ExpressionParameter
                          || (resistanceParameter is AssignmentParameter ap && (ap.Name.ToLower() == "r" || ap.Name.ToLower() == "resistance"))))
                     {
-                        context.Result.Validation.Add(
+                        context.Result.ValidationResult.Add(
                             new ValidationEntry(
                                 ValidationEntrySource.Reader,
                                 ValidationEntryLevel.Warning,
@@ -580,7 +577,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         }
                         catch (Exception e)
                         {
-                            context.Result.Validation.Add(
+                            context.Result.ValidationResult.Add(
                                 new ValidationEntry(
                                     ValidationEntrySource.Reader,
                                     ValidationEntryLevel.Error,
@@ -593,7 +590,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     }
                     else
                     {
-                        context.Result.Validation.Add(
+                        context.Result.ValidationResult.Add(
                             new ValidationEntry(
                                 ValidationEntrySource.Reader,
                                 ValidationEntryLevel.Error,

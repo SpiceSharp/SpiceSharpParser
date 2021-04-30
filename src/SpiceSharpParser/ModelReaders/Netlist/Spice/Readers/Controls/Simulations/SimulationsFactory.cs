@@ -64,8 +64,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
         protected static bool IsMonteCarloEnabledForSimulation(Control statement, ICircuitContext context)
         {
-            return context.Result.SimulationConfiguration.MonteCarloConfiguration.Enabled
-                   && statement.Name.ToLower() == context.Result.SimulationConfiguration.MonteCarloConfiguration.SimulationType.ToLower();
+            return context.SimulationConfiguration.MonteCarloConfiguration.Enabled
+                   && statement.Name.ToLower() == context.SimulationConfiguration.MonteCarloConfiguration.SimulationType.ToLower();
         }
     }
 }

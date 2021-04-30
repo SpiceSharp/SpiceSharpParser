@@ -30,7 +30,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         {
             var op = new OP(name);
             ConfigureCommonSettings(op, context);
-            context.Result.AddSimulation(op);
+            context.Result.Simulations.Add(op);
 
             return op;
         }

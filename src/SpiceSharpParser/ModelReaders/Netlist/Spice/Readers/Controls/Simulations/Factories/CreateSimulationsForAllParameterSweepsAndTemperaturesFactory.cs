@@ -40,7 +40,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
             ProcessTempParameterSweep(context);
 
-            if (context.Result.SimulationConfiguration.ParameterSweeps.Count == 0)
+            if (context.SimulationConfiguration.ParameterSweeps.Count == 0)
             {
                 result.AddRange(AllTemperaturesFactory.CreateSimulations(
                     statement,
@@ -53,9 +53,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             List<List<double>> sweeps = new List<List<double>>();
             int productCount = 1;
 
-            for (var i = 0; i < context.Result.SimulationConfiguration.ParameterSweeps.Count; i++)
+            for (var i = 0; i < context.SimulationConfiguration.ParameterSweeps.Count; i++)
             {
-                var sweepValues = context.Result.SimulationConfiguration.ParameterSweeps[i].Sweep.ToList();
+                var sweepValues = context.SimulationConfiguration.ParameterSweeps[i].Sweep.ToList();
                 sweeps.Add(sweepValues);
                 productCount *= sweepValues.Count;
             }
@@ -111,7 +111,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
             for (var j = 0; j < system.Length; j++)
             {
-                Parameter parameter = context.Result.SimulationConfiguration.ParameterSweeps[j].Parameter;
+                Parameter parameter = context.SimulationConfiguration.ParameterSweeps[j].Parameter;
 
                 double parameterValue = sweeps[j][indexes[j]];
                 parameterValues.Add(new KeyValuePair<Parameter, double>(parameter, parameterValue));
@@ -122,23 +122,23 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
         protected void ProcessTempParameterSweep(ICircuitContext context)
         {
-            var tempSweep = context.Result.SimulationConfiguration.ParameterSweeps.SingleOrDefault(sweep => sweep.Parameter.Value == "TEMP");
+            var tempSweep = context.SimulationConfiguration.ParameterSweeps.SingleOrDefault(sweep => sweep.Parameter.Value == "TEMP");
 
             if (tempSweep != null)
             {
-                context.Result.SimulationConfiguration.ParameterSweeps.Remove(tempSweep);
+                context.SimulationConfiguration.ParameterSweeps.Remove(tempSweep);
                 var tempValues = tempSweep.Sweep.ToList();
 
-                if (context.Result.SimulationConfiguration.TemperaturesInKelvinsFromOptions.HasValue)
+                if (context.SimulationConfiguration.TemperaturesInKelvinsFromOptions.HasValue)
                 {
-                    context.Result.SimulationConfiguration.TemperaturesInKelvins.Remove(context.Result.SimulationConfiguration.TemperaturesInKelvinsFromOptions.Value);
+                    context.SimulationConfiguration.TemperaturesInKelvins.Remove(context.SimulationConfiguration.TemperaturesInKelvinsFromOptions.Value);
                 }
 
-                context.Result.SimulationConfiguration.TemperaturesInKelvins.Clear();
+                context.SimulationConfiguration.TemperaturesInKelvins.Clear();
 
                 foreach (var temp in tempValues)
                 {
-                    context.Result.SimulationConfiguration.TemperaturesInKelvins.Add(Constants.CelsiusKelvin + temp);
+                    context.SimulationConfiguration.TemperaturesInKelvins.Add(Constants.CelsiusKelvin + temp);
                 }
             }
         }

@@ -33,11 +33,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             switch (statement.Parameters.Count)
             {
                 case 0:
-                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".tran control - Step expected", statement.LineInfo));
+                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".tran control - Step expected", statement.LineInfo));
                     break;
 
                 case 1:
-                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".tran control - Maximum time expected", statement.LineInfo));
+                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".tran control - Maximum time expected", statement.LineInfo));
                     break;
             }
 
@@ -72,15 +72,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     args = new double[] { step.Value, final.Value, maxStep.Value };
                     break;
                 default:
-                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".TRAN control - Too many parameters for .TRAN", statement.LineInfo));
+                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".TRAN control - Too many parameters for .TRAN", statement.LineInfo));
                     return null;
             }
 
-            var factory = context.Result.SimulationConfiguration.TimeParametersFactory;
+            var factory = context.SimulationConfiguration.TimeParametersFactory;
 
             if (factory != null)
             {
-                var config = context.Result.SimulationConfiguration.TransientConfiguration;
+                var config = context.SimulationConfiguration.TransientConfiguration;
                 config.Step = step;
                 config.Final = final;
                 config.MaxStep = maxStep;
@@ -107,7 +107,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             {
                 context.Evaluator.SetParameter(tran, "TIME", ((IStateful<IIntegrationMethod>)tran).State.Time);
             };
-            context.Result.AddSimulation(tran);
+            context.Result.Simulations.Add(tran);
 
             return tran;
         }

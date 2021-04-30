@@ -15,9 +15,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         {
             var result = new List<Simulation>();
 
-            if (context.Result.SimulationConfiguration.TemperaturesInKelvins.Count > 0)
+            if (context.SimulationConfiguration.TemperaturesInKelvins.Count > 0)
             {
-                foreach (double temp in context.Result.SimulationConfiguration.TemperaturesInKelvins)
+                foreach (double temp in context.SimulationConfiguration.TemperaturesInKelvins)
                 {
                     result.Add(CreateSimulationForTemperature(statement, context, createSimulation, temp));
                 }
@@ -35,7 +35,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             var simulation = createSimulation(GetSimulationName(context, statement, temp), statement, context);
 
             SetTempVariable(context, temp, simulation);
-            SetSimulationTemperatures(simulation, temp, context.Result.SimulationConfiguration.NominalTemperatureInKelvins);
+            SetSimulationTemperatures(simulation, temp, context.SimulationConfiguration.NominalTemperatureInKelvins);
 
             return simulation;
         }

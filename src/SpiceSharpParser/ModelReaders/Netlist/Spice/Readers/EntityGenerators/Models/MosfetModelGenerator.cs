@@ -104,7 +104,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
             }
             else
             {
-                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Error, $"Unknown mosfet model level {level}", parameters.LineInfo));
+                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Error, $"Unknown mosfet model level {level}", parameters.LineInfo));
                 return null;
             }
 

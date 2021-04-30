@@ -29,7 +29,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             if (parameters.Count < 5)
             {
-                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Wrong parameters count for BJT", parameters.LineInfo));
+                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Wrong parameters count for BJT", parameters.LineInfo));
                 return null;
             }
 
@@ -41,7 +41,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     parameters.Get(4),
                     $"Could not find model {parameters.Get(4)} for BJT {originalName}",
                     (Context.Models.Model model) => bjt.Model = model.Name,
-                    context.Result,
                     context);
             });
 

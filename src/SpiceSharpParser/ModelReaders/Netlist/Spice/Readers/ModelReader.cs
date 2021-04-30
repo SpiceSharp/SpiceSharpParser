@@ -61,7 +61,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
                     if (!Mapper.TryGetValue(type, context.CaseSensitivity.IsEntityNamesCaseSensitive, out var generator))
                     {
-                        context.Result.Validation.Add(
+                        context.Result.ValidationResult.Add(
                             new ValidationEntry(
                                 ValidationEntrySource.Reader,
                                 ValidationEntryLevel.Warning,
@@ -90,7 +90,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
                     if (!Mapper.TryGetValue(type, context.CaseSensitivity.IsModelTypeCaseSensitive, out var generator))
                     {
-                        context.Result.Validation.Add(
+                        context.Result.ValidationResult.Add(
                             new ValidationEntry(
                                 ValidationEntrySource.Reader,
                                 ValidationEntryLevel.Warning,

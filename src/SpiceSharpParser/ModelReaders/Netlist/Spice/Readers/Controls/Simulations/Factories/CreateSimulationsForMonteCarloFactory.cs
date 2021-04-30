@@ -45,14 +45,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// <param name="createSimulation">Simulation factory.</param>
         public List<Simulation> Create(Control statement, ICircuitContext context, Func<string, Control, ICircuitContext, Simulation> createSimulation)
         {
-            context.Result.MonteCarlo.Enabled = true;
-            context.Result.MonteCarlo.Seed = context.Result.SimulationConfiguration.MonteCarloConfiguration.Seed;
-            context.Result.MonteCarlo.OutputVariable = context.Result.SimulationConfiguration.MonteCarloConfiguration.OutputVariable.Value;
-            context.Result.MonteCarlo.Function = context.Result.SimulationConfiguration.MonteCarloConfiguration.Function;
+            context.Result.MonteCarloResult.Enabled = true;
+            context.Result.MonteCarloResult.Seed = context.SimulationConfiguration.MonteCarloConfiguration.Seed;
+            context.Result.MonteCarloResult.OutputVariable = context.SimulationConfiguration.MonteCarloConfiguration.OutputVariable.Value;
+            context.Result.MonteCarloResult.Function = context.SimulationConfiguration.MonteCarloConfiguration.Function;
 
             var result = new List<Simulation>();
 
-            for (var i = 0; i < context.Result.SimulationConfiguration.MonteCarloConfiguration.Runs; i++)
+            for (var i = 0; i < context.SimulationConfiguration.MonteCarloConfiguration.Runs; i++)
             {
                 var simulations = TemperatureAndParameterSweepsSimulationFactory.CreateSimulations(statement, context, createSimulation);
                 AttachMonteCarloDataGathering(context, simulations);
@@ -72,7 +72,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
         protected void AttachMonteCarloDataGatheringForSimulation(ICircuitContext context, Simulation simulation)
         {
-            var exportParam = context.Result.SimulationConfiguration.MonteCarloConfiguration.OutputVariable;
+            var exportParam = context.SimulationConfiguration.MonteCarloConfiguration.OutputVariable;
 
             simulation.BeforeSetup += (sender, args) =>
             {
@@ -88,7 +88,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     if (export != null)
                     {
                         var value = export.Extract();
-                        context.Result.MonteCarlo.Collect(simulation, value);
+                        context.Result.MonteCarloResult.Collect(simulation, value);
                     }
                 };
             };

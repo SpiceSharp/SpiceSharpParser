@@ -19,13 +19,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             if (statement.Parameters.Count == 0)
             {
-                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "No parameters for .TEMP", statement.LineInfo));
+                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "No parameters for .TEMP", statement.LineInfo));
                 return;
             }
 
-            if (context.Result.SimulationConfiguration.TemperaturesInKelvinsFromOptions.HasValue)
+            if (context.SimulationConfiguration.TemperaturesInKelvinsFromOptions.HasValue)
             {
-                context.Result.SimulationConfiguration.TemperaturesInKelvins.Remove(context.Result.SimulationConfiguration.TemperaturesInKelvinsFromOptions.Value);
+                context.SimulationConfiguration.TemperaturesInKelvins.Remove(context.SimulationConfiguration.TemperaturesInKelvinsFromOptions.Value);
             }
 
             foreach (Parameter param in statement.Parameters)
@@ -34,11 +34,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     && (param is Models.Netlist.Spice.Objects.Parameters.ValueParameter
                         || param is Models.Netlist.Spice.Objects.Parameters.ExpressionParameter))
                 {
-                    context.Result.SimulationConfiguration.TemperaturesInKelvins.Add(context.Evaluator.EvaluateDouble(param.Value) + Constants.CelsiusKelvin);
+                    context.SimulationConfiguration.TemperaturesInKelvins.Add(context.Evaluator.EvaluateDouble(param.Value) + Constants.CelsiusKelvin);
                 }
                 else
                 {
-                    context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Wrong type of parameter for .TEMP: {param.GetType()}", param.LineInfo));
+                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Wrong type of parameter for .TEMP: {param.GetType()}", param.LineInfo));
                 }
             }
         }

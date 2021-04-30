@@ -18,7 +18,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// <param name="context">A context to modify.</param>
         public override void Read(Control statement, ICircuitContext context)
         {
-            Read(statement, context.Evaluator.GetEvaluationContext(),  context.Result.Validation, true);
+            Read(statement, context.Evaluator.GetEvaluationContext(),  context.Result.ValidationResult, true);
         }
 
         public void Read(Control statement, EvaluationContext context, SpiceNetlistValidationResult validation)

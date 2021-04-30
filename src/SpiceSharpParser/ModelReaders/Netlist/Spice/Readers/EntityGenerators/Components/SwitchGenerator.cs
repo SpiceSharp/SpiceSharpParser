@@ -38,7 +38,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             if (parameters.Count < 5)
             {
-                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Wrong parameter count for voltage switch", parameters.LineInfo));
+                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Wrong parameter count for voltage switch", parameters.LineInfo));
                 return null;
             }
 
@@ -114,7 +114,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     parameters.Get(4),
                     $"Could not find model {parameters.Get(4)} for voltage switch {name}",
                     (Context.Models.Model model2) => { vsw.Model = model2.Name; },
-                    context.Result,
                     context);
             });
 
@@ -132,13 +131,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         break;
 
                     default:
-                        context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "ON or OFF expected", parameters.LineInfo));
+                        context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "ON or OFF expected", parameters.LineInfo));
                         return vsw;
                 }
             }
             else if (parameters.Count > 6)
             {
-                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Too many parameters for voltage switch", parameters.LineInfo));
+                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Too many parameters for voltage switch", parameters.LineInfo));
                 return vsw;
             }
 
@@ -188,7 +187,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             if (parameters.Count < 4)
             {
-                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Wrong parameter count for current switch", parameters.LineInfo));
+                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Wrong parameter count for current switch", parameters.LineInfo));
                 return null;
             }
 
@@ -262,7 +261,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
             else
             {
-                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Voltage source name expected", parameters.LineInfo));
+                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Voltage source name expected", parameters.LineInfo));
                 return null;
             }
 
@@ -275,7 +274,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     parameters.Get(3),
                     $"Could not find model {parameters.Get(3)} for current switch {name}",
                     (Context.Models.Model switchModel) => csw.Model = switchModel.Name,
-                    context.Result,
                     context);
             });
 
@@ -293,7 +291,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         break;
 
                     default:
-                        context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "ON or OFF expected", parameters.LineInfo));
+                        context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "ON or OFF expected", parameters.LineInfo));
                         return csw;
                 }
             }

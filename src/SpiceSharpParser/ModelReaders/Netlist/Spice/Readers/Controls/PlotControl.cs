@@ -133,7 +133,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 simulation.ExportSimulationData += (sender, args) => CreatePointForSeries(simulation, context, args, exports, series);
             }
 
-            context.Result.AddPlot(plot);
+            context.Result.XyPlots.Add(plot);
         }
 
         private void AddPlotToResultIfValid(string plotImage, ICircuitContext context, XyPlot plot, Simulation simulation)
@@ -149,11 +149,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
             if (plot.Series.Count > 0)
             {
-                context.Result.AddPlot(plot);
+                context.Result.XyPlots.Add(plot);
             }
             else
             {
-                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"{plotImage} is not valid for: {simulation.Name}"));
+                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"{plotImage} is not valid for: {simulation.Name}"));
             }
         }
 
@@ -176,7 +176,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 if (eventArgs.GetSweepValues().Length > 1)
                 {
                     // TODO: Add support for DC Sweeps > 1
-                    context.Result.Validation.Add(
+                    context.Result.ValidationResult.Add(
                         new ValidationEntry(
                             ValidationEntrySource.Reader,
                             ValidationEntryLevel.Warning,

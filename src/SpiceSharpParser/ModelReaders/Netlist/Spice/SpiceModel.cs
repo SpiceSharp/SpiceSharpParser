@@ -2,7 +2,6 @@
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations;
 using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice
@@ -17,7 +16,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         {
             Circuit = circuit ?? throw new System.ArgumentNullException(nameof(circuit));
             Title = title;
-            ValidationResult = new SpiceNetlistValidationResult();
         }
 
         /// <summary>
@@ -56,11 +54,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         public MonteCarloResult MonteCarloResult { get; } = new MonteCarloResult();
 
         /// <summary>
-        /// Gets the simulation configuration.
-        /// </summary>
-        public SimulationConfiguration SimulationConfiguration { get; } = new SimulationConfiguration();
-
-        /// <summary>
         /// Gets the list of generated prints.
         /// </summary>
         public List<Print> Prints { get; } = new List<Print>();
@@ -73,6 +66,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// <summary>
         /// Gets the validation result.
         /// </summary>
-        public SpiceNetlistValidationResult ValidationResult { get; }
+        public SpiceNetlistValidationResult ValidationResult { get; } = new SpiceNetlistValidationResult();
     }
 }

@@ -29,7 +29,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             ifPreprocessor.CaseSettings = subCircuitContext.CaseSensitivity;
             ifPreprocessor.Validation = new SpiceParserValidationResult()
             {
-                Reading = context.Result.Validation,
+                Reading = context.Result.ValidationResult,
             };
             ifPreprocessor.EvaluationContext = subCircuitContext.Evaluator.GetEvaluationContext();
             subCircuitDefinition.Statements = ifPreprocessor.Process(subCircuitDefinition.Statements);
@@ -148,7 +148,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             if (result == null)
             {
-                context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Could not find '{subCircuitDefinitionName}' subcircuit", parameters.LineInfo));
+                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Could not find '{subCircuitDefinitionName}' subcircuit", parameters.LineInfo));
             }
 
             return result;
@@ -239,14 +239,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 context,
                 subcircuitEvaluator,
                 context.SimulationPreparations,
-                context.Result,
                 subcircuitNameGenerator,
                 context.StatementsReader,
                 context.WaveformReader,
                 context.CaseSensitivity,
                 context.Exporters,
                 context.WorkingDirectory,
-                context.ExpandSubcircuits);
+                context.ExpandSubcircuits,
+                context.SimulationConfiguration,
+                context.Result);
 
             subcircuitEvaluationContext.CircuitContext = subcircuitContext;
 

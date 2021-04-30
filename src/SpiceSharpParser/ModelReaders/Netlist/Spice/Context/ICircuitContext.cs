@@ -5,6 +5,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System.Collections.Generic;
 
@@ -12,6 +13,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     public interface ICircuitContext
     {
+        SpiceModel<Circuit, Simulation> Result { get; }
+
+        SimulationConfiguration SimulationConfiguration { get; }
+
         /// <summary>
         /// Gets the simulation parameters.
         /// </summary>
@@ -41,11 +46,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Gets the list of available subcircuit for the context.
         /// </summary>
         ICollection<SubCircuit> AvailableSubcircuits { get; }
-
-        /// <summary>
-        /// Gets the result service for the context.
-        /// </summary>
-        IResultService Result { get; }
 
         Circuit ContextEntities { get; set; } 
 

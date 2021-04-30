@@ -87,7 +87,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
         private void CreatePlotsForTranParameterSweeps(ICircuitContext context)
         {
-            if (context.Result.SimulationConfiguration.ParameterSweeps.Count > 0)
+            if (context.SimulationConfiguration.ParameterSweeps.Count > 0)
             {
                 // 2. Find all .TRAN exports
                 List<Export> tranExports = new List<Export>();
@@ -114,7 +114,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
         private void CreatePlotsForAcParameterSweeps(ICircuitContext context)
         {
-            if (context.Result.SimulationConfiguration.ParameterSweeps.Count > 0)
+            if (context.SimulationConfiguration.ParameterSweeps.Count > 0)
             {
                 // 2. Find all .AC exports
                 List<Export> acExports = new List<Export>();
@@ -141,10 +141,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
         private void CreatePlotsForOpParameterSweeps(ICircuitContext context)
         {
-            if (context.Result.SimulationConfiguration.ParameterSweeps.Count > 0)
+            if (context.SimulationConfiguration.ParameterSweeps.Count > 0)
             {
                 // 1. Find first parameter sweep (it will decide about X-axis scale)
-                var firstParameterSweep = context.Result.SimulationConfiguration.ParameterSweeps[0];
+                var firstParameterSweep = context.SimulationConfiguration.ParameterSweeps[0];
 
                 // 2. Find all .OP exports
                 List<Export> opExports = new List<Export>();
@@ -185,7 +185,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 plot.Series.Add(series);
             }
 
-            context.Result.AddPlot(plot);
+            context.Result.XyPlots.Add(plot);
         }
 
         private void CreateTranSweepPlot(string variableName, List<Export> exports, ICircuitContext context)
@@ -204,7 +204,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 plot.Series.Add(series);
             }
 
-            context.Result.AddPlot(plot);
+            context.Result.XyPlots.Add(plot);
         }
 
         private void CreateAcSweepPlot(string variableName, List<Export> exports, ICircuitContext context)
@@ -223,7 +223,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 plot.Series.Add(series);
             }
 
-            context.Result.AddPlot(plot);
+            context.Result.XyPlots.Add(plot);
         }
 
         private void AddOpPointToSeries(Context.Sweeps.ParameterSweep firstParameterSweep, Export export, ICircuitContext context, Series series)
@@ -279,7 +279,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         }
 
                         // Add current export for component
-                        context.Result.AddExport(
+                        context.Result.Exports.Add(
                             Mapper
                             .GetValue("I", true)
                             .CreateExport(
@@ -296,7 +296,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     var @params = new ParameterCollection(new List<Parameter>());
                     @params.Add(new WordParameter(node, null));
 
-                    context.Result.AddExport(
+                    context.Result.Exports.Add(
                         Mapper
                         .GetValue("V", true)
                         .CreateExport(
@@ -313,7 +313,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             foreach (var simulation in Filter(context.Result.Simulations, simulationType))
             {
-                context.Result.AddExport(GenerateExport(parameter, context, simulation));
+                context.Result.Exports.Add(GenerateExport(parameter, context, simulation));
             }
         }
 
@@ -328,12 +328,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 foreach (var simulation in simulations)
                 {
                     var export = new ExpressionExport(simulation.Name, expressionName, context.Evaluator.GetEvaluationContext(simulation));
-                    context.Result.AddExport(export);
+                    context.Result.Exports.Add(export);
                 }
             }
             else
             {
-                context.Result.Validation.Add(
+                context.Result.ValidationResult.Add(
                     new ValidationEntry(
                         ValidationEntrySource.Reader,
                         ValidationEntryLevel.Warning,

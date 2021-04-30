@@ -10,6 +10,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
@@ -40,19 +41,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             ICircuitContext parent,
             ICircuitEvaluator evaluator,
             ISimulationPreparations simulationPreparations,
-            IResultService resultService,
             INameGenerator nameGenerator,
             ISpiceStatementsReader statementsReader,
             IWaveformReader waveformReader,
             ISpiceNetlistCaseSensitivitySettings caseSettings,
             IMapper<Exporter> exporters,
             string workingDirectory,
-            bool expandSubcircuits)
+            bool expandSubcircuits,
+            SimulationConfiguration simulationConfiguration,
+            SpiceModel<Circuit, Simulation> result)
         {
             Name = contextName ?? throw new ArgumentNullException(nameof(contextName));
             Evaluator = evaluator;
             SimulationPreparations = simulationPreparations;
-            Result = resultService ?? throw new ArgumentNullException(nameof(resultService));
             NameGenerator = nameGenerator ?? throw new ArgumentNullException(nameof(nameGenerator));
             Parent = parent;
             Children = new List<ICircuitContext>();
@@ -65,7 +66,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             WorkingDirectory = workingDirectory;
             ContextEntities = new Circuit(new EntityCollection(StringComparerProvider.Get(caseSettings.IsEntityNamesCaseSensitive)));
             ExpandSubcircuits = expandSubcircuits;
+            SimulationConfiguration = simulationConfiguration;
+            Result = result;
         }
+
+        /// <summary>
+        /// Gets the main configuration.
+        /// </summary>
+        public SimulationConfiguration SimulationConfiguration { get; }
+
+        public SpiceModel<Circuit, Simulation> Result { get; }
 
         /// <summary>
         /// Gets the working directory.
@@ -101,11 +111,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Gets available subcircuits in context.
         /// </summary>
         public ICollection<SubCircuit> AvailableSubcircuits { get; }
-
-        /// <summary>
-        /// Gets the result service.
-        /// </summary>
-        public IResultService Result { get; }
 
         /// <summary>
         /// Gets the name generator.
@@ -272,7 +277,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
             catch (Exception e)
             {
-                Result.Validation.Add(
+                Result.ValidationResult.Add(
                     new ValidationEntry(
                         ValidationEntrySource.Reader,
                         ValidationEntryLevel.Warning,
@@ -328,7 +333,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
             catch (Exception ex)
             {
-                Result.Validation.Add(
+                Result.ValidationResult.Add(
                     new ValidationEntry(
                         ValidationEntrySource.Reader,
                         ValidationEntryLevel.Warning,

@@ -99,7 +99,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
                 }
             }
 
-            context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Unsupported component {componentName}", lineInfo));
+            context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Unsupported component {componentName}", lineInfo));
             componentType = null;
             return null;
         }

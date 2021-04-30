@@ -57,7 +57,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             Utility.Separator = Settings.Separator;
 
             // Get reading context
-            var resultService = new ResultService(result);
             var nodeNameGenerator = new MainCircuitNodeNameGenerator(
                 new[] { "0" },
                 Settings.CaseSensitivity.IsEntityNamesCaseSensitive);
@@ -98,14 +97,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 null,
                 circuitEvaluator,
                 simulationPreparations,
-                resultService,
                 nameGenerator,
                 statementsReader,
                 waveformReader,
                 Settings.CaseSensitivity,
                 Settings.Mappings.Exporters,
                 Settings.WorkingDirectory,
-                Settings.ExpandSubcircuits);
+                Settings.ExpandSubcircuits,
+                new Readers.Controls.Simulations.Configurations.SimulationConfiguration(),
+                result);
 
             // Set initial seed
             circuitContext.Evaluator.Seed = Settings.Seed;

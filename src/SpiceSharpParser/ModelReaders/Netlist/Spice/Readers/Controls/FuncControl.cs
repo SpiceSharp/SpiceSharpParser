@@ -32,7 +32,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 {
                     if (!assignmentParameter.HasFunctionSyntax)
                     {
-                        context.Result.Validation.Add(
+                        context.Result.ValidationResult.Add(
                             new ValidationEntry(
                                 ValidationEntrySource.Reader,
                                 ValidationEntryLevel.Warning,
@@ -70,7 +70,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     }
                     else
                     {
-                        context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Unsupported syntax for .FUNC", param.LineInfo));
+                        context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Unsupported syntax for .FUNC", param.LineInfo));
                     }
                 }
             }
