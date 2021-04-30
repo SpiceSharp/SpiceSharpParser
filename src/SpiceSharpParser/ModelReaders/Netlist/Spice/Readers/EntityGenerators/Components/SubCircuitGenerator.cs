@@ -57,6 +57,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var pinNames = GetPinNames(parameters, subCircuitDefinition, context);
                 var subCircuit = new Subcircuit(componentIdentifier, def);
                 subCircuit.Connect(pinNames.ToArray());
+
+                if (context.SimulationConfiguration.LocalSolver)
+                {
+                    subCircuit.Parameters.LocalSolver = true;
+                }
+
                 return subCircuit;
             }
         }

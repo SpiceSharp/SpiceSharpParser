@@ -103,6 +103,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                             context.Evaluator.GetEvaluationContext().Randomizer.CurrentPdfName = value;
                             break;
 
+                        case "localsolver":
+                            context.SimulationConfiguration.LocalSolver = value == "on";
+                            break;
+
                         case "cdfpoints":
                             var points = (int)context.Evaluator.EvaluateDouble(value);
 
