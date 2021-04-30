@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
 {
@@ -14,7 +15,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
         /// </summary>
         /// <param name="globals">Global pin names.</param>
         /// <param name="isNodeNameCaseSensitive">Is node name case-sensitive.</param>
-        public MainCircuitNodeNameGenerator(IEnumerable<string> globals, bool isNodeNameCaseSensitive)
+        /// <param name="separator">Separator.</param>
+        public MainCircuitNodeNameGenerator(IEnumerable<string> globals, bool isNodeNameCaseSensitive, string separator)
         {
             if (globals == null)
             {
@@ -23,6 +25,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
 
             IsNodeNameCaseSensitive = isNodeNameCaseSensitive;
             InitGlobals(globals);
+            Separator = separator;
         }
 
         public bool IsNodeNameCaseSensitive { get; }
@@ -41,6 +44,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
         /// Gets or sets the children.
         /// </summary>
         public List<INodeNameGenerator> Children { get; set; } = new List<INodeNameGenerator>();
+        
+        public string Separator { get; }
 
         /// <summary>
         /// Generates node name.
@@ -90,7 +95,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
                 throw new ArgumentNullException(nameof(path));
             }
 
-            string[] parts = path.Split('.');
+            string[] parts = Regex.Split(path, Regex.Escape(Separator));
 
             if (parts.Length == 1)
             {
@@ -104,7 +109,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
                 {
                     if (child.RootName == firstSubcircuit)
                     {
-                        string restOfPath = string.Join(".", parts.Skip(1));
+                        string restOfPath = string.Join(Separator, parts.Skip(1));
                         return child.Parse(restOfPath);
                     }
                 }

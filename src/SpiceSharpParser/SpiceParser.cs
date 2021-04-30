@@ -168,9 +168,10 @@ namespace SpiceSharpParser
         {
             var nodeNameGenerator = new MainCircuitNodeNameGenerator(
                 new[] { "0" },
-                Settings.Reading.CaseSensitivity.IsEntityNamesCaseSensitive);
+                Settings.Reading.CaseSensitivity.IsEntityNamesCaseSensitive,
+                Settings.Reading.Separator);
 
-            var objectNameGenerator = new ObjectNameGenerator(string.Empty);
+            var objectNameGenerator = new ObjectNameGenerator(string.Empty, Settings.Reading.Separator);
             INameGenerator nameGenerator = new NameGenerator(nodeNameGenerator, objectNameGenerator);
             var expressionParserFactory = new ExpressionParserFactory(Settings.Reading.CaseSensitivity);
 

@@ -3,6 +3,7 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
 {
@@ -20,7 +21,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
         /// <param name="pinInstanceNames">The names of pins.</param>
         /// <param name="globals">Global pin names.</param>
         /// <param name="isNodeNameCaseSensitive">Is node name case sensitive.</param>
-        public SubcircuitNodeNameGenerator(string subcircuitFullName, string subCircuitName, SubCircuit currentSubCircuit, List<string> pinInstanceNames, IEnumerable<string> globals, bool isNodeNameCaseSensitive)
+        public SubcircuitNodeNameGenerator(
+            string subcircuitFullName, 
+            string subCircuitName, 
+            SubCircuit currentSubCircuit, 
+            List<string> pinInstanceNames, 
+            IEnumerable<string> globals,
+            bool isNodeNameCaseSensitive, 
+            string separator)
         {
             RootName = subCircuitName ?? throw new ArgumentNullException(nameof(subCircuitName));
             FullName = subcircuitFullName ?? throw new ArgumentNullException(nameof(subcircuitFullName));
@@ -48,6 +56,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
 
             IsNodeNameCaseSensitive = isNodeNameCaseSensitive;
             InitGlobals(globals);
+            Separator = separator;
         }
 
         public Dictionary<string, string> PinMap
@@ -89,6 +98,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
         /// Gets or sets children of node name generator.
         /// </summary>
         public List<INodeNameGenerator> Children { get; set; } = new List<INodeNameGenerator>();
+        public string Separator { get; }
 
         /// <summary>
         /// Generates node name.
@@ -122,7 +132,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
             }
             else
             {
-                return $"{FullName}.{nodeName}";
+                return $"{FullName}{Separator}{nodeName}";
             }
         }
 
@@ -157,7 +167,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
                 throw new ArgumentNullException(nameof(path));
             }
 
-            string[] parts = path.Split('.');
+            string[] parts = Regex.Split(path, Regex.Escape(Separator));
 
             if (parts.Length == 1)
             {
@@ -174,7 +184,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
                 }
                 else
                 {
-                    return $"{FullName}.{pinName}";
+                    return $"{FullName}{Separator}{pinName}";
                 }
             }
             else
@@ -185,7 +195,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
                 {
                     if (child.RootName == firstSubcircuit)
                     {
-                        string restOfPath = string.Join(".", parts.Skip(1));
+                        string restOfPath = string.Join(Separator, parts.Skip(1));
                         return child.Parse(restOfPath);
                     }
                 }
@@ -193,7 +203,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
 
             if (parts[0] == RootName)
             {
-                string restOfPath = string.Join(".", parts.Skip(1));
+                string restOfPath = string.Join(Separator, parts.Skip(1));
                 return restOfPath;
             }
 

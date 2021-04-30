@@ -49,7 +49,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             string workingDirectory,
             bool expandSubcircuits,
             SimulationConfiguration simulationConfiguration,
-            SpiceModel<Circuit, Simulation> result)
+            SpiceModel<Circuit, Simulation> result,
+            string separator)
         {
             Name = contextName ?? throw new ArgumentNullException(nameof(contextName));
             Evaluator = evaluator;
@@ -68,6 +69,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             ExpandSubcircuits = expandSubcircuits;
             SimulationConfiguration = simulationConfiguration;
             Result = result;
+            Separator = separator;
         }
 
         /// <summary>
@@ -76,6 +78,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public SimulationConfiguration SimulationConfiguration { get; }
 
         public SpiceModel<Circuit, Simulation> Result { get; }
+
+        public string Separator { get; }
 
         /// <summary>
         /// Gets the working directory.
@@ -143,6 +147,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public ISpiceNetlistCaseSensitivitySettings CaseSensitivity { get; }
 
         public Circuit ContextEntities { get; set; }
+
         public bool ExpandSubcircuits { get; }
 
         /// <summary>

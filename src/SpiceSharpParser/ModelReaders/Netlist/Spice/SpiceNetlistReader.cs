@@ -59,8 +59,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             // Get reading context
             var nodeNameGenerator = new MainCircuitNodeNameGenerator(
                 new[] { "0" },
-                Settings.CaseSensitivity.IsEntityNamesCaseSensitive);
-            var objectNameGenerator = new ObjectNameGenerator(string.Empty);
+                Settings.CaseSensitivity.IsEntityNamesCaseSensitive,
+                Settings.Separator);
+            var objectNameGenerator = new ObjectNameGenerator(string.Empty, Settings.Separator);
             INameGenerator nameGenerator = new NameGenerator(nodeNameGenerator, objectNameGenerator);
             IRandomizer randomizer = new Randomizer(
                 Settings.CaseSensitivity.IsDistributionNameCaseSensitive,
@@ -105,7 +106,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 Settings.WorkingDirectory,
                 Settings.ExpandSubcircuits,
                 new Readers.Controls.Simulations.Configurations.SimulationConfiguration(),
-                result);
+                result,
+                Settings.Separator);
 
             // Set initial seed
             circuitContext.Evaluator.Seed = Settings.Seed;

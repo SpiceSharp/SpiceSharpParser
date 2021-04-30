@@ -67,9 +67,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         public ISpiceNetlistCaseSensitivitySettings CaseSensitivity { get; }
         
         /// <summary>
-        /// Gets the separator for object and node names.
+        /// Gets or sets the separator for object and node names.
         /// </summary>
-        public string Separator { get; }
+        public string Separator { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether subcircuts should be expaned.

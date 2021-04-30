@@ -224,9 +224,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             GetAssigmentParametersCount(parameters, out var subCktParameters);
             var subcircuitParameters = CreateSubcircuitParameters(subCircuitDefinition, subCktParameters, context);
-            var subcircuitNodeNameGenerator = new SubcircuitNodeNameGenerator(subcircuitFullName, subcircuitName, subCircuitDefinition, pinInstanceIdentifiers, context.NameGenerator.Globals, context.CaseSensitivity.IsEntityNamesCaseSensitive);
+            var subcircuitNodeNameGenerator = new SubcircuitNodeNameGenerator(
+                subcircuitFullName,
+                subcircuitName,
+                subCircuitDefinition,
+                pinInstanceIdentifiers,
+                context.NameGenerator.Globals,
+                context.CaseSensitivity.IsEntityNamesCaseSensitive,
+                context.Separator);
+
             var subcircuitObjectNameGenerator = context.NameGenerator.CreateChildNameGenerator(subcircuitName);
-            var subcircuitNameGenerator = new NameGenerator(subcircuitNodeNameGenerator, subcircuitObjectNameGenerator);
+            var subcircuitNameGenerator = new NameGenerator(
+                subcircuitNodeNameGenerator,
+                subcircuitObjectNameGenerator);
+
             context.NameGenerator.AddChild(subcircuitNodeNameGenerator);
             var subcircuitEvaluationContext = context.Evaluator.CreateChildContext(subcircuitFullName, true);
             subcircuitEvaluationContext.SetParameters(subcircuitParameters);
@@ -247,7 +258,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 context.WorkingDirectory,
                 context.ExpandSubcircuits,
                 context.SimulationConfiguration,
-                context.Result);
+                context.Result,
+                context.Separator);
 
             subcircuitEvaluationContext.CircuitContext = subcircuitContext;
 
