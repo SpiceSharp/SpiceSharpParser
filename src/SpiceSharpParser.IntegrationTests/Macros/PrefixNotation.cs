@@ -20,8 +20,8 @@ namespace SpiceSharpParser.IntegrationTests.Macros
                 ".OP",
                 ".END");
 
-            Assert.True(result.ValidationResult.Lexing.IsValid);
-            Assert.True(result.ValidationResult.Reading.IsValid);
+            Assert.False(result.ValidationResult.Lexing.HasError);
+            Assert.False(result.ValidationResult.Reading.HasError);
             Assert.False(result.ValidationResult.Reading.HasWarning);
         }
 
@@ -40,8 +40,9 @@ namespace SpiceSharpParser.IntegrationTests.Macros
                 "V1 0 1 1000",
                 ".OP",
                 ".END");
-            Assert.True(result.ValidationResult.Lexing.IsValid);
-            Assert.True(result.ValidationResult.Reading.IsValid);
+
+            Assert.False(result.ValidationResult.Lexing.HasError);
+            Assert.False(result.ValidationResult.Reading.HasError);
             Assert.False(result.ValidationResult.Reading.HasWarning);
         }
 
@@ -60,8 +61,9 @@ namespace SpiceSharpParser.IntegrationTests.Macros
                 "V1 0 1 1000",
                 ".OP",
                 ".END");
-            Assert.True(result.ValidationResult.Lexing.IsValid);
-            Assert.True(result.ValidationResult.Reading.IsValid);
+
+            Assert.False(result.ValidationResult.Lexing.HasError);
+            Assert.False(result.ValidationResult.Reading.HasError);
             Assert.False(result.ValidationResult.Reading.HasWarning);
         }
 
@@ -81,8 +83,8 @@ namespace SpiceSharpParser.IntegrationTests.Macros
                 ".OP",
                 ".END");
 
-            Assert.True(result.ValidationResult.Lexing.IsValid);
-            Assert.True(result.ValidationResult.Reading.IsValid);
+            Assert.False(result.ValidationResult.Lexing.HasError);
+            Assert.False(result.ValidationResult.Reading.HasError);
             Assert.False(result.ValidationResult.Reading.HasWarning);
         }
 
@@ -102,8 +104,8 @@ namespace SpiceSharpParser.IntegrationTests.Macros
                 ".OP",
                 ".END");
 
-            Assert.True(result.ValidationResult.Lexing.IsValid);
-            Assert.True(result.ValidationResult.Reading.IsValid);
+            Assert.False(result.ValidationResult.Lexing.HasError);
+            Assert.False(result.ValidationResult.Reading.HasError);
             Assert.False(result.ValidationResult.Reading.HasWarning);
         }
     }

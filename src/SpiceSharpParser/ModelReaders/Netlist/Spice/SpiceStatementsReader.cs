@@ -65,7 +65,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                     circuitContext.Result.ValidationResult.Add(
                         new ValidationEntry(
                             ValidationEntrySource.Reader,
-                            ValidationEntryLevel.Warning,
+                            ValidationEntryLevel.Error,
                             $"There was a problem during reading statement: {statement.GetType()} : {e}",
                             statement.LineInfo));
                 }

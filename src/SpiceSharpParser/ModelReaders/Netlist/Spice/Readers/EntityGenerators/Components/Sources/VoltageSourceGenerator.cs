@@ -241,7 +241,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 int tableParameterPosition = parameters.IndexOf(tableParameter);
                 if (tableParameterPosition == parameters.Count - 1)
                 {
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "table expects expression parameter", tableParameter.LineInfo));
+                    context.Result.ValidationResult.Add(
+                        new ValidationEntry(
+                            ValidationEntrySource.Reader, 
+                            ValidationEntryLevel.Error, 
+                            "table expects expression parameter", 
+                            tableParameter.LineInfo));
                 }
 
                 var nextParameter = parameters[tableParameterPosition + 1];
@@ -255,7 +260,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else
                 {
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "table expects expression equal parameter", parameters.LineInfo));
+                    context.Result.ValidationResult.Add(
+                        new ValidationEntry(
+                            ValidationEntrySource.Reader,
+                            ValidationEntryLevel.Error,
+                            "table expects expression equal parameter",
+                            parameters.LineInfo));
                 }
             }
 

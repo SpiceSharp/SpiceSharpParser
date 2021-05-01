@@ -1,4 +1,3 @@
-using SpiceSharpParser.Parsers.Netlist;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.Common

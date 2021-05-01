@@ -25,8 +25,8 @@ namespace SpiceSharpParser.IntegrationTests.Macros
                 ".OP",
                 ".END");
 
-            Assert.True(result.ValidationResult.Lexing.IsValid);
-            Assert.True(result.ValidationResult.Reading.IsValid);
+            Assert.False(result.ValidationResult.Lexing.HasError);
+            Assert.False(result.ValidationResult.Reading.HasError);
             Assert.False(result.ValidationResult.Reading.HasWarning);
         }
 
@@ -36,7 +36,7 @@ namespace SpiceSharpParser.IntegrationTests.Macros
             var result = ParseNetlistRaw(
                 enableBusSyntax: true,
                 "Suffix notation",
-                ".SUBCKT complex_component2 input<0, 1,(1:3)*2>", 
+                ".SUBCKT complex_component2 input<0, 1,(1:3)*2>",
                 "R1 input<0> 1 100",
                 "R2 input<1> 1 200",
                 ".ENDS complex_component2",
@@ -45,8 +45,8 @@ namespace SpiceSharpParser.IntegrationTests.Macros
                 ".OP",
                 ".END");
 
-            Assert.True(result.ValidationResult.Lexing.IsValid);
-            Assert.True(result.ValidationResult.Reading.IsValid);
+            Assert.False(result.ValidationResult.Lexing.HasError);
+            Assert.False(result.ValidationResult.Reading.HasError);
             Assert.False(result.ValidationResult.Reading.HasWarning);
         }
 
@@ -63,8 +63,8 @@ namespace SpiceSharpParser.IntegrationTests.Macros
                 "X1<0:30, 31> REGISTER<0:31><0:7> GND ENABLE_IN mysubckt",
                 ".END");
 
-            Assert.True(result.ValidationResult.Lexing.IsValid);
-            Assert.True(result.ValidationResult.Reading.IsValid);
+            Assert.False(result.ValidationResult.Lexing.HasError);
+            Assert.False(result.ValidationResult.Reading.HasError);
             Assert.False(result.ValidationResult.Reading.HasWarning);
         }
 
@@ -74,7 +74,7 @@ namespace SpiceSharpParser.IntegrationTests.Macros
             var result = ParseNetlistRaw(
                 enableBusSyntax: true,
                 "Suffix notation",
-                
+
                 ".SUBCKT mysubckt bus<0:15><0:7> GND ENABLE",
                 "X1<0:12> bus<0:12><0:3> GND ENABLE mysubckt2",
                 "C1 bus<0><1> 1 100",
@@ -86,8 +86,8 @@ namespace SpiceSharpParser.IntegrationTests.Macros
                 "X1<0:30, 31> bus<0:31><0:15><0:7> GND ENABLE_IN mysubckt",
                 ".END");
 
-            Assert.True(result.ValidationResult.Lexing.IsValid);
-            Assert.True(result.ValidationResult.Reading.IsValid);
+            Assert.False(result.ValidationResult.Lexing.HasError);
+            Assert.False(result.ValidationResult.Reading.HasError);
             Assert.False(result.ValidationResult.Reading.HasWarning);
         }
     }

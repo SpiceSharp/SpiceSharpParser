@@ -21,6 +21,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 "CaseSensitivity",
                 ".End");
             var result = parser.ParseNetlist(text);
+
+            Assert.NotNull(result);
             Assert.True(result.ValidationResult.Parsing.HasError);
         }
 
@@ -43,6 +45,10 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".End");
 
             var parseResult = parser.ParseNetlist(text);
+
+            Assert.NotNull(parseResult);
+            Assert.False(parseResult.ValidationResult.HasError);
+            Assert.False(parseResult.ValidationResult.HasWarning);
 
             parseResult.SpiceModel.Simulations[0].Run(parseResult.SpiceModel.Circuit);
         }

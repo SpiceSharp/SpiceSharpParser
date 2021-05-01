@@ -5,10 +5,10 @@ namespace SpiceSharpParser.IntegrationTests.Common
     public class ErrorsTests : BaseTests
     {
         [Fact]
-        public void When_UnknownComponent_Expect_Exception()
+        public void When_UnknownComponent_Expect_Warning()
         {
             var result = ParseNetlist(
-                "Exceptions",
+                "Errors",
                 "UMemory 1 0 1N914",
                 "V1_a 1 0 0.0",
                 ".DC V1_a -1 1.0 10e-3",
@@ -19,10 +19,10 @@ namespace SpiceSharpParser.IntegrationTests.Common
         }
 
         [Fact]
-        public void When_InvalidProperty_Expect_Exception()
+        public void When_InvalidProperty_Expect_Warning()
         {
             var result = ParseNetlist(
-                "Exceptions",
+                "Errors",
                 "V1 1 0 150",
                 "R1 1 0 10 a = 1.2",
                 ".SAVE I(R1)",

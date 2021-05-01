@@ -35,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Resources\example01.cir">
+    <None Update="Examples\Circuits\example01.cir">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Resources\pwl_reference.txt">

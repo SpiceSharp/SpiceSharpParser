@@ -25,6 +25,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasWarning);
+            Assert.False(netlist.ValidationResult.HasError);
+
             double export = RunOpSimulation(netlist, "V(3,6)");
             Assert.Equal(6, export);
         }
@@ -49,6 +52,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasWarning);
+            Assert.False(netlist.ValidationResult.HasError);
+
             double export = RunOpSimulation(netlist, "V(3,6)");
             Assert.Equal(6, export);
         }
@@ -73,6 +79,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasWarning);
+            Assert.False(netlist.ValidationResult.HasError);
+
             double export = RunOpSimulation(netlist, "V(3,6)");
             Assert.Equal(18, export);
         }
@@ -100,6 +109,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasWarning);
+            Assert.False(netlist.ValidationResult.HasError);
+
             double[] exports = RunOpSimulation(netlist, "V(2,1)", "V(3,7)");
             Assert.Equal(2, exports[0]);
             Assert.Equal(6, exports[1]);
@@ -118,6 +130,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasWarning);
+            Assert.False(netlist.ValidationResult.HasError);
+
             double export = RunOpSimulation(netlist, "V(2,0)");
             Assert.Equal(4, export);
         }
@@ -135,6 +150,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasWarning);
+            Assert.False(netlist.ValidationResult.HasError);
+
             double export = RunOpSimulation(netlist, "V(2,0)");
             Assert.Equal(4, export);
         }
@@ -153,6 +171,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasWarning);
+            Assert.False(netlist.ValidationResult.HasError);
+
             double export = RunOpSimulation(netlist, "V(2,0)");
             Assert.Equal(18, export);
         }
@@ -170,6 +191,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasWarning);
+            Assert.False(netlist.ValidationResult.HasError);
+
             Assert.Throws<SpiceSharp.SpiceSharpException>(() => RunOpSimulation(netlist, "V(2,0)"));
         }
 
@@ -186,6 +210,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasWarning);
+            Assert.False(netlist.ValidationResult.HasError);
+
             double export = RunOpSimulation(netlist, "V(2,0)");
             Assert.Equal(4, export);
         }
@@ -203,6 +230,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasWarning);
+            Assert.False(netlist.ValidationResult.HasError);
+
             double export = RunOpSimulation(netlist, "V(2,0)");
             Assert.Equal(4, export);
         }
@@ -221,6 +251,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasWarning);
+            Assert.False(netlist.ValidationResult.HasError);
+
             double export = RunOpSimulation(netlist, "V(2,0)");
             Assert.Equal(18, export);
         }
@@ -238,6 +271,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasWarning);
+            Assert.False(netlist.ValidationResult.HasError);
+
             Assert.Throws<SpiceSharp.SpiceSharpException>(() => RunOpSimulation(netlist, "V(2,0)"));
         }
 
@@ -254,6 +290,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasWarning);
+            Assert.False(netlist.ValidationResult.HasError);
+
             double export = RunOpSimulation(netlist, "V(2,0)");
             Assert.Equal(4, export);
         }
@@ -272,6 +311,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasWarning);
+            Assert.False(netlist.ValidationResult.HasError);
+
             double export = RunOpSimulation(netlist, "V(2,0)");
             Assert.Equal(18, export);
         }
@@ -289,6 +331,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasWarning);
+            Assert.False(netlist.ValidationResult.HasError);
+
             Assert.Throws<SpiceSharp.SpiceSharpException>(() => RunOpSimulation(netlist, "V(2,0)"));
         }
 
@@ -305,6 +350,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasWarning);
+            Assert.False(netlist.ValidationResult.HasError);
+
             double export = RunOpSimulation(netlist, "V(2,0)");
             Assert.Equal(4, export);
         }
@@ -322,6 +370,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasWarning);
+            Assert.False(netlist.ValidationResult.HasError);
+
             double export = RunOpSimulation(netlist, "V(2,0)");
             Assert.Equal(4, export);
         }
@@ -340,6 +391,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasWarning);
+            Assert.False(netlist.ValidationResult.HasError);
+
             double export = RunOpSimulation(netlist, "V(2,0)");
             Assert.Equal(18, export);
         }
@@ -357,6 +411,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasWarning);
+            Assert.False(netlist.ValidationResult.HasError);
+
             Assert.Throws<SpiceSharp.SpiceSharpException>(() => RunOpSimulation(netlist, "V(2,0)"));
         }
 
@@ -371,6 +428,10 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".DC V1 -10 10 1e-3",
                 ".SAVE V(out)",
                 ".END");
+
+            Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasWarning);
+            Assert.False(netlist.ValidationResult.HasError);
 
             var exports = RunDCSimulation(netlist, "V(out)");
 
@@ -390,6 +451,10 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".TRAN 1e-8 10e-6",
                 ".SAVE V(out)",
                 ".END");
+
+            Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasWarning);
+            Assert.False(netlist.ValidationResult.HasError);
 
             var exports = RunTransientSimulation(netlist, "V(out)");
 
@@ -412,6 +477,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasWarning);
+            Assert.False(netlist.ValidationResult.HasError);
+
             double export = RunOpSimulation(netlist, "I(I2)");
             Assert.Equal(4, export);
         }
@@ -430,6 +498,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasWarning);
+            Assert.False(netlist.ValidationResult.HasError);
+
             double export = RunOpSimulation(netlist, "I(I2)");
             Assert.Equal(4, export);
         }
@@ -448,6 +519,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasWarning);
+            Assert.False(netlist.ValidationResult.HasError);
+
             double export = RunOpSimulation(netlist, "I(I2)");
             Assert.Equal(4, export);
         }
@@ -465,6 +539,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasWarning);
+            Assert.False(netlist.ValidationResult.HasError);
+
             double export = RunOpSimulation(netlist, "I(GSource)");
             Assert.Equal(4, export);
         }
@@ -482,6 +559,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasWarning);
+            Assert.False(netlist.ValidationResult.HasError);
+
             double export = RunOpSimulation(netlist, "I(GSource)");
             Assert.Equal(4, export);
         }
@@ -500,6 +580,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasWarning);
+            Assert.False(netlist.ValidationResult.HasError);
+
             double export = RunOpSimulation(netlist, "I(FSource)");
             Assert.Equal(4, export);
         }
@@ -518,6 +601,9 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasWarning);
+            Assert.False(netlist.ValidationResult.HasError);
+
             double export = RunOpSimulation(netlist, "I(FSource)");
             Assert.Equal(4, export);
         }

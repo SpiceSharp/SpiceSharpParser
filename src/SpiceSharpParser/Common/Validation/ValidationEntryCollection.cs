@@ -7,8 +7,6 @@ namespace SpiceSharpParser.Common.Validation
     {
         public bool HasError => this.Any(c => c.Level == ValidationEntryLevel.Error);
 
-        public bool IsValid => !HasError;
-
         public bool HasWarning => this.Any(c => c.Level == ValidationEntryLevel.Warning);
 
         public IEnumerable<ValidationEntry> Errors

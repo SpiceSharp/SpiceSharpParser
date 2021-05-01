@@ -8,7 +8,7 @@ namespace SpiceSharpParser.IntegrationTests.Examples
         [Fact]
         public void When_Simulated_Expect_NoExceptions()
         {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "Resources/example01.cir");
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/example01.cir");
             var netlistContent = File.ReadAllText(path);
 
             var parser = new SpiceParser();

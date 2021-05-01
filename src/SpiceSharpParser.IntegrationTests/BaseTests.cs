@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp;
 using Xunit;
-using System.Diagnostics;
 
 namespace SpiceSharpParser.IntegrationTests
 {
