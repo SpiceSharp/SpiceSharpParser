@@ -3,6 +3,7 @@ using SpiceSharp.Components;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 {
@@ -31,33 +32,84 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 throw new ArgumentNullException(nameof(context));
             }
 
-            if (parameters.Count < 3 || parameters.Count > 6)
+            if (parameters.Count > 6 || parameters.Count == 1 && parameters[0] is VectorParameter vp && vp.Elements.Count > 6)
             {
-                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Wrong parameters count for sine. There must be 3, 4, 5 or 6 parameters", parameters.LineInfo));
+                context.Result.ValidationResult.Add(
+                    new ValidationEntry(
+                        ValidationEntrySource.Reader,
+                        ValidationEntryLevel.Warning,
+                        "Wrong number of arguments for SINE waveform",
+                        parameters.LineInfo));
             }
 
-            var sine = new Sine();
+            var w = new Sine();
 
-            sine.Offset = context.Evaluator.EvaluateDouble(parameters.Get(0));
-            sine.Amplitude = context.Evaluator.EvaluateDouble(parameters.Get(1));
-            sine.Frequency = context.Evaluator.EvaluateDouble(parameters.Get(2));
+            if (parameters.Count == 1 && parameters[0] is VectorParameter v)
+            {
+                if (v.Elements.Count >= 1)
+                {
+                    w.Offset = context.Evaluator.EvaluateDouble(v.Elements[0].Value);
+                }
+
+                if (v.Elements.Count >= 2)
+                {
+                    w.Amplitude = context.Evaluator.EvaluateDouble(v.Elements[1].Value);
+                }
+
+                if (v.Elements.Count >= 3)
+                {
+                    w.Frequency = context.Evaluator.EvaluateDouble(v.Elements[2].Value);
+                }
+
+                if (v.Elements.Count >= 4)
+                {
+                    w.Delay = context.Evaluator.EvaluateDouble(v.Elements[3].Value);
+                }
+
+                if (v.Elements.Count >= 5)
+                {
+                    w.Theta = context.Evaluator.EvaluateDouble(v.Elements[4].Value);
+                }
+
+                if (v.Elements.Count >= 6)
+                {
+                    w.Phase = context.Evaluator.EvaluateDouble(v.Elements[5].Value);
+                }
+
+                return w;
+            }
+
+            if (parameters.Count >= 1)
+            {
+                w.Offset = context.Evaluator.EvaluateDouble(parameters[0].Value);
+            }
+
+            if (parameters.Count >= 2)
+            {
+                w.Amplitude = context.Evaluator.EvaluateDouble(parameters[1].Value);
+            }
+
+            if (parameters.Count >= 3)
+            {
+                w.Frequency = context.Evaluator.EvaluateDouble(parameters[2].Value);
+            }
 
             if (parameters.Count >= 4)
             {
-                sine.Delay = context.Evaluator.EvaluateDouble(parameters.Get(3));
+                w.Delay = context.Evaluator.EvaluateDouble(parameters[3].Value);
             }
 
             if (parameters.Count >= 5)
             {
-                sine.Theta = context.Evaluator.EvaluateDouble(parameters.Get(4));
+                w.Theta = context.Evaluator.EvaluateDouble(parameters[4].Value);
             }
 
-            if (parameters.Count == 6)
+            if (parameters.Count >= 6)
             {
-                sine.Phase = context.Evaluator.EvaluateDouble(parameters.Get(5));
+                w.Phase = context.Evaluator.EvaluateDouble(parameters[5].Value);
             }
 
-            return sine;
+            return w;
         }
     }
 }
