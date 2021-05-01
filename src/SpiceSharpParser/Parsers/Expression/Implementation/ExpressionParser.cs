@@ -217,6 +217,7 @@ namespace SpiceSharpParser.Parsers.Expression
             result["poly"] = new PolyResolverFunction();
             result["if"] = new IfResolverFunction();
             result["max"] = new MaxResolverFunction();
+            result["min"] = new MinResolverFunction();
             result["random"] = new RandomResolverFunction(Context);
             result["gauss"] = new GaussResolverFunction(Context);
 

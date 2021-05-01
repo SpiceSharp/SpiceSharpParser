@@ -4,7 +4,6 @@ using SpiceSharp.Simulations;
 using SpiceSharpBehavioral.Parsers;
 using SpiceSharpBehavioral.Parsers.Nodes;
 using SpiceSharpParser.Common.Evaluation.Expressions;
-using SpiceSharpParser.Common.Evaluation.Functions;
 using SpiceSharpParser.Common.Mathematics.Probability;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;

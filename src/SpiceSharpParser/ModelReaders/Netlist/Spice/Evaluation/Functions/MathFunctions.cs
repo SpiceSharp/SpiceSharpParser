@@ -28,40 +28,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Get a pwr() function.
-        /// </summary>
-        /// <param name="mode">Evaluator mode.</param>
-        /// <returns>
-        /// A new instance of pwr function.
-        /// </returns>
-        public static IFunction<double, double> CreatePwr(SpiceExpressionMode mode)
-        {
-            return new PwrFunction(mode);
-        }
-
-        /// <summary>
-        /// Get a pwrs() function.
-        /// </summary>
-        /// <returns>
-        /// A new instance of pwrs function.
-        /// </returns>
-        public static IFunction<double, double> CreatePwrs()
-        {
-            return new PwrsFunction();
-        }
-
-        /// <summary>
-        /// Get a min() function.
-        /// </summary>
-        /// <returns>
-        /// A new instance of min function.
-        /// </returns>
-        public static IFunction<double, double> CreateMin()
-        {
-            return new MinFunction();
-        }
-
-        /// <summary>
         /// Get a nint() function.
         /// </summary>
         /// <returns>
@@ -73,17 +39,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Get a max() function.
-        /// </summary>
-        /// <returns>
-        /// A new instance of max function.
-        /// </returns>
-        public static IFunction<double, double> CreateMax()
-        {
-            return new MaxFunction();
-        }
-
-        /// <summary>
         /// Get a limit(x, xmin, xmax) function.
         /// </summary>
         /// <returns>
@@ -92,17 +47,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         public static IFunction<double, double> CreateLimit()
         {
             return new LimitFunction();
-        }
-
-        /// <summary>
-        /// Get a ln() function.
-        /// </summary>
-        /// <returns>
-        /// A new instance of ln function.
-        /// </returns>
-        public static IFunction<double, double> CreateLn()
-        {
-            return new LnFunction();
         }
 
         /// <summary>
@@ -125,39 +69,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         public static IFunction<double, double> CreateBuf()
         {
             return new BufFunction();
-        }
-
-        /// <summary>
-        /// Get a ceil() function.
-        /// </summary>
-        /// <returns>
-        /// A new instance of ceil function.
-        /// </returns>
-        public static IFunction<double, double> CreateCeil()
-        {
-            return new CeilFunction();
-        }
-
-        /// <summary>
-        /// Get a floor() function.
-        /// </summary>
-        /// <returns>
-        /// A new instance of floor function.
-        /// </returns>
-        public static IFunction<double, double> CreateFloor()
-        {
-            return new FloorFunction();
-        }
-
-        /// <summary>
-        /// Get a hypot() function.
-        /// </summary>
-        /// <returns>
-        /// A new instance of hypot function.
-        /// </returns>
-        public static IFunction<double, double> CreateHypot()
-        {
-            return new HypotFunction();
         }
 
         /// <summary>
@@ -194,17 +105,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Get a round() function.
-        /// </summary>
-        /// <returns>
-        /// A new instance of round function.
-        /// </returns>
-        public static IFunction<double, double> CreateRound()
-        {
-            return new RoundFunction();
-        }
-
-        /// <summary>
         /// Get a u() function.
         /// </summary>
         /// <returns>
@@ -224,17 +124,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         public static IFunction<double, double> CreateURamp()
         {
             return new URampFunction();
-        }
-
-        /// <summary>
-        /// Get a sgn() function.
-        /// </summary>
-        /// <returns>
-        /// A new instance of sgn function.
-        /// </returns>
-        public static IFunction<double, double> CreateSgn()
-        {
-            return new SgnFunction();
         }
 
         /// <summary>
