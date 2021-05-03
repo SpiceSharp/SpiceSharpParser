@@ -30,6 +30,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             Waveforms.Map("PWL", new PwlGenerator());
             Waveforms.Map("AM", new AMGenerator());
             Waveforms.Map("SFFM", new SFFMGenerator());
+            Waveforms.Map("WAVE", new WaveGenerator());
 
             // Register exporters
             Exporters.Map(new[] { "V", "VI", "VR", "VM", "VDB", "VPH", "VP" }, new VoltageExporter());
@@ -69,6 +70,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             Controls.Map("PRINT", new PrintControl(Exporters, new ExportFactory()));
             Controls.Map("IC", new ICControl());
             Controls.Map("NODESET", new NodeSetControl());
+            Controls.Map("WAVE", new WaveControl(Exporters, new ExportFactory()));
 
             // Register component generators
             Components.Map(new[] { "R", "L", "C", "K" }, new RLCKGenerator());

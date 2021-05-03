@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
+using System.Net;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.Components
@@ -294,6 +296,26 @@ namespace SpiceSharpParser.IntegrationTests.Components
             Assert.NotNull(netlist);
             var exports = RunTransientSimulation(netlist, "V(1,0)");
             Assert.True(exports.All(export => EqualsWithToWithoutAssert(export.Item2, (export.Item1 < 1.0 ? 1.0 + export.Item1 : 2.0))));
+        }
+
+        [Fact]
+        public void When_WaveFile_Expect_NoException()
+        {
+            using var client = new WebClient();
+            var waveFileData = client.DownloadData("http://www.ecircuitcenter.com/Circuits/distortion_box/guitar2a.wav");
+            File.WriteAllBytes("guitar2a.wav", waveFileData);
+
+            var netlist = ParseNetlist(
+                "Wave file voltage source",
+                "V1 1 0 WAVE wavefile=guitar2a.wav chan=0",
+                "R1 1 0 10",
+                ".WAVE guitar2a_out.wav 16 44100 V(1)",
+                ".SAVE V(1)",
+                ".TRAN 1e-8 5",
+                ".END");
+
+            Assert.NotNull(netlist);
+            RunTransientSimulation(netlist, "V(1)");
         }
 
         [Fact]
