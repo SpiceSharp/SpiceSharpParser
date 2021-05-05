@@ -57,6 +57,11 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         }
 
         /// <summary>
+        /// Gets the end line number.
+        /// </summary>
+        public override int EndLineNumber => Statements.LastOrDefault()?.EndLineNumber + 1 ?? base.EndLineNumber;
+
+        /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
         /// <returns>A string that represents the current object.</returns>
@@ -64,7 +69,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         {
             var builder = new StringBuilder();
 
-            builder.Append($".SUBCKT {Name} {Pins} params: ");
+            builder.Append($".SUBCKT {Name} {Pins} params:");
 
             foreach (var defaultParameter in DefaultParameters)
             {
@@ -79,12 +84,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
             }
 
             builder.AppendLine();
-
-            foreach (Statement statement in Statements)
-            {
-                builder.AppendLine(statement.ToString());
-            }
-
+            builder.AppendLine(Statements.ToString());
             builder.AppendLine($".ENDS {Name}");
 
             return builder.ToString();

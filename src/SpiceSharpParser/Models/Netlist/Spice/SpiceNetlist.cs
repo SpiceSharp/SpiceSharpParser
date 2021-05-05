@@ -1,5 +1,6 @@
 ﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
+using System.Text;
 
 namespace SpiceSharpParser.Models.Netlist.Spice
 {
@@ -39,7 +40,17 @@ namespace SpiceSharpParser.Models.Netlist.Spice
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
-            return $"{Title}{Environment.NewLine}{Statements}{Environment.NewLine}.END";
+            var builder = new StringBuilder();
+            builder.AppendLine(Title);
+
+            for (var i = 0; i < Statements.LineInfo.LineNumber - 2; i++)
+            {
+                builder.AppendLine();
+            }
+            builder.AppendLine(Statements.ToString());
+            builder.Append(".END");
+
+            return builder.ToString();
         }
     }
 }

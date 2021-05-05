@@ -1,4 +1,6 @@
-﻿namespace SpiceSharpParser.Models.Netlist.Spice.Objects
+﻿using System.Linq;
+
+namespace SpiceSharpParser.Models.Netlist.Spice.Objects
 {
     /// <summary>
     /// A SPICE model.
@@ -30,6 +32,11 @@
         {
             return new Model(Name, (ParameterCollection)Parameters.Clone(), LineInfo);
         }
+
+        /// <summary>
+        /// Gets the end line number.
+        /// </summary>
+        public override int EndLineNumber => Parameters.LastOrDefault()?.LineInfo.LineNumber ?? base.EndLineNumber;
 
         /// <summary>
         /// Returns a string that represents the current object.

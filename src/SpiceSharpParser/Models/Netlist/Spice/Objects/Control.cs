@@ -1,4 +1,6 @@
-﻿namespace SpiceSharpParser.Models.Netlist.Spice.Objects
+﻿using System.Linq;
+
+namespace SpiceSharpParser.Models.Netlist.Spice.Objects
 {
     /// <summary>
     /// A SPICE control.
@@ -37,12 +39,24 @@
         }
 
         /// <summary>
+        /// Gets the end line number.
+        /// </summary>
+        public override int EndLineNumber => Parameters.LastOrDefault()?.LineInfo.LineNumber ?? base.EndLineNumber;
+
+        /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
-            return $".{Name} {Parameters}";
+            if (Parameters.Any())
+            {
+                return $".{Name} {Parameters}";
+            }
+            else
+            {
+                return $".{Name}";
+            }
         }
     }
 }

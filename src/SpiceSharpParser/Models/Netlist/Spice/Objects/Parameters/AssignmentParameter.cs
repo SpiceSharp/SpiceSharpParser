@@ -75,7 +75,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
                     return Name + "() = " + Values;
                 }
 
-                return Name + "=" + string.Join(",", Values.ToArray());
+                return $"{Name}={{{string.Join(",", Values.ToArray())}}}";
             }
         }
 
