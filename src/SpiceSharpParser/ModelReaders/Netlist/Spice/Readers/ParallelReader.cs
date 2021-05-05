@@ -49,8 +49,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
                 context.Result,
                 context.Separator);
 
-          
-            foreach (var st in statement.Statements) {
+            foreach (var st in statement.Statements) 
+            {
                 StatementsReader.Read(st, parallelContext);
             }
 

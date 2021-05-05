@@ -1,4 +1,5 @@
 ﻿using SpiceSharp;
+using SpiceSharp.Components;
 using SpiceSharp.Entities;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
@@ -46,6 +47,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Gets the list of available subcircuit for the context.
         /// </summary>
         ICollection<SubCircuit> AvailableSubcircuits { get; }
+
+        /// <summary>
+        /// Gets the list of available subcircuit for the context.
+        /// </summary>
+        Dictionary<string, SubcircuitDefinition> AvailableSubcircuitDefinitions { get; }
 
         Circuit ContextEntities { get; set; } 
 

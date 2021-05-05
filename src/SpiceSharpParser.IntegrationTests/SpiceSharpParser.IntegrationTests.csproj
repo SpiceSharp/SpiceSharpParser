@@ -35,6 +35,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Examples\Circuits\example01_without_params.cir">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Examples\Circuits\example01.cir">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

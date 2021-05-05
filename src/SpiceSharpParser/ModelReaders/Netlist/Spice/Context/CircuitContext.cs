@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp;
+using SpiceSharp.Components;
 using SpiceSharp.Entities;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
@@ -62,6 +63,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             StatementsReader = statementsReader;
             WaveformReader = waveformReader;
             AvailableSubcircuits = CreateAvailableSubcircuitsCollection();
+            AvailableSubcircuitDefinitions = CreateAvailableSubcircuitDefinitions();
             ModelsRegistry = CreateModelsRegistry();
             Exporters = exporters;
             WorkingDirectory = workingDirectory;
@@ -115,6 +117,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Gets available subcircuits in context.
         /// </summary>
         public ICollection<SubCircuit> AvailableSubcircuits { get; }
+
+        public Dictionary<string, SubcircuitDefinition> AvailableSubcircuitDefinitions { get; }
 
         /// <summary>
         /// Gets the name generator.
@@ -356,6 +360,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             else
             {
                 return new List<SubCircuit>();
+            }
+        }
+
+        protected Dictionary<string, SubcircuitDefinition> CreateAvailableSubcircuitDefinitions()
+        {
+            if (Parent != null)
+            {
+                return new Dictionary<string, SubcircuitDefinition>(Parent.AvailableSubcircuitDefinitions);
+            }
+            else
+            {
+                return new Dictionary<string, SubcircuitDefinition>();
             }
         }
 

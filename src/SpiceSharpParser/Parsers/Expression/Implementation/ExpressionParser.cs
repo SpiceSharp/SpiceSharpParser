@@ -129,7 +129,7 @@ namespace SpiceSharpParser.Parsers.Expression
 
                         if (args.Node.NodeType == NodeTypes.Current)
                         {
-                            args.Result = args.Node;
+                            args.Result = args.Node; //TODO
                         }
                     };
                 }
@@ -159,7 +159,7 @@ namespace SpiceSharpParser.Parsers.Expression
 
                         if (args.Node.NodeType == NodeTypes.Current)
                         {
-                            args.Result = VariableNode.Current(args.Node.Name);
+                            args.Result = args.Node; //TODO
                         }
                     };
                 }

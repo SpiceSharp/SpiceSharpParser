@@ -1,0 +1,66 @@
+﻿Example 01
+
+.param a0_entry=0.1
+.param b0_entry=0.01
+.param density =850
+.param viscosity =0.000006
+.param rout_entry =0.9
+.param rin_entry =0.8
+.param r1_entry1 =0.8
+.param r2_entry1=0.81
+.param r1_entry2 =0.89
+.param r2_entry2=0.9
+.param FlowRate =0.025
+
+I_M 0 N1 {FlowRate}
+
+X_entry1   N1 0 N2 entry
+X_entry2   N1 0 N3 entry2 
+
+.subckt entry m_in m_out v_vel params: a0={a0_entry}, b0={b0_entry}, ro={density}, v={viscosity}, rout={rout_entry},
++rin={rin_entry},r1={r1_entry1},r2={r2_entry1}
+
+.param D0 = {2*a0*b0/(a0+b0)}
+.param F1 = {(rout-rin)*a0*(rout+rin)/(r2+r1)}
+.param F0 = {(r2-r1)*a0}
+.param fraction = {F0/F1}
+.func 	Q(m) {m/ro}
+.func  	vel(m) {Q(m)/(a0*b0)}
+.func 	R(x) {x*D0/v}
+*Changed function
+.func xi(x) {40*pow(R(x),-0.9) + 90*pow(fraction,-0.003)-80}
+Vmas m_in msx {0}
+Rmas msx msy 1e-6
+*The pressure drop:
+Exm msy m_out value={xi(V(v_vel))*ro*V(v_vel)*V(v_vel)/2}
+Hmss mss 0 Vmas 1
+*Velocity:
+Guv 0 v_vel value={vel(V(mss))}
+Ruv 0 v_vel 1
+.ends
+
+
+.subckt entry2 m_in m_out v_vel params: a0={a0_entry}, b0={b0_entry}, ro={density}, v={viscosity}, rout={rout_entry},
++rin={rin_entry},r1={r1_entry2},r2={r2_entry2}
+.param D0 = {2*a0*b0/(a0+b0)}
+.param F1 = {(rout-rin)*a0*(rout+rin)/(r2+r1)}
+.param F0 = {(r2-r1)*a0}
+.param fraction = {F0/F1}
+.func 	Q(m) {m/ro}
+.func  	vel(m) {Q(m)/(a0*b0)}
+.func 	R(x) {x*D0/v}
+*Changed function
+.func xi(x) {40*pow(R(x),-0.9) + 90*pow(fraction,-0.003)-80}
+Vmas m_in msx {0}
+Rmas msx msy 1e-6
+*The pressure drop:
+Exm msy m_out value={xi(V(v_vel))*ro*V(v_vel)*V(v_vel)/2}
+Hmss mss 0 Vmas 1
+*Velocity:
+Guv 0 v_vel value={vel(V(mss))}
+Ruv 0 v_vel 1
+.ends
+
+.OP
+.SAVE V(N1) V(N2) V(N3)
+.end
