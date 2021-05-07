@@ -13,6 +13,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         public IEnumerable<string> Globals => NodeNameGenerator.Globals;
 
+        public string Separator => ObjectNameGenerator.Separator;
+
         public INodeNameGenerator NodeNameGenerator { get; }
 
         protected IObjectNameGenerator ObjectNameGenerator { get; }

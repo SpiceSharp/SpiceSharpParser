@@ -315,7 +315,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 pinInstanceIdentifiers,
                 context.NameGenerator.Globals,
                 context.CaseSensitivity.IsEntityNamesCaseSensitive,
-                context.Separator);
+                context.NameGenerator.Separator);
 
             var subcircuitObjectNameGenerator = context.NameGenerator.CreateChildNameGenerator(subcircuitName);
             var subcircuitNameGenerator = new NameGenerator(
@@ -342,8 +342,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 context.WorkingDirectory,
                 true,
                 context.SimulationConfiguration,
-                context.Result,
-                context.Separator);
+                context.Result);
 
             subcircuitEvaluationContext.CircuitContext = subcircuitContext;
 
@@ -385,8 +384,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 context.WorkingDirectory,
                 false,
                 context.SimulationConfiguration,
-                context.Result,
-                context.Separator);
+                context.Result);
 
             subcircuitEvaluationContext.CircuitContext = subcircuitContext;
 

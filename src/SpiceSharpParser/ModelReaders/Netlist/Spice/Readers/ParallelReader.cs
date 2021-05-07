@@ -46,8 +46,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
                 context.WorkingDirectory,
                 context.ExpandSubcircuits,
                 context.SimulationConfiguration,
-                context.Result,
-                context.Separator);
+                context.Result);
 
             foreach (var st in statement.Statements) 
             {

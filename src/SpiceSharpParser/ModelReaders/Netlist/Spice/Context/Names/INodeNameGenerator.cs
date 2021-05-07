@@ -12,6 +12,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
         /// </summary>
         string RootName { get; }
 
+        string Separator { get; }
+
         /// <summary>
         /// Gets the globals.
         /// </summary>
