@@ -226,6 +226,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
                 {
                     builder.AppendLine(statement.ToString());
                 }
+
                 previousStatement = statement;
             }
 

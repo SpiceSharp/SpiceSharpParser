@@ -39,7 +39,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             return ObjectNameGenerator.CreateChildGenerator(name);
         }
 
-
         public void AddChild(INodeNameGenerator nodeNameGenerator)
         {
             NodeNameGenerator.Children.Add(nodeNameGenerator);

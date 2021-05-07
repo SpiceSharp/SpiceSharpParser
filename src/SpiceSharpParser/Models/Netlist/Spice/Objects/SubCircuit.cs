@@ -41,6 +41,11 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         public Statements Statements { get; set; }
 
         /// <summary>
+        /// Gets the end line number.
+        /// </summary>
+        public override int EndLineNumber => Statements.LastOrDefault()?.EndLineNumber + 1 ?? base.EndLineNumber;
+
+        /// <summary>
         /// Clones the object.
         /// </summary>
         /// <returns>A clone of the object.</returns>
@@ -55,11 +60,6 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
 
             return clone;
         }
-
-        /// <summary>
-        /// Gets the end line number.
-        /// </summary>
-        public override int EndLineNumber => Statements.LastOrDefault()?.EndLineNumber + 1 ?? base.EndLineNumber;
 
         /// <summary>
         /// Returns a string that represents the current object.

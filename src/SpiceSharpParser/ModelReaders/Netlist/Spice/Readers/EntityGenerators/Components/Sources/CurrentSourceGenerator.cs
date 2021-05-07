@@ -145,7 +145,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return cs;
         }
 
-
         protected static BehavioralCurrentSource CreateBehavioralCurrentSource(string name, ParameterCollection parameters, IReadingContext context, Common.Evaluation.EvaluationContext evalContext, string expression)
         {
             var entity = new BehavioralCurrentSource(name);

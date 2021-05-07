@@ -320,6 +320,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 return null;
             }
+
             var inductor = new Inductor(name);
             context.CreateNodes(inductor, parameters.Take(Inductor.InductorPinCount));
             context.SetParameter(inductor, "inductance", parameters.Get(2), true);
@@ -401,6 +402,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 bool modelBased = false;
                 bool resistanceBased = false;
+
                 // Check if something is a model name
                 if ((something is WordParameter || something is IdentifierParameter)
                     && context.ModelsRegistry.FindModel(something.Value) != null)
@@ -616,6 +618,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 return $"({expression} / {mExpression})";
             }
+
             if (!string.IsNullOrEmpty(nExpression))
             {
                 return $"({expression} * {nExpression})";

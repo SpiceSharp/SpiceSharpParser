@@ -53,7 +53,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         Dictionary<string, SubcircuitDefinition> AvailableSubcircuitDefinitions { get; }
 
-        Circuit ContextEntities { get; set; } 
+        Circuit ContextEntities { get; set; }
 
         /// <summary>
         /// Gets or set name generator.
@@ -94,7 +94,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="parameterName">Parameter name.</param>
         /// <param name="expression">Value expression.</param>
         /// <param name="beforeTemperature">Should be re-evaluated before temperature.</param>
-        /// <param name="onload">Should be re-evaluated OnBeforeLoad.</param>
         void SetParameter(IEntity entity, string parameterName, string expression, bool beforeTemperature = true,  Simulation simulation = null);
 
         /// <summary>
@@ -104,7 +103,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="parameterName">Parameter name.</param>
         /// <param name="valueExpression">Value expression.</param>
         /// <param name="beforeTemperature">Should be re-evaluated before temperature.</param>
-        /// <param name="onload">Should be re-evaluated OnBeforeLoad.</param>
         void SetParameter(IEntity entity, string parameterName, Parameter valueExpression, bool beforeTemperature = true, Simulation simulation = null);
 
         /// <summary>

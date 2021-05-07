@@ -30,6 +30,11 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         public ParameterCollection PinsAndParameters { get; set; }
 
         /// <summary>
+        /// Gets the end line number.
+        /// </summary>
+        public override int EndLineNumber => PinsAndParameters.LastOrDefault()?.LineInfo.LineNumber ?? base.EndLineNumber;
+
+        /// <summary>
         /// Clones the object.
         /// </summary>
         /// <returns>A clone of the object.</returns>
@@ -39,11 +44,6 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
             clone.NameParameter = (Parameter)NameParameter.Clone();
             return clone;
         }
-
-        /// <summary>
-        /// Gets the end line number.
-        /// </summary>
-        public override int EndLineNumber => PinsAndParameters.LastOrDefault()?.LineInfo.LineNumber ?? base.EndLineNumber;
 
         /// <summary>
         /// Returns a string that represents the current object.

@@ -47,6 +47,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice
             {
                 builder.AppendLine();
             }
+
             builder.AppendLine(Statements.ToString());
             builder.Append(".END");
 

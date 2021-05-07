@@ -61,6 +61,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                     {
                         action.Run(simulation, Contexts);
                     }
+
                     if (SimulationBeforeTemperatureActions.ContainsKey(simulation))
                     {
                         var actions = SimulationBeforeTemperatureActions[simulation];

@@ -287,9 +287,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(expression));
             }
 
-
             double value = Evaluator.EvaluateDouble(expression, simulation);
-
             entity.SetParameter(parameterName, value);
             var context = Evaluator.GetEvaluationContext(simulation);
 
@@ -336,7 +334,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             try
             {
                 SetParameter(entity, parameterName, expression, beforeTemperature, simulation);
-
             }
             catch (Exception e)
             {

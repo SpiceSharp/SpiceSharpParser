@@ -13,6 +13,7 @@ namespace SpiceSharpParser.Common.Evaluation
         public IUnit Unit { get; set; }
 
         public bool Constant { get; set; }
-        public Node VariableNode { get; internal set; }
+
+        public Node VariableNode { get; set; }
     }
 }
