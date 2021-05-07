@@ -116,6 +116,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="expression">Node voltage expression.</param>
         void SetICVoltage(string nodeName, string expression);
 
+        void SetNodeSetVoltage(string nodeName, string expression);
+
         /// <summary>
         /// Creates nodes for a component.
         /// </summary>

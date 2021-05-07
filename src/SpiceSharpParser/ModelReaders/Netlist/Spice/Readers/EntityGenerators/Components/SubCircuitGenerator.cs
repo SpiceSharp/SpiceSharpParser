@@ -73,8 +73,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             ReadParamControl(subCircuit, subCircuitContext);
             ReadFuncControl(subCircuit, subCircuitContext);
+            ReadICControl(subCircuit, subCircuitContext);
+            ReadNodeSetControl(subCircuit, subCircuitContext);
             ReadSubcircuits(subCircuit, subCircuitContext);
-            CreateSubcircuitModels(subCircuit, subCircuitContext); // TODO: Share models someday between instances of subcircuits
+
+            CreateSubcircuitModels(subCircuit, subCircuitContext);
             CreateSubcircuitComponents(subCircuit, subCircuitContext);
         }
 
@@ -86,6 +89,32 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         private void ReadParamControl(SubCircuit subCircuitDefinition, IReadingContext subCircuitContext)
         {
             foreach (Statement statement in subCircuitDefinition.Statements.Where(s => s is Control && ((Control)s).Name.ToLower() == "param"))
+            {
+                subCircuitContext.StatementsReader.Read(statement, subCircuitContext);
+            }
+        }
+
+        /// <summary>
+        /// Read .IC statements.
+        /// </summary>
+        /// <param name="subCircuitDefinition">A subcircuit definition.</param>
+        /// <param name="subCircuitContext">A subcircuit reading context.</param>
+        private void ReadICControl(SubCircuit subCircuitDefinition, IReadingContext subCircuitContext)
+        {
+            foreach (Statement statement in subCircuitDefinition.Statements.Where(s => s is Control && ((Control)s).Name.ToLower() == "ic"))
+            {
+                subCircuitContext.StatementsReader.Read(statement, subCircuitContext);
+            }
+        }
+
+        /// <summary>
+        /// Read .NODESET statements.
+        /// </summary>
+        /// <param name="subCircuitDefinition">A subcircuit definition.</param>
+        /// <param name="subCircuitContext">A subcircuit reading context.</param>
+        private void ReadNodeSetControl(SubCircuit subCircuitDefinition, IReadingContext subCircuitContext)
+        {
+            foreach (Statement statement in subCircuitDefinition.Statements.Where(s => s is Control && ((Control)s).Name.ToLower() == "nodeset"))
             {
                 subCircuitContext.StatementsReader.Read(statement, subCircuitContext);
             }

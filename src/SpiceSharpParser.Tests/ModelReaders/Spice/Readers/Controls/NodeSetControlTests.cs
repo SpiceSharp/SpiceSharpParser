@@ -41,7 +41,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             };
 
             var readingContext = Substitute.For<IReadingContext>();
-            readingContext.NameGenerator.GenerateNodeName(Arg.Any<string>()).Returns(x => x[0].ToString());
+            readingContext.NameGenerator.ParseNodeName(Arg.Any<string>()).Returns(x => x[0].ToString());
             readingContext.SimulationPreparations.Returns(Substitute.For<ISimulationPreparations>());
 
             // act

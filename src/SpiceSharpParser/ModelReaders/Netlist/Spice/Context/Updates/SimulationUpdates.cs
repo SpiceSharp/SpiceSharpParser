@@ -21,7 +21,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
         protected ConcurrentDictionary<Simulation, List<SimulationUpdateAction>> SimulationBeforeSetupActions { get; }
 
         protected ConcurrentDictionary<Simulation, List<SimulationUpdateAction>> SimulationBeforeTemperatureActions { get; }
-        
+
         protected List<SimulationUpdateAction> CommonBeforeSetupActions { get; }
 
         protected List<SimulationUpdateAction> CommonBeforeTemperatureActions { get; }

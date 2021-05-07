@@ -26,14 +26,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     if (type == "v" && ap.Arguments.Count == 1)
                     {
                         var nodeName = ap.Arguments[0];
-                        var nodeId = context.NameGenerator.GenerateNodeName(nodeName);
-
-                        context.SimulationPreparations.SetNodeSetVoltage(nodeId, value);
+                        context.SetNodeSetVoltage(nodeName, value);
                     }
                     else
                     {
                         context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".NODESET supports only V(X)=Y", statement.LineInfo));
-                        return;
                     }
                 }
             }

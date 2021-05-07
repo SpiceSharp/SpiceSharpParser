@@ -171,8 +171,29 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            var nodeId = NameGenerator.GenerateNodeName(nodeName);
+            var nodeId = NameGenerator.ParseNodeName(nodeName);
             SimulationPreparations.SetICVoltage(nodeId, expression);
+        }
+
+        /// <summary>
+        /// Sets node set voltage for node.
+        /// </summary>
+        /// <param name="nodeName">Name of node.</param>
+        /// <param name="expression">Expression string.</param>
+        public void SetNodeSetVoltage(string nodeName, string expression)
+        {
+            if (nodeName == null)
+            {
+                throw new ArgumentNullException(nameof(nodeName));
+            }
+
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
+            var nodeId = NameGenerator.ParseNodeName(nodeName);
+            SimulationPreparations.SetNodeSetVoltage(nodeId, expression);
         }
 
         /// <summary>
