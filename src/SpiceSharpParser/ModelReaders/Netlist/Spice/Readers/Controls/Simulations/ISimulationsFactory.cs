@@ -7,6 +7,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 {
     public interface ISimulationsFactory
     {
-        void Create(Control statement, ICircuitContext context, Func<string, Control, ICircuitContext, Simulation> createSimulation);
+        void Create(Control statement, IReadingContext context, Func<string, Control, IReadingContext, Simulation> createSimulation);
     }
 }

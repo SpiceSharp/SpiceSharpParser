@@ -23,7 +23,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
         /// <returns>
         /// A new instance of entity.
         /// </returns>
-        public Context.Models.Model GenerateModel(IModelGenerator modelGenerator, string id, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
+        public Context.Models.Model GenerateModel(IModelGenerator modelGenerator, string id, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
             if (modelGenerator == null)
             {

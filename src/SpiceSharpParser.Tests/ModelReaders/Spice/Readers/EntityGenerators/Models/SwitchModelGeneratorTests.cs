@@ -19,7 +19,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Mod
                 new AssignmentParameter() { Name = "unkownParametr", Value = "1002" },
             };
 
-            var context = Substitute.For<ICircuitContext>();
+            var context = Substitute.For<IReadingContext>();
             var generator = new SwitchModelGenerator();
             var model = generator.Generate("SRES", "sw", parameters, context);
 

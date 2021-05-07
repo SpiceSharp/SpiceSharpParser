@@ -7,7 +7,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
 {
     public class JFETModelGenerator : ModelGenerator
     {
-        public override Context.Models.Model Generate(string id, string type, ParameterCollection parameters, ICircuitContext context)
+        public override Context.Models.Model Generate(string id, string type, ParameterCollection parameters, IReadingContext context)
         {
             var model = new JFETModel(id);
             switch (type.ToLower())

@@ -125,7 +125,7 @@ namespace SpiceSharpParser.Common.Evaluation
 
         public Circuit ContextEntities { get; set; }
 
-        public ICircuitContext CircuitContext { get; set; }
+        public IReadingContext CircuitContext { get; set; }
 
         protected IExpressionParserFactory ExpressionParserFactory { get; }
 

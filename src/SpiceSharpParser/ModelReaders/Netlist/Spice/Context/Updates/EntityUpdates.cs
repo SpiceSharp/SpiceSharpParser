@@ -1,5 +1,4 @@
-﻿using SpiceSharp;
-using SpiceSharp.Entities;
+﻿using SpiceSharp.Entities;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common.Evaluation.Expressions;
 using System;
@@ -14,8 +13,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
         {
             IsParameterNameCaseSensitive = isParameterNameCaseSensitive;
             Contexts = contexts ?? throw new ArgumentNullException(nameof(contexts));
-            CommonUpdates = new Dictionary<IEntity, EntityUpdate>();
-            SimulationSpecificUpdates = new Dictionary<Simulation, Dictionary<IEntity, EntityUpdate>>();
+            CommonUpdates = new ConcurrentDictionary<IEntity, EntityUpdate>();
+            SimulationSpecificUpdates = new ConcurrentDictionary<Simulation, Dictionary<IEntity, EntityUpdate>>();
             SimulationEntityParametersCache = new ConcurrentDictionary<string, double>();
         }
 
@@ -23,9 +22,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
         protected SimulationEvaluationContexts Contexts { get; set; }
 
-        protected Dictionary<IEntity, EntityUpdate> CommonUpdates { get; set; }
+        protected ConcurrentDictionary<IEntity, EntityUpdate> CommonUpdates { get; set; }
 
-        protected Dictionary<Simulation, Dictionary<IEntity, EntityUpdate>> SimulationSpecificUpdates { get; set; }
+        protected ConcurrentDictionary<Simulation, Dictionary<IEntity, EntityUpdate>> SimulationSpecificUpdates { get; set; }
 
         protected ConcurrentDictionary<string, double> SimulationEntityParametersCache { get; }
 
@@ -38,49 +37,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
             if (simulation is BiasingSimulation biasingSimulation)
             {
-                biasingSimulation.BeforeLoad += (sender, args) =>
-                {
-                    foreach (var entity in CommonUpdates.Keys)
-                    {
-                        var beforeLoads = CommonUpdates[entity].ParameterUpdatesBeforeLoad;
-
-                        foreach (var entityUpdate in beforeLoads)
-                        {
-                            Common.Evaluation.EvaluationContext context = GetEntityContext(simulation, entity.Name);
-
-                            if (context != null)
-                            {
-                                var value = entityUpdate.GetValue(context);
-                                if (!double.IsNaN(value))
-                                {
-                                    entity.CreateParameterSetter<double>(entityUpdate.ParameterName)?.Invoke(value);
-                                }
-                            }
-                        }
-                    }
-
-                    if (SimulationSpecificUpdates.ContainsKey(simulation))
-                    {
-                        foreach (var entityPair in SimulationSpecificUpdates[simulation])
-                        {
-                            var beforeLoads = entityPair.Value.ParameterUpdatesBeforeLoad;
-
-                            foreach (var entityUpdate in beforeLoads)
-                            {
-                                Common.Evaluation.EvaluationContext context = GetEntityContext(simulation, entityPair.Key.Name);
-                                if (context != null)
-                                {
-                                    var value = entityUpdate.GetValue(context);
-                                    if (!double.IsNaN(value))
-                                    {
-                                        entityPair.Key.CreateParameterSetter<double>(entityUpdate.ParameterName)?.Invoke(value);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                };
-
                 biasingSimulation.BeforeTemperature += (sender, args) =>
                 {
                     foreach (var entity in CommonUpdates.Keys)
@@ -100,7 +56,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                             }
                         }
                     }
+                };
 
+                biasingSimulation.BeforeTemperature += (sender, args) =>
+                {
                     if (SimulationSpecificUpdates.ContainsKey(simulation))
                     {
                         foreach (var entityPair in SimulationSpecificUpdates[simulation])
@@ -125,7 +84,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
             }
         }
 
-        public void Add(IEntity entity, Simulation simulation, string parameterName, string expression, bool beforeTemperature, bool beforeLoad)
+        public void Add(IEntity entity, string parameterName, string expression, bool beforeTemperature, Simulation simulation)
         {
             if (entity == null)
             {
@@ -152,16 +111,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                 SimulationSpecificUpdates[simulation][entity] = new EntityUpdate();
             }
 
-            if (beforeLoad)
-            {
-                SimulationSpecificUpdates[simulation][entity].ParameterUpdatesBeforeLoad.Add(
-                    new EntityParameterExpressionValueUpdate()
-                    {
-                        ParameterName = parameterName,
-                        Expression = new DynamicExpression(expression),
-                    });
-            }
-
             if (beforeTemperature)
             {
                 SimulationSpecificUpdates[simulation][entity].ParameterUpdatesBeforeTemperature.Add(new EntityParameterExpressionValueUpdate()
@@ -172,41 +121,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
             }
         }
 
-        public void Add(IEntity entity, string parameterName, double value, bool beforeTemperature, bool beforeLoad)
-        {
-            if (entity == null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-
-            if (parameterName == null)
-            {
-                throw new ArgumentNullException(nameof(parameterName));
-            }
-
-            if (!CommonUpdates.ContainsKey(entity))
-            {
-                CommonUpdates[entity] = new EntityUpdate();
-            }
-
-            if (beforeLoad)
-            {
-                CommonUpdates[entity].ParameterUpdatesBeforeLoad.Add(
-                    new EntityParameterDoubleValueUpdate()
-                    {
-                        ParameterName = parameterName,
-                        Value = value,
-                    });
-            }
-
-            if (beforeTemperature)
-            {
-                CommonUpdates[entity].ParameterUpdatesBeforeTemperature.Add(
-                    new EntityParameterDoubleValueUpdate() { ParameterName = parameterName, Value = value });
-            }
-        }
-
-        public void Add(IEntity entity, string parameterName, string expression, bool beforeTemperature, bool beforeLoad)
+        public void Add(IEntity entity, string parameterName, string expression, bool beforeTemperature)
         {
             if (entity == null)
             {
@@ -228,16 +143,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                 CommonUpdates[entity] = new EntityUpdate();
             }
 
-            if (beforeLoad)
-            {
-                CommonUpdates[entity].ParameterUpdatesBeforeLoad.Add(
-                    new EntityParameterExpressionValueUpdate()
-                    {
-                        ParameterName = parameterName,
-                        Expression = new DynamicExpression(expression),
-                    });
-            }
-
             if (beforeTemperature)
             {
                 CommonUpdates[entity].ParameterUpdatesBeforeTemperature.Add(new EntityParameterExpressionValueUpdate()
@@ -248,7 +153,31 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
             }
         }
 
-        public void Add(IEntity entity, Simulation simulation, string parameterName, double value, bool beforeTemperature, bool beforeLoad)
+        public void Add(IEntity entity, string parameterName, double value, bool beforeTemperature)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
+            if (parameterName == null)
+            {
+                throw new ArgumentNullException(nameof(parameterName));
+            }
+
+            if (!CommonUpdates.ContainsKey(entity))
+            {
+                CommonUpdates[entity] = new EntityUpdate();
+            }
+
+            if (beforeTemperature)
+            {
+                CommonUpdates[entity].ParameterUpdatesBeforeTemperature.Add(
+                    new EntityParameterDoubleValueUpdate() { ParameterName = parameterName, Value = value });
+            }
+        }
+
+        public void Add(IEntity entity, string parameterName, double value, bool beforeTemperature, Simulation simulation)
         {
             if (entity == null)
             {
@@ -273,11 +202,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
             if (!SimulationSpecificUpdates[simulation].ContainsKey(entity))
             {
                 SimulationSpecificUpdates[simulation][entity] = new EntityUpdate();
-            }
-
-            if (beforeLoad)
-            {
-                SimulationSpecificUpdates[simulation][entity].ParameterUpdatesBeforeLoad.Add(new EntityParameterDoubleValueUpdate { ParameterName = parameterName, Value = value });
             }
 
             if (beforeTemperature)

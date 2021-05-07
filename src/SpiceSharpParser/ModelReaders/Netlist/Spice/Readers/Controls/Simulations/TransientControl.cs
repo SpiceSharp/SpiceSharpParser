@@ -23,12 +23,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A context to modify.</param>
-        public override void Read(Control statement, ICircuitContext context)
+        public override void Read(Control statement, IReadingContext context)
         {
             CreateSimulations(statement, context, CreateTransientSimulation);
         }
 
-        private Transient CreateTransientSimulation(string name, Control statement, ICircuitContext context)
+        private Transient CreateTransientSimulation(string name, Control statement, IReadingContext context)
         {
             switch (statement.Parameters.Count)
             {
@@ -105,7 +105,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
             tran.BeforeLoad += (truncateSender, truncateArgs) =>
             {
-                context.Evaluator.SetParameter(tran, "TIME", ((IStateful<IIntegrationMethod>)tran).State.Time);
+                context.Evaluator.SetParameter("TIME", ((IStateful<IIntegrationMethod>)tran).State.Time, tran);
             };
             context.Result.Simulations.Add(tran);
 

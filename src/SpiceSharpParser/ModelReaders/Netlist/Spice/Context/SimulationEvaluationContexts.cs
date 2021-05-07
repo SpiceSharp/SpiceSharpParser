@@ -64,10 +64,5 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 _cacheLock.ExitUpgradeableReadLock();
             }
         }
-
-        public void SetEntites(Circuit contextEntities)
-        {
-            SourceContext.ContextEntities = contextEntities;
-        }
     }
 }

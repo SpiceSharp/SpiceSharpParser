@@ -25,7 +25,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// <summary>
         /// Creates simulations.
         /// </summary>
-        protected void CreateSimulations(Control statement, ICircuitContext context, Func<string, Control, ICircuitContext, Simulation> createSimulation)
+        protected void CreateSimulations(Control statement, IReadingContext context, Func<string, Control, IReadingContext, Simulation> createSimulation)
         {
             _factory.Create(statement, context, createSimulation);
         }
@@ -35,7 +35,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// </summary>
         /// <param name="baseSimulation">The simulation to configure.</param>
         /// <param name="context">The reading context.</param>
-        protected void ConfigureCommonSettings(Simulation baseSimulation, ICircuitContext context)
+        protected void ConfigureCommonSettings(Simulation baseSimulation, IReadingContext context)
         {
             if (baseSimulation is BiasingSimulation bs)
             {

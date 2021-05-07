@@ -13,9 +13,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         string GenerateObjectName(string entityName);
 
+        string GenerateNodeName(string nodeName);
+
         IObjectNameGenerator CreateChildNameGenerator(string name);
 
-        string GenerateNodeName(string nodeName);
 
         void AddChild(INodeNameGenerator nodeNameGenerator);
 

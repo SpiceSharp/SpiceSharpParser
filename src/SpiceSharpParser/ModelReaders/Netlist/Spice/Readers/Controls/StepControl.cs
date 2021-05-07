@@ -19,7 +19,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A context to modify.</param>
-        public override void Read(Control statement, ICircuitContext context)
+        public override void Read(Control statement, IReadingContext context)
         {
             if (statement.Parameters == null)
             {
@@ -62,7 +62,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void ReadParam(ParameterCollection parameters, ICircuitContext context)
+        private void ReadParam(ParameterCollection parameters, IReadingContext context)
         {
             var variableParameter = parameters[0];
             string type = parameters[1].Value;
@@ -91,7 +91,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void ReadOtherCases(ParameterCollection parameters, ICircuitContext context)
+        private void ReadOtherCases(ParameterCollection parameters, IReadingContext context)
         {
             bool list = false;
             for (var i = 0; i <= 2; i++)
@@ -127,7 +127,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void ReadOct(ParameterCollection parameters, ICircuitContext context)
+        private void ReadOct(ParameterCollection parameters, IReadingContext context)
         {
             if (parameters[1] is BracketParameter bp)
             {
@@ -139,7 +139,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void ReadDec(ParameterCollection parameters, ICircuitContext context)
+        private void ReadDec(ParameterCollection parameters, IReadingContext context)
         {
             if (parameters[1] is BracketParameter bp)
             {
@@ -151,7 +151,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void ReadLin(ParameterCollection parameters, ICircuitContext context)
+        private void ReadLin(ParameterCollection parameters, IReadingContext context)
         {
             if (parameters[1] is BracketParameter bp)
             {
@@ -163,7 +163,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void ReadDec(Parameter variableParameter, ParameterCollection parameters, ICircuitContext context)
+        private void ReadDec(Parameter variableParameter, ParameterCollection parameters, IReadingContext context)
         {
             var pSweep = new ParameterSweep()
             {
@@ -177,7 +177,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             context.SimulationConfiguration.ParameterSweeps.Add(pSweep);
         }
 
-        private void ReadOct(Parameter variableParameter, ParameterCollection parameters, ICircuitContext context)
+        private void ReadOct(Parameter variableParameter, ParameterCollection parameters, IReadingContext context)
         {
             var pSweep = new ParameterSweep()
             {
@@ -191,7 +191,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             context.SimulationConfiguration.ParameterSweeps.Add(pSweep);
         }
 
-        private void ReadList(Parameter variableParameter, ParameterCollection parameters, ICircuitContext context)
+        private void ReadList(Parameter variableParameter, ParameterCollection parameters, IReadingContext context)
         {
             var values = new List<double>();
 
@@ -219,7 +219,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 });
         }
 
-        private void ReadLin(Parameter variableParameter, ParameterCollection parameters, ICircuitContext context)
+        private void ReadLin(Parameter variableParameter, ParameterCollection parameters, IReadingContext context)
         {
             var pSweep = new ParameterSweep()
             {

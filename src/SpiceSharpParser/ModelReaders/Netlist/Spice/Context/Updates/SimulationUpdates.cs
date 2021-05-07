@@ -1,23 +1,131 @@
 ﻿using SpiceSharp.Simulations;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 {
     public class SimulationUpdates
     {
-        public SimulationUpdates()
+        public SimulationUpdates(SimulationEvaluationContexts contexts)
         {
-            ParameterUpdatesBeforeSetup = new List<SimulationUpdate>();
-            ParameterUpdatesBeforeTemperature = new List<SimulationUpdate>();
-            ParameterUpdatesBeforeLoad = new List<SimulationUpdate>();
+            Contexts = contexts;
+            SimulationBeforeSetupActions = new ConcurrentDictionary<Simulation, List<SimulationUpdateAction>>();
+            SimulationBeforeTemperatureActions = new ConcurrentDictionary<Simulation, List<SimulationUpdateAction>>();
+            CommonBeforeSetupActions = new List<SimulationUpdateAction>();
+            CommonBeforeTemperatureActions = new List<SimulationUpdateAction>();
         }
 
-        public Simulation Simulation { get; set; }
+        protected SimulationEvaluationContexts Contexts { get; private set; }
 
-        public List<SimulationUpdate> ParameterUpdatesBeforeSetup { get; protected set; }
+        protected ConcurrentDictionary<Simulation, List<SimulationUpdateAction>> SimulationBeforeSetupActions { get; }
 
-        public List<SimulationUpdate> ParameterUpdatesBeforeTemperature { get; protected set; }
+        protected ConcurrentDictionary<Simulation, List<SimulationUpdateAction>> SimulationBeforeTemperatureActions { get; }
+        
+        protected List<SimulationUpdateAction> CommonBeforeSetupActions { get; }
 
-        public List<SimulationUpdate> ParameterUpdatesBeforeLoad { get; protected set; }
+        protected List<SimulationUpdateAction> CommonBeforeTemperatureActions { get; }
+
+        public void Apply(Simulation simulation)
+        {
+            if (simulation == null)
+            {
+                throw new ArgumentNullException(nameof(simulation));
+            }
+
+            // Apply common updates
+            simulation.BeforeSetup += (object sender, EventArgs args) =>
+            {
+                foreach (var action in CommonBeforeSetupActions)
+                {
+                    action.Run(simulation, Contexts);
+                }
+
+                if (SimulationBeforeSetupActions.ContainsKey(simulation))
+                {
+                    var actions = SimulationBeforeSetupActions[simulation];
+
+                    foreach (var action in actions)
+                    {
+                        action.Run(simulation, Contexts);
+                    }
+                }
+            };
+
+            BiasingSimulation biasingSimulation = simulation as BiasingSimulation;
+            if (biasingSimulation != null)
+            {
+                biasingSimulation.BeforeTemperature += (object sender, TemperatureStateEventArgs args) =>
+                {
+                    foreach (var action in CommonBeforeTemperatureActions)
+                    {
+                        action.Run(simulation, Contexts);
+                    }
+                    if (SimulationBeforeTemperatureActions.ContainsKey(simulation))
+                    {
+                        var actions = SimulationBeforeTemperatureActions[simulation];
+
+                        foreach (var action in actions)
+                        {
+                            action.Run(simulation, Contexts);
+                        }
+                    }
+                };
+            }
+        }
+
+        public void AddBeforeSetup(Simulation simulation, Action<Simulation, SimulationEvaluationContexts> action)
+        {
+            if (simulation == null)
+            {
+                throw new ArgumentNullException(nameof(simulation));
+            }
+
+            if (!SimulationBeforeSetupActions.ContainsKey(simulation))
+            {
+                SimulationBeforeSetupActions[simulation] = new List<SimulationUpdateAction>() { new SimulationUpdateAction(action) };
+            }
+            else
+            {
+                SimulationBeforeSetupActions[simulation].Add(new SimulationUpdateAction(action));
+            }
+        }
+
+        public void AddBeforeTemperature(Simulation simulation, Action<Simulation, SimulationEvaluationContexts> action)
+        {
+            if (simulation == null)
+            {
+                throw new ArgumentNullException(nameof(simulation));
+            }
+
+            if (!SimulationBeforeTemperatureActions.ContainsKey(simulation))
+            {
+                SimulationBeforeTemperatureActions[simulation] = new List<SimulationUpdateAction>() { new SimulationUpdateAction(action) };
+            }
+            else
+            {
+                SimulationBeforeTemperatureActions[simulation].Add(new SimulationUpdateAction(action));
+            }
+        }
+
+        public void AddBeforeSetup(Action<Simulation, SimulationEvaluationContexts> action)
+        {
+            if (action == null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+
+            CommonBeforeSetupActions.Add(new SimulationUpdateAction(action));
+        }
+
+        public void AddBeforeTemperature(Action<Simulation, SimulationEvaluationContexts> action)
+        {
+            if (action == null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+
+            CommonBeforeTemperatureActions.Add(new SimulationUpdateAction(action));
+        }
     }
 }

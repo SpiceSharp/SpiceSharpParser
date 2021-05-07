@@ -11,7 +11,6 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.Parsers.Expression;
-using System;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
@@ -84,16 +83,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             var simulationEvaluationContexts = new SimulationEvaluationContexts(evaluationContext);
             ISimulationPreparations simulationPreparations = new SimulationPreparations(
                 new EntityUpdates(Settings.CaseSensitivity.IsParameterNameCaseSensitive, simulationEvaluationContexts),
-                new SimulationsUpdates(simulationEvaluationContexts));
+                new SimulationUpdates(simulationEvaluationContexts));
 
-            ICircuitEvaluator circuitEvaluator = new CircuitEvaluator(simulationEvaluationContexts, evaluationContext);
+            IEvaluator circuitEvaluator = new Evaluator(simulationEvaluationContexts, evaluationContext);
             ISpiceStatementsReader statementsReader = new SpiceStatementsReader(
                 Settings.Mappings.Controls,
                 Settings.Mappings.Models,
                 Settings.Mappings.Components);
             IWaveformReader waveformReader = new WaveformReader(Settings.Mappings.Waveforms);
 
-            ICircuitContext circuitContext = new CircuitContext(
+            IReadingContext circuitContext = new ReadingContext(
                 "Root circuit context",
                 null,
                 circuitEvaluator,

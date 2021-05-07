@@ -26,12 +26,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A context to modify.</param>
-        public override void Read(Control statement, ICircuitContext context)
+        public override void Read(Control statement, IReadingContext context)
         {
             CreateSimulations(statement, context, CreateNoiseSimulation);
         }
 
-        private Noise CreateNoiseSimulation(string name, Control statement, ICircuitContext context)
+        private Noise CreateNoiseSimulation(string name, Control statement, IReadingContext context)
         {
             Noise noise = null;
 

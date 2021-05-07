@@ -6,6 +6,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
 {
     public interface IComponentGenerator
     {
-        IEntity Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context);
+        IEntity Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context);
     }
 }

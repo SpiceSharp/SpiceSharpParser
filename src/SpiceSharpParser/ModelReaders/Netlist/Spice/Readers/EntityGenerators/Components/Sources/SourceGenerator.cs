@@ -13,7 +13,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
     {
         protected void SetSourceParameters(
             ParameterCollection parameters,
-            ICircuitContext context,
+            IReadingContext context,
             Component component)
         {
             var originalParameters = parameters;

@@ -35,7 +35,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A context to modify.</param>
-        public override void Read(Control statement, ICircuitContext context)
+        public override void Read(Control statement, IReadingContext context)
         {
             Type simulationType = null;
 
@@ -85,7 +85,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             CreatePlotsForAcParameterSweeps(context);
         }
 
-        private void CreatePlotsForTranParameterSweeps(ICircuitContext context)
+        private void CreatePlotsForTranParameterSweeps(IReadingContext context)
         {
             if (context.SimulationConfiguration.ParameterSweeps.Count > 0)
             {
@@ -112,7 +112,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void CreatePlotsForAcParameterSweeps(ICircuitContext context)
+        private void CreatePlotsForAcParameterSweeps(IReadingContext context)
         {
             if (context.SimulationConfiguration.ParameterSweeps.Count > 0)
             {
@@ -139,7 +139,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void CreatePlotsForOpParameterSweeps(ICircuitContext context)
+        private void CreatePlotsForOpParameterSweeps(IReadingContext context)
         {
             if (context.SimulationConfiguration.ParameterSweeps.Count > 0)
             {
@@ -169,7 +169,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void CreateOpSweepPlot(Context.Sweeps.ParameterSweep firstParameterSweep, string variableName, List<Export> exports, ICircuitContext context)
+        private void CreateOpSweepPlot(Context.Sweeps.ParameterSweep firstParameterSweep, string variableName, List<Export> exports, IReadingContext context)
         {
             var plot = new XyPlot("OP - Parameter sweep: " + variableName);
 
@@ -188,7 +188,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             context.Result.XyPlots.Add(plot);
         }
 
-        private void CreateTranSweepPlot(string variableName, List<Export> exports, ICircuitContext context)
+        private void CreateTranSweepPlot(string variableName, List<Export> exports, IReadingContext context)
         {
             var plot = new XyPlot("Tran - Parameter sweep: " + variableName);
 
@@ -207,7 +207,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             context.Result.XyPlots.Add(plot);
         }
 
-        private void CreateAcSweepPlot(string variableName, List<Export> exports, ICircuitContext context)
+        private void CreateAcSweepPlot(string variableName, List<Export> exports, IReadingContext context)
         {
             var plot = new XyPlot("AC - Parameter sweep: " + variableName);
 
@@ -226,7 +226,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             context.Result.XyPlots.Add(plot);
         }
 
-        private void AddOpPointToSeries(Context.Sweeps.ParameterSweep firstParameterSweep, Export export, ICircuitContext context, Series series)
+        private void AddOpPointToSeries(Context.Sweeps.ParameterSweep firstParameterSweep, Export export, IReadingContext context, Series series)
         {
             export.Simulation.ExportSimulationData += (object sender, ExportDataEventArgs e) =>
             {
@@ -254,7 +254,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             };
         }
 
-        private void CreateExportsForAllVoltageAndCurrents(ICircuitContext context)
+        private void CreateExportsForAllVoltageAndCurrents(IReadingContext context)
         {
             // For all simulations add exports for current and voltages
             foreach (var simulation in context.Result.Simulations)
@@ -309,7 +309,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void AddCommonExport(ICircuitContext context, Type simulationType, Parameter parameter)
+        private void AddCommonExport(IReadingContext context, Type simulationType, Parameter parameter)
         {
             foreach (var simulation in Filter(context.Result.Simulations, simulationType))
             {
@@ -317,7 +317,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void AddLetExport(ICircuitContext context, Type simulationType, SingleParameter parameter)
+        private void AddLetExport(IReadingContext context, Type simulationType, SingleParameter parameter)
         {
             string expressionName = parameter.Value;
             var expressionNames = context.Evaluator.GetExpressionNames();

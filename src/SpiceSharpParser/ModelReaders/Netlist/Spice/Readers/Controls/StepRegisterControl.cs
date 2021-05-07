@@ -15,7 +15,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A context to modify.</param>
-        public override void Read(Control statement, ICircuitContext context)
+        public override void Read(Control statement, IReadingContext context)
         {
             if (statement.Parameters == null)
             {
@@ -58,7 +58,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void ReadOtherCases(ParameterCollection parameters, ICircuitContext context)
+        private void ReadOtherCases(ParameterCollection parameters, IReadingContext context)
         {
             if (parameters[1] is BracketParameter bp)
             {
@@ -70,7 +70,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void ReadOct(ParameterCollection parameters, ICircuitContext context)
+        private void ReadOct(ParameterCollection parameters, IReadingContext context)
         {
             if (parameters[1] is BracketParameter bp)
             {
@@ -82,7 +82,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void ReadDec(ParameterCollection parameters, ICircuitContext context)
+        private void ReadDec(ParameterCollection parameters, IReadingContext context)
         {
             if (parameters[1] is BracketParameter bp)
             {
@@ -94,7 +94,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void ReadLin(ParameterCollection parameters, ICircuitContext context)
+        private void ReadLin(ParameterCollection parameters, IReadingContext context)
         {
             if (parameters[1] is BracketParameter bp)
             {
@@ -106,7 +106,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void RegisterParameter(Parameter variableParameter, ICircuitContext context)
+        private void RegisterParameter(Parameter variableParameter, IReadingContext context)
         {
             context.Evaluator.SetParameter(variableParameter.Value, 0);
         }

@@ -9,9 +9,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public abstract class ComponentGenerator : IComponentGenerator
     {
-        public abstract IEntity Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context);
+        public abstract IEntity Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context);
 
-        protected void SetParameters(ICircuitContext context, IEntity entity, ParameterCollection parameters, bool onload)
+        protected void SetParameters(IReadingContext context, IEntity entity, ParameterCollection parameters)
         {
             foreach (Parameter parameter in parameters)
             {
@@ -19,7 +19,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     try
                     {
-                        context.SetParameter(entity, ap.Name, ap.Value, true, onload);
+                        context.SetParameter(entity, ap.Name, ap.Value, true);
                     }
                     catch (Exception)
                     {

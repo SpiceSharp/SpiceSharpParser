@@ -21,7 +21,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A reading context.</param>
-        public override void Read(Parallel statement, ICircuitContext context)
+        public override void Read(Parallel statement, IReadingContext context)
         {
             if (statement == null)
             {
@@ -33,7 +33,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
                 throw new ArgumentNullException(nameof(context));
             }
 
-            var parallelContext = new CircuitContext(
+            var parallelContext = new ReadingContext(
                 $"{statement.Name} Parallel context",
                 context,
                 context.Evaluator,

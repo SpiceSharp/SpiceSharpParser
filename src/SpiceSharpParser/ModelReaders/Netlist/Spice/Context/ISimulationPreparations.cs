@@ -12,13 +12,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         void SetICVoltage(string nodeId, string expression);
 
-        void SetParameter(IEntity @object, string paramName, string expression, bool beforeTemperature, bool onload);
+        void SetParameterBeforeTemperature(IEntity @object, string paramName, string expression);
 
-        void SetParameter(IEntity @object, string paramName, double value, bool beforeTemperature, bool onload);
+        void SetParameterBeforeTemperature(IEntity @object, string paramName, double value);
 
-        void SetParameter(IEntity @object, Simulation simulation, string paramName, double value, bool beforeTemperature, bool onload);
-
-        void ExecuteTemperatureBehaviorBeforeLoad(IEntity @object);
+        void SetParameterBeforeTemperature(IEntity @object, string paramName, double value, Simulation simulation);
 
         void ExecuteActionBeforeSetup(Action<Simulation> action);
 

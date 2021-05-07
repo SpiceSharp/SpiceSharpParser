@@ -22,6 +22,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             return NodeNameGenerator.Parse(nodePath);
         }
 
+        public string GenerateNodeName(string nodeName)
+        {
+            return NodeNameGenerator.Generate(nodeName);
+        }
+
         public string GenerateObjectName(string entityName)
         {
             return ObjectNameGenerator.Generate(entityName);
@@ -32,10 +37,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             return ObjectNameGenerator.CreateChildGenerator(name);
         }
 
-        public string GenerateNodeName(string nodeName)
-        {
-            return NodeNameGenerator.Generate(nodeName);
-        }
 
         public void AddChild(INodeNameGenerator nodeNameGenerator)
         {

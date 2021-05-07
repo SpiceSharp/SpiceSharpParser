@@ -19,7 +19,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         }
 
         [Fact]
-        public void When_InvalidProperty_Expect_Warning()
+        public void When_InvalidProperty_Expect_Error()
         {
             var result = ParseNetlist(
                 "Errors",
@@ -29,7 +29,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".OP",
                 ".END");
 
-            Assert.True(result.ValidationResult.HasWarning);
+            Assert.True(result.ValidationResult.HasError);
         }
     }
 }

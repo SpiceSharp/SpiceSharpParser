@@ -13,6 +13,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// </summary>
         /// <param name="statement">A statement.</param>
         /// <param name="circuitContext">A reading context.</param>
-        void Read(Statement statement, ICircuitContext circuitContext);
+        void Read(Statement statement, IReadingContext circuitContext);
     }
 }
