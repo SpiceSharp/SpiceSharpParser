@@ -29,7 +29,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             EqualsWithTol(exports, reference);
         }
 
-        [Fact(Skip = "4 parameter is removed")]
+        [Fact]
         public void When_TranHasTStart_Expect_Reference()
         {
             double dcVoltage = 10;

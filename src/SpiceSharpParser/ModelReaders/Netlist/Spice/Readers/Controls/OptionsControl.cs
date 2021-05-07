@@ -58,6 +58,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                                     context.SimulationConfiguration.TransientConfiguration.Type = typeof(Trapezoidal);
                                     context.SimulationConfiguration.TimeParametersFactory = (TransientConfiguration config) => new Trapezoidal()
                                     {
+                                        StartTime = config.Start ?? 0.0,
                                         StopTime = config.Final ?? 0.0,
                                         MaxStep = config.MaxStep ?? 0.0,
                                         InitialStep = config.Step ?? 0.0,
@@ -71,6 +72,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                                     context.SimulationConfiguration.TransientConfiguration.Type = typeof(Gear);
                                     context.SimulationConfiguration.TimeParametersFactory = (TransientConfiguration config) => new Gear()
                                     {
+                                        StartTime = config.Start ?? 0.0,
                                         StopTime = config.Final ?? 0.0,
                                         MaxStep = config.MaxStep ?? 0.0,
                                         InitialStep = config.Step ?? 0.0,
@@ -84,6 +86,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                                     context.SimulationConfiguration.TransientConfiguration.Type = typeof(FixedEuler);
                                     context.SimulationConfiguration.TimeParametersFactory = (TransientConfiguration config) => new FixedEuler()
                                     {
+                                        StartTime = config.Start ?? 0.0,
                                         StopTime = config.Final ?? 0.0,
                                         Step = config.Step ?? 0.0,
                                         UseIc = config.UseIc ?? false,

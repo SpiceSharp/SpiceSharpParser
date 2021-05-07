@@ -10,6 +10,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
         public double? Final { get; set; }
 
+        public double? Start { get; set; }
+
         public bool? UseIc { get; set; }
 
         public int? TranMaxIterations { get; set; }
