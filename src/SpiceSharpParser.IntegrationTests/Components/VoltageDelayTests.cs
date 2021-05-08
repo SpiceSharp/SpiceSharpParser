@@ -18,6 +18,8 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".END");
 
             Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasError);
+            Assert.False(netlist.ValidationResult.HasWarning);
             RunTransientSimulation(netlist, "V(1,0)");
         }
     }

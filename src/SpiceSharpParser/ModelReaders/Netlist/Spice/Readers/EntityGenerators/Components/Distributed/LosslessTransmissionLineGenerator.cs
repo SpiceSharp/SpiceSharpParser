@@ -42,6 +42,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     {
                         context.SetParameter(losslessLine, "abstol", ap.Value);
                     }
+                    else if (paramName == "m")
+                    {
+                        context.SetParameter(losslessLine, "m", ap.Value);
+                    }
                     else
                     {
                         context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Invalid parameter: {parameter}", parameter.LineInfo));

@@ -90,18 +90,25 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
         private IComponentGenerator GetComponentGenerator(IReadingContext context, string componentName, SpiceLineInfo lineInfo, out string componentType)
         {
+            componentType = null;
+            IComponentGenerator generator = null;
+
             foreach (var map in Mapper)
             {
-                if (componentName.StartsWith(map.Key, context.CaseSensitivity.IsEntityNamesCaseSensitive ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase))
+                if (componentName.StartsWith(map.Key, context.CaseSensitivity.IsEntityNamesCaseSensitive ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase) 
+                    && (componentType == null || componentType != null && componentType.Length < map.Key.Length))
                 {
                     componentType = map.Key;
-                    return map.Value;
+                    generator = map.Value;
                 }
             }
 
-            context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Unsupported component {componentName}", lineInfo));
-            componentType = null;
-            return null;
+            if (generator == null)
+            {
+                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Unsupported component {componentName}", lineInfo));
+            }
+
+            return generator;
         }
     }
 }

@@ -12,16 +12,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
     {
         public override IEntity Generate(string name, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
-            if (parameters.Count > 7 || parameters.Count < 5)
+            if (parameters.Count < 5)
             {
                 context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Wrong parameter count for voltage delay", parameters.LineInfo));
                 return null;
             }
 
             var vd = new VoltageDelay(name);
-            context.CreateNodes(vd, parameters);
+            context.CreateNodes(vd, parameters.Take(VoltageDelay.PinCount));
 
-            parameters = parameters.Skip(4);
+            parameters = parameters.Skip(VoltageDelay.PinCount);
 
             foreach (Parameter parameter in parameters)
             {
