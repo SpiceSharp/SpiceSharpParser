@@ -44,13 +44,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     if (asg.Name.ToLower() == "ic")
                     {
-                        if (asg.Value.Length == 2)
+                        if (asg.Values.Count == 2)
                         {
                             context.SetParameter(jfet, "ic-vds", asg.Values[0]);
                             context.SetParameter(jfet, "ic-vgs", asg.Values[1]);
                         }
 
-                        if (asg.Value.Length == 1)
+                        if (asg.Values.Count == 1)
                         {
                             context.SetParameter(jfet, "ic-vds", asg.Values[0]);
                         }
@@ -65,7 +65,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     }
                     else
                     {
-                        throw new System.Exception("Unknown parameter: " + asg.Name);
+                        context.SetParameter(jfet, asg.Name, asg.Value);
                     }
                 }
 

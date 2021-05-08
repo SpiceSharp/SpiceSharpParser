@@ -1,5 +1,4 @@
 ﻿using SpiceSharp.Components;
-using SpiceSharp.Components.Diodes;
 using SpiceSharp.Entities;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -17,7 +16,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
 
             Diode diode = new Diode(componentIdentifier);
-            context.CreateNodes(diode, parameters);
+            context.CreateNodes(diode, parameters.Take(Diode.PinCount));
 
             context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
             {
@@ -30,6 +29,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     context);
             });
 
+            bool areaSet = false;
             // Read the rest of the parameters
             for (int i = 3; i < parameters.Count; i++)
             {
@@ -51,26 +51,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (parameters[i] is AssignmentParameter asg)
                 {
-                    if (asg.Name.ToLower() == "ic")
-                    {
-                        context.SetParameter(diode, "ic", asg.Value);
-                    }
+                    context.SetParameter(diode, asg.Name, asg);
                 }
 
                 if (parameters[i] is ValueParameter || parameters[i] is ExpressionParameter)
                 {
-                    // TODO: Fix this please it's broken ...
-                    var bp = diode.GetParameterSet<Parameters>();
-                    if (bp.Area == 0.0)
+                    if (!areaSet)
                     {
-                        bp.Area = context.Evaluator.EvaluateDouble(parameters.Get(i));
+                        context.SetParameter(diode, "area", parameters.Get(i));
+                        areaSet = true;
                     }
                     else
                     {
-                        if (!bp.Temperature.Given)
-                        {
-                            bp.Temperature = context.Evaluator.EvaluateDouble(parameters.Get(i));
-                        }
+                        context.SetParameter(diode, "temp", parameters.Get(i));
                     }
                 }
             }

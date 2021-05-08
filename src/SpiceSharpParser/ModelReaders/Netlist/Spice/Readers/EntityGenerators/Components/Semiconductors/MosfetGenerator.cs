@@ -4,7 +4,8 @@ using SpiceSharp.Components;
 using SpiceSharp.Entities;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors
 {
@@ -16,21 +17,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             Mosfets.Add(typeof(Mosfet1Model), (string name) =>
             {
                 var mosfet = new Mosfet1(name);
-                return new MosfetDetails { Mosfet = mosfet, SetModelAction = (Model model) => mosfet.Model = model.Name };
+                return new MosfetDetails { Mosfet = mosfet, SetModelAction = (Context.Models.Model model) => mosfet.Model = model.Name };
             });
 
             // MOS2
             Mosfets.Add(typeof(Mosfet2Model), (string name) =>
             {
                 var mosfet = new Mosfet2(name);
-                return new MosfetDetails { Mosfet = mosfet, SetModelAction = (Model model) => mosfet.Model = model.Name };
+                return new MosfetDetails { Mosfet = mosfet, SetModelAction = (Context.Models.Model model) => mosfet.Model = model.Name };
             });
 
             // MOS3
             Mosfets.Add(typeof(Mosfet3Model), (string name) =>
             {
                 var mosfet = new Mosfet3(name);
-                return new MosfetDetails { Mosfet = mosfet, SetModelAction = (Model model) => mosfet.Model = model.Name };
+                return new MosfetDetails { Mosfet = mosfet, SetModelAction = (Context.Models.Model model) => mosfet.Model = model.Name };
             });
         }
 
@@ -113,17 +114,55 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 return null;
             }
 
-            // The rest is all just parameters
             context.CreateNodes(mosfet, parameters);
-            SetParameters(context, mosfet, parameters.Skip(5));
+
+            foreach (Parameter parameter in parameters.Skip(5))
+            {
+                if (parameter is AssignmentParameter ap)
+                {
+                    try
+                    {
+                        if (ap.Name.ToLower() == "ic")
+                        {
+                            if (ap.Values.Count == 3)
+                            {
+                                context.SetParameter(mosfet, "icvds", ap.Values[0], true);
+                                context.SetParameter(mosfet, "icvgs", ap.Values[1], true);
+                                context.SetParameter(mosfet, "icvbs", ap.Values[2], true);
+                            }
+                            if (ap.Values.Count == 2)
+                            {
+                                context.SetParameter(mosfet, "icvds", ap.Values[0], true);
+                                context.SetParameter(mosfet, "icvgs", ap.Values[1], true);
+                            }
+                            if (ap.Values.Count == 1)
+                            {
+                                context.SetParameter(mosfet, "icvds", ap.Values[0], true);
+                            }
+                        }
+                        else
+                        {
+                            context.SetParameter(mosfet, ap.Name, ap.Value, true);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Problem with setting parameter: {parameter}", parameter.LineInfo, ex));
+                    }
+                }
+                else
+                {
+                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Unsupported parameter: {parameter}", parameter.LineInfo));
+                }
+            }
             return mosfet;
         }
 
         protected class MosfetDetails
         {
-            public Component Mosfet { get; set; }
+            public SpiceSharp.Components.Component Mosfet { get; set; }
 
-            public Action<Model> SetModelAction { get; set; }
+            public Action<Context.Models.Model> SetModelAction { get; set; }
         }
     }
 }

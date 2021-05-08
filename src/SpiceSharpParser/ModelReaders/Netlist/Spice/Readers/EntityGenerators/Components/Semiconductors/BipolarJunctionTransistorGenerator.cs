@@ -4,6 +4,7 @@ using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using System.Linq;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors
 {
@@ -11,28 +12,33 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
     {
         public IEntity Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
-            BipolarJunctionTransistor bjt = new BipolarJunctionTransistor(componentIdentifier);
-
-            // If the component is of the format QXXX NC NB NE MNAME off we will insert NE again before the model name
-            if (parameters.Count == 5 && parameters[4] is WordParameter w && w.Value == "off")
-            {
-                parameters.Insert(3, parameters[2]);
-            }
-
-            // If the component is of the format QXXX NC NB NE MNAME we will insert NE again before the model name
-            if (parameters.Count == 4)
-            {
-                parameters.Insert(3, parameters[2]);
-            }
-
-            context.CreateNodes(bjt, parameters);
-
-            if (parameters.Count < 5)
+            if (parameters.Count < 4) // QXXX NC NB NE MNAME
             {
                 context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Wrong parameters count for BJT", parameters.LineInfo));
                 return null;
             }
 
+            var modelParameter = parameters.Skip(3).FirstOrDefault(p => p is WordParameter ag && context.ModelsRegistry.FindModel(ag.Value) != null);
+
+            if (modelParameter == null)
+            {
+                context.Result.ValidationResult.Add(
+                   new ValidationEntry(
+                       ValidationEntrySource.Reader,
+                       ValidationEntryLevel.Error,
+                       $"Could not find model for bjt {originalName}",
+                       parameters.LineInfo));
+                return null;
+            }
+
+            if (parameters.IndexOf(modelParameter) != 4)
+            {
+                parameters.Insert(3, parameters[2]);
+            }
+
+            BipolarJunctionTransistor bjt = new BipolarJunctionTransistor(componentIdentifier);
+            context.CreateNodes(bjt, parameters.Take(BipolarJunctionTransistor.PinCount));
+         
             context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
             {
                 context.ModelsRegistry.SetModel(
@@ -43,6 +49,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     (Context.Models.Model model) => bjt.Model = model.Name,
                     context);
             });
+
+            bool areaSet = false;
 
             for (int i = 5; i < parameters.Count; i++)
             {
@@ -55,22 +63,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         switch (s.Value.ToLower())
                         {
                             case "on": bjt.SetParameter("off", false); break;
-                            case "off": bjt.SetParameter("on", false); break;
+                            case "off": bjt.SetParameter("off", true); break;
                             default: throw new System.Exception();
                         }
                     }
                     else
                     {
-                        // TODO: Verify it
-                        var bp = bjt.Parameters;
-                        if (bp.Area == 0.0)
+                        if (!areaSet) // area is before temperature
                         {
-                            bp.Area = context.Evaluator.EvaluateDouble(s.Value);
+                            bjt.SetParameter("area", context.Evaluator.EvaluateDouble(s.Value));
+                            areaSet = true;
                         }
-
-                        if (!bp.Temperature.Given)
+                        else
                         {
-                            bp.Temperature = context.Evaluator.EvaluateDouble(s.Value);
+                            bjt.SetParameter("temp", context.Evaluator.EvaluateDouble(s.Value));
                         }
                     }
                 }
@@ -79,7 +85,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     if (asg.Name.ToLower() == "ic")
                     {
-                        context.SetParameter(bjt, "ic", asg.Value);
+                        if (asg.Values.Count == 2)
+                        {
+                            context.SetParameter(bjt, "icvbe", asg.Values[0]);
+                            context.SetParameter(bjt, "icvce", asg.Values[1]);
+                        }
+
+                        if (asg.Values.Count == 1)
+                        {
+                            context.SetParameter(bjt, "icvbe", asg.Values[0]);
+                        }
+                    }
+                    else
+                    {
+                        context.SetParameter(bjt, asg.Name, asg);
                     }
                 }
             }
