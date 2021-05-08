@@ -77,7 +77,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     final = context.Evaluator.EvaluateDouble(clonedParameters[1].Value);
                     start = context.Evaluator.EvaluateDouble(clonedParameters[2].Value);
                     maxStep = context.Evaluator.EvaluateDouble(clonedParameters[3].Value);
-
                     args = new double[] { step.Value, final.Value, maxStep.Value, start.Value };
                     break;
                 default:
@@ -107,7 +106,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 {
                     if (clonedParameters.Count == 3)
                     {
-                        tran = new Transient(name, step.Value, final.Value, maxStep.Value);
+                        tran = new Transient(name, step.Value, final.Value, maxStep ?? step.Value);
                     }
                     else
                     {
@@ -115,7 +114,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                             name,
                             new Trapezoidal()
                             {
-                                StartTime = start.Value,
+                                StartTime = start ?? 0.0,
                                 StopTime = final.Value,
                                 MaxStep = maxStep.Value,
                                 InitialStep = step.Value
@@ -126,7 +125,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             tran.TimeParameters.UseIc = useIc;
 
             ConfigureCommonSettings(tran, context);
-
             tran.BeforeLoad += (truncateSender, truncateArgs) =>
             {
                 context.Evaluator.SetParameter("TIME", ((IStateful<IIntegrationMethod>)tran).State.Time, tran);
