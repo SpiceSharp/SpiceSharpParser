@@ -14,7 +14,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public class SwitchGenerator : ComponentGenerator
     {
-        public override IEntity Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
+        public override IEntity Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
             switch (type.ToLower())
             {
@@ -34,7 +34,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new voltage switch.
         /// </returns>
-        protected IEntity GenerateVoltageSwitch(string name, ParameterCollection parameters, ICircuitContext context)
+        protected IEntity GenerateVoltageSwitch(string name, ParameterCollection parameters, IReadingContext context)
         {
             if (parameters.Count < 5)
             {
@@ -183,7 +183,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of current switch.
         /// </returns>
-        private IEntity GenerateCurrentSwitch(string name, ParameterCollection parameters, ICircuitContext context)
+        private IEntity GenerateCurrentSwitch(string name, ParameterCollection parameters, IReadingContext context)
         {
             if (parameters.Count < 4)
             {

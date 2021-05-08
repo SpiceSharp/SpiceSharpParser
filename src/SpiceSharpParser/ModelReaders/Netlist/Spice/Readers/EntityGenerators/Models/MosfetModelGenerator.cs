@@ -56,7 +56,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
         /// </summary>
         protected Dictionary<int, Func<string, string, string, Context.Models.Model>> Levels { get; } = new Dictionary<int, Func<string, string, string, Context.Models.Model>>();
 
-        public override Context.Models.Model Generate(string id, string type, ParameterCollection parameters, ICircuitContext context)
+        public override Context.Models.Model Generate(string id, string type, ParameterCollection parameters, IReadingContext context)
         {
             var clonedParameters = (ParameterCollection)parameters.Clone();
 

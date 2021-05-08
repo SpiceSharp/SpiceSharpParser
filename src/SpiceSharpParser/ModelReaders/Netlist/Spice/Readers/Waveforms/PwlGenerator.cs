@@ -23,7 +23,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
         /// <returns>
         /// A new waveform.
         /// </returns>
-        public override IWaveformDescription Generate(ParameterCollection parameters, ICircuitContext context)
+        public override IWaveformDescription Generate(ParameterCollection parameters, IReadingContext context)
         {
             if (parameters == null)
             {
@@ -52,7 +52,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             }
         }
 
-        private static IWaveformDescription CreatePwlFromSequence(ParameterCollection parameters, ICircuitContext context)
+        private static IWaveformDescription CreatePwlFromSequence(ParameterCollection parameters, IReadingContext context)
         {
             if (parameters.Count % 2 != 0)
             {
@@ -73,7 +73,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             return new Pwl() { Points = points };
         }
 
-        private static IWaveformDescription CreatePwlFromVector(ParameterCollection parameters, ICircuitContext context)
+        private static IWaveformDescription CreatePwlFromVector(ParameterCollection parameters, IReadingContext context)
         {
             List<double> values = new List<double>();
 
@@ -105,7 +105,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             return new Pwl() { Points = points };
         }
 
-        private static IWaveformDescription CreatePwlFromFile(ParameterCollection parameters, ICircuitContext context)
+        private static IWaveformDescription CreatePwlFromFile(ParameterCollection parameters, IReadingContext context)
         {
             var fileParameter = (AssignmentParameter)parameters.First(p => p is AssignmentParameter ap && ap.Name.ToLower() == "file");
             var filePath = PathConverter.Convert(fileParameter.Value);

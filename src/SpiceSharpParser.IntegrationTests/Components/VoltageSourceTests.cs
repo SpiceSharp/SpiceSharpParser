@@ -319,6 +319,26 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
+        public void When_WaveFile_WithoutWave_Expect_NoException()
+        {
+            using var client = new WebClient();
+            var waveFileData = client.DownloadData("http://www.ecircuitcenter.com/Circuits/distortion_box/guitar2a.wav");
+            File.WriteAllBytes("guitar2a.wav", waveFileData);
+
+            var netlist = ParseNetlist(
+                "Wave file voltage source",
+                "V1 1 0 wavefile=guitar2a.wav chan=0",
+                "R1 1 0 10",
+                ".WAVE guitar2a_out.wav 16 44100 V(1)",
+                ".SAVE V(1)",
+                ".TRAN 1e-8 5",
+                ".END");
+
+            Assert.NotNull(netlist);
+            RunTransientSimulation(netlist, "V(1)");
+        }
+
+        [Fact]
         public void When_ACWithoutValue_Expect_NoException()
         {
             var netlist = ParseNetlist(

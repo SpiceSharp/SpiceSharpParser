@@ -5,6 +5,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     public interface INameGenerator
     {
+        string Separator { get; }
+
         IEnumerable<string> Globals { get; }
 
         INodeNameGenerator NodeNameGenerator { get; }
@@ -13,9 +15,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         string GenerateObjectName(string entityName);
 
-        IObjectNameGenerator CreateChildNameGenerator(string name);
-
         string GenerateNodeName(string nodeName);
+
+        IObjectNameGenerator CreateChildNameGenerator(string name);
 
         void AddChild(INodeNameGenerator nodeNameGenerator);
 

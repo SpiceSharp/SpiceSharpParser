@@ -31,7 +31,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
             string separator)
         {
             RootName = subCircuitName ?? throw new ArgumentNullException(nameof(subCircuitName));
-            FullName = subcircuitFullName ?? throw new ArgumentNullException(nameof(subcircuitFullName));
+            SubCircuitFullName = subcircuitFullName ?? throw new ArgumentNullException(nameof(subcircuitFullName));
 
             SubCircuit = currentSubCircuit ?? throw new ArgumentNullException(nameof(currentSubCircuit));
             PinInstanceNames = pinInstanceNames ?? throw new ArgumentNullException(nameof(pinInstanceNames));
@@ -92,12 +92,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
         /// <summary>
         /// Gets or sets the full name.
         /// </summary>
-        public string FullName { get; set; }
+        public string SubCircuitFullName { get; set; }
 
         /// <summary>
         /// Gets or sets children of node name generator.
         /// </summary>
         public List<INodeNameGenerator> Children { get; set; } = new List<INodeNameGenerator>();
+        
         public string Separator { get; }
 
         /// <summary>
@@ -132,7 +133,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
             }
             else
             {
-                return $"{FullName}{Separator}{nodeName}";
+                return $"{SubCircuitFullName}{Separator}{nodeName}";
             }
         }
 
@@ -184,7 +185,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
                 }
                 else
                 {
-                    return $"{FullName}{Separator}{pinName}";
+                    return $"{SubCircuitFullName}{Separator}{pinName}";
                 }
             }
             else

@@ -36,7 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// <param name="statement">Simulation statement.</param>
         /// <param name="context">Context.</param>
         /// <param name="createSimulation">Simulation factory.</param>
-        public void Create(Control statement, ICircuitContext context, Func<string, Control, ICircuitContext, Simulation> createSimulation)
+        public void Create(Control statement, IReadingContext context, Func<string, Control, IReadingContext, Simulation> createSimulation)
         {
             if (!IsMonteCarloEnabledForSimulation(statement, context))
             {
@@ -62,7 +62,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             }
         }
 
-        protected static bool IsMonteCarloEnabledForSimulation(Control statement, ICircuitContext context)
+        protected static bool IsMonteCarloEnabledForSimulation(Control statement, IReadingContext context)
         {
             return context.SimulationConfiguration.MonteCarloConfiguration.Enabled
                    && statement.Name.ToLower() == context.SimulationConfiguration.MonteCarloConfiguration.SimulationType.ToLower();

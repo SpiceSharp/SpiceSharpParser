@@ -1,8 +1,5 @@
 ﻿using SpiceSharp;
-using SpiceSharp.Entities;
 using SpiceSharp.Simulations;
-using SpiceSharpBehavioral.Parsers;
-using SpiceSharpBehavioral.Parsers.Nodes;
 using SpiceSharpParser.Common.Evaluation.Expressions;
 using SpiceSharpParser.Common.Mathematics.Probability;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
@@ -126,11 +123,11 @@ namespace SpiceSharpParser.Common.Evaluation
 
         public IExpressionValueProvider ExpressionValueProvider { get; }
 
-        protected IExpressionParserFactory ExpressionParserFactory { get; }
-
         public Circuit ContextEntities { get; set; }
 
-        public ICircuitContext CircuitContext { get; set; }
+        public IReadingContext CircuitContext { get; set; }
+
+        protected IExpressionParserFactory ExpressionParserFactory { get; }
 
         /// <summary>
         /// Sets the parameter.

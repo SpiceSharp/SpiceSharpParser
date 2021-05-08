@@ -14,10 +14,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 {
     public class EnableStochasticModelsSimulationDecorator
     {
-        private readonly ICircuitContext _context;
+        private readonly IReadingContext _context;
         private readonly ConcurrentDictionary<string, Dictionary<string, double>> _lotValues = new ConcurrentDictionary<string, Dictionary<string, double>>();
 
-        public EnableStochasticModelsSimulationDecorator(ICircuitContext context)
+        public EnableStochasticModelsSimulationDecorator(IReadingContext context)
         {
             _context = context;
         }
@@ -69,7 +69,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     var percentValue = _context.Evaluator.EvaluateDouble(parameterPercent.Tolerance.Value, simulation);
                     double newValue = GetValueForLotParameter(_context.Evaluator.GetEvaluationContext(simulation), baseModel, parameterName, currentValue, percentValue, parameterPercent.RandomDistributionName, comparer);
 
-                    _context.SimulationPreparations.SetParameter(componentModel, simulation, parameterName, newValue, true, false);
+                    _context.SimulationPreparations.SetParameterBeforeTemperature(componentModel, parameterName, newValue, simulation);
                 }
             }
         }
@@ -91,7 +91,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     var r = random.NextSignedDouble();
                     var newValue = currentValue + ((percentValue / 100.0) * currentValue * r);
 
-                    _context.SimulationPreparations.SetParameter(componentModel, simulation, parameterName, newValue, true, false);
+                    _context.SimulationPreparations.SetParameterBeforeTemperature(componentModel, parameterName, newValue, simulation);
                 }
             }
         }

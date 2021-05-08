@@ -5,6 +5,8 @@
     /// </summary>
     public interface IObjectNameGenerator
     {
+        string Separator { get; }
+
         /// <summary>
         /// Generates entity object name.
         /// </summary>

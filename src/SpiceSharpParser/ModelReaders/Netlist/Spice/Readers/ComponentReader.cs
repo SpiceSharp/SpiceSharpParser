@@ -35,7 +35,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A context to modify.</param>
-        public override void Read(Component statement, ICircuitContext context)
+        public override void Read(Component statement, IReadingContext context)
         {
             if (statement == null)
             {
@@ -88,7 +88,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
             }
         }
 
-        private IComponentGenerator GetComponentGenerator(ICircuitContext context, string componentName, SpiceLineInfo lineInfo, out string componentType)
+        private IComponentGenerator GetComponentGenerator(IReadingContext context, string componentName, SpiceLineInfo lineInfo, out string componentType)
         {
             foreach (var map in Mapper)
             {

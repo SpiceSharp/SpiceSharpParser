@@ -36,7 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A reading context.</param>
-        public override void Read(Control statement, ICircuitContext context)
+        public override void Read(Control statement, IReadingContext context)
         {
             if (context == null)
             {
@@ -68,7 +68,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private static void CreateRowInPrint(ref int rowIndex, Simulation simulation, ICircuitContext context, ExportDataEventArgs eventArgs, List<Export> exports, Print print)
+        private static void CreateRowInPrint(ref int rowIndex, Simulation simulation, IReadingContext context, ExportDataEventArgs eventArgs, List<Export> exports, Print print)
         {
             Row row = new Row(rowIndex++);
 
@@ -133,7 +133,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void CreatePrint(string printImage, ParameterCollection parameters, ICircuitContext context, Simulation simulation, string firstColumnName, bool filterSpecified)
+        private void CreatePrint(string printImage, ParameterCollection parameters, IReadingContext context, Simulation simulation, string firstColumnName, bool filterSpecified)
         {
             var print = new Print(simulation.Name.ToString());
 
@@ -154,7 +154,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             simulation.AfterExecute += (sender, args) => AddPrintToResultIfValid(printImage, context, print, simulation, filterSpecified);
         }
 
-        private void AddPrintToResultIfValid(string printImage, ICircuitContext context, Print print, Simulation simulation, bool filterSpecified)
+        private void AddPrintToResultIfValid(string printImage, IReadingContext context, Print print, Simulation simulation, bool filterSpecified)
         {
             if (!filterSpecified)
             {

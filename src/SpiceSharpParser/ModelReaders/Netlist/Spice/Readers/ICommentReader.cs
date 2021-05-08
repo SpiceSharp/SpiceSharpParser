@@ -5,6 +5,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 {
     public interface ICommentReader
     {
-        void Read(CommentLine statement, ICircuitContext context);
+        void Read(CommentLine statement, IReadingContext context);
     }
 }

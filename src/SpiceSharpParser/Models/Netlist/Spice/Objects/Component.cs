@@ -1,4 +1,6 @@
-﻿namespace SpiceSharpParser.Models.Netlist.Spice.Objects
+﻿using System.Linq;
+
+namespace SpiceSharpParser.Models.Netlist.Spice.Objects
 {
     /// <summary>
     /// A SPICE component.
@@ -26,6 +28,11 @@
         /// Gets or sets pins and components parameters.
         /// </summary>
         public ParameterCollection PinsAndParameters { get; set; }
+
+        /// <summary>
+        /// Gets the end line number.
+        /// </summary>
+        public override int EndLineNumber => PinsAndParameters.LastOrDefault()?.LineInfo.LineNumber ?? base.EndLineNumber;
 
         /// <summary>
         /// Clones the object.

@@ -9,7 +9,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public class BipolarJunctionTransistorGenerator : IComponentGenerator
     {
-        public IEntity Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
+        public IEntity Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
             BipolarJunctionTransistor bjt = new BipolarJunctionTransistor(componentIdentifier);
 

@@ -14,7 +14,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A context to modify.</param>
-        public override void Read(CommentLine statement, ICircuitContext context)
+        public override void Read(CommentLine statement, IReadingContext context)
         {
             if (statement == null)
             {

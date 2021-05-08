@@ -20,7 +20,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
         /// <returns>
         /// A new waveform.
         /// </returns>
-        public override IWaveformDescription Generate(ParameterCollection parameters, ICircuitContext context)
+        public override IWaveformDescription Generate(ParameterCollection parameters, IReadingContext context)
         {
             if (parameters == null)
             {

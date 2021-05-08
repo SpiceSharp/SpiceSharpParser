@@ -13,7 +13,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
     {
         protected void SetSourceParameters(
             ParameterCollection parameters,
-            ICircuitContext context,
+            IReadingContext context,
             Component component)
         {
             var originalParameters = parameters;
@@ -103,6 +103,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         else
                         {
                             context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Unsupported waveform: {wp}", wp.LineInfo));
+                        }
+                    }
+
+                    if (firstParameter is AssignmentParameter assignmentParameter)
+                    {
+                        if (context.WaveformReader.Supports(assignmentParameter.Name, context))
+                        {
+                            component.SetParameter("waveform", context.WaveformReader.Generate(assignmentParameter.Name, parameters, context));
+                        }
+                        else
+                        {
+                            context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Unsupported waveform: {assignmentParameter.Name}", assignmentParameter.LineInfo));
                         }
                     }
                 }

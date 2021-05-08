@@ -25,7 +25,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
         /// <returns>
         /// A new waveform.
         /// </returns>
-        public override IWaveformDescription Generate(ParameterCollection parameters, ICircuitContext context)
+        public override IWaveformDescription Generate(ParameterCollection parameters, IReadingContext context)
         {
             if (parameters == null)
             {
@@ -40,7 +40,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             return CreateWaveFromFile(parameters, context);;
         }
 
-        private static IWaveformDescription CreateWaveFromFile(ParameterCollection parameters, ICircuitContext context)
+        private static IWaveformDescription CreateWaveFromFile(ParameterCollection parameters, IReadingContext context)
         {
             var fileParameter = (AssignmentParameter)parameters.First(p => p is AssignmentParameter ap && ap.Name.ToLower() == "wavefile");
             var channelParameter = (AssignmentParameter)parameters.First(p => p is AssignmentParameter ap && ap.Name.ToLower() == "chan");

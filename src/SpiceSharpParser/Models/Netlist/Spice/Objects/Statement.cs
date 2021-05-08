@@ -9,5 +9,12 @@
             : base(lineInfo)
         {
         }
+
+        public int StartLineNumber => LineInfo.LineNumber;
+
+        /// <summary>
+        /// Gets the end line number.
+        /// </summary>
+        public virtual int EndLineNumber => LineInfo.LineNumber;
     }
 }

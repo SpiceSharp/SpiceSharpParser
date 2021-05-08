@@ -37,12 +37,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// <summary>
         /// Generates a new export.
         /// </summary>
-        protected Export GenerateExport(Parameter parameter, ICircuitContext context, Simulation simulation)
+        protected Export GenerateExport(Parameter parameter, IReadingContext context, Simulation simulation)
         {
             return ExportFactory.Create(parameter, context, simulation, Mapper);
         }
 
-        protected List<Export> CreateExportsForAllVoltageAndCurrents(Simulation simulation, ICircuitContext context)
+        protected List<Export> CreateExportsForAllVoltageAndCurrents(Simulation simulation, IReadingContext context)
         {
             var result = new List<Export>();
             var nodes = new List<string>();
@@ -96,7 +96,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             return result;
         }
 
-        protected List<Export> GenerateExports(ParameterCollection parameterCollection, Simulation simulation, ICircuitContext context)
+        protected List<Export> GenerateExports(ParameterCollection parameterCollection, Simulation simulation, IReadingContext context)
         {
             if (parameterCollection.Count == 0)
             {

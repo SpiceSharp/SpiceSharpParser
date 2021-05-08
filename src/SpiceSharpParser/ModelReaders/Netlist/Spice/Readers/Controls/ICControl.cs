@@ -14,7 +14,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>
-        public override void Read(Control statement, ICircuitContext context)
+        public override void Read(Control statement, IReadingContext context)
         {
             foreach (var param in statement.Parameters)
             {
@@ -25,7 +25,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
                     if (type == "v" && ap.Arguments.Count == 1)
                     {
-                        context.SetICVoltage(ap.Arguments[0], initialValue);
+                        var nodeName = ap.Arguments[0];
+                        context.SetICVoltage(nodeName, initialValue);
                     }
                     else
                     {

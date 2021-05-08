@@ -19,7 +19,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A context to modify.</param>
-        public override void Read(Control statement, ICircuitContext context)
+        public override void Read(Control statement, IReadingContext context)
         {
             if (statement.Parameters == null)
             {
@@ -62,7 +62,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private static void ReadLin(ParameterCollection parameters, ICircuitContext context)
+        private static void ReadLin(ParameterCollection parameters, IReadingContext context)
         {
             var variableParameter = parameters[0];
             var pSweep = new ParameterSweep()
@@ -77,7 +77,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             context.SimulationConfiguration.ParameterSweeps.Add(pSweep);
         }
 
-        private void ReadDec(ParameterCollection parameters, ICircuitContext context)
+        private void ReadDec(ParameterCollection parameters, IReadingContext context)
         {
             var variableParameter = parameters[0];
             var pSweep = new ParameterSweep()
@@ -92,7 +92,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             context.SimulationConfiguration.ParameterSweeps.Add(pSweep);
         }
 
-        private void ReadOct(ParameterCollection parameters, ICircuitContext context)
+        private void ReadOct(ParameterCollection parameters, IReadingContext context)
         {
             var variableParameter = parameters[0];
             var pSweep = new ParameterSweep()
@@ -107,7 +107,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             context.SimulationConfiguration.ParameterSweeps.Add(pSweep);
         }
 
-        private void ReadList(ParameterCollection parameters, ICircuitContext context)
+        private void ReadList(ParameterCollection parameters, IReadingContext context)
         {
             var variableParameter = parameters[0];
             var values = new List<double>();

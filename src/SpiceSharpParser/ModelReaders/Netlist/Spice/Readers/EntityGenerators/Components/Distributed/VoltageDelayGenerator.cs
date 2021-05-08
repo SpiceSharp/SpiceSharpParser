@@ -10,7 +10,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public class VoltageDelayGenerator : ComponentGenerator
     {
-        public override IEntity Generate(string name, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
+        public override IEntity Generate(string name, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
             if (parameters.Count > 7 || parameters.Count < 5)
             {

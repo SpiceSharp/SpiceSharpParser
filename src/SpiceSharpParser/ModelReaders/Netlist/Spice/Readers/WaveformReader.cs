@@ -33,7 +33,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         /// <returns>
         /// An new instance of waveform.
         /// </returns>
-        public IWaveformDescription Generate(string type, ParameterCollection parameters, ICircuitContext context)
+        public IWaveformDescription Generate(string type, ParameterCollection parameters, IReadingContext context)
         {
             if (type == null)
             {
@@ -65,7 +65,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
             return reader.Generate(parameters, context);
         }
 
-        public bool Supports(string type, ICircuitContext context)
+        public bool Supports(string type, IReadingContext context)
         {
             if (type == null)
             {

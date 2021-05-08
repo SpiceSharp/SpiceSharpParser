@@ -7,7 +7,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
 {
     public class DiodeModelGenerator : ModelGenerator
     {
-        public override Model Generate(string id, string type, ParameterCollection parameters, ICircuitContext context)
+        public override Model Generate(string id, string type, ParameterCollection parameters, IReadingContext context)
         {
             var model = new DiodeModel(id);
             SetParameters(context, model, parameters);

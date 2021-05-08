@@ -14,7 +14,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A context to modify.</param>
-        public override void Read(Control statement, ICircuitContext context)
+        public override void Read(Control statement, IReadingContext context)
         {
             foreach (var param in statement.Parameters)
             {
@@ -26,14 +26,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     if (type == "v" && ap.Arguments.Count == 1)
                     {
                         var nodeName = ap.Arguments[0];
-                        var nodeId = context.NameGenerator.GenerateNodeName(nodeName);
-
-                        context.SimulationPreparations.SetNodeSetVoltage(nodeId, value);
+                        context.SetNodeSetVoltage(nodeName, value);
                     }
                     else
                     {
                         context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".NODESET supports only V(X)=Y", statement.LineInfo));
-                        return;
                     }
                 }
             }

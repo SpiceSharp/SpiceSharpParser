@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using SpiceSharp.Behaviors;
 using SpiceSharp.Entities;
 using SpiceSharp.Simulations;
-using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     public class SimulationPreparations : ISimulationPreparations
     {
-        public SimulationPreparations(EntityUpdates entityUpdates, SimulationsUpdates simulationUpdates)
+        public SimulationPreparations(EntityUpdates entityUpdates, SimulationUpdates simulationUpdates)
         {
             EntityUpdates = entityUpdates ?? throw new ArgumentNullException(nameof(entityUpdates));
             SimulationUpdates = simulationUpdates ?? throw new ArgumentNullException(nameof(simulationUpdates));
@@ -20,7 +18,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         protected EntityUpdates EntityUpdates { get; }
 
-        protected SimulationsUpdates SimulationUpdates { get; }
+        protected SimulationUpdates SimulationUpdates { get; }
 
         protected List<Action<Simulation>> BeforeSetup { get; }
 
@@ -101,26 +99,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             });
         }
 
-        public void ExecuteTemperatureBehaviorBeforeLoad(IEntity entity)
-        {
-            if (entity == null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-
-            SimulationUpdates.AddBeforeLoad((simulation, contexts) =>
-            {
-                if (simulation.EntityBehaviors[entity.Name].TryGetValue<ITemperatureBehavior>(out var temperatureBehavior))
-                {
-                    temperatureBehavior.Temperature();
-                }
-                else
-                {
-                    throw new SpiceSharpParserException($"No temperature behavior for {entity.Name}");
-                }
-            });
-        }
-
         public void ExecuteActionBeforeSetup(Action<Simulation> action)
         {
             BeforeSetup.Add(action);
@@ -131,7 +109,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             AfterSetup.Add(action);
         }
 
-        public void SetParameter(IEntity @object, string paramName, string expression, bool beforeTemperature, bool onload)
+        public void SetParameterBeforeTemperature(IEntity @object, string paramName, string expression)
         {
             if (@object == null)
             {
@@ -148,10 +126,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            EntityUpdates.Add(@object, paramName, expression, beforeTemperature, onload);
+            EntityUpdates.Add(@object, paramName, expression, true);
         }
 
-        public void SetParameter(IEntity @object, string paramName, double value, bool beforeTemperature, bool onload)
+        public void SetParameterBeforeTemperature(IEntity @object, string paramName, double value)
         {
             if (@object == null)
             {
@@ -163,10 +141,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(paramName));
             }
 
-            EntityUpdates.Add(@object, paramName, value, beforeTemperature, onload);
+            EntityUpdates.Add(@object, paramName, value, true);
         }
 
-        public void SetParameter(IEntity @object, Simulation simulation, string paramName, double value, bool beforeTemperature, bool onload)
+        public void SetParameterBeforeTemperature(IEntity @object, string paramName, double value, Simulation simulation)
         {
             if (@object == null)
             {
@@ -183,7 +161,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(paramName));
             }
 
-            EntityUpdates.Add(@object, simulation, paramName, value, beforeTemperature, onload);
+            EntityUpdates.Add(@object, paramName, value, true, simulation);
         }
     }
 }

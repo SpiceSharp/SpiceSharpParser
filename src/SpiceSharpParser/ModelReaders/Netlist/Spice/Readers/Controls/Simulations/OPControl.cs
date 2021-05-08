@@ -21,12 +21,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// </summary>
         /// <param name="statement">A statement to process</param>
         /// <param name="context">A context to modify</param>
-        public override void Read(Control statement, ICircuitContext context)
+        public override void Read(Control statement, IReadingContext context)
         {
             CreateSimulations(statement, context, CreateOperatingPointSimulation);
         }
 
-        private OP CreateOperatingPointSimulation(string name, Control statement, ICircuitContext context)
+        private OP CreateOperatingPointSimulation(string name, Control statement, IReadingContext context)
         {
             var op = new OP(name);
             ConfigureCommonSettings(op, context);

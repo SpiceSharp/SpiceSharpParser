@@ -7,7 +7,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
         /// <summary>
         /// Initializes a new instance of the <see cref="ObjectNameGenerator"/> class.
         /// </summary>
-        /// <param name="prefix">Naming prefix</param>
+        /// <param name="prefix">Naming prefix.</param>
         /// <param name="separator">Separator.</param>
         public ObjectNameGenerator(string prefix, string separator)
         {
@@ -16,19 +16,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
         }
 
         /// <summary>
-        /// Gets the prefix for names.
-        /// </summary>
-        protected string Prefix { get; }
-
-        /// <summary>
         /// Gets the separator.
         /// </summary>
         public string Separator { get; }
 
         /// <summary>
+        /// Gets the prefix for names.
+        /// </summary>
+        protected string Prefix { get; }
+
+        /// <summary>
         /// Creates a new child object name generator.
         /// </summary>
-        /// <param name="name">Name of generator.</param>
+        /// <param name="childGeneratorName">Name of generator.</param>
         /// <returns>
         /// A new object name generator.
         /// </returns>

@@ -197,9 +197,37 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         public override string ToString()
         {
             var builder = new StringBuilder();
+            Statement previousStatement = null;
             foreach (Statement statement in _list)
             {
-                builder.AppendLine(statement.ToString());
+                if (previousStatement != null)
+                {
+                    if (previousStatement is SubCircuit s)
+                    {
+                        for (var i = 0; i < statement.StartLineNumber - s.Statements.Last().EndLineNumber - 3; i++)
+                        {
+                            builder.AppendLine();
+                        }
+                    }
+                    else
+                    {
+                        for (var i = 0; i < statement.StartLineNumber - previousStatement.EndLineNumber - 1; i++)
+                        {
+                            builder.AppendLine();
+                        }
+                    }
+                }
+
+                if (_list.IndexOf(statement) == _list.Count - 1)
+                {
+                    builder.Append(statement.ToString());
+                }
+                else
+                {
+                    builder.AppendLine(statement.ToString());
+                }
+
+                previousStatement = statement;
             }
 
             return builder.ToString();

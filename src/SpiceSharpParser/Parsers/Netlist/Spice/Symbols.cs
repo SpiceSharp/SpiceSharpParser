@@ -37,6 +37,5 @@
         public static readonly string Distribution = "DISTRIBUTION";
         public static readonly string Parallel = "PARALLEL";
         public static readonly string ParallelEnding = "PARALLEL-ENDING";
-
     }
 }

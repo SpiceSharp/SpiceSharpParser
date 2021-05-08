@@ -14,7 +14,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
     {
         public Export Create(
             Parameter exportParameter,
-            ICircuitContext context,
+            IReadingContext context,
             Simulation simulation,
             IMapper<Exporter> mapper)
         {

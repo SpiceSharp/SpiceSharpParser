@@ -24,12 +24,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A context to modify.</param>
-        public override void Read(Control statement, ICircuitContext context)
+        public override void Read(Control statement, IReadingContext context)
         {
             CreateSimulations(statement, context, CreateDCSimulation);
         }
 
-        private DC CreateDCSimulation(string name, Control statement, ICircuitContext context)
+        private DC CreateDCSimulation(string name, Control statement, IReadingContext context)
         {
             int count = statement.Parameters.Count / 4;
             switch (statement.Parameters.Count - (4 * count))
@@ -90,7 +90,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             return dc;
         }
 
-        private void ConfigureDcSettings(DCParameters dCConfiguration, ICircuitContext context)
+        private void ConfigureDcSettings(DCParameters dCConfiguration, IReadingContext context)
         {
             if (context.SimulationConfiguration.SweepMaxIterations.HasValue)
             {

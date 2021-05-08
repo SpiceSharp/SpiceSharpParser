@@ -14,7 +14,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public class RLCKGenerator : ComponentGenerator
     {
-        public override IEntity Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, ICircuitContext context)
+        public override IEntity Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
             switch (type.ToLower())
             {
@@ -36,7 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of mutual inductance.
         /// </returns>
-        protected IEntity GenerateMut(string name, ParameterCollection parameters, ICircuitContext context)
+        protected IEntity GenerateMut(string name, ParameterCollection parameters, IReadingContext context)
         {
             var mut = new MutualInductance(name);
 
@@ -108,7 +108,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of capacitor.
         /// </returns>
-        protected SpiceSharp.Components.IComponent GenerateCap(string name, ParameterCollection parameters, ICircuitContext context)
+        protected SpiceSharp.Components.IComponent GenerateCap(string name, ParameterCollection parameters, IReadingContext context)
         {
             if (parameters.Count >= 3)
             {
@@ -188,7 +188,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 // CXXXXXXX N1 N2 VALUE
                 if (parameters[2] is ValueParameter || parameters[2] is ExpressionParameter || parameters[2] is WordParameter)
                 {
-                    context.SetParameter(capacitor, "capacitance", parameters.Get(2), true, false);
+                    context.SetParameter(capacitor, "capacitance", parameters.Get(2), true);
                 }
                 else
                 {
@@ -211,7 +211,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 // CMOD 3 7 1.3 IC=1
                 if (parameters[2] is ValueParameter)
                 {
-                    context.SetParameter(capacitor, "capacitance", parameters.Get(2), true, false);
+                    context.SetParameter(capacitor, "capacitance", parameters.Get(2), true);
                 }
                 else
                 {
@@ -229,7 +229,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     modelBased = true;
                 }
 
-                SetParameters(context, capacitor, parameters.Skip(3), true);
+                SetParameters(context, capacitor, parameters.Skip(3));
 
                 if (modelBased)
                 {
@@ -265,8 +265,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                     if (tcParameterAssignment.Values.Count == 2)
                     {
-                        context.SetParameter(model, "tc1", tcParameterAssignment.Values[0], true, false);
-                        context.SetParameter(model, "tc2", tcParameterAssignment.Values[1], true, false);
+                        context.SetParameter(model, "tc1", tcParameterAssignment.Values[0], true);
+                        context.SetParameter(model, "tc2", tcParameterAssignment.Values[1], true);
                     }
                     else
                     {
@@ -281,8 +281,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     var model = new CapacitorModel(capacitor.Name + "_default_model");
                     if (tcParameterAssignment.Values.Count == 2)
                     {
-                        context.SetParameter(model, "tc1", tcParameterAssignment.Values[0], true, false);
-                        context.SetParameter(model, "tc2", tcParameterAssignment.Values[1], true, false);
+                        context.SetParameter(model, "tc1", tcParameterAssignment.Values[0], true);
+                        context.SetParameter(model, "tc2", tcParameterAssignment.Values[1], true);
                     }
                     else
                     {
@@ -307,7 +307,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of inductor.
         /// </returns>
-        protected IEntity GenerateInd(string name, ParameterCollection parameters, ICircuitContext context)
+        protected IEntity GenerateInd(string name, ParameterCollection parameters, IReadingContext context)
         {
             if (parameters.Count < 3)
             {
@@ -320,10 +320,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 return null;
             }
+
             var inductor = new Inductor(name);
             context.CreateNodes(inductor, parameters.Take(Inductor.InductorPinCount));
-            context.SetParameter(inductor, "inductance", parameters.Get(2), true, false);
-            SetParameters(context, inductor, parameters.Skip(Inductor.InductorPinCount + 1), false);
+            context.SetParameter(inductor, "inductance", parameters.Get(2), true);
+            SetParameters(context, inductor, parameters.Skip(Inductor.InductorPinCount + 1));
 
             return inductor;
         }
@@ -337,7 +338,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of resistor.
         /// </returns>
-        protected IEntity GenerateRes(string name, ParameterCollection parameters, ICircuitContext context)
+        protected IEntity GenerateRes(string name, ParameterCollection parameters, IReadingContext context)
         {
             if (parameters.Count >= 3)
             {
@@ -401,6 +402,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 bool modelBased = false;
                 bool resistanceBased = false;
+
                 // Check if something is a model name
                 if ((something is WordParameter || something is IdentifierParameter)
                     && context.ModelsRegistry.FindModel(something.Value) != null)
@@ -420,7 +422,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (resistanceBased)
                 {
-                    context.SetParameter(res, "resistance", something, true, false);
+                    context.SetParameter(res, "resistance", something, beforeTemperature: true);
                     return res;
                 }
 
@@ -513,7 +515,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                                                          || resistorParameters[0] is ValueParameter
                                                          || resistorParameters[0] is ExpressionParameter))
                     {
-                        context.SetParameter(res, "resistance", resistorParameters[0].Value, true, false);
+                        context.SetParameter(res, "resistance", resistorParameters[0].Value, true);
                         resistorParameters.RemoveAt(0);
                     }
                 }
@@ -557,11 +559,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                     if (resistanceParameter is AssignmentParameter asp)
                     {
-                        context.SetParameter(res, "resistance", asp.Value, true, false);
+                        context.SetParameter(res, "resistance", asp.Value, true);
                     }
                     else
                     {
-                        context.SetParameter(res, "resistance", resistanceParameter.Value, true, false);
+                        context.SetParameter(res, "resistance", resistanceParameter.Value, true);
                     }
 
                     resistorParameters.RemoveAt(0);
@@ -616,6 +618,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 return $"({expression} / {mExpression})";
             }
+
             if (!string.IsNullOrEmpty(nExpression))
             {
                 return $"({expression} * {nExpression})";

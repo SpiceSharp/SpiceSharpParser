@@ -22,12 +22,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A context to modify.</param>
-        public override void Read(Control statement, ICircuitContext context)
+        public override void Read(Control statement, IReadingContext context)
         {
             CreateSimulations(statement, context, CreateAcSimulation);
         }
 
-        private AC CreateAcSimulation(string name, Control statement, ICircuitContext context)
+        private AC CreateAcSimulation(string name, Control statement, IReadingContext context)
         {
             switch (statement.Parameters.Count)
             {
@@ -81,7 +81,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             return ac;
         }
 
-        private void ConfigureAcSettings(FrequencyParameters frequencyConfiguration, ICircuitContext context)
+        private void ConfigureAcSettings(FrequencyParameters frequencyConfiguration, IReadingContext context)
         {
             if (context.SimulationConfiguration.KeepOpInfo.HasValue)
             {

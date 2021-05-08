@@ -42,7 +42,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// </summary>
         /// <param name="statement">A statement.</param>
         /// <param name="circuitContext">A reading context.</param>
-        public void Read(Statement statement, ICircuitContext circuitContext)
+        public void Read(Statement statement, IReadingContext circuitContext)
         {
             if (statement == null)
             {

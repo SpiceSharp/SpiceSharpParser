@@ -36,7 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A reading context.</param>
-        public override void Read(Control statement, ICircuitContext context)
+        public override void Read(Control statement, IReadingContext context)
         {
             if (context == null)
             {
@@ -102,7 +102,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void CreatePlot(string plotImage, ParameterCollection parameters, ICircuitContext context, Simulation simulation)
+        private void CreatePlot(string plotImage, ParameterCollection parameters, IReadingContext context, Simulation simulation)
         {
             var plot = new XyPlot(simulation.Name);
             List<Export> exports = GenerateExports(parameters, simulation, context);
@@ -116,7 +116,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             simulation.AfterExecute += (sender, args) => AddPlotToResultIfValid(plotImage, context, plot, simulation);
         }
 
-        private void CreatePlot(string plotImage, ParameterCollection parameters, ICircuitContext context, IEnumerable<Simulation> simulations)
+        private void CreatePlot(string plotImage, ParameterCollection parameters, IReadingContext context, IEnumerable<Simulation> simulations)
         {
             var plot = new XyPlot($"Merged: {plotImage}");
             foreach (var simulation in simulations)
@@ -136,7 +136,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             context.Result.XyPlots.Add(plot);
         }
 
-        private void AddPlotToResultIfValid(string plotImage, ICircuitContext context, XyPlot plot, Simulation simulation)
+        private void AddPlotToResultIfValid(string plotImage, IReadingContext context, XyPlot plot, Simulation simulation)
         {
             for (int i = plot.Series.Count - 1; i >= 0; i--)
             {
@@ -157,7 +157,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void CreatePointForSeries(Simulation simulation, ICircuitContext context, ExportDataEventArgs eventArgs, List<Export> exports, List<Series> series)
+        private void CreatePointForSeries(Simulation simulation, IReadingContext context, ExportDataEventArgs eventArgs, List<Export> exports, List<Series> series)
         {
             double x = 0;
 

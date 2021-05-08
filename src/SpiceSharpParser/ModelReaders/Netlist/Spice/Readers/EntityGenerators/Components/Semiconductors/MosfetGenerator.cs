@@ -36,7 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
         protected Dictionary<Type, Func<string, MosfetDetails>> Mosfets { get; } = new Dictionary<Type, Func<string, MosfetDetails>>();
 
-        public override IEntity Generate(string componentIdentifier, string originalName, string type, SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection parameters, ICircuitContext context)
+        public override IEntity Generate(string componentIdentifier, string originalName, string type, SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection parameters, IReadingContext context)
         {
             // Errors
             switch (parameters.Count)
@@ -115,7 +115,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             // The rest is all just parameters
             context.CreateNodes(mosfet, parameters);
-            SetParameters(context, mosfet, parameters.Skip(5), true);
+            SetParameters(context, mosfet, parameters.Skip(5));
             return mosfet;
         }
 

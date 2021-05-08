@@ -40,8 +40,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
                 },
             };
 
-            var readingContext = Substitute.For<ICircuitContext>();
-            readingContext.NameGenerator.GenerateNodeName(Arg.Any<string>()).Returns(x => x[0].ToString());
+            var readingContext = Substitute.For<IReadingContext>();
+            readingContext.NameGenerator.ParseNodeName(Arg.Any<string>()).Returns(x => x[0].ToString());
             readingContext.SimulationPreparations.Returns(Substitute.For<ISimulationPreparations>());
 
             // act
@@ -49,8 +49,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
             nodeSetControl.Read(control, readingContext);
 
             // assert
-            readingContext.SimulationPreparations.Received().SetNodeSetVoltage("input", "12");
-            readingContext.SimulationPreparations.Received().SetNodeSetVoltage("x", "13");
+            readingContext.Received().SetNodeSetVoltage("input", "12");
+            readingContext.Received().SetNodeSetVoltage("x", "13");
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using SpiceSharp.Simulations;
+using SpiceSharp.Simulations.IntegrationMethods;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
@@ -23,12 +24,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// </summary>
         /// <param name="statement">A statement to process.</param>
         /// <param name="context">A context to modify.</param>
-        public override void Read(Control statement, ICircuitContext context)
+        public override void Read(Control statement, IReadingContext context)
         {
             CreateSimulations(statement, context, CreateTransientSimulation);
         }
 
-        private Transient CreateTransientSimulation(string name, Control statement, ICircuitContext context)
+        private Transient CreateTransientSimulation(string name, Control statement, IReadingContext context)
         {
             switch (statement.Parameters.Count)
             {
@@ -55,7 +56,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             double? maxStep = null;
             double? step = null;
             double? final = null;
-
+            double? start = null;
             double[] args;
 
             switch (clonedParameters.Count)
@@ -71,6 +72,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     maxStep = context.Evaluator.EvaluateDouble(clonedParameters[2].Value);
                     args = new double[] { step.Value, final.Value, maxStep.Value };
                     break;
+                case 4:
+                    step = context.Evaluator.EvaluateDouble(clonedParameters[0].Value);
+                    final = context.Evaluator.EvaluateDouble(clonedParameters[1].Value);
+                    start = context.Evaluator.EvaluateDouble(clonedParameters[2].Value);
+                    maxStep = context.Evaluator.EvaluateDouble(clonedParameters[3].Value);
+
+                    args = new double[] { step.Value, final.Value, maxStep.Value, start.Value };
+                    break;
                 default:
                     context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".TRAN control - Too many parameters for .TRAN", statement.LineInfo));
                     return null;
@@ -84,6 +93,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 config.Step = step;
                 config.Final = final;
                 config.MaxStep = maxStep;
+                config.Start = start;
                 config.UseIc = useIc;
                 tran = new Transient(name, factory(config));
             }
@@ -92,20 +102,34 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 if (clonedParameters.Count == 2)
                 {
                     tran = new Transient(name, step.Value, final.Value);
-                    tran.TimeParameters.UseIc = useIc;
                 }
                 else
                 {
-                    tran = new Transient(name, step.Value, final.Value, maxStep.Value);
-                    tran.TimeParameters.UseIc = useIc;
+                    if (clonedParameters.Count == 3)
+                    {
+                        tran = new Transient(name, step.Value, final.Value, maxStep.Value);
+                    }
+                    else
+                    {
+                        tran = new Transient(
+                            name,
+                            new Trapezoidal()
+                            {
+                                StartTime = start.Value,
+                                StopTime = final.Value,
+                                MaxStep = maxStep.Value,
+                                InitialStep = step.Value
+                            });
+                    }
                 }
             }
+            tran.TimeParameters.UseIc = useIc;
 
             ConfigureCommonSettings(tran, context);
 
             tran.BeforeLoad += (truncateSender, truncateArgs) =>
             {
-                context.Evaluator.SetParameter(tran, "TIME", ((IStateful<IIntegrationMethod>)tran).State.Time);
+                context.Evaluator.SetParameter("TIME", ((IStateful<IIntegrationMethod>)tran).State.Time, tran);
             };
             context.Result.Simulations.Add(tran);
 

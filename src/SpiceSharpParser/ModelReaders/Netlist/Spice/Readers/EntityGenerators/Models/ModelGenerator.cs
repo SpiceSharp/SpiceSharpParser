@@ -10,9 +10,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
 {
     public abstract class ModelGenerator : IModelGenerator
     {
-        public abstract Context.Models.Model Generate(string id, string type, ParameterCollection parameters, ICircuitContext context);
+        public abstract Context.Models.Model Generate(string id, string type, ParameterCollection parameters, IReadingContext context);
 
-        protected void SetParameters(ICircuitContext context, IEntity entity, ParameterCollection parameters, bool onload = true)
+        protected void SetParameters(IReadingContext context, IEntity entity, ParameterCollection parameters, bool onload = true)
         {
             foreach (Parameter parameter in parameters)
             {

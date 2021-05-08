@@ -16,7 +16,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             string originalName,
             string type,
             ParameterCollection parameters,
-            ICircuitContext context)
+            IReadingContext context)
         {
             if (parameters.Any(p => p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "v"))
             {

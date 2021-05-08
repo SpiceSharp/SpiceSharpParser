@@ -6,7 +6,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
 {
     public class BipolarModelGenerator : ModelGenerator
     {
-        public override Model Generate(string id, string type, SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection parameters, ICircuitContext context)
+        public override Model Generate(string id, string type, SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection parameters, IReadingContext context)
         {
             BipolarJunctionTransistorModel model = new BipolarJunctionTransistorModel(id);
 

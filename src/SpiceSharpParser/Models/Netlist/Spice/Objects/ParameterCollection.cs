@@ -277,11 +277,21 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
                 var resultBuilder = new StringBuilder();
                 for (var i = 0; i < Values.Count; i++)
                 {
-                    if (i > paramsIndex + 1)
+                    if (i > paramsIndex && i != Values.Count - 1)
                     {
-                        resultBuilder.Append(", ");
+                        resultBuilder.Append($"{Values[i]}, ");
                     }
-                    resultBuilder.Append($" {Values[i].ToString()}");
+                    else
+                    {
+                        if (i != Values.Count - 1)
+                        {
+                            resultBuilder.Append($"{Values[i]} ");
+                        }
+                        else
+                        {
+                            resultBuilder.Append($"{Values[i]}");
+                        }
+                    }
                 }
 
                 return resultBuilder.ToString();
