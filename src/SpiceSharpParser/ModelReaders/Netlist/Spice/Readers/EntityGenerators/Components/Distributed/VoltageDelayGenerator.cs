@@ -37,6 +37,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     {
                         context.SetParameter(vd, "abstol", ap.Value);
                     }
+                    else if (paramName == "m")
+                    {
+                        //ignore
+                    }
                     else
                     {
                         context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Wrong parameter {paramName} for voltage delay", parameters.LineInfo));

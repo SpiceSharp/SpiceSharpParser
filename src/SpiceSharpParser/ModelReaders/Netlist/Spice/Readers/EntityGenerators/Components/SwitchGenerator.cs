@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using SpiceSharp.Components;
 using SpiceSharp.Entities;
 using SpiceSharpParser.Common.Validation;
@@ -43,6 +44,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
 
             string modelName = parameters.Get(4).Value;
+            var mParameter = parameters.FirstOrDefault(p => p is AssignmentParameter p1 && p1.Name.ToLower() == "m");
 
             var model = context.ModelsRegistry.FindModel(modelName);
             if (model.Entity is VSwitchModel)
@@ -62,7 +64,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 double lr = Math.Log(rOn / rOff);
                 double vm = (vOn + vOff) / 2.0;
                 double vd = vOn - vOff;
-                string resExpression = GetVSwitchExpression(vOff, rOff, vOn, rOn, vc, lm, lr, vm, vd);
+                string resExpression = GetVSwitchExpression(vOff, rOff, vOn, rOn, vc, lm, lr, vm, vd, mParameter?.Value);
 
                 resistor.Parameters.Expression = resExpression;
                 resistor.Parameters.ParseAction = (expression) =>
@@ -92,7 +94,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         lr = Math.Log(rOn / rOff);
                         vm = (vOn + vOff) / 2.0;
                         vd = vOn - vOff;
-                        resExpression = GetVSwitchExpression(vOff, rOff, vOn, rOn, vc, lm, lr, vm, vd);
+                        resExpression = GetVSwitchExpression(vOff, rOff, vOn, rOn, vc, lm, lr, vm, vd, mParameter?.Value);
                         resistor.Parameters.Expression = resExpression;
                         resistor.Parameters.ParseAction = (expression) =>
                         {
@@ -118,7 +120,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             });
 
             // Optional ON or OFF
-            if (parameters.Count == 6)
+            if (parameters.Count >= 6)
             {
                 switch (parameters.Get(5).Value.ToLower())
                 {
@@ -129,22 +131,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     case "off":
                         vsw.SetParameter("off", true);
                         break;
-
-                    default:
-                        context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "ON or OFF expected", parameters.LineInfo));
-                        return vsw;
                 }
             }
-            else if (parameters.Count > 6)
+
+            if (mParameter != null)
             {
-                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Too many parameters for voltage switch", parameters.LineInfo));
-                return vsw;
+                context.SetParameter(vsw, "m", mParameter, true);
             }
 
             return vsw;
         }
 
-        private static string GetISwitchExpression(double iOff, double rOff, double iOn, double rOn, string ic, double lm, double lr, double im, double id)
+        private static string GetISwitchExpression(double iOff, double rOff, double iOn, double rOn, string ic, double lm, double lr, double im, double id, string m)
         {
             string resExpression;
             if (iOn >= iOff)
@@ -156,10 +154,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 resExpression = $"{ic} < {iOn} ? {rOn} : ({ic} > {iOff} ? {rOff} : (exp({lm} - 3 * {lr} * ({ic}-{im})/(2*{id}) + 2 * {lr} * pow({ic}-{im}, 3)/(pow({id},3)))))";
             }
 
-            return resExpression;
+            return MultiplyIfNeeded(resExpression, m);
         }
 
-        private static string GetVSwitchExpression(double vOff, double rOff, double vOn, double rOn, string vc, double lm, double lr, double vm, double vd)
+        private static string GetVSwitchExpression(double vOff, double rOff, double vOn, double rOn, string vc, double lm, double lr, double vm, double vd, string m)
         {
             string resExpression;
             if (vOn >= vOff)
@@ -171,7 +169,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 resExpression = $"{vc} < {vOn} ? {rOn} : ({vc} > {vOff} ? {rOff} : (exp({lm} - 3 * {lr} * ({vc}-{vm})/(2*{vd}) + 2 * {lr} * pow({vc}-{vm}, 3)/(pow({vd},3)))))";
             }
 
-            return resExpression;
+            return MultiplyIfNeeded(resExpression, m);
         }
 
         /// <summary>
@@ -193,6 +191,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             string modelName = parameters.Get(3).Value;
             var model = context.ModelsRegistry.FindModel(modelName);
+            var mParameter = parameters.FirstOrDefault(p => p is AssignmentParameter p1 && p1.Name.ToLower() == "m");
+
             if (model.Entity is ISwitchModel)
             {
                 BehavioralResistor resistor = new BehavioralResistor(name);
@@ -210,7 +210,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 double lr = Math.Log(rOn / rOff);
                 double im = (iOn + iOff) / 2.0;
                 double id = iOn - iOff;
-                var resExpression = GetISwitchExpression(iOff, rOff, iOn, rOn, ic, lm, lr, im, id);
+                var resExpression = GetISwitchExpression(iOff, rOff, iOn, rOn, ic, lm, lr, im, id, mParameter?.Value);
                 resistor.Parameters.Expression = resExpression;
                 resistor.Parameters.ParseAction = (expression) =>
                 {
@@ -240,7 +240,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         lr = Math.Log(rOn / rOff);
                         im = (iOn + iOff) / 2.0;
                         id = iOn - iOff;
-                        resExpression = GetISwitchExpression(iOff, rOff, iOn, rOn, ic, lm, lr, im, id);
+                        resExpression = GetISwitchExpression(iOff, rOff, iOn, rOn, ic, lm, lr, im, id, mParameter?.Value);
                         resistor.Parameters.Expression = resExpression;
                         resistor.Parameters.ParseAction = (expression) =>
                         {
@@ -289,14 +289,25 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     case "off":
                         csw.SetParameter("off", true);
                         break;
-
-                    default:
-                        context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "ON or OFF expected", parameters.LineInfo));
-                        return csw;
                 }
             }
 
+            if (mParameter != null)
+            {
+                context.SetParameter(csw, "m", mParameter, true);
+            }
+
             return csw;
+        }
+
+        private static string MultiplyIfNeeded(string expression, string mExpression)
+        {
+            if (!string.IsNullOrEmpty(mExpression))
+            {
+                return $"({expression} / {mExpression})";
+            }
+
+            return expression;
         }
     }
 }

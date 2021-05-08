@@ -47,7 +47,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var cccs = new CurrentControlledCurrentSource(name);
                 context.CreateNodes(cccs, parameters);
                 cccs.ControllingSource = context.NameGenerator.GenerateObjectName(parameters.Get(2).Value);
-                context.SetParameter(cccs, "gain", parameters.Get(3));
+
+                var mParameter = (AssignmentParameter)parameters.FirstOrDefault(p => p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "m");
+                if (mParameter == null)
+                {
+                    context.SetParameter(cccs, "gain", parameters.Get(3));
+                }
+                else
+                {
+                    context.SetParameter(cccs, "gain", $"({mParameter.Value}) * ({parameters.Get(3)})");
+                }
                 return cccs;
             }
             else
@@ -76,7 +85,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 var vccs = new VoltageControlledCurrentSource(name);
                 context.CreateNodes(vccs, parameters);
-                context.SetParameter(vccs, "gain", parameters.Get(4));
+                var mParameter = (AssignmentParameter)parameters.FirstOrDefault(p => p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "m");
+                if (mParameter == null)
+                {
+                    context.SetParameter(vccs, "gain", parameters.Get(4));
+                }
+                else
+                {
+                    context.SetParameter(vccs, "gain", $"({mParameter.Value}) * ({parameters.Get(4)})");
+                }
+
                 return vccs;
             }
             else
@@ -93,7 +111,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                     var vccs = new VoltageControlledCurrentSource(name);
                     context.CreateNodes(vccs, vccsNodes);
-                    context.SetParameter(vccs, "gain", parameters.Get(2));
+                    var mParameter = (AssignmentParameter)parameters.FirstOrDefault(p => p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "m");
+                    if (mParameter == null)
+                    {
+                        context.SetParameter(vccs, "gain", parameters.Get(2));
+                    }
+                    else
+                    {
+                        context.SetParameter(vccs, "gain", $"({mParameter.Value}) * ({parameters.Get(2)})");
+                    }
                     return vccs;
                 }
                 else
@@ -141,12 +167,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             var cs = new CurrentSource(name);
             context.CreateNodes(cs, parameters);
-            SetSourceParameters(parameters, context, cs);
+            SetSourceParameters(parameters, context, cs, true);
             return cs;
         }
 
         protected static BehavioralCurrentSource CreateBehavioralCurrentSource(string name, ParameterCollection parameters, IReadingContext context, Common.Evaluation.EvaluationContext evalContext, string expression)
         {
+            var mParameter = (AssignmentParameter)parameters.FirstOrDefault(p =>
+                   p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "m");
+
+            if (mParameter != null)
+            {
+                expression = $"({expression}) * ({mParameter.Value})";
+            }
+
             var entity = new BehavioralCurrentSource(name);
             context.CreateNodes(entity, parameters.Take(BehavioralCurrentSource.BehavioralCurrentSourcePinCount));
             entity.Parameters.Expression = expression;

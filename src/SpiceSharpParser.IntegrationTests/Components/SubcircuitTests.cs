@@ -58,10 +58,10 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void SubcircuitWithMandNParameters()
+        public void SubcircuitWithMParameters()
         {
             var netlist = ParseNetlist(
-                "Using M and N parameters for subcircuits",
+                "Using M for subcircuits",
                 
                 "V1 IN 0 10",
                 "X1 IN 0 twoResistorsInSeries R1=1 R2=2 M = 10",
@@ -69,6 +69,34 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SUBCKT twoResistorsInSeries input output R1=10 R2=100",
                 "R1 input 1 {R1}",
                 "R2 1 output {R2}",
+                ".ENDS twoResistorsInSeries",
+
+                ".OP",
+                ".SAVE I(V1)",
+                ".END");
+
+            double export = RunOpSimulation(netlist, "I(V1)");
+
+            double[] references = { -10.0 / (((1.0 + 2.0) / 10.0)) };
+
+            EqualsWithTol(new double[] { export }, references);
+        }
+
+        [Fact]
+        public void SubcircuitWithMParameterAndFewComponents()
+        {
+            var netlist = ParseNetlist(
+                "Using M for subcircuits",
+
+                "V1 IN 0 10",
+                "X1 IN 0 twoResistorsInSeries R1=1 R2=2 M = 10",
+
+                ".SUBCKT twoResistorsInSeries input output R1=10 R2=100",
+                "R1 input 1 {R1}",
+                "R2 1 output {R2}",
+                "V1 0 11 1",
+                "RX 0 12 100",
+                "I1 0 12 1",
                 ".ENDS twoResistorsInSeries",
 
                 ".OP",

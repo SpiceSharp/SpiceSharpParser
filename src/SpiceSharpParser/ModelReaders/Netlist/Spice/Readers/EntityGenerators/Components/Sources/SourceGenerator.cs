@@ -14,7 +14,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         protected void SetSourceParameters(
             ParameterCollection parameters,
             IReadingContext context,
-            Component component)
+            Component component,
+            bool isCurrentSource)
         {
             var originalParameters = parameters;
             parameters = parameters.Skip(VoltageSource.PinCount);
@@ -131,6 +132,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     context.SetParameter(component, "dc", parameters[1].Value);
                 }
             }
+
+            if (isCurrentSource && parameters.Any(p => p is AssignmentParameter mParameter && mParameter.Name.ToLower() == "m"))
+            {
+                var mParameter = parameters.First(p => p is AssignmentParameter m && m.Name.ToLower() == "m");
+                context.SetParameter(component, "m", mParameter);
+            }
+
 
             context.CreateNodes(component, originalParameters);
         }
