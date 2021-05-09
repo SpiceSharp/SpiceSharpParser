@@ -2,19 +2,20 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 
 namespace SpiceSharpParser.Common.FileSystem
 {
     public static class CsvFileReader
     {
-        public static IEnumerable<double[]> Read(string path, bool hasHeader)
+        public static IEnumerable<double[]> Read(string path, bool hasHeader, Encoding encoding)
         {
             if (path == null)
             {
                 throw new ArgumentNullException(nameof(path));
             }
 
-            FileReader fileReader = new FileReader();
+            FileReader fileReader = new FileReader(() => encoding);
             var lines = fileReader.ReadAllLines(path);
 
             if (lines.Length == 0)

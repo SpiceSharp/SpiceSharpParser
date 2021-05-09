@@ -117,7 +117,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 throw new ArgumentException("PWL file does not exist:" + fullFilePath);
             }
 
-            List<double[]> csvData = CsvFileReader.Read(fullFilePath, true).ToList();
+            List<double[]> csvData = CsvFileReader.Read(fullFilePath, true, context.ExternalFilesEncoding).ToList();
             double[] times = new double[csvData.LongCount()];
             double[] voltages = new double[csvData.LongCount()];
             var points = new List<Point>();

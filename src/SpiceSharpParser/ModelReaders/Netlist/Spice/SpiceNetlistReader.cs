@@ -105,7 +105,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 Settings.WorkingDirectory,
                 Settings.ExpandSubcircuits,
                 new Readers.Controls.Simulations.Configurations.SimulationConfiguration(),
-                result);
+                result,
+                Settings.ExternalFilesEncoding);
 
             // Set initial seed
             circuitContext.Evaluator.Seed = Settings.Seed;

@@ -1,9 +1,18 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace SpiceSharpParser.Common.FileSystem
 {
     public class FileReader : IFileReader
     {
+        public FileReader(Func<Encoding> encoding)
+        {
+            Encoding = encoding;
+        }
+
+        public Func<Encoding> Encoding { get; }
+
         /// <summary>
         /// Gets the content of the file located at the specified path.
         /// </summary>
@@ -23,7 +32,8 @@ namespace SpiceSharpParser.Common.FileSystem
                 throw new System.ArgumentException(nameof(path));
             }
 
-            return File.ReadAllText(path);
+            using var reader = new System.IO.StreamReader(path, Encoding(), true);
+            return reader.ReadToEnd();
         }
 
         /// <summary>
@@ -45,7 +55,15 @@ namespace SpiceSharpParser.Common.FileSystem
                 throw new System.ArgumentException(nameof(path));
             }
 
-            return File.ReadAllLines(path);
+            using var reader = new System.IO.StreamReader(path, Encoding(), true);
+            var lines = new List<string>();
+            string line;
+            while ((line = reader.ReadLine()) != null)
+            {
+                lines.Add(line);
+            }
+
+            return lines.ToArray();
         }
     }
 }

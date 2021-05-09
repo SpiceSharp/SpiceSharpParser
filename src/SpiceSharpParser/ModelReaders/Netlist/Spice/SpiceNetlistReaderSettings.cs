@@ -1,5 +1,6 @@
 ﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using System;
+using System.Text;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
@@ -28,6 +29,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         public SpiceNetlistReaderSettings(
             ISpiceNetlistCaseSensitivitySettings caseSensitivitySettings,
             Func<string> workingDirectoryProvider,
+            Encoding encoding,
             string separator = ".",
             bool expandSubcircuits = true)
         {
@@ -39,7 +41,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             _workingDirectoryProvider = workingDirectoryProvider ?? throw new ArgumentNullException(nameof(workingDirectoryProvider));
             Separator = separator;
             ExpandSubcircuits = expandSubcircuits;
+            ExternalFilesEncoding = encoding;
         }
+
+        public Encoding ExternalFilesEncoding { get; set; }
 
         /// <summary>
         /// Gets or sets the evaluator mode.

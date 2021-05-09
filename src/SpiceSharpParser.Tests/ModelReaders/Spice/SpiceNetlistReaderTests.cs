@@ -1,6 +1,7 @@
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using System.Text;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice
@@ -11,7 +12,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice
         public void Read()
         {
             // arrange
-            var reader = new SpiceNetlistReader(new SpiceNetlistReaderSettings(new SpiceNetlistCaseSensitivitySettings(), () => null));
+            var reader = new SpiceNetlistReader(new SpiceNetlistReaderSettings(new SpiceNetlistCaseSensitivitySettings(), () => null, Encoding.Default));
             var netlist = new SpiceNetlist(string.Empty, new Statements());
 
             // act

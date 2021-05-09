@@ -342,7 +342,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 context.WorkingDirectory,
                 true,
                 context.SimulationConfiguration,
-                context.Result);
+                context.Result,
+                context.ExternalFilesEncoding);
 
             subcircuitEvaluationContext.CircuitContext = subcircuitContext;
 
@@ -384,7 +385,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 context.WorkingDirectory,
                 false,
                 context.SimulationConfiguration,
-                context.Result);
+                context.Result,
+                context.ExternalFilesEncoding);
 
             subcircuitEvaluationContext.CircuitContext = subcircuitContext;
 

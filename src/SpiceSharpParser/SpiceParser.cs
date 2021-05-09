@@ -45,14 +45,14 @@ namespace SpiceSharpParser
 
             TokenProviderPool = new SpiceTokenProviderPool();
             var includesPreprocessor = new IncludesPreprocessor(
-                new FileReader(),
+                new FileReader(() => Settings.ExternalFilesEncoding),
                 TokenProviderPool,
                 SingleNetlistParser,
                 () => Settings.WorkingDirectory,
                 Settings.Lexing);
 
             var libPreprocessor = new LibPreprocessor(
-                new FileReader(),
+                new FileReader(() => Settings.ExternalFilesEncoding),
                 TokenProviderPool,
                 SingleNetlistParser,
                 includesPreprocessor,
