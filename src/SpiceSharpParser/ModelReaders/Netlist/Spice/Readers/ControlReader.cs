@@ -45,7 +45,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
             string type = statement.Name;
 
-            if (!Mapper.TryGetValue(type, context.CaseSensitivity.IsDotStatementNameCaseSensitive, out var controlReader))
+            if (!Mapper.TryGetValue(type, context.ReaderSettings.CaseSensitivity.IsDotStatementNameCaseSensitive, out var controlReader))
             {
                 context.Result.ValidationResult.Add(
                     new ValidationEntry(

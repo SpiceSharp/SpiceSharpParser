@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using SpiceSharp.Components;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
@@ -46,37 +47,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 
             if (parameters.Count == 1 && parameters[0] is VectorParameter v)
             {
-                if (v.Elements.Count >= 1)
-                {
-                    w.Offset = context.Evaluator.EvaluateDouble(v.Elements[0].Value);
-                }
-
-                if (v.Elements.Count >= 2)
-                {
-                    w.Amplitude = context.Evaluator.EvaluateDouble(v.Elements[1].Value);
-                }
-
-                if (v.Elements.Count >= 3)
-                {
-                    w.Frequency = context.Evaluator.EvaluateDouble(v.Elements[2].Value);
-                }
-
-                if (v.Elements.Count >= 4)
-                {
-                    w.Delay = context.Evaluator.EvaluateDouble(v.Elements[3].Value);
-                }
-
-                if (v.Elements.Count >= 5)
-                {
-                    w.Theta = context.Evaluator.EvaluateDouble(v.Elements[4].Value);
-                }
-
-                if (v.Elements.Count >= 6)
-                {
-                    w.Phase = context.Evaluator.EvaluateDouble(v.Elements[5].Value);
-                }
-
-                return w;
+                parameters = new ParameterCollection(v.Elements.Select(e => e).Cast<Parameter>().ToList());
             }
 
             if (parameters.Count >= 1)

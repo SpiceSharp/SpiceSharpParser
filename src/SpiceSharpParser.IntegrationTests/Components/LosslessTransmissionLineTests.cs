@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void IsAbleToParse()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                "Lossless transmission line parse test circuit",
                "T1 1 2 3 4 z0 = 230 Td = 120ns",
                "T2 1 2 3 4 z0=250 f=2.6MEG",

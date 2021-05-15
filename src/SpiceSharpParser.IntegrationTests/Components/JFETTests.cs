@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void IsAbleToParse()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                "JFET parse test circuit",
                "J1 D G S JModel1",
                "J2 D G S JModel2 off",

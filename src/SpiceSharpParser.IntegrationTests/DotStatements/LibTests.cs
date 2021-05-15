@@ -13,13 +13,13 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
 
             File.WriteAllText(l1Path, ".lib a\n*comment\n.endl\n");
 
-            var netlist = ParseNetlistInWorkingDirectory(
+            var model = GetSpiceSharpModelWithWorkingDirectoryParameter(
                 Directory.GetCurrentDirectory(),
                 "Lib - Basic",
                 ".lib l0 a",
                 ".END");
 
-            Assert.Single(netlist.Comments);
+            Assert.Single(model.Comments);
         }
 
         [Fact]
@@ -29,14 +29,14 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
 
             File.WriteAllText(l1Path, ".lib a\n*comment\n.endl\n.lib b\n*comment2\n.endl\n");
 
-            var netlist = ParseNetlistInWorkingDirectory(
+            var model = GetSpiceSharpModelWithWorkingDirectoryParameter(
                 Directory.GetCurrentDirectory(),
                 "Lib - Basic",
                 ".lib l0 b",
                 ".END");
 
-            Assert.Single(netlist.Comments);
-            Assert.Equal("*comment2", netlist.Comments[0]);
+            Assert.Single(model.Comments);
+            Assert.Equal("*comment2", model.Comments[0]);
         }
 
         [Fact]
@@ -46,13 +46,13 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
 
             File.WriteAllText(l1Path, "*comment\n");
 
-            var netlist = ParseNetlistInWorkingDirectory(
+            var model = GetSpiceSharpModelWithWorkingDirectoryParameter(
                 Directory.GetCurrentDirectory(),
                 "Lib - Basic",
                 ".lib lb",
                 ".END");
 
-            Assert.Single(netlist.Comments);
+            Assert.Single(model.Comments);
         }
 
         [Fact]
@@ -65,7 +65,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             string l1Path = Path.Combine(Directory.GetCurrentDirectory(), "l1");
             File.WriteAllText(l1Path, ".lib a\n.include diodeslib.mod\n.endl\n");
 
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Lib - Diode circuit",
                 "D1 OUT 0 1N914",
                 "V1 OUT 0 0",
@@ -76,8 +76,8 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 $".lib l1 a",
                 ".END");
 
-            RunDCSimulation(netlist, "V(OUT)");
-            //Assert.Equal(14, ((BaseSimulation)netlist.Simulations[0]).Configurations.Get<BaseConfiguration>().Nodesets["OUT"]);
+            var exception = Record.Exception(() => RunDCSimulation(model, "V(OUT)"));
+            Assert.Null(exception);
         }
 
         [Fact]
@@ -90,7 +90,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             string l1Path = Path.Combine(Directory.GetCurrentDirectory(), "l12");
             File.WriteAllText(l1Path, ".include diodes4_.mod\n");
 
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Lib - Diode circuit",
                 "D1 OUT 0 1N914",
                 "V1 OUT 0 0",
@@ -101,8 +101,8 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 $".lib l12",
                 ".END");
 
-            RunDCSimulation(netlist, "V(OUT)");
-            //Assert.Equal(14, ((BaseSimulation)netlist.Simulations[0]).Configurations.Get<BaseConfiguration>().Nodesets["OUT"]);
+            var exception = Record.Exception(() => RunDCSimulation(model, "V(OUT)"));
+            Assert.Null(exception);
         }
 
         [Fact]
@@ -118,7 +118,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             string l1Path = Path.Combine(Directory.GetCurrentDirectory(), "l1");
             File.WriteAllText(l1Path, ".lib a\n.lib basic diodes\n.endl\n");
 
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Lib - Diode circuit",
                 "D1 OUT 0 1N914",
                 "V1 OUT 0 0",
@@ -129,8 +129,8 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 $".lib l1 a",
                 ".END");
 
-            RunDCSimulation(netlist, "V(OUT)");
-            //Assert.Equal(14, ((BaseSimulation)netlist.Simulations[0]).Configurations.Get<BaseConfiguration>().Nodesets["OUT"]);
+            var exception = Record.Exception(() => RunDCSimulation(model, "V(OUT)"));
+            Assert.Null(exception);
         }
 
         [Fact]
@@ -146,7 +146,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             string l1Path = Path.Combine(Directory.GetCurrentDirectory(), "l1");
             File.WriteAllText(l1Path, ".lib basic diodes\n");
 
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Lib - Diode circuit",
                 "D1 OUT 0 1N914",
                 "V1 OUT 0 0",
@@ -157,8 +157,8 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 $".lib l1",
                 ".END");
 
-            RunDCSimulation(netlist, "V(OUT)");
-            //Assert.Equal(14, ((BaseSimulation)netlist.Simulations[0]).Configurations.Get<BaseConfiguration>().Nodesets["OUT"]);
+            var exception = Record.Exception(() => RunDCSimulation(model, "V(OUT)"));
+            Assert.Null(exception);
         }
     }
 }

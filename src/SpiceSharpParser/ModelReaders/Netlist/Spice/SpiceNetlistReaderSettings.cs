@@ -33,7 +33,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             string separator = ".",
             bool expandSubcircuits = true)
         {
-            EvaluatorMode = SpiceExpressionMode.Spice3f5;
             Mappings = new SpiceObjectMappings();
             Orderer = new SpiceStatementsOrderer();
 
@@ -44,12 +43,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             ExternalFilesEncoding = encoding;
         }
 
-        public Encoding ExternalFilesEncoding { get; set; }
+        public SpiceNetlistReaderSettings() 
+        {
+            Mappings = new SpiceObjectMappings();
+            Orderer = new SpiceStatementsOrderer();
 
-        /// <summary>
-        /// Gets or sets the evaluator mode.
-        /// </summary>
-        public SpiceExpressionMode EvaluatorMode { get; set; }
+            CaseSensitivity = new SpiceNetlistCaseSensitivitySettings();
+            _workingDirectoryProvider = () => Environment.CurrentDirectory;
+            Separator = ".";
+            ExpandSubcircuits = true;
+            ExternalFilesEncoding = Encoding.Default;
+        }
+
+
+        public Encoding ExternalFilesEncoding { get; set; }
 
         /// <summary>
         /// Gets or sets the evaluator random seed.
@@ -85,5 +92,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// Gets working directory.
         /// </summary>
         public string WorkingDirectory => _workingDirectoryProvider();
+
+        public SpiceNetlistReaderSettings Clone()
+        {
+            var result = new SpiceNetlistReaderSettings(CaseSensitivity, _workingDirectoryProvider, ExternalFilesEncoding, Separator, ExpandSubcircuits);
+            return result;
+        }
     }
 }

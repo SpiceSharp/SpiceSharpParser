@@ -29,15 +29,17 @@ namespace SpiceSharpParser.IntegrationTests.Common
             var text = string.Join(Environment.NewLine, lines);
 
             var parser = new SpiceParser();
-            parser.Settings.Reading.Separator = "--";
+            var parseResult = parser.ParseNetlist(text);
 
-            var model = parser.ParseNetlist(text).SpiceModel;
-            double[] export = RunOpSimulation(model, "V(OUT)", "V(X1--X1--input)", "I(X1--X1--R1)");
+            var reader = new SpiceSharpReader();
+            reader.Settings.Separator = "--";
+            var spiceModel = reader.Read(parseResult.FinalModel);
+
+            double[] export = RunOpSimulation(spiceModel, "V(OUT)", "V(X1--X1--input)", "I(X1--X1--R1)");
 
             Assert.Equal(1, export[0]);
             Assert.Equal(4, export[1]);
             Assert.Equal(1, export[2]);
         }
-
     }
 }

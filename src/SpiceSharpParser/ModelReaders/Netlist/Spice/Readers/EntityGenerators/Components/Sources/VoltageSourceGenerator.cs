@@ -4,6 +4,7 @@ using SpiceSharp.Components;
 using SpiceSharp.Entities;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharpParser.Parsers.Expression;
@@ -156,14 +157,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return vs;
         }
 
-        protected static BehavioralVoltageSource CreateBehavioralVoltageSource(string name, ParameterCollection parameters, IReadingContext context, Common.Evaluation.EvaluationContext evalContext, string expression)
+        protected static BehavioralVoltageSource CreateBehavioralVoltageSource(string name, ParameterCollection parameters, IReadingContext context, EvaluationContext evalContext, string expression)
         {
             var entity = new BehavioralVoltageSource(name);
             context.CreateNodes(entity, parameters.Take(BehavioralVoltageSource.BehavioralVoltageSourcePinCount));
             entity.Parameters.Expression = expression;
             entity.Parameters.ParseAction = (expression) =>
             {
-                var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
+                var parser = context.CreateExpressionParser(null);
                 return parser.Resolve(expression);
             };
 
@@ -174,7 +175,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     entity.Parameters.Expression = expression.ToString();
                     entity.Parameters.ParseAction = (expression) =>
                     {
-                        var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(simulation), false, context.CaseSensitivity);
+                        var parser = context.CreateExpressionParser(simulation);
                         return parser.Resolve(expression);
                     };
                 });

@@ -14,7 +14,7 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
         [InlineData(0, 5, 50, 0, 0, 90)]
         public void Test01(double offset, double amplitude, double frequency, double delay, double theta, double phase)
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Sine tests",
                 $"V1 1 0 SINE({offset} {amplitude} {frequency} {delay} {theta} {phase})",
                 ".SAVE V(1)",
@@ -43,7 +43,7 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
 
                 // Return result (with offset)
                 var expected = offset + result;
-                EqualsWithTol(expected, args.GetVoltage("1"));
+                Assert.True(EqualsWithTol(expected, args.GetVoltage("1")));
             };
 
             simulation.Run(netlist.Circuit);
@@ -54,7 +54,7 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
         [InlineData(0, 5, 50, 0, 0, 90)]
         public void Test02(double offset, double amplitude, double frequency, double delay, double theta, double phase)
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Sine tests",
                 $"V1 1 0 SINE({offset}, {amplitude}, {frequency}, {delay}, {theta}, {phase})",
                 ".SAVE V(1)",
@@ -83,7 +83,7 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
 
                 // Return result (with offset)
                 var expected = offset + result;
-                EqualsWithTol(expected, args.GetVoltage("1"));
+                Assert.True(EqualsWithTol(expected, args.GetVoltage("1")));
             };
 
             simulation.Run(netlist.Circuit);

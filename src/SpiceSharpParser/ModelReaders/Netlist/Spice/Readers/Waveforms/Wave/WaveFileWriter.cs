@@ -9,6 +9,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.Wave
     {
         public void Write(string path, int sampleRate, double amplitude, int bitsPerSample, (double time, double value)[] leftChannel, (double time, double value)[] rightChannel)
         {
+            if (path is null)
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
+
             if (leftChannel == null)
             {
                 throw new ArgumentNullException(nameof(leftChannel));
@@ -30,6 +35,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.Wave
 
         public void Write(string path, int sampleRate, double amplitude, int bitsPerSample, (double time, double value)[] monoChannel)
         {
+            if (path is null)
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
+
             if (monoChannel == null)
             {
                 throw new ArgumentNullException(nameof(monoChannel));

@@ -3,6 +3,7 @@ using SpiceSharp.Components;
 using SpiceSharp.Entities;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
@@ -15,12 +16,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     public interface IReadingContext
     {
-        SpiceModel<Circuit, Simulation> Result { get; }
+        SpiceSharpModel Result { get; }
 
         SimulationConfiguration SimulationConfiguration { get; }
 
         /// <summary>
-        /// Gets the simulation parameters.
+        /// Gets the simulation preparations.
         /// </summary>
         ISimulationPreparations SimulationPreparations { get; }
 
@@ -76,19 +77,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         IWaveformReader WaveformReader { get; }
 
-        /// <summary>
-        /// Gets case-sensitivity settings.
-        /// </summary>
-        ISpiceNetlistCaseSensitivitySettings CaseSensitivity { get; }
-
-        /// <summary>
-        /// Gets working directory.
-        /// </summary>
-        string WorkingDirectory { get; }
-
-        Encoding ExternalFilesEncoding { get; set; }
-
-        bool ExpandSubcircuits { get; }
+        SpiceNetlistReaderSettings ReaderSettings { get; }
 
         /// <summary>
         /// Sets parameter of entity to value of expression.
@@ -132,5 +121,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         void Read(Statements statements, ISpiceStatementsOrderer orderer);
 
         bool FindObject(string objectId, out IEntity entity);
+
+        ExpressionParser CreateExpressionParser(Simulation simulation);
     }
 }

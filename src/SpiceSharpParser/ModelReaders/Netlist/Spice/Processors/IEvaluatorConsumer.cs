@@ -1,4 +1,4 @@
-﻿using SpiceSharpParser.Common.Evaluation;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {

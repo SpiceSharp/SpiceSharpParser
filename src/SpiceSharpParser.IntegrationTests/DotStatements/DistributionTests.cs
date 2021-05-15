@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void When_CustomDistribiton_Expect_NoException()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Monte Carlo Analysis - OP - POWER",
                 "V1 0 1 100",
                 "R1 1 0 {R}",
@@ -20,11 +20,11 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".DISTRIBUTION triangle_dist (-1,0) (0, 1) (1, 0)",
                 ".END");
 
-            Assert.Equal(1000, result.Simulations.Count);
-            Assert.True(result.MonteCarloResult.Enabled);
-            RunSimulations(result);
+            Assert.Equal(1000, model.Simulations.Count);
+            Assert.True(model.MonteCarloResult.Enabled);
+            RunSimulations(model);
 
-            var mcResult = result.MonteCarloResult;
+            var mcResult = model.MonteCarloResult;
             var histPlot = mcResult.GetPlot(10);
 
             Assert.Equal(10, histPlot.Bins.Count);

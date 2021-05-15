@@ -13,7 +13,7 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
         [Fact]
         public void Test01()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Voltage source - Pwl waveform",
                 $"V1 a 0 Pwl(1.111 2.0 3.34 2.0)",
                 ".SAVE V(a)",
@@ -39,7 +39,7 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
                     wasHit2 = true;
                 }
 
-                EqualsWithTol(2.0, args.GetVoltage("a"));
+                Assert.True(EqualsWithTol(2.0, args.GetVoltage("a")));
             };
 
             simulation.Run(netlist.Circuit);

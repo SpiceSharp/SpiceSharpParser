@@ -1,8 +1,6 @@
 ﻿using SpiceSharp;
 using SpiceSharp.Entities;
-using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
-using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Mathematics.Probability;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
@@ -10,7 +8,6 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.Models.Netlist.Spice;
-using SpiceSharpParser.Parsers.Expression;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
@@ -40,7 +37,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// <returns>
         /// A new SpiceSharp netlist.
         /// </returns>
-        public SpiceModel<Circuit, Simulation> Read(SpiceNetlist netlist)
+        public SpiceSharpModel Read(SpiceNetlist netlist)
         {
             if (netlist == null)
             {
@@ -48,7 +45,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             }
 
             // Get result netlist
-            var result = new SpiceModel<Circuit, Simulation>(
+            var result = new SpiceSharpModel(
                 new Circuit(new EntityCollection(StringComparerProvider.Get(Settings.CaseSensitivity.IsEntityNamesCaseSensitive))),
                 netlist.Title);
 
@@ -72,7 +69,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 
             EvaluationContext evaluationContext = new SpiceEvaluationContext(
                 string.Empty,
-                Settings.EvaluatorMode,
                 Settings.CaseSensitivity,
                 randomizer,
                 expressionParserFactory,
@@ -100,18 +96,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 nameGenerator,
                 statementsReader,
                 waveformReader,
-                Settings.CaseSensitivity,
                 Settings.Mappings.Exporters,
-                Settings.WorkingDirectory,
-                Settings.ExpandSubcircuits,
                 new Readers.Controls.Simulations.Configurations.SimulationConfiguration(),
                 result,
-                Settings.ExternalFilesEncoding);
-
-            // Set initial seed
-            circuitContext.Evaluator.Seed = Settings.Seed;
-            circuitContext.Evaluator.SetEntites(circuitContext.ContextEntities);
-            evaluationContext.CircuitContext = circuitContext;
+                Settings);
 
             // Read statements form input netlist using created context
             circuitContext.Read(netlist.Statements, Settings.Orderer);

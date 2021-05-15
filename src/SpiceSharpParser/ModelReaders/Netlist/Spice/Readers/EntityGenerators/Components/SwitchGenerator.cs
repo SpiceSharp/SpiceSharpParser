@@ -69,7 +69,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 resistor.Parameters.Expression = resExpression;
                 resistor.Parameters.ParseAction = (expression) =>
                 {
-                    var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
+                    var parser = context.CreateExpressionParser(null);
                     return parser.Resolve(expression);
                 };
 
@@ -98,7 +98,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         resistor.Parameters.Expression = resExpression;
                         resistor.Parameters.ParseAction = (expression) =>
                         {
-                            var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(simulation), false, context.CaseSensitivity);
+                            var parser = context.CreateExpressionParser(simulation);
                             return parser.Resolve(expression);
                         };
                     });
@@ -214,7 +214,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 resistor.Parameters.Expression = resExpression;
                 resistor.Parameters.ParseAction = (expression) =>
                 {
-                    var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
+                    var parser = context.CreateExpressionParser(null);
                     return parser.Resolve(expression);
                 };
 
@@ -244,7 +244,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         resistor.Parameters.Expression = resExpression;
                         resistor.Parameters.ParseAction = (expression) =>
                         {
-                            var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(simulation), false, context.CaseSensitivity);
+                            var parser = context.CreateExpressionParser(simulation);
                             return parser.Resolve(expression);
                         };
                     });

@@ -1,6 +1,7 @@
 ﻿using SpiceSharp;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System.Collections.Generic;
 
@@ -60,7 +61,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="parameter">Parameter value.</param>
         void SetParameter(string parameterName, Parameter parameter);
 
-        void SetEntites(Circuit contextEntities);
 
         /// <summary>
         /// Sets a parameter.
@@ -86,5 +86,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         Expression GetExpression(string expressionName);
 
         IEnumerable<string> GetExpressionNames();
+
+        void SetEntites(Circuit contextEntities);
+
+        void SetCircuitContext(ReadingContext readingContext);
     }
 }

@@ -10,7 +10,7 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
         [Fact]
         public void Test01()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Voltage source - Pulse waveform",
                 $"V1 a 0 PULSE(0, 1, 0.2, 0.1, 0.1, 0.4, 1.0)",
                 ".SAVE V(a)",
@@ -45,7 +45,7 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
         [Fact]
         public void Test02()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Voltage source - Pulse waveform",
                 $"V1 a 0 PULSE(0 1 0.2 0.1 0.1 0.4 1.0)",
                 ".SAVE V(a)",

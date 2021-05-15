@@ -1,4 +1,5 @@
-﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
+﻿using SpiceSharpParser.Common.Validation;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {
@@ -7,7 +8,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
     /// </summary>
     public interface IProcessor
     {
-        SpiceParserValidationResult Validation { get; set; }
+        ValidationEntryCollection Validation { get; set; }
 
         Statements Process(Statements statements);
     }

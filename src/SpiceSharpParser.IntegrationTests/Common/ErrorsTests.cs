@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void When_UnknownComponent_Expect_Warning()
         {
-            var result = ParseNetlist(
+            var result = GetSpiceSharpModel(
                 "Errors",
                 "UMemory 1 0 1N914",
                 "V1_a 1 0 0.0",
@@ -21,7 +21,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void When_InvalidProperty_Expect_Error()
         {
-            var result = ParseNetlist(
+            var result = GetSpiceSharpModel(
                 "Errors",
                 "V1 1 0 150",
                 "R1 1 0 10 a = 1.2",

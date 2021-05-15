@@ -25,9 +25,8 @@ namespace SpiceSharpParser.IntegrationTests.Macros
                 ".OP",
                 ".END");
 
-            Assert.False(result.ValidationResult.Lexing.HasError);
-            Assert.False(result.ValidationResult.Reading.HasError);
-            Assert.False(result.ValidationResult.Reading.HasWarning);
+            Assert.False(result.ValidationResult.HasError);
+            Assert.False(result.ValidationResult.HasWarning);
         }
 
         [Fact]
@@ -45,9 +44,8 @@ namespace SpiceSharpParser.IntegrationTests.Macros
                 ".OP",
                 ".END");
 
-            Assert.False(result.ValidationResult.Lexing.HasError);
-            Assert.False(result.ValidationResult.Reading.HasError);
-            Assert.False(result.ValidationResult.Reading.HasWarning);
+            Assert.False(result.ValidationResult.HasError);
+            Assert.False(result.ValidationResult.HasWarning);
         }
 
         [Fact]
@@ -63,9 +61,8 @@ namespace SpiceSharpParser.IntegrationTests.Macros
                 "X1<0:30, 31> REGISTER<0:31><0:7> GND ENABLE_IN mysubckt",
                 ".END");
 
-            Assert.False(result.ValidationResult.Lexing.HasError);
-            Assert.False(result.ValidationResult.Reading.HasError);
-            Assert.False(result.ValidationResult.Reading.HasWarning);
+            Assert.False(result.ValidationResult.HasError);
+            Assert.False(result.ValidationResult.HasWarning);
         }
 
         [Fact]
@@ -86,9 +83,8 @@ namespace SpiceSharpParser.IntegrationTests.Macros
                 "X1<0:30, 31> bus<0:31><0:15><0:7> GND ENABLE_IN mysubckt",
                 ".END");
 
-            Assert.False(result.ValidationResult.Lexing.HasError);
-            Assert.False(result.ValidationResult.Reading.HasError);
-            Assert.False(result.ValidationResult.Reading.HasWarning);
+            Assert.False(result.ValidationResult.HasError);
+            Assert.False(result.ValidationResult.HasWarning);
         }
     }
 }

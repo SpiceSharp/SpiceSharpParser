@@ -46,7 +46,7 @@ namespace SpiceSharpParser.Tests.Lexers
             Lexer<LexerState> lexer = new Lexer<LexerState>(grammar);
             var s = new LexerState();
             var tokens = lexer.GetTokens("Line1\nLine2\n", s).Tokens.ToArray();
-            Assert.Equal(5, tokens.Count());
+            Assert.Equal(5, tokens.Length);
 
             Assert.Equal(3, s.LineNumber);
         }

@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
         [Fact]
         public void DevLotMultipleComponentsSameModel()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "DevLot - Diodes circuit",
                 "D1 OUT 0 1N914",
                 "D2 OUT 0 1N914",
@@ -31,7 +31,7 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
         [Fact]
         public void When_Mc_Expect_NoException()
         {
-            var result = ParseNetlist(
+            var result = GetSpiceSharpModel(
                 "Monte Carlo Analysis - DevLot - Diodes",
                 "D1 OUT 0 1N914",
                 "V1 OUT 0 0",
@@ -41,7 +41,7 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
                 ".MC 1000 OP is MAX",
                 ".END");
 
-            RunSimulationsAndReturnExports(result);
+            Assert.NotNull(RunSimulationsAndReturnExports(result));
         }
     }
 }

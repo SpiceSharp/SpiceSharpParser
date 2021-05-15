@@ -138,12 +138,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var mParameter = parameters.First(p => p is AssignmentParameter m && m.Name.ToLower() == "m");
                 context.SetParameter(component, "m", mParameter);
             }
-
-
-            context.CreateNodes(component, originalParameters);
         }
 
-        protected string CreatePolyExpression(int dimension, ParameterCollection parameters, bool isVoltageControlled, EvaluationContext context)
+        protected string CreatePolyExpression(int dimension, ParameterCollection parameters, bool isVoltageControlled, IEvaluationContext context)
         {
             if (isVoltageControlled)
             {

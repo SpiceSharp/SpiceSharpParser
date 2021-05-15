@@ -1,0 +1,90 @@
+﻿using SpiceSharp.Components;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using System.Collections.Generic;
+using System.Linq;
+using Component = SpiceSharpParser.Models.Netlist.Spice.Objects.Component;
+
+namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
+{
+    public class BipolarJunctionTransistorWriter : BaseWriter, IWriter<Component>
+    {
+        public List<CSharpStatement> Write(Component component, IWriterContext context)
+        {
+            var result = new List<CSharpStatement>();
+
+            if (component.PinsAndParameters.Count < 4) // QXXX NC NB NE MNAME
+            {
+                return null;
+            }
+
+            var pins = component.PinsAndParameters.Take(BipolarJunctionTransistor.PinCount);
+            var parameters = component.PinsAndParameters.Skip(BipolarJunctionTransistor.PinCount);
+            var name = component.Name;
+
+            var bjtId = context.GetNewIdentifier(name);
+            var modelName = parameters[0].Value;
+
+            result.Add(new CSharpNewStatement(bjtId, 
+                $@"new BipolarJunctionTransistor(""{name}"", ""{pins[0].Value}"", ""{pins[1].Value}"", ""{pins[2].Value}"", ""{pins[3].Value}"", ""{modelName}"")"));
+
+            bool areaSet = false;
+            for (int i = 1; i < parameters.Count; i++)
+            {
+                var parameter = parameters[i];
+
+                if (parameter is SingleParameter s)
+                {
+                    if (s is WordParameter)
+                    {
+                        switch (s.Value.ToLower())
+                        {
+                            case "on": result.Add(SetParameter(bjtId, "off", false, context)); break;
+                            case "off": result.Add(SetParameter(bjtId, "off", true, context)); break;
+                            default: throw new System.Exception();
+                        }
+                    }
+                    else
+                    {
+                        if (!areaSet) // area is before temperature
+                        {
+                            result.Add(SetParameter(bjtId, "area", s.Value, context));
+                            areaSet = true;
+                        }
+                        else
+                        {
+                            result.Add(SetParameter(bjtId, "temp", s.Value, context));
+                        }
+                    }
+                }
+
+                if (parameter is AssignmentParameter asg)
+                {
+                    if (asg.Name.ToLower() == "ic")
+                    {
+                        if (asg.Value.Length == 2)
+                        {
+                            result.Add(SetParameter(bjtId, "icvbe", asg.Values[0], context));
+                            result.Add(SetParameter(bjtId, "icvce", asg.Values[1], context));
+                        }
+
+                        if (asg.Value.Length == 1)
+                        {
+                            result.Add(SetParameter(bjtId, "icvbe", asg.Values[0], context));
+                        }
+                    }
+                    else
+                    {
+                        if (asg.Name.ToLower() != "m")
+                        {
+                            result.Add(SetParameter(bjtId, asg.Name, asg.Value, context));
+                        }
+                    }
+                }
+            }
+
+            SetParallelParameter(result, bjtId, parameters, context);
+
+            return result;
+        }
+    }
+}

@@ -31,6 +31,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 
         protected virtual int GetOrder(Statement statement)
         {
+            if (statement is null)
+            {
+                throw new ArgumentNullException(nameof(statement));
+            }
+
             if (statement is SubCircuit)
             {
                 return 1000;

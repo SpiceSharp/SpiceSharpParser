@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void When_NodeNameHasUnderline_Expect_NoException()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Diode circuit",
                 "D1 1_a 0 1N914",
                 "V1_a 1_a 0 0.0",
@@ -16,13 +16,14 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".SAVE i(V1_a) v(1_a,0)",
                 ".END");
 
-            RunDCSimulation(netlist, "v(1_a,0)");
+            var exception = Record.Exception(() => RunDCSimulation(netlist, "v(1_a,0)"));
+            Assert.Null(exception);
         }
 
         [Fact]
         public void When_NodeNameHasPlusPrefix_Expect_NoException()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Diode circuit",
                 "D1 +1_a 0 1N914",
                 "V1_a +1_a 0 0.0",
@@ -31,13 +32,14 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".SAVE i(V1_a) v(+1_a,0)",
                 ".END");
 
-            RunDCSimulation(netlist, "v(+1_a,0)");
+            var exception = Record.Exception(() => RunDCSimulation(netlist, "v(+1_a,0)"));
+            Assert.Null(exception);
         }
 
         [Fact]
         public void When_NodeNameHasMinusPrefix_Expect_NoException()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Diode circuit",
                 "D1 -1_a 0 1N914",
                 "V1_a -1_a 0 0.0",
@@ -46,7 +48,8 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".SAVE i(V1_a) v(-1_a,0)",
                 ".END");
 
-            RunDCSimulation(netlist, "v(-1_a,0)");
+            var exception = Record.Exception(() => RunDCSimulation(netlist, "v(-1_a,0)"));
+            Assert.Null(exception);
         }
     }
 }

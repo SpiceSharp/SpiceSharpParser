@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.Expressions
         [Fact]
         public void WhenIfUsedInExpression()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Test circuit",
                 "R1 1 0 100",
                 "V1 1 0 1",

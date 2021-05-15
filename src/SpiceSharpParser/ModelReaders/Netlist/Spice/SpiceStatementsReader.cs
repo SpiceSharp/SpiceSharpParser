@@ -17,6 +17,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             IMapper<IModelGenerator> modelMapper,
             IMapper<IComponentGenerator> entityMapper)
         {
+            if (controlMapper is null)
+            {
+                throw new ArgumentNullException(nameof(controlMapper));
+            }
+
+            if (modelMapper is null)
+            {
+                throw new ArgumentNullException(nameof(modelMapper));
+            }
+
+            if (entityMapper is null)
+            {
+                throw new ArgumentNullException(nameof(entityMapper));
+            }
+
             var modelReader = new ModelReader(modelMapper, new StochasticModelsGenerator());
             var componentReader = new ComponentReader(entityMapper);
             var controlReader = new ControlReader(controlMapper);

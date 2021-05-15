@@ -4,6 +4,7 @@ using SpiceSharp;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
@@ -188,6 +189,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public void SetEntites(Circuit contextEntities)
         {
             ParsingContext.ContextEntities = contextEntities;
+        }
+
+        public void SetCircuitContext(ReadingContext readingContext)
+        {
+            ParsingContext.CircuitContext = readingContext;
         }
     }
 }

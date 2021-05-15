@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void VoltageDelay_NoException()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Voltage delay",
                 "V1 1 0 SINE(0 5 50 0 0 90)",
                 "BVDELAY1 2 0 1 0 1e-2",
@@ -17,10 +17,12 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".TRAN 1e-8 1e-5",
                 ".END");
 
-            Assert.NotNull(netlist);
-            Assert.False(netlist.ValidationResult.HasError);
-            Assert.False(netlist.ValidationResult.HasWarning);
-            RunTransientSimulation(netlist, "V(1,0)");
+            Assert.NotNull(model);
+            Assert.False(model.ValidationResult.HasError);
+            Assert.False(model.ValidationResult.HasWarning);
+
+            var exception = Record.Exception(() => RunTransientSimulation(model, "V(1,0)"));
+            Assert.Null(exception);
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using SpiceSharpParser.Lexers.Netlist.Spice;
-using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.Parsers.Netlist.Spice;
 using System.Text;
 
@@ -14,7 +13,7 @@ namespace SpiceSharpParser
         {
             Lexing = new SpiceLexerSettings();
             Parsing = new SingleSpiceNetlistParserSettings(Lexing);
-            Reading = new SpiceNetlistReaderSettings(new SpiceNetlistCaseSensitivitySettings(Lexing), () => WorkingDirectory, ExternalFilesEncoding = Encoding.Default);
+            CaseSensitivity = new SpiceNetlistCaseSensitivitySettings();
         }
 
         /// <summary>
@@ -38,8 +37,8 @@ namespace SpiceSharpParser
         public SingleSpiceNetlistParserSettings Parsing { get; }
 
         /// <summary>
-        /// Gets the SPICE netlist model reader settings.
+        /// Gets or sets the case sensitivity settings.
         /// </summary>
-        public SpiceNetlistReaderSettings Reading { get; }
+        public ISpiceNetlistCaseSensitivitySettings CaseSensitivity { get; set; }
     }
 }

@@ -22,14 +22,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
             {
                 string type = bp.Name;
 
-                if (mapper.TryGetValue(type, context.CaseSensitivity.IsFunctionNameCaseSensitive, out var exporter))
+                if (mapper.TryGetValue(type, context.ReaderSettings.CaseSensitivity.IsFunctionNameCaseSensitive, out var exporter))
                 {
                     return exporter.CreateExport(
                         exportParameter.Value,
                         type,
                         bp.Parameters,
                         context.Evaluator.GetEvaluationContext(simulation),
-                        context.CaseSensitivity);
+                        context.ReaderSettings.CaseSensitivity);
                 }
             }
 
@@ -54,7 +54,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
                         type,
                         parameters,
                         context.Evaluator.GetEvaluationContext(simulation),
-                        context.CaseSensitivity);
+                        context.ReaderSettings.CaseSensitivity);
                 }
             }
 

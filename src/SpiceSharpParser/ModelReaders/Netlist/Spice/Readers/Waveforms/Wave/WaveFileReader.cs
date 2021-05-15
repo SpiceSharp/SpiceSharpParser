@@ -8,7 +8,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.Wave
 
         public WaveFileReader(byte[] fileContent, bool bigIndian = false)
         {
-            FileContent = fileContent;
+            FileContent = fileContent ?? throw new ArgumentNullException(nameof(fileContent));
             BigIndian = bigIndian;
         }
 

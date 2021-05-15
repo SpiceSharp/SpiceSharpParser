@@ -16,7 +16,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return expression;
         }
 
-        public static string CreatePolyVoltageExpression(int dimension, ParameterCollection polyArguments, EvaluationContext evaluationContext)
+        public static string CreatePolyVoltageExpression(int dimension, ParameterCollection polyArguments, IEvaluationContext evaluationContext)
         {
             if (polyArguments.Count == 0)
             {
@@ -73,7 +73,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
         }
 
-        public static string CreatePolyCurrentExpression(int dimension, ParameterCollection polyArguments, EvaluationContext context)
+        public static string CreatePolyCurrentExpression(int dimension, ParameterCollection polyArguments, IEvaluationContext context)
         {
             var variables = polyArguments.Take(dimension);
             var voltages = new List<string>();
@@ -92,7 +92,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             int dimension,
             ParameterCollection coefficients,
             List<string> variables,
-            EvaluationContext context)
+            IEvaluationContext context)
         {
             if (coefficients.Count == 1 && coefficients[0] is PointParameter pp)
             {

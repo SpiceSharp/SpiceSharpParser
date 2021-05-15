@@ -33,10 +33,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             ISingleSpiceNetlistParser spiceNetlistParser,
             IProcessor includesPreprocessor,
             Func<string> initialDirectoryPathProvider,
-            SpiceNetlistReaderSettings readerSettings,
             SpiceLexerSettings lexerSettings)
         {
-            ReaderSettings = readerSettings ?? throw new ArgumentNullException(nameof(readerSettings));
             TokenProviderPool = tokenProviderPool ?? throw new ArgumentNullException(nameof(tokenProviderPool));
             IncludesPreprocessor = includesPreprocessor ?? throw new ArgumentNullException(nameof(includesPreprocessor));
             SpiceNetlistParser = spiceNetlistParser ?? throw new ArgumentNullException(nameof(spiceNetlistParser));
@@ -48,8 +46,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         public SpiceLexerSettings LexerSettings { get; }
 
         public ISpiceTokenProviderPool TokenProviderPool { get; }
-
-        public SpiceNetlistReaderSettings ReaderSettings { get; }
 
         /// <summary>
         /// Gets the initial directory path.
@@ -74,7 +70,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// <summary>
         /// Gets or sets validation.
         /// </summary>
-        public SpiceParserValidationResult Validation { get; set; }
+        public ValidationEntryCollection Validation { get; set; }
 
         protected Func<string> InitialDirectoryPathProvider { get; }
 
@@ -185,7 +181,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             // check if file exists
             if (!File.Exists(libFullPath))
             {
-                Validation.Reading.Add(
+                Validation.Add(
                     new ValidationEntry(
                         ValidationEntrySource.Reader,
                         ValidationEntryLevel.Warning,
@@ -232,7 +228,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             }
             else
             {
-                Validation.Reading.Add(
+                Validation.Add(
                     new ValidationEntry(
                         ValidationEntrySource.Reader,
                         ValidationEntryLevel.Warning,

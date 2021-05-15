@@ -94,17 +94,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Get a db() function.
-        /// </summary>
-        /// <returns>
-        /// A new instance of db function.
-        /// </returns>
-        public static IFunction<double, double> CreateDb(SpiceExpressionMode mode)
-        {
-            return new DbFunction(mode);
-        }
-
-        /// <summary>
         /// Get a u() function.
         /// </summary>
         /// <returns>

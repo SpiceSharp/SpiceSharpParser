@@ -11,7 +11,7 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
         [Fact]
         public void Basic()
         {
-            var result = ParseNetlist(
+            var result = GetSpiceSharpModel(
                 "Random - Test circuit",
                 "V1 0 1 100",
                 "R1 1 0 {R+N}",
@@ -31,8 +31,8 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
         [Fact]
         public void OptionsSeed()
         {
-            ISpiceModel<Circuit, Simulation> parseResult2223 = null;
-            ISpiceModel<Circuit, Simulation> parseResult2224 = null;
+            SpiceSharpModel parseResult2223 = null;
+            SpiceSharpModel parseResult2224 = null;
 
             var resultsSeed2223 = new List<double>();
             var resultsSeed2224 = new List<double>();
@@ -41,7 +41,7 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
 
             for (var i = 0; i < n; i++)
             {
-                parseResult2223 = ParseNetlist(
+                parseResult2223 = GetSpiceSharpModel(
                     "Random - Seed test circuit",
                     "V1 0 1 100",
                     "R1 1 0 {R+N}",
@@ -59,7 +59,7 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
 
             for (var i = 0; i < n; i++)
             {
-                parseResult2224 = ParseNetlist(
+                parseResult2224 = GetSpiceSharpModel(
                     "Random - Seed test circuit",
                     "V1 0 1 100",
                     "R1 1 0 {R+N}",
@@ -94,8 +94,8 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
         [Fact]
         public void OptionsSeedOverridesParsingSeed()
         {
-            ISpiceModel<Circuit, Simulation> parseResult2223 = null;
-            ISpiceModel<Circuit, Simulation> parseResult2224 = null;
+            SpiceSharpModel parseResult2223 = null;
+            SpiceSharpModel parseResult2224 = null;
 
             var resultsSeed2223 = new List<double>();
             var resultsSeed2224 = new List<double>();
@@ -104,7 +104,7 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
 
             for (var i = 0; i < n; i++)
             {
-                parseResult2223 = ParseNetlist(
+                parseResult2223 = GetSpiceSharpModel(
                     1111,
                     "Random - Seed test circuit",
                     "V1 0 1 100",
@@ -123,7 +123,7 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
 
             for (var i = 0; i < n; i++)
             {
-                parseResult2224 = ParseNetlist(
+                parseResult2224 = GetSpiceSharpModel(
                     1111,
                     "Random - Seed test circuit",
                     "V1 0 1 100",
@@ -161,8 +161,8 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
         {
             for (var index = 0; index < 12; index++)
             {
-                ISpiceModel<Circuit, Simulation> parseResult2223 = null;
-                ISpiceModel<Circuit, Simulation> parseResult2224 = null;
+                SpiceSharpModel parseResult2223 = null;
+                SpiceSharpModel parseResult2224 = null;
 
                 var resultsSeed2223 = new List<double>();
                 var resultsSeed2224 = new List<double>();
@@ -171,7 +171,7 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
 
                 for (var i = 0; i < n; i++)
                 {
-                    parseResult2223 = ParseNetlist(
+                    parseResult2223 = GetSpiceSharpModel(
                         2223,
                         "Random - Seed test circuit",
                         "V1 0 1 100",
@@ -189,7 +189,7 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
 
                 for (var i = 0; i < n; i++)
                 {
-                    parseResult2224 = ParseNetlist(
+                    parseResult2224 = GetSpiceSharpModel(
                         2224,
                         "Random - Seed test circuit",
                         "V1 0 1 100",

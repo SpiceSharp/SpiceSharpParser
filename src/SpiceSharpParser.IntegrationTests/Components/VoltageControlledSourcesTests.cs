@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void VoltageControlledVoltageSourceWithVoltagePointFormat()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Voltage controlled voltage source - point format",
                 "V1 1 0 100",
                 "R1 1 0 10",
@@ -16,15 +16,15 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".OP",
                 ".END");
 
-            var export = RunOpSimulation(netlist, "V(2,0)");
-            Assert.NotNull(netlist);
+            var export = RunOpSimulation(model, "V(2,0)");
+            Assert.NotNull(model);
             Assert.Equal(150, export);
         }
 
         [Fact]
         public void VoltageControlledCurrentSourceWithVoltagePointFormat()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Voltage controlled current source - point format",
                 "V1 1 0 100",
                 "R1 1 0 10",
@@ -34,15 +34,15 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".OP",
                 ".END");
 
-            var export = RunOpSimulation(netlist, "I(R2)");
-            Assert.NotNull(netlist);
+            var export = RunOpSimulation(model, "I(R2)");
+            Assert.NotNull(model);
             Assert.Equal(-150, export);
         }
 
         [Fact]
         public void VoltageControlledCurrentSource()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Voltage controlled current source - point format",
                 "V1 1 0 200",
                 "R1 1 0 10",
@@ -52,8 +52,8 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".OP",
                 ".END");
 
-            var export = RunOpSimulation(netlist, "I(R2)");
-            Assert.NotNull(netlist);
+            var export = RunOpSimulation(model, "I(R2)");
+            Assert.NotNull(model);
             Assert.Equal(-300, export);
         }
     }

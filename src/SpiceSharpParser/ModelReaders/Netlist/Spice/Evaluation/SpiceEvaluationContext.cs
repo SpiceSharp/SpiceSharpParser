@@ -1,10 +1,8 @@
 ﻿using SpiceSharp;
-using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Evaluation.Expressions;
 using SpiceSharpParser.Common.Mathematics.Probability;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions;
-using SpiceSharpParser.Parsers.Expression;
 using System;
 using System.Collections.Generic;
 
@@ -14,7 +12,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
     {
         public SpiceEvaluationContext(
             string name,
-            SpiceExpressionMode mode,
             ISpiceNetlistCaseSensitivitySettings caseSetting,
             IRandomizer randomizer,
             IExpressionParserFactory expressionParserFactory,
@@ -31,12 +28,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
               expressionValueProvider,
               nameGenerator)
         {
-            Mode = mode;
             CreateSpiceFunctions();
             CreateSpiceParameters();
         }
-
-        public SpiceExpressionMode Mode { get; }
 
         private void CreateSpiceFunctions()
         {
@@ -47,7 +41,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
                 RandomFunctions.CreateAUnif(),
                 MathFunctions.CreateBuf(),
                 MathFunctions.CreateCbrt(),
-                MathFunctions.CreateDb(Mode),
                 ControlFunctions.CreateDef(),
                 RandomFunctions.CreateFlat(),
                 RandomFunctions.CreateGauss(),

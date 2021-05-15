@@ -11,7 +11,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
     {
         public ParallelReader(ISpiceStatementsReader statementsReader)
         {
-            StatementsReader = statementsReader;
+            StatementsReader = statementsReader ?? throw new ArgumentNullException(nameof(statementsReader));
         }
 
         public ISpiceStatementsReader StatementsReader { get; }
@@ -41,20 +41,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
                 context.NameGenerator,
                 context.StatementsReader,
                 context.WaveformReader,
-                context.CaseSensitivity,
                 context.Exporters,
-                context.WorkingDirectory,
-                context.ExpandSubcircuits,
                 context.SimulationConfiguration,
                 context.Result,
-                context.ExternalFilesEncoding);
+                context.ReaderSettings);
 
             foreach (var st in statement.Statements) 
             {
                 StatementsReader.Read(st, parallelContext);
             }
 
-            string componentName = context.ExpandSubcircuits ? context.NameGenerator.GenerateObjectName(statement.Name) : statement.Name;
+            string componentName = context.ReaderSettings.ExpandSubcircuits ? context.NameGenerator.GenerateObjectName(statement.Name) : statement.Name;
 
             var parallelEntity = new SpiceSharp.Components.Parallel(componentName, parallelContext.ContextEntities);
 

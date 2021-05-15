@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice;
+using System.IO;
+using System.Text;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.ModelWriters
@@ -16,16 +18,22 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
             var parseResult = parser.ParseNetlist(netlistContent);
 
             var writer = new SpiceSharpParser.ModelWriters.Netlist.StringWriter();
-            var writerContent = writer.Write(parseResult.PreprocessedInputModel);
+            var writerContent = writer.Write(parseResult.FinalModel);
             Assert.Equal(netlistContent, writerContent);
 
             parseResult = parser.ParseNetlist(writerContent);
 
-            double[] exports = RunOpSimulation(parseResult.SpiceModel, new[] { "V(N1)", "V(N2)", "V(N3)" });
 
-            EqualsWithTol(1.0970919064909939, exports[0]);
-            EqualsWithTol(0.014696545624995935, exports[1]);
-            EqualsWithTol(0.014715219080886419, exports[2]);
+            var spiceSharpSettings = new SpiceNetlistReaderSettings(new SpiceNetlistCaseSensitivitySettings(parser.Settings.Lexing), () => parser.Settings.WorkingDirectory, Encoding.Default);
+            var spiceSharpReader = new SpiceNetlistReader(spiceSharpSettings);
+
+            var spiceSharpModel =  spiceSharpReader.Read(parseResult.FinalModel);
+
+            double[] exports = RunOpSimulation(spiceSharpModel, new[] { "V(N1)", "V(N2)", "V(N3)" });
+
+            Assert.True(EqualsWithTol(1.0970919064909939, exports[0]));
+            Assert.True(EqualsWithTol(0.014696545624995935, exports[1]));
+            Assert.True(EqualsWithTol(0.014715219080886419, exports[2]));
         }
     }
 }

@@ -287,7 +287,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                                 "i",
                                 @params,
                                 context.Evaluator.GetEvaluationContext(simulation),
-                                context.CaseSensitivity));
+                                context.ReaderSettings.CaseSensitivity));
                     }
                 }
 
@@ -304,7 +304,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                             "v",
                             @params,
                             context.Evaluator.GetEvaluationContext(simulation),
-                            context.CaseSensitivity));
+                            context.ReaderSettings.CaseSensitivity));
                 }
             }
         }

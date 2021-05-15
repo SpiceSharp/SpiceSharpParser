@@ -7,14 +7,17 @@ using SpiceSharp.Components;
 using SpiceSharp.Entities;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using SpiceSharpParser.Parsers.Expression;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -46,13 +49,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             INameGenerator nameGenerator,
             ISpiceStatementsReader statementsReader,
             IWaveformReader waveformReader,
-            ISpiceNetlistCaseSensitivitySettings caseSettings,
             IMapper<Exporter> exporters,
-            string workingDirectory,
-            bool expandSubcircuits,
             SimulationConfiguration simulationConfiguration,
-            SpiceModel<Circuit, Simulation> result,
-            Encoding encoding)
+            SpiceSharpModel result,
+            SpiceNetlistReaderSettings readerSettings)
         {
             Name = contextName ?? throw new ArgumentNullException(nameof(contextName));
             Evaluator = evaluator;
@@ -60,19 +60,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             NameGenerator = nameGenerator ?? throw new ArgumentNullException(nameof(nameGenerator));
             Parent = parent;
             Children = new List<IReadingContext>();
-            CaseSensitivity = caseSettings;
             StatementsReader = statementsReader;
             WaveformReader = waveformReader;
             AvailableSubcircuits = CreateAvailableSubcircuitsCollection();
             AvailableSubcircuitDefinitions = CreateAvailableSubcircuitDefinitions();
-            ModelsRegistry = CreateModelsRegistry();
+            ReaderSettings = readerSettings;
             Exporters = exporters;
-            WorkingDirectory = workingDirectory;
-            ContextEntities = new Circuit(new EntityCollection(StringComparerProvider.Get(caseSettings.IsEntityNamesCaseSensitive)));
-            ExpandSubcircuits = expandSubcircuits;
+            ContextEntities = new Circuit(new EntityCollection(StringComparerProvider.Get(readerSettings.CaseSensitivity.IsEntityNamesCaseSensitive)));
             SimulationConfiguration = simulationConfiguration;
             Result = result;
-            ExternalFilesEncoding = encoding;
+
+            ModelsRegistry = CreateModelsRegistry();
+
+            Evaluator.Seed = readerSettings.Seed;
+            Evaluator.SetEntites(ContextEntities);
+            Evaluator.SetCircuitContext(this);
+
         }
 
         /// <summary>
@@ -80,18 +83,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         public SimulationConfiguration SimulationConfiguration { get; }
 
-        public SpiceModel<Circuit, Simulation> Result { get; }
+        public SpiceSharpModel Result { get; }
+
+        public SpiceNetlistReaderSettings ReaderSettings { get; }
 
         public Encoding ExternalFilesEncoding { get; set; }
-
-        public string Separator { get; }
-
-        /// <summary>
-        /// Gets the working directory.
-        /// </summary>
-        public string WorkingDirectory { get; }
-
-        /// <summary>
         /// Gets the name of context.
         /// </summary>
         public string Name { get; }
@@ -148,14 +144,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         public IWaveformReader WaveformReader { get;  }
 
-        /// <summary>
-        /// Gets the case sensitivity settings.
-        /// </summary>
-        public ISpiceNetlistCaseSensitivitySettings CaseSensitivity { get; }
-
         public Circuit ContextEntities { get; set; }
-
-        public bool ExpandSubcircuits { get; }
 
         /// <summary>
         /// Sets voltage initial condition for node.
@@ -225,7 +214,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             for (var i = 0; i < component.Nodes.Count; i++)
             {
                 string pinName = parameters.Get(i).Value;
-                if (ExpandSubcircuits)
+                if (ReaderSettings.ExpandSubcircuits)
                 {
                     nodes[i] = NameGenerator.GenerateNodeName(pinName);
                 }
@@ -305,6 +294,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 SimulationPreparations.SetParameterBeforeTemperature(entity, parameterName, expression);
             }
+        }
+
+        public ExpressionParser CreateExpressionParser(Simulation simulation)
+        {
+            var evalContext = Evaluator.GetEvaluationContext(simulation);
+            var variablesFactory = new VariablesFactory();
+
+            var parser = new ExpressionParser(
+                new CustomRealBuilder(evalContext, new Parser(), ReaderSettings.CaseSensitivity, false, variablesFactory),
+                evalContext,
+                false,
+                ReaderSettings.CaseSensitivity,
+                variablesFactory);
+
+            return parser;
         }
 
         public void SetParameter(IEntity entity, string parameterName, Parameter parameter, bool beforeTemperature = true, Simulation simulation = null)
@@ -394,8 +398,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 var generators = new List<INameGenerator>();
                 generators.Add(NameGenerator);
-                return new StochasticModelsRegistry(generators, CaseSensitivity.IsEntityNamesCaseSensitive);
+                return new StochasticModelsRegistry(generators, ReaderSettings.CaseSensitivity.IsEntityNamesCaseSensitive);
             }
         }
+
     }
 }

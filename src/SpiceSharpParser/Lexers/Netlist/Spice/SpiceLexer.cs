@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using SpiceSharpParser.Lexers.Expressions;
 using SpiceSharpParser.Models.Netlist.Spice;
-using SpiceSharpParser.Parsers.Expression.Implementation;
+using SpiceSharpParser.Parsers.Expression;
 
 namespace SpiceSharpParser.Lexers.Netlist.Spice
 {

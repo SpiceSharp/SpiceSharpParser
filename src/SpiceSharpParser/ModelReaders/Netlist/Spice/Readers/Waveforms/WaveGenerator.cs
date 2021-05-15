@@ -1,7 +1,6 @@
 ﻿using SpiceSharp.Components;
 using SpiceSharpParser.Common.FileSystem;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.Wave;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System;
@@ -48,7 +47,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 
             var filePath = PathConverter.Convert(fileParameter.Value);
             
-            var workingDirectory = context.WorkingDirectory ?? Directory.GetCurrentDirectory();
+            var workingDirectory = context.ReaderSettings.WorkingDirectory ?? Directory.GetCurrentDirectory();
             var fullFilePath = Path.Combine(workingDirectory, filePath);
 
             if (!File.Exists(fullFilePath))
@@ -57,10 +56,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             }
 
             byte[] fileContent = File.ReadAllBytes(fullFilePath);
-
-            var reader = new WaveFileReader(fileContent);
-            var result = reader.Read();
-
+            
             var amplitude = DefaultAmplidude;
 
             if (ampliduteParameter != null)
@@ -69,12 +65,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             }
 
             int channel = (int)context.Evaluator.EvaluateDouble(channelParameter.Value);
-            var pwlRawData = result.ConverToPwl(channel, amplitude);
 
-            var pwl = new Pwl();
-            pwl.Points = pwlRawData.Select(raw => new Point(raw.Item1, raw.Item2));
-
-            return pwl;
+            return new Wave.Wave(fileContent, channel, amplitude);
         }
     }
 }

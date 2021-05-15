@@ -1,6 +1,7 @@
 ﻿using SpiceSharp.Entities;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common.Evaluation.Expressions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -45,7 +46,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
                         foreach (var entityUpdate in beforeTemperature)
                         {
-                            Common.Evaluation.EvaluationContext context = GetEntityContext(simulation, entity.Name);
+                            EvaluationContext context = GetEntityContext(simulation, entity.Name);
                             if (context != null)
                             {
                                 var value = entityUpdate.GetValue(context);
@@ -68,7 +69,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
                             foreach (var entityUpdate in beforeTemperature)
                             {
-                                Common.Evaluation.EvaluationContext context = GetEntityContext(simulation, entityPair.Key.Name);
+                                EvaluationContext context = GetEntityContext(simulation, entityPair.Key.Name);
                                 if (context != null)
                                 {
                                     var value = entityUpdate.GetValue(context);
@@ -210,7 +211,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
             }
         }
 
-        private Common.Evaluation.EvaluationContext GetEntityContext(Simulation simulation, string entityName)
+        private EvaluationContext GetEntityContext(Simulation simulation, string entityName)
         {
             var context = Contexts.GetContext(simulation).Find(entityName);
             return context;

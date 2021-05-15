@@ -12,9 +12,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         public override IEntity Generate(string name, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
             var losslessLine = new LosslessTransmissionLine(name);
-            context.CreateNodes(losslessLine, parameters);
-
-            parameters = parameters.Skip(4);
+            context.CreateNodes(losslessLine, parameters.Take(LosslessTransmissionLine.PinCount));
+            parameters = parameters.Skip(LosslessTransmissionLine.PinCount);
 
             foreach (Parameter parameter in parameters)
             {

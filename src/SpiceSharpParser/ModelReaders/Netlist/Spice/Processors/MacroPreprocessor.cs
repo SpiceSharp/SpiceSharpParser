@@ -1,4 +1,5 @@
-﻿using SpiceSharpParser.Lexers.BusSuffix;
+﻿using SpiceSharpParser.Common.Validation;
+using SpiceSharpParser.Lexers.BusSuffix;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharpParser.Parsers.BusSuffix;
@@ -9,7 +10,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {
     public class MacroPreprocessor : IProcessor
     {
-        public SpiceParserValidationResult Validation { get; set; }
+        public ValidationEntryCollection Validation { get; set; }
 
         public Statements Process(Statements statements)
         {

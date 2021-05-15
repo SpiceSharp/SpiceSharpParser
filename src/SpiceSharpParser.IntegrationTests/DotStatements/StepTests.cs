@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void StepWithoutDeclaration()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Step - Test circuit",
                 "V1 0 1 100",
                 "R1 1 0 {R}",
@@ -18,10 +18,10 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".STEP PARAM N LIST 1 2 {S}",
                 ".END");
 
-            Assert.Equal(3, result.Exports.Count);
-            Assert.Equal(3, result.Simulations.Count);
+            Assert.Equal(3, model.Exports.Count);
+            Assert.Equal(3, model.Simulations.Count);
 
-            var exports = RunSimulationsAndReturnExports(result);
+            var exports = RunSimulationsAndReturnExports(model);
 
             for (var i = 0; i < exports.Count; i++)
             {
@@ -32,7 +32,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void ParamList()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Step - Test circuit",
                 "V1 0 1 100",
                 "R1 1 0 {R}",
@@ -43,10 +43,10 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".STEP PARAM N LIST 1 2 3",
                 ".END");
 
-            Assert.Equal(3, result.Exports.Count);
-            Assert.Equal(3, result.Simulations.Count);
+            Assert.Equal(3, model.Exports.Count);
+            Assert.Equal(3, model.Simulations.Count);
 
-            var exports = RunSimulationsAndReturnExports(result);
+            var exports = RunSimulationsAndReturnExports(model);
 
             for (var i = 0; i < exports.Count; i++)
             {
@@ -57,7 +57,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void ParamDependencyList()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Step - Test circuit",
                 "V1 0 1 100",
                 "R1 1 0 {R}",
@@ -70,10 +70,10 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".STEP PARAM N LIST 1 2 3",
                 ".END");
 
-            Assert.Equal(3, result.Exports.Count);
-            Assert.Equal(3, result.Simulations.Count);
+            Assert.Equal(3, model.Exports.Count);
+            Assert.Equal(3, model.Simulations.Count);
 
-            var exports = RunSimulationsAndReturnExports(result);
+            var exports = RunSimulationsAndReturnExports(model);
 
             for (var i = 0; i < exports.Count; i++)
             {
@@ -84,7 +84,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void ParamListWithTableInterpolation()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Step - Test circuit",
                 "V1 0 1 100",
                 "R1 1 0 {R}",
@@ -95,10 +95,10 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".STEP PARAM N LIST 1 2 3",
                 ".END");
 
-            Assert.Equal(3, result.Exports.Count);
-            Assert.Equal(3, result.Simulations.Count);
+            Assert.Equal(3, model.Exports.Count);
+            Assert.Equal(3, model.Simulations.Count);
 
-            var exports = RunSimulationsAndReturnExports(result);
+            var exports = RunSimulationsAndReturnExports(model);
 
             for (var i = 0; i < exports.Count; i++)
             {
@@ -109,7 +109,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void ParamLin()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Step - Test circuit",
                 "V1 0 1 100",
                 "R1 1 0 {R}",
@@ -120,10 +120,10 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".STEP PARAM N 1 4 1",
                 ".END");
 
-            Assert.Equal(4, result.Exports.Count);
-            Assert.Equal(4, result.Simulations.Count);
+            Assert.Equal(4, model.Exports.Count);
+            Assert.Equal(4, model.Simulations.Count);
 
-            var exports = RunSimulationsAndReturnExports(result);
+            var exports = RunSimulationsAndReturnExports(model);
 
             for (var i = 0; i < exports.Count; i++)
             {
@@ -134,7 +134,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void StepParamSubcktGlobal()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Step - Subcircuit + STEP",
                 "V1 IN 0 4.0",
                 "X1 IN OUT twoResistors R1=1 R2=2",
@@ -148,24 +148,24 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".STEP PARAM X LIST 1 5",
                 ".END");
 
-            Assert.Equal(2, result.Exports.Count);
-            Assert.Equal(2, result.Simulations.Count);
+            Assert.Equal(2, model.Exports.Count);
+            Assert.Equal(2, model.Simulations.Count);
 
-            var exports = RunSimulationsAndReturnExports(result);
+            var exports = RunSimulationsAndReturnExports(model);
 
             // Get references
             double[] references = { 1.0, 0.5 };
 
             for (var i = 0; i < exports.Count; i++)
             {
-                EqualsWithTol((double)exports[i], references[i]);
+                Assert.True(EqualsWithTol((double)exports[i], references[i]));
             }
         }
 
         [Fact]
         public void StepParamSubcktParam()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Step - Subcircuit + STEP",
                 "V1 IN 0 4.0",
                 "X1 IN OUT twoResistors R1={X} R2=2",
@@ -179,24 +179,24 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".STEP PARAM X LIST 1 5",
                 ".END");
 
-            Assert.Equal(2, result.Exports.Count);
-            Assert.Equal(2, result.Simulations.Count);
+            Assert.Equal(2, model.Exports.Count);
+            Assert.Equal(2, model.Simulations.Count);
 
-            var exports = RunSimulationsAndReturnExports(result);
+            var exports = RunSimulationsAndReturnExports(model);
 
             // Get references
             double[] references = { 1.0, 0.5 };
 
             for (var i = 0; i < exports.Count; i++)
             {
-                EqualsWithTol((double)exports[i], references[i]);
+                Assert.True(EqualsWithTol((double)exports[i], references[i]));
             }
         }
 
         [Fact]
         public void StepParamSubcktParamComplex()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Step - Subcircuit + STEP",
                 "V1 IN 0 4.0",
                 "X1 IN OUT twoResistors R1={X} R2=2",
@@ -213,24 +213,24 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".STEP PARAM X LIST 1 5",
                 ".END");
 
-            Assert.Equal(2, result.Exports.Count);
-            Assert.Equal(2, result.Simulations.Count);
+            Assert.Equal(2, model.Exports.Count);
+            Assert.Equal(2, model.Simulations.Count);
 
-            var exports = RunSimulationsAndReturnExports(result);
+            var exports = RunSimulationsAndReturnExports(model);
 
             // Get references
             double[] references = { 1.0, 0.5 };
 
             for (var i = 0; i < exports.Count; i++)
             {
-                EqualsWithTol((double)exports[i], references[i]);
+                Assert.True(EqualsWithTol((double)exports[i], references[i]));
             }
         }
 
         [Fact]
         public void SourceDefaultLin()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Step - Test circuit",
                 "V1 0 1",
                 "R1 1 0 100",
@@ -239,21 +239,21 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".STEP V1 1 100 1",
                 ".END");
 
-            Assert.Equal(100, result.Exports.Count);
-            Assert.Equal(100, result.Simulations.Count);
+            Assert.Equal(100, model.Exports.Count);
+            Assert.Equal(100, model.Simulations.Count);
 
-            var exports = RunSimulationsAndReturnExports(result);
+            var exports = RunSimulationsAndReturnExports(model);
 
             for (var i = 0; i < exports.Count; i++)
             {
-                EqualsWithTol(-1.0 * (i + 1) / 100.0, (double)exports[i]);
+                Assert.True(EqualsWithTol(-1.0 * (i + 1) / 100.0, (double)exports[i]));
             }
         }
 
         [Fact]
         public void SourceLin()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Step - Test circuit",
                 "V1 0 1",
                 "R1 1 0 100",
@@ -262,21 +262,21 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".STEP LIN V1 1 100 1",
                 ".END");
 
-            Assert.Equal(100, result.Exports.Count);
-            Assert.Equal(100, result.Simulations.Count);
+            Assert.Equal(100, model.Exports.Count);
+            Assert.Equal(100, model.Simulations.Count);
 
-            var exports = RunSimulationsAndReturnExports(result);
+            var exports = RunSimulationsAndReturnExports(model);
 
             for (var i = 0; i < exports.Count; i++)
             {
-                EqualsWithTol(-1.0 * (i + 1) / 100.0, (double)exports[i]);
+                Assert.True(EqualsWithTol(-1.0 * (i + 1) / 100.0, (double)exports[i]));
             }
         }
 
         [Fact]
         public void SourceList()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Step - Test circuit",
                 "V1 0 1",
                 "R1 1 0 100",
@@ -285,21 +285,21 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".STEP V1 LIST 1 2 3 4",
                 ".END");
 
-            Assert.Equal(4, result.Exports.Count);
-            Assert.Equal(4, result.Simulations.Count);
+            Assert.Equal(4, model.Exports.Count);
+            Assert.Equal(4, model.Simulations.Count);
 
-            var exports = RunSimulationsAndReturnExports(result);
+            var exports = RunSimulationsAndReturnExports(model);
 
             for (var i = 0; i < exports.Count; i++)
             {
-                EqualsWithTol(-1.0 * (i + 1) / 100.0, (double)exports[i]);
+                Assert.True(EqualsWithTol(-1.0 * (i + 1) / 100.0, (double)exports[i]));
             }
         }
 
         [Fact]
         public void SourceDec()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Step - Test circuit",
                 "V1 0 1",
                 "R1 1 0 100",
@@ -308,19 +308,20 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".STEP DEC V1 1 100 1",
                 ".END");
 
-            Assert.Equal(3, result.Exports.Count);
-            Assert.Equal(3, result.Simulations.Count);
+            Assert.Equal(3, model.Exports.Count);
+            Assert.Equal(3, model.Simulations.Count);
 
-            var exports = RunSimulationsAndReturnExports(result);
-            EqualsWithTol(-1 / 100.0, (double)exports[0]);
-            EqualsWithTol(-10.000000000000002 / 100.0, (double)exports[1]);
-            EqualsWithTol(-100.00000000000004 / 100.0, (double)exports[2]);
+            var exports = RunSimulationsAndReturnExports(model);
+
+            Assert.True(EqualsWithTol(-1 / 100.0, (double)exports[0]));
+            Assert.True(EqualsWithTol(-10.000000000000002 / 100.0, (double)exports[1]));
+            Assert.True(EqualsWithTol(-100.00000000000004 / 100.0, (double)exports[2]));
         }
 
         [Fact]
         public void ModelList()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Step - Diode circuit",
                 "D1 OUT 0 1N914",
                 "R1 OUT 1 100",
@@ -331,22 +332,22 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".STEP D 1N914(N) LIST 1.752 1.234 1.2 1.0 0.1",
                 ".END");
 
-            Assert.Equal(5, result.Exports.Count);
-            Assert.Equal(5, result.Simulations.Count);
-            var exports = RunSimulationsAndReturnExports(result);
+            Assert.Equal(5, model.Exports.Count);
+            Assert.Equal(5, model.Simulations.Count);
+            var exports = RunSimulationsAndReturnExports(model);
 
             // values not verified with other simulators
-            EqualsWithTol(2.52068480498246E-09, (double)exports[0]);
-            EqualsWithTol(2.52088986490984E-09, (double)exports[1]);
-            EqualsWithTol(2.52089871893846E-09, (double)exports[2]);
-            EqualsWithTol(2.5209413879318E-09, (double)exports[3]);
-            EqualsWithTol(2.520999941788E-09, (double)exports[4]);
+            Assert.True(EqualsWithTol(2.52068480498246E-09, (double)exports[0]));
+            Assert.True(EqualsWithTol(2.52088986490984E-09, (double)exports[1]));
+            Assert.True(EqualsWithTol(2.52089871893846E-09, (double)exports[2]));
+            Assert.True(EqualsWithTol(2.5209413879318E-09, (double)exports[3]));
+            Assert.True(EqualsWithTol(2.520999941788E-09, (double)exports[4]));
         }
 
         [Fact]
         public void ModelLinCount()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Step - Diode circuit",
                 "D1 OUT 0 1N914",
                 "R1 OUT 1 100",
@@ -357,14 +358,14 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".STEP D 1N914(N) 5 10 0.5",
                 ".END");
 
-            Assert.Equal(11, result.Exports.Count);
-            Assert.Equal(11, result.Simulations.Count);
+            Assert.Equal(11, model.Exports.Count);
+            Assert.Equal(11, model.Simulations.Count);
         }
 
         [Fact]
         public void TempLinCount()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Step - Diode circuit",
                 "D1 OUT 0 1N914",
                 "R1 OUT 1 100",
@@ -375,8 +376,8 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".STEP TEMP 50 100 0.5",
                 ".END");
 
-            Assert.Equal(101, result.Exports.Count);
-            Assert.Equal(101, result.Simulations.Count);
+            Assert.Equal(101, model.Exports.Count);
+            Assert.Equal(101, model.Simulations.Count);
         }
     }
 }

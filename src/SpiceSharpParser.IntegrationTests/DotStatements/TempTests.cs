@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void TempVariableWorks()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Temp - Diode circuit",
                 "D1 OUT 0 1N914",
                 "R1 OUT 1 100",
@@ -18,18 +18,18 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".TEMP 26 27",
                 ".END");
 
-            Assert.Equal(2, netlist.Exports.Count);
+            Assert.Equal(2, model.Exports.Count);
 
-            var export = RunSimulationsAndReturnExports(netlist);
+            var export = RunSimulationsAndReturnExports(model);
             Assert.Equal(2, export.Count);
-            EqualsWithTol(2.30935768424922E-09, (double)export[0]);
-            EqualsWithTol(2.2407198249641E-09, (double)export[1]);
+            Assert.True(EqualsWithTol(2.30935768424922E-09, (double)export[0]));
+            Assert.True(EqualsWithTol(2.2407198249641E-09, (double)export[1]));
         }
 
         [Fact]
         public void TempVariableParamWorks()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Temp - Diode circuit",
                 "R1 1 0 {X}",
                 "V1 1 0 10",
@@ -42,15 +42,16 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.Equal(2, netlist.Exports.Count);
 
             var export = RunSimulationsAndReturnExports(netlist);
+            
             Assert.Equal(2, export.Count);
-            EqualsWithTol(-0.769230769230769, (double)export[0]);
-            EqualsWithTol(-0.740740740740741, (double)export[1]);
+            Assert.True(EqualsWithTol(-0.769230769230769, (double)export[0]));
+            Assert.True(EqualsWithTol(-0.740740740740741, (double)export[1]));
         }
 
         [Fact]
         public void TempStatementMultiplySimulations()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Temp - Diode circuit",
                 "D1 OUT 0 1N914",
                 "R1 OUT 1 100",
@@ -68,7 +69,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void TempStatementOverridesOptions()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Temp - Diode circuit",
                 "D1 OUT 0 1N914",
                 "R1 OUT 1 100",
@@ -81,13 +82,14 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".END");
 
             var export = RunOpSimulation(netlist, "i(V1)");
-            EqualsWithTol(2.30935768424922E-09, export);
+
+            Assert.True(EqualsWithTol(2.30935768424922E-09, export));
         }
 
         [Fact]
         public void WhenTempIs27EqualsToSpice()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Temp - Diode circuit",
                 "D1 OUT 0 1N914",
                 "R1 OUT 1 100",
@@ -99,13 +101,13 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".END");
 
             var export = RunOpSimulation(netlist, "i(V1)");
-            EqualsWithTol(2.5206849402909E-09, export);
+            Assert.True(EqualsWithTol(2.5206849402909E-09, export));
         }
 
         [Fact]
         public void WhenTempIsNot27()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Temp - Diode circuit",
                 "D1 OUT 0 1N914",
                 "R1 OUT 1 100",
@@ -117,13 +119,13 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".END");
 
             var export = RunOpSimulation(netlist, "i(V1)");
-            EqualsWithTol(2.30935768424922E-09, export);
+            Assert.True(EqualsWithTol(2.30935768424922E-09, export));
         }
 
         [Fact]
         public void WhenTNomIs27EqualsToSpice()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Temp - Diode circuit",
                 "D1 OUT 0 1N914",
                 "R1 OUT 1 100",
@@ -135,13 +137,13 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".END");
 
             var export = RunOpSimulation(netlist, "i(V1)");
-            EqualsWithTol(2.5206849402909E-09, export);
+            Assert.True(EqualsWithTol(2.5206849402909E-09, export));
         }
 
         [Fact]
         public void WhenTNomIsNot27()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Temp - Diode circuit",
                 "D1 OUT 0 1N914",
                 "R1 OUT 1 100",
@@ -153,13 +155,13 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".END");
 
             var export = RunOpSimulation(netlist, "i(V1)");
-            EqualsWithTol(2.75136240873719E-09, export); 
+            Assert.True(EqualsWithTol(2.75136240873719E-09, export)); 
         }
 
         [Fact]
         public void NoOptionsEqualsToSpice()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Temp - Diode circuit",
                 "D1 OUT 0 1N914",
                 "R1 OUT 1 100",
@@ -170,7 +172,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".END");
 
             var export = RunOpSimulation(netlist, "i(V1)");
-            EqualsWithTol(2.5206849402909E-09, export);
+            Assert.True(EqualsWithTol(2.5206849402909E-09, export));
         }
     }
 }

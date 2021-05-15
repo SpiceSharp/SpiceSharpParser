@@ -4,8 +4,8 @@ using SpiceSharpParser.Models.Netlist.Spice;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SpiceSharp;
 using Xunit;
+using System.Text;
 
 namespace SpiceSharpParser.IntegrationTests
 {
@@ -21,7 +21,7 @@ namespace SpiceSharpParser.IntegrationTests
         /// </summary>
         private double RelTol = 1e-3;
 
-        public static ISpiceModel<Circuit, Simulation> ParseNetlistInWorkingDirectory(string workingDirectory, params string[] lines)
+        public static SpiceSharpModel GetSpiceSharpModelWithWorkingDirectoryParameter(string workingDirectory, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
             var parser = new SpiceParser();
@@ -32,10 +32,13 @@ namespace SpiceSharpParser.IntegrationTests
 
             var parserResult = parser.ParseNetlist(text);
 
-            return parserResult.SpiceModel;
+            var spiceSharpSettings = new SpiceNetlistReaderSettings(new SpiceNetlistCaseSensitivitySettings(parser.Settings.Lexing), () => parser.Settings.WorkingDirectory, Encoding.Default);
+            var spiceSharpReader = new SpiceNetlistReader(spiceSharpSettings);
+
+            return spiceSharpReader.Read(parserResult.FinalModel);
         }
 
-        public static ISpiceModel<Circuit, Simulation> ParseNetlist(params string[] lines)
+        public static SpiceSharpModel GetSpiceSharpModel(params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
             var parser = new SpiceParser();
@@ -43,9 +46,13 @@ namespace SpiceSharpParser.IntegrationTests
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Parsing.IsEndRequired = true;
 
-            return parser.ParseNetlist(text).SpiceModel;
-        }
+            var parserResult = parser.ParseNetlist(text);
 
+            var spiceSharpSettings = new SpiceNetlistReaderSettings(new SpiceNetlistCaseSensitivitySettings(parser.Settings.Lexing), () => parser.Settings.WorkingDirectory, Encoding.Default);
+            var spiceSharpReader = new SpiceNetlistReader(spiceSharpSettings);
+
+            return spiceSharpReader.Read(parserResult.FinalModel);
+        }
 
         public static SpiceParserResult ParseNetlistRaw(bool enableBusSyntax = false, params string[] lines)
         {
@@ -59,26 +66,33 @@ namespace SpiceSharpParser.IntegrationTests
             return parser.ParseNetlist(text);
         }
 
-        public static ISpiceModel<Circuit, Simulation> ParseNetlist(int randomSeed, params string[] lines)
+        public static SpiceSharpModel GetSpiceSharpModel(int randomSeed, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
             var parser = new SpiceParser();
 
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Parsing.IsEndRequired = true;
-            parser.Settings.Reading.Seed = randomSeed;
+            var parserResult = parser.ParseNetlist(text);
 
-            return parser.ParseNetlist(text).SpiceModel;
+            var spiceSharpSettings = new SpiceNetlistReaderSettings(new SpiceNetlistCaseSensitivitySettings(parser.Settings.Lexing), () => parser.Settings.WorkingDirectory, Encoding.Default)
+            {
+                Seed = randomSeed
+            };
+
+            var spiceSharpReader = new SpiceNetlistReader(spiceSharpSettings);
+
+            return spiceSharpReader.Read(parserResult.FinalModel);
         }
 
-        public static SpiceNetlist ParseNetlistToModel(bool isEndRequired, bool hasTitle, params string[] lines)
+        public static SpiceNetlist ParseNetlist(bool isEndRequired, bool hasTitle, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
             var parser = new SpiceParser();
             parser.Settings.Lexing.HasTitle = hasTitle;
             parser.Settings.Parsing.IsEndRequired = isEndRequired;
 
-            return parser.ParseNetlist(text).PreprocessedInputModel;
+            return parser.ParseNetlist(text).FinalModel;
         }
 
         public static SpiceNetlist ParseNetlistToModel(bool isEndRequired, bool hasTitle, string text)
@@ -87,7 +101,7 @@ namespace SpiceSharpParser.IntegrationTests
             parser.Settings.Lexing.HasTitle = hasTitle;
             parser.Settings.Parsing.IsEndRequired = isEndRequired;
 
-            return parser.ParseNetlist(text).PreprocessedInputModel;
+            return parser.ParseNetlist(text).FinalModel;
         }
 
         public static SpiceNetlist ParseNetlistToModel(bool isEndRequired, bool isNewlineRequired, bool hasTitle, params string[] lines)
@@ -98,7 +112,7 @@ namespace SpiceSharpParser.IntegrationTests
             parser.Settings.Parsing.IsEndRequired = isEndRequired;
             parser.Settings.Parsing.IsNewlineRequired = isNewlineRequired;
 
-            return parser.ParseNetlist(text).PreprocessedInputModel;
+            return parser.ParseNetlist(text).FinalModel;
         }
 
         /// <summary>
@@ -108,7 +122,7 @@ namespace SpiceSharpParser.IntegrationTests
         /// <returns>
         /// A list of exports list
         /// </returns>
-        public static List<object> RunSimulationsAndReturnExports(ISpiceModel<Circuit, Simulation> readerResult)
+        public static List<object> RunSimulationsAndReturnExports(SpiceSharpModel readerResult)
         {
             var result = new List<object>();
 
@@ -160,7 +174,7 @@ namespace SpiceSharpParser.IntegrationTests
         /// <returns>
         /// A list of exports list
         /// </returns>
-        public static void RunSimulations(ISpiceModel<Circuit, Simulation> readerResult)
+        public static void RunSimulations(SpiceSharpModel readerResult)
         {
             foreach (var simulation in readerResult.Simulations)
             {
@@ -168,7 +182,7 @@ namespace SpiceSharpParser.IntegrationTests
             }
         }
 
-        public static double RunOpSimulation(ISpiceModel<Circuit, Simulation> readerResult, string nameOfExport)
+        public static double RunOpSimulation(SpiceSharpModel readerResult, string nameOfExport)
         {
             double result = double.NaN;
             var export = readerResult.Exports.Find(e => e.Name == nameOfExport);
@@ -183,7 +197,7 @@ namespace SpiceSharpParser.IntegrationTests
             return result;
         }
 
-        public static double[] RunOpSimulation(ISpiceModel<Circuit, Simulation> readerResult, params string[] nameOfExport)
+        public static double[] RunOpSimulation(SpiceSharpModel readerResult, params string[] nameOfExport)
         {
             var simulation = readerResult.Simulations.Single();
             double[] result = new double[nameOfExport.Length];
@@ -202,7 +216,7 @@ namespace SpiceSharpParser.IntegrationTests
             return result;
         }
 
-        public static Tuple<string, double>[] RunOpSimulation(ISpiceModel<Circuit, Simulation> readerResult)
+        public static Tuple<string, double>[] RunOpSimulation(SpiceSharpModel readerResult)
         {
             var simulation = readerResult.Simulations.First(s => s is OP);
             Tuple<string, double>[] result = new Tuple<string, double>[readerResult.Exports.Count];
@@ -228,7 +242,7 @@ namespace SpiceSharpParser.IntegrationTests
             return result;
         }
 
-        public static Tuple<double, double>[] RunTransientSimulation(ISpiceModel<Circuit, Simulation> readerResult, string nameOfExport)
+        public static Tuple<double, double>[] RunTransientSimulation(SpiceSharpModel readerResult, string nameOfExport)
         {
             var list = new List<Tuple<double, double>>();
 
@@ -244,7 +258,7 @@ namespace SpiceSharpParser.IntegrationTests
             return list.ToArray();
         }
 
-        public static Tuple<double, double>[] RunDCSimulation(ISpiceModel<Circuit, Simulation> readerResult, string nameOfExport)
+        public static Tuple<double, double>[] RunDCSimulation(SpiceSharpModel readerResult, string nameOfExport)
         {
             var list = new List<Tuple<double, double>>();
 
@@ -260,7 +274,7 @@ namespace SpiceSharpParser.IntegrationTests
             return list.ToArray();
         }
 
-        protected void EqualsWithTol(IEnumerable<Tuple<double, double>> exports, Func<double, double> reference)
+        protected bool EqualsWithTol(IEnumerable<Tuple<double, double>> exports, Func<double, double> reference)
         {
             using (var exportIt = exports.GetEnumerator())
             {
@@ -270,24 +284,23 @@ namespace SpiceSharpParser.IntegrationTests
                     double expected = reference(exportIt.Current.Item1);
                     double tol = Math.Max(Math.Abs(actual), Math.Abs(expected)) * RelTol + AbsTol;
 
-                    Assert.True(Math.Abs(expected - actual) < tol);
+                    if (Math.Abs(expected - actual) > tol)
+                    {
+                        return false;
+                    }
                 }
             }
+
+            return true;
         }
 
-        protected bool EqualsWithToWithoutAssert(double expected, double actual)
+        protected bool EqualsWithTol(double expected, double actual)
         {
             double tol = Math.Max(Math.Abs(actual), Math.Abs(expected)) * RelTol + AbsTol;
             return Math.Abs(expected - actual) < tol;
         }
 
-        protected void EqualsWithTol(double expected, double actual)
-        {
-            double tol = Math.Max(Math.Abs(actual), Math.Abs(expected)) * RelTol + AbsTol;
-            Assert.True(Math.Abs(expected - actual) < tol, $"Actual={actual} expected={expected}");
-        }
-
-        protected void EqualsWithTol(IEnumerable<Tuple<double, double>> exports, IEnumerable<double> references)
+        protected bool EqualsWithTol(IEnumerable<Tuple<double, double>> exports, IEnumerable<double> references)
         {
             using (var exportIt = exports.GetEnumerator())
             using (var referencesIt = references.GetEnumerator())
@@ -297,12 +310,17 @@ namespace SpiceSharpParser.IntegrationTests
                     double actual = exportIt.Current.Item2;
                     double expected = referencesIt.Current;
                     double tol = Math.Max(Math.Abs(actual), Math.Abs(expected)) * RelTol + AbsTol;
-                    Assert.True(Math.Abs(expected - actual) < tol);
+                    if (Math.Abs(expected - actual) > tol)
+                    {
+                        return false;
+                    }
                 }
             }
+
+            return true;
         }
 
-        protected void EqualsWithTol(IEnumerable<double> exports, IEnumerable<double> references)
+        protected bool EqualsWithTol(IEnumerable<double> exports, IEnumerable<double> references)
         {
             using (var exportIt = exports.GetEnumerator())
             using (var referencesIt = references.GetEnumerator())
@@ -312,9 +330,14 @@ namespace SpiceSharpParser.IntegrationTests
                     double actual = exportIt.Current;
                     double expected = referencesIt.Current;
                     double tol = Math.Max(Math.Abs(actual), Math.Abs(expected)) * RelTol + AbsTol;
-                    Assert.True(Math.Abs(expected - actual) < tol);
+                    if (Math.Abs(expected - actual) > tol)
+                    {
+                        return false;
+                    }
                 }
             }
+
+            return true;
         }
     }
 }

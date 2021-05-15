@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void LetConst()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Let - Low-pass RC circuit - The capacitor should act like an open circuit",
                 "V1 IN 0 10.0",
                 "R1 IN OUT 10e3",
@@ -17,7 +17,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".LET VX {1}",
                 ".END");
 
-            double export = RunOpSimulation(netlist, "VX");
+            double export = RunOpSimulation(model, "VX");
 
             Assert.Equal(1, export);
         }
@@ -25,7 +25,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void LetVoltage()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Let - Low-pass RC circuit - The capacitor should act like an open circuit",
                 "V1 IN 0 10.0",
                 "R1 IN OUT 10e3",
@@ -35,7 +35,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".LET VX {V(IN)}",
                 ".END");
 
-            double export = RunOpSimulation(netlist, "VX");
+            double export = RunOpSimulation(model, "VX");
 
             Assert.Equal(10, export);
         }
@@ -43,7 +43,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void LetBasic()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Let - Low-pass RC circuit - The capacitor should act like an open circuit",
                 "V1 IN 0 10.0",
                 "R1 IN OUT 10e3",
@@ -54,7 +54,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".LET avg {0.5 * (V(OUT) + V(IN))}",
                 ".END");
 
-            double[] export = RunOpSimulation(netlist, "VX", "avg");
+            double[] export = RunOpSimulation(model, "VX", "avg");
 
             Assert.Equal(2, export[0]);
             Assert.Equal(10, export[1]);
@@ -63,7 +63,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void LetResistance()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Let - Simple circuit",
                 "V1 0 1 10.0",
                 "R1 1 0 {R}",
@@ -73,14 +73,14 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".SAVE something",
                 ".END");
 
-            double export = RunOpSimulation(netlist, "something");
+            double export = RunOpSimulation(model, "something");
             Assert.Equal(1000, export);
         }
 
         [Fact]
         public void LetResistanceFunc()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Let - Simple circuit",
                 "V1 0 1 10.0",
                 "R1 1 0 {R}",
@@ -92,14 +92,14 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".SAVE something",
                 ".END");
 
-            double export = RunOpSimulation(netlist, "something");
+            double export = RunOpSimulation(model, "something");
             Assert.Equal(1001, export);
         }
 
         [Fact]
         public void ReferenceInLet()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Let - Subcircuit test",
                 "V1 IN 0 4.0",
                 "X1 IN OUT twoResistorsInSeries R1=1 R2=2",
@@ -119,7 +119,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".SAVE V(OUT) double_current triple_current_plus_1",
                 ".END");
 
-            double[] export = RunOpSimulation(netlist, "V(OUT)", "double_current", "triple_current_plus_1");
+            double[] export = RunOpSimulation(model, "V(OUT)", "double_current", "triple_current_plus_1");
 
             Assert.Equal(1, export[0]);
             Assert.Equal(2, export[1]);
@@ -129,7 +129,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void ReferenceAsArgumentInLet()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Let - Subcircuit test",
                 "V1 IN 0 4.0",
                 "X1 IN OUT twoResistorsInSeries R1=1 R2=2",
@@ -148,7 +148,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".SAVE V(OUT) log_current",
                 ".END");
 
-            double[] export = RunOpSimulation(netlist, "V(OUT)", "log_current");
+            double[] export = RunOpSimulation(model, "V(OUT)", "log_current");
 
             Assert.Equal(1, export[0]);
             Assert.Equal(0, export[1]);

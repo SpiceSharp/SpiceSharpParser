@@ -9,7 +9,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void McWithoutSaveLet()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Monte Carlo Analysis - OP - POWER",
                 "V1 0 1 100",
                 "R1 1 0 {R}",
@@ -19,11 +19,11 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".MC 1000 OP power MAX",
                 ".END");
 
-            Assert.Equal(1000, result.Simulations.Count);
-            Assert.True(result.MonteCarloResult.Enabled);
-            RunSimulations(result);
+            Assert.Equal(1000, model.Simulations.Count);
+            Assert.True(model.MonteCarloResult.Enabled);
+            RunSimulations(model);
 
-            var mcResult = result.MonteCarloResult;
+            var mcResult = model.MonteCarloResult;
             var histPlot = mcResult.GetPlot(10);
 
             Assert.Equal(10, histPlot.Bins.Count);
@@ -33,7 +33,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void McWithoutSaveVoltage()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Monte Carlo Analysis - OP - POWER",
                 "V1 0 1 100",
                 "R1 1 0 {R}",
@@ -42,11 +42,11 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".MC 1000 OP V(1) MAX",
                 ".END");
 
-            Assert.Equal(1000, result.Simulations.Count);
-            Assert.True(result.MonteCarloResult.Enabled);
-            RunSimulations(result);
+            Assert.Equal(1000, model.Simulations.Count);
+            Assert.True(model.MonteCarloResult.Enabled);
+            RunSimulations(model);
 
-            var mcResult = result.MonteCarloResult;
+            var mcResult = model.MonteCarloResult;
             var histPlot = mcResult.GetPlot(10);
 
             Assert.Single(histPlot.Bins);
@@ -56,7 +56,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void McOp()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Monte Carlo Analysis - OP - POWER",
                 "V1 0 1 100",
                 "R1 1 0 {R}",
@@ -67,11 +67,11 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".MC 1000 OP power MAX",
                 ".END");
 
-            Assert.Equal(1000, result.Simulations.Count);
-            Assert.True(result.MonteCarloResult.Enabled);
-            RunSimulations(result);
+            Assert.Equal(1000, model.Simulations.Count);
+            Assert.True(model.MonteCarloResult.Enabled);
+            RunSimulations(model);
 
-            var mcResult = result.MonteCarloResult;
+            var mcResult = model.MonteCarloResult;
             var histPlot = mcResult.GetPlot(10);
 
             Assert.Equal(10, histPlot.Bins.Count);
@@ -81,7 +81,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void McWrongFunction()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Monte Carlo Analysis - O - POWER",
                 "V1 0 1 100",
                 "R1 1 0 {R}",
@@ -92,11 +92,11 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".MC 1000 OP power MAX1",
                 ".END");
 
-            Assert.Equal(1000, result.Simulations.Count);
-            Assert.True(result.MonteCarloResult.Enabled);
-            RunSimulations(result);
+            Assert.Equal(1000, model.Simulations.Count);
+            Assert.True(model.MonteCarloResult.Enabled);
+            RunSimulations(model);
 
-            var mcResult = result.MonteCarloResult;
+            var mcResult = model.MonteCarloResult;
 
             Assert.Throws<SpiceSharpParserException>(() => mcResult.GetPlot(10));
         }
@@ -104,7 +104,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void McOpDeviceParameter()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Monte Carlo Analysis - OP - POWER",
                 "V1 0 1 100",
                 "R1 1 0 {R}",
@@ -115,10 +115,10 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".MC 1000 OP power MAX",
                 ".END");
 
-            Assert.Equal(1000, result.Simulations.Count);
-            Assert.True(result.MonteCarloResult.Enabled);
-            RunSimulations(result);
-            var mcResult = result.MonteCarloResult;
+            Assert.Equal(1000, model.Simulations.Count);
+            Assert.True(model.MonteCarloResult.Enabled);
+            RunSimulations(model);
+            var mcResult = model.MonteCarloResult;
             var histPlot = mcResult.GetPlot(10);
             Assert.Equal(10, histPlot.Bins.Count);
             Assert.Equal("power", histPlot.XUnit);
@@ -127,7 +127,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void McTurnOff()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Monte Carlo Analysis - OP - POWER",
                 "V1 0 1 100",
                 "R1 1 0 {R}",
@@ -137,13 +137,13 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".SAVE power",
                 ".END");
 
-            Assert.False(result.MonteCarloResult.Enabled);
+            Assert.False(model.MonteCarloResult.Enabled);
         }
 
         [Fact]
         public void McOpGauss()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Monte Carlo Analysis - OP - POWER",
                 "V1 0 1 {100 + 100 / 100 - 1 + 5 + 3 + 10 -100}",
                 "R1 1 0 {R}",
@@ -154,10 +154,10 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".MC 1000 OP power MAX",
                 ".END");
 
-            Assert.Equal(1000, result.Simulations.Count);
-            Assert.True(result.MonteCarloResult.Enabled);
-            RunSimulations(result);
-            var mcResult = result.MonteCarloResult;
+            Assert.Equal(1000, model.Simulations.Count);
+            Assert.True(model.MonteCarloResult.Enabled);
+            RunSimulations(model);
+            var mcResult = model.MonteCarloResult;
             var histPlot = mcResult.GetPlot(10);
             Assert.Equal(10, histPlot.Bins.Count);
             Assert.Equal("power", histPlot.XUnit);
@@ -166,7 +166,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void McOpGaussSeed()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Monte Carlo Analysis - OP - POWER",
                 "V1 0 1 100",
                 "R1 1 0 {R}",
@@ -177,17 +177,17 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".MC 100 OP power MAX SEED = 90",
                 ".END");
 
-            Assert.Equal(100, result.Simulations.Count);
-            Assert.True(result.MonteCarloResult.Enabled);
-            RunSimulations(result);
-            Assert.Equal(90, result.MonteCarloResult.Seed);
+            Assert.Equal(100, model.Simulations.Count);
+            Assert.True(model.MonteCarloResult.Enabled);
+            RunSimulations(model);
+            Assert.Equal(90, model.MonteCarloResult.Seed);
             //Assert.Equal(90, result.Seed); TODO: What to return
         }
 
         [Fact]
         public void McTran()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Monte Carlo Analysis - TRAN - The initial voltage on capacitor is 0V. The result should be an exponential converging to dcVoltage.",
                 "C1 OUT 0 1e-6",
                 "R1 IN OUT {10e3 + 100 * random()}",
@@ -198,10 +198,10 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".MC 100 TRAN V(OUT) MAX",
                 ".END");
 
-            Assert.Equal(100, result.Simulations.Count);
-            Assert.True(result.MonteCarloResult.Enabled);
-            RunSimulations(result);
-            var mcResult = result.MonteCarloResult;
+            Assert.Equal(100, model.Simulations.Count);
+            Assert.True(model.MonteCarloResult.Enabled);
+            RunSimulations(model);
+            var mcResult = model.MonteCarloResult;
             var histPlot = mcResult.GetPlot(10);
             Assert.Equal(10, histPlot.Bins.Count);
             Assert.Equal("V(OUT)", histPlot.XUnit);

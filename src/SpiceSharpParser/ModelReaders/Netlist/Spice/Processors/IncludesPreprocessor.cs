@@ -57,7 +57,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// </summary>
         public ISingleSpiceNetlistParser SpiceNetlistParser { get; }
 
-        public SpiceParserValidationResult Validation { get; set; }
+        public ValidationEntryCollection Validation { get; set; }
 
         protected Func<string> InitialDirectoryPathProvider { get; }
 
@@ -125,7 +125,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             // check if file exists
             if (!File.Exists(includeFullPath))
             {
-                Validation.Reading.Add(
+                Validation.Add(
                     new ValidationEntry(
                         ValidationEntrySource.Reader,
                         ValidationEntryLevel.Warning,
@@ -167,7 +167,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             }
             else
             {
-                Validation.Reading.Add(
+                Validation.Add(
                     new ValidationEntry(
                         ValidationEntrySource.Reader,
                         ValidationEntryLevel.Warning,

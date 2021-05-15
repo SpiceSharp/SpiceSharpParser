@@ -4,6 +4,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System;
+using System.Linq;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 {
@@ -46,42 +47,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 
             if (parameters.Count == 1 && parameters[0] is VectorParameter v)
             {
-                if (v.Elements.Count >= 1)
-                {
-                    w.Offset = context.Evaluator.EvaluateDouble(v.Elements[0].Value);
-                }
-
-                if (v.Elements.Count >= 2)
-                {
-                    w.Amplitude = context.Evaluator.EvaluateDouble(v.Elements[1].Value);
-                }
-
-                if (v.Elements.Count >= 3)
-                {
-                    w.CarrierFrequency = context.Evaluator.EvaluateDouble(v.Elements[2].Value);
-                }
-
-                if (v.Elements.Count >= 4)
-                {
-                    w.ModulationIndex = context.Evaluator.EvaluateDouble(v.Elements[3].Value);
-                }
-
-                if (v.Elements.Count >= 5)
-                {
-                    w.SignalFrequency = context.Evaluator.EvaluateDouble(v.Elements[4].Value);
-                }
-
-                if (v.Elements.Count >= 6)
-                {
-                    w.CarrierPhase = context.Evaluator.EvaluateDouble(v.Elements[5].Value);
-                }
-
-                if (v.Elements.Count == 7)
-                {
-                    w.SignalPhase = context.Evaluator.EvaluateDouble(v.Elements[6].Value);
-                }
-
-                return w;
+                parameters = new ParameterCollection(v.Elements.Select(e => e).Cast<Parameter>().ToList());
             }
 
             if (parameters.Count >= 1)

@@ -8,7 +8,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void ComplexSubcircuitWithParamsAndMultiply()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Subcircuit - ComplexSubcircuitWithParams",
                 "V1 IN 0 4.0",
                 "X1 IN 0 twoResistorsInSeries M = 10",
@@ -23,18 +23,18 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(V1)",
                 ".END");
 
-            double export = RunOpSimulation(netlist, "I(V1)");
+            double export = RunOpSimulation(model, "I(V1)");
 
             // Get references
             double[] references = { -4.0 / ((10.0 + 20.0) / 10.0) };
 
-            EqualsWithTol(new double[] { export }, references);
+            Assert.True(EqualsWithTol(new double[] { export }, references));
         }
 
         [Fact]
         public void ComplexSubcircuitWithParamsAndMultiplyExisting()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Subcircuit",
                 "V1 IN 0 4.0",
                 "XX IN 0 twoResistorsInSeries M = 10",
@@ -49,18 +49,18 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(V1)",
                 ".END");
 
-            double export = RunOpSimulation(netlist, "I(V1)");
+            double export = RunOpSimulation(model, "I(V1)");
 
             // Get references
             double[] references = { -4.0 / ( (10.0 + 20.0) / 30.0) };
 
-            EqualsWithTol(new double[] { export }, references);
+            Assert.True(EqualsWithTol(new double[] { export }, references));
         }
 
         [Fact]
         public void SubcircuitWithMParameters()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Using M for subcircuits",
                 
                 "V1 IN 0 10",
@@ -75,17 +75,17 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(V1)",
                 ".END");
 
-            double export = RunOpSimulation(netlist, "I(V1)");
+            double export = RunOpSimulation(model, "I(V1)");
 
             double[] references = { -10.0 / (((1.0 + 2.0) / 10.0)) };
 
-            EqualsWithTol(new double[] { export }, references);
+            Assert.True(EqualsWithTol(new double[] { export }, references));
         }
 
         [Fact]
         public void SubcircuitWithMParameterAndFewComponents()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Using M for subcircuits",
 
                 "V1 IN 0 10",
@@ -103,17 +103,17 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(V1)",
                 ".END");
 
-            double export = RunOpSimulation(netlist, "I(V1)");
+            double export = RunOpSimulation(model, "I(V1)");
 
             double[] references = { -10.0 / (((1.0 + 2.0) / 10.0)) };
 
-            EqualsWithTol(new double[] { export }, references);
+            Assert.True(EqualsWithTol(new double[] { export }, references));
         }
 
         [Fact]
         public void SubcircuitEnding()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Subcircuit - SubcircuitEndingTest",
                 "V1 IN 0 4.0",
                 "X1 IN OUT twoResistorsInSeries R1=1 R2=2",
@@ -131,18 +131,18 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE V(OUT)",
                 ".END");
 
-            double export = RunOpSimulation(netlist, "V(OUT)");
+            double export = RunOpSimulation(model, "V(OUT)");
 
             // Get references
             double[] references = {1.0};
 
-            EqualsWithTol(new double[] {export}, references);
+            Assert.True(EqualsWithTol(new double[] { export }, references));
         }
 
         [Fact]
         public void SubcircuitParamsDifferentFormat()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Subcircuit - SubcircuitEndingTest",
                 "V1 IN 0 4.0",
                 "X1 IN OUT twoResistorsInSeries PARAMS: R1=1, R2=2",
@@ -160,18 +160,18 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE V(OUT)",
                 ".END");
 
-            double export = RunOpSimulation(netlist, "V(OUT)");
+            double export = RunOpSimulation(model, "V(OUT)");
 
             // Get references
             double[] references = {1.0};
 
-            EqualsWithTol(new double[] {export}, references);
+            Assert.True(EqualsWithTol(new double[] { export }, references));
         }
 
         [Fact]
         public void SubcircuitParams()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Subcircuit - SubcircuitEndingTest",
                 "V1 IN 0 4.0",
                 "X1 IN OUT twoResistorsInSeries PARAMS: R1=1 R2=2",
@@ -189,18 +189,18 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE V(OUT)",
                 ".END");
 
-            double export = RunOpSimulation(netlist, "V(OUT)");
+            double export = RunOpSimulation(model, "V(OUT)");
 
             // Get references
             double[] references = {1.0};
 
-            EqualsWithTol(new double[] {export}, references);
+            Assert.True(EqualsWithTol(new double[] { export }, references));
         }
 
         [Fact]
         public void SingleSubcircuitWithParams()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Subcircuit - SingleSubcircuitWithParams",
                 "V1 IN 0 4.0",
                 "X1 IN OUT twoResistorsInSeries R1=1 R2=2",
@@ -213,18 +213,18 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE V(OUT)",
                 ".END");
 
-            double export = RunOpSimulation(netlist, "V(OUT)");
+            double export = RunOpSimulation(model, "V(OUT)");
 
             // Get references
             double[] references = {1.0};
 
-            EqualsWithTol(new double[] {export}, references);
+            Assert.True(EqualsWithTol(new double[] { export }, references));
         }
 
         [Fact]
         public void When_Connectors_Are_Used()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Subcircuit - Voltometr",
                 "V1 IN 0 4.0",
                 "X1 IN 0 OUT voltometr",
@@ -239,18 +239,18 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE V(OUT) V(OUT2)",
                 ".END");
 
-            double[] exports = RunOpSimulation(netlist, "V(OUT)", "V(OUT2)");
+            double[] exports = RunOpSimulation(model, "V(OUT)", "V(OUT2)");
 
             // Get references
             double[] references = {2.4, 2.0};
 
-            EqualsWithTol(exports, references);
+            Assert.True(EqualsWithTol(exports, references));
         }
 
         [Fact]
         public void When_ConnectorsSame_Are_Used()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Subcircuit",
                 "V1 IN 0 10.0",
                 "V2 IN2 0 5.0",
@@ -266,18 +266,18 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE V(OUT) V(OUT2)",
                 ".END");
 
-            double[] exports = RunOpSimulation(netlist, "V(OUT)", "V(OUT2)");
+            double[] exports = RunOpSimulation(model, "V(OUT)", "V(OUT2)");
 
             // Get references
             double[] references = {5.0, 0.5};
 
-            EqualsWithTol(exports, references);
+            Assert.True(EqualsWithTol(exports, references));
         }
 
         [Fact]
         public void SingleSubcircuitWithoutParamsKeyword()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Subcircuit - SingleSubcircuitWithoutParamsKeyword",
                 "V1 IN 0 4.0",
                 "X1 IN OUT twoResistorsInSeries R1=1 R2=2",
@@ -290,18 +290,18 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE V(OUT)",
                 ".END");
 
-            double export = RunOpSimulation(netlist, "V(OUT)");
+            double export = RunOpSimulation(model, "V(OUT)");
 
             // Get references
             double[] references = {1.0};
 
-            EqualsWithTol(new double[] {export}, references);
+            Assert.True(EqualsWithTol(new double[] { export }, references));
         }
 
         [Fact]
         public void SingleSubcircuitWithDefaultParams()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Subcircuit - SingleSubcircuitWithDefaultParams",
                 "V1 IN 0 4.0",
                 "X1 IN OUT twoResistorsInSeries",
@@ -314,18 +314,18 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE V(OUT)",
                 ".END");
 
-            double export = RunOpSimulation(netlist, "V(OUT)");
+            double export = RunOpSimulation(model, "V(OUT)");
 
             // Get references
             double[] references = {(1.0 / (10.0 + 20.0 + 1.0)) * 4.0};
 
-            EqualsWithTol(new double[] {export}, references);
+            Assert.True(EqualsWithTol(new double[] { export }, references));
         }
 
         [Fact]
         public void ComplexSubcircuitWithParams()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Subcircuit - ComplexSubcircuitWithParams",
                 "V1 IN 0 4.0",
                 "X1 IN OUT twoResistorsInSeries",
@@ -341,18 +341,18 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE V(OUT)",
                 ".END");
 
-            double export = RunOpSimulation(netlist, "V(OUT)");
+            double export = RunOpSimulation(model, "V(OUT)");
 
             // Get references
             double[] references = {(1.0 / (10.0 + 20.0 + 1.0)) * 4.0};
 
-            EqualsWithTol(new double[] {export}, references);
+            Assert.True(EqualsWithTol(new double[] { export }, references));
         }
 
         [Fact]
         public void ComplexContainedSubcircuitWithParams()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Subcircuit - ComplexContainedSubcircuitWithParams",
                 "V1 IN 0 4.0",
                 "X1 IN OUT twoResistorsInSeries",
@@ -368,18 +368,18 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE V(OUT)",
                 ".END");
 
-            double export = RunOpSimulation(netlist, "V(OUT)");
+            double export = RunOpSimulation(model, "V(OUT)");
 
             // Get references
             double[] references = {(1.0 / (10.0 + 20.0 + 1.0)) * 4.0};
 
-            EqualsWithTol(new double[] {export}, references);
+            Assert.True(EqualsWithTol(new double[] { export }, references));
         }
 
         [Fact]
         public void ComplexContainedSubcircuitWithParamsAndParamControl()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Subcircuit - ComplexContainedSubcircuitWithParamsAndParamControl",
                 "V1 IN 0 4.0",
                 "X1 IN OUT twoResistorsInSeries",
@@ -396,12 +396,12 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE V(OUT)",
                 ".END");
 
-            double export = RunOpSimulation(netlist, "V(OUT)");
+            double export = RunOpSimulation(model, "V(OUT)");
 
             // Get references
             double[] references = {(1.0 / (10.0 + 20.0 + 1.0)) * 4.0};
 
-            EqualsWithTol(new double[] {export}, references);
+            Assert.True(EqualsWithTol(new double[] { export }, references));
         }
 
         [Fact]
@@ -422,8 +422,8 @@ namespace SpiceSharpParser.IntegrationTests.Components
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Parsing.IsEndRequired = true;
 
-            var result = parser.ParseNetlist(text);
-            Assert.True(result.ValidationResult.Parsing.HasError);
+            var model = parser.ParseNetlist(text);
+            Assert.True(model.ValidationResult.HasError);
         }
     }
 }
