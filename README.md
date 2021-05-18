@@ -129,5 +129,4 @@ Note: Only voltage and current expressions are supported in TABLE, VALUE
 ## License
 SpiceSharpParser is under MIT License
 
-
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FSpiceSharp%2FSpiceSharpParser.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FSpiceSharp%2FSpiceSharpParser?ref=badge_large)
