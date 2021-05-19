@@ -1,0 +1,9 @@
+﻿Switches
+
+s1 1 2 3 4 s_model1 ON
+I1 5 0 1
+w1 1 2 I1 s_model2 ON
+
+.model s_model1 SW(Ron=1 Roff=1Meg Vt=1 Vh=0)
+.model s_model2 CSW(Ron=1 Roff=1Meg It=1 Ih=0)
+.END

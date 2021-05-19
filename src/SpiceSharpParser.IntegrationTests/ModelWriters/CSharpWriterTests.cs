@@ -203,5 +203,22 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
             var dc = simulations.First();
             dc.Run(circuit);
         }
+
+        [Fact]
+        public void Example11()
+        {
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/example11.cir");
+            var netlistContent = File.ReadAllText(path);
+            var parser = new SpiceParser();
+            parser.Settings.Lexing.HasTitle = true;
+            var parseResult = parser.ParseNetlist(netlistContent);
+            var spiceSharpWriter = new SpiceSharpWriter();
+            var classNode = spiceSharpWriter.WriteCreateCircuitClass("Example", parseResult.FinalModel);
+            var classText = classNode.GetText().ToString();
+            var circuit = spiceSharpWriter.CreateCircuit(parseResult.FinalModel);
+
+            Assert.NotNull(classText);
+            Assert.NotNull(circuit);
+        }
     }
 }

@@ -32,7 +32,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
             ModelWriters["NJF"] = new JFETModelWriter();
             ModelWriters["PJF"] = ModelWriters["NJF"];
             ModelWriters["SW"] = new SwitchModelWriter();
-            ModelWriters["CS"] = ModelWriters["SW"];
+            ModelWriters["CSW"] = ModelWriters["SW"];
             ModelWriters["PMOS"] = new MosfetModelWriter();
             ModelWriters["NMOS"] = ModelWriters["PMOS"];
             //ModelWriters["VSWITCH"] TODO
@@ -58,12 +58,13 @@ namespace SpiceSharpParser.ModelWriters.CSharp
             ComponentWriters["H"] = new CurrentControlledVoltageSourceWriter();
             ComponentWriters["B"] = new ArbitraryBehavioralWriter();
             ComponentWriters["T"] = new LosslessTransmissionLineWriter();
+            ComponentWriters["S"] = new VoltageSwitchWriter();
+            ComponentWriters["W"] = new CurrentSwitchWriter();
+
 
             //ComponentWriters["BVDelay"] = TODO
 
 
-            //ComponentWriters["S"] = TODO
-            //ComponentWriters["W"] = TODO
 
             ControlWriters["DC"] = new DcWriter();
             ControlWriters["AC"] = new AcWriter();

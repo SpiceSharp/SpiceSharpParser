@@ -42,7 +42,8 @@ namespace SpiceSharpParser.ModelWriters.CSharp
 
         public CSharpStatement SetParameter(string identifier, string parameter, bool value, IWriterContext context)
         {
-            return new CSharpCallStatement(identifier, $@"SetParameter(""{parameter}"", {value})");
+            string boolString = value ? "true" : "false";
+            return new CSharpCallStatement(identifier, $@"SetParameter(""{parameter}"", {boolString})");
         }
 
         public string Evaluate(string expression, IWriterContext context)
