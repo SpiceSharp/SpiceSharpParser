@@ -12,7 +12,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
     {
         public IEntity Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
-            if (parameters.Count < 4) // QXXX NC NB NE MNAME
+            if (parameters.Count < 4)
             {
                 context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Wrong parameters count for BJT", parameters.LineInfo));
                 return null;
@@ -38,7 +38,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             BipolarJunctionTransistor bjt = new BipolarJunctionTransistor(componentIdentifier);
             context.CreateNodes(bjt, parameters.Take(BipolarJunctionTransistor.PinCount));
-         
             context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
             {
                 context.ModelsRegistry.SetModel(
@@ -69,7 +68,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     }
                     else
                     {
-                        if (!areaSet) // area is before temperature
+                        if (!areaSet)
                         {
                             bjt.SetParameter("area", context.Evaluator.EvaluateDouble(s.Value));
                             areaSet = true;

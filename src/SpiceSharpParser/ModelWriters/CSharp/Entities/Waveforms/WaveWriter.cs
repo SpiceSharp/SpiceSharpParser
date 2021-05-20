@@ -45,7 +45,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp
             var ampliduteParameter = (AssignmentParameter)parameters.FirstOrDefault(p => p is AssignmentParameter ap && ap.Name.ToLower() == "amplitude");
 
             var filePath = PathConverter.Convert(fileParameter.Value);
-            
             var workingDirectory = context.WorkingDirectory ?? Directory.GetCurrentDirectory();
             var fullFilePath = Path.Combine(workingDirectory, filePath);
 
@@ -54,7 +53,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp
                 throw new ArgumentException("WAVE file does not exist:" + fullFilePath);
             }
 
-            
             var amplitude = DefaultAmplidude;
 
             if (ampliduteParameter != null)

@@ -33,7 +33,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             Waveforms.Map("WAVE", new WaveGenerator());
             Waveforms.Map("wavefile", new WaveGenerator());
 
-
             // Register exporters
             Exporters.Map(new[] { "V", "VI", "VR", "VM", "VDB", "VPH", "VP" }, new VoltageExporter());
             Exporters.Map(new[] { "I", "IR", "II", "IM", "IDB", "IP" }, new CurrentExporter());

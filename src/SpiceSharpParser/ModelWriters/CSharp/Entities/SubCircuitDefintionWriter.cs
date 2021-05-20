@@ -1,5 +1,4 @@
-﻿using SpiceSharp.Components;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
+﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,7 +18,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities
             var result = new List<CSharpStatement>();
             var parameters = @object.DefaultParameters.ToList();
             parameters.Add(new SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters.AssignmentParameter() { Name = "internal_m", Value = "1" });
-            var localParameters = parameters.Where(p => context.ParentSubcircuit == null || !context.ParentSubcircuit.DefaultParameters.Any(dp => dp.Name == p.Name) && p.Name != "internal_m").ToList();
+            var localParameters = parameters.Where(p => context.ParentSubcircuit == null || (!context.ParentSubcircuit.DefaultParameters.Any(dp => dp.Name == p.Name) && p.Name != "internal_m")).ToList();
 
             var parameterNames = localParameters.Select(p => p.Name).ToArray();
             var defaults = localParameters.Select(p => p.Name.ToLower() == "internal_m" ? "1" : p.Value);
@@ -36,10 +35,10 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities
                 oldSubcircuitParent != null,
                 methodName,
                 @object.Statements,
-                localParameters.ToList(), 
+                localParameters.ToList(),
                 context,
-                optionalParameters : false));
-            
+                optionalParameters: false));
+
             context.CurrentSubcircuitName = oldSubcircuitName;
             context.ParentSubcircuit = oldSubcircuitParent;
             context.SubcircuitCreateStatements = currentStatements;
@@ -54,16 +53,18 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities
 
             var methodDefName = "CreateSubcircuitDefinition_" + @object.Name;
             result.Add(
-                new CSharpMethod(context.CurrentSubcircuitName != WriterContext.RootCircuitName ? null : true,
-                methodDefName,
-                "SubcircuitDefinition",
-                parameterNames,
-                defaults.ToArray(),
-                localParameters.Select(p => typeof(string)).ToArray(), subDefStatements, true)
+                new CSharpMethod(
+                    context.CurrentSubcircuitName != WriterContext.RootCircuitName ? null : true,
+                    methodDefName,
+                    "SubcircuitDefinition",
+                    parameterNames,
+                    defaults.ToArray(),
+                    localParameters.Select(p => typeof(string)).ToArray(),
+                    subDefStatements,
+                    true)
                 {
-                    Local = context.ParentSubcircuit != null
+                    Local = context.ParentSubcircuit != null,
                 });
-
 
             return result;
         }

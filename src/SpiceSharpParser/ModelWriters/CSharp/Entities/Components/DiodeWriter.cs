@@ -19,7 +19,8 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
             var modelName = parameters[0].Value;
             result.Add(new CSharpNewStatement(diodeId, $@"new Diode(""{name}"", ""{pins[0].Value}"", ""{pins[1].Value}"", ""{modelName}"")"));
 
-            bool areaSet = true;
+            bool areaSet = false;
+
             // Read the rest of the parameters
             for (int i = 1; i < parameters.Count; i++)
             {
@@ -71,7 +72,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
             }
 
             SetParallelParameter(result, diodeId, parameters, context);
-
 
             return result;
         }

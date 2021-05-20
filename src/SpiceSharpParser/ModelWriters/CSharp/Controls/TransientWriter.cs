@@ -12,7 +12,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Controls
             var result = new List<CSharpStatement>();
 
             var transientId = context.GetNewIdentifier("t");
-            
+
             bool useIc = false;
             var clonedParameters = (ParameterCollection)@object.Parameters.Clone();
             var lastParameter = clonedParameters[clonedParameters.Count - 1];
@@ -21,7 +21,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Controls
                 useIc = true;
                 clonedParameters.RemoveAt(clonedParameters.Count - 1);
             }
-          
+
             string maxStep = null;
             string step = null;
             string final = null;
@@ -30,19 +30,19 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Controls
             switch (clonedParameters.Count)
             {
                 case 2:
-                    step = base.Evaluate(clonedParameters[0].Value, context);
-                    final = base.Evaluate(clonedParameters[1].Value, context);
+                    step = Evaluate(clonedParameters[0].Value, context);
+                    final = Evaluate(clonedParameters[1].Value, context);
                     break;
                 case 3:
-                    step = base.Evaluate(clonedParameters[0].Value, context);
-                    final = base.Evaluate(clonedParameters[1].Value, context);
-                    maxStep = base.Evaluate(clonedParameters[2].Value, context);
+                    step = Evaluate(clonedParameters[0].Value, context);
+                    final = Evaluate(clonedParameters[1].Value, context);
+                    maxStep = Evaluate(clonedParameters[2].Value, context);
                     break;
                 case 4:
-                    step = base.Evaluate(clonedParameters[0].Value, context);
-                    final = base.Evaluate(clonedParameters[1].Value, context);
-                    start = base.Evaluate(clonedParameters[2].Value, context);
-                    maxStep = base.Evaluate(clonedParameters[3].Value, context);
+                    step = Evaluate(clonedParameters[0].Value, context);
+                    final = Evaluate(clonedParameters[1].Value, context);
+                    start = Evaluate(clonedParameters[2].Value, context);
+                    maxStep = Evaluate(clonedParameters[3].Value, context);
                     break;
                 default:
                     break;
@@ -53,10 +53,10 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Controls
                 result.Add(
                     new CSharpNewStatement(
                         transientId,
-                        @$"new Transient(""{ transientId }"", {step}, {final})")
+                        @$"new Transient(""{transientId}"", {step}, {final})")
                     {
                         Kind = CSharpStatementKind.CreateSimulation,
-                        Metadata = new Dictionary<string, string>() { { "type", typeof(Transient).Name } }
+                        Metadata = new Dictionary<string, string>() { { "type", typeof(Transient).Name } },
                     });
             }
             else
@@ -66,28 +66,28 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Controls
                     result.Add(
                         new CSharpNewStatement(
                             transientId,
-                            @$"new Transient(""{ transientId }"", {step}, {final}, {maxStep ?? step})")
+                            @$"new Transient(""{transientId}"", {step}, {final}, {maxStep ?? step})")
                         {
                             Kind = CSharpStatementKind.CreateSimulation,
-                            Metadata = new Dictionary<string, string>() { { "type", typeof(Transient).Name } }
+                            Metadata = new Dictionary<string, string>() { { "type", typeof(Transient).Name } },
                         });
                 }
                 else
                 {
-                    result.Add( new CSharpNewStatement(
+                    result.Add(new CSharpNewStatement(
                         transientId,
-                            @$"new Transient(""{ transientId }"", new Trapezoidal() {{ StartTime = {start ?? "0.0"}, StopTime = {final}, MaxStep = {maxStep ?? step}}}, InitialStep = {step}}})")
-                            {
-                                Kind = CSharpStatementKind.CreateSimulation,
-                                Metadata = new Dictionary<string, string>() { { "type", typeof(Transient).Name } }
-                            });
+                        @$"new Transient(""{transientId}"", new Trapezoidal() {{ StartTime = {start ?? "0.0"}, StopTime = {final}, MaxStep = {maxStep ?? step}}}, InitialStep = {step}}})")
+                    {
+                        Kind = CSharpStatementKind.CreateSimulation,
+                        Metadata = new Dictionary<string, string>() { { "type", typeof(Transient).Name } },
+                    });
                 }
             }
 
             result.Add(new CSharpAssignmentStatement(@$"{transientId}.TimeParameters.UseIc", $"{useIc.ToString().ToLower()}")
             {
                 Kind = CSharpStatementKind.CreateSimulationInit_After,
-                Metadata = new Dictionary<string, string>() { { "type", typeof(Transient).Name }, { "dependency", transientId } }
+                Metadata = new Dictionary<string, string>() { { "type", typeof(Transient).Name }, { "dependency", transientId } },
             });
 
             return result;

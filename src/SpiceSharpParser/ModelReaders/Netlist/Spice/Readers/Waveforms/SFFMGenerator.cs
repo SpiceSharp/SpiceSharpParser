@@ -33,7 +33,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 throw new ArgumentNullException(nameof(context));
             }
 
-            if (parameters.Count > 7 || parameters.Count == 1 && parameters[0] is VectorParameter vp && vp.Elements.Count > 7)
+            if (parameters.Count > 7 || (parameters.Count == 1 && parameters[0] is VectorParameter vp && vp.Elements.Count > 7))
             {
                 context.Result.ValidationResult.Add(
                     new ValidationEntry(

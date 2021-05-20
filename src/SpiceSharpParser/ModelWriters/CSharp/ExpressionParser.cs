@@ -20,7 +20,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp
             CaseSettings = caseSettings;
         }
 
-
         public bool ThrowOnErrors { get; }
 
         public ISpiceNetlistCaseSensitivitySettings CaseSettings { get; }

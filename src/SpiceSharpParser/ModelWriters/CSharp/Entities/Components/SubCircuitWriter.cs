@@ -1,5 +1,4 @@
-﻿using SpiceSharp.Components;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
+﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +45,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                 var node = parser.Parse(new Lexers.Expressions.Lexer(p.Value));
                 var transformed = transformer.Transform(node);
                 return $@"{p.Name}_{transformed}";
-
             }).ToArray());
 
             var dict = $@"definitions[$""{key}""]";

@@ -58,6 +58,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     context.SetParameter(cccs, "gain", $"({mParameter.Value}) * ({parameters.Get(3)})");
                 }
+
                 return cccs;
             }
             else
@@ -121,6 +122,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     {
                         context.SetParameter(vccs, "gain", $"({mParameter.Value}) * ({parameters.Get(2)})");
                     }
+
                     return vccs;
                 }
                 else

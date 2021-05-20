@@ -95,7 +95,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
             foreach (var map in Mapper)
             {
-                if (componentName.StartsWith(map.Key, context.ReaderSettings.CaseSensitivity.IsEntityNamesCaseSensitive ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase) 
+                if (componentName.StartsWith(map.Key, context.ReaderSettings.CaseSensitivity.IsEntityNamesCaseSensitive ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase)
                     && (componentType == null || (componentType != null && componentType.Length < map.Key.Length)))
                 {
                     componentType = map.Key;

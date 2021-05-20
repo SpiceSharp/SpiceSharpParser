@@ -82,10 +82,12 @@ namespace SpiceSharpParser.ModelWriters.CSharp
                             return $"{{{vn.Name}()}}";
                         }
                     }
+
                     if (vn.NodeType == NodeTypes.Voltage || vn.NodeType == NodeTypes.Current)
                     {
                         return vn.ToString();
                     }
+
                     break;
             }
 

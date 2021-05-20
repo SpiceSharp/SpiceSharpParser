@@ -21,7 +21,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
             var model = parameters[1].Value;
             result.Add(new CSharpAssignmentStatement(voltageSwitchId + ".Model", $@"""{model}"""));
 
-
             for (var i = 2; i < parameters.Count; i++)
             {
                 if (parameters[i] is AssignmentParameter assignmentParameter)

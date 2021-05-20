@@ -13,11 +13,10 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Models
             var modelId = context.GetIdentifier(@object.Name);
 
             result.Add(new CSharpNewStatement(modelId, $@"new ResistorModel(""{@object.Name}"")"));
-            
             context.RegisterModelType(@object.Name, "ResistorModel");
             SetProperties(result, modelId, parameters, context);
 
             return result;
-        }        
+        }
     }
 }

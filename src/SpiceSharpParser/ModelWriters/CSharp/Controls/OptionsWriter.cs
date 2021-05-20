@@ -15,17 +15,13 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Controls
                 if (param is Models.Netlist.Spice.Objects.Parameters.AssignmentParameter a)
                 {
                     string name = a.Name.ToLower();
-                    string value = base.Evaluate(a.Value, context);
+                    string value = Evaluate(a.Value, context);
                     result.Add(new CSharpAssignmentStatement($@"this.configuration[""{name}""]", value));
                 }
 
-                if (param is Models.Netlist.Spice.Objects.Parameters.WordParameter w)
+                if (param is Models.Netlist.Spice.Objects.Parameters.WordParameter w && w.Value.ToLower() == "keepopinfo")
                 {
-                    if (w.Value.ToLower() == "keepopinfo")
-                    {
-                        result.Add(new CSharpAssignmentStatement(@"this.configuration[""keepopinfo""]", "1"));
-                        break;
-                    }
+                    result.Add(new CSharpAssignmentStatement(@"this.configuration[""keepopinfo""]", "1"));
                 }
             }
 

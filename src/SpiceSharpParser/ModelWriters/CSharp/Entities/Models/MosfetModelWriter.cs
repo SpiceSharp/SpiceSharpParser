@@ -1,9 +1,7 @@
-﻿using SpiceSharp.Components;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
+﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Models
 {
@@ -30,7 +28,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Models
             var clonedParameters = (ParameterCollection)parameters.Clone();
 
             int level = 1;
-            string version;
             int lindex = -1, vindex = -1;
             for (int i = 0; i < clonedParameters.Count; i++)
             {
@@ -45,7 +42,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Models
                     if (ap.Name.ToLower() == "version")
                     {
                         vindex = i;
-                        version = ap.Value.ToLower();
                     }
 
                     if (vindex >= 0 && lindex >= 0)
@@ -78,6 +74,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Models
                     case "pmos":
                         result.Add(SetParameter(modelId, "pmos", true, context)); break;
                 }
+
                 context.RegisterModelType(@object.Name, model);
                 SetProperties(result, modelId, clonedParameters, context);
             }

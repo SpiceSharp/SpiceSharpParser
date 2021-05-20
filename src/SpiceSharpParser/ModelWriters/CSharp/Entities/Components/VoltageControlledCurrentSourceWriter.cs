@@ -21,7 +21,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                 var parameters = @object.PinsAndParameters.Skip(VoltageControlledCurrentSource.PinCount);
 
                 double gain = 0;
-                
                 var mParameter = (AssignmentParameter)parameters.FirstOrDefault(p => p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "m");
                 if (mParameter == null)
                 {
@@ -32,7 +31,8 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                     gain = context.EvaluationContext.Evaluate($"({mParameter.Value}) * ({parameters.Get(4)})");
                 }
 
-                result.Add(new CSharpNewStatement(sourceId,
+                result.Add(new CSharpNewStatement(
+                    sourceId,
                     $@"new VoltageControlledCurrentSource(""{@object.Name}"", ""{pins[0].Value}"", ""{pins[1].Value}"",""{pins[2].Value}"", ""{pins[3].Value}"", {gain})"));
             }
             else
@@ -58,14 +58,14 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                         gain = context.EvaluationContext.Evaluate($"({mParameter.Value}) * ({@object.PinsAndParameters.Get(4)})");
                     }
 
-                    result.Add(new CSharpNewStatement(sourceId,
-                            $@"new VoltageControlledCurrentSource(""{@object.Name}"", ""{vccsNodes[0].Value}"", ""{vccsNodes[1].Value}"",""{vccsNodes[2].Value}"",""{vccsNodes[3].Value}"", {gain})"));
+                    result.Add(new CSharpNewStatement(
+                        sourceId,
+                        $@"new VoltageControlledCurrentSource(""{@object.Name}"", ""{vccsNodes[0].Value}"", ""{vccsNodes[1].Value}"",""{vccsNodes[2].Value}"",""{vccsNodes[3].Value}"", {gain})"));
                 }
                 else
                 {
                     SourceWriterHelper.CreateCustomCurrentSource(result, @object.Name, @object.PinsAndParameters, context, true);
                 }
-
             }
 
             return result;

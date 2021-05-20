@@ -8,13 +8,13 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
 {
     public class LosslessTransmissionLineWriter : BaseWriter, IWriter<Component>
     {
-        public List<CSharpStatement> Write(Component component, IWriterContext context)
+        public List<CSharpStatement> Write(Component @object, IWriterContext context)
         {
             var result = new List<CSharpStatement>();
 
-            var pins = component.PinsAndParameters.Take(LosslessTransmissionLine.PinCount);
-            var parameters = component.PinsAndParameters.Skip(LosslessTransmissionLine.PinCount);
-            var name = component.Name;
+            var pins = @object.PinsAndParameters.Take(LosslessTransmissionLine.PinCount);
+            var parameters = @object.PinsAndParameters.Skip(LosslessTransmissionLine.PinCount);
+            var name = @object.Name;
 
             var lineId = context.GetNewIdentifier(name);
 
@@ -48,6 +48,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                     }
                 }
             }
+
             SetParallelParameter(result, lineId, parameters, context);
 
             return result;

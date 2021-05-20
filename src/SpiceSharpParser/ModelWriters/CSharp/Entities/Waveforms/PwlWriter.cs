@@ -2,7 +2,6 @@
 using SpiceSharpParser.Common.FileSystem;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.ModelWriters.CSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,7 +22,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
         /// <returns>
         /// A new waveform.
         /// </returns>
-        public List<CSharpStatement> Generate(ParameterCollection parameters, IWriterContext context, out string waveFormId)
+        public List<CSharpStatement> Generate(ParameterCollection parameters, IWriterContext context, out string waveformId)
         {
             if (parameters == null)
             {
@@ -37,18 +36,18 @@ namespace SpiceSharpParser.ModelWriters.CSharp
 
             if (parameters.Count > 0 && parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "file"))
             {
-                return CreatePwlFromFile(parameters, context, out waveFormId);
+                return CreatePwlFromFile(parameters, context, out waveformId);
             }
 
             bool vectorMode = parameters.Count > 1 && parameters[1] is VectorParameter vp && vp.Elements.Count == 2;
 
             if (!vectorMode)
             {
-                return CreatePwlFromSequence(parameters, context, out waveFormId);
+                return CreatePwlFromSequence(parameters, context, out waveformId);
             }
             else
             {
-                return CreatePwlFromVector(parameters, context, out waveFormId);
+                return CreatePwlFromVector(parameters, context, out waveformId);
             }
         }
 
@@ -58,6 +57,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
             {
                 throw new ArgumentException("PWL waveform expects even count of parameters");
             }
+
             List<double> values = new List<double>();
             var points = new List<Point>();
 
@@ -98,7 +98,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
             return result;
         }
 
-        private static List<CSharpStatement> CreatePwlFromFile(ParameterCollection parameters, IWriterContext context, out string waveFormId)
+        private List<CSharpStatement> CreatePwlFromFile(ParameterCollection parameters, IWriterContext context, out string waveFormId)
         {
             var fileParameter = (AssignmentParameter)parameters.First(p => p is AssignmentParameter ap && ap.Name.ToLower() == "file");
             var filePath = PathConverter.Convert(fileParameter.Value);

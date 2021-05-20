@@ -8,31 +8,31 @@ namespace SpiceSharpParser.ModelWriters.CSharp
 {
     public class WaveformWriter
     {
-        private Dictionary<string, IWaveformWriter> Waveforms;
+        private Dictionary<string, IWaveformWriter> _waveforms;
 
         public WaveformWriter()
         {
-            Waveforms = new Dictionary<string, IWaveformWriter>(StringComparer.OrdinalIgnoreCase);
+            _waveforms = new Dictionary<string, IWaveformWriter>(StringComparer.OrdinalIgnoreCase);
 
             // Register waveform generators
-            Waveforms["SINE"] = new SineWriter();
-            Waveforms["SIN"] = new SineWriter();
-            Waveforms["PULSE"] = new PulseWriter();
-            Waveforms["PWL"] = new PwlWriter();
-            Waveforms["AM"] = new AMWriter();
-            Waveforms["SFFM"] = new SFFMWriter();
-            Waveforms["WAVE"] = new WaveWriter();
-            Waveforms["wavefile"] = new WaveWriter();
+            _waveforms["SINE"] = new SineWriter();
+            _waveforms["SIN"] = new SineWriter();
+            _waveforms["PULSE"] = new PulseWriter();
+            _waveforms["PWL"] = new PwlWriter();
+            _waveforms["AM"] = new AMWriter();
+            _waveforms["SFFM"] = new SFFMWriter();
+            _waveforms["WAVE"] = new WaveWriter();
+            _waveforms["wavefile"] = new WaveWriter();
         }
 
         public bool IsWaveFormSupported(string waveformName)
         {
-            return Waveforms.ContainsKey(waveformName);
+            return _waveforms.ContainsKey(waveformName);
         }
 
         public List<CSharpStatement> GenerateWaveform(string name, ParameterCollection parameterCollection, out string waveFormId, IWriterContext context)
         {
-            return Waveforms[name].Generate(parameterCollection, context, out waveFormId);
+            return _waveforms[name].Generate(parameterCollection, context, out waveFormId);
         }
     }
 }

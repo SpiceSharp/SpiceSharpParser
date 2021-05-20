@@ -65,7 +65,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.Wave
 
         public WaveFileChannelData[] ChannelData { get; set; }
 
-
         public (double, double)[] ConverToPwl(int channel, double amplitude)
         {
             if (NumberOfChannels <= channel)

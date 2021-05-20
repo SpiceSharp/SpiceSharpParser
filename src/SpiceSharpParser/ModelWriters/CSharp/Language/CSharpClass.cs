@@ -13,7 +13,9 @@ namespace SpiceSharpParser.ModelWriters.CSharp
         }
 
         public string ClassName { get; }
+
         public List<CSharpFieldDeclaration> Fields { get; }
+
         public List<CSharpMethod> Methods { get; }
     }
 }

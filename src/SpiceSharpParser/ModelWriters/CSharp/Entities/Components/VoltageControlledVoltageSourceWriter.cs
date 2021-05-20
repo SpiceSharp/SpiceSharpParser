@@ -22,7 +22,8 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
 
                 double gain = context.EvaluationContext.Evaluate(parameters.Get(0));
 
-                result.Add(new CSharpNewStatement(sourceId,
+                result.Add(new CSharpNewStatement(
+                    sourceId,
                     $@"new VoltageControlledVoltageSource(""{@object.Name}"", ""{pins[0].Value}"", ""{pins[1].Value}"",""{pins[2].Value}"", ""{pins[3].Value}"", {gain})"));
             }
             else
@@ -39,14 +40,14 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
 
                     double gain = context.EvaluationContext.Evaluate(@object.PinsAndParameters.Get(4));
 
-                    result.Add(new CSharpNewStatement(sourceId,
-                            $@"new VoltageControlledVoltageSource(""{@object.Name}"", ""{vccsNodes[0].Value}"", ""{vccsNodes[1].Value}"",""{vccsNodes[2].Value}"",""{vccsNodes[3].Value}"", {gain})"));
+                    result.Add(new CSharpNewStatement(
+                        sourceId,
+                        $@"new VoltageControlledVoltageSource(""{@object.Name}"", ""{vccsNodes[0].Value}"", ""{vccsNodes[1].Value}"",""{vccsNodes[2].Value}"",""{vccsNodes[3].Value}"", {gain})"));
                 }
                 else
                 {
                     SourceWriterHelper.CreateCustomVoltageSource(result, @object.Name, @object.PinsAndParameters, context, true);
                 }
-
             }
 
             return result;

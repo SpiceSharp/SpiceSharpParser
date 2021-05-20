@@ -17,34 +17,34 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Controls
             result.Add(new CSharpNewStatement(sweepsId, "new List<ISweep>()")
             {
                 Kind = CSharpStatementKind.CreateSimulationInit_Before,
-                Metadata = new Dictionary<string, string>() { { "type", typeof(DC).Name }, { "dependency", dcId } }
+                Metadata = new Dictionary<string, string>() { { "type", typeof(DC).Name }, { "dependency", dcId } },
             });
 
             for (int i = 0; i < count; i++)
             {
-                var start = base.Evaluate(@object.Parameters.Get((4 * i) + 1).Value, context);
-                var stop = base.Evaluate(@object.Parameters.Get((4 * i) + 2).Value, context);
-                var step = base.Evaluate(@object.Parameters.Get((4 * i) + 3).Value, context);
+                var start = Evaluate(@object.Parameters.Get((4 * i) + 1).Value, context);
+                var stop = Evaluate(@object.Parameters.Get((4 * i) + 2).Value, context);
+                var step = Evaluate(@object.Parameters.Get((4 * i) + 3).Value, context);
                 result.Add(
                     new CSharpNewStatement(
                         sweepsId + "_" + i,
                         @$"new ParameterSweep(""{@object.Parameters.Get(4 * i).Value}"", Enumerable.Range(0, (int)(({stop} - {start}) / {step}) + 1).Select(index => {start} + (index * {step})))")
                     {
                         Kind = CSharpStatementKind.CreateSimulationInit_Before,
-                        Metadata = new Dictionary<string, string>() { { "type", typeof(DC).Name }, { "dependency", dcId } }
+                        Metadata = new Dictionary<string, string>() { { "type", typeof(DC).Name }, { "dependency", dcId } },
                     });
 
                 result.Add(new CSharpCallStatement(sweepsId, "Add(" + sweepsId + "_" + i + ")")
                 {
                     Kind = CSharpStatementKind.CreateSimulationInit_Before,
-                    Metadata = new Dictionary<string, string>() { { "type", typeof(DC).Name }, { "dependency", dcId } }
+                    Metadata = new Dictionary<string, string>() { { "type", typeof(DC).Name }, { "dependency", dcId } },
                 });
             }
 
             result.Add(new CSharpNewStatement(dcId, @$"new DC(""{dcId}"",{sweepsId})")
             {
                 Kind = CSharpStatementKind.CreateSimulation,
-                Metadata = new Dictionary<string, string>() { { "type", typeof(DC).Name } }
+                Metadata = new Dictionary<string, string>() { { "type", typeof(DC).Name } },
             });
 
             return result;

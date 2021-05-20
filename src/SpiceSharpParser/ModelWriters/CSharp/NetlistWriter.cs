@@ -39,7 +39,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp
                 context,
                 createSubCircuitDefinitions: true);
 
-           
             var fields = allStatements.OfType<CSharpFieldDeclaration>().ToList();
             var methods = allStatements.OfType<CSharpMethod>().ToList();
 

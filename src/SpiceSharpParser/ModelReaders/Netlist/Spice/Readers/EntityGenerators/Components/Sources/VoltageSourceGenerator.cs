@@ -157,7 +157,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return vs;
         }
 
-        protected static BehavioralVoltageSource CreateBehavioralVoltageSource(string name, ParameterCollection parameters, IReadingContext context, EvaluationContext evalContext, string expression)
+        protected BehavioralVoltageSource CreateBehavioralVoltageSource(string name, ParameterCollection parameters, IReadingContext context, EvaluationContext evalContext, string expression)
         {
             var entity = new BehavioralVoltageSource(name);
             context.CreateNodes(entity, parameters.Take(BehavioralVoltageSource.BehavioralVoltageSourcePinCount));
@@ -244,9 +244,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     context.Result.ValidationResult.Add(
                         new ValidationEntry(
-                            ValidationEntrySource.Reader, 
-                            ValidationEntryLevel.Error, 
-                            "table expects expression parameter", 
+                            ValidationEntrySource.Reader,
+                            ValidationEntryLevel.Error,
+                            "table expects expression parameter",
                             tableParameter.LineInfo));
                 }
 

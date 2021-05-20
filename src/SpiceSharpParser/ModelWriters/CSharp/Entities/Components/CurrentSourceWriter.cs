@@ -1,6 +1,4 @@
 ﻿using SpiceSharp.Components;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +22,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
             var pins = @object.PinsAndParameters.Take(VoltageSource.PinCount);
             var parameters = @object.PinsAndParameters.Skip(VoltageSource.PinCount);
             var name = @object.Name;
-
 
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
             {

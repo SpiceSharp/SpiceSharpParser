@@ -8,6 +8,6 @@
         CreateSimulationInit_Before,
         SetSimulation,
         OtherSimulation,
-        Configuration
+        Configuration,
     }
 }

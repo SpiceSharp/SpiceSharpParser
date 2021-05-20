@@ -5,7 +5,7 @@ namespace SpiceSharpParser.Common.Evaluation
     public interface IEvaluationContext
     {
         /// <summary>
-        /// Gets or sets the parameters.
+        /// Gets the parameters.
         /// </summary>
         Dictionary<string, Expression> Parameters { get; }
 
@@ -15,8 +15,11 @@ namespace SpiceSharpParser.Common.Evaluation
         Dictionary<string, Expression> Arguments { get; }
 
         double Evaluate(string expression);
+
         bool HaveFunction(string expression, string functionName);
+
         bool HaveFunctions(string expression);
+
         bool HaveSpiceProperties(string expression);
     }
 }

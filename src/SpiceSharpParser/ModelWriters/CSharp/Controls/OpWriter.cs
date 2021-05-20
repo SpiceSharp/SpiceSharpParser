@@ -14,10 +14,10 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Controls
             result.Add(
                 new CSharpNewStatement(
                     opId,
-                    @$"new OP(""{ opId }"")")
+                    @$"new OP(""{opId}"")")
                 {
                     Kind = CSharpStatementKind.CreateSimulation,
-                    Metadata = new Dictionary<string, string>() { { "type", typeof(OP).Name } }
+                    Metadata = new Dictionary<string, string>() { { "type", typeof(OP).Name } },
                 });
 
             return result;

@@ -53,7 +53,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp
                 return id_without_counter;
             }
 
-            
             var id = $@"{name.Substring(0, 1).ToLower()}{name.Substring(1)}_{_idCacheCounter[name]}";
             _idCache[id] = name;
             _idCacheReversed[name] = id;
@@ -83,6 +82,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
             {
                 return _models[modelName];
             }
+
             return null;
         }
 

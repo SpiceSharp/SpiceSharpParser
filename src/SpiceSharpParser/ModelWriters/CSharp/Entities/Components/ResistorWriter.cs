@@ -8,13 +8,13 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
 {
     public class ResistorWriter : BaseWriter, IWriter<Component>
     {
-        public List<CSharpStatement> Write(Component component, IWriterContext context)
+        public List<CSharpStatement> Write(Component @object, IWriterContext context)
         {
             var result = new List<CSharpStatement>();
 
-            var pins = component.PinsAndParameters.Take(Resistor.ResistorPinCount);
-            var parameters = component.PinsAndParameters.Skip(Resistor.ResistorPinCount);
-            var name = component.Name;
+            var pins = @object.PinsAndParameters.Take(Resistor.ResistorPinCount);
+            var parameters = @object.PinsAndParameters.Skip(Resistor.ResistorPinCount);
+            var name = @object.Name;
 
             if (parameters.Count >= 1)
             {
@@ -63,7 +63,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
 
                 if (!modelBased)
                 {
-                    result.Add(new CSharpNewStatement(resistorId, $@"new Resistor(""{name}"", ""{pins[0].Value}"", ""{pins[1].Value}"", {base.Evaluate(something.Value, context)})"));
+                    result.Add(new CSharpNewStatement(resistorId, $@"new Resistor(""{name}"", ""{pins[0].Value}"", ""{pins[1].Value}"", {Evaluate(something.Value, context)})"));
                 }
                 else
                 {

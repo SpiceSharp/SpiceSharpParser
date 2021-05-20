@@ -61,7 +61,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="parameter">Parameter value.</param>
         void SetParameter(string parameterName, Parameter parameter);
 
-
         /// <summary>
         /// Sets a parameter.
         /// </summary>

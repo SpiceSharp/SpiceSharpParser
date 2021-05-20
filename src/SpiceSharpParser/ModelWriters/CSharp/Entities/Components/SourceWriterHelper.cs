@@ -16,7 +16,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
             result.Add(new CSharpNewStatement(currentSourceId, $@"new BehavioralCurrentSource(""{name}"")"));
             result.Add(new CSharpCallStatement(currentSourceId, $@"Connect(""{pins[0].Value}"", ""{pins[1].Value}"")"));
             var transformed = context.EvaluationContext.Transform(expression);
-            
             result.Add(new CSharpAssignmentStatement($@"{currentSourceId}.Parameters.Expression", @$"$""{transformed}"""));
         }
 
@@ -87,7 +86,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                 {
                     var expression = ExpressionFactory.CreateTableExpression(eep.Expression, eep.Points);
                     CreateBehavioralCurrentSource(result, name, parameters, expression, context);
-
                 }
                 else
                 {
@@ -153,7 +151,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                 {
                     var expression = ExpressionFactory.CreateTableExpression(eep.Expression, eep.Points);
                     CreateBehavioralVoltageSource(result, name, parameters, expression, context);
-
                 }
                 else
                 {
@@ -281,7 +278,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
             }
         }
 
-
         protected static string CreatePolyExpression(int dimension, ParameterCollection parameters, bool isVoltageControlled, IEvaluationContext context)
         {
             if (isVoltageControlled)
@@ -292,5 +288,4 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
             return ExpressionFactory.CreatePolyCurrentExpression(dimension, parameters, context);
         }
     }
-
 }

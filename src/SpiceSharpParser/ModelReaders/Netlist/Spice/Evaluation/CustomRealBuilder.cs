@@ -37,7 +37,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 
         public Parser Parser { get; }
 
-        public List<CustomVariable<Func<double>>> Variables { get; } = new List<Common.Evaluation.CustomVariable<Func<double>>>();
+        public List<CustomVariable<Func<double>>> Variables { get; }
 
         public bool ThrowOnErrors { get; }
 
@@ -111,8 +111,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
                 {
                     if (e.Node.NodeType == NodeTypes.Current)
                     {
-                        var name = e.Node.Name;
-
                         var parameters = new ParameterCollection();
                         var vectorParameter = new VectorParameter();
                         vectorParameter.Elements.Add(new IdentifierParameter(e.Node.Name.ToString()));

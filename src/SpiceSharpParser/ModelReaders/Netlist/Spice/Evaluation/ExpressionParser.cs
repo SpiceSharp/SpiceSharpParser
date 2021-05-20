@@ -15,7 +15,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
     {
         public ExpressionParser(
             RealBuilder doubleBuilder,
-            EvaluationContext context, 
+            EvaluationContext context,
             bool throwOnErrors,
             ISpiceNetlistCaseSensitivitySettings caseSettings,
             VariablesFactory variablesFactory = null)

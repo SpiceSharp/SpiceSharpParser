@@ -41,9 +41,9 @@
 
             return
                 asg.Condition == this.Condition
-                && asg.This == this.This 
-                && asg.IncludeInCollection == this.IncludeInCollection 
-                && asg.Left == this.Left 
+                && asg.This == this.This
+                && asg.IncludeInCollection == this.IncludeInCollection
+                && asg.Left == this.Left
                 && asg.ValueExpression == this.ValueExpression;
         }
     }

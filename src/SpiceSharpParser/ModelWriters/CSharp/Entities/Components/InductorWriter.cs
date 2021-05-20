@@ -7,17 +7,17 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
 {
     public class InductorWriter : BaseWriter, IWriter<Component>
     {
-        public List<CSharpStatement> Write(Component component, IWriterContext context)
+        public List<CSharpStatement> Write(Component @object, IWriterContext context)
         {
             var result = new List<CSharpStatement>();
 
-            var pins = component.PinsAndParameters.Take(Inductor.InductorPinCount);
-            var parameters = component.PinsAndParameters.Skip(Inductor.InductorPinCount);
-            var name = component.Name;
+            var pins = @object.PinsAndParameters.Take(Inductor.InductorPinCount);
+            var parameters = @object.PinsAndParameters.Skip(Inductor.InductorPinCount);
+            var name = @object.Name;
 
             var inductorId = context.GetNewIdentifier(name);
 
-            result.Add(new CSharpNewStatement(inductorId, $@"new Inductor(""{name}"", ""{pins[0].Value}"", ""{pins[1].Value}"", {base.Evaluate(parameters[0].Value, context)})"));
+            result.Add(new CSharpNewStatement(inductorId, $@"new Inductor(""{name}"", ""{pins[0].Value}"", ""{pins[1].Value}"", {Evaluate(parameters[0].Value, context)})"));
 
             for (var i = 1; i < parameters.Count; i++)
             {

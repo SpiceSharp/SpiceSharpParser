@@ -29,6 +29,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Models
             context.RegisterModelType(@object.Name, "BipolarJunctionTransistorModel");
 
             return result;
-        }        
+        }
     }
 }

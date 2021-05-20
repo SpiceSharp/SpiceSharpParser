@@ -6,8 +6,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Models
 {
     public abstract class ModelWriter : BaseWriter, IWriter<Model>
     {
-        public abstract List<CSharpStatement> Write(Model @object, IWriterContext context);
-
         public static string GetType(Model @object)
         {
             if (@object.Parameters.Count == 0)
@@ -28,6 +26,8 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Models
             return null;
         }
 
+        public abstract List<CSharpStatement> Write(Model @object, IWriterContext context);
+
         public ParameterCollection GetModelParameters(Model @object)
         {
             if (@object.Parameters.Count == 0)
@@ -47,6 +47,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Models
 
             return null;
         }
+
         protected void SetProperties(List<CSharpStatement> result, string modelId, ParameterCollection parameters, IWriterContext context)
         {
             foreach (var parameter in parameters)

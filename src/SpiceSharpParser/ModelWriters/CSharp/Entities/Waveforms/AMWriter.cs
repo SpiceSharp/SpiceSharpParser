@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.ModelWriters.CSharp;
 
 namespace SpiceSharpParser.ModelWriters.CSharp
 {
@@ -32,7 +31,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
                 throw new ArgumentNullException(nameof(context));
             }
 
-            if (parameters.Count > 7 || parameters.Count == 1 && parameters[0] is VectorParameter vp && vp.Elements.Count > 7)
+            if (parameters.Count > 7 || (parameters.Count == 1 && parameters[0] is VectorParameter vp && vp.Elements.Count > 7))
             {
                 waveFormId = null;
                 return null;

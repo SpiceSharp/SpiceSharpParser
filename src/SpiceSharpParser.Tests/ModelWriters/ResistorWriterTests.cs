@@ -15,7 +15,8 @@ namespace SpiceSharpParser.Tests.ModelWriters
                 new SpiceSharpParser.Models.Netlist.Spice.Objects.Component(
                     "R1",
                     new Models.Netlist.Spice.Objects.ParameterCollection(
-                        new System.Collections.Generic.List<Models.Netlist.Spice.Objects.Parameter>() { 
+                        new System.Collections.Generic.List<Models.Netlist.Spice.Objects.Parameter>()
+                        {
                             new WordParameter("in"),
                             new WordParameter("gnd"),
                             new ValueParameter("1000m"),

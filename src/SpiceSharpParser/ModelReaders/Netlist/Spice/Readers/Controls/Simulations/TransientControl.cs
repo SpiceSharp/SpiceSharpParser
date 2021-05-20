@@ -117,11 +117,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                                 StartTime = start ?? 0.0,
                                 StopTime = final.Value,
                                 MaxStep = maxStep ?? step.Value,
-                                InitialStep = step.Value
+                                InitialStep = step.Value,
                             });
                     }
                 }
             }
+
             tran.TimeParameters.UseIc = useIc;
 
             ConfigureCommonSettings(tran, context);

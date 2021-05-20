@@ -38,13 +38,11 @@ namespace SpiceSharpParser.ModelWriters.CSharp
             //ModelWriters["VSWITCH"] TODO
             //ModelWriters["ISWITCH"] TODO
 
-
             ComponentWriters["R"] = new ResistorWriter();
             ComponentWriters["L"] = new InductorWriter();
             ComponentWriters["K"] = new MutualInductanceWriter();
             ComponentWriters["C"] = new CapacitorWriter();
-            ComponentWriters["R"] = new ResistorWriter();
-            ComponentWriters["R"] = new ResistorWriter();
+
             ComponentWriters["V"] = new VoltageSourceWriter(new WaveformWriter());
             ComponentWriters["I"] = new CurrentSourceWriter(new WaveformWriter());
             ComponentWriters["Q"] = new BipolarJunctionTransistorWriter();
@@ -60,11 +58,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp
             ComponentWriters["T"] = new LosslessTransmissionLineWriter();
             ComponentWriters["S"] = new VoltageSwitchWriter();
             ComponentWriters["W"] = new CurrentSwitchWriter();
-
-
-            //ComponentWriters["BVDelay"] = TODO
-
-
 
             ControlWriters["DC"] = new DcWriter();
             ControlWriters["AC"] = new AcWriter();
@@ -192,17 +185,18 @@ namespace SpiceSharpParser.ModelWriters.CSharp
                     methodStatements.Insert(0, new CSharpCallStatement(null, $"CreateSubCircuitDefinitions_{context.CurrentSubcircuitName}()"));
                 }
             }
-           
+
             result.Add(
                 new CSharpMethod(@public, methodName, "EntityCollection", parameters.ToArray(), defaults.ToArray(), types.ToArray(), methodStatements, optionalParameters)
                 {
-                    Local = local
+                    Local = local,
                 });
 
             foreach (var asg in assignmentParameters)
             {
                 context.EvaluationContext.Variables.Remove(asg.Name);
             }
+
             return result;
         }
 
@@ -212,7 +206,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
             {
                 var graph = new Graphs.Graph<string>();
                 graph.Edges = new HashSet<Graphs.Edge<string>>(context.GetDependencies().SelectMany(p => p.Value, (parent, child) => new Graphs.Edge<string>(parent.Key, child)));
-              
+
                 foreach (var edge in graph.Edges)
                 {
                     if (!graph.Nodes.Contains(edge.From))
@@ -239,7 +233,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
             }
         }
 
-        protected virtual int GetOrder(Statement statement)
+        private int GetOrder(Statement statement)
         {
             if (statement is SubCircuit)
             {

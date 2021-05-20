@@ -32,6 +32,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
         public string ReturnType { get; }
 
         public List<CSharpStatement> Statements { get; }
+
         public bool OptionalArguments { get; }
     }
 }

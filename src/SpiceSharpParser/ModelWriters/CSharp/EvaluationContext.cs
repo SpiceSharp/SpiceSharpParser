@@ -8,6 +8,11 @@ namespace SpiceSharpParser.ModelWriters.CSharp
 {
     public class EvaluationContext : IEvaluationContext
     {
+        public EvaluationContext(ExpressionParser parser)
+        {
+            Parser = parser;
+        }
+
         public ExpressionParser Parser { get; }
 
         public Dictionary<string, Expression> Parameters { get; set; } = new Dictionary<string, Expression>();
@@ -17,11 +22,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp
         public Dictionary<string, string> Variables { get; set; } = new Dictionary<string, string>();
 
         public List<string> Functions { get; set; } = new List<string>();
-
-        public EvaluationContext(ExpressionParser parser)
-        {
-            Parser = parser;
-        }
 
         public bool HaveSpiceProperties(string expression)
         {

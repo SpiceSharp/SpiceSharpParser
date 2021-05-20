@@ -42,14 +42,18 @@ namespace SpiceSharpParser
             {
                 throw new SpiceSharpException("Generated class has some code issues");
             }
+
             return rootNode;
         }
 
         public Assembly CreateCircuitAssembly(string className, SpiceNetlist model)
-        { 
+        {
             var rootNode = WriteCreateCircuitClass(className, model, true);
             var compilation
-            = CSharpCompilation.Create("Simulation.dll", new SyntaxTree[] { rootNode.SyntaxTree }, null,
+            = CSharpCompilation.Create(
+                "Simulation.dll",
+                new SyntaxTree[] { rootNode.SyntaxTree },
+                null,
                 new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
             compilation = compilation.WithReferences(
@@ -61,7 +65,6 @@ namespace SpiceSharpParser
                 MetadataReference.CreateFromFile(Assembly.Load("netstandard").Location),
                 MetadataReference.CreateFromFile(Assembly.Load("System.Runtime").Location));
 
-
             using (var memoryStream = new MemoryStream())
             {
                 EmitResult result = compilation.Emit(memoryStream);
@@ -70,6 +73,7 @@ namespace SpiceSharpParser
                     var assembly = Assembly.Load(memoryStream.GetBuffer());
                     return assembly;
                 }
+
                 return null;
             }
         }
@@ -88,7 +92,6 @@ namespace SpiceSharpParser
             MethodInfo magicMethod = factory.GetType().GetMethod("CreateCircuit");
             return (EntityCollection)magicMethod.Invoke(factory, new object[0]);
         }
-
 
         public List<Simulation> CreateSimulations(SpiceNetlist model)
         {

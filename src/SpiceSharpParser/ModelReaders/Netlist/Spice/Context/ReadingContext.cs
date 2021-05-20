@@ -75,7 +75,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             Evaluator.Seed = readerSettings.Seed;
             Evaluator.SetEntites(ContextEntities);
             Evaluator.SetCircuitContext(this);
-
         }
 
         /// <summary>
@@ -88,6 +87,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public SpiceNetlistReaderSettings ReaderSettings { get; }
 
         public Encoding ExternalFilesEncoding { get; set; }
+
+        /// <summary>
         /// Gets the name of context.
         /// </summary>
         public string Name { get; }
@@ -296,21 +297,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
         }
 
-        public ExpressionParser CreateExpressionParser(Simulation simulation)
-        {
-            var evalContext = Evaluator.GetEvaluationContext(simulation);
-            var variablesFactory = new VariablesFactory();
-
-            var parser = new ExpressionParser(
-                new CustomRealBuilder(evalContext, new Parser(), ReaderSettings.CaseSensitivity, false, variablesFactory),
-                evalContext,
-                false,
-                ReaderSettings.CaseSensitivity,
-                variablesFactory);
-
-            return parser;
-        }
-
         public void SetParameter(IEntity entity, string parameterName, Parameter parameter, bool beforeTemperature = true, Simulation simulation = null)
         {
             if (entity == null)
@@ -354,6 +340,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                         parameter.LineInfo,
                         exception: e));
             }
+        }
+
+        public ExpressionParser CreateExpressionParser(Simulation simulation)
+        {
+            var evalContext = Evaluator.GetEvaluationContext(simulation);
+            var variablesFactory = new VariablesFactory();
+
+            var parser = new ExpressionParser(
+                new CustomRealBuilder(evalContext, new Parser(), ReaderSettings.CaseSensitivity, false, variablesFactory),
+                evalContext,
+                false,
+                ReaderSettings.CaseSensitivity,
+                variablesFactory);
+
+            return parser;
         }
 
         protected ICollection<SubCircuit> CreateAvailableSubcircuitsCollection()
@@ -401,6 +402,5 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 return new StochasticModelsRegistry(generators, ReaderSettings.CaseSensitivity.IsEntityNamesCaseSensitive);
             }
         }
-
     }
 }

@@ -43,7 +43,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             ExternalFilesEncoding = encoding;
         }
 
-        public SpiceNetlistReaderSettings() 
+        public SpiceNetlistReaderSettings()
         {
             Mappings = new SpiceObjectMappings();
             Orderer = new SpiceStatementsOrderer();
@@ -54,7 +54,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             ExpandSubcircuits = true;
             ExternalFilesEncoding = Encoding.Default;
         }
-
 
         public Encoding ExternalFilesEncoding { get; set; }
 
@@ -77,14 +76,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// Gets the case-sensitivity settings.
         /// </summary>
         public ISpiceNetlistCaseSensitivitySettings CaseSensitivity { get; }
-        
+
         /// <summary>
         /// Gets or sets the separator for object and node names.
         /// </summary>
         public string Separator { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether subcircuts should be expaned.
+        /// Gets or sets a value indicating whether subcircuts should be expaned.
         /// </summary>
         public bool ExpandSubcircuits { get; set; }
 

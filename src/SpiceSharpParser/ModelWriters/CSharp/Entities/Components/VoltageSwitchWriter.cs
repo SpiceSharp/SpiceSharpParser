@@ -17,7 +17,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
 
             var voltageSwitchId = context.GetNewIdentifier(name);
             result.Add(new CSharpNewStatement(voltageSwitchId, $@"new VoltageSwitch(""{name}"", ""{pins[0].Value}"", ""{pins[1].Value}"", ""{pins[2].Value}"", ""{pins[3].Value}"", ""{parameters[0].Value}"")"));
-            
+
             for (var i = 1; i < parameters.Count; i++)
             {
                 if (parameters[i] is AssignmentParameter assignmentParameter)

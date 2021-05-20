@@ -44,7 +44,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
         /// Gets or sets the children.
         /// </summary>
         public List<INodeNameGenerator> Children { get; set; } = new List<INodeNameGenerator>();
-        
+
         public string Separator { get; }
 
         /// <summary>

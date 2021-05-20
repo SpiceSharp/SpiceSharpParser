@@ -11,6 +11,7 @@ namespace SpiceSharpParser.Common.Evaluation
         public List<CustomVariable<Func<double>>> CreateVariables(IEvaluationContext context, Parser parser, RealBuilder builder)
         {
             var result = new List<CustomVariable<Func<double>>>();
+
             // setup variables
             foreach (var variable in context.Arguments)
             {
@@ -32,8 +33,8 @@ namespace SpiceSharpParser.Common.Evaluation
                     result.Add(new CustomVariable<Func<double>>() { Name = variable.Key, VariableNode = variableNode, Value = () => builder.Build(variableNode) });
                 }
             }
+
             return result;
         }
-
     }
 }

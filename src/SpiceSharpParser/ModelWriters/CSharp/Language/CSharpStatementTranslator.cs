@@ -49,17 +49,18 @@ namespace SpiceSharpParser.ModelWriters.CSharp
             var builder = new StringBuilder();
             var returnType = method.ReturnType;
 
-            builder.Append(GetSpace(spaces) + (method.IsPublic != null ? (method.IsPublic.Value ? "public " : "private ") : "") + $"{returnType} {method.MethodName}(");
+            builder.Append(GetSpace(spaces) + (method.IsPublic != null ? (method.IsPublic.Value ? "public " : "private ") : string.Empty) + $"{returnType} {method.MethodName}(");
 
             for (var i = 0; i < method.ArgumentNames.Length; i++)
             {
-                builder.Append(method.ArgumentTypes[i].Name + " " + method.ArgumentNames[i] + (method.OptionalArguments ? " = null" : ""));
+                builder.Append(method.ArgumentTypes[i].Name + " " + method.ArgumentNames[i] + (method.OptionalArguments ? " = null" : string.Empty));
 
                 if (i != method.ArgumentNames.Length - 1)
                 {
                     builder.Append(", ");
                 }
             }
+
             builder.Append(")");
             builder.AppendLine();
             builder.AppendLine(GetSpace(spaces) + "{");
@@ -78,6 +79,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
                         builder.AppendLine(GetSpace(spaces + 5) + @$"if ({method.ArgumentNames[i]} == null) {method.ArgumentNames[i]} = $""{transformed}"";");
                     }
                 }
+
                 builder.AppendLine();
             }
 
@@ -103,7 +105,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
 
         private string GetSpace(int count)
         {
-            string result = "";
+            string result = string.Empty;
 
             for (var i = 0; i < count; i++)
             {
@@ -127,10 +129,10 @@ namespace SpiceSharpParser.ModelWriters.CSharp
 
             if (statement is CSharpAssignmentStatement @as)
             {
-                return GetSpace(spaces) +  @as.Left + " = " + @as.ValueExpression + ";";
+                return GetSpace(spaces) + @as.Left + " = " + @as.ValueExpression + ";";
             }
 
-            if(statement is CSharpConditionAssignmentStatement cond)
+            if (statement is CSharpConditionAssignmentStatement cond)
             {
                 return GetSpace(spaces) + "if (" + cond.Condition + ") { " + cond.Left + " = " + cond.ValueExpression + "; }";
             }
@@ -159,6 +161,5 @@ namespace SpiceSharpParser.ModelWriters.CSharp
 
             return null;
         }
-
     }
 }

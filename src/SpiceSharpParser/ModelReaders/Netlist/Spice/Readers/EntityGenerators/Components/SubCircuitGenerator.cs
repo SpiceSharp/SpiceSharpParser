@@ -220,7 +220,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return result;
         }
 
-        private static int GetAssigmentParametersCount(ParameterCollection parameters, out List<AssignmentParameter> subCktParameters)
+        private int GetAssigmentParametersCount(ParameterCollection parameters, out List<AssignmentParameter> subCktParameters)
         {
             var parameterParameters = 0;
             subCktParameters = new List<AssignmentParameter>();
@@ -366,9 +366,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             var subcircuitEvaluationContext = context.Evaluator.CreateChildContext(subcircuitFullName, true);
             subcircuitEvaluationContext.SetParameters(subcircuitParameters);
 
-            var subcircuitEvaluator = 
-                new Evaluator(new SimulationEvaluationContexts(subcircuitEvaluationContext), subcircuitEvaluationContext);
-            
+            var subcircuitEvaluator = new Evaluator(new SimulationEvaluationContexts(subcircuitEvaluationContext), subcircuitEvaluationContext);
+
             var settings = context.ReaderSettings.Clone();
             settings.ExpandSubcircuits = false;
 

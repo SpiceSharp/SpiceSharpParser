@@ -26,9 +26,9 @@ namespace SpiceSharpParser.ModelWriters.CSharp
 
                 methodStatements.Add(createSimulation);
 
-                methodStatements.AddRange(simulationStatements.Where(s => 
-                    s.Kind == CSharpStatementKind.CreateSimulationInit_After 
-                    && s.Metadata.ContainsKey("dependency") 
+                methodStatements.AddRange(simulationStatements.Where(s =>
+                    s.Kind == CSharpStatementKind.CreateSimulationInit_After
+                    && s.Metadata.ContainsKey("dependency")
                     && s.Metadata["dependency"] == variableName));
 
                 foreach (var setSimulation in simulationStatements.Where(s => s.Kind == CSharpStatementKind.SetSimulation && s.Metadata.ContainsKey("type")))

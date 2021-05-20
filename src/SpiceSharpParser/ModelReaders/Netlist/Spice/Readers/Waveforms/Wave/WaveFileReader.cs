@@ -44,6 +44,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.Wave
             {
                 throw new Exception("Only mono or stereo audio format is supported");
             }
+
             if (result.BitsPerSample != 8 && result.BitsPerSample != 16)
             {
                 throw new Exception("Only 8 or 16 bits per sample is supported");
@@ -147,7 +148,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.Wave
             {
                 Array.Reverse(result);
             }
-
 
             return result;
         }

@@ -20,7 +20,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
         /// <returns>
         /// A new waveform.
         /// </returns>
-        public List<CSharpStatement> Generate(ParameterCollection parameters, IWriterContext context, out string waveFormId)
+        public List<CSharpStatement> Generate(ParameterCollection parameters, IWriterContext context, out string waveformId)
         {
             if (parameters == null)
             {
@@ -32,15 +32,15 @@ namespace SpiceSharpParser.ModelWriters.CSharp
                 throw new ArgumentNullException(nameof(context));
             }
 
-            if (parameters.Count > 7 || parameters.Count == 1 && parameters[0] is VectorParameter vp && vp.Elements.Count > 7)
+            if (parameters.Count > 7 || (parameters.Count == 1 && parameters[0] is VectorParameter vp && vp.Elements.Count > 7))
             {
-                waveFormId = null;
+                waveformId = null;
                 return null;
             }
 
             var result = new List<CSharpStatement>();
-            waveFormId = context.GetNewIdentifier("pulse");
-            result.Add(new CSharpNewStatement(waveFormId, "new Pulse()") { IncludeInCollection = false });
+            waveformId = context.GetNewIdentifier("pulse");
+            result.Add(new CSharpNewStatement(waveformId, "new Pulse()") { IncludeInCollection = false });
 
             if (parameters.Count == 1 && parameters[0] is VectorParameter v)
             {
@@ -49,37 +49,37 @@ namespace SpiceSharpParser.ModelWriters.CSharp
 
             if (parameters.Count >= 1)
             {
-                result.Add(SetProperty(waveFormId, "InitialValue", parameters[0].Value, context));
+                result.Add(SetProperty(waveformId, "InitialValue", parameters[0].Value, context));
             }
 
             if (parameters.Count >= 2)
             {
-                result.Add(SetProperty(waveFormId, "PulsedValue", parameters[1].Value, context));
+                result.Add(SetProperty(waveformId, "PulsedValue", parameters[1].Value, context));
             }
 
             if (parameters.Count >= 3)
             {
-                result.Add(SetProperty(waveFormId, "Delay", parameters[2].Value, context));
+                result.Add(SetProperty(waveformId, "Delay", parameters[2].Value, context));
             }
 
             if (parameters.Count >= 4)
             {
-                result.Add(SetProperty(waveFormId, "RiseTime", parameters[3].Value, context));
+                result.Add(SetProperty(waveformId, "RiseTime", parameters[3].Value, context));
             }
 
             if (parameters.Count >= 5)
             {
-                result.Add(SetProperty(waveFormId, "FallTime", parameters[4].Value, context));
+                result.Add(SetProperty(waveformId, "FallTime", parameters[4].Value, context));
             }
 
             if (parameters.Count >= 6)
             {
-                result.Add(SetProperty(waveFormId, "PulseWidth", parameters[5].Value, context));
+                result.Add(SetProperty(waveformId, "PulseWidth", parameters[5].Value, context));
             }
 
             if (parameters.Count == 7)
             {
-                result.Add(SetProperty(waveFormId, "Period", parameters[6].Value, context));
+                result.Add(SetProperty(waveformId, "Period", parameters[6].Value, context));
             }
 
             return result;

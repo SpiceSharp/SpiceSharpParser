@@ -20,18 +20,20 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
             Mosfets.Add("Mosfet3Model", (string name) => "Mosfet3");
         }
 
-        public List<CSharpStatement> Write(Component component, IWriterContext context)
+        protected Dictionary<string, Func<string, string>> Mosfets { get; } = new Dictionary<string, Func<string, string>>();
+
+        public List<CSharpStatement> Write(Component @object, IWriterContext context)
         {
             var result = new List<CSharpStatement>();
 
-            if (component.PinsAndParameters.Count < 5) 
+            if (@object.PinsAndParameters.Count < 5)
             {
                 return null;
             }
 
-            var pins = component.PinsAndParameters.Take(4);
-            var parameters = component.PinsAndParameters.Skip(4);
-            var name = component.Name;
+            var pins = @object.PinsAndParameters.Take(4);
+            var parameters = @object.PinsAndParameters.Skip(4);
+            var name = @object.Name;
 
             var mosfetId = context.GetNewIdentifier(name);
             var modelNameParameter = parameters.Get(0);
@@ -58,11 +60,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
 
             SetParallelParameter(result, mosfetId, parameters, context);
 
-
             return result;
         }
-
-        protected Dictionary<string, Func<string, string>> Mosfets { get; } = new Dictionary<string, Func<string, string>>();
-
     }
 }

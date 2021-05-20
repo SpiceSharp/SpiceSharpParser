@@ -12,16 +12,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.ResolverFunctio
             Name = "poly";
         }
 
-        public override Node GetBody(Node[] args)
+        public override Node GetBody(Node[] argumentValues)
         {
-            if (args[0].NodeType != NodeTypes.Constant)
+            if (argumentValues[0].NodeType != NodeTypes.Constant)
             {
                 throw new SpiceSharpParserException("POLY first parameter should be constant");
             }
 
-            int dimension = (int)(args[0] as ConstantNode).Literal;
+            int dimension = (int)(argumentValues[0] as ConstantNode).Literal;
 
-            if (args.Length < dimension + 1)
+            if (argumentValues.Length < dimension + 1)
             {
                 throw new SpiceSharpParserException("Too less variables for POLY");
             }
@@ -30,14 +30,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.ResolverFunctio
 
             for (var i = 1; i <= dimension; i++)
             {
-                variables.Add(args[i]);
+                variables.Add(argumentValues[i]);
             }
 
             List<Node> coefficients = new List<Node>();
 
-            for (var i = dimension + 1; i < args.Length; i++)
+            for (var i = dimension + 1; i < argumentValues.Length; i++)
             {
-                coefficients.Add(args[i]);
+                coefficients.Add(argumentValues[i]);
             }
 
             if (coefficients.Count == 0)

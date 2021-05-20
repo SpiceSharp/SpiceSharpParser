@@ -28,7 +28,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
         [Fact]
         public void Example04()
         {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/example04.cir");
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/Example04.cir");
             var netlistContent = File.ReadAllText(path);
             var parser = new SpiceParser();
             parser.Settings.Lexing.HasTitle = true;
@@ -48,7 +48,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
         [Fact]
         public void Example04_reversed()
         {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/example04_reversed.cir");
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/Example04_reversed.cir");
             var netlistContent = File.ReadAllText(path);
             var parser = new SpiceParser();
             parser.Settings.Lexing.HasTitle = true;
@@ -68,7 +68,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
         [Fact]
         public void Example04_nested()
         {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/example04_nested.cir");
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/Example04_nested.cir");
             var netlistContent = File.ReadAllText(path);
             var parser = new SpiceParser();
             parser.Settings.Lexing.HasTitle = true;
@@ -87,7 +87,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
         [Fact]
         public void Example05()
         {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/example05.cir");
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/Example05.cir");
             var netlistContent = File.ReadAllText(path);
             var parser = new SpiceParser();
             parser.Settings.Lexing.HasTitle = true;
@@ -106,7 +106,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
         [Fact]
         public void Example06()
         {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/example06.cir");
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/Example06.cir");
             var netlistContent = File.ReadAllText(path);
             var parser = new SpiceParser();
             parser.Settings.Lexing.HasTitle = true;
@@ -125,7 +125,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
         [Fact]
         public void Example07()
         {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/example07.cir");
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/Example07.cir");
             var netlistContent = File.ReadAllText(path);
             var parser = new SpiceParser();
             parser.Settings.Lexing.HasTitle = true;
@@ -144,7 +144,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
         [Fact]
         public void Example08()
         {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/example08.cir");
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/Example08.cir");
             var netlistContent = File.ReadAllText(path);
             var parser = new SpiceParser();
             parser.Settings.Lexing.HasTitle = true;
@@ -163,7 +163,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
         [Fact]
         public void Example09()
         {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/example09.cir");
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/Example09.cir");
             var netlistContent = File.ReadAllText(path);
             var parser = new SpiceParser();
             parser.Settings.Lexing.HasTitle = true;
@@ -183,7 +183,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
         [Fact]
         public void Example10()
         {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/example10.cir");
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/Example10.cir");
             var netlistContent = File.ReadAllText(path);
             var parser = new SpiceParser();
             parser.Settings.Lexing.HasTitle = true;
@@ -207,7 +207,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
         [Fact]
         public void Example11()
         {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/example11.cir");
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/Example11.cir");
             var netlistContent = File.ReadAllText(path);
             var parser = new SpiceParser();
             parser.Settings.Lexing.HasTitle = true;

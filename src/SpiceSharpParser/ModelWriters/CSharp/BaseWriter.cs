@@ -13,7 +13,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
                 || context.EvaluationContext.HaveVariables(expression))
             {
                 var functionExpression = context.EvaluationContext.Transform(expression);
-                return new CSharpAssignmentStatement(identifier + "." + property, $@"SpiceHelper.ParseNumber($""{ functionExpression }"")");
+                return new CSharpAssignmentStatement(identifier + "." + property, $@"SpiceHelper.ParseNumber($""{functionExpression}"")");
             }
             else
             {
@@ -53,7 +53,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
             {
                 var functionExpression = context.EvaluationContext.Transform(expression);
 
-                return $@"SpiceHelper.ParseNumber($""{ functionExpression }"")";
+                return $@"SpiceHelper.ParseNumber($""{functionExpression}"")";
             }
             else
             {

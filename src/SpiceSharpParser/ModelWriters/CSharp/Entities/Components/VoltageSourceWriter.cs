@@ -8,12 +8,12 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
 {
     public class VoltageSourceWriter : BaseWriter, IWriter<Component>
     {
-        public WaveformWriter WaveformWriter { get; }
-
         public VoltageSourceWriter(WaveformWriter waveformWriter)
         {
             WaveformWriter = waveformWriter;
         }
+
+        public WaveformWriter WaveformWriter { get; }
 
         public List<CSharpStatement> Write(Component @object, IWriterContext context)
         {
@@ -22,7 +22,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
             var pins = @object.PinsAndParameters.Take(VoltageSource.PinCount);
             var parameters = @object.PinsAndParameters.Skip(VoltageSource.PinCount);
             var name = @object.Name;
-
 
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
             {

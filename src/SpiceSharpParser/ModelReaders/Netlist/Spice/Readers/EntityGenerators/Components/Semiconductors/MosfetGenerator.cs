@@ -130,11 +130,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                                 context.SetParameter(mosfet, "icvgs", ap.Values[1], true);
                                 context.SetParameter(mosfet, "icvbs", ap.Values[2], true);
                             }
+
                             if (ap.Values.Count == 2)
                             {
                                 context.SetParameter(mosfet, "icvds", ap.Values[0], true);
                                 context.SetParameter(mosfet, "icvgs", ap.Values[1], true);
                             }
+
                             if (ap.Values.Count == 1)
                             {
                                 context.SetParameter(mosfet, "icvds", ap.Values[0], true);
@@ -155,6 +157,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Unsupported parameter: {parameter}", parameter.LineInfo));
                 }
             }
+
             return mosfet;
         }
 

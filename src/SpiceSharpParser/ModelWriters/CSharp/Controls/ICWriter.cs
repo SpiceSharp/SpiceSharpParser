@@ -15,7 +15,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Controls
                 if (param is Models.Netlist.Spice.Objects.Parameters.AssignmentParameter ap)
                 {
                     string type = ap.Name.ToLower();
-                    string initialValue = base.Evaluate(ap.Value, context);
+                    string initialValue = Evaluate(ap.Value, context);
 
                     if (type == "v" && ap.Arguments.Count == 1)
                     {
@@ -25,13 +25,11 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Controls
                                 "{transactionId} is Transient", @$"{{transactionId}}.TimeParameters.InitialConditions[""{nodeName}""]", $@"{initialValue}")
                             {
                                 Kind = CSharpStatementKind.SetSimulation,
-                                Metadata = new Dictionary<string, string>() { { "type", typeof(Transient).Name } }
-
+                                Metadata = new Dictionary<string, string>() { { "type", typeof(Transient).Name } },
                             });
                     }
                 }
             }
-
 
             return result;
         }

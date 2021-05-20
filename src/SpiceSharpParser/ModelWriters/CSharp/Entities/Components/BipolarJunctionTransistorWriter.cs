@@ -12,7 +12,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
         {
             var result = new List<CSharpStatement>();
 
-            if (component.PinsAndParameters.Count < 4) // QXXX NC NB NE MNAME
+            if (component.PinsAndParameters.Count < 4)
             {
                 return null;
             }
@@ -24,7 +24,8 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
             var bjtId = context.GetNewIdentifier(name);
             var modelName = parameters[0].Value;
 
-            result.Add(new CSharpNewStatement(bjtId, 
+            result.Add(new CSharpNewStatement(
+                bjtId,
                 $@"new BipolarJunctionTransistor(""{name}"", ""{pins[0].Value}"", ""{pins[1].Value}"", ""{pins[2].Value}"", ""{pins[3].Value}"", ""{modelName}"")"));
 
             bool areaSet = false;
@@ -45,7 +46,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                     }
                     else
                     {
-                        if (!areaSet) // area is before temperature
+                        if (!areaSet)
                         {
                             result.Add(SetParameter(bjtId, "area", s.Value, context));
                             areaSet = true;

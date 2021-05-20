@@ -36,7 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 throw new ArgumentNullException(nameof(context));
             }
 
-            return CreateWaveFromFile(parameters, context);;
+            return CreateWaveFromFile(parameters, context);
         }
 
         private static IWaveformDescription CreateWaveFromFile(ParameterCollection parameters, IReadingContext context)
@@ -46,7 +46,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             var ampliduteParameter = (AssignmentParameter)parameters.FirstOrDefault(p => p is AssignmentParameter ap && ap.Name.ToLower() == "amplitude");
 
             var filePath = PathConverter.Convert(fileParameter.Value);
-            
             var workingDirectory = context.ReaderSettings.WorkingDirectory ?? Directory.GetCurrentDirectory();
             var fullFilePath = Path.Combine(workingDirectory, filePath);
 
@@ -56,7 +55,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             }
 
             byte[] fileContent = File.ReadAllBytes(fullFilePath);
-            
             var amplitude = DefaultAmplidude;
 
             if (ampliduteParameter != null)

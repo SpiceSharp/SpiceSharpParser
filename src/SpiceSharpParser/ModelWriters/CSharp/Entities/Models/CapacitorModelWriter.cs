@@ -17,6 +17,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Models
             SetProperties(result, modelId, parameters, context);
             context.RegisterModelType(@object.Name, "CapacitorModel");
             return result;
-        }        
+        }
     }
 }

@@ -35,9 +35,9 @@
 
             var asg = (CSharpAssignmentStatement)obj;
 
-            return asg.This == this.This 
-                && asg.IncludeInCollection == this.IncludeInCollection 
-                && asg.Left == this.Left 
+            return asg.This == this.This
+                && asg.IncludeInCollection == this.IncludeInCollection
+                && asg.Left == this.Left
                 && asg.ValueExpression == this.ValueExpression;
         }
     }

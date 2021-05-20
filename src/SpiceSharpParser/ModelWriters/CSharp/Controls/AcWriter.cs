@@ -23,30 +23,30 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Controls
                     result.Add(
                         new CSharpNewStatement(
                             acId,
-                            @$"new AC(""{ acId }"", new LinearSweep({start}, {stop}, (int){numberSteps}))")
+                            @$"new AC(""{acId}"", new LinearSweep({start}, {stop}, (int){numberSteps}))")
                         {
                             Kind = CSharpStatementKind.CreateSimulation,
-                            Metadata = new Dictionary<string, string>() { { "type", typeof(AC).Name } }
+                            Metadata = new Dictionary<string, string>() { { "type", typeof(AC).Name } },
                         });
                     break;
                 case "oct":
                     result.Add(
                         new CSharpNewStatement(
                             acId,
-                            @$"new AC(""{ acId }"", new OctaveSweep({start}, {stop}, (int){numberSteps}))")
+                            @$"new AC(""{acId}"", new OctaveSweep({start}, {stop}, (int){numberSteps}))")
                         {
                             Kind = CSharpStatementKind.CreateSimulation,
-                            Metadata = new Dictionary<string, string>() { { "type", typeof(AC).Name } }
+                            Metadata = new Dictionary<string, string>() { { "type", typeof(AC).Name } },
                         });
                     break;
                 case "dec":
                     result.Add(
                         new CSharpNewStatement(
                             acId,
-                            @$"new AC(""{ acId }"", new DecadeSweep({start}, {stop}, (int){numberSteps}))")
+                            @$"new AC(""{acId}"", new DecadeSweep({start}, {stop}, (int){numberSteps}))")
                         {
                             Kind = CSharpStatementKind.CreateSimulation,
-                            Metadata = new Dictionary<string, string>() { { "type", typeof(AC).Name } }
+                            Metadata = new Dictionary<string, string>() { { "type", typeof(AC).Name } },
                         });
                     break;
                 default:

@@ -48,6 +48,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 {
                     throw new Exception("Too few parameters for WAV");
                 }
+
                 var filePath = statement.Parameters[0].Value;
                 var bitPerSample = (int)context.Evaluator.EvaluateDouble(statement.Parameters[1]);
                 var sampleRate = (int)context.Evaluator.EvaluateDouble(statement.Parameters[2]);
@@ -89,7 +90,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         writer.Write(
                             filePath,
                             sampleRate,
-                            1.0, 
+                            1.0,
                             bitPerSample,
                             leftData.ToArray(),
                             rightData.ToArray());

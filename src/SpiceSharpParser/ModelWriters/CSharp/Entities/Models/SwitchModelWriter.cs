@@ -24,6 +24,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Models
                     result.Add(new CSharpNewStatement(modelId, $@"new CurrentSwitchModel(""{@object.Name}"")"));
                     break;
             }
+
             SetProperties(result, modelId, parameters, context);
 
             return result;
