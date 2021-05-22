@@ -54,11 +54,12 @@ namespace SpiceSharpParser
                 Settings.Lexing);
 
             var appendModelPreprocessor = new AppendModelPreprocessor();
+            var akoModelPreprocessor = new AkoModelPreprocessor();
             var sweepsPreprocessor = new SweepsPreprocessor();
             var ifPostprocessor = new IfPreprocessor();
             var macroPreprocessor = new MacroPreprocessor();
 
-            Preprocessors.AddRange(new IProcessor[] { includesPreprocessor, libPreprocessor, macroPreprocessor, appendModelPreprocessor, sweepsPreprocessor, ifPostprocessor });
+            Preprocessors.AddRange(new IProcessor[] { includesPreprocessor, libPreprocessor, macroPreprocessor, appendModelPreprocessor, akoModelPreprocessor, sweepsPreprocessor, ifPostprocessor });
         }
 
         public ISpiceTokenProviderPool TokenProviderPool { get; set; }
@@ -128,7 +129,7 @@ namespace SpiceSharpParser
 
         private SpiceNetlist GetFinalModel(SpiceNetlist originalNetlistModel, ValidationEntryCollection validationResult)
         {
-            SpiceNetlist preprocessedNetListModel = (SpiceNetlist)originalNetlistModel.Clone();
+            SpiceNetlist finalModel = (SpiceNetlist)originalNetlistModel.Clone();
             var preprocessorContext = GetEvaluationContext();
 
             foreach (var preprocessor in Preprocessors)
@@ -141,10 +142,10 @@ namespace SpiceSharpParser
                     consumer.CaseSettings = Settings?.CaseSensitivity;
                 }
 
-                preprocessedNetListModel.Statements = preprocessor.Process(preprocessedNetListModel.Statements);
+                finalModel.Statements = preprocessor.Process(finalModel.Statements);
             }
 
-            return preprocessedNetListModel;
+            return finalModel;
         }
 
         private EvaluationContext GetEvaluationContext()
