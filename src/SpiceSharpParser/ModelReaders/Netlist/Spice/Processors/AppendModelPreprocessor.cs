@@ -30,16 +30,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
             {
                 foreach (SubCircuit subCircuit in subCircuits)
                 {
-                    // 2. For each subcircuit find all APPENDMODELS
-                    var subCircuitAppendModels = subCircuit.Statements
-                        .Where(statement => statement is Control c && (c.Name.ToLower() == "appendmodel"))
-                        .Cast<Control>().ToList();
-
-                    foreach (Control appendModel in subCircuitAppendModels)
-                    {
-                        // 3. Read APPENDMODEL
-                        ReadAppendModel(subCircuit.Statements, appendModel);
-                    }
+                    Process(subCircuit.Statements);
                 }
             }
 
