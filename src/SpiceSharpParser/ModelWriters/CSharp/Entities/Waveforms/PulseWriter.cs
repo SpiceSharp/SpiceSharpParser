@@ -32,13 +32,15 @@ namespace SpiceSharpParser.ModelWriters.CSharp
                 throw new ArgumentNullException(nameof(context));
             }
 
+            var result = new List<CSharpStatement>();
+
             if (parameters.Count > 7 || (parameters.Count == 1 && parameters[0] is VectorParameter vp && vp.Elements.Count > 7))
             {
                 waveformId = null;
-                return null;
+                result.Add(new CSharpComment("Skipped, wrong parameters count for PULSE waveform"));
+                return result;
             }
 
-            var result = new List<CSharpStatement>();
             waveformId = context.GetNewIdentifier("pulse");
             result.Add(new CSharpNewStatement(waveformId, "new Pulse()") { IncludeInCollection = false });
 

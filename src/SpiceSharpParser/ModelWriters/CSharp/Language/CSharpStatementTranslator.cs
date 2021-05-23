@@ -122,6 +122,11 @@ namespace SpiceSharpParser.ModelWriters.CSharp
                 return GetCSharpCode(method, spaces); // local function
             }
 
+            if (statement is CSharpComment @comment)
+            {
+                return GetSpace(spaces) + "// " + comment.Text;
+            }
+
             if (statement is CSharpNewStatement @new)
             {
                 return GetSpace(spaces) + "var " + @new.VariableName + " = " + @new.NewExpression + ";";

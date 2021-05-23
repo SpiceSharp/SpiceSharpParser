@@ -12,6 +12,12 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
         {
             var result = new List<CSharpStatement>();
 
+            if (component.PinsAndParameters.Count < 3)
+            {
+                result.Add(new CSharpComment("Skipped, wrong pins/parameters count:" + component));
+                return result;
+            }
+
             var pins = component.PinsAndParameters.Take(Capacitor.PinCount);
             var parameters = component.PinsAndParameters.Skip(Capacitor.PinCount);
             var name = component.Name;
@@ -77,7 +83,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                     {
                         if (assignmentParameter.Name.ToLower() == "tc" || assignmentParameter.Name.ToLower() == "tc1" || assignmentParameter.Name.ToLower() == "tc2")
                         {
-                            context.Warnings.Add($"TC parameters for {name} capacitor where skipped");
+                            result.Add(new CSharpComment($"TC parameters for {name} capacitor where skipped"));
                             continue;
                         }
 

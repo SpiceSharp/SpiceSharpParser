@@ -31,13 +31,15 @@ namespace SpiceSharpParser.ModelWriters.CSharp
                 throw new ArgumentNullException(nameof(context));
             }
 
+            var result = new List<CSharpStatement>();
+
             if (parameters.Count > 6 || (parameters.Count == 1 && parameters[0] is VectorParameter vp && vp.Elements.Count > 6))
             {
                 waveformId = null;
-                return null;
-            }
 
-            var result = new List<CSharpStatement>();
+                result.Add(new CSharpComment("Skipped, wrong parameters count for SINE waveform"));
+                return result;
+            }
 
             waveformId = context.GetNewIdentifier("sine");
             result.Add(new CSharpNewStatement(waveformId, "new Sine()") { IncludeInCollection = false });

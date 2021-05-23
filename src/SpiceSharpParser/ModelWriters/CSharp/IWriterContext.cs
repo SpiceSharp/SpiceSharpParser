@@ -10,8 +10,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp
 
         EvaluationContext EvaluationContext { get; }
 
-        List<string> Warnings { get; }
-
         bool SubcircuitDictionaryPresent { get; set; }
 
         List<(string, CSharpStatement)> SubcircuitCreateStatements { get; set; }

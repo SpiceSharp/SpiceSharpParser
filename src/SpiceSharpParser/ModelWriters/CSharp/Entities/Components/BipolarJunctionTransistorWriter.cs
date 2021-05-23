@@ -8,18 +8,19 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
 {
     public class BipolarJunctionTransistorWriter : BaseWriter, IWriter<Component>
     {
-        public List<CSharpStatement> Write(Component component, IWriterContext context)
+        public List<CSharpStatement> Write(Component @object, IWriterContext context)
         {
             var result = new List<CSharpStatement>();
 
-            if (component.PinsAndParameters.Count < 4)
+            if (@object.PinsAndParameters.Count < 4)
             {
-                return null;
+                result.Add(new CSharpComment("Skipped, wrong pins/parameters count:" + @object));
+                return result;
             }
 
-            var pins = component.PinsAndParameters.Take(BipolarJunctionTransistor.PinCount);
-            var parameters = component.PinsAndParameters.Skip(BipolarJunctionTransistor.PinCount);
-            var name = component.Name;
+            var pins = @object.PinsAndParameters.Take(BipolarJunctionTransistor.PinCount);
+            var parameters = @object.PinsAndParameters.Skip(BipolarJunctionTransistor.PinCount);
+            var name = @object.Name;
 
             var bjtId = context.GetNewIdentifier(name);
             var modelName = parameters[0].Value;

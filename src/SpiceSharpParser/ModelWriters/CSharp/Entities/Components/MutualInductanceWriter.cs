@@ -10,6 +10,12 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
         {
             var result = new List<CSharpStatement>();
 
+            if (@object.PinsAndParameters.Count < 3)
+            {
+                result.Add(new CSharpComment("Skipped, wrong pins/parameters count:" + @object));
+                return result;
+            }
+
             var pins = @object.PinsAndParameters.Take(2);
             var parameters = @object.PinsAndParameters.Skip(2);
             var name = @object.Name;

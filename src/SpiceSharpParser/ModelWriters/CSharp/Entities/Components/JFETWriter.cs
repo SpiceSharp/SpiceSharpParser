@@ -12,6 +12,12 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
         {
             var result = new List<CSharpStatement>();
 
+            if (component.PinsAndParameters.Count < JFET.PinCount + 1)
+            {
+                result.Add(new CSharpComment("Skipped, wrong pins/parameters count:" + component));
+                return result;
+            }
+
             var pins = component.PinsAndParameters.Take(JFET.PinCount);
             var parameters = component.PinsAndParameters.Skip(JFET.PinCount);
             var name = component.Name;

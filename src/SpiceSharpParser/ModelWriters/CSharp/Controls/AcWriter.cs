@@ -10,12 +10,17 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Controls
         {
             var result = new List<CSharpStatement>();
 
+            if (@object.Parameters.Count < 4)
+            {
+                result.Add(new CSharpComment("Skipped, wrong parameters count:" + @object));
+                return result;
+            }
+
             var acId = context.GetNewIdentifier("ac");
             string type = @object.Parameters[0].Value.ToLower();
-
-            var numberSteps = Evaluate(@object.Parameters.Get(1).Value, context);
-            var start = Evaluate(@object.Parameters.Get(2).Value, context);
-            var stop = Evaluate(@object.Parameters.Get(3).Value, context);
+            var numberSteps = Evaluate(@object.Parameters[1].Value, context);
+            var start = Evaluate(@object.Parameters[2].Value, context);
+            var stop = Evaluate(@object.Parameters[3].Value, context);
 
             switch (type)
             {

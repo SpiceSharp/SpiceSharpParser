@@ -11,6 +11,12 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
         {
             var result = new List<CSharpStatement>();
 
+            if (component.PinsAndParameters.Count < CurrentSwitch.CurrentSwitchPinCount + 1)
+            {
+                result.Add(new CSharpComment("Skipped, wrong pins/parameters count:" + component));
+                return result;
+            }
+
             var pins = component.PinsAndParameters.Take(CurrentSwitch.CurrentSwitchPinCount);
             var parameters = component.PinsAndParameters.Skip(CurrentSwitch.CurrentSwitchPinCount);
             var name = component.Name;

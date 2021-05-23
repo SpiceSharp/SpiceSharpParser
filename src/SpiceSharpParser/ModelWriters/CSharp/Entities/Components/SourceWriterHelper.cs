@@ -31,6 +31,8 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
 
         public static void CreateCustomCurrentSource(List<CSharpStatement> result, string name, ParameterCollection parameters, IWriterContext context, bool isVoltageControlled)
         {
+            var resultIntialCount = result.Count;
+
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
             {
                 var valueParameter = (AssignmentParameter)parameters.Single(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");
@@ -63,7 +65,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
 
                 if (polyParameter.Parameters.Count != 1)
                 {
-                    return;//TODO
+                    result.Add(new CSharpComment("Error: POLY(n) expects one argument => dimension, " + name + " " + parameters));
                 }
 
                 var dimension = (int)context.EvaluationContext.Evaluate(polyParameter.Parameters[0].Value);
@@ -77,7 +79,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                 int tableParameterPosition = parameters.IndexOf(tableParameter);
                 if (tableParameterPosition == parameters.Count - 1)
                 {
-                    return;//TODO
+                    result.Add(new CSharpComment("Error: TABLE expects expression parameter, " + name + " " + parameters));
                 }
 
                 var nextParameter = parameters[tableParameterPosition + 1];
@@ -89,13 +91,20 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                 }
                 else
                 {
-                    return; //TODO
+                    result.Add(new CSharpComment("Error: TABLE expects expression parameter, " + name + " " + parameters));
                 }
+            }
+
+            if (result.Count == resultIntialCount)
+            {
+                result.Add(new CSharpComment("Skipped, wrong parameter count, " + name + " " + parameters));
             }
         }
 
         public static void CreateCustomVoltageSource(List<CSharpStatement> result, string name, ParameterCollection parameters, IWriterContext context, bool isVoltageControlled)
         {
+            var resultIntialCount = result.Count;
+
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
             {
                 var valueParameter = (AssignmentParameter)parameters.Single(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");
@@ -128,7 +137,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
 
                 if (polyParameter.Parameters.Count != 1)
                 {
-                    return;//TODO
+                    result.Add(new CSharpComment("Error: POLY(n) expects one argument => dimension, " + name + " " + parameters));
                 }
 
                 var dimension = (int)context.EvaluationContext.Evaluate(polyParameter.Parameters[0].Value);
@@ -142,7 +151,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                 int tableParameterPosition = parameters.IndexOf(tableParameter);
                 if (tableParameterPosition == parameters.Count - 1)
                 {
-                    return;//TODO
+                    result.Add(new CSharpComment("Error: TABLE expects expression parameter, " + name + " " + parameters));
                 }
 
                 var nextParameter = parameters[tableParameterPosition + 1];
@@ -154,8 +163,13 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                 }
                 else
                 {
-                    return; //TODO
+                    result.Add(new CSharpComment("Error: TABLE expects expression parameter, " + name + " " + parameters));
                 }
+            }
+
+            if (result.Count == resultIntialCount)
+            {
+                result.Add(new CSharpComment("Skipped, wrong parameter count, " + name + " " + parameters));
             }
         }
 

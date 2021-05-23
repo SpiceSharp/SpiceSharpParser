@@ -10,6 +10,12 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Controls
         {
             var result = new List<CSharpStatement>();
 
+            if (@object.Parameters.Count < 4)
+            {
+                result.Add(new CSharpComment("Skipped, wrong parameters count:" + @object));
+                return result;
+            }
+
             var dcId = context.GetNewIdentifier("dc");
             int count = @object.Parameters.Count / 4;
 

@@ -19,8 +19,14 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
         {
             var result = new List<CSharpStatement>();
 
-            var pins = @object.PinsAndParameters.Take(VoltageSource.PinCount);
-            var parameters = @object.PinsAndParameters.Skip(VoltageSource.PinCount);
+            if (@object.PinsAndParameters.Count < CurrentSource.PinCount + 1)
+            {
+                result.Add(new CSharpComment("Skipped, wrong pins/parameters count:" + @object));
+                return result;
+            }
+
+            var pins = @object.PinsAndParameters.Take(CurrentSource.PinCount);
+            var parameters = @object.PinsAndParameters.Skip(CurrentSource.PinCount);
             var name = @object.Name;
 
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))

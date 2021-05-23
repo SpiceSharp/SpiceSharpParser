@@ -109,6 +109,10 @@ namespace SpiceSharpParser.ModelWriters.CSharp
                         var writer = ModelWriters[type];
                         cSharpStatements.AddRange(writer.Write(model, context));
                     }
+                    else
+                    {
+                        cSharpStatements.Add(new CSharpComment("Skipped, unsupported model:" + model));
+                    }
                 }
 
                 if (statement is Component component)
@@ -119,6 +123,10 @@ namespace SpiceSharpParser.ModelWriters.CSharp
                         var writer = ComponentWriters[type];
                         cSharpStatements.AddRange(writer.Write(component, context));
                     }
+                    else
+                    {
+                        cSharpStatements.Add(new CSharpComment("Skipped, unsupported component:" + component));
+                    }
                 }
 
                 if (statement is Control control)
@@ -128,6 +136,10 @@ namespace SpiceSharpParser.ModelWriters.CSharp
                     {
                         var writer = ControlWriters[type];
                         cSharpStatements.AddRange(writer.Write(control, context));
+                    }
+                    else
+                    {
+                        cSharpStatements.Add(new CSharpComment("Skipped, unsupported control:" + control));
                     }
                 }
             }

@@ -11,8 +11,13 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Controls
         {
             var result = new List<CSharpStatement>();
 
-            var transientId = context.GetNewIdentifier("t");
+            if (@object.Parameters.Count < 2)
+            {
+                result.Add(new CSharpComment("Skipped, wrong parameters count:" + @object));
+                return result;
+            }
 
+            var transientId = context.GetNewIdentifier("t");
             bool useIc = false;
             var clonedParameters = (ParameterCollection)@object.Parameters.Clone();
             var lastParameter = clonedParameters[clonedParameters.Count - 1];
