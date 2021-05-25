@@ -8,7 +8,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void DotStatementsException()
         {
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
 
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Lexing.IsDotStatementNameCaseSensitive = true;
@@ -27,7 +27,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void FunctionNamePositive()
         {
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
 
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Parsing.IsEndRequired = true;
@@ -57,7 +57,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void When_DistributionNameNotSensitive_Expect_NoException()
         {
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
             var text = string.Join(Environment.NewLine,
                "Dev - Diode circuit",
                 "D1 OUT 0 1N914",
@@ -80,7 +80,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void When_DistributionNameSensitive_Positive_Expect_NoException()
         {
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
             var text = string.Join(Environment.NewLine,
                 "Dev - Diode circuit",
                 "D1 OUT 0 1N914",
@@ -102,7 +102,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void When_DistributionNameSensitive_Negative_Expect_Exception()
         {
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
 
             var text = string.Join(Environment.NewLine,
                 "Dev - Diode circuit",
@@ -127,7 +127,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void BuiltInFunctionNamePositive()
         {
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
 
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Parsing.IsEndRequired = true;
@@ -154,7 +154,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void DotStatementsNoException2()
         {
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
 
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Lexing.IsDotStatementNameCaseSensitive = false;
@@ -173,7 +173,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void DotStatementsNoException3()
         {
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
 
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Lexing.IsDotStatementNameCaseSensitive = false;
@@ -192,7 +192,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void DotStatementsNoException()
         {
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
 
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Lexing.IsDotStatementNameCaseSensitive = false;
@@ -210,7 +210,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void ComponentNamesPositive()
         {
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
 
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Parsing.IsEndRequired = true;
@@ -238,7 +238,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void ComponentNamesException()
         {
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
 
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Parsing.IsEndRequired = true;
@@ -264,7 +264,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void ModelNamesPositive()
         {
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
 
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Parsing.IsEndRequired = true;
@@ -293,7 +293,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void ParamNamesPositive()
         {
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
 
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Parsing.IsEndRequired = true;
@@ -323,7 +323,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void ParamNamesFunctionParamPositive()
         {
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
 
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Parsing.IsEndRequired = true;
@@ -353,7 +353,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void ParamNamesException()
         {
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
 
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Parsing.IsEndRequired = true;
@@ -381,7 +381,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void LetNamePositive()
         {
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
 
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Parsing.IsEndRequired = true;
@@ -412,7 +412,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void LetNameException()
         {
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
 
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Parsing.IsEndRequired = true;
@@ -441,7 +441,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void EntityParameterPositive()
         {
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
 
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Parsing.IsEndRequired = true;
@@ -476,7 +476,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void EntityParameterPositive2()
         {
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
 
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Parsing.IsEndRequired = true;
@@ -511,7 +511,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void EntityParameterPositive3()
         {
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
 
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Parsing.IsEndRequired = true;

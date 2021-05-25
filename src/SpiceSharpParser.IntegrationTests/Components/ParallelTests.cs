@@ -28,7 +28,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".END"};
 
             var text = string.Join(Environment.NewLine, lines);
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = true;
 
             var parseResult = parser.ParseNetlist(text);
@@ -67,7 +67,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".END"};
 
             var text = string.Join(Environment.NewLine, lines);
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = true;
 
             var parseResult = parser.ParseNetlist(text);

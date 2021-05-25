@@ -25,7 +25,7 @@ namespace SpiceSharpParser.IntegrationTests
         public static SpiceSharpModel GetSpiceSharpModelWithWorkingDirectoryParameter(string workingDirectory, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
 
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Parsing.IsEndRequired = true;
@@ -42,7 +42,7 @@ namespace SpiceSharpParser.IntegrationTests
         public static SpiceSharpModel GetSpiceSharpModel(params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
 
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Parsing.IsEndRequired = true;
@@ -55,10 +55,10 @@ namespace SpiceSharpParser.IntegrationTests
             return spiceSharpReader.Read(parserResult.FinalModel);
         }
 
-        public static SpiceParserResult ParseNetlistRaw(bool enableBusSyntax = false, params string[] lines)
+        public static SpiceNetlistParseResult ParseNetlistRaw(bool enableBusSyntax = false, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
 
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Lexing.EnableBusSyntax = enableBusSyntax;
@@ -70,7 +70,7 @@ namespace SpiceSharpParser.IntegrationTests
         public static SpiceSharpModel GetSpiceSharpModel(int randomSeed, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
 
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Parsing.IsEndRequired = true;
@@ -89,7 +89,7 @@ namespace SpiceSharpParser.IntegrationTests
         public static SpiceNetlist ParseNetlist(bool isEndRequired, bool hasTitle, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = hasTitle;
             parser.Settings.Parsing.IsEndRequired = isEndRequired;
 
@@ -98,7 +98,7 @@ namespace SpiceSharpParser.IntegrationTests
 
         public static SpiceNetlist ParseNetlistToModel(bool isEndRequired, bool hasTitle, string text)
         {
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = hasTitle;
             parser.Settings.Parsing.IsEndRequired = isEndRequired;
 
@@ -108,7 +108,7 @@ namespace SpiceSharpParser.IntegrationTests
         public static SpiceNetlist ParseNetlistToModel(bool isEndRequired, bool isNewlineRequired, bool hasTitle, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = hasTitle;
             parser.Settings.Parsing.IsEndRequired = isEndRequired;
             parser.Settings.Parsing.IsNewlineRequired = isNewlineRequired;

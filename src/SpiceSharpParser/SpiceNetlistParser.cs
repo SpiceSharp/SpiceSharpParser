@@ -18,21 +18,21 @@ namespace SpiceSharpParser
     /// <summary>
     /// The SPICE netlist parser.
     /// </summary>
-    public class SpiceParser
+    public class SpiceNetlistParser
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SpiceParser"/> class.
+        /// Initializes a new instance of the <see cref="SpiceNetlistParser"/> class.
         /// </summary>
-        public SpiceParser()
-            : this(new SpiceParserSettings())
+        public SpiceNetlistParser()
+            : this(new SpiceNetlistParserSettings())
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SpiceParser"/> class.
+        /// Initializes a new instance of the <see cref="SpiceNetlistParser"/> class.
         /// </summary>
         /// <param name="settings">SPICE parser settings.</param>
-        public SpiceParser(SpiceParserSettings settings)
+        public SpiceNetlistParser(SpiceNetlistParserSettings settings)
         {
             Settings = settings ?? throw new ArgumentNullException(nameof(settings));
             SingleNetlistParser = new SingleSpiceNetlistParser(Settings.Parsing);
@@ -67,7 +67,7 @@ namespace SpiceSharpParser
         /// <summary>
         /// Gets the parser parserSettings.
         /// </summary>
-        public SpiceParserSettings Settings { get; }
+        public SpiceNetlistParserSettings Settings { get; }
 
         /// <summary>
         /// Gets the preprocessors.
@@ -86,14 +86,14 @@ namespace SpiceSharpParser
         /// <returns>
         /// A parsing result.
         /// </returns>
-        public SpiceParserResult ParseNetlist(string spiceNetlist)
+        public SpiceNetlistParseResult ParseNetlist(string spiceNetlist)
         {
             if (spiceNetlist == null)
             {
                 throw new ArgumentNullException(nameof(spiceNetlist));
             }
 
-            var result = new SpiceParserResult { ValidationResult = new ValidationEntryCollection() };
+            var result = new SpiceNetlistParseResult { ValidationResult = new ValidationEntryCollection() };
 
             // Get tokens
             try

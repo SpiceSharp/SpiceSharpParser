@@ -8,9 +8,9 @@ namespace SpiceSharpParser
     /// <summary>
     /// Settings for the SPICE netlist parser.
     /// </summary>
-    public class SpiceParserSettings
+    public class SpiceNetlistParserSettings
     {
-        public SpiceParserSettings()
+        public SpiceNetlistParserSettings()
         {
             Lexing = new SpiceLexerSettings();
             Parsing = new SingleSpiceNetlistParserSettings(Lexing);

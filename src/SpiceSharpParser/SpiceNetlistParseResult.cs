@@ -6,7 +6,7 @@ namespace SpiceSharpParser
     /// <summary>
     /// A result of the SPICE netlist parser.
     /// </summary>
-    public class SpiceParserResult
+    public class SpiceNetlistParseResult
     {
         /// <summary>
         /// Gets or sets the netlist model before preprocessing.

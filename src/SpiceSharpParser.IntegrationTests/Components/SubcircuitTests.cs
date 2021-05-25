@@ -417,7 +417,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".OP",
                 ".SAVE V(OUT)",
                 ".END");
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
 
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Parsing.IsEndRequired = true;

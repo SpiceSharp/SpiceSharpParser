@@ -14,7 +14,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
             string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/example01_stringwriter.cir");
             var netlistContent = File.ReadAllText(path);
 
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = true;
             var parseResult = parser.ParseNetlist(netlistContent);
 

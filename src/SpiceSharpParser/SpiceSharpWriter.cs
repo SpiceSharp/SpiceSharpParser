@@ -81,7 +81,7 @@ namespace SpiceSharpParser
             var assembly = CreateCircuitAssembly(className, model);
             if (assembly == null)
             {
-                throw new System.Exception("Generation of circuit assemly failed");
+                throw new System.Exception("Generation of circuit assembly failed");
             }
 
             var factory = assembly.CreateInstance(className);
@@ -95,7 +95,7 @@ namespace SpiceSharpParser
             var assembly = CreateCircuitAssembly(className, model);
             if (assembly == null)
             {
-                throw new System.Exception("Generation of circuit assemly failed");
+                throw new System.Exception("Generation of circuit assembly failed");
             }
 
             var factory = assembly.CreateInstance(className);

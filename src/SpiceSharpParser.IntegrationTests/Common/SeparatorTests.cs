@@ -28,7 +28,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
 
             var text = string.Join(Environment.NewLine, lines);
 
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
             var parseResult = parser.ParseNetlist(text);
 
             var reader = new SpiceSharpReader();

@@ -11,7 +11,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
         {
             string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/example01.cir");
             var netlistContent = File.ReadAllText(path);
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = true;
             var parseResult = parser.ParseNetlist(netlistContent);
             var spiceSharpWriter = new SpiceSharpWriter();
@@ -30,7 +30,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
         {
             string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/Example04.cir");
             var netlistContent = File.ReadAllText(path);
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = true;
             var parseResult = parser.ParseNetlist(netlistContent);
             var spiceSharpWriter = new SpiceSharpWriter();
@@ -50,7 +50,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
         {
             string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/Example04_reversed.cir");
             var netlistContent = File.ReadAllText(path);
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = true;
             var parseResult = parser.ParseNetlist(netlistContent);
             var spiceSharpWriter = new SpiceSharpWriter();
@@ -70,7 +70,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
         {
             string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/Example04_nested.cir");
             var netlistContent = File.ReadAllText(path);
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = true;
             var parseResult = parser.ParseNetlist(netlistContent);
             var spiceSharpWriter = new SpiceSharpWriter();
@@ -89,7 +89,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
         {
             string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/Example05.cir");
             var netlistContent = File.ReadAllText(path);
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = true;
             var parseResult = parser.ParseNetlist(netlistContent);
             var spiceSharpWriter = new SpiceSharpWriter();
@@ -108,7 +108,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
         {
             string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/Example06.cir");
             var netlistContent = File.ReadAllText(path);
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = true;
             var parseResult = parser.ParseNetlist(netlistContent);
             var spiceSharpWriter = new SpiceSharpWriter();
@@ -127,7 +127,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
         {
             string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/Example07.cir");
             var netlistContent = File.ReadAllText(path);
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = true;
             var parseResult = parser.ParseNetlist(netlistContent);
             var spiceSharpWriter = new SpiceSharpWriter();
@@ -146,7 +146,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
         {
             string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/Example08.cir");
             var netlistContent = File.ReadAllText(path);
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = true;
             var parseResult = parser.ParseNetlist(netlistContent);
             var spiceSharpWriter = new SpiceSharpWriter();
@@ -165,7 +165,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
         {
             string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/Example09.cir");
             var netlistContent = File.ReadAllText(path);
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = true;
             var parseResult = parser.ParseNetlist(netlistContent);
             var spiceSharpWriter = new SpiceSharpWriter();
@@ -185,7 +185,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
         {
             string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/Example10.cir");
             var netlistContent = File.ReadAllText(path);
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = true;
             var parseResult = parser.ParseNetlist(netlistContent);
             var spiceSharpWriter = new SpiceSharpWriter();
@@ -209,7 +209,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
         {
             string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/Example11.cir");
             var netlistContent = File.ReadAllText(path);
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = true;
             var parseResult = parser.ParseNetlist(netlistContent);
             var spiceSharpWriter = new SpiceSharpWriter();

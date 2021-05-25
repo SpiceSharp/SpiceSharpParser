@@ -54,7 +54,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 "R1 OUT 0 10 ; test2",
                 "V1 OUT 0 0 $  test3 ; test4 $ test5\n");
 
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Parsing.IsEndRequired = true;
 
