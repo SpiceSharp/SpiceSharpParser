@@ -1,6 +1,4 @@
-﻿using SpiceSharp;
-using SpiceSharp.Simulations;
-using SpiceSharpParser.Common.Evaluation;
+﻿using SpiceSharp.Simulations;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using System;
 using System.Collections.Generic;

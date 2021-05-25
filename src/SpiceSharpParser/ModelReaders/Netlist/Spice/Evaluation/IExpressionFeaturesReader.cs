@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using SpiceSharpParser.Common.Evaluation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 {

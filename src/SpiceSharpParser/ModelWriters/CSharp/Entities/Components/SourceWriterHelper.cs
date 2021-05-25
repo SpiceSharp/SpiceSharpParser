@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
 {
-    public class SourceWriterHelper
+    public static class SourceWriterHelper
     {
         public static void CreateBehavioralCurrentSource(List<CSharpStatement> result, string name, ParameterCollection pins, string expression, IWriterContext context)
         {
@@ -175,8 +175,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
 
         public static void SetSourceParameters(BaseWriter writer, WaveformWriter waveformWriter, List<CSharpStatement> result, string sourceId, ParameterCollection parameters, IWriterContext context, bool isCurrentSource)
         {
-            var originalParameters = parameters;
-
             var acParameter = parameters.FirstOrDefault(p => p.Value.ToLower() == "ac");
             if (acParameter != null)
             {
@@ -256,8 +254,8 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                     {
                         if (waveformWriter.IsWaveFormSupported(wp.Value))
                         {
-                            var wavefromLines = waveformWriter.GenerateWaveform(wp.Value, parameters.Skip(1), out string waveFormId, context);
-                            result.AddRange(wavefromLines);
+                            var waveformLines = waveformWriter.GenerateWaveform(wp.Value, parameters.Skip(1), out string waveFormId, context);
+                            result.AddRange(waveformLines);
                             result.Add(new CSharpCallStatement(sourceId, @$"SetParameter(""waveform"", {waveFormId})"));
                         }
                     }
@@ -266,8 +264,8 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                     {
                         if (waveformWriter.IsWaveFormSupported(assignmentParameter.Name))
                         {
-                            var wavefromLines = waveformWriter.GenerateWaveform(assignmentParameter.Name, parameters, out var waveFormId, context);
-                            result.AddRange(wavefromLines);
+                            var waveformLines = waveformWriter.GenerateWaveform(assignmentParameter.Name, parameters, out var waveFormId, context);
+                            result.AddRange(waveformLines);
                             result.Add(new CSharpCallStatement(sourceId, @$"SetParameter(""waveform"", {waveFormId})"));
                         }
                     }
@@ -292,7 +290,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
             }
         }
 
-        protected static string CreatePolyExpression(int dimension, ParameterCollection parameters, bool isVoltageControlled, IEvaluationContext context)
+        public static string CreatePolyExpression(int dimension, ParameterCollection parameters, bool isVoltageControlled, IEvaluationContext context)
         {
             if (isVoltageControlled)
             {

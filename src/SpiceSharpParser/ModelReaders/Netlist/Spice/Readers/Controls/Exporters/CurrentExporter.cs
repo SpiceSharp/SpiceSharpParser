@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using SpiceSharpParser.Common;
-using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.CurrentExports;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -20,7 +19,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             }
 
             // Get the nodes
-            string componentIdentifier = null;
+            string componentIdentifier;
             if (parameters[0] is VectorParameter vector)
             {
                 switch (vector.Elements.Count)

@@ -59,7 +59,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities
                     "SubcircuitDefinition",
                     parameterNames,
                     defaults.ToArray(),
-                    localParameters.Select(p => typeof(string)).ToArray(),
+                    localParameters.Select(_ => typeof(string)).ToArray(),
                     subDefStatements,
                     true)
                 {

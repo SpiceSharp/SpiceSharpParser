@@ -1,5 +1,6 @@
 ﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System.Collections.Generic;
+using SpiceSharpParser.ModelWriters.CSharp.Language;
 
 namespace SpiceSharpParser.ModelWriters.CSharp.Controls
 {

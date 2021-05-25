@@ -1,25 +1,26 @@
-﻿using SpiceSharpParser.Common.FileSystem;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using SpiceSharpParser.Common.FileSystem;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
-namespace SpiceSharpParser.ModelWriters.CSharp
+namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Waveforms
 {
     /// <summary>
     /// Generator for wave waveform.
     /// </summary>
     public class WaveWriter : BaseWriter, IWaveformWriter
     {
-        public const double DefaultAmplidude = 1.0;
+        public const double DefaultAmplitude = 1.0;
 
         /// <summary>
         /// Generates a new waveform.
         /// </summary>
         /// <param name="parameters">Parameters for waveform.</param>
         /// <param name="context">A context.</param>
+        /// <param name="waveFormId">Waveform id.</param>
         /// <returns>
         /// A new waveform.
         /// </returns>
@@ -53,7 +54,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
                 throw new ArgumentException("WAVE file does not exist:" + fullFilePath);
             }
 
-            var amplitude = DefaultAmplidude;
+            var amplitude = DefaultAmplitude;
 
             if (ampliduteParameter != null)
             {
@@ -61,8 +62,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp
             }
 
             int channel = (int)context.EvaluationContext.Evaluate(channelParameter.Value);
-
-            byte[] fileContent = File.ReadAllBytes(fullFilePath);
 
             var result = new List<CSharpStatement>();
             waveFormId = context.GetNewIdentifier("wave");

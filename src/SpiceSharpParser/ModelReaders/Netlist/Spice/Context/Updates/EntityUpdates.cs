@@ -38,7 +38,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
             if (simulation is BiasingSimulation biasingSimulation)
             {
-                biasingSimulation.BeforeTemperature += (sender, args) =>
+                biasingSimulation.BeforeTemperature += (_, _) =>
                 {
                     foreach (var entity in CommonUpdates.Keys)
                     {
@@ -59,7 +59,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                     }
                 };
 
-                biasingSimulation.BeforeTemperature += (sender, args) =>
+                biasingSimulation.BeforeTemperature += (_, _) =>
                 {
                     if (SimulationSpecificUpdates.ContainsKey(simulation))
                     {

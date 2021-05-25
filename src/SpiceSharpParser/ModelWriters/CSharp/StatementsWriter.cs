@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SpiceSharpParser.ModelWriters.CSharp.Graphs;
+using SpiceSharpParser.ModelWriters.CSharp.Language;
 
 namespace SpiceSharpParser.ModelWriters.CSharp
 {
@@ -187,7 +188,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
                         new string[0],
                         new string[0],
                         new Type[0],
-                        createCircuitDefinitionStatementsOrdered.Cast<CSharpStatement>().ToList(),
+                        createCircuitDefinitionStatementsOrdered.ToList(),
                         false)
                     {
                         Local = true
@@ -216,8 +217,8 @@ namespace SpiceSharpParser.ModelWriters.CSharp
         {
             if (context.SubcircuitCreateStatements.Any())
             {
-                var graph = new Graphs.Graph<string>();
-                graph.Edges = new HashSet<Graphs.Edge<string>>(context.GetDependencies().SelectMany(p => p.Value, (parent, child) => new Graphs.Edge<string>(parent.Key, child)));
+                var graph = new Graph<string>();
+                graph.Edges = new HashSet<Edge<string>>(context.GetDependencies().SelectMany(p => p.Value, (parent, child) => new Edge<string>(parent.Key, child)));
 
                 foreach (var edge in graph.Edges)
                 {

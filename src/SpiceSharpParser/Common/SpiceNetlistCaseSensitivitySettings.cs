@@ -1,7 +1,7 @@
-﻿using SpiceSharpParser.Lexers.Netlist.Spice;
-using System;
+﻿using System;
+using SpiceSharpParser.Lexers.Netlist.Spice;
 
-namespace SpiceSharpParser
+namespace SpiceSharpParser.Common
 {
     /// <summary>
     /// Case-sensitivity settings.

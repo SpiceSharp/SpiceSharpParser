@@ -31,7 +31,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(simulation));
             }
 
-            simulation.BeforeSetup += (obj, args) =>
+            simulation.BeforeSetup += (_, _) =>
             {
                 foreach (var action in BeforeSetup)
                 {
@@ -39,7 +39,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 }
             };
 
-            simulation.AfterSetup += (obj, args) =>
+            simulation.AfterSetup += (_, _) =>
             {
                 foreach (var action in AfterSetup)
                 {

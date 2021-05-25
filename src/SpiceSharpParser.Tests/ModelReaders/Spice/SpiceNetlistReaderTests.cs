@@ -2,6 +2,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System.Text;
+using SpiceSharpParser.Common;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice

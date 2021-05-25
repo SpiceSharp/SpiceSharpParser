@@ -4,7 +4,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.Wave
 {
     public class WaveFileReader
     {
-        private int _index = 0;
+        private int _index;
 
         public WaveFileReader(byte[] fileContent, bool bigIndian = false)
         {

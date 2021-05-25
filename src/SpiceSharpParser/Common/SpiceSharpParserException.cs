@@ -37,8 +37,8 @@ namespace SpiceSharpParser.Common
         {
             return lineInfo != null ?
                 (lineInfo.FileName != null
-                    ? $"{message} (at line {lineInfo?.LineNumber}, start column = {lineInfo?.StartColumnIndex}, end column = {lineInfo?.EndColumnIndex} from file {lineInfo.FileName})"
-                    : $"{message} (at line {lineInfo?.LineNumber}, start column = {lineInfo?.StartColumnIndex}, end column = {lineInfo?.EndColumnIndex})") : $"{message}";
+                    ? $"{message} (at line {lineInfo.LineNumber}, start column = {lineInfo.StartColumnIndex}, end column = {lineInfo.EndColumnIndex} from file {lineInfo.FileName})"
+                    : $"{message} (at line {lineInfo.LineNumber}, start column = {lineInfo.StartColumnIndex}, end column = {lineInfo.EndColumnIndex})") : $"{message}";
         }
     }
 }

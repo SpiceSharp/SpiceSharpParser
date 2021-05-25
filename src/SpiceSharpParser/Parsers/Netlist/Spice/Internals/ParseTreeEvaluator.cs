@@ -1,13 +1,12 @@
-﻿using SpiceSharpParser.Lexers.Netlist.Spice;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using SpiceSharpParser.Lexers.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.Parsers.Netlist.Spice.Internals;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace SpiceSharpParser.Parsers.Netlist.Spice
+namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
 {
     /// <summary>
     /// Translates a parse tree (<see cref="ParseTreeNode"/> to SPICE object model.
@@ -17,50 +16,50 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
         /// <summary>
         /// The dictionary with tree node values.
         /// </summary>
-        private readonly Dictionary<ParseTreeNode, ParseTreeNodeEvaluationValue> treeNodesValues = new Dictionary<ParseTreeNode, ParseTreeNodeEvaluationValue>();
+        private readonly Dictionary<ParseTreeNode, ParseTreeNodeEvaluationValue> _treeNodesValues = new Dictionary<ParseTreeNode, ParseTreeNodeEvaluationValue>();
 
         /// <summary>
         /// The dictionary with non-terminal nodes evaluators.
         /// </summary>
-        private readonly Dictionary<string, Func<ParseTreeNodeEvaluationValues, SpiceObject>> evaluators = new Dictionary<string, Func<ParseTreeNodeEvaluationValues, SpiceObject>>();
+        private readonly Dictionary<string, Func<ParseTreeNodeEvaluationValues, SpiceObject>> _evaluators = new Dictionary<string, Func<ParseTreeNodeEvaluationValues, SpiceObject>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ParseTreeEvaluator"/> class.
         /// </summary>
         public ParseTreeEvaluator()
         {
-            evaluators.Add(Symbols.Netlist, (ParseTreeNodeEvaluationValues nt) => CreateNetlist(nt));
-            evaluators.Add(Symbols.NetlistWithoutTitle, (ParseTreeNodeEvaluationValues nt) => CreateNetlistWithoutTitle(nt));
-            evaluators.Add(Symbols.NetlistEnding, (ParseTreeNodeEvaluationValues nt) => null);
-            evaluators.Add(Symbols.Statements, (ParseTreeNodeEvaluationValues nt) => CreateStatements(nt));
-            evaluators.Add(Symbols.Statement, (ParseTreeNodeEvaluationValues nt) => CreateStatement(nt));
-            evaluators.Add(Symbols.Model, (ParseTreeNodeEvaluationValues nt) => CreateModel(nt));
-            evaluators.Add(Symbols.Distribution, (ParseTreeNodeEvaluationValues nt) => CreateDistribution(nt));
-            evaluators.Add(Symbols.Control, (ParseTreeNodeEvaluationValues nt) => CreateControl(nt));
-            evaluators.Add(Symbols.Component, (ParseTreeNodeEvaluationValues nt) => CreateComponent(nt));
-            evaluators.Add(Symbols.Parameters, (ParseTreeNodeEvaluationValues nt) => CreateParameters(nt));
-            evaluators.Add(Symbols.ParametersSeparator, (ParseTreeNodeEvaluationValues nt) => CreateParametersSeparator());
-            evaluators.Add(Symbols.Parameter, (ParseTreeNodeEvaluationValues nt) => CreateParameter(nt));
-            evaluators.Add(Symbols.Vector, (ParseTreeNodeEvaluationValues nt) => CreateVector(nt));
-            evaluators.Add(Symbols.VectorContinue, (ParseTreeNodeEvaluationValues nt) => CreateVectorContinue(nt));
-            evaluators.Add(Symbols.ParameterBracket, (ParseTreeNodeEvaluationValues nt) => CreateBracketParameter(nt));
-            evaluators.Add(Symbols.ParameterBracketContent, (ParseTreeNodeEvaluationValues nt) => CreateBracketParameterContent(nt));
-            evaluators.Add(Symbols.ParameterEqual, (ParseTreeNodeEvaluationValues nt) => CreateAssignmentParameter(nt));
-            evaluators.Add(Symbols.ExpressionEqual, (ParseTreeNodeEvaluationValues nt) => CreateExpressionEqualParameter(nt));
-            evaluators.Add(Symbols.Point, (ParseTreeNodeEvaluationValues nt) => CreatePointParameter(nt));
-            evaluators.Add(Symbols.PointValue, (ParseTreeNodeEvaluationValues nt) => CreatePointValue(nt));
-            evaluators.Add(Symbols.PointValues, (ParseTreeNodeEvaluationValues nt) => CreatePointValues(nt));
-            evaluators.Add(Symbols.Points, (ParseTreeNodeEvaluationValues nt) => CreatePoints(nt));
-            evaluators.Add(Symbols.PointsContinue, (ParseTreeNodeEvaluationValues nt) => CreatePointsContinue(nt));
-            evaluators.Add(Symbols.ParameterEqualSingle, (ParseTreeNodeEvaluationValues nt) => CreateAssignmentSimpleParameter(nt));
-            evaluators.Add(Symbols.ParameterSingle, (ParseTreeNodeEvaluationValues nt) => CreateParameterSingle(nt));
-            evaluators.Add(Symbols.Subckt, (ParseTreeNodeEvaluationValues nt) => CreateSubCircuit(nt));
-            evaluators.Add(Symbols.SubcktEnding, (ParseTreeNodeEvaluationValues nt) => null);
-            evaluators.Add(Symbols.ParallelEnding, (ParseTreeNodeEvaluationValues nt) => null);
-            evaluators.Add(Symbols.Parallel, (ParseTreeNodeEvaluationValues nt) => CreateParallel(nt));
-            evaluators.Add(Symbols.CommentLine, (ParseTreeNodeEvaluationValues nt) => CreateComment(nt));
-            evaluators.Add(Symbols.NewLine, (ParseTreeNodeEvaluationValues nt) => null);
-            evaluators.Add(Symbols.NewLines, (ParseTreeNodeEvaluationValues nt) => null);
+            _evaluators.Add(Symbols.Netlist, CreateNetlist);
+            _evaluators.Add(Symbols.NetlistWithoutTitle, CreateNetlistWithoutTitle);
+            _evaluators.Add(Symbols.NetlistEnding, (_) => null);
+            _evaluators.Add(Symbols.Statements, CreateStatements);
+            _evaluators.Add(Symbols.Statement, CreateStatement);
+            _evaluators.Add(Symbols.Model, CreateModel);
+            _evaluators.Add(Symbols.Distribution, CreateDistribution);
+            _evaluators.Add(Symbols.Control, CreateControl);
+            _evaluators.Add(Symbols.Component, CreateComponent);
+            _evaluators.Add(Symbols.Parameters, CreateParameters);
+            _evaluators.Add(Symbols.ParametersSeparator, (_) => CreateParametersSeparator());
+            _evaluators.Add(Symbols.Parameter, CreateParameter);
+            _evaluators.Add(Symbols.Vector, CreateVector);
+            _evaluators.Add(Symbols.VectorContinue, CreateVectorContinue);
+            _evaluators.Add(Symbols.ParameterBracket, CreateBracketParameter);
+            _evaluators.Add(Symbols.ParameterBracketContent, CreateBracketParameterContent);
+            _evaluators.Add(Symbols.ParameterEqual, CreateAssignmentParameter);
+            _evaluators.Add(Symbols.ExpressionEqual, CreateExpressionEqualParameter);
+            _evaluators.Add(Symbols.Point, CreatePointParameter);
+            _evaluators.Add(Symbols.PointValue, CreatePointValue);
+            _evaluators.Add(Symbols.PointValues, CreatePointValues);
+            _evaluators.Add(Symbols.Points, CreatePoints);
+            _evaluators.Add(Symbols.PointsContinue, CreatePointsContinue);
+            _evaluators.Add(Symbols.ParameterEqualSingle, CreateAssignmentSimpleParameter);
+            _evaluators.Add(Symbols.ParameterSingle, CreateParameterSingle);
+            _evaluators.Add(Symbols.Subckt, CreateSubCircuit);
+            _evaluators.Add(Symbols.SubcktEnding, (_) => null);
+            _evaluators.Add(Symbols.ParallelEnding, (_) => null);
+            _evaluators.Add(Symbols.Parallel, CreateParallel);
+            _evaluators.Add(Symbols.CommentLine, CreateComment);
+            _evaluators.Add(Symbols.NewLine, (_) => null);
+            _evaluators.Add(Symbols.NewLines, (_) => null);
         }
 
         /// <summary>
@@ -89,16 +88,16 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
 
                     foreach (var child in nt.Children)
                     {
-                        items.Add(treeNodesValues[child]);
+                        items.Add(_treeNodesValues[child]);
                     }
 
-                    if (!evaluators.ContainsKey(nt.Name))
+                    if (!_evaluators.ContainsKey(nt.Name))
                     {
                         throw new ParseTreeEvaluationException("Unsupported evaluation of parse tree node: " + nt.Name);
                     }
 
-                    var treeNodeResult = evaluators[nt.Name](items);
-                    treeNodesValues[treeNode] = new ParseTreeNonTerminalEvaluationValue
+                    var treeNodeResult = _evaluators[nt.Name](items);
+                    _treeNodesValues[treeNode] = new ParseTreeNonTerminalEvaluationValue
                     {
                         SpiceObject = treeNodeResult,
                         Node = treeNode,
@@ -106,7 +105,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 }
                 else
                 {
-                    treeNodesValues[treeNode] = new ParseTreeNodeTerminalEvaluationValue()
+                    _treeNodesValues[treeNode] = new ParseTreeNodeTerminalEvaluationValue()
                     {
                         Node = treeNode,
                         Token = ((ParseTreeTerminalNode)treeNode).Token,
@@ -114,7 +113,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
                 }
             }
 
-            if (treeNodesValues[root] is ParseTreeNonTerminalEvaluationValue rootNt)
+            if (_treeNodesValues[root] is ParseTreeNonTerminalEvaluationValue rootNt)
             {
                 return rootNt.SpiceObject;
             }
@@ -535,7 +534,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice
             return subCkt;
         }
 
-        // <summary>
+        /// <summary>
         /// Returns new instance of <see cref="Parallel"/>
         /// from the values of children nodes of <see cref="Symbols.Parallel"/> parse tree node.
         /// </summary>

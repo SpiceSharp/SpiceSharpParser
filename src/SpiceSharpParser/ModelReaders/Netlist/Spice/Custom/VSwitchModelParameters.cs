@@ -1,5 +1,4 @@
-﻿using SpiceSharp;
-using SpiceSharp.Attributes;
+﻿using SpiceSharp.Attributes;
 using SpiceSharp.ParameterSets;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Custom

@@ -2,6 +2,7 @@
 using SpiceSharpParser.Models.Netlist.Spice;
 using System;
 using System.Text;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser
 {

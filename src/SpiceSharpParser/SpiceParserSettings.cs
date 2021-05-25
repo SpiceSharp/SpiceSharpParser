@@ -1,6 +1,7 @@
 ﻿using SpiceSharpParser.Lexers.Netlist.Spice;
 using SpiceSharpParser.Parsers.Netlist.Spice;
 using System.Text;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser
 {

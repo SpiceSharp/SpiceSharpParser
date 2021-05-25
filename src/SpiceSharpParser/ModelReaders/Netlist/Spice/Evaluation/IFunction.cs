@@ -1,6 +1,4 @@
-﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
-
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
+﻿namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 {
     public interface IFunction<in TInputArgumentType, out TOutputType> : IFunction
     {

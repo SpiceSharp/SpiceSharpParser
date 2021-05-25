@@ -14,30 +14,30 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         public MosfetGenerator()
         {
             // MOS1
-            Mosfets.Add(typeof(Mosfet1Model), (string name) =>
+            Mosfets.Add(typeof(Mosfet1Model), name =>
             {
                 var mosfet = new Mosfet1(name);
-                return new MosfetDetails { Mosfet = mosfet, SetModelAction = (Context.Models.Model model) => mosfet.Model = model.Name };
+                return new MosfetDetails { Mosfet = mosfet, SetModelAction = (model) => mosfet.Model = model.Name };
             });
 
             // MOS2
-            Mosfets.Add(typeof(Mosfet2Model), (string name) =>
+            Mosfets.Add(typeof(Mosfet2Model), (name) =>
             {
                 var mosfet = new Mosfet2(name);
-                return new MosfetDetails { Mosfet = mosfet, SetModelAction = (Context.Models.Model model) => mosfet.Model = model.Name };
+                return new MosfetDetails { Mosfet = mosfet, SetModelAction = (model) => mosfet.Model = model.Name };
             });
 
             // MOS3
-            Mosfets.Add(typeof(Mosfet3Model), (string name) =>
+            Mosfets.Add(typeof(Mosfet3Model), (name) =>
             {
                 var mosfet = new Mosfet3(name);
-                return new MosfetDetails { Mosfet = mosfet, SetModelAction = (Context.Models.Model model) => mosfet.Model = model.Name };
+                return new MosfetDetails { Mosfet = mosfet, SetModelAction = (model) => mosfet.Model = model.Name };
             });
         }
 
-        protected Dictionary<Type, Func<string, MosfetDetails>> Mosfets { get; } = new Dictionary<Type, Func<string, MosfetDetails>>();
+        protected Dictionary<Type, Func<string, MosfetDetails>> Mosfets { get; } = new ();
 
-        public override IEntity Generate(string componentIdentifier, string originalName, string type, SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection parameters, IReadingContext context)
+        public override IEntity Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
             // Errors
             switch (parameters.Count)
@@ -71,7 +71,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
 
             // Get the model and generate a component for it
-            SpiceSharp.Components.Component mosfet = null;
+            SpiceSharp.Components.Component mosfet;
             var modelNameParameter = parameters.Get(4);
             var model = context.ModelsRegistry.FindModel(modelNameParameter.Value);
             if (model == null)

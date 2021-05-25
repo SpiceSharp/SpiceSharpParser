@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using SpiceSharpBehavioral.Builders.Direct;
 using SpiceSharpBehavioral.Parsers.Nodes;
@@ -91,7 +92,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             }
         }
 
-        private void OnVariableFound(object sender, SpiceSharpBehavioral.Builders.Direct.VariableFoundEventArgs<double> e)
+        private void OnVariableFound(object sender, VariableFoundEventArgs<double> e)
         {
             if (e.Node.NodeType != NodeTypes.Voltage && e.Node.NodeType != NodeTypes.Current && e.Node.NodeType != NodeTypes.Property)
             {
@@ -113,7 +114,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
                     {
                         var parameters = new ParameterCollection();
                         var vectorParameter = new VectorParameter();
-                        vectorParameter.Elements.Add(new IdentifierParameter(e.Node.Name.ToString()));
+                        vectorParameter.Elements.Add(new IdentifierParameter(e.Node.Name));
                         parameters.Add(vectorParameter);
 
                         string key = $"{Context.Name}_I_{parameters}_{Context.Simulation?.Name}";
@@ -145,7 +146,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
                         var variable = Variables.FirstOrDefault(v => v.Name == name);
                         if (variable != null)
                         {
-                            name = variable.Value().ToString();
+                            name = variable.Value().ToString(CultureInfo.InvariantCulture);
                         }
 
                         var parameters = new ParameterCollection();
@@ -191,7 +192,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             }
         }
 
-        private void OnCustomFunctionFound(object sender, SpiceSharpBehavioral.Builders.Direct.FunctionFoundEventArgs<double> e)
+        private void OnCustomFunctionFound(object sender, FunctionFoundEventArgs<double> e)
         {
             if (!e.Created)
             {

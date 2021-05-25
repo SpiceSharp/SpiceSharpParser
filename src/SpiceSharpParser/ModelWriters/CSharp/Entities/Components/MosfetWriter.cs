@@ -1,7 +1,6 @@
 ﻿using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Component = SpiceSharpParser.Models.Netlist.Spice.Objects.Component;
 
 namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
@@ -11,16 +10,16 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
         public MosfetWriter()
         {
             // MOS1
-            Mosfets.Add("Mosfet1Model", (string name) => "Mosfet1");
+            Mosfets.Add("Mosfet1Model", (_) => "Mosfet1");
 
             // MOS2
-            Mosfets.Add("Mosfet2Model", (string name) => "Mosfet2");
+            Mosfets.Add("Mosfet2Model", (_) => "Mosfet2");
 
             // MOS3
-            Mosfets.Add("Mosfet3Model", (string name) => "Mosfet3");
+            Mosfets.Add("Mosfet3Model", (_) => "Mosfet3");
         }
 
-        protected Dictionary<string, Func<string, string>> Mosfets { get; } = new Dictionary<string, Func<string, string>>();
+        protected Dictionary<string, Func<string, string>> Mosfets { get; } = new();
 
         public List<CSharpStatement> Write(Component @object, IWriterContext context)
         {

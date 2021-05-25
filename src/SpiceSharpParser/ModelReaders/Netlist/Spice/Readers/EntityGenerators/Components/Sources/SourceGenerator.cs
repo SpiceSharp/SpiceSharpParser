@@ -17,7 +17,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             Component component,
             bool isCurrentSource)
         {
-            var originalParameters = parameters;
             parameters = parameters.Skip(VoltageSource.PinCount);
 
             var acParameter = parameters.FirstOrDefault(p => p.Value.ToLower() == "ac");

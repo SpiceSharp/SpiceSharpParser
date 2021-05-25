@@ -33,14 +33,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="parent">Parent of the context.</param>
         /// <param name="evaluator">Circuit evaluator.</param>
         /// <param name="simulationPreparations">Simulation preparations.</param>
-        /// <param name="resultService">SpiceModel service for the context.</param>
         /// <param name="nameGenerator">Name generator for the models.</param>
         /// <param name="statementsReader">Statements reader.</param>
         /// <param name="waveformReader">Waveform reader.</param>
-        /// <param name="caseSettings">Case settings.</param>
         /// <param name="exporters">Exporters.</param>
-        /// <param name="workingDirectory">Working directory.</param>
-        /// <param name="instanceData">Instance data.</param>
+        /// <param name="simulationConfiguration">Simulation configuration.</param>
+        /// <param name="result">Result.</param>
+        /// <param name="readerSettings">Reader settings.</param>
         public ReadingContext(
             string contextName,
             IReadingContext parent,
@@ -194,7 +193,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         /// <param name="component">A component.</param>
         /// <param name="parameters">Parameters of component.</param>
-        public void CreateNodes(SpiceSharp.Components.IComponent component, ParameterCollection parameters)
+        public void CreateNodes(IComponent component, ParameterCollection parameters)
         {
             if (component == null)
             {

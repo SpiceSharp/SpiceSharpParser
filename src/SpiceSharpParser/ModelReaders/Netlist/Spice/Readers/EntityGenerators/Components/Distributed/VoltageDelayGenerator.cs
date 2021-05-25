@@ -1,6 +1,5 @@
 ﻿using SpiceSharp.Components;
 using SpiceSharp.Entities;
-using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;

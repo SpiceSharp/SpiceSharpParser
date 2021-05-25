@@ -8,7 +8,6 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Custom;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.Parsers.Expression;
 using Model = SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.Model;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
@@ -115,7 +114,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     simulation,
                     parameters.Get(4),
                     $"Could not find model {parameters.Get(4)} for voltage switch {name}",
-                    (Context.Models.Model model2) => { vsw.Model = model2.Name; },
+                    (model2) => { vsw.Model = model2.Name; },
                     context);
             });
 

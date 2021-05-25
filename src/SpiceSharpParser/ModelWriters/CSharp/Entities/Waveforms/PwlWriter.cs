@@ -1,13 +1,13 @@
-﻿using SpiceSharp.Components;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 using SpiceSharpParser.Common.FileSystem;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
-namespace SpiceSharpParser.ModelWriters.CSharp
+namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Waveforms
 {
     /// <summary>
     /// Generator for PWL waveform.
@@ -19,6 +19,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
         /// </summary>
         /// <param name="parameters">Parameters for waveform.</param>
         /// <param name="context">A context.</param>
+        /// <param name="waveformId">Waveform id.</param>
         /// <returns>
         /// A new waveform.
         /// </returns>
@@ -59,8 +60,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp
             }
 
             List<double> values = new List<double>();
-            var points = new List<Point>();
-
             for (var i = 0; i < parameters.Count / 2; i++)
             {
                 values.Add(context.EvaluationContext.Evaluate(parameters.Get(2 * i)));
@@ -70,7 +69,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
             var result = new List<CSharpStatement>();
             waveFormId = context.GetNewIdentifier("pwl");
             result.Add(new CSharpNewStatement(waveFormId, "new Pwl()") { IncludeInCollection = false });
-            result.Add(new CSharpCallStatement(waveFormId, $"SetPoints({string.Join(",", values.Select(v => v.ToString()))})"));
+            result.Add(new CSharpCallStatement(waveFormId, $"SetPoints({string.Join(",", values.Select(v => v.ToString(CultureInfo.InvariantCulture)))})"));
             return result;
         }
 
@@ -94,7 +93,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
             var result = new List<CSharpStatement>();
             waveFormId = context.GetNewIdentifier("pwl");
             result.Add(new CSharpNewStatement(waveFormId, "new Pwl()") { IncludeInCollection = false });
-            result.Add(new CSharpCallStatement(waveFormId, $"SetPoints({string.Join(",", values.Select(v => v.ToString()))})"));
+            result.Add(new CSharpCallStatement(waveFormId, $"SetPoints({string.Join(",", values.Select(v => v.ToString(CultureInfo.InvariantCulture)))})"));
             return result;
         }
 
@@ -122,7 +121,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
             var result = new List<CSharpStatement>();
             waveFormId = context.GetNewIdentifier("pwl");
             result.Add(new CSharpNewStatement(waveFormId, "new Pwl()") { IncludeInCollection = false });
-            result.Add(new CSharpCallStatement(waveFormId, $"SetPoints({string.Join(",", data.Select(v => v.ToString()))})"));
+            result.Add(new CSharpCallStatement(waveFormId, $"SetPoints({string.Join(",", data.Select(v => v.ToString(CultureInfo.InvariantCulture)))})"));
             return result;
         }
     }

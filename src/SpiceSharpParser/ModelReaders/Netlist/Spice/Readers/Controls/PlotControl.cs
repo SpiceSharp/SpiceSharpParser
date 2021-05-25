@@ -171,7 +171,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 x = eventArgs.Frequency;
             }
 
-            if (simulation is DC dc)
+            if (simulation is DC)
             {
                 if (eventArgs.GetSweepValues().Length > 1)
                 {

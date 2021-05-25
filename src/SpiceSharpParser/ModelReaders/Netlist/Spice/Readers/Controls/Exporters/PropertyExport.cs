@@ -1,6 +1,5 @@
 ﻿using SpiceSharp.Simulations;
 using System;
-using System.Collections.Generic;
 using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters

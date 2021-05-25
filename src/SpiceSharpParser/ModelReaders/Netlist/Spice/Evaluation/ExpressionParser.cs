@@ -45,7 +45,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
         {
             var list = new List<string>();
             var node = InternalParser.Parse(expression);
-            DoubleBuilder.FunctionFound += (o, e) =>
+            DoubleBuilder.FunctionFound += (_, e) =>
             {
                 list.Add(e.Function.Name);
                 e.Result = 0;
@@ -76,7 +76,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
         {
             var list = new List<string>();
 
-            DoubleBuilder.VariableFound += (o, e) =>
+            DoubleBuilder.VariableFound += (_, e) =>
             {
                 list.Add(e.Node.ToString());
                 e.Result = 0;
@@ -112,14 +112,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 
                 if (Context.NameGenerator.NodeNameGenerator is SubcircuitNodeNameGenerator)
                 {
-                    resolver.UnknownVariableFound += (sender, args) =>
+                    resolver.UnknownVariableFound += (_, args) =>
                     {
                         if (args.Node.NodeType == NodeTypes.Voltage)
                         {
                             if (resolver.VariableMap.Any(v => comparer.Equals(v.Key, args.Node.Name)))
                             {
-                                var node = resolver.VariableMap.First(v => comparer.Equals(v.Key, args.Node.Name)).Value;
-                                args.Result = VariableNode.Voltage(node.ToString());
+                                var variableNode = resolver.VariableMap.First(v => comparer.Equals(v.Key, args.Node.Name)).Value;
+                                args.Result = VariableNode.Voltage(variableNode.ToString());
                             }
                             else
                             {
@@ -142,14 +142,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
                 }
                 else
                 {
-                    resolver.UnknownVariableFound += (sender, args) =>
+                    resolver.UnknownVariableFound += (_, args) =>
                     {
                         if (args.Node.NodeType == NodeTypes.Voltage)
                         {
                             if (resolver.VariableMap.Any(v => comparer.Equals(v.Key, args.Node.Name)))
                             {
-                                var node = resolver.VariableMap.First(v => comparer.Equals(v.Key, args.Node.Name)).Value;
-                                args.Result = VariableNode.Voltage(node.ToString());
+                                var variableNode = resolver.VariableMap.First(v => comparer.Equals(v.Key, args.Node.Name)).Value;
+                                args.Result = VariableNode.Voltage(variableNode.ToString());
                             }
                             else
                             {

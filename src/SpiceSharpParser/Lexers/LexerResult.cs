@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.Lexers
 {

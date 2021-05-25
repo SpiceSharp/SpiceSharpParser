@@ -20,7 +20,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                 var pins = @object.PinsAndParameters.Take(VoltageControlledCurrentSource.PinCount);
                 var parameters = @object.PinsAndParameters.Skip(VoltageControlledCurrentSource.PinCount);
 
-                double gain = 0;
+                double gain;
                 var mParameter = (AssignmentParameter)parameters.FirstOrDefault(p => p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "m");
                 if (mParameter == null)
                 {
@@ -47,7 +47,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                     vccsNodes.Add(pp2.Values.Items[0]);
                     vccsNodes.Add(pp2.Values.Items[1]);
 
-                    double gain = 0;
+                    double gain;
                     var mParameter = (AssignmentParameter)@object.PinsAndParameters.FirstOrDefault(p => p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "m");
                     if (mParameter == null)
                     {

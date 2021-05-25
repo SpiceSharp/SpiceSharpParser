@@ -49,7 +49,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
 
             string type = statement.Parameters.Count > 0 ? statement.Parameters[0].Value.ToLower() : null;
-            string printImage = statement.Name + ":" + statement.Parameters.ToString();
+            string printImage = statement.Name + ":" + statement.Parameters;
             if (type != null && SupportedPrintTypes.Contains(type))
             {
                 foreach (Simulation simulation in FilterSimulations(context.Result.Simulations, type))
@@ -84,7 +84,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 x = eventArgs.Frequency;
             }
 
-            if (simulation is DC dc)
+            if (simulation is DC)
             {
                 if (eventArgs.GetSweepValues().Length > 1)
                 {
@@ -135,7 +135,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
         private void CreatePrint(string printImage, ParameterCollection parameters, IReadingContext context, Simulation simulation, string firstColumnName, bool filterSpecified)
         {
-            var print = new Print(simulation.Name.ToString());
+            var print = new Print(simulation.Name);
 
             // Create column names
             if (!string.IsNullOrEmpty(firstColumnName))
@@ -150,8 +150,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
 
             int rowIndex = 0;
-            simulation.ExportSimulationData += (sender, args) => CreateRowInPrint(ref rowIndex, simulation, context, args, exports, print);
-            simulation.AfterExecute += (sender, args) => AddPrintToResultIfValid(printImage, context, print, simulation, filterSpecified);
+            simulation.ExportSimulationData += (_, args) => CreateRowInPrint(ref rowIndex, simulation, context, args, exports, print);
+            simulation.AfterExecute += (_, _) => AddPrintToResultIfValid(printImage, context, print, simulation, filterSpecified);
         }
 
         private void AddPrintToResultIfValid(string printImage, IReadingContext context, Print print, Simulation simulation, bool filterSpecified)

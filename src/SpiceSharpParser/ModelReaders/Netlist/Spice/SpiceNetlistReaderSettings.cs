@@ -1,6 +1,6 @@
-﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
-using System;
+﻿using System;
 using System.Text;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
@@ -20,6 +20,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// <param name="workingDirectoryProvider">
         /// Working directory provider.
         /// </param>
+        /// <param name="encoding"></param>
         /// <param name="separator">
         /// Separator for node and object names.
         /// </param>

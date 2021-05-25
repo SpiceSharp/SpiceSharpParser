@@ -1,6 +1,7 @@
 ﻿using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using System.IO;
 using System.Text;
+using SpiceSharpParser.Common;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.ModelWriters

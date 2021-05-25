@@ -2,7 +2,6 @@
 using SpiceSharp.Simulations.IntegrationMethods;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
@@ -56,7 +55,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                                 case "trap":
                                 case "trapezoidal":
                                     context.SimulationConfiguration.TransientConfiguration.Type = typeof(Trapezoidal);
-                                    context.SimulationConfiguration.TimeParametersFactory = (TransientConfiguration config) => new Trapezoidal()
+                                    context.SimulationConfiguration.TimeParametersFactory = (config) => new Trapezoidal()
                                     {
                                         StartTime = config.Start ?? 0.0,
                                         StopTime = config.Final ?? 0.0,
@@ -70,7 +69,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
                                 case "gear":
                                     context.SimulationConfiguration.TransientConfiguration.Type = typeof(Gear);
-                                    context.SimulationConfiguration.TimeParametersFactory = (TransientConfiguration config) => new Gear()
+                                    context.SimulationConfiguration.TimeParametersFactory = (config) => new Gear()
                                     {
                                         StartTime = config.Start ?? 0.0,
                                         StopTime = config.Final ?? 0.0,
@@ -84,7 +83,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
                                 case "euler":
                                     context.SimulationConfiguration.TransientConfiguration.Type = typeof(FixedEuler);
-                                    context.SimulationConfiguration.TimeParametersFactory = (TransientConfiguration config) => new FixedEuler()
+                                    context.SimulationConfiguration.TimeParametersFactory = (config) => new FixedEuler()
                                     {
                                         StartTime = config.Start ?? 0.0,
                                         StopTime = config.Final ?? 0.0,

@@ -1,11 +1,10 @@
-﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.ModelWriters.CSharp;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
-namespace SpiceSharpParser.ModelWriters.CSharp
+namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Waveforms
 {
     /// <summary>
     /// Single-frequency FM waveform.
@@ -17,6 +16,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
         /// </summary>
         /// <param name="parameters">Parameters for waveform.</param>
         /// <param name="context">A context.</param>
+        /// <param name="waveformId">Waveform id.</param>
         /// <returns>
         /// A new waveform.
         /// </returns>

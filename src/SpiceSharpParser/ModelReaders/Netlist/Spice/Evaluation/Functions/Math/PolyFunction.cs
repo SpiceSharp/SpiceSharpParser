@@ -1,5 +1,4 @@
 ﻿using SpiceSharpParser.Common;
-using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Mathematics.Combinatorics;
 using System.Collections.Generic;
 using System.Globalization;

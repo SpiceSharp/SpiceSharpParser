@@ -1,6 +1,7 @@
 ﻿using SpiceSharp.Simulations;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System.Collections.Generic;
+using SpiceSharpParser.ModelWriters.CSharp.Language;
 
 namespace SpiceSharpParser.ModelWriters.CSharp.Controls
 {
@@ -22,7 +23,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Controls
             var sweepsId = dcId + "_sweeps";
             result.Add(new CSharpNewStatement(sweepsId, "new List<ISweep>()")
             {
-                Kind = CSharpStatementKind.CreateSimulationInit_Before,
+                Kind = CSharpStatementKind.CreateSimulationInitBefore,
                 Metadata = new Dictionary<string, string>() { { "type", typeof(DC).Name }, { "dependency", dcId } },
             });
 
@@ -36,13 +37,13 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Controls
                         sweepsId + "_" + i,
                         @$"new ParameterSweep(""{@object.Parameters.Get(4 * i).Value}"", Enumerable.Range(0, (int)(({stop} - {start}) / {step}) + 1).Select(index => {start} + (index * {step})))")
                     {
-                        Kind = CSharpStatementKind.CreateSimulationInit_Before,
+                        Kind = CSharpStatementKind.CreateSimulationInitBefore,
                         Metadata = new Dictionary<string, string>() { { "type", typeof(DC).Name }, { "dependency", dcId } },
                     });
 
                 result.Add(new CSharpCallStatement(sweepsId, "Add(" + sweepsId + "_" + i + ")")
                 {
-                    Kind = CSharpStatementKind.CreateSimulationInit_Before,
+                    Kind = CSharpStatementKind.CreateSimulationInitBefore,
                     Metadata = new Dictionary<string, string>() { { "type", typeof(DC).Name }, { "dependency", dcId } },
                 });
             }

@@ -8,7 +8,6 @@ using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.Parsers.Expression;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
 {
@@ -108,7 +107,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of capacitor.
         /// </returns>
-        protected SpiceSharp.Components.IComponent GenerateCap(string name, ParameterCollection parameters, IReadingContext context)
+        protected IComponent GenerateCap(string name, ParameterCollection parameters, IReadingContext context)
         {
             if (parameters.Count >= 3)
             {
@@ -116,7 +115,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var evalContext = context.Evaluator.GetEvaluationContext();
 
                 var something = parameters[2];
-                string expression = null;
+                string expression;
 
                 if (something is AssignmentParameter asp)
                 {
@@ -151,7 +150,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     {
                         context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
                         {
-                            behavioralCapacitor.Parameters.Expression = expression.ToString();
+                            behavioralCapacitor.Parameters.Expression = expression;
 
                             behavioralCapacitor.Parameters.ParseAction = (expression) =>
                             {
@@ -174,7 +173,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             Parameter tcParameter = parameters.FirstOrDefault(
                 p => p is AssignmentParameter ap && ap.Name.Equals(
                          "tc",
-                         false ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase));
+                         context.ReaderSettings.CaseSensitivity.IsParameterNameCaseSensitive ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase));
 
             if (tcParameter != null)
             {
@@ -412,10 +411,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 // Check if something can be resistance
                 if (!modelBased && (something is WordParameter
-                     || something is IdentifierParameter
-                     || something is ValueParameter
-                     || something is ExpressionParameter
-                     || (something is AssignmentParameter ap && (ap.Name.ToLower() == "r" || ap.Name.ToLower() == "resistance"))))
+                                    || something is IdentifierParameter
+                                    || something is ValueParameter
+                                    || something is ExpressionParameter
+                                    || (something is AssignmentParameter ap &&
+                                        (ap.Name.ToLower() == "r" || ap.Name.ToLower() == "resistance"))))
                 {
                     resistanceBased = true;
                 }
@@ -442,18 +442,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     return res;
                 }
 
-                if (!modelBased && !resistanceBased)
-                {
-                    // RName Node1 Node2 something
-                    context.Result.ValidationResult.Add(
-                        new ValidationEntry(
-                            ValidationEntrySource.Reader,
-                            ValidationEntryLevel.Warning,
-                            $"Resistancee or model name needs to be specified for resistor",
-                            parameters.LineInfo));
-
-                    return null;
-                }
+                context.Result.ValidationResult.Add(
+                    new ValidationEntry(
+                        ValidationEntrySource.Reader,
+                        ValidationEntryLevel.Warning,
+                        $"Resistance or model name needs to be specified for resistor",
+                        parameters.LineInfo));
+                return null;
             }
             else
             {

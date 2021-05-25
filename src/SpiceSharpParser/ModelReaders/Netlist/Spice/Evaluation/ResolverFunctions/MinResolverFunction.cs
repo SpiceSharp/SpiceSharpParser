@@ -11,7 +11,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.ResolverFunctio
 
         public override Node GetBody(Node[] argumentValues)
         {
-            return TernaryOperatorNode.Conditional(TernaryOperatorNode.LessThan(argumentValues[0], argumentValues[1]), argumentValues[0], argumentValues[1]);
+            return TernaryOperatorNode.Conditional(Node.LessThan(argumentValues[0], argumentValues[1]), argumentValues[0], argumentValues[1]);
         }
     }
 }

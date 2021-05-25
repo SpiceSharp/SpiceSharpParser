@@ -1,5 +1,4 @@
-﻿using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
 {

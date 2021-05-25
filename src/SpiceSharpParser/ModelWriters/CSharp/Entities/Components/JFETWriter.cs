@@ -1,7 +1,6 @@
 ﻿using SpiceSharp.Components;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Collections.Generic;
-using System.Linq;
 using Component = SpiceSharpParser.Models.Netlist.Spice.Objects.Component;
 
 namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components

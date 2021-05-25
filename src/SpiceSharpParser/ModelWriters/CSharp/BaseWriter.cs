@@ -1,6 +1,7 @@
 ﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace SpiceSharpParser.ModelWriters.CSharp
@@ -17,7 +18,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
             }
             else
             {
-                return new CSharpAssignmentStatement(identifier + "." + property, context.EvaluationContext.Evaluate(expression).ToString());
+                return new CSharpAssignmentStatement(identifier + "." + property, context.EvaluationContext.Evaluate(expression).ToString(CultureInfo.InvariantCulture));
             }
         }
 
@@ -57,7 +58,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
             }
             else
             {
-                return context.EvaluationContext.Evaluate(expression).ToString();
+                return context.EvaluationContext.Evaluate(expression).ToString(CultureInfo.InvariantCulture);
             }
         }
 

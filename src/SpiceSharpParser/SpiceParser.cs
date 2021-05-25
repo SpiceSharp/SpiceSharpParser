@@ -112,7 +112,7 @@ namespace SpiceSharpParser
                         ValidationEntrySource.Lexer,
                         ValidationEntryLevel.Error,
                         e.ToString(),
-                        null));
+                        e.LineInfo));
             }
             catch (ParseException e)
             {
@@ -121,7 +121,7 @@ namespace SpiceSharpParser
                         ValidationEntrySource.Parser,
                         ValidationEntryLevel.Error,
                         e.ToString(),
-                        null));
+                        e.LineInfo));
             }
 
             return result;

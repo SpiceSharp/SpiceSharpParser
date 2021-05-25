@@ -4,17 +4,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.ResolverFunctio
 {
     public class GaussResolverFunction : DynamicResolverFunction
     {
-        private readonly EvaluationContext context;
+        private readonly EvaluationContext _context;
 
         public GaussResolverFunction(EvaluationContext context)
         {
             Name = "gauss";
-            this.context = context;
+            this._context = context;
         }
 
         public override Node GetBody(Node[] argumentValues)
         {
-            var random = context.Randomizer.GetRandomDoubleProvider();
+            var random = _context.Randomizer.GetRandomDoubleProvider();
 
             double p1 = 1 - random.NextDouble();
             double p2 = 1 - random.NextDouble();

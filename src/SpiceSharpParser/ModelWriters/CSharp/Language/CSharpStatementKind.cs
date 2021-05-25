@@ -1,11 +1,11 @@
-﻿namespace SpiceSharpParser.ModelWriters.CSharp
+﻿namespace SpiceSharpParser.ModelWriters.CSharp.Language
 {
     public enum CSharpStatementKind
     {
         CreateEntity,
         CreateSimulation,
-        CreateSimulationInit_After,
-        CreateSimulationInit_Before,
+        CreateSimulationInitAfter,
+        CreateSimulationInitBefore,
         SetSimulation,
         OtherSimulation,
         Configuration,

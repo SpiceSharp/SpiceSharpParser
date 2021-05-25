@@ -10,7 +10,6 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -86,6 +85,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="parameterName">Parameter name.</param>
         /// <param name="expression">Value expression.</param>
         /// <param name="beforeTemperature">Should be re-evaluated before temperature.</param>
+        /// <param name="simulation">Simulation.</param>
         void SetParameter(IEntity entity, string parameterName, string expression, bool beforeTemperature = true,  Simulation simulation = null);
 
         /// <summary>
@@ -95,6 +95,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="parameterName">Parameter name.</param>
         /// <param name="valueExpression">Value expression.</param>
         /// <param name="beforeTemperature">Should be re-evaluated before temperature.</param>
+        /// <param name="simulation">Simulation.</param>
         void SetParameter(IEntity entity, string parameterName, Parameter valueExpression, bool beforeTemperature = true, Simulation simulation = null);
 
         /// <summary>
@@ -111,7 +112,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         /// <param name="component">A component.</param>
         /// <param name="parameters">Parameters of component.</param>
-        void CreateNodes(SpiceSharp.Components.IComponent component, ParameterCollection parameters);
+        void CreateNodes(IComponent component, ParameterCollection parameters);
 
         /// <summary>
         /// Reads the statements with given order.

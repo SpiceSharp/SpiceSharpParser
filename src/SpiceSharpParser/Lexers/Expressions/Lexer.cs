@@ -9,8 +9,8 @@ namespace SpiceSharpParser.Lexers.Expressions
     /// </summary>
     public class Lexer
     {
-        private const int _initialWordSize = 16;
-        private readonly StringBuilder _builder = new StringBuilder(_initialWordSize);
+        private const int InitialWordSize = 16;
+        private readonly StringBuilder _builder = new (InitialWordSize);
         private readonly string _expression;
         private int _index;
 
@@ -258,7 +258,6 @@ namespace SpiceSharpParser.Lexers.Expressions
                         return true;
                 }
             });
-            return;
         }
 
         /// <summary>

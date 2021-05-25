@@ -25,7 +25,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// <param name="spiceNetlistParser">Single spice netlist parser.</param>
         /// <param name="includesPreprocessor">Includes preprocessor.</param>
         /// <param name="initialDirectoryPathProvider">Initial directory path provider.</param>
-        /// <param name="readerSettings">Reader settings.</param>
         /// <param name="lexerSettings">Lexer settings.</param>
         public LibPreprocessor(
             IFileReader fileReader,

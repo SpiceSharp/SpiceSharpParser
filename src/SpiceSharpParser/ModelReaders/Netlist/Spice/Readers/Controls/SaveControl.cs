@@ -74,7 +74,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 {
                     AddCommonExport(context, simulationType, parameter);
                 }
-                else if ((i != 0 || (i == 0 && simulationType == null)) && parameter is SingleParameter s)
+                else if ((i != 0 || simulationType == null) && parameter is SingleParameter s)
                 {
                     AddLetExport(context, simulationType, s);
                 }

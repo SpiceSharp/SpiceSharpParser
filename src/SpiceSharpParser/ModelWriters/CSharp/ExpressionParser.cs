@@ -32,7 +32,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
         {
             var list = new List<string>();
             var node = InternalParser.Parse(expression);
-            DoubleBuilder.FunctionFound += (o, e) =>
+            DoubleBuilder.FunctionFound += (_, e) =>
             {
                 list.Add(e.Function.Name);
                 e.Result = 0;
@@ -63,7 +63,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
         {
             var list = new List<Node>();
 
-            DoubleBuilder.VariableFound += (o, e) =>
+            DoubleBuilder.VariableFound += (_, e) =>
             {
                 list.Add(e.Node);
                 e.Result = 0;

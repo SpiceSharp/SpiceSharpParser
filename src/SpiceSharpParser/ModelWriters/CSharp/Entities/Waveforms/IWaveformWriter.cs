@@ -1,8 +1,7 @@
-﻿using SpiceSharp.Components;
+﻿using System.Collections.Generic;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using System.Collections.Generic;
 
-namespace SpiceSharpParser.ModelWriters.CSharp
+namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Waveforms
 {
     /// <summary>
     /// Generates a waveform.
@@ -14,6 +13,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
         /// </summary>
         /// <param name="parameters">Parameters for waveform.</param>
         /// <param name="context">A context.</param>
+        /// <param name="waveformId">Waveform id.</param>
         /// <returns>
         /// A new waveform.
         /// </returns>

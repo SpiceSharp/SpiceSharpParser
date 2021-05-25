@@ -105,7 +105,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.Wave
             result.AddRange(Encoding.ASCII.GetBytes("WAVE")); //FormatBytes
             result.AddRange(Encoding.ASCII.GetBytes("fmt ")); //FmtChunkIdBytes
 
-            var fmtChunkSize = BitConverter.GetBytes((int)16);
+            var fmtChunkSize = BitConverter.GetBytes(16);
             result.AddRange(fmtChunkSize); //FmtChunkSize
 
             var audioFormat = BitConverter.GetBytes((short)1);

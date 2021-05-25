@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharpParser.ModelWriters.CSharp.Language;
 
 namespace SpiceSharpParser.ModelWriters.CSharp
 {
@@ -20,14 +21,14 @@ namespace SpiceSharpParser.ModelWriters.CSharp
                 var variableName = (createSimulation as CSharpNewStatement).VariableName;
 
                 methodStatements.AddRange(simulationStatements.Where(s =>
-                  s.Kind == CSharpStatementKind.CreateSimulationInit_Before
+                  s.Kind == CSharpStatementKind.CreateSimulationInitBefore
                   && s.Metadata.ContainsKey("dependency")
                   && s.Metadata["dependency"] == variableName));
 
                 methodStatements.Add(createSimulation);
 
                 methodStatements.AddRange(simulationStatements.Where(s =>
-                    s.Kind == CSharpStatementKind.CreateSimulationInit_After
+                    s.Kind == CSharpStatementKind.CreateSimulationInitAfter
                     && s.Metadata.ContainsKey("dependency")
                     && s.Metadata["dependency"] == variableName));
 

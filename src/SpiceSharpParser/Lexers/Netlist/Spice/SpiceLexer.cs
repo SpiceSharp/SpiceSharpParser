@@ -50,7 +50,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 throw new LexerException("Invalid netlist", lexerResult.LexerException, lexerResult.LexerException.LineInfo);
             }
 
-            return lexerResult.Tokens.Select(token => new SpiceToken((SpiceTokenType)token.Type, token.Lexem, token.LineNumber, token.StartColumnIndex, null));
+            return lexerResult.Tokens.Select(token => new SpiceToken((SpiceTokenType)token.Type, token.Lexem, token.LineNumber, token.StartColumnIndex));
         }
 
         /// <summary>

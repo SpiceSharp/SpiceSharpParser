@@ -8,8 +8,8 @@ namespace SpiceSharpParser.Lexers
     /// </summary>
     public abstract class LexerRegexRule
     {
-        private Regex regex;
-        private string regularExpressionPattern;
+        private Regex _regex;
+        private string _regularExpressionPattern;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LexerRegexRule"/> class.
@@ -39,12 +39,12 @@ namespace SpiceSharpParser.Lexers
         /// </summary>
         public string RegularExpressionPattern
         {
-            get => regularExpressionPattern;
+            get => _regularExpressionPattern;
 
             set
             {
-                regularExpressionPattern = value;
-                regex = null;
+                _regularExpressionPattern = value;
+                _regex = null;
             }
         }
 
@@ -55,7 +55,7 @@ namespace SpiceSharpParser.Lexers
         {
             get
             {
-                if (regex == null)
+                if (_regex == null)
                 {
                     RegexOptions options = RegexOptions.None;
 
@@ -64,10 +64,10 @@ namespace SpiceSharpParser.Lexers
                         options |= RegexOptions.IgnoreCase;
                     }
 
-                    regex = new Regex($"^{RegularExpressionPattern}", options);
+                    _regex = new Regex($"^{RegularExpressionPattern}", options);
                 }
 
-                return regex;
+                return _regex;
             }
         }
 

@@ -19,7 +19,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     try
                     {
-                        context.SetParameter(entity, ap.Name, ap.Value, true);
+                        context.SetParameter(entity, ap.Name, ap.Value);
                     }
                     catch (Exception)
                     {

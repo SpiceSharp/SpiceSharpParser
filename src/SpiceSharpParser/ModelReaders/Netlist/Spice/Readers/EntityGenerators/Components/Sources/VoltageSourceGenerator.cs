@@ -7,7 +7,6 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.Parsers.Expression;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
 {
@@ -172,7 +171,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
                 {
-                    entity.Parameters.Expression = expression.ToString();
+                    entity.Parameters.Expression = expression;
                     entity.Parameters.ParseAction = (expression) =>
                     {
                         var parser = context.CreateExpressionParser(simulation);

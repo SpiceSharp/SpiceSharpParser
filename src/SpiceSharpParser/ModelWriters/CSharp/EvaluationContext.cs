@@ -1,6 +1,5 @@
 ﻿using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -25,7 +24,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
 
         public bool HaveSpiceProperties(string expression)
         {
-            var variables = Parser.GetVariables(expression);
+            var variables = Parser.GetVariables(expression).ToList();
 
             return
                 variables.Any(v => v.NodeType == SpiceSharpBehavioral.Parsers.Nodes.NodeTypes.Current)

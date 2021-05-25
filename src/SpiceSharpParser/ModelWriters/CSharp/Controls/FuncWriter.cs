@@ -15,7 +15,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Controls
                 && !context.EvaluationContext.HaveFunctions(functionExpression)
                 && !context.EvaluationContext.HaveVariables(functionExpression))
             {
-                var parser = new Parsers.Expression.Parser();
                 var statements = new List<CSharpStatement>();
                 statements.Add(new CSharpReturnStatement(functionExpression));
 
@@ -51,7 +50,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Controls
                     "string",
                     functionArguments.ToArray(),
                     null,
-                    functionArguments.Select(f => typeof(string)).ToArray(),
+                    functionArguments.Select(_ => typeof(string)).ToArray(),
                     statements,
                     false)
                 {
@@ -72,7 +71,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Controls
             var result = new List<CSharpStatement>();
             if (@object.Parameters == null)
             {
-                throw new System.ArgumentNullException(nameof(@object.Parameters));
+                throw new ArgumentNullException(nameof(@object.Parameters));
             }
 
             for (var i = 0; i < @object.Parameters.Count; i++)

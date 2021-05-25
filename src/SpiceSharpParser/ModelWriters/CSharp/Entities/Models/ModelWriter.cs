@@ -40,7 +40,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Models
                 return bracketParameter.Parameters;
             }
 
-            if (@object.Parameters[0] is SingleParameter parameter)
+            if (@object.Parameters[0] is SingleParameter)
             {
                 return @object.Parameters.Skip(1);
             }

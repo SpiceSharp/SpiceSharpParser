@@ -14,7 +14,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
     /// </summary>
     public class NoiseControl : SimulationControl
     {
-        private IEnumerable<double> sweep;
+        private IEnumerable<double> _sweep;
 
         public NoiseControl(IMapper<Exporter> mapper)
             : base(mapper)
@@ -72,9 +72,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
             switch (type)
             {
-                case "lin": sweep = new LinearSweep(start, stop, (int)numberSteps); break;
-                case "oct": sweep = new OctaveSweep(start, stop, (int)numberSteps); break;
-                case "dec": sweep = new DecadeSweep(start, stop, (int)numberSteps); break;
+                case "lin": _sweep = new LinearSweep(start, stop, (int)numberSteps); break;
+                case "oct": _sweep = new OctaveSweep(start, stop, (int)numberSteps); break;
+                case "dec": _sweep = new DecadeSweep(start, stop, (int)numberSteps); break;
                 default:
                     context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "LIN, DEC or OCT expected", statement.LineInfo));
                     return null;
@@ -95,13 +95,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                                 var output = v.Elements[0].Value;
                                 var reference = v.Elements[1].Value;
                                 var input = statement.Parameters[2].Value;
-                                noise = new Noise(name, output, reference, sweep);
+                                noise = new Noise(name, input, output, reference, _sweep);
                             }
                             else if (bracket.Parameters[0] is SingleParameter s)
                             {
                                 var output = s.Value;
                                 var input = statement.Parameters[1].Value;
-                                noise = new Noise(name, output, input, sweep);
+                                noise = new Noise(name, input, output, _sweep);
                             }
 
                             break;

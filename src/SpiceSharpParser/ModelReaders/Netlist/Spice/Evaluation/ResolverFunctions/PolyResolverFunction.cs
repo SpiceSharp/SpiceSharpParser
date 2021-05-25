@@ -19,7 +19,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.ResolverFunctio
                 throw new SpiceSharpParserException("POLY first parameter should be constant");
             }
 
-            int dimension = (int)(argumentValues[0] as ConstantNode).Literal;
+            int dimension = (int)((ConstantNode)argumentValues[0]).Literal;
 
             if (argumentValues.Length < dimension + 1)
             {

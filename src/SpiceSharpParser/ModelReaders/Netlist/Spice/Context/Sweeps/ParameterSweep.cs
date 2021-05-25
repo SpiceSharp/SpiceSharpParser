@@ -1,6 +1,4 @@
-﻿using SpiceSharp;
-using SpiceSharp.Simulations;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
 {

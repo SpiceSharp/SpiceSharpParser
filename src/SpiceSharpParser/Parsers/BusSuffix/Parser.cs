@@ -18,7 +18,7 @@ namespace SpiceSharpParser.Parsers.BusSuffix
 
             while (lexer.Token == TokenType.LessThan)
             {
-                var dimension = new BusSuffix.SuffixDimension();
+                var dimension = new SuffixDimension();
 
                 do
                 {

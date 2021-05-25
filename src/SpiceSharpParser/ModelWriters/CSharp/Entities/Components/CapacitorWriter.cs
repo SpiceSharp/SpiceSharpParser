@@ -26,7 +26,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
             {
                 // CName Node1 Node2 something ...
                 var something = parameters[0];
-                string expression = null;
+                string expression;
 
                 if (something is AssignmentParameter asp)
                 {
@@ -48,25 +48,10 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                     result.Add(new CSharpNewStatement(capacitorId, $@"new BehavioralCapacitor(""{name}"", ""{pins[0].Value}"", ""{pins[1].Value}"",""{expression}"")"));
                 }
 
-                bool modelBased = false;
+                bool modelBased = (something is WordParameter || something is IdentifierParameter)
+                                  && context.FindModelType(something.Value) != null;
 
                 // Check if something is a model name
-                if ((something is WordParameter || something is IdentifierParameter)
-                    && context.FindModelType(something.Value) != null)
-                {
-                    modelBased = true;
-                }
-
-                // Check if something can be resistance
-                if (!modelBased && (something is WordParameter
-                     || something is IdentifierParameter
-                     || something is ValueParameter
-                     || something is ExpressionParameter
-                     || (something is AssignmentParameter ap && (ap.Name.ToLower() == "r" || ap.Name.ToLower() == "resistance"))))
-                {
-                    modelBased = false;
-                }
-
                 if (!modelBased)
                 {
                     result.Add(new CSharpNewStatement(capacitorId, $@"new Capacitor(""{name}"", ""{pins[0].Value}"", ""{pins[1].Value}"", {Evaluate(something.Value, context)})"));

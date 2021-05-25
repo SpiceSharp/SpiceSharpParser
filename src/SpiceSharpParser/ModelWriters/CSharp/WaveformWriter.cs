@@ -1,8 +1,7 @@
-﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms;
-using SpiceSharpParser.Models.Netlist.Spice.Objects;
+﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using SpiceSharpParser.ModelWriters.CSharp.Entities.Waveforms;
 
 namespace SpiceSharpParser.ModelWriters.CSharp
 {

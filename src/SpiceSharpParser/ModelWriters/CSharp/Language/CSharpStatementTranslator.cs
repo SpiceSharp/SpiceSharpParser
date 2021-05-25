@@ -65,7 +65,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
             builder.AppendLine();
             builder.AppendLine(GetSpace(spaces) + "{");
 
-            var parser = new SpiceSharpParser.Parsers.Expression.Parser();
+            var parser = new Parsers.Expression.Parser();
 
             if (method.DefaultArgumentValues != null && method.OptionalArguments)
             {

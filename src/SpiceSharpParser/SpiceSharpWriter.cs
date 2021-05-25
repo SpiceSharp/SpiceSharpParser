@@ -15,10 +15,6 @@ namespace SpiceSharpParser
 {
     public class SpiceSharpWriter
     {
-        public SpiceSharpWriter()
-        {
-        }
-
         public SyntaxNode WriteCreateCircuitClass(string className, SpiceNetlist model, bool validateClass = true)
         {
             if (className is null)
@@ -48,16 +44,16 @@ namespace SpiceSharpParser
 
         public Assembly CreateCircuitAssembly(string className, SpiceNetlist model)
         {
-            var rootNode = WriteCreateCircuitClass(className, model, true);
+            var rootNode = WriteCreateCircuitClass(className, model);
             var compilation
             = CSharpCompilation.Create(
                 "Simulation.dll",
-                new SyntaxTree[] { rootNode.SyntaxTree },
+                new [] { rootNode.SyntaxTree },
                 null,
                 new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
             compilation = compilation.WithReferences(
-                MetadataReference.CreateFromFile(typeof(System.Linq.Enumerable).Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location),
                 MetadataReference.CreateFromFile(typeof(List<>).Assembly.Location),
                 MetadataReference.CreateFromFile(Assembly.Load("System.Collections").Location),
                 MetadataReference.CreateFromFile(typeof(Circuit).Assembly.Location),

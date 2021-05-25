@@ -2,6 +2,7 @@
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Collections.Generic;
+using SpiceSharpParser.ModelWriters.CSharp.Language;
 
 namespace SpiceSharpParser.ModelWriters.CSharp.Controls
 {
@@ -49,8 +50,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Controls
                     start = Evaluate(clonedParameters[2].Value, context);
                     maxStep = Evaluate(clonedParameters[3].Value, context);
                     break;
-                default:
-                    break;
             }
 
             if (clonedParameters.Count == 2)
@@ -91,7 +90,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Controls
 
             result.Add(new CSharpAssignmentStatement(@$"{transientId}.TimeParameters.UseIc", $"{useIc.ToString().ToLower()}")
             {
-                Kind = CSharpStatementKind.CreateSimulationInit_After,
+                Kind = CSharpStatementKind.CreateSimulationInitAfter,
                 Metadata = new Dictionary<string, string>() { { "type", typeof(Transient).Name }, { "dependency", transientId } },
             });
 

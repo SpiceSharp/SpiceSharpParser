@@ -40,7 +40,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                 }
             }
 
-            if (parameters.Any(p => p is ExpressionParameter ep))
+            if (parameters.Any(p => p is ExpressionParameter))
             {
                 var expressionParameter = (ExpressionParameter)parameters.Single(p => p is ExpressionParameter);
                 string expression = expressionParameter.Value;

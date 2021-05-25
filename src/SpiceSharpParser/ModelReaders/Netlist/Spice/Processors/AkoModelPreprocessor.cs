@@ -57,7 +57,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// <summary>
         /// Appends parameters to models.
         /// </summary>
-        /// <param name="models">A enumerable of models.</param>
+        /// <param name="model">A model.</param>
         /// <param name="parametersToSet">Parameters to set.</param>
         private void AppendParametersToModel(Model model, ParameterCollection parametersToSet)
         {

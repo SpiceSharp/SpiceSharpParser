@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelWriters.CSharp
 {
@@ -9,15 +10,11 @@ namespace SpiceSharpParser.ModelWriters.CSharp
     {
         public const string RootCircuitName = "Circuit";
 
-        private Dictionary<string, string> _idCache = new Dictionary<string, string>();
-        private Dictionary<string, string> _idCacheReversed = new Dictionary<string, string>();
-        private Dictionary<string, int> _idCacheCounter = new Dictionary<string, int>();
-        private Dictionary<string, List<string>> _subcircuitDependencies = new Dictionary<string, List<string>>();
-        private Dictionary<string, string> _models = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-
-        public WriterContext()
-        {
-        }
+        private readonly Dictionary<string, string> _idCache = new();
+        private readonly Dictionary<string, string> _idCacheReversed = new();
+        private readonly Dictionary<string, int> _idCacheCounter = new();
+        private readonly Dictionary<string, List<string>> _subcircuitDependencies = new();
+        private readonly Dictionary<string, string> _models = new (StringComparer.OrdinalIgnoreCase);
 
         public SpiceNetlistCaseSensitivitySettings CaseSettings { get; set; }
 
@@ -25,7 +22,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
 
         public bool SubcircuitDictionaryPresent { get; set; }
 
-        public List<(string, CSharpStatement)> SubcircuitCreateStatements { get; set; } = new List<(string, CSharpStatement)>();
+        public List<(string, CSharpStatement)> SubcircuitCreateStatements { get; set; } = new();
 
         public string WorkingDirectory { get; set; } = Environment.CurrentDirectory;
 
@@ -42,13 +39,13 @@ namespace SpiceSharpParser.ModelWriters.CSharp
                 name = "_" + name;
             }
 
-            var id_without_counter = $@"{name.Substring(0, 1).ToLower()}{name.Substring(1)}";
-            if (!_idCache.ContainsKey(id_without_counter))
+            var idWithoutCounter = $@"{name.Substring(0, 1).ToLower()}{name.Substring(1)}";
+            if (!_idCache.ContainsKey(idWithoutCounter))
             {
-                _idCache[id_without_counter] = name;
+                _idCache[idWithoutCounter] = name;
                 _idCacheCounter[name] = 0;
-                _idCacheReversed[name] = id_without_counter;
-                return id_without_counter;
+                _idCacheReversed[name] = idWithoutCounter;
+                return idWithoutCounter;
             }
 
             var id = $@"{name.Substring(0, 1).ToLower()}{name.Substring(1)}_{_idCacheCounter[name]}";

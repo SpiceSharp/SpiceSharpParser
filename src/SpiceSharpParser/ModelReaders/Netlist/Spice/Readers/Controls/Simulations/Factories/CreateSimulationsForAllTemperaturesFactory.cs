@@ -42,7 +42,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
         protected void SetTempVariable(IReadingContext context, double? operatingTemperatureInKelvins, Simulation simulation)
         {
-            double temp = 0;
+            double temp;
             if (operatingTemperatureInKelvins.HasValue)
             {
                 temp = operatingTemperatureInKelvins.Value - Constants.CelsiusKelvin;
@@ -54,7 +54,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
             if (simulation is BiasingSimulation biasingSimulation)
             {
-                biasingSimulation.BeforeTemperature += (object sender, TemperatureStateEventArgs e) =>
+                biasingSimulation.BeforeTemperature += (_, _) =>
                 {
                     context.Evaluator.SetParameter("TEMP", temp, simulation);
                 };

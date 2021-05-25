@@ -381,7 +381,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            return ExpressionValueProvider.GetExpressionValue(expression, this, true);
+            return ExpressionValueProvider.GetExpressionValue(expression, this);
         }
 
         public virtual double Evaluate(Expression expression)
@@ -417,11 +417,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
         public List<string> GetExpressionParameters(string expression, bool b)
         {
             return ExpressionFeaturesReader.GetParameters(expression, this, b).ToList();
-        }
-
-        public ExpressionParser GetDeriveParser(EvaluationContext context = null)
-        {
-            return ExpressionParserFactory.Create(context ?? this, true);
         }
 
         protected void SetParameter(string parameterName, string expression, Expression parameter)

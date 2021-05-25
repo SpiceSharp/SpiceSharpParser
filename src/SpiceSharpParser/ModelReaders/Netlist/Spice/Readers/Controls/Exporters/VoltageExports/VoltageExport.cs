@@ -1,5 +1,4 @@
 ﻿using SpiceSharp.Simulations;
-using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports
 {

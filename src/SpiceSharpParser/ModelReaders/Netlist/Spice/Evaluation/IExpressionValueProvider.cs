@@ -1,6 +1,4 @@
-﻿using SpiceSharpParser.Common.Evaluation;
-
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
+﻿namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 {
     public interface IExpressionValueProvider
     {
