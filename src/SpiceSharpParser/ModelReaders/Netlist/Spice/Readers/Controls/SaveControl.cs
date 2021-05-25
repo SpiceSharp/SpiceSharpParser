@@ -230,10 +230,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             export.Simulation.ExportSimulationData += (object sender, ExportDataEventArgs e) =>
             {
-                var expressionContext = context.Evaluator.GetEvaluationContext(export.Simulation);
+                var expressionContext = context.EvaluationContext.GetSimulationContext(export.Simulation);
                 var firstParameterSweepParameter = expressionContext.Parameters[firstParameterSweep.Parameter.Value];
 
-                var value = context.Evaluator.GetEvaluationContext(export.Simulation).Evaluate(firstParameterSweepParameter);
+                var value = context.EvaluationContext.GetSimulationContext(export.Simulation).Evaluator.EvaluateDouble(firstParameterSweepParameter);
                 series.Points.Add(new Point() { X = value, Y = export.Extract() });
             };
         }
@@ -286,7 +286,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                                 "I(" + entity.Name + ")",
                                 "i",
                                 @params,
-                                context.Evaluator.GetEvaluationContext(simulation),
+                                context.EvaluationContext.GetSimulationContext(simulation),
                                 context.ReaderSettings.CaseSensitivity));
                     }
                 }
@@ -303,7 +303,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                             "V(" + node + ")",
                             "v",
                             @params,
-                            context.Evaluator.GetEvaluationContext(simulation),
+                            context.EvaluationContext.GetSimulationContext(simulation),
                             context.ReaderSettings.CaseSensitivity));
                 }
             }
@@ -320,14 +320,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         private void AddLetExport(IReadingContext context, Type simulationType, SingleParameter parameter)
         {
             string expressionName = parameter.Value;
-            var expressionNames = context.Evaluator.GetExpressionNames();
+            var expressionNames = context.EvaluationContext.GetExpressionNames();
 
             if (expressionNames.Contains(expressionName))
             {
                 var simulations = Filter(context.Result.Simulations, simulationType);
                 foreach (var simulation in simulations)
                 {
-                    var export = new ExpressionExport(simulation.Name, expressionName, context.Evaluator.GetEvaluationContext(simulation));
+                    var export = new ExpressionExport(simulation.Name, expressionName, context.EvaluationContext.GetSimulationContext(simulation));
                     context.Result.Exports.Add(export);
                 }
             }

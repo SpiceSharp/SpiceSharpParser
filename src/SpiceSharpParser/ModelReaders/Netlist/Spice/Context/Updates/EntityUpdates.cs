@@ -10,10 +10,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 {
     public class EntityUpdates
     {
-        public EntityUpdates(bool isParameterNameCaseSensitive, SimulationEvaluationContexts contexts)
+        public EntityUpdates(bool isParameterNameCaseSensitive, EvaluationContext context)
         {
             IsParameterNameCaseSensitive = isParameterNameCaseSensitive;
-            Contexts = contexts ?? throw new ArgumentNullException(nameof(contexts));
+            Context = context;
             CommonUpdates = new ConcurrentDictionary<IEntity, EntityUpdate>();
             SimulationSpecificUpdates = new ConcurrentDictionary<Simulation, Dictionary<IEntity, EntityUpdate>>();
             SimulationEntityParametersCache = new ConcurrentDictionary<string, double>();
@@ -21,7 +21,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
         protected bool IsParameterNameCaseSensitive { get; }
 
-        protected SimulationEvaluationContexts Contexts { get; set; }
+        public EvaluationContext Context { get; }
 
         protected ConcurrentDictionary<IEntity, EntityUpdate> CommonUpdates { get; set; }
 
@@ -213,7 +213,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
         private EvaluationContext GetEntityContext(Simulation simulation, string entityName)
         {
-            var context = Contexts.GetContext(simulation).Find(entityName);
+            var context = Context.GetSimulationContext(simulation).Find(entityName);
             return context;
         }
     }

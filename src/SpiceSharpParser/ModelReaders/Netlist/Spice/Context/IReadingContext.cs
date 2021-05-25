@@ -2,6 +2,7 @@
 using SpiceSharp.Components;
 using SpiceSharp.Entities;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
@@ -10,6 +11,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System.Collections.Generic;
+using ExpressionParser = SpiceSharpParser.Common.ExpressionParser;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -34,10 +36,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         IMapper<Exporter> Exporters { get; }
 
-        /// <summary>
-        /// Gets or set circuit evaluator.
-        /// </summary>
-        IEvaluator Evaluator { get; }
+
+        EvaluationContext EvaluationContext { get; }
 
         /// <summary>
         /// Gets the children of the reading context.
@@ -77,6 +77,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         IWaveformReader WaveformReader { get; }
 
         SpiceNetlistReaderSettings ReaderSettings { get; }
+        
+        IEvaluator Evaluator { get; }
 
         /// <summary>
         /// Sets parameter of entity to value of expression.
@@ -124,5 +126,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         bool FindObject(string objectId, out IEntity entity);
 
         ExpressionParser CreateExpressionParser(Simulation simulation);
+
+        ExpressionResolver CreateExpressionResolver(Simulation simulation);
     }
 }

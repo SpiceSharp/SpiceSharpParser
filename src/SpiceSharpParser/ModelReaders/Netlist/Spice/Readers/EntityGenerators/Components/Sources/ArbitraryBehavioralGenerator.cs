@@ -25,7 +25,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 entity.Parameters.Expression = expressionParameter.Value;
                 entity.Parameters.ParseAction = (expression) =>
                 {
-                    var parser = context.CreateExpressionParser(null);
+                    var parser = context.CreateExpressionResolver(null);
                     return parser.Resolve(expression);
                 };
                 return entity;
@@ -53,7 +53,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 entity.Parameters.ParseAction = (expression) =>
                 {
-                    var parser = context.CreateExpressionParser(null);
+                    var parser = context.CreateExpressionResolver(null);
                     return parser.Resolve(expression);
                 };
                 return entity;

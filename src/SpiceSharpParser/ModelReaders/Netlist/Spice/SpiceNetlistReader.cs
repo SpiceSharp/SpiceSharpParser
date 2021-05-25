@@ -1,6 +1,7 @@
 ﻿using SpiceSharp;
 using SpiceSharp.Entities;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Mathematics.Probability;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
@@ -64,8 +65,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 seed: Settings.Seed);
 
             IExpressionParserFactory expressionParserFactory = new ExpressionParserFactory(Settings.CaseSensitivity);
-            IExpressionFeaturesReader expressionFeaturesReader = new ExpressionFeaturesReader(expressionParserFactory);
-            IExpressionValueProvider expressionValueProvider = new ExpressionValueProvider(expressionParserFactory);
+            IExpressionResolverFactory expressionResolverFactory = new ExpressionResolverFactory(Settings.CaseSensitivity);
+            IExpressionFeaturesReader expressionFeaturesReader = new ExpressionFeaturesReader(expressionParserFactory, expressionResolverFactory);
+            
 
             EvaluationContext evaluationContext = new SpiceEvaluationContext(
                 string.Empty,
@@ -73,25 +75,24 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 randomizer,
                 expressionParserFactory,
                 expressionFeaturesReader,
-                expressionValueProvider,
                 nameGenerator);
+            evaluationContext.Evaluator =  new Evaluator(evaluationContext, new ExpressionValueProvider(expressionParserFactory));
 
-            var simulationEvaluationContexts = new SimulationEvaluationContexts(evaluationContext);
-            ISimulationPreparations simulationPreparations = new SimulationPreparations(
-                new EntityUpdates(Settings.CaseSensitivity.IsParameterNameCaseSensitive, simulationEvaluationContexts),
-                new SimulationUpdates(simulationEvaluationContexts));
-
-            IEvaluator circuitEvaluator = new Evaluator(simulationEvaluationContexts, evaluationContext);
             ISpiceStatementsReader statementsReader = new SpiceStatementsReader(
                 Settings.Mappings.Controls,
                 Settings.Mappings.Models,
                 Settings.Mappings.Components);
             IWaveformReader waveformReader = new WaveformReader(Settings.Mappings.Waveforms);
 
+
+            ISimulationPreparations simulationPreparations = new SimulationPreparations(
+                new EntityUpdates(Settings.CaseSensitivity.IsParameterNameCaseSensitive, evaluationContext),
+                new SimulationUpdates(evaluationContext.SimulationEvaluationContexts));
+
             IReadingContext circuitContext = new ReadingContext(
                 "Root circuit context",
                 null,
-                circuitEvaluator,
+                evaluationContext,
                 simulationPreparations,
                 nameGenerator,
                 statementsReader,
@@ -105,7 +106,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             circuitContext.Read(netlist.Statements, Settings.Orderer);
 
             // Set final seed
-            result.Seed = circuitContext.Evaluator.Seed;
+            result.Seed = circuitContext.EvaluationContext.Seed;
             result.Circuit = circuitContext.ContextEntities;
 
             return result;

@@ -28,11 +28,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     var x = pp.Values.Items[0];
                     var y = pp.Values.Items[1];
 
-                    curve.Add(new Point(context.Evaluator.EvaluateDouble(x.Value), context.Evaluator.EvaluateDouble(y.Value)));
+                    curve.Add(new Point(context.EvaluationContext.Evaluator.EvaluateDouble(x.Value), context.EvaluationContext.Evaluator.EvaluateDouble(y.Value)));
                 }
             }
 
-            context.Evaluator.GetEvaluationContext().Randomizer.RegisterPdf(distributionName, () => new Pdf(curve));
+            context.EvaluationContext.Randomizer.RegisterPdf(distributionName, () => new Pdf(curve));
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
+﻿using SpiceSharpParser.Common;
+
+namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 {
     public interface IExpressionParserFactory
     {

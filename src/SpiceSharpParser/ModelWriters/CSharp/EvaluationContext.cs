@@ -2,6 +2,7 @@
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelWriters.CSharp
 {
@@ -21,6 +22,8 @@ namespace SpiceSharpParser.ModelWriters.CSharp
         public Dictionary<string, string> Variables { get; set; } = new Dictionary<string, string>();
 
         public List<string> Functions { get; set; } = new List<string>();
+
+        public IEvaluator Evaluator { get; set; }
 
         public bool HaveSpiceProperties(string expression)
         {
@@ -42,12 +45,12 @@ namespace SpiceSharpParser.ModelWriters.CSharp
 
         public double Evaluate(Parameter something)
         {
-            return Parser.Parse(something.Value);
+            return Parser.Evaluate(something.Value);
         }
 
         public double Evaluate(string expression)
         {
-            return Parser.Parse(expression);
+            return Parser.Evaluate(expression);
         }
 
         public bool HaveFunctions(string expression)

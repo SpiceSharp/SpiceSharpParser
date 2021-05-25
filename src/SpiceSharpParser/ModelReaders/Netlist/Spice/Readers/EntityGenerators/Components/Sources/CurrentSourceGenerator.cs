@@ -142,7 +142,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </returns>
         protected IEntity GenerateCurrentSource(string name, ParameterCollection parameters, IReadingContext context)
         {
-            var evalContext = context.Evaluator.GetEvaluationContext();
+            var evalContext = context.EvaluationContext;
 
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
             {
@@ -155,7 +155,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
             }
 
-            if (parameters.Any(p => p is ExpressionParameter ep))
+            if (parameters.Any(p => p is ExpressionParameter))
             {
                 var expressionParameter = (ExpressionParameter)parameters.Single(p => p is ExpressionParameter);
                 string expression = expressionParameter.Value;
@@ -188,7 +188,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             entity.Parameters.Expression = expression;
             entity.Parameters.ParseAction = (expression) =>
             {
-                var parser = context.CreateExpressionParser(null);
+                var parser = context.CreateExpressionResolver(null);
                 return parser.Resolve(expression);
             };
 
@@ -199,7 +199,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     entity.Parameters.Expression = expression;
                     entity.Parameters.ParseAction = (expression) =>
                     {
-                        var parser = context.CreateExpressionParser(simulation);
+                        var parser = context.CreateExpressionResolver(simulation);
                         return parser.Resolve(expression);
                     };
                 });
@@ -210,7 +210,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
         private IEntity CreateCustomCurrentSource(string name, ParameterCollection parameters, IReadingContext context, bool isVoltageControlled)
         {
-            var evalContext = context.Evaluator.GetEvaluationContext();
+            var evalContext = context.EvaluationContext;
 
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
             {
@@ -236,7 +236,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             if (parameters.Any(p => p is WordParameter bp && bp.Value.ToLower() == "poly"))
             {
                 var dimension = 1;
-                var expression = CreatePolyExpression(dimension, parameters.Skip(CurrentSource.PinCount + 1), isVoltageControlled, context.Evaluator.GetEvaluationContext());
+                var expression = CreatePolyExpression(dimension, parameters.Skip(CurrentSource.PinCount + 1), isVoltageControlled, context.EvaluationContext);
                 BehavioralCurrentSource entity = CreateBehavioralCurrentSource(name, parameters, context, evalContext, expression);
                 return entity;
             }
@@ -252,7 +252,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
 
                 var dimension = (int)context.Evaluator.EvaluateDouble(polyParameter.Parameters[0].Value);
-                var expression = CreatePolyExpression(dimension, parameters.Skip(CurrentSource.PinCount + 1), isVoltageControlled, context.Evaluator.GetEvaluationContext());
+                var expression = CreatePolyExpression(dimension, parameters.Skip(CurrentSource.PinCount + 1), isVoltageControlled, context.EvaluationContext);
                 BehavioralCurrentSource entity = CreateBehavioralCurrentSource(name, parameters, context, evalContext, expression);
                 return entity;
             }

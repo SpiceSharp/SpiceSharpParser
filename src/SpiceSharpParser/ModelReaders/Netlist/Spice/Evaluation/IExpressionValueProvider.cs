@@ -2,6 +2,6 @@
 {
     public interface IExpressionValueProvider
     {
-        double GetExpressionValue(string expression, EvaluationContext context, bool @throw = true);
+        double GetExpressionValue(string expression, object context, bool @throw = true);
     }
 }

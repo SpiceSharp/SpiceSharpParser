@@ -53,7 +53,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         private void RegisterParameter(ParameterCollection parameters, IReadingContext context)
         {
             var variableParameter = parameters[0];
-            context.Evaluator.SetParameter(variableParameter.Value, 0);
+            context.EvaluationContext.SetParameter(variableParameter.Value, 0);
         }
     }
 }

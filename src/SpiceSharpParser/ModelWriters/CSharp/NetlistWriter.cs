@@ -1,7 +1,9 @@
 ﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
 using System.Linq;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelWriters.CSharp.Language;
+using SpiceSharpParser.Parsers.Expression;
 
 namespace SpiceSharpParser.ModelWriters.CSharp
 {
@@ -27,9 +29,9 @@ namespace SpiceSharpParser.ModelWriters.CSharp
             var context = new WriterContext();
             context.EvaluationContext = new EvaluationContext(
                 new ExpressionParser(
+                    new Parser(),
                     new SpiceSharpBehavioral.Builders.Direct.RealBuilder(),
-                    false,
-                    context.CaseSettings));
+                    false));
 
             var allStatements = CircuitWriter.Write(
                 true,

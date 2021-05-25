@@ -1,4 +1,5 @@
-﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
@@ -10,7 +11,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
     {
         protected override void SetParameter(string parameterName, string parameterExpression, EvaluationContext context)
         {
-            context.SetParameter(parameterName, context.Evaluate(parameterExpression));
+            context.SetParameter(parameterName, context.Evaluator.EvaluateDouble(parameterExpression));
         }
     }
 }

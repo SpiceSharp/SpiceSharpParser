@@ -15,7 +15,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                 throw new ArgumentNullException(nameof(context));
             }
 
-            return context.Evaluate(Expression);
+            return context.Evaluator.EvaluateDouble(Expression);
         }
     }
 }

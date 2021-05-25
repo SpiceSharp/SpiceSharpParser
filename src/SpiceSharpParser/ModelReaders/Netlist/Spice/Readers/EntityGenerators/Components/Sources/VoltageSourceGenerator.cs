@@ -125,7 +125,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </returns>
         protected IEntity GenerateVoltageSource(string name, ParameterCollection parameters, IReadingContext context)
         {
-            var evalContext = context.Evaluator.GetEvaluationContext();
+            var evalContext = context.EvaluationContext;
 
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
             {
@@ -163,7 +163,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             entity.Parameters.Expression = expression;
             entity.Parameters.ParseAction = (expression) =>
             {
-                var parser = context.CreateExpressionParser(null);
+                var parser = context.CreateExpressionResolver(null);
                 return parser.Resolve(expression);
             };
 
@@ -174,7 +174,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     entity.Parameters.Expression = expression;
                     entity.Parameters.ParseAction = (expression) =>
                     {
-                        var parser = context.CreateExpressionParser(simulation);
+                        var parser = context.CreateExpressionResolver(simulation);
                         return parser.Resolve(expression);
                     };
                 });
@@ -189,7 +189,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             IReadingContext context,
             bool isVoltageControlled)
         {
-            var evalContext = context.Evaluator.GetEvaluationContext();
+            var evalContext = context.EvaluationContext;
 
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
             {
@@ -213,7 +213,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 var polyParameters = parameters.Skip(VoltageSource.PinCount);
                 var dimension = 1;
-                var expression = CreatePolyExpression(dimension, polyParameters.Skip(1), isVoltageControlled, context.Evaluator.GetEvaluationContext());
+                var expression = CreatePolyExpression(dimension, polyParameters.Skip(1), isVoltageControlled, context.EvaluationContext);
                 BehavioralVoltageSource entity = CreateBehavioralVoltageSource(name, parameters, context, evalContext, expression);
                 return entity;
             }
@@ -229,7 +229,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 var polyParameters = parameters.Skip(VoltageSource.PinCount);
                 var dimension = (int)context.Evaluator.EvaluateDouble(polyParameter.Parameters[0].Value);
-                var expression = CreatePolyExpression(dimension, polyParameters.Skip(1), isVoltageControlled, context.Evaluator.GetEvaluationContext());
+                var expression = CreatePolyExpression(dimension, polyParameters.Skip(1), isVoltageControlled, context.EvaluationContext);
 
                 BehavioralVoltageSource entity = CreateBehavioralVoltageSource(name, parameters, context, evalContext, expression);
                 return entity;

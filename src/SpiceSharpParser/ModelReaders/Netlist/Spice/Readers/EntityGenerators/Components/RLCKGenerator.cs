@@ -112,7 +112,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             if (parameters.Count >= 3)
             {
                 // CXXXXXXX N1 N2 VALUE
-                var evalContext = context.Evaluator.GetEvaluationContext();
+                var evalContext = context.EvaluationContext;
 
                 var something = parameters[2];
                 string expression;
@@ -140,7 +140,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     behavioralCapacitor.Parameters.Expression = expression;
                     behavioralCapacitor.Parameters.ParseAction = (expression) =>
                     {
-                        var parser = context.CreateExpressionParser(null);
+                        var parser = context.CreateExpressionResolver(null);
                         return parser.Resolve(expression);
                     };
 
@@ -154,7 +154,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                             behavioralCapacitor.Parameters.ParseAction = (expression) =>
                             {
-                                var parser = context.CreateExpressionParser(simulation);
+                                var parser = context.CreateExpressionResolver(simulation);
                                 return parser.Resolve(expression);
                             };
                         });
@@ -341,7 +341,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             if (parameters.Count >= 3)
             {
-                var evalContext = context.Evaluator.GetEvaluationContext();
+                var evalContext = context.EvaluationContext;
 
                 // RName Node1 Node2 something
                 var something = parameters[2];
@@ -369,7 +369,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     behavioralResistor.Parameters.Expression = expression;
                     behavioralResistor.Parameters.ParseAction = (expression) =>
                     {
-                        var parser = context.CreateExpressionParser(null);
+                        var parser = context.CreateExpressionResolver(null);
                         return parser.Resolve(expression);
                     };
 
@@ -381,7 +381,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                             behavioralResistor.Parameters.ParseAction = (expression) =>
                             {
-                                var parser = context.CreateExpressionParser(simulation);
+                                var parser = context.CreateExpressionResolver(simulation);
                                 return parser.Resolve(expression);
                             };
                         });

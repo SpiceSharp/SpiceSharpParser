@@ -36,7 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
             var parallelContext = new ReadingContext(
                 $"{statement.Name} Parallel context",
                 context,
-                context.Evaluator,
+                context.EvaluationContext,
                 context.SimulationPreparations,
                 context.NameGenerator,
                 context.StatementsReader,

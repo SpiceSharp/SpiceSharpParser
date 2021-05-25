@@ -11,16 +11,17 @@ using Parser = SpiceSharpParser.Parsers.Expression.Parser;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 {
-    public class ExpressionParser
+    public class ExpressionResolver
     {
-        public ExpressionParser(
+        public ExpressionResolver(
+            Parser parser,
             RealBuilder doubleBuilder,
             EvaluationContext context,
             bool throwOnErrors,
             ISpiceNetlistCaseSensitivitySettings caseSettings,
             VariablesFactory variablesFactory = null)
         {
-            InternalParser = new Parser();
+            InternalParser = parser;
             DoubleBuilder = doubleBuilder;
 
             Context = context;
@@ -40,67 +41,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
         protected RealBuilder DoubleBuilder { get; }
 
         protected Parser InternalParser { get; }
-
-        public IEnumerable<string> GetFunctions(string expression)
-        {
-            var list = new List<string>();
-            var node = InternalParser.Parse(expression);
-            DoubleBuilder.FunctionFound += (_, e) =>
-            {
-                list.Add(e.Function.Name);
-                e.Result = 0;
-            };
-
-            try
-            {
-                DoubleBuilder.Build(node);
-            }
-            catch (Exception)
-            {
-                if (ThrowOnErrors)
-                {
-                    throw;
-                }
-            }
-
-            return list;
-        }
-
-        public IEnumerable<string> GetVariables(string expression)
-        {
-            var node = InternalParser.Parse(expression);
-            return GetVariables(node);
-        }
-
-        public IEnumerable<string> GetVariables(Node node)
-        {
-            var list = new List<string>();
-
-            DoubleBuilder.VariableFound += (_, e) =>
-            {
-                list.Add(e.Node.ToString());
-                e.Result = 0;
-            };
-            try
-            {
-                DoubleBuilder.Build(node);
-            }
-            catch (Exception)
-            {
-                if (ThrowOnErrors)
-                {
-                    throw;
-                }
-            }
-
-            return list;
-        }
-
-        public double Parse(string expression)
-        {
-            var node = InternalParser.Parse(expression);
-            return DoubleBuilder.Build(node);
-        }
 
         public Node Resolve(string expression)
         {

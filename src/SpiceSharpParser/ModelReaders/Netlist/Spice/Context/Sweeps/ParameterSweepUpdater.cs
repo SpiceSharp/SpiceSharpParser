@@ -94,7 +94,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
         {
             simulation.BeforeSetup += (_, _) =>
             {
-                context.Evaluator.SetParameter(paramToSet.Key.Value, paramToSet.Value, simulation);
+                context.EvaluationContext.SetParameter(paramToSet.Key.Value, paramToSet.Value, simulation);
             };
         }
 

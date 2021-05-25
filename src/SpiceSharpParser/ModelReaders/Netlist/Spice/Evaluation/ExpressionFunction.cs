@@ -41,7 +41,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
                 childContext.SetParameter(Arguments[i], args[i]);
             }
 
-            var @value = childContext.Evaluate(Expression);
+            var @value = childContext.Evaluator.EvaluateDouble(Expression);
             return @value;
         }
     }

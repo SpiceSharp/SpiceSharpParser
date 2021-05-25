@@ -1,4 +1,5 @@
-﻿using SpiceSharpParser.Common.Evaluation;
+﻿using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Parsers.Expression;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
@@ -16,8 +17,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
         {
             var parser = new Parser();
             var realBuilder = new CustomRealBuilder(context, parser, _caseSensitivitySettings, throwOnErrors, new VariablesFactory());
-            var variableFactory = new VariablesFactory();
-            var expressionParser = new ExpressionParser(realBuilder, context, throwOnErrors, _caseSensitivitySettings, variableFactory);
+            var expressionParser = new ExpressionParser(parser, realBuilder, throwOnErrors);
             return expressionParser;
         }
     }

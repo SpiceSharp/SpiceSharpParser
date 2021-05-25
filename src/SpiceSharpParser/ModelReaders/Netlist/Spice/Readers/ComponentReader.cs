@@ -54,7 +54,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
             if (context.Parent != null)
             {
                 // entity is part of subcircuit
-                var evalContext = context.Evaluator.GetEvaluationContext();
+                var evalContext = context.EvaluationContext;
 
                 if (evalContext.Parameters.ContainsKey("m"))
                 {

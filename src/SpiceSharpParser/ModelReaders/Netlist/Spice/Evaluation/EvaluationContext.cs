@@ -17,6 +17,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
         private readonly ISpiceNetlistCaseSensitivitySettings _caseSettings;
         private readonly ConcurrentDictionary<string, EvaluationContext> _cache;
         private Simulation _simulation;
+        private readonly SimulationEvaluationContexts _simulationEvaluationContexts;
 
         public EvaluationContext(
             string name,
@@ -24,31 +25,53 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             IRandomizer randomizer,
             IExpressionParserFactory expressionParserFactory,
             IExpressionFeaturesReader expressionFeaturesReader,
-            IExpressionValueProvider expressionValueProvider,
             INameGenerator nameGenerator)
         {
             _caseSettings = caseSettings;
             ExpressionParserFactory = expressionParserFactory;
             ExpressionFeaturesReader = expressionFeaturesReader;
-            ExpressionValueProvider = expressionValueProvider;
             NameGenerator = nameGenerator;
             Name = name;
-            Parameters = new Dictionary<string, Expression>(StringComparerProvider.Get(caseSettings.IsParameterNameCaseSensitive));
-            Arguments = new Dictionary<string, Expression>(StringComparerProvider.Get(caseSettings.IsParameterNameCaseSensitive));
-            Functions = new Dictionary<string, List<IFunction>>(StringComparerProvider.Get(caseSettings.IsFunctionNameCaseSensitive));
+            Parameters =
+                new Dictionary<string, Expression>(
+                    StringComparerProvider.Get(caseSettings.IsParameterNameCaseSensitive));
+            Arguments = new Dictionary<string, Expression>(
+                StringComparerProvider.Get(caseSettings.IsParameterNameCaseSensitive));
+            Functions = new Dictionary<string, List<IFunction>>(
+                StringComparerProvider.Get(caseSettings.IsFunctionNameCaseSensitive));
             Children = new List<EvaluationContext>();
-            ExpressionRegistry = new ExpressionRegistry(caseSettings.IsParameterNameCaseSensitive, caseSettings.IsExpressionNameCaseSensitive);
+            ExpressionRegistry = new ExpressionRegistry(caseSettings.IsParameterNameCaseSensitive,
+                caseSettings.IsExpressionNameCaseSensitive);
             FunctionsBody = new Dictionary<string, string>();
             FunctionArguments = new Dictionary<string, List<string>>();
             Randomizer = randomizer;
 
-            _cache = new ConcurrentDictionary<string, EvaluationContext>(StringComparerProvider.Get(caseSettings.IsEntityNamesCaseSensitive));
+            _cache = new ConcurrentDictionary<string, EvaluationContext>(
+                StringComparerProvider.Get(caseSettings.IsEntityNamesCaseSensitive));
+
+            _simulationEvaluationContexts = new SimulationEvaluationContexts(this);
         }
+
+        public SimulationEvaluationContexts SimulationEvaluationContexts => _simulationEvaluationContexts;
+
+        public EvaluationContext GetSimulationContext(Simulation simulation)
+        {
+            return _simulationEvaluationContexts.GetContext(simulation);
+        }
+
+        public void SetEntities(Circuit contextEntities)
+        {
+            ContextEntities = contextEntities;
+        }
+
+        public IExpressionFeaturesReader ExpressionFeaturesReader { get; }
 
         /// <summary>
         /// Gets the name of the context.
         /// </summary>
         public string Name { get; }
+
+        public IEvaluator Evaluator { get; set; }
 
         /// <summary>
         /// Gets or sets the random seed for the evaluator.
@@ -119,9 +142,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 
         public INameGenerator NameGenerator { get; set; }
 
-        public IExpressionFeaturesReader ExpressionFeaturesReader { get; }
-
-        public IExpressionValueProvider ExpressionValueProvider { get; }
 
         public Circuit ContextEntities { get; set; }
 
@@ -149,6 +169,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             foreach (var child in Children)
             {
                 child.SetParameter(parameterName, value);
+            }
+        }
+
+        public void SetParameter(string parameterName, double value, Simulation simulation)
+        {
+            if (simulation != null)
+            {
+                GetSimulationContext(simulation).SetParameter(parameterName, value);
+            }
+            else
+            {
+                SetParameter(parameterName, value);
             }
         }
 
@@ -194,6 +226,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 
             var parameter = new DynamicExpression(expression);
             SetParameter(parameterName, expression, parameter);
+        }
+
+        public void SetParameters(Dictionary<string, string> parameters)
+        {
+            if (parameters == null)
+            {
+                throw new ArgumentNullException(nameof(parameters));
+            }
+
+            foreach (var paramName in parameters)
+            {
+                SetParameter(paramName.Key, paramName.Value);
+            }
         }
 
         /// <summary>
@@ -261,7 +306,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
                 throw new ArgumentNullException(nameof(name));
             }
 
-            var child = new EvaluationContext(name, _caseSettings, Randomizer, ExpressionParserFactory, ExpressionFeaturesReader, ExpressionValueProvider, NameGenerator);
+            var child = new EvaluationContext(name, _caseSettings, Randomizer, ExpressionParserFactory, ExpressionFeaturesReader, NameGenerator);
 
             child.Parameters = new Dictionary<string, Expression>(Parameters, StringComparerProvider.Get(_caseSettings.IsParameterNameCaseSensitive));
             child.Simulation = Simulation;
@@ -277,12 +322,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
                 Children.Add(child);
             }
 
+            child.Evaluator = new Evaluator(child, Evaluator.ExpressionValueProvider);
+
             return child;
         }
 
         public virtual EvaluationContext Clone()
         {
-            EvaluationContext context = new EvaluationContext(Name, _caseSettings, Randomizer, ExpressionParserFactory, ExpressionFeaturesReader, ExpressionValueProvider, NameGenerator)
+            EvaluationContext context = new EvaluationContext(Name, _caseSettings, Randomizer, ExpressionParserFactory, ExpressionFeaturesReader, NameGenerator)
             {
                 ExpressionRegistry = ExpressionRegistry.Clone(),
                 Functions = new Dictionary<string, List<IFunction>>(Functions, StringComparerProvider.Get(_caseSettings.IsFunctionNameCaseSensitive)),
@@ -306,20 +353,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             context.ContextEntities = ContextEntities;
             context.CircuitContext = CircuitContext;
 
+            context.Evaluator = new Evaluator(context, Evaluator.ExpressionValueProvider);
+
             return context;
-        }
-
-        public void SetParameters(Dictionary<string, string> parameters)
-        {
-            if (parameters == null)
-            {
-                throw new ArgumentNullException(nameof(parameters));
-            }
-
-            foreach (var paramName in parameters)
-            {
-                SetParameter(paramName.Key, paramName.Value);
-            }
         }
 
         public EvaluationContext Find(string entityName)
@@ -348,6 +384,27 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             return null;
         }
 
+        public void AddFunction(string functionName, List<string> arguments, string body)
+        {
+            if (functionName == null)
+            {
+                throw new ArgumentNullException(nameof(functionName));
+            }
+
+            if (arguments == null)
+            {
+                throw new ArgumentNullException(nameof(arguments));
+            }
+
+            if (body == null)
+            {
+                throw new ArgumentNullException(nameof(body));
+            }
+
+            IFunctionFactory factory = new FunctionFactory();
+            AddFunction(functionName, body, arguments, factory.Create(functionName, arguments, body));
+        }
+
         public void AddFunction(string functionName, string body, List<string> arguments, IFunction function)
         {
             if (!Functions.ContainsKey(functionName))
@@ -367,38 +424,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             Functions[functionName].Add(function);
         }
 
-        /// <summary>
-        /// Evaluates a specific expression to double.
-        /// </summary>
-        /// <param name="expression">An expression to evaluate.</param>
-        /// <returns>
-        /// A double value.
-        /// </returns>
-        public virtual double Evaluate(string expression)
-        {
-            if (expression == null)
-            {
-                throw new ArgumentNullException(nameof(expression));
-            }
-
-            return ExpressionValueProvider.GetExpressionValue(expression, this);
-        }
-
-        public virtual double Evaluate(Expression expression)
-        {
-            if (expression == null)
-            {
-                throw new ArgumentNullException(nameof(expression));
-            }
-
-            if (expression.CanProvideValueDirectly)
-            {
-                return expression.GetValue();
-            }
-
-            return Evaluate(expression.ValueExpression);
-        }
-
         public bool HaveSpiceProperties(string expression)
         {
             return ExpressionFeaturesReader.HaveSpiceProperties(expression, this);
@@ -414,9 +439,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             return ExpressionFeaturesReader.HaveFunction(expression, functionName, this);
         }
 
-        public List<string> GetExpressionParameters(string expression, bool b)
+        public List<string> GetExpressionParameters(string expression, bool @throw)
         {
-            return ExpressionFeaturesReader.GetParameters(expression, this, b).ToList();
+            return ExpressionFeaturesReader.GetParameters(expression, this, @throw).ToList();
         }
 
         protected void SetParameter(string parameterName, string expression, Expression parameter)

@@ -4,9 +4,11 @@ using System.Linq;
 using SpiceSharp.Components;
 using SpiceSharp.Entities;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Processors;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
@@ -30,7 +32,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 IReadingContext subCircuitContext = CreateExpandedSubcircuitContext(componentIdentifier, originalName, subCircuit, parameters, context);
                 context.Children.Add(subCircuitContext);
                 CreateSubcircuitContent(context, subCircuit, subCircuitContext);
-                subCircuitContext.Evaluator.SetEntites(subCircuitContext.ContextEntities);
+                subCircuitContext.EvaluationContext.SetEntities(subCircuitContext.ContextEntities);
 
                 foreach (var entity in subCircuitContext.ContextEntities)
                 {
@@ -47,7 +49,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 if (!subCircuitContext.AvailableSubcircuitDefinitions.TryGetValue(subCircuit.Name, out var subCircuitDefinition))
                 {
                     CreateSubcircuitContent(context, subCircuit, subCircuitContext);
-                    subCircuitContext.Evaluator.SetEntites(subCircuitContext.ContextEntities);
+                    subCircuitContext.EvaluationContext.SetEntities(subCircuitContext.ContextEntities);
                     subCircuitDefinition = new SubcircuitDefinition(subCircuitContext.ContextEntities, subCircuit.Pins.Select(p => p.ToString()).ToArray());
                     context.AvailableSubcircuitDefinitions[subCircuit.Name] = subCircuitDefinition;
                 }
@@ -65,7 +67,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             var ifPreprocessor = new IfProcessor();
             ifPreprocessor.CaseSettings = subCircuitContext.ReaderSettings.CaseSensitivity;
             ifPreprocessor.Validation = context.Result.ValidationResult;
-            ifPreprocessor.EvaluationContext = subCircuitContext.Evaluator.GetEvaluationContext();
+            ifPreprocessor.EvaluationContext = subCircuitContext.EvaluationContext;
             subCircuit.Statements = ifPreprocessor.Process(subCircuit.Statements);
 
             ReadParamControl(subCircuit, subCircuitContext);
@@ -272,7 +274,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 if (parameterName == result[parameterName])
                 {
-                    result[parameterName] = readingContext.Evaluator.EvaluateDouble(parameterName).ToString(CultureInfo.InvariantCulture);
+                    result[parameterName] = readingContext.EvaluationContext.Evaluator.EvaluateDouble(parameterName).ToString(CultureInfo.InvariantCulture);
                 }
             }
 
@@ -320,11 +322,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 subcircuitObjectNameGenerator);
 
             context.NameGenerator.AddChild(subcircuitNodeNameGenerator);
-            var subcircuitEvaluationContext = context.Evaluator.CreateChildContext(subcircuitFullName, true);
+            
+            var subcircuitEvaluationContext = context.EvaluationContext.CreateChildContext(subcircuitFullName, true);
             subcircuitEvaluationContext.SetParameters(subcircuitParameters);
             subcircuitEvaluationContext.NameGenerator = subcircuitNameGenerator;
-
-            var subcircuitEvaluator = new Evaluator(new SimulationEvaluationContexts(subcircuitEvaluationContext), subcircuitEvaluationContext);
 
             var settings = context.ReaderSettings.Clone();
             settings.ExpandSubcircuits = true;
@@ -332,7 +333,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             var subcircuitContext = new ReadingContext(
                 subcircuitName,
                 context,
-                subcircuitEvaluator,
+                subcircuitEvaluationContext,
                 context.SimulationPreparations,
                 subcircuitNameGenerator,
                 context.StatementsReader,
@@ -363,10 +364,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             GetAssigmentParametersCount(parameters, out var subCktParameters);
             var subcircuitParameters = CreateSubcircuitParameters(subCircuitDefinition, subCktParameters, context);
 
-            var subcircuitEvaluationContext = context.Evaluator.CreateChildContext(subcircuitFullName, true);
+            var subcircuitEvaluationContext = context.EvaluationContext.CreateChildContext(subcircuitFullName, true);
             subcircuitEvaluationContext.SetParameters(subcircuitParameters);
-
-            var subcircuitEvaluator = new Evaluator(new SimulationEvaluationContexts(subcircuitEvaluationContext), subcircuitEvaluationContext);
+            subcircuitEvaluationContext.Evaluator = new Evaluator(subcircuitEvaluationContext, context.Evaluator.ExpressionValueProvider);
 
             var settings = context.ReaderSettings.Clone();
             settings.ExpandSubcircuits = false;
@@ -374,7 +374,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             var subcircuitContext = new ReadingContext(
                 subcircuitName,
                 context,
-                subcircuitEvaluator,
+                subcircuitEvaluationContext,
                 context.SimulationPreparations,
                 context.NameGenerator,
                 context.StatementsReader,

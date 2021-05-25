@@ -3,6 +3,7 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharpParser.ModelWriters.CSharp;
 using SpiceSharpParser.ModelWriters.CSharp.Entities.Components;
 using System.Linq;
+using SpiceSharpParser.Parsers.Expression;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelWriters
@@ -27,9 +28,10 @@ namespace SpiceSharpParser.Tests.ModelWriters
             var writer = new ResistorWriter();
 
             var parser = new ExpressionParser(
+                new Parser(),
                 new SpiceSharpBehavioral.Builders.Direct.RealBuilder(),
-                false,
-                new SpiceNetlistCaseSensitivitySettings());
+                false);
+
             var lines = writer.Write(component, new WriterContext()
             {
                 CaseSettings = new SpiceNetlistCaseSensitivitySettings(),

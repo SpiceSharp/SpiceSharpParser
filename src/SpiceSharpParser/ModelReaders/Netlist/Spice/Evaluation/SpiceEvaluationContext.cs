@@ -16,7 +16,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             IRandomizer randomizer,
             IExpressionParserFactory expressionParserFactory,
             IExpressionFeaturesReader expressionFeaturesReader,
-            IExpressionValueProvider expressionValueProvider,
             INameGenerator nameGenerator)
 
         : base(
@@ -25,7 +24,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
               randomizer,
               expressionParserFactory,
               expressionFeaturesReader,
-              expressionValueProvider,
               nameGenerator)
         {
             CreateSpiceFunctions();

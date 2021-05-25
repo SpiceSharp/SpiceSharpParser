@@ -28,7 +28,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
                         exportParameter.Value,
                         type,
                         bp.Parameters,
-                        context.Evaluator.GetEvaluationContext(simulation),
+                        context.EvaluationContext.GetSimulationContext(simulation),
                         context.ReaderSettings.CaseSensitivity);
                 }
             }
@@ -53,7 +53,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
                         exportParameter.Value,
                         type,
                         parameters,
-                        context.Evaluator.GetEvaluationContext(simulation),
+                        context.EvaluationContext.GetSimulationContext(simulation),
                         context.ReaderSettings.CaseSensitivity);
                 }
             }
@@ -61,14 +61,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
             if (exportParameter is SingleParameter s)
             {
                 string expressionName = s.Value;
-                var expressionNames = context.Evaluator.GetExpressionNames();
+                var expressionNames = context.EvaluationContext.GetExpressionNames();
 
                 if (expressionNames.Any(e => e == expressionName))
                 {
                     var export = new ExpressionExport(
                         simulation.Name,
                         expressionName,
-                        context.Evaluator.GetEvaluationContext(simulation));
+                        context.EvaluationContext.GetSimulationContext(simulation));
 
                     return export;
                 }

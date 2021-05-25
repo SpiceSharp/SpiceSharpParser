@@ -98,7 +98,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 var result = PolyFunction.GetExpression(
                     dimension,
-                    pp.Values.Items.Select(c => context.Evaluate(c.Value)).ToList(),
+                    pp.Values.Items.Select(c => context.Evaluator.EvaluateDouble(c.Value)).ToList(),
                     variables);
                 return result;
             }
@@ -106,7 +106,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 var result = PolyFunction.GetExpression(
                     dimension,
-                    coefficients.Select(c => context.Evaluate(c.Value)).ToList(),
+                    coefficients.Select(c => context.Evaluator.EvaluateDouble(c.Value)).ToList(),
                     variables);
 
                 return result;

@@ -56,7 +56,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             {
                 biasingSimulation.BeforeTemperature += (_, _) =>
                 {
-                    context.Evaluator.SetParameter("TEMP", temp, simulation);
+                    context.EvaluationContext.SetParameter("TEMP", temp, simulation);
                 };
             }
         }

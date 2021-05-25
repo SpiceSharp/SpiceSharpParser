@@ -84,7 +84,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         public string Separator { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether subcircuts should be expaned.
+        /// Gets or sets a value indicating whether subcircuits should be expanded.
         /// </summary>
         public bool ExpandSubcircuits { get; set; }
 

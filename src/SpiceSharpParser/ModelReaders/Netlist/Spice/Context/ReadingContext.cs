@@ -31,7 +31,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         /// <param name="contextName">Name of the context.</param>
         /// <param name="parent">Parent of the context.</param>
-        /// <param name="evaluator">Circuit evaluator.</param>
+        /// <param name="evaluationContext">Evaluation context.</param>
         /// <param name="simulationPreparations">Simulation preparations.</param>
         /// <param name="nameGenerator">Name generator for the models.</param>
         /// <param name="statementsReader">Statements reader.</param>
@@ -43,7 +43,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public ReadingContext(
             string contextName,
             IReadingContext parent,
-            IEvaluator evaluator,
+            EvaluationContext evaluationContext,
             ISimulationPreparations simulationPreparations,
             INameGenerator nameGenerator,
             ISpiceStatementsReader statementsReader,
@@ -54,7 +54,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             SpiceNetlistReaderSettings readerSettings)
         {
             Name = contextName ?? throw new ArgumentNullException(nameof(contextName));
-            Evaluator = evaluator;
+            EvaluationContext = evaluationContext;
             SimulationPreparations = simulationPreparations;
             NameGenerator = nameGenerator ?? throw new ArgumentNullException(nameof(nameGenerator));
             Parent = parent;
@@ -71,9 +71,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             ModelsRegistry = CreateModelsRegistry();
 
-            Evaluator.Seed = readerSettings.Seed;
-            Evaluator.SetEntites(ContextEntities);
-            Evaluator.SetCircuitContext(this);
+            EvaluationContext.Seed = readerSettings.Seed;
+            EvaluationContext.SetEntities(ContextEntities);
+            EvaluationContext.CircuitContext = this;
         }
 
         /// <summary>
@@ -101,11 +101,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Gets exporter mapper.
         /// </summary>
         public IMapper<Exporter> Exporters { get; }
-
-        /// <summary>
-        /// Gets the evaluator.
-        /// </summary>
-        public IEvaluator Evaluator { get; }
 
         /// <summary>
         /// Gets simulation parameters.
@@ -145,6 +140,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public IWaveformReader WaveformReader { get;  }
 
         public Circuit ContextEntities { get; set; }
+
+        public EvaluationContext EvaluationContext { get; set; }
+
+        public IEvaluator Evaluator => EvaluationContext.Evaluator;
 
         /// <summary>
         /// Sets voltage initial condition for node.
@@ -281,9 +280,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            double value = Evaluator.EvaluateDouble(expression, simulation);
+            var context = simulation != null ? EvaluationContext.GetSimulationContext(simulation) : EvaluationContext;
+            double value = context.Evaluator.EvaluateDouble(expression);
             entity.SetParameter(parameterName, value);
-            var context = Evaluator.GetEvaluationContext(simulation);
 
             bool shouldBeUpdatedBeforeTemperature = (context.HaveSpiceProperties(expression)
                              || context.HaveFunctions(expression)
@@ -343,12 +342,32 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         public ExpressionParser CreateExpressionParser(Simulation simulation)
         {
-            var evalContext = Evaluator.GetEvaluationContext(simulation);
+            var evalContext = simulation != null
+                ? EvaluationContext.GetSimulationContext(simulation)
+                : EvaluationContext;
+
             var variablesFactory = new VariablesFactory();
 
             var parser = new ExpressionParser(
+                new Parser(),
                 new CustomRealBuilder(evalContext, new Parser(), ReaderSettings.CaseSensitivity, false, variablesFactory),
-                evalContext,
+                false);
+
+            return parser;
+        }
+
+        public ExpressionResolver CreateExpressionResolver(Simulation simulation)
+        {
+            var evalContext = simulation != null
+                ? EvaluationContext.GetSimulationContext(simulation)
+                : EvaluationContext;
+
+            var variablesFactory = new VariablesFactory();
+
+            var parser = new ExpressionResolver(
+                new Parser(),
+                new CustomRealBuilder(evalContext, new Parser(), ReaderSettings.CaseSensitivity, false, variablesFactory),
+                EvaluationContext,
                 false,
                 ReaderSettings.CaseSensitivity,
                 variablesFactory);

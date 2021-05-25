@@ -124,7 +124,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             ConfigureCommonSettings(tran, context);
             tran.BeforeLoad += (_, _) =>
             {
-                context.Evaluator.SetParameter("TIME", ((IStateful<IIntegrationMethod>)tran).State.Time, tran);
+                context.EvaluationContext.SetParameter("TIME", ((IStateful<IIntegrationMethod>)tran).State.Time, tran);
             };
             context.Result.Simulations.Add(tran);
 

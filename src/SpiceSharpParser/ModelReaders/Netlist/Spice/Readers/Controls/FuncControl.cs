@@ -41,7 +41,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         continue;
                     }
 
-                    context.Evaluator.AddFunction(assignmentParameter.Name, assignmentParameter.Arguments, assignmentParameter.Value);
+                    context.EvaluationContext.AddFunction(assignmentParameter.Name, assignmentParameter.Arguments, assignmentParameter.Value);
                 }
                 else
                 {
@@ -61,7 +61,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                             }
                         }
 
-                        context.Evaluator.AddFunction(
+                        context.EvaluationContext.AddFunction(
                             bracketParameter.Name,
                             arguments,
                             statement.Parameters[i + 1].Value);

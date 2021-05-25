@@ -4,25 +4,21 @@ using System;
 using System.Collections.Generic;
 using Parser = SpiceSharpParser.Parsers.Expression.Parser;
 
-namespace SpiceSharpParser.ModelWriters.CSharp
+namespace SpiceSharpParser.Common
 {
     public class ExpressionParser
     {
         public ExpressionParser(
+            Parser parser,
             RealBuilder doubleBuilder,
-            bool throwOnErrors,
-            ISpiceNetlistCaseSensitivitySettings caseSettings)
+            bool throwOnErrors)
         {
-            InternalParser = new Parser();
+            InternalParser = parser;
             DoubleBuilder = doubleBuilder;
-
             ThrowOnErrors = throwOnErrors;
-            CaseSettings = caseSettings;
         }
 
         public bool ThrowOnErrors { get; }
-
-        public ISpiceNetlistCaseSensitivitySettings CaseSettings { get; }
 
         protected RealBuilder DoubleBuilder { get; }
 
@@ -83,10 +79,16 @@ namespace SpiceSharpParser.ModelWriters.CSharp
             return list;
         }
 
-        public double Parse(string expression)
+        public double Evaluate(string expression)
         {
             var node = InternalParser.Parse(expression);
             return DoubleBuilder.Build(node);
+        }
+
+        public Node Parse(string expression)
+        {
+            var node = InternalParser.Parse(expression);
+            return node;
         }
     }
 }

@@ -42,7 +42,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// </returns>
         public override double Extract()
         {
-            return Context.Evaluate(Context.GetExpression(ExpressionName));
+            return Context.Evaluator.EvaluateDouble(Context.GetExpression(ExpressionName));
         }
     }
 }

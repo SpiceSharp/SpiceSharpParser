@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.FileSystem;
 using SpiceSharpParser.Common.Mathematics.Probability;
 using SpiceSharpParser.Common.Processors;
@@ -60,7 +61,7 @@ namespace SpiceSharpParser
             var ifPostprocessor = new IfProcessor();
             var macroPreprocessor = new MacroProcessor();
 
-            Preprocessors.AddRange(new IProcessor[] { includesPreprocessor, libPreprocessor, macroPreprocessor, appendModelPreprocessor, akoModelPreprocessor, sweepsPreprocessor, ifPostprocessor });
+            Processors.AddRange(new IProcessor[] { includesPreprocessor, libPreprocessor, macroPreprocessor, appendModelPreprocessor, akoModelPreprocessor, sweepsPreprocessor, ifPostprocessor });
         }
 
         public ISpiceTokenProviderPool TokenProviderPool { get; set; }
@@ -73,7 +74,7 @@ namespace SpiceSharpParser
         /// <summary>
         /// Gets the preprocessors.
         /// </summary>
-        public List<IProcessor> Preprocessors { get; } = new List<IProcessor>();
+        public List<IProcessor> Processors { get; } = new List<IProcessor>();
 
         /// <summary>
         /// Gets the SPICE netlist parser.
@@ -133,7 +134,7 @@ namespace SpiceSharpParser
             SpiceNetlist finalModel = (SpiceNetlist)originalNetlistModel.Clone();
             var preprocessorContext = GetEvaluationContext();
 
-            foreach (var preprocessor in Preprocessors)
+            foreach (var preprocessor in Processors)
             {
                 preprocessor.Validation = validationResult;
 
@@ -159,18 +160,21 @@ namespace SpiceSharpParser
             var objectNameGenerator = new ObjectNameGenerator(string.Empty, ".");
             INameGenerator nameGenerator = new NameGenerator(nodeNameGenerator, objectNameGenerator);
             var expressionParserFactory = new ExpressionParserFactory(Settings.CaseSensitivity);
+            var expressionResolverFactory = new ExpressionResolverFactory(Settings.CaseSensitivity);
 
-            EvaluationContext preprocessorContext = new SpiceEvaluationContext(
+            EvaluationContext context = new SpiceEvaluationContext(
                 string.Empty,
                 Settings.CaseSensitivity,
                 new Randomizer(
                     Settings.CaseSensitivity.IsDistributionNameCaseSensitive,
                     seed: 0),
                 expressionParserFactory,
-                new ExpressionFeaturesReader(expressionParserFactory),
-                new ExpressionValueProvider(expressionParserFactory),
+                new ExpressionFeaturesReader(expressionParserFactory, expressionResolverFactory),
                 nameGenerator);
-            return preprocessorContext;
+
+            context.Evaluator = new Evaluator(context, new ExpressionValueProvider(expressionParserFactory));
+
+            return context;
         }
     }
 }

@@ -68,7 +68,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 resistor.Parameters.Expression = resExpression;
                 resistor.Parameters.ParseAction = (expression) =>
                 {
-                    var parser = context.CreateExpressionParser(null);
+                    var parser = context.CreateExpressionResolver(null);
                     return parser.Resolve(expression);
                 };
 
@@ -97,7 +97,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         resistor.Parameters.Expression = resExpression;
                         resistor.Parameters.ParseAction = (expression) =>
                         {
-                            var parser = context.CreateExpressionParser(simulation);
+                            var parser = context.CreateExpressionResolver(simulation);
                             return parser.Resolve(expression);
                         };
                     });
@@ -213,7 +213,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 resistor.Parameters.Expression = resExpression;
                 resistor.Parameters.ParseAction = (expression) =>
                 {
-                    var parser = context.CreateExpressionParser(null);
+                    var parser = context.CreateExpressionResolver(null);
                     return parser.Resolve(expression);
                 };
 
@@ -243,7 +243,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         resistor.Parameters.Expression = resExpression;
                         resistor.Parameters.ParseAction = (expression) =>
                         {
-                            var parser = context.CreateExpressionParser(simulation);
+                            var parser = context.CreateExpressionResolver(simulation);
                             return parser.Resolve(expression);
                         };
                     });

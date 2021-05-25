@@ -9,12 +9,12 @@
             _parserFactory = parserFactory;
         }
 
-        public double GetExpressionValue(string expression, EvaluationContext context, bool @throw = true)
+        public double GetExpressionValue(string expression, object context, bool @throw = true)
         {
             try
             {
-                var parser = _parserFactory.Create(context, @throw);
-                return parser.Parse(expression);
+                var parser = _parserFactory.Create((EvaluationContext)context, @throw);
+                return parser.Evaluate(expression);
             }
             catch
             {

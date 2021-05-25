@@ -66,7 +66,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             SimulationUpdates.AddBeforeTemperature((simulation, contexts) =>
             {
                 var context = contexts.GetContext(simulation);
-                var value = context.Evaluate(expression);
+                var value = context.Evaluator.EvaluateDouble(expression);
 
                 if (simulation is BiasingSimulation biasingSimulation)
                 {
@@ -90,7 +90,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             SimulationUpdates.AddBeforeSetup((simulation, contexts) =>
             {
                 var context = contexts.GetContext(simulation);
-                var value = context.Evaluate(expression);
+                var value = context.Evaluator.EvaluateDouble(expression);
 
                 if (simulation is Transient ts)
                 {
