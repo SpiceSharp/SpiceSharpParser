@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SpiceSharpParser.Common.FileSystem;
 using SpiceSharpParser.Common.Mathematics.Probability;
+using SpiceSharpParser.Common.Processors;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.Lexers;
 using SpiceSharpParser.Lexers.Netlist.Spice;
@@ -38,14 +39,14 @@ namespace SpiceSharpParser
             SingleNetlistParser = new SingleSpiceNetlistParser(Settings.Parsing);
 
             TokenProviderPool = new SpiceTokenProviderPool();
-            var includesPreprocessor = new IncludesPreprocessor(
+            var includesPreprocessor = new IncludesProcessor(
                 new FileReader(() => Settings.ExternalFilesEncoding),
                 TokenProviderPool,
                 SingleNetlistParser,
                 () => Settings.WorkingDirectory,
                 Settings.Lexing);
 
-            var libPreprocessor = new LibPreprocessor(
+            var libPreprocessor = new LibProcessor(
                 new FileReader(() => Settings.ExternalFilesEncoding),
                 TokenProviderPool,
                 SingleNetlistParser,
@@ -53,11 +54,11 @@ namespace SpiceSharpParser
                 () => Settings.WorkingDirectory,
                 Settings.Lexing);
 
-            var appendModelPreprocessor = new AppendModelPreprocessor();
-            var akoModelPreprocessor = new AkoModelPreprocessor();
-            var sweepsPreprocessor = new SweepsPreprocessor();
-            var ifPostprocessor = new IfPreprocessor();
-            var macroPreprocessor = new MacroPreprocessor();
+            var appendModelPreprocessor = new AppendModelProcessor();
+            var akoModelPreprocessor = new AkoModelProcessor();
+            var sweepsPreprocessor = new SweepsProcessor();
+            var ifPostprocessor = new IfProcessor();
+            var macroPreprocessor = new MacroProcessor();
 
             Preprocessors.AddRange(new IProcessor[] { includesPreprocessor, libPreprocessor, macroPreprocessor, appendModelPreprocessor, akoModelPreprocessor, sweepsPreprocessor, ifPostprocessor });
         }

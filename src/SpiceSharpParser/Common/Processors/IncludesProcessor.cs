@@ -8,22 +8,22 @@ using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Parsers.Netlist.Spice;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+namespace SpiceSharpParser.Common.Processors
 {
     /// <summary>
     /// Preprocess .include statements from netlist file.
     /// </summary>
-    public class IncludesPreprocessor : IProcessor
+    public class IncludesProcessor : IProcessor
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="IncludesPreprocessor"/> class.
+        /// Initializes a new instance of the <see cref="IncludesProcessor"/> class.
         /// </summary>
         /// <param name="fileReader">File reader.</param>
         /// <param name="tokenProviderPool">Token provider pool.</param>
         /// <param name="spiceNetlistParser">Parser.</param>
         /// <param name="lexerSettings">Lexer settings.</param>
         /// <param name="initialDirectoryPathProvider">Directory provider.</param>
-        public IncludesPreprocessor(IFileReader fileReader, ISpiceTokenProviderPool tokenProviderPool, ISingleSpiceNetlistParser spiceNetlistParser, Func<string> initialDirectoryPathProvider, SpiceLexerSettings lexerSettings)
+        public IncludesProcessor(IFileReader fileReader, ISpiceTokenProviderPool tokenProviderPool, ISingleSpiceNetlistParser spiceNetlistParser, Func<string> initialDirectoryPathProvider, SpiceLexerSettings lexerSettings)
         {
             TokenProviderPool = tokenProviderPool;
             SpiceNetlistParser = spiceNetlistParser;

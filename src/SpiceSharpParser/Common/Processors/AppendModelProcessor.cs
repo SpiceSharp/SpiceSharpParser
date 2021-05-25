@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+namespace SpiceSharpParser.Common.Processors
 {
-    public class AppendModelPreprocessor : IProcessor
+    public class AppendModelProcessor : IProcessor
     {
         public ValidationEntryCollection Validation { get; set; }
 

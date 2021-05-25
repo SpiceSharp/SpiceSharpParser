@@ -62,7 +62,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
         private void CreateSubcircuitContent(IReadingContext context, SubCircuit subCircuit, IReadingContext subCircuitContext)
         {
-            var ifPreprocessor = new IfPreprocessor();
+            var ifPreprocessor = new IfProcessor();
             ifPreprocessor.CaseSettings = subCircuitContext.ReaderSettings.CaseSensitivity;
             ifPreprocessor.Validation = context.Result.ValidationResult;
             ifPreprocessor.EvaluationContext = subCircuitContext.Evaluator.GetEvaluationContext();

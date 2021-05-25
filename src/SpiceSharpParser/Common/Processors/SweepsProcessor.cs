@@ -3,9 +3,9 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
 using System.Linq;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+namespace SpiceSharpParser.Common.Processors
 {
-    public class SweepsPreprocessor : IProcessor
+    public class SweepsProcessor : IProcessor
     {
         public ValidationEntryCollection Validation { get; set; }
 

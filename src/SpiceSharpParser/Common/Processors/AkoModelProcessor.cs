@@ -4,9 +4,9 @@ using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+namespace SpiceSharpParser.Common.Processors
 {
-    public class AkoModelPreprocessor : IProcessor
+    public class AkoModelProcessor : IProcessor
     {
         public ValidationEntryCollection Validation { get; set; }
 

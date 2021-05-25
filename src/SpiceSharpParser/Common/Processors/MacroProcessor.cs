@@ -6,9 +6,9 @@ using SpiceSharpParser.Parsers.BusSuffix;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+namespace SpiceSharpParser.Common.Processors
 {
-    public class MacroPreprocessor : IProcessor
+    public class MacroProcessor : IProcessor
     {
         public ValidationEntryCollection Validation { get; set; }
 

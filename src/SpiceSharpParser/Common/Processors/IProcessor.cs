@@ -1,7 +1,7 @@
 ﻿using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
-namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
+namespace SpiceSharpParser.Common.Processors
 {
     /// <summary>
     /// An interface for all statements processors.
