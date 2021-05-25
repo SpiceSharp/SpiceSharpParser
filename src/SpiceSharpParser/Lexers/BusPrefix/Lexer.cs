@@ -10,7 +10,7 @@ namespace SpiceSharpParser.Lexers.BusPrefix
     {
         private readonly string _expression;
         private int _index;
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Lexer"/> class.
         /// </summary>

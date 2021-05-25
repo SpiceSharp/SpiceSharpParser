@@ -59,7 +59,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.Wave
         /// <param name="arg">The argument.</param>
         /// <param name="data">The interpolation data.</param>
         /// <returns>The interpolated value.</returns>
-        public static double Pwl(double arg, (double time, double value)[] data)
+        public double Pwl(double arg, (double time, double value)[] data)
         {
             if (arg <= data[0].time)
             {

@@ -173,7 +173,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return cs;
         }
 
-        protected static BehavioralCurrentSource CreateBehavioralCurrentSource(string name, ParameterCollection parameters, IReadingContext context, EvaluationContext evalContext, string expression)
+        protected BehavioralCurrentSource CreateBehavioralCurrentSource(string name, ParameterCollection parameters, IReadingContext context, EvaluationContext evalContext, string expression)
         {
             var mParameter = (AssignmentParameter)parameters.FirstOrDefault(p =>
                    p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "m");

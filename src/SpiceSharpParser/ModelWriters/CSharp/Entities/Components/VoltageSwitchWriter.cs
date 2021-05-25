@@ -7,19 +7,19 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
 {
     public class VoltageSwitchWriter : BaseWriter, IWriter<Component>
     {
-        public List<CSharpStatement> Write(Component component, IWriterContext context)
+        public List<CSharpStatement> Write(Component @object, IWriterContext context)
         {
             var result = new List<CSharpStatement>();
 
-            if (component.PinsAndParameters.Count < 5)
+            if (@object.PinsAndParameters.Count < 5)
             {
-                result.Add(new CSharpComment("Skipped, wrong pins/parameters count:" + component));
+                result.Add(new CSharpComment("Skipped, wrong pins/parameters count:" + @object));
                 return result;
             }
 
-            var pins = component.PinsAndParameters.Take(VoltageSwitch.VoltageSwitchPinCount);
-            var parameters = component.PinsAndParameters.Skip(VoltageSwitch.VoltageSwitchPinCount);
-            var name = component.Name;
+            var pins = @object.PinsAndParameters.Take(VoltageSwitch.VoltageSwitchPinCount);
+            var parameters = @object.PinsAndParameters.Skip(VoltageSwitch.VoltageSwitchPinCount);
+            var name = @object.Name;
 
             var voltageSwitchId = context.GetNewIdentifier(name);
             result.Add(new CSharpNewStatement(voltageSwitchId, $@"new VoltageSwitch(""{name}"", ""{pins[0].Value}"", ""{pins[1].Value}"", ""{pins[2].Value}"", ""{pins[3].Value}"", ""{parameters[0].Value}"")"));

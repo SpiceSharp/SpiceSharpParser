@@ -7,19 +7,19 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
 {
     public class JFETWriter : BaseWriter, IWriter<Component>
     {
-        public List<CSharpStatement> Write(Component component, IWriterContext context)
+        public List<CSharpStatement> Write(Component @object, IWriterContext context)
         {
             var result = new List<CSharpStatement>();
 
-            if (component.PinsAndParameters.Count < JFET.PinCount + 1)
+            if (@object.PinsAndParameters.Count < JFET.PinCount + 1)
             {
-                result.Add(new CSharpComment("Skipped, wrong pins/parameters count:" + component));
+                result.Add(new CSharpComment("Skipped, wrong pins/parameters count:" + @object));
                 return result;
             }
 
-            var pins = component.PinsAndParameters.Take(JFET.PinCount);
-            var parameters = component.PinsAndParameters.Skip(JFET.PinCount);
-            var name = component.Name;
+            var pins = @object.PinsAndParameters.Take(JFET.PinCount);
+            var parameters = @object.PinsAndParameters.Skip(JFET.PinCount);
+            var name = @object.Name;
 
             var jfetId = context.GetNewIdentifier(name);
             var modelName = parameters[0].Value;

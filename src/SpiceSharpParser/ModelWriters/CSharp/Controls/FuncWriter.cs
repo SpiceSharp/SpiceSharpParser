@@ -71,7 +71,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Controls
             var result = new List<CSharpStatement>();
             if (@object.Parameters == null)
             {
-                throw new ArgumentNullException(nameof(@object.Parameters));
+                throw new ArgumentNullException(nameof(@object), "Parameters are null");
             }
 
             for (var i = 0; i < @object.Parameters.Count; i++)

@@ -122,7 +122,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             tran.TimeParameters.UseIc = useIc;
 
             ConfigureCommonSettings(tran, context);
-            tran.BeforeLoad += (_,_) =>
+            tran.BeforeLoad += (_, _) =>
             {
                 context.Evaluator.SetParameter("TIME", ((IStateful<IIntegrationMethod>)tran).State.Time, tran);
             };

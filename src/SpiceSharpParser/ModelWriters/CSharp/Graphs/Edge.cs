@@ -2,7 +2,8 @@
 
 namespace SpiceSharpParser.ModelWriters.CSharp.Graphs
 {
-    public class Edge<TNode> where TNode : IEquatable<TNode>
+    public class Edge<TNode>
+        where TNode : IEquatable<TNode>
     {
         public Edge(TNode from, TNode to)
         {

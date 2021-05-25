@@ -7,18 +7,19 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
 {
     public class DiodeWriter : BaseWriter, IWriter<Component>
     {
-        public List<CSharpStatement> Write(Component component, IWriterContext context)
+        public List<CSharpStatement> Write(Component @object, IWriterContext context)
         {
             var result = new List<CSharpStatement>();
 
-            if (component.PinsAndParameters.Count < Diode.PinCount + 1)
+            if (@object.PinsAndParameters.Count < Diode.PinCount + 1)
             {
-                result.Add(new CSharpComment("Skipped, wrong pins/parameters count:" + component));
+                result.Add(new CSharpComment("Skipped, wrong pins/parameters count:" + @object));
                 return result;
             }
-            var pins = component.PinsAndParameters.Take(Diode.PinCount);
-            var parameters = component.PinsAndParameters.Skip(Diode.PinCount);
-            var name = component.Name;
+
+            var pins = @object.PinsAndParameters.Take(Diode.PinCount);
+            var parameters = @object.PinsAndParameters.Skip(Diode.PinCount);
+            var name = @object.Name;
 
             var diodeId = context.GetNewIdentifier(name);
             var modelName = parameters[0].Value;
@@ -41,7 +42,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                     }
                     else
                     {
-                        throw new System.Exception("Expected on/off for diode");
+                        result.Add(new CSharpComment("Wrong parameter for diode:" + w.Value));
                     }
                 }
 
@@ -70,7 +71,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                 {
                     if (assignmentParameter.Name.ToLower() != "m")
                     {
-
                         result.Add(SetParameter(diodeId, assignmentParameter.Name, assignmentParameter.Value, context));
                     }
                 }

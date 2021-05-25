@@ -29,7 +29,7 @@ namespace SpiceSharpParser
 
             var writer = new NetlistWriter(new StatementsWriter(), new SimulationsWriter());
             var @class = writer.Write(className, model.Statements);
-            var translator = new CSharpStatementCodeTranslator();
+            var translator = new CSharpStatementTranslator();
             var code = translator.GetCSharpCode(@class);
             var rootNode = CSharpSyntaxTree.ParseText(code).GetRoot();
             var codeIssues = rootNode.GetDiagnostics();

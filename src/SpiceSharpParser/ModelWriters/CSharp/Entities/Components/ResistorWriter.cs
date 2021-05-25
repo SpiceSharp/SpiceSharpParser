@@ -52,7 +52,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                                   && context.FindModelType(something.Value) != null;
 
                 // Check if something is a model name
-
                 if (!modelBased)
                 {
                     result.Add(new CSharpNewStatement(resistorId, $@"new Resistor(""{name}"", ""{pins[0].Value}"", ""{pins[1].Value}"", {Evaluate(something.Value, context)})"));

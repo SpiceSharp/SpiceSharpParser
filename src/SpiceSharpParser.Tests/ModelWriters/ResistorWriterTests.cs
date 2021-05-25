@@ -1,8 +1,8 @@
-﻿using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+﻿using SpiceSharpParser.Common;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharpParser.ModelWriters.CSharp;
 using SpiceSharpParser.ModelWriters.CSharp.Entities.Components;
 using System.Linq;
-using SpiceSharpParser.Common;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelWriters

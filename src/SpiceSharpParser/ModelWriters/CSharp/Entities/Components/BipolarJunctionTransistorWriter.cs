@@ -41,7 +41,9 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                         {
                             case "on": result.Add(SetParameter(bjtId, "off", false, context)); break;
                             case "off": result.Add(SetParameter(bjtId, "off", true, context)); break;
-                            default: throw new System.Exception();
+                            default:
+                                result.Add(new CSharpComment("Unsupported parameter" + s.Value));
+                                break;
                         }
                     }
                     else

@@ -3,7 +3,7 @@ using System.Text;
 
 namespace SpiceSharpParser.ModelWriters.CSharp
 {
-    public class CSharpStatementCodeTranslator
+    public class CSharpStatementTranslator
     {
         public string GetCSharpCode(CSharpClass @class)
         {

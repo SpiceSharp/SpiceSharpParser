@@ -32,7 +32,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Models
         {
             if (@object.Parameters.Count == 0)
             {
-                return null;
+                return new ParameterCollection();
             }
 
             if (@object.Parameters[0] is BracketParameter bracketParameter)
@@ -45,7 +45,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Models
                 return @object.Parameters.Skip(1);
             }
 
-            return null;
+            return new ParameterCollection();
         }
 
         protected void SetProperties(List<CSharpStatement> result, string modelId, ParameterCollection parameters, IWriterContext context)

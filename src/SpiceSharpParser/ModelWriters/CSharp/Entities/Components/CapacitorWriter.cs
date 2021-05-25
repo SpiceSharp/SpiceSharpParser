@@ -8,19 +8,19 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
 {
     public class CapacitorWriter : BaseWriter, IWriter<Component>
     {
-        public List<CSharpStatement> Write(Component component, IWriterContext context)
+        public List<CSharpStatement> Write(Component @object, IWriterContext context)
         {
             var result = new List<CSharpStatement>();
 
-            if (component.PinsAndParameters.Count < 3)
+            if (@object.PinsAndParameters.Count < 3)
             {
-                result.Add(new CSharpComment("Skipped, wrong pins/parameters count:" + component));
+                result.Add(new CSharpComment("Skipped, wrong pins/parameters count:" + @object));
                 return result;
             }
 
-            var pins = component.PinsAndParameters.Take(Capacitor.PinCount);
-            var parameters = component.PinsAndParameters.Skip(Capacitor.PinCount);
-            var name = component.Name;
+            var pins = @object.PinsAndParameters.Take(Capacitor.PinCount);
+            var parameters = @object.PinsAndParameters.Skip(Capacitor.PinCount);
+            var name = @object.Name;
 
             if (parameters.Count >= 1)
             {

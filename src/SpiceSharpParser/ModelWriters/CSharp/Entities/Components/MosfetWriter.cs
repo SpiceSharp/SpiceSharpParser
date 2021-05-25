@@ -19,7 +19,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
             Mosfets.Add("Mosfet3Model", (_) => "Mosfet3");
         }
 
-        protected Dictionary<string, Func<string, string>> Mosfets { get; } = new();
+        private Dictionary<string, Func<string, string>> Mosfets { get; } = new ();
 
         public List<CSharpStatement> Write(Component @object, IWriterContext context)
         {

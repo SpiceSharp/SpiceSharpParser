@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelWriters.CSharp.Graphs
 {
-    public class Graph<TNode> where TNode : IEquatable<TNode>
+    public class Graph<TNode>
+        where TNode : IEquatable<TNode>
     {
         public HashSet<TNode> Nodes { get; set; } = new HashSet<TNode>();
 

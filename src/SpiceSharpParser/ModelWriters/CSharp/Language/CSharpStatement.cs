@@ -7,7 +7,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
     {
         public CSharpStatementKind Kind { get; set; } = CSharpStatementKind.CreateEntity;
 
-        public Dictionary<string, string> Metadata { get; set; } = new();
+        public Dictionary<string, string> Metadata { get; set; } = new ();
 
         public bool IncludeInCollection { get; set; } = true;
     }
