@@ -28,7 +28,6 @@ namespace SpiceSharpParser.Tests.ModelWriters
             var writer = new ResistorWriter();
 
             var parser = new ExpressionParser(
-                new Parser(),
                 new SpiceSharpBehavioral.Builders.Direct.RealBuilder(),
                 false);
 

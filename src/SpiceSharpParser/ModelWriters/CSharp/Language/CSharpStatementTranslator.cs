@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using System.Text;
+using SpiceSharpParser.Lexers.Expressions;
+using SpiceSharpParser.Parsers.Expression;
 
 namespace SpiceSharpParser.ModelWriters.CSharp
 {
@@ -65,8 +67,6 @@ namespace SpiceSharpParser.ModelWriters.CSharp
             builder.AppendLine();
             builder.AppendLine(GetSpace(spaces) + "{");
 
-            var parser = new Parsers.Expression.Parser();
-
             if (method.DefaultArgumentValues != null && method.OptionalArguments)
             {
                 for (var i = 0; i < method.DefaultArgumentValues.Length; i++)
@@ -74,7 +74,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
                     var value = method.DefaultArgumentValues[i];
                     if (value != null)
                     {
-                        var node = parser.Parse(new Lexers.Expressions.Lexer(value));
+                        var node = Parser.Parse(Lexer.FromString(value));
                         var transformed = new ExpressionTransformer(new System.Collections.Generic.List<string>(), new System.Collections.Generic.List<string>()).Transform(node);
                         builder.AppendLine(GetSpace(spaces + 5) + @$"if ({method.ArgumentNames[i]} == null) {method.ArgumentNames[i]} = $""{transformed}"";");
                     }

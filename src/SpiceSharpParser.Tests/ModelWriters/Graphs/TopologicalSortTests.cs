@@ -1,9 +1,5 @@
-﻿using SpiceSharpParser.ModelWriters.CSharp.Graphs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
+using SpiceSharpParser.Common.Mathematics.Graphs;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.ModelWriters.Graphs

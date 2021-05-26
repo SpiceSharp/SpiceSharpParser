@@ -3,19 +3,20 @@ using SpiceSharpParser.Common.Evaluation.Expressions;
 using SpiceSharpParser.Parsers.Expression;
 using System;
 using System.Collections.Generic;
+using SpiceSharpParser.Lexers.Expressions;
 
 namespace SpiceSharpParser.Common.Evaluation
 {
     public class VariablesFactory
     {
-        public List<CustomVariable<Func<double>>> CreateVariables(IEvaluationContext context, Parser parser, RealBuilder builder)
+        public List<CustomVariable<Func<double>>> CreateVariables(IEvaluationContext context,  RealBuilder builder)
         {
             var result = new List<CustomVariable<Func<double>>>();
 
             // setup variables
             foreach (var variable in context.Arguments)
             {
-                var variableNode = parser.Parse(variable.Value.ValueExpression);
+                var variableNode = Parser.Parse(Lexer.FromString(variable.Value.ValueExpression));
 
                 result.Add(
                     new CustomVariable<Func<double>>() { Name = variable.Key, VariableNode = variableNode, Value = () => builder.Build(variableNode) });
@@ -29,7 +30,7 @@ namespace SpiceSharpParser.Common.Evaluation
                 }
                 else
                 {
-                    var variableNode = parser.Parse(variable.Value.ValueExpression);
+                    var variableNode = Parser.Parse(Lexer.FromString(variable.Value.ValueExpression));
                     result.Add(new CustomVariable<Func<double>>() { Name = variable.Key, VariableNode = variableNode, Value = () => builder.Build(variableNode) });
                 }
             }

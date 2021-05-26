@@ -349,8 +349,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             var variablesFactory = new VariablesFactory();
 
             var parser = new ExpressionParser(
-                new Parser(),
-                new CustomRealBuilder(evalContext, new Parser(), ReaderSettings.CaseSensitivity, false, variablesFactory),
+                new CustomRealBuilder(evalContext, ReaderSettings.CaseSensitivity, false, variablesFactory),
                 false);
 
             return parser;
@@ -365,8 +364,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             var variablesFactory = new VariablesFactory();
 
             var parser = new ExpressionResolver(
-                new Parser(),
-                new CustomRealBuilder(evalContext, new Parser(), ReaderSettings.CaseSensitivity, false, variablesFactory),
+                new CustomRealBuilder(evalContext,  ReaderSettings.CaseSensitivity, false, variablesFactory),
                 EvaluationContext,
                 false,
                 ReaderSettings.CaseSensitivity,

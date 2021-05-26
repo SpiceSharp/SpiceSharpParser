@@ -1,137 +1,123 @@
 ﻿using SpiceSharpBehavioral.Parsers.Nodes;
-using SpiceSharpParser.Lexers.Expressions;
 using System;
 using System.Collections.Generic;
+using SpiceSharp;
+using SpiceSharpBehavioral.Parsers;
+using Lexer = SpiceSharpParser.Lexers.Expressions.Lexer;
+using TokenType = SpiceSharpParser.Lexers.Expressions.TokenType;
 
 namespace SpiceSharpParser.Parsers.Expression
 {
     /// <summary>
-    /// A parser that parses Spice expressions.
+    /// Methods for parsing expressions.
     /// </summary>
     /// <remarks>
-    /// This is a recursive descent parser.
+    /// Code from SpiceSharpBehavioral.
     /// </remarks>
-    public class Parser
+    public static class Parser
     {
         /// <summary>
-        /// Parses the expression using a lexer.
+        /// Parses an expression using the given lexer.
         /// </summary>
         /// <param name="lexer">The lexer.</param>
-        /// <returns>The value of the lexed expression.</returns>
-        /// <exception cref="Exception">Invalid expression.</exception>
-        public Node Parse(Lexer lexer)
+        /// <param name="throw">Throw exception if lexer contains more characters.</param>
+        /// <returns>The parsed expression.</returns>
+        public static Node Parse(Lexer lexer, bool @throw = false)
         {
-            lexer.ReadToken();
             var result = ParseConditional(lexer);
+            if (lexer.Type != TokenType.EndOfExpression && @throw)
+                throw new ParserException(lexer, "Unrecognized token '{0}'".FormatString(lexer.Content));
             return result;
         }
 
-        /// <summary>
-        /// Parses the expression.
-        /// </summary>
-        /// <param name="text">The text to parse.</param>
-        /// <returns>The value of the lexed expression.</returns>
-        /// <exception cref="Exception">Invalid expression.</exception>
-        public Node Parse(string text)
-        {
-            return Parse(new Lexer(text));
-        }
-
-        private Node ParseConditional(Lexer lexer)
+        private static Node ParseConditional(Lexer lexer)
         {
             var result = ParseConditionalOr(lexer);
-            while (lexer.Token == TokenType.Huh)
+            while (lexer.Type == TokenType.Huh)
             {
-                lexer.ReadToken();
+                lexer.Next();
                 var ifTrue = ParseConditional(lexer);
-                if (lexer.Token != TokenType.Colon)
-                {
-                    throw new Exception("Invalid conditional");
-                }
-
-                lexer.ReadToken();
+                if (lexer.Type != TokenType.Colon)
+                    throw new ParserException(lexer, "Unrecognized token '{0}', expected ':'".FormatString(lexer.Content));
+                lexer.Next();
                 var ifFalse = ParseConditional(lexer);
                 result = Node.Conditional(result, ifTrue, ifFalse);
             }
-
             return result;
         }
 
-        private Node ParseConditionalOr(Lexer lexer)
+        private static Node ParseConditionalOr(Lexer lexer)
         {
             var result = ParseConditionalAnd(lexer);
-            while (lexer.Token == TokenType.Or)
+            while (lexer.Type == TokenType.Or)
             {
-                lexer.ReadToken();
+                lexer.Next();
                 var right = ParseConditionalAnd(lexer);
                 result = Node.Or(result, right);
             }
-
             return result;
         }
 
-        private Node ParseConditionalAnd(Lexer lexer)
+        private static Node ParseConditionalAnd(Lexer lexer)
         {
             var result = ParseEquality(lexer);
-            while (lexer.Token == TokenType.And)
+            while (lexer.Type == TokenType.And)
             {
-                lexer.ReadToken();
+                lexer.Next();
                 var right = ParseEquality(lexer);
                 result = Node.And(result, right);
             }
-
             return result;
         }
 
-        private Node ParseEquality(Lexer lexer)
+        private static Node ParseEquality(Lexer lexer)
         {
             var result = ParseRelational(lexer);
-            while (lexer.Token == TokenType.Equals || lexer.Token == TokenType.NotEquals)
+            while (lexer.Type == TokenType.Equals || lexer.Type == TokenType.NotEquals)
             {
                 Node right;
-                switch (lexer.Token)
+                switch (lexer.Type)
                 {
                     case TokenType.Equals:
-                        lexer.ReadToken();
+                        lexer.Next();
                         right = ParseRelational(lexer);
                         result = Node.Equals(result, right);
                         break;
                     case TokenType.NotEquals:
-                        lexer.ReadToken();
+                        lexer.Next();
                         right = ParseRelational(lexer);
                         result = Node.NotEquals(result, right);
                         break;
                 }
             }
-
             return result;
         }
 
-        private Node ParseRelational(Lexer lexer)
+        private static Node ParseRelational(Lexer lexer)
         {
             var result = ParseAdditive(lexer);
             while (true)
             {
                 Node right;
-                switch (lexer.Token)
+                switch (lexer.Type)
                 {
                     case TokenType.LessThan:
-                        lexer.ReadToken();
+                        lexer.Next();
                         right = ParseAdditive(lexer);
                         result = Node.LessThan(result, right);
                         break;
                     case TokenType.GreaterThan:
-                        lexer.ReadToken();
+                        lexer.Next();
                         right = ParseAdditive(lexer);
                         result = Node.GreaterThan(result, right);
                         break;
                     case TokenType.LessEqual:
-                        lexer.ReadToken();
+                        lexer.Next();
                         right = ParseAdditive(lexer);
                         result = Node.LessThanOrEqual(result, right);
                         break;
                     case TokenType.GreaterEqual:
-                        lexer.ReadToken();
+                        lexer.Next();
                         right = ParseAdditive(lexer);
                         result = Node.GreaterThanOrEqual(result, right);
                         break;
@@ -141,21 +127,21 @@ namespace SpiceSharpParser.Parsers.Expression
             }
         }
 
-        private Node ParseAdditive(Lexer lexer)
+        private static Node ParseAdditive(Lexer lexer)
         {
             var result = ParseMultiplicative(lexer);
             while (true)
             {
                 Node right;
-                switch (lexer.Token)
+                switch (lexer.Type)
                 {
                     case TokenType.Plus:
-                        lexer.ReadToken();
+                        lexer.Next();
                         right = ParseMultiplicative(lexer);
                         result = Node.Add(result, right);
                         break;
                     case TokenType.Minus:
-                        lexer.ReadToken();
+                        lexer.Next();
                         right = ParseMultiplicative(lexer);
                         result = Node.Subtract(result, right);
                         break;
@@ -165,26 +151,26 @@ namespace SpiceSharpParser.Parsers.Expression
             }
         }
 
-        private Node ParseMultiplicative(Lexer lexer)
+        private static Node ParseMultiplicative(Lexer lexer)
         {
             var result = ParseUnary(lexer);
             while (true)
             {
                 Node right;
-                switch (lexer.Token)
+                switch (lexer.Type)
                 {
                     case TokenType.Times:
-                        lexer.ReadToken();
+                        lexer.Next();
                         right = ParseUnary(lexer);
                         result = Node.Multiply(result, right);
                         break;
                     case TokenType.Divide:
-                        lexer.ReadToken();
+                        lexer.Next();
                         right = ParseUnary(lexer);
                         result = Node.Divide(result, right);
                         break;
                     case TokenType.Mod:
-                        lexer.ReadToken();
+                        lexer.Next();
                         right = ParseUnary(lexer);
                         result = Node.Modulo(result, right);
                         break;
@@ -194,192 +180,151 @@ namespace SpiceSharpParser.Parsers.Expression
             }
         }
 
-        private Node ParseUnary(Lexer lexer)
+        private static Node ParseUnary(Lexer lexer)
         {
             Node argument;
-            switch (lexer.Token)
+            switch (lexer.Type)
             {
                 case TokenType.Plus:
-                    lexer.ReadToken();
+                    lexer.Next();
                     argument = ParseUnary(lexer);
                     return Node.Plus(argument);
-
                 case TokenType.Minus:
-                    lexer.ReadToken();
+                    lexer.Next();
                     argument = ParseUnary(lexer);
                     return Node.Minus(argument);
-
-                case TokenType.Bang:
-                    lexer.ReadToken();
-                    argument = ParseUnary(lexer);
-                    return Node.Not(argument);
-
                 default:
                     return ParsePower(lexer);
             }
         }
 
-        private Node ParsePower(Lexer lexer)
+        private static Node ParsePower(Lexer lexer)
         {
             var result = ParseTerminal(lexer);
-            if (lexer.Token == TokenType.Power)
+            if (lexer.Type == TokenType.Power)
             {
-                lexer.ReadToken();
+                lexer.Next();
                 var right = ParsePower(lexer);
                 result = Node.Power(result, right);
             }
-
             return result;
         }
 
-        private Node ParseTerminal(Lexer lexer)
+        private static Node ParseTerminal(Lexer lexer)
         {
             Node result;
-            switch (lexer.Token)
+            switch (lexer.Type)
             {
-                // Nested
                 case TokenType.LeftParenthesis:
-                    lexer.ReadToken();
+                    lexer.Next();
                     result = ParseConditional(lexer);
-                    if (lexer.Token != TokenType.RightParenthesis)
-                    {
-                        throw new Exception("Unclosed parenthesis");
-                    }
-
-                    lexer.ReadToken();
+                    if (lexer.Type != TokenType.RightParenthesis)
+                        throw new ParserException("Expected closing parenthesis, but found '{0}'".FormatString(lexer.Content));
+                    lexer.Next();
                     break;
 
-                // A number
                 case TokenType.Number:
-                    result = Node.Constant(SpiceSharpBehavioral.Parsers.SpiceHelper.ParseNumber(lexer.Content));
-                    lexer.ReadToken();
+                    result = SpiceHelper.ParseNumber(lexer.Content);
+                    lexer.Next();
                     break;
 
-                // Can be a variable or a function call
                 case TokenType.Identifier:
                     string name = lexer.Content;
-                    lexer.ReadToken();
-                    if (lexer.Token == TokenType.LeftParenthesis)
+                    lexer.Next();
+                    if (lexer.Type == TokenType.LeftParenthesis)
                     {
                         // Function call!
+                        lexer.Next();
+
                         string function = null;
                         switch (name.ToLowerInvariant())
                         {
                             case "vr":
-                                function = "real"; goto case "v";
+                                function = "real";
+                                goto case "v";
                             case "vi":
-                                function = "imag"; goto case "v";
+                                function = "imag";
+                                goto case "v";
                             case "vm":
-                                function = "abs"; goto case "v";
-                            case "vdb":
-                                function = "db"; goto case "v";
-                            case "vph":
-                                function = "phase"; goto case "v";
+                                function = "abs";
+                                goto case "v";
                             case "v":
                                 // Read the nodes
-                                lexer.ReadNode();
+                                lexer.ContinueWhileNode();
                                 result = Node.Voltage(lexer.Content);
-                                lexer.ReadToken();
-                                if (lexer.Token == TokenType.Comma)
+                                lexer.Next();
+                                if (lexer.Type == TokenType.Comma)
                                 {
-                                    lexer.ReadNode();
+                                    lexer.Next(); lexer.ContinueWhileNode();
                                     result = Node.Subtract(result, Node.Voltage(lexer.Content));
-                                    lexer.ReadToken();
+                                    lexer.Next();
                                 }
-
-                                if (lexer.Token != TokenType.RightParenthesis)
-                                {
-                                    throw new Exception("Invalid voltage specifier");
-                                }
-
-                                lexer.ReadToken();
+                                if (lexer.Type != TokenType.RightParenthesis)
+                                    throw new ParserException(lexer, "Expected closing parenthesis but found '{0}'".FormatString(lexer.Content));
+                                lexer.Next();
                                 break;
-                            case "ir":
-                                function = "real"; goto case "i";
-                            case "ii":
-                                function = "imag"; goto case "i";
-                            case "im":
-                                function = "abs"; goto case "i";
-                            case "idb":
-                                function = "db"; goto case "i";
-                            case "iph":
-                                function = "phase"; goto case "i";
-                            case "i":
-                                // Read the name
-                                lexer.ReadNode();
-                                result = Node.Current(lexer.Content);
-                                lexer.ReadToken();
-                                if (lexer.Token != TokenType.RightParenthesis)
-                                {
-                                    throw new Exception("Invalid current specifier");
-                                }
 
-                                lexer.ReadToken();
+                            case "ir":
+                                function = "real";
+                                goto case "i";
+                            case "ii":
+                                function = "imag";
+                                goto case "i";
+                            case "im":
+                                function = "abs";
+                                goto case "i";
+                            case "i":
+                                // Read the nodes
+                                lexer.ContinueWhileNode();
+                                result = Node.Current(lexer.Content);
+                                lexer.Next();
+                                if (lexer.Type != TokenType.RightParenthesis)
+                                    throw new ParserException("Expected closing parenthesis but found '{0}'".FormatString(lexer.Content));
+                                lexer.Next();
                                 break;
 
                             default:
                                 var arguments = new List<Node>(2);
-
-                                // Let's go to the first token after the function call
-                                lexer.ReadToken();
-                                while (lexer.Token != TokenType.RightParenthesis)
+                                while (lexer.Type != TokenType.RightParenthesis)
                                 {
-                                    // Read the argument
                                     arguments.Add(ParseConditional(lexer));
 
-                                    // Continue with another argument
-                                    if (lexer.Token == TokenType.Comma)
-                                    {
-                                        lexer.ReadToken();
-                                    }
-                                    else if (lexer.Token != TokenType.RightParenthesis)
-                                    {
-                                        throw new Exception("Invalid function call");
-                                    }
+                                    // continue
+                                    if (lexer.Type == TokenType.Comma)
+                                        lexer.Next();
+                                    else if (lexer.Type != TokenType.RightParenthesis)
+                                        throw new ParserException("Expected closing parenthesis but found '{0}'".FormatString(lexer.Content));
                                 }
-
                                 result = Node.Function(name, arguments);
-                                lexer.ReadToken();
+                                lexer.Next();
                                 break;
                         }
-
                         if (function != null)
-                        {
                             result = Node.Function(function, new[] { result });
-                        }
                     }
                     else
-                    {
                         result = Node.Variable(name);
-                    }
-
                     break;
 
                 case TokenType.At:
-                    lexer.ReadNode();
+                    lexer.Next();
+                    lexer.ContinueWhileNode();
                     name = lexer.Content;
-                    lexer.ReadToken();
-                    if (lexer.Token != TokenType.LeftIndex)
-                    {
-                        throw new Exception("Invalid property identifier");
-                    }
-
-                    lexer.ReadNode();
+                    lexer.Next();
+                    if (lexer.Type != TokenType.LeftIndex)
+                        throw new ParserException("Expected property indexing, but found '{0}'".FormatString(lexer.Content));
+                    lexer.Next();
+                    lexer.ContinueWhileNode();
                     result = Node.Property(name, lexer.Content);
-                    lexer.ReadToken();
-                    if (lexer.Token != TokenType.RightIndex)
-                    {
-                        throw new Exception("Invalid property identifier");
-                    }
-
-                    lexer.ReadToken();
+                    lexer.Next();
+                    if (lexer.Type != TokenType.RightIndex)
+                        throw new ParserException("Expected closing indexer, but found '{0}'".FormatString(lexer.Content));
+                    lexer.Next();
                     break;
 
-                // There is no level below this, so let's throw an exception
                 default:
-                    throw new Exception("Invalid value");
+                    throw new ParserException("Invalid value");
             }
-
             return result;
         }
     }

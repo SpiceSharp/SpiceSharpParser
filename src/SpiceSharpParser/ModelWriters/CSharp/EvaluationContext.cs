@@ -3,6 +3,7 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System.Collections.Generic;
 using System.Linq;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.Lexers.Expressions;
 
 namespace SpiceSharpParser.ModelWriters.CSharp
 {
@@ -36,8 +37,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
 
         public string Transform(string expression)
         {
-            var parser = new Parsers.Expression.Parser();
-            var node = parser.Parse(new Lexers.Expressions.Lexer(expression));
+            var node = SpiceSharpParser.Parsers.Expression.Parser.Parse(Lexer.FromString(expression));
             var transformer = new ExpressionTransformer(Variables.Select(v => v.Key).ToList(), Functions);
             var parameterFunction = transformer.Transform(node);
             return parameterFunction;

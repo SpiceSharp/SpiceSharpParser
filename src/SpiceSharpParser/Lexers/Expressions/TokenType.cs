@@ -3,6 +3,9 @@
     /// <summary>
     /// The token types (also function as a state).
     /// </summary>
+    /// <remarks>
+    /// Code from SpiceSharpBehavioral.
+    /// </remarks>
     public enum TokenType
     {
         /// <summary>
@@ -146,8 +149,13 @@
         RightIndex,
 
         /// <summary>
+        /// An unknown character.
+        /// </summary>
+        Unknown,
+
+        /// <summary>
         /// The end of the expression.
         /// </summary>
-        EndOfExpression,
+        EndOfExpression
     }
 }

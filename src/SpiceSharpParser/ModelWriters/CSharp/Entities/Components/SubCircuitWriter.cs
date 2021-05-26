@@ -2,6 +2,8 @@
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharpParser.Lexers.Expressions;
+using SpiceSharpParser.Parsers.Expression;
 using Component = SpiceSharpParser.Models.Netlist.Spice.Objects.Component;
 
 namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
@@ -10,9 +12,8 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
     {
         public List<CSharpStatement> Write(Component @object, IWriterContext context)
         {
-            var parser = new Parsers.Expression.Parser();
-            var subCircuitDefinitonName = GetSubcircuitDefinitionName(@object.PinsAndParameters);
-            context.RegisterDependency(context.CurrentSubcircuitName, subCircuitDefinitonName);
+            var subCircuitDefinitionName = GetSubcircuitDefinitionName(@object.PinsAndParameters);
+            context.RegisterDependency(context.CurrentSubcircuitName, subCircuitDefinitionName);
 
             var subCircuitId = context.GetNewIdentifier(@object.Name);
             GetAssigmentParametersCount(@object.PinsAndParameters, out var parameters);
@@ -32,7 +33,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                 parameters.Add(new AssignmentParameter() { Name = "internal_m", Value = "internal_m" });
             }
 
-            var subCircuitDefinitonId = context.GetIdentifier(subCircuitDefinitonName);
+            var subCircuitDefinitionId = context.GetIdentifier(subCircuitDefinitionName);
 
             var variables = new List<string>(context.EvaluationContext.Variables.Select(v => v.Key));
             variables.AddRange(parameters.Select(p => p.Name));
@@ -40,9 +41,9 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
 
             var transformer = new ExpressionTransformer(variables, context.EvaluationContext.Functions);
 
-            var key = subCircuitDefinitonId + "_" + string.Join("__", parameters.Select(p =>
+            var key = subCircuitDefinitionId + "_" + string.Join("__", parameters.Select(p =>
             {
-                var node = parser.Parse(new Lexers.Expressions.Lexer(p.Value));
+                var node = Parser.Parse(Lexer.FromString(p.Value));
                 var transformed = transformer.Transform(node);
                 return $@"{p.Name}_{transformed}";
             }).ToArray());
@@ -63,7 +64,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                 context.SubcircuitDictionaryPresent = true;
             }
 
-            var methodDefName = "CreateSubcircuitDefinition_" + subCircuitDefinitonName;
+            var methodDefName = "CreateSubcircuitDefinition_" + subCircuitDefinitionName;
 
             var @params = new List<string>();
 
@@ -74,7 +75,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                     continue;
                 }
 
-                var node = parser.Parse(new Lexers.Expressions.Lexer(parameters[i].Value));
+                var node = Parser.Parse(Lexer.FromString(parameters[i].Value));
                 var transformed = transformer.Transform(node);
 
                 transformed = $@"$""{transformed}""";
@@ -91,7 +92,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
             var @contains = @$"!this.definitions.ContainsKey($""{key}"")";
             var createStatement = new CSharpAssignmentStatement(@this, $"{@contains} ? {methodDefName}({string.Join(",", @params)}): {@this}", true);
 
-            context.SubcircuitCreateStatements.Add((subCircuitDefinitonName, createStatement));
+            context.SubcircuitCreateStatements.Add((subCircuitDefinitionName, createStatement));
 
             return result;
         }

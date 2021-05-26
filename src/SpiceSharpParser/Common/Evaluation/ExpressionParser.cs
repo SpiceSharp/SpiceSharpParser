@@ -2,6 +2,7 @@
 using SpiceSharpBehavioral.Parsers.Nodes;
 using System;
 using System.Collections.Generic;
+using SpiceSharpParser.Lexers.Expressions;
 using Parser = SpiceSharpParser.Parsers.Expression.Parser;
 
 namespace SpiceSharpParser.Common
@@ -9,11 +10,9 @@ namespace SpiceSharpParser.Common
     public class ExpressionParser
     {
         public ExpressionParser(
-            Parser parser,
             RealBuilder doubleBuilder,
             bool throwOnErrors)
         {
-            InternalParser = parser;
             DoubleBuilder = doubleBuilder;
             ThrowOnErrors = throwOnErrors;
         }
@@ -22,12 +21,10 @@ namespace SpiceSharpParser.Common
 
         protected RealBuilder DoubleBuilder { get; }
 
-        protected Parser InternalParser { get; }
-
         public IEnumerable<string> GetFunctions(string expression)
         {
             var list = new List<string>();
-            var node = InternalParser.Parse(expression);
+            var node = Parser.Parse(Lexer.FromString(expression));
             DoubleBuilder.FunctionFound += (_, e) =>
             {
                 list.Add(e.Function.Name);
@@ -51,7 +48,7 @@ namespace SpiceSharpParser.Common
 
         public IEnumerable<Node> GetVariables(string expression)
         {
-            var node = InternalParser.Parse(expression);
+            var node = Parser.Parse(Lexer.FromString(expression));
             return GetVariables(node);
         }
 
@@ -81,14 +78,8 @@ namespace SpiceSharpParser.Common
 
         public double Evaluate(string expression)
         {
-            var node = InternalParser.Parse(expression);
+            var node = Parser.Parse(Lexer.FromString(expression));
             return DoubleBuilder.Build(node);
-        }
-
-        public Node Parse(string expression)
-        {
-            var node = InternalParser.Parse(expression);
-            return node;
         }
     }
 }

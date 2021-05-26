@@ -8,6 +8,7 @@ using SpiceSharpBehavioral.Parsers.Nodes;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Evaluation.Expressions;
+using SpiceSharpParser.Lexers.Expressions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
@@ -21,7 +22,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 
         private readonly SpiceNetlistCaseSensitivitySettings _caseSettings;
 
-        public CustomRealBuilder(EvaluationContext context, Parser parser, SpiceNetlistCaseSensitivitySettings caseSettings, bool throwOnErrors, VariablesFactory variablesFactory)
+        public CustomRealBuilder(EvaluationContext context, SpiceNetlistCaseSensitivitySettings caseSettings, bool throwOnErrors, VariablesFactory variablesFactory)
         {
             _caseSettings = caseSettings;
 
@@ -29,14 +30,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             FunctionFound += OnCustomFunctionFound;
             VariableFound += OnVariableFound;
             Context = context;
-            Parser = parser;
             ThrowOnErrors = throwOnErrors;
-            Variables = variablesFactory.CreateVariables(context, Parser, this);
+            Variables = variablesFactory.CreateVariables(context, this);
         }
 
         public EvaluationContext Context { get; }
-
-        public Parser Parser { get; }
 
         public List<CustomVariable<Func<double>>> Variables { get; }
 
@@ -232,11 +230,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 
                 for (var i = 0; i < argumentsDefinition.Length; i++)
                 {
-                    var argumentValue = Build(Parser.Parse(argumentsDefinition[i]));
+                    var argumentValue = Build(Parser.Parse(Lexer.FromString(argumentsDefinition[i])));
                     Context.Arguments.Add(argumentsDefinition[i], new ConstantExpression(argumentValue));
                 }
 
-                return Build(Parser.Parse(functionBody));
+                return Build(Parser.Parse(Lexer.FromString(functionBody)));
             }
 
             return null;

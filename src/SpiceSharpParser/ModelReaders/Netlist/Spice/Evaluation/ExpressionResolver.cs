@@ -7,6 +7,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.ResolverFunctions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharpParser.Lexers.Expressions;
 using Parser = SpiceSharpParser.Parsers.Expression.Parser;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
@@ -14,14 +15,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
     public class ExpressionResolver
     {
         public ExpressionResolver(
-            Parser parser,
             RealBuilder doubleBuilder,
             EvaluationContext context,
             bool throwOnErrors,
             SpiceNetlistCaseSensitivitySettings caseSettings,
             VariablesFactory variablesFactory = null)
         {
-            InternalParser = parser;
             DoubleBuilder = doubleBuilder;
 
             Context = context;
@@ -40,11 +39,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 
         protected RealBuilder DoubleBuilder { get; }
 
-        protected Parser InternalParser { get; }
-
         public Node Resolve(string expression)
         {
-            var node = InternalParser.Parse(expression);
+            var node = Parser.Parse(Lexer.FromString(expression));
             try
             {
                 var resolver = new Resolver();
@@ -116,7 +113,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 
                 if (VariablesFactory != null)
                 {
-                    var variables = VariablesFactory.CreateVariables(Context, InternalParser, DoubleBuilder);
+                    var variables = VariablesFactory.CreateVariables(Context, DoubleBuilder);
 
                     foreach (var variable in variables)
                     {
@@ -157,7 +154,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
                 var body = Context.FunctionsBody[functionName];
                 if (body != null)
                 {
-                    var bodyNode = InternalParser.Parse(body);
+                    var bodyNode = Parser.Parse(Lexer.FromString(body));
 
                     result[functionName] = new StaticResolverFunction(
                         functionName,

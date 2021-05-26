@@ -15,10 +15,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 
         public ExpressionResolver Create(EvaluationContext context, bool throwOnErrors = true)
         {
-            var parser = new Parser();
             var variableFactory = new VariablesFactory();
-            var realBuilder = new CustomRealBuilder(context, parser, _caseSensitivitySettings, throwOnErrors, variableFactory);
-            var resolver = new ExpressionResolver(parser, realBuilder, context, throwOnErrors, _caseSensitivitySettings, variableFactory);
+            var realBuilder = new CustomRealBuilder(context, _caseSensitivitySettings, throwOnErrors, variableFactory);
+            var resolver = new ExpressionResolver(realBuilder, context, throwOnErrors, _caseSensitivitySettings, variableFactory);
             return resolver;
         }
     }
