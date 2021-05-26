@@ -8,7 +8,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     public class SimulationEvaluationContexts
     {
-        private readonly ReaderWriterLockSlim _cacheLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
+        private readonly ReaderWriterLockSlim _cacheLock = new (LockRecursionPolicy.NoRecursion);
 
         public SimulationEvaluationContexts(EvaluationContext sourceContext)
         {

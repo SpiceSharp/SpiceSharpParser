@@ -85,8 +85,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         public SpiceNetlistReaderSettings ReaderSettings { get; }
 
-        public Encoding ExternalFilesEncoding { get; set; }
-
         /// <summary>
         /// Gets the name of context.
         /// </summary>
