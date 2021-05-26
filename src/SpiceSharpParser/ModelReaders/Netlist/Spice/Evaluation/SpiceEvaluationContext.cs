@@ -5,6 +5,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions;
 using System;
 using System.Collections.Generic;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 {
@@ -12,7 +13,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
     {
         public SpiceEvaluationContext(
             string name,
-            ISpiceNetlistCaseSensitivitySettings caseSetting,
+            SpiceNetlistCaseSensitivitySettings caseSetting,
             IRandomizer randomizer,
             IExpressionParserFactory expressionParserFactory,
             IExpressionFeaturesReader expressionFeaturesReader,

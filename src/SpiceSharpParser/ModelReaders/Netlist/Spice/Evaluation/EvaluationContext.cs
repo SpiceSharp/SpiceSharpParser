@@ -14,14 +14,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 {
     public class EvaluationContext : IEvaluationContext
     {
-        private readonly ISpiceNetlistCaseSensitivitySettings _caseSettings;
+        private readonly SpiceNetlistCaseSensitivitySettings _caseSettings;
         private readonly ConcurrentDictionary<string, EvaluationContext> _cache;
         private Simulation _simulation;
         private readonly SimulationEvaluationContexts _simulationEvaluationContexts;
 
         public EvaluationContext(
             string name,
-            ISpiceNetlistCaseSensitivitySettings caseSettings,
+            SpiceNetlistCaseSensitivitySettings caseSettings,
             IRandomizer randomizer,
             IExpressionParserFactory expressionParserFactory,
             IExpressionFeaturesReader expressionFeaturesReader,
@@ -96,7 +96,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
         /// <summary>
         /// Gets the case settings.
         /// </summary>
-        public ISpiceNetlistCaseSensitivitySettings CaseSettings => _caseSettings;
+        public SpiceNetlistCaseSensitivitySettings CaseSettings => _caseSettings;
 
         /// <summary>
         /// Gets or sets the parameters.

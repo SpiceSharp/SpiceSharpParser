@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Processors;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
@@ -21,7 +22,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
         /// <summary>
         /// Gets or sets the evaluator.
         /// </summary>
-        public ISpiceNetlistCaseSensitivitySettings CaseSettings { get; set; }
+        public SpiceNetlistCaseSensitivitySettings CaseSettings { get; set; }
 
         public Statements Process(Statements statements)
         {

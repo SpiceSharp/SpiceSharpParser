@@ -33,7 +33,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             var parserResult = parser.ParseNetlist(text);
 
-            var spiceSharpSettings = new SpiceNetlistReaderSettings(new SpiceNetlistCaseSensitivitySettings(parser.Settings.Lexing), () => parser.Settings.WorkingDirectory, Encoding.Default);
+            var spiceSharpSettings = new SpiceNetlistReaderSettings(new SpiceNetlistCaseSensitivitySettings(), () => parser.Settings.WorkingDirectory, Encoding.Default);
             var spiceSharpReader = new SpiceNetlistReader(spiceSharpSettings);
 
             return spiceSharpReader.Read(parserResult.FinalModel);
@@ -49,7 +49,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             var parserResult = parser.ParseNetlist(text);
 
-            var spiceSharpSettings = new SpiceNetlistReaderSettings(new SpiceNetlistCaseSensitivitySettings(parser.Settings.Lexing), () => parser.Settings.WorkingDirectory, Encoding.Default);
+            var spiceSharpSettings = new SpiceNetlistReaderSettings(new SpiceNetlistCaseSensitivitySettings(), () => parser.Settings.WorkingDirectory, Encoding.Default);
             var spiceSharpReader = new SpiceNetlistReader(spiceSharpSettings);
 
             return spiceSharpReader.Read(parserResult.FinalModel);
@@ -76,7 +76,7 @@ namespace SpiceSharpParser.IntegrationTests
             parser.Settings.Parsing.IsEndRequired = true;
             var parserResult = parser.ParseNetlist(text);
 
-            var spiceSharpSettings = new SpiceNetlistReaderSettings(new SpiceNetlistCaseSensitivitySettings(parser.Settings.Lexing), () => parser.Settings.WorkingDirectory, Encoding.Default)
+            var spiceSharpSettings = new SpiceNetlistReaderSettings(new SpiceNetlistCaseSensitivitySettings(), () => parser.Settings.WorkingDirectory, Encoding.Default)
             {
                 Seed = randomSeed
             };

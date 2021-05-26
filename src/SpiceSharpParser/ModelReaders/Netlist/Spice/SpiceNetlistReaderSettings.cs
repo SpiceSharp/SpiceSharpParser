@@ -28,7 +28,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// Expand subcircuits.
         /// </param>
         public SpiceNetlistReaderSettings(
-            ISpiceNetlistCaseSensitivitySettings caseSensitivitySettings,
+            SpiceNetlistCaseSensitivitySettings caseSensitivitySettings,
             Func<string> workingDirectoryProvider,
             Encoding encoding,
             string separator = ".",
@@ -76,7 +76,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// <summary>
         /// Gets the case-sensitivity settings.
         /// </summary>
-        public ISpiceNetlistCaseSensitivitySettings CaseSensitivity { get; }
+        public SpiceNetlistCaseSensitivitySettings CaseSensitivity { get; }
 
         /// <summary>
         /// Gets or sets the separator for object and node names.

@@ -6,9 +6,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 {
     public class ExpressionParserFactory : IExpressionParserFactory
     {
-        private readonly ISpiceNetlistCaseSensitivitySettings _caseSensitivitySettings;
+        private readonly SpiceNetlistCaseSensitivitySettings _caseSensitivitySettings;
 
-        public ExpressionParserFactory(ISpiceNetlistCaseSensitivitySettings caseSensitivitySettings)
+        public ExpressionParserFactory(SpiceNetlistCaseSensitivitySettings caseSensitivitySettings)
         {
             _caseSensitivitySettings = caseSensitivitySettings;
         }

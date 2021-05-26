@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using SpiceSharpBehavioral.Parsers;
 using SpiceSharpParser.Common.FileSystem;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.Lexers.Netlist.Spice;
@@ -138,10 +139,9 @@ namespace SpiceSharpParser.Common.Processors
             string includeContent = FileReader.ReadAll(includeFullPath);
             if (includeContent != null)
             {
-                var lexerSettings = new SpiceLexerSettings()
+                var lexerSettings = new SpiceLexerSettings(LexerSettings.IsDotStatementNameCaseSensitive)
                 {
                     HasTitle = false,
-                    IsDotStatementNameCaseSensitive = LexerSettings.IsDotStatementNameCaseSensitive,
                 };
 
                 var tokens = TokenProviderPool.GetSpiceTokenProvider(lexerSettings).GetTokens(includeContent);

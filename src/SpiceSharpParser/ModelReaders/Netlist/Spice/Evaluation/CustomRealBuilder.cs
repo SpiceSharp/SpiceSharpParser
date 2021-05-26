@@ -17,11 +17,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 {
     public class CustomRealBuilder : RealBuilder
     {
-        private readonly ConcurrentDictionary<string, Export> _exporterInstances = new ConcurrentDictionary<string, Export>();
+        private readonly ConcurrentDictionary<string, Export> _exporterInstances = new ();
 
-        private readonly ISpiceNetlistCaseSensitivitySettings _caseSettings;
+        private readonly SpiceNetlistCaseSensitivitySettings _caseSettings;
 
-        public CustomRealBuilder(EvaluationContext context, Parser parser, ISpiceNetlistCaseSensitivitySettings caseSettings, bool throwOnErrors, VariablesFactory variablesFactory)
+        public CustomRealBuilder(EvaluationContext context, Parser parser, SpiceNetlistCaseSensitivitySettings caseSettings, bool throwOnErrors, VariablesFactory variablesFactory)
         {
             _caseSettings = caseSettings;
 

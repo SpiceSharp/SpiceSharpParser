@@ -14,7 +14,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
             var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = true;
             var parseResult = parser.ParseNetlist(netlistContent);
-            var spiceSharpWriter = new SpiceSharpWriter();
+            var spiceSharpWriter = new SpiceSharpCSharpWriter();
             var classNode = spiceSharpWriter.WriteCreateCircuitClass("Example", parseResult.FinalModel);
             var classText = classNode.GetText().ToString();
             var circuit = spiceSharpWriter.CreateCircuit(parseResult.FinalModel);
@@ -33,7 +33,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
             var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = true;
             var parseResult = parser.ParseNetlist(netlistContent);
-            var spiceSharpWriter = new SpiceSharpWriter();
+            var spiceSharpWriter = new SpiceSharpCSharpWriter();
 
             var classNode = spiceSharpWriter.WriteCreateCircuitClass("Example", parseResult.FinalModel);
             var classText = classNode.GetText().ToString();
@@ -53,7 +53,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
             var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = true;
             var parseResult = parser.ParseNetlist(netlistContent);
-            var spiceSharpWriter = new SpiceSharpWriter();
+            var spiceSharpWriter = new SpiceSharpCSharpWriter();
             var classNode = spiceSharpWriter.WriteCreateCircuitClass("Example", parseResult.FinalModel);
             var classText = classNode.GetText().ToString();
             var circuit = spiceSharpWriter.CreateCircuit(parseResult.FinalModel);
@@ -73,7 +73,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
             var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = true;
             var parseResult = parser.ParseNetlist(netlistContent);
-            var spiceSharpWriter = new SpiceSharpWriter();
+            var spiceSharpWriter = new SpiceSharpCSharpWriter();
             var classNode = spiceSharpWriter.WriteCreateCircuitClass("Example", parseResult.FinalModel);
             var classText = classNode.GetText().ToString();
             var circuit = spiceSharpWriter.CreateCircuit(parseResult.FinalModel);
@@ -92,7 +92,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
             var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = true;
             var parseResult = parser.ParseNetlist(netlistContent);
-            var spiceSharpWriter = new SpiceSharpWriter();
+            var spiceSharpWriter = new SpiceSharpCSharpWriter();
             var classNode = spiceSharpWriter.WriteCreateCircuitClass("Example", parseResult.FinalModel);
             var classText = classNode.GetText().ToString();
             var circuit = spiceSharpWriter.CreateCircuit(parseResult.FinalModel);
@@ -111,7 +111,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
             var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = true;
             var parseResult = parser.ParseNetlist(netlistContent);
-            var spiceSharpWriter = new SpiceSharpWriter();
+            var spiceSharpWriter = new SpiceSharpCSharpWriter();
             var classNode = spiceSharpWriter.WriteCreateCircuitClass("Example", parseResult.FinalModel);
             var classText = classNode.GetText().ToString();
             var circuit = spiceSharpWriter.CreateCircuit(parseResult.FinalModel);
@@ -130,7 +130,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
             var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = true;
             var parseResult = parser.ParseNetlist(netlistContent);
-            var spiceSharpWriter = new SpiceSharpWriter();
+            var spiceSharpWriter = new SpiceSharpCSharpWriter();
             var classNode = spiceSharpWriter.WriteCreateCircuitClass("Example", parseResult.FinalModel);
             var classText = classNode.GetText().ToString();
             var circuit = spiceSharpWriter.CreateCircuit(parseResult.FinalModel);
@@ -149,7 +149,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
             var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = true;
             var parseResult = parser.ParseNetlist(netlistContent);
-            var spiceSharpWriter = new SpiceSharpWriter();
+            var spiceSharpWriter = new SpiceSharpCSharpWriter();
             var classNode = spiceSharpWriter.WriteCreateCircuitClass("Example", parseResult.FinalModel);
             var classText = classNode.GetText().ToString();
             var circuit = spiceSharpWriter.CreateCircuit(parseResult.FinalModel);
@@ -168,7 +168,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
             var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = true;
             var parseResult = parser.ParseNetlist(netlistContent);
-            var spiceSharpWriter = new SpiceSharpWriter();
+            var spiceSharpWriter = new SpiceSharpCSharpWriter();
             var classNode = spiceSharpWriter.WriteCreateCircuitClass("Example", parseResult.FinalModel);
             var classText = classNode.GetText().ToString();
             var circuit = spiceSharpWriter.CreateCircuit(parseResult.FinalModel);
@@ -188,7 +188,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
             var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = true;
             var parseResult = parser.ParseNetlist(netlistContent);
-            var spiceSharpWriter = new SpiceSharpWriter();
+            var spiceSharpWriter = new SpiceSharpCSharpWriter();
             var classNode = spiceSharpWriter.WriteCreateCircuitClass("Example", parseResult.FinalModel);
             var classText = classNode.GetText().ToString();
             var circuit = spiceSharpWriter.CreateCircuit(parseResult.FinalModel);
@@ -212,7 +212,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
             var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = true;
             var parseResult = parser.ParseNetlist(netlistContent);
-            var spiceSharpWriter = new SpiceSharpWriter();
+            var spiceSharpWriter = new SpiceSharpCSharpWriter();
             var classNode = spiceSharpWriter.WriteCreateCircuitClass("Example", parseResult.FinalModel);
             var classText = classNode.GetText().ToString();
             var circuit = spiceSharpWriter.CreateCircuit(parseResult.FinalModel);

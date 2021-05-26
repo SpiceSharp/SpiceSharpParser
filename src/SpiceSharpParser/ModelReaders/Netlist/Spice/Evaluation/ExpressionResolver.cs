@@ -18,7 +18,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             RealBuilder doubleBuilder,
             EvaluationContext context,
             bool throwOnErrors,
-            ISpiceNetlistCaseSensitivitySettings caseSettings,
+            SpiceNetlistCaseSensitivitySettings caseSettings,
             VariablesFactory variablesFactory = null)
         {
             InternalParser = parser;
@@ -34,7 +34,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 
         public bool ThrowOnErrors { get; }
 
-        public ISpiceNetlistCaseSensitivitySettings CaseSettings { get; }
+        public SpiceNetlistCaseSensitivitySettings CaseSettings { get; }
 
         public VariablesFactory VariablesFactory { get; }
 

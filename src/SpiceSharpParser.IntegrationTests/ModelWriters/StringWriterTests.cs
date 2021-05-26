@@ -25,7 +25,7 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
             parseResult = parser.ParseNetlist(writerContent);
 
 
-            var spiceSharpSettings = new SpiceNetlistReaderSettings(new SpiceNetlistCaseSensitivitySettings(parser.Settings.Lexing), () => parser.Settings.WorkingDirectory, Encoding.Default);
+            var spiceSharpSettings = new SpiceNetlistReaderSettings(new SpiceNetlistCaseSensitivitySettings(), () => parser.Settings.WorkingDirectory, Encoding.Default);
             var spiceSharpReader = new SpiceNetlistReader(spiceSharpSettings);
 
             var spiceSharpModel =  spiceSharpReader.Read(parseResult.FinalModel);

@@ -1,31 +1,10 @@
-﻿using System;
-using SpiceSharpParser.Lexers.Netlist.Spice;
-
-namespace SpiceSharpParser.Common
+﻿namespace SpiceSharpParser.Common
 {
     /// <summary>
     /// Case-sensitivity settings.
     /// </summary>
-    public class SpiceNetlistCaseSensitivitySettings : ISpiceNetlistCaseSensitivitySettings
+    public class SpiceNetlistCaseSensitivitySettings 
     {
-        private readonly SpiceLexerSettings _lexerSettings;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SpiceNetlistCaseSensitivitySettings"/> class.
-        /// </summary>
-        public SpiceNetlistCaseSensitivitySettings()
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SpiceNetlistCaseSensitivitySettings"/> class.
-        /// </summary>
-        /// <param name="lexerSettings">Lexer settings.</param>
-        public SpiceNetlistCaseSensitivitySettings(SpiceLexerSettings lexerSettings)
-        {
-            _lexerSettings = lexerSettings ?? throw new ArgumentNullException(nameof(lexerSettings));
-        }
-
         /// <summary>
         /// Gets or sets a value indicating whether names are case-sensitive.
         /// </summary>
@@ -34,7 +13,7 @@ namespace SpiceSharpParser.Common
         /// <summary>
         /// Gets a value indicating whether dot statements names are case-sensitive.
         /// </summary>
-        public bool IsDotStatementNameCaseSensitive => _lexerSettings?.IsDotStatementNameCaseSensitive ?? false;
+        public bool IsDotStatementNameCaseSensitive { get; set; } = false;
 
         /// <summary>
         /// Gets or sets a value indicating whether model types names are case-sensitive.

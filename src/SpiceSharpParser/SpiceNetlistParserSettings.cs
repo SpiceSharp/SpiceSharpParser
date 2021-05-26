@@ -12,9 +12,9 @@ namespace SpiceSharpParser
     {
         public SpiceNetlistParserSettings()
         {
-            Lexing = new SpiceLexerSettings();
-            Parsing = new SingleSpiceNetlistParserSettings(Lexing);
             CaseSensitivity = new SpiceNetlistCaseSensitivitySettings();
+            Lexing = new SpiceLexerSettings(CaseSensitivity);
+            Parsing = new SingleSpiceNetlistParserSettings(Lexing);
         }
 
         /// <summary>
@@ -38,8 +38,8 @@ namespace SpiceSharpParser
         public SingleSpiceNetlistParserSettings Parsing { get; }
 
         /// <summary>
-        /// Gets or sets the case sensitivity settings.
+        /// Gets the case sensitivity settings.
         /// </summary>
-        public ISpiceNetlistCaseSensitivitySettings CaseSensitivity { get; set; }
+        public SpiceNetlistCaseSensitivitySettings CaseSensitivity { get; }
     }
 }

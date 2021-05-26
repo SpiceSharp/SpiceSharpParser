@@ -1,13 +1,14 @@
-﻿using SpiceSharpParser.Common.Evaluation;
+﻿using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Parsers.Expression;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 {
     public class ExpressionResolverFactory : IExpressionResolverFactory
     {
-        private readonly ISpiceNetlistCaseSensitivitySettings _caseSensitivitySettings;
+        private readonly SpiceNetlistCaseSensitivitySettings _caseSensitivitySettings;
 
-        public ExpressionResolverFactory(ISpiceNetlistCaseSensitivitySettings caseSensitivitySettings)
+        public ExpressionResolverFactory(SpiceNetlistCaseSensitivitySettings caseSensitivitySettings)
         {
             _caseSensitivitySettings = caseSensitivitySettings;
         }

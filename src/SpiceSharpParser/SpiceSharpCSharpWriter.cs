@@ -13,7 +13,7 @@ using System.Reflection;
 
 namespace SpiceSharpParser
 {
-    public class SpiceSharpWriter
+    public class SpiceSharpCSharpWriter
     {
         public SyntaxNode WriteCreateCircuitClass(string className, SpiceNetlist model, bool validateClass = true)
         {

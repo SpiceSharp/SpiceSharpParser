@@ -192,10 +192,9 @@ namespace SpiceSharpParser.Common.Processors
             string libContent = FileReader.ReadAll(libFullPath);
             if (libContent != null)
             {
-                var lexerSettings = new SpiceLexerSettings()
+                var lexerSettings = new SpiceLexerSettings(LexerSettings.IsDotStatementNameCaseSensitive)
                 {
                     HasTitle = false,
-                    IsDotStatementNameCaseSensitive = LexerSettings.IsDotStatementNameCaseSensitive,
                 };
 
                 var tokens = TokenProviderPool.GetSpiceTokenProvider(lexerSettings).GetTokens(libContent);
