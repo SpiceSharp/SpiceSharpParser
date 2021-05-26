@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SpiceSharpParser.ModelWriters.CSharp.Graphs
+namespace SpiceSharpParser.Common.Mathematics.Graphs
 {
     public class Graph<TNode>
         where TNode : IEquatable<TNode>

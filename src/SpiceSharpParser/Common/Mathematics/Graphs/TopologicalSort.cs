@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SpiceSharpParser.ModelWriters.CSharp.Graphs
+namespace SpiceSharpParser.Common.Mathematics.Graphs
 {
     public class TopologicalSort
     {

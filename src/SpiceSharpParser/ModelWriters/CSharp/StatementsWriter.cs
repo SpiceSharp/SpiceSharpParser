@@ -1,14 +1,14 @@
 ﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using SpiceSharpParser.ModelWriters.CSharp.Controls;
 using SpiceSharpParser.ModelWriters.CSharp.Entities;
 using SpiceSharpParser.ModelWriters.CSharp.Entities.Components;
-using SpiceSharpParser.ModelWriters.CSharp.Controls;
 using SpiceSharpParser.ModelWriters.CSharp.Entities.Models;
+using SpiceSharpParser.ModelWriters.CSharp.Language;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SpiceSharpParser.ModelWriters.CSharp.Graphs;
-using SpiceSharpParser.ModelWriters.CSharp.Language;
+using SpiceSharpParser.Common.Mathematics.Graphs;
 
 namespace SpiceSharpParser.ModelWriters.CSharp
 {

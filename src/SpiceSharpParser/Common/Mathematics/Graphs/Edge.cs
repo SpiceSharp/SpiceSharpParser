@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SpiceSharpParser.ModelWriters.CSharp.Graphs
+namespace SpiceSharpParser.Common.Mathematics.Graphs
 {
     public class Edge<TNode>
         where TNode : IEquatable<TNode>
