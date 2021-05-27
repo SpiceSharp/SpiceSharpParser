@@ -92,9 +92,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
 
         protected void SetSimulationParameter(Simulation simulation, IReadingContext context, KeyValuePair<SpiceSharpParser.Models.Netlist.Spice.Objects.Parameter, double> paramToSet)
         {
-            simulation.BeforeSetup += (object sender, EventArgs args) =>
+            simulation.BeforeSetup += (_, _) =>
             {
-                context.Evaluator.SetParameter(paramToSet.Key.Value, paramToSet.Value, simulation);
+                context.EvaluationContext.SetParameter(paramToSet.Key.Value, paramToSet.Value, simulation);
             };
         }
 

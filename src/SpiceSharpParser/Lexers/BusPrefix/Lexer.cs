@@ -11,6 +11,7 @@ namespace SpiceSharpParser.Lexers.BusPrefix
         private readonly string _expression;
         private int _index;
 
+        /// <summary>
         /// Initializes a new instance of the <see cref="Lexer"/> class.
         /// </summary>
         /// <param name="expression">The expression.</param>
@@ -44,7 +45,6 @@ namespace SpiceSharpParser.Lexers.BusPrefix
 
         public int Index { get => _index; set => _index = value; }
 
-        /// <summary>
         /// <summary>
         /// Reads the next token.
         /// </summary>

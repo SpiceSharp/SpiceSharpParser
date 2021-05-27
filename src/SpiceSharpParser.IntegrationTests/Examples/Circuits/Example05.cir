@@ -1,0 +1,23 @@
+﻿Topological sort example
+V1 IN 0 4.0
+XX IN 0 twoResistorsInSeries M = 10
+XX2 IN2 0 twoResistorsInSeriesWithCapacitor m = 10
+
+.SUBCKT resistor input output params: R=1
+R1 input output {R} m = 3
+.ENDS resistor
+
+.SUBCKT twoResistorsInSeries input output params: R1=10 R2=20
+X1 input 1 resistor R=R1
+X2 1 output resistor R=R2
+.ENDS twoResistorsInSeries
+
+.SUBCKT twoResistorsInSeriesWithCapacitor input output params: R1=10 R2=20
+X1 input 1 resistor R=R1
+X2 1 output resistor R=R2
+C1 1 input 1e-4 M = 5
+.ENDS twoResistorsInSeriesWithCapacitor
+
+.OP
+.SAVE I(V1)
+.END

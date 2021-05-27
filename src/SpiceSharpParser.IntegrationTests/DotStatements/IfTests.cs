@@ -15,7 +15,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             string incFilePath = Path.Combine(Directory.GetCurrentDirectory(), "params.inc");
             File.WriteAllText(incFilePath, incContent);
 
-            var netlist = ParseNetlistToModel(
+            var netlist = ParseNetlist(
                 false,
                 true,
                 "Simplest netlist with if and def",
@@ -40,7 +40,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             string incFilePath = Path.Combine(Directory.GetCurrentDirectory(), "params.inc");
             File.WriteAllText(incFilePath, incContent);
 
-            var netlist = ParseNetlistToModel(
+            var netlist = ParseNetlist(
                 false,
                 true,
                 "Simplest netlist with if and def - include at the bottom",
@@ -61,7 +61,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void MissingEndIf()
         {
-            var result = ParseNetlist(
+            var result = GetSpiceSharpModel(
                 "Missing endif",
                 ".IF (a == 0)",
                 "* Comment 1",
@@ -70,13 +70,13 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".PARAM a = 1",
                 ".END");
 
-            Assert.True(result.ValidationResult.HasWarning);
+            Assert.True(result.ValidationResult.HasError);
         }
 
         [Fact]
         public void IfElse()
         {
-            var netlist = ParseNetlistToModel(
+            var netlist = ParseNetlist(
                 false,
                 true,
                "Simplest netlist with if",
@@ -98,7 +98,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void IfElseIfElse()
         {
-            var netlist = ParseNetlistToModel(
+            var netlist = ParseNetlist(
                 false,
                 true,
                "Simplest netlist with if",
@@ -122,7 +122,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void ManyIfElseIfElse()
         {
-            var netlist = ParseNetlistToModel(
+            var netlist = ParseNetlist(
                 false,
                 true,
                "Simplest netlist with if",
@@ -152,7 +152,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void NestedIfElseIfElse()
         {
-            var netlist = ParseNetlistToModel(
+            var netlist = ParseNetlist(
                 false,
                 true,
                "Simplest netlist with if",
@@ -188,7 +188,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void NestedIfElese()
         {
-            var netlist = ParseNetlistToModel(
+            var netlist = ParseNetlist(
                 false,
                 true,
                "Nested netlist with if",
@@ -214,7 +214,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void BasicFalse()
         {
-            var netlist = ParseNetlistToModel(
+            var netlist = ParseNetlist(
                 false,
                 true,
                "Simplest netlist with if",
@@ -231,7 +231,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void BasicTrue()
         {
-            var netlist = ParseNetlistToModel(
+            var netlist = ParseNetlist(
                 false,
                 true,
                "Simplest netlist with if",
@@ -249,7 +249,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void DoubleTrue()
         {
-            var netlist = ParseNetlistToModel(
+            var netlist = ParseNetlist(
                 false,
                 true,
                 "Simplest netlist with if",
@@ -269,7 +269,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void AdvancedTrue()
         {
-            var netlist = ParseNetlistToModel(
+            var netlist = ParseNetlist(
                 false,
                 true,
                 "Simplest netlist with if",
@@ -291,7 +291,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void AdvancedSecondExampleTrue()
         {
-            var netlist = ParseNetlistToModel(
+            var netlist = ParseNetlist(
                 false,
                 true,
                 "Simplest netlist with if",
@@ -313,7 +313,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void Subcircuit()
         {
-            var spiceSharpModel = ParseNetlist(
+            var model = GetSpiceSharpModel(
                "Subcircuit with if",
                ".SUBCKT resistor input output params: R=1",
                ".IF (R==1)",
@@ -328,7 +328,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                ".PARAM r_global = 2",
                ".END");
 
-            Assert.Equal(2, spiceSharpModel.Circuit.Count);
+            Assert.Equal(2, model.Circuit.Count);
         }
     }
 }

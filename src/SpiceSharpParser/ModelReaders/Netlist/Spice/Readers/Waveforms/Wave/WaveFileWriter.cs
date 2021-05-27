@@ -9,6 +9,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.Wave
     {
         public void Write(string path, int sampleRate, double amplitude, int bitsPerSample, (double time, double value)[] leftChannel, (double time, double value)[] rightChannel)
         {
+            if (path is null)
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
+
             if (leftChannel == null)
             {
                 throw new ArgumentNullException(nameof(leftChannel));
@@ -30,6 +35,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.Wave
 
         public void Write(string path, int sampleRate, double amplitude, int bitsPerSample, (double time, double value)[] monoChannel)
         {
+            if (path is null)
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
+
             if (monoChannel == null)
             {
                 throw new ArgumentNullException(nameof(monoChannel));
@@ -41,6 +51,42 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.Wave
             WriteData(result, data);
 
             File.WriteAllBytes(path, result.ToArray());
+        }
+
+        /// <summary>
+        /// Piece-wise linear interpolation.
+        /// </summary>
+        /// <param name="arg">The argument.</param>
+        /// <param name="data">The interpolation data.</param>
+        /// <returns>The interpolated value.</returns>
+        public double Pwl(double arg, (double time, double value)[] data)
+        {
+            if (arg <= data[0].time)
+            {
+                return data[0].value;
+            }
+
+            if (arg >= data[data.Length - 1].time)
+            {
+                return data[data.Length - 1].value;
+            }
+
+            // Narrow in on the index for the piece-wise linear function
+            int k0 = 0, k1 = data.Length;
+            while (k1 - k0 > 1)
+            {
+                int k = (k0 + k1) / 2;
+                if (data[k].time > arg)
+                {
+                    k1 = k;
+                }
+                else
+                {
+                    k0 = k;
+                }
+            }
+
+            return data[k0].value + ((arg - data[k0].time) * (data[k1].value - data[k0].value) / (data[k1].time - data[k0].time));
         }
 
         private void WriteData(List<byte> result, byte[] data)
@@ -59,7 +105,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.Wave
             result.AddRange(Encoding.ASCII.GetBytes("WAVE")); //FormatBytes
             result.AddRange(Encoding.ASCII.GetBytes("fmt ")); //FmtChunkIdBytes
 
-            var fmtChunkSize = BitConverter.GetBytes((int)16);
+            var fmtChunkSize = BitConverter.GetBytes(16);
             result.AddRange(fmtChunkSize); //FmtChunkSize
 
             var audioFormat = BitConverter.GetBytes((short)1);
@@ -83,7 +129,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.Wave
             result.AddRange(Encoding.ASCII.GetBytes("data"));
             result.AddRange(BitConverter.GetBytes(data.Length));
         }
-
 
         private byte[] Compute(int sampleRate, double amplitude, int bitsPerSample, (double time, double value)[] leftChannel, (double time, double value)[] rightChannel)
         {
@@ -129,38 +174,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.Wave
             }
 
             return result.ToArray();
-
-        }
-
-        /// <summary>
-        /// Piece-wise linear interpolation.
-        /// </summary>
-        /// <param name="arg">The argument.</param>
-        /// <param name="data">The interpolation data.</param>
-        /// <returns>The interpolated value.</returns>
-        public static double Pwl(double arg, (double time, double value)[] data)
-        {
-            if (arg <= data[0].time)
-            {
-                return data[0].value;
-            }
-
-            if (arg >= data[data.Length - 1].time)
-            {
-                return data[data.Length - 1].value;
-            }
-
-            // Narrow in on the index for the piece-wise linear function
-            int k0 = 0, k1 = data.Length;
-            while (k1 - k0 > 1)
-            {
-                int k = (k0 + k1) / 2;
-                if (data[k].time > arg)
-                    k1 = k;
-                else
-                    k0 = k;
-            }
-            return data[k0].value + (arg - data[k0].time) * (data[k1].value - data[k0].value) / (data[k1].time - data[k0].time);
         }
     }
 }

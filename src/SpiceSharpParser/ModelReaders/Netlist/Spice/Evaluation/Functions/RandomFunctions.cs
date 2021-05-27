@@ -1,5 +1,4 @@
-﻿using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Random;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
 {

@@ -31,7 +31,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(simulation));
             }
 
-            simulation.BeforeSetup += (obj, args) =>
+            simulation.BeforeSetup += (_, _) =>
             {
                 foreach (var action in BeforeSetup)
                 {
@@ -39,7 +39,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 }
             };
 
-            simulation.AfterSetup += (obj, args) =>
+            simulation.AfterSetup += (_, _) =>
             {
                 foreach (var action in AfterSetup)
                 {
@@ -66,7 +66,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             SimulationUpdates.AddBeforeTemperature((simulation, contexts) =>
             {
                 var context = contexts.GetContext(simulation);
-                var value = context.Evaluate(expression);
+                var value = context.Evaluator.EvaluateDouble(expression);
 
                 if (simulation is BiasingSimulation biasingSimulation)
                 {
@@ -90,7 +90,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             SimulationUpdates.AddBeforeSetup((simulation, contexts) =>
             {
                 var context = contexts.GetContext(simulation);
-                var value = context.Evaluate(expression);
+                var value = context.Evaluator.EvaluateDouble(expression);
 
                 if (simulation is Transient ts)
                 {

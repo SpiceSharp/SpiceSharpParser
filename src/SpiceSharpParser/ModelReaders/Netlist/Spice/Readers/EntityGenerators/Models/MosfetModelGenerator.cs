@@ -13,7 +13,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
         public MosfetModelGenerator()
         {
             // Default MOS levels
-            Levels.Add(1, (string name, string type, string version) =>
+            Levels.Add(1, (name, type, _) =>
             {
                 var m = new Mosfet1Model(name);
                 switch (type.ToLower())
@@ -25,7 +25,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
                 return new Context.Models.Model(name, m, m.Parameters);
             });
 
-            Levels.Add(2, (string name, string type, string version) =>
+            Levels.Add(2, (name, type, _) =>
             {
                 var m = new Mosfet2Model(name);
                 switch (type.ToLower())
@@ -37,7 +37,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
                 return new Context.Models.Model(name, m, m.Parameters);
             });
 
-            Levels.Add(3, (string name, string type, string version) =>
+            Levels.Add(3, (name, type, _) =>
             {
                 var m = new Mosfet3Model(name);
                 switch (type.ToLower())
@@ -97,14 +97,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
             }
 
             // Generate the model
-            Context.Models.Model model = null;
+            Context.Models.Model model;
             if (Levels.ContainsKey(level))
             {
                 model = Levels[level].Invoke(id, type, version);
             }
             else
             {
-                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Error, $"Unknown mosfet model level {level}", parameters.LineInfo));
+                context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, $"Unknown mosfet model level {level}", parameters.LineInfo);
                 return null;
             }
 

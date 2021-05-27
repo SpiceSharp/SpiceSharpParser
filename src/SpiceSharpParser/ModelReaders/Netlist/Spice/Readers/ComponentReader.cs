@@ -54,7 +54,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
             if (context.Parent != null)
             {
                 // entity is part of subcircuit
-                var evalContext = context.Evaluator.GetEvaluationContext();
+                var evalContext = context.EvaluationContext;
 
                 if (evalContext.Parameters.ContainsKey("m"))
                 {
@@ -76,7 +76,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
             }
 
             IEntity entity = generator?.Generate(
-                context.ExpandSubcircuits ? context.NameGenerator.GenerateObjectName(componentName) : componentName,
+                context.ReaderSettings.ExpandSubcircuits ? context.NameGenerator.GenerateObjectName(componentName) : componentName,
                 componentName,
                 componentType,
                 statementClone.PinsAndParameters,
@@ -95,8 +95,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
             foreach (var map in Mapper)
             {
-                if (componentName.StartsWith(map.Key, context.CaseSensitivity.IsEntityNamesCaseSensitive ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase) 
-                    && (componentType == null || componentType != null && componentType.Length < map.Key.Length))
+                if (componentName.StartsWith(map.Key, context.ReaderSettings.CaseSensitivity.IsEntityNamesCaseSensitive ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase)
+                    && (componentType == null || (componentType != null && componentType.Length < map.Key.Length)))
                 {
                     componentType = map.Key;
                     generator = map.Value;
@@ -105,7 +105,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
             if (generator == null)
             {
-                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Unsupported component {componentName}", lineInfo));
+                context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, $"Unsupported component {componentName}", lineInfo);
             }
 
             return generator;

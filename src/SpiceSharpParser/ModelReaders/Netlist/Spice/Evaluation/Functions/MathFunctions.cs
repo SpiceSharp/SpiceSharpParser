@@ -1,5 +1,4 @@
-﻿using SpiceSharpParser.Common.Evaluation;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions.Math;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
 {
@@ -91,17 +90,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         public static IFunction<double, double> CreateInv()
         {
             return new InvFunction();
-        }
-
-        /// <summary>
-        /// Get a db() function.
-        /// </summary>
-        /// <returns>
-        /// A new instance of db function.
-        /// </returns>
-        public static IFunction<double, double> CreateDb(SpiceExpressionMode mode)
-        {
-            return new DbFunction(mode);
         }
 
         /// <summary>

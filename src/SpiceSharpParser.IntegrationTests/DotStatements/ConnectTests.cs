@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void SingleConnectionTwoNodes()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "ConnectTests - Diode circuit",
                 "D1 D1_OUT 0 default",
                 "V1 OUT 0 0",
@@ -17,7 +17,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".SAVE i(V1)",
                 ".END");
 
-            var export = RunDCSimulation(netlist, "i(V1)");
+            var export = RunDCSimulation(model, "i(V1)");
 
             // Get reference
             double[] references =
@@ -29,7 +29,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                -618.507827392572
             };
 
-            EqualsWithTol(export, references);
+            Assert.True(EqualsWithTol(export, references));
         }
     }
 }

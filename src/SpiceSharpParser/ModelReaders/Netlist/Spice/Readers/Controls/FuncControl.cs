@@ -32,16 +32,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 {
                     if (!assignmentParameter.HasFunctionSyntax)
                     {
-                        context.Result.ValidationResult.Add(
-                            new ValidationEntry(
-                                ValidationEntrySource.Reader,
-                                ValidationEntryLevel.Warning,
-                                $".FUNC needs to be a function",
-                                statement.LineInfo));
+                        context.Result.ValidationResult.AddError(
+                            ValidationEntrySource.Reader,
+                            $".FUNC needs to be a function",
+                            statement.LineInfo);
                         continue;
                     }
 
-                    context.Evaluator.AddFunction(assignmentParameter.Name, assignmentParameter.Arguments, assignmentParameter.Value);
+                    context.EvaluationContext.AddFunction(assignmentParameter.Name, assignmentParameter.Arguments, assignmentParameter.Value);
                 }
                 else
                 {
@@ -61,7 +59,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                             }
                         }
 
-                        context.Evaluator.AddFunction(
+                        context.EvaluationContext.AddFunction(
                             bracketParameter.Name,
                             arguments,
                             statement.Parameters[i + 1].Value);
@@ -70,7 +68,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     }
                     else
                     {
-                        context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Unsupported syntax for .FUNC", param.LineInfo));
+                        context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, "Unsupported syntax for .FUNC", param.LineInfo);
                     }
                 }
             }

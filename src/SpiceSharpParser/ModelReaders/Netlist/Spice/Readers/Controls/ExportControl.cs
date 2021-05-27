@@ -47,6 +47,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             var result = new List<Export>();
             var nodes = new List<string>();
 
+            if (simulation is Noise)
+            {
+                result.Add(new OutputNoiseExport(simulation));
+                result.Add(new InputNoiseExport(simulation));
+                return result;
+            }
+
             foreach (IEntity entity in context.ContextEntities)
             {
                 if (entity is SpiceSharp.Components.Component c)
@@ -72,8 +79,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                             "I(" + componentName + ")",
                             "i",
                             @params,
-                            context.Evaluator.GetEvaluationContext(simulation),
-                            context.CaseSensitivity));
+                            context.EvaluationContext.GetSimulationContext(simulation),
+                            context.ReaderSettings.CaseSensitivity));
                 }
             }
 
@@ -89,8 +96,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         "V(" + node + ")",
                         "v",
                         @params,
-                        context.Evaluator.GetEvaluationContext(simulation),
-                        context.CaseSensitivity));
+                        context.EvaluationContext.GetSimulationContext(simulation),
+                        context.ReaderSettings.CaseSensitivity));
             }
 
             return result;
@@ -98,7 +105,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
         protected List<Export> GenerateExports(ParameterCollection parameterCollection, Simulation simulation, IReadingContext context)
         {
-            if (parameterCollection.Count == 0)
+            if (parameterCollection == null || parameterCollection.Count == 0 || (parameterCollection.Count == 1 && parameterCollection[0].Value.ToLower() == "merge"))
             {
                 return CreateExportsForAllVoltageAndCurrents(simulation, context);
             }
@@ -113,14 +120,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 else
                 {
                     string expressionName = parameter.Value;
-                    var expressionNames = context.Evaluator.GetExpressionNames();
+                    var expressionNames = context.EvaluationContext.GetExpressionNames();
 
                     if (expressionNames.Contains(expressionName))
                     {
                         var export = new ExpressionExport(
                             simulation.Name,
                             expressionName,
-                            context.Evaluator.GetEvaluationContext(simulation));
+                            context.EvaluationContext.GetSimulationContext(simulation));
 
                         result.Add(export);
                     }
@@ -152,6 +159,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             if (simulation is OP)
             {
                 firstColumnName = string.Empty;
+            }
+
+            if (simulation is Noise)
+            {
+                firstColumnName = "Frequency (Hz)";
             }
 
             return firstColumnName;

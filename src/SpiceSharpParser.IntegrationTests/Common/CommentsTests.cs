@@ -9,7 +9,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void When_CommentsMixed_Expect_Refrence()
         {
-            var netlist = ParseNetlistToModel(
+            var netlist = ParseNetlist(
                 true,
                 true,
                 "Comment test circuit",
@@ -19,7 +19,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".END");
 
             Assert.Equal("Comment test circuit", netlist.Title);
-            Assert.Equal(3, netlist.Statements.Count());
+            Assert.Equal(3, netlist.Statements.Count);
             Assert.True(netlist.Statements[0] is CommentLine);
 
             Assert.True(netlist.Statements[1] is Component);
@@ -29,7 +29,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void When_ThereIsSpaceBeforeStar_Expect_Reference()
         {
-            var netlist = ParseNetlistToModel(
+            var netlist = ParseNetlist(
                 true,
                 true,
                 "Comment test circuit",
@@ -39,7 +39,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".END");
 
             Assert.Equal("Comment test circuit", netlist.Title);
-            Assert.Equal(3, netlist.Statements.Count());
+            Assert.Equal(3, netlist.Statements.Count);
             Assert.True(netlist.Statements[0] is CommentLine);
 
             Assert.True(netlist.Statements[1] is Component);
@@ -47,7 +47,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         }
 
         [Fact]
-        public void When_NewLineWithComments_Expect_NoException()
+        public void When_NewLineWithComments_Expect_NoExceptions()
         {
             var netlist = string.Join(
                 "\n",
@@ -60,16 +60,20 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 "* Copyright (c) 2003-2012",
                 string.Empty);
 
-            ParseNetlistToModel(
-                false,
-                true,
-                netlist);
+            var exception = Record.Exception(() =>
+                ParseNetlist(
+                    false,
+                    true,
+                    netlist));
+
+            Assert.Null(exception);
         }
 
         [Fact]
         public void When_CommentsSubckt_Expect_NoException()
         {
-            ParseNetlistToModel(
+            var exception = Record.Exception(() =>
+               ParseNetlist(
                 true,
                 true,
                 "*",
@@ -81,18 +85,23 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 "+ CJO = 1.0000E-13 $ comment1",
                 "+ IS = 100e-15",
                 ".ends",
-                ".end");
+                ".end"));
+
+            Assert.Null(exception);
         }
 
         [Fact]
         public void When_CommentsOnly_Expect_NoException()
         {
-            ParseNetlistToModel(
+            var exception = Record.Exception(() =>
+               ParseNetlist(
                 false,
                 false,
                 "**",
                 "**",
-                ".end");
+                ".end"));
+
+            Assert.Null(exception);
         }
     }
 }

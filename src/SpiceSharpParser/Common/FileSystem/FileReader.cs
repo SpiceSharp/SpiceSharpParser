@@ -24,12 +24,12 @@ namespace SpiceSharpParser.Common.FileSystem
         {
             if (path == null)
             {
-                throw new System.ArgumentNullException(nameof(path));
+                throw new ArgumentNullException(nameof(path));
             }
 
             if (string.IsNullOrEmpty(path))
             {
-                throw new System.ArgumentException(nameof(path));
+                throw new ArgumentException(nameof(path));
             }
 
             using var reader = new System.IO.StreamReader(path, Encoding(), true);
@@ -47,12 +47,12 @@ namespace SpiceSharpParser.Common.FileSystem
         {
             if (path == null)
             {
-                throw new System.ArgumentNullException(nameof(path));
+                throw new ArgumentNullException(nameof(path));
             }
 
             if (string.IsNullOrEmpty(path))
             {
-                throw new System.ArgumentException(nameof(path));
+                throw new ArgumentException(nameof(path));
             }
 
             using var reader = new System.IO.StreamReader(path, Encoding(), true);

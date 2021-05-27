@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using SpiceSharpParser.Lexers.Expressions;
 using SpiceSharpParser.Models.Netlist.Spice;
-using SpiceSharpParser.Parsers.Expression.Implementation;
+using SpiceSharpParser.Parsers.Expression;
 
 namespace SpiceSharpParser.Lexers.Netlist.Spice
 {
@@ -50,7 +50,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 throw new LexerException("Invalid netlist", lexerResult.LexerException, lexerResult.LexerException.LineInfo);
             }
 
-            return lexerResult.Tokens.Select(token => new SpiceToken((SpiceTokenType)token.Type, token.Lexem, token.LineNumber, token.StartColumnIndex, null));
+            return lexerResult.Tokens.Select(token => new SpiceToken((SpiceTokenType)token.Type, token.Lexem, token.LineNumber, token.StartColumnIndex));
         }
 
         /// <summary>
@@ -187,18 +187,15 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 {
                     try
                     {
-                        var parser = new Parser();
-                        var lexer = new Lexer(textToLex);
+                        var lexer = Lexer.FromString(textToLex);
+                        Parser.Parse(lexer, false);
 
-                        var node = parser.Parse(lexer);
+                        int length = lexer.Index - lexer.Content.Length;
 
-                        int length = lexer.Index - lexer.BuilderLength;
-
-                        if (lexer.Current == ' ')
+                        if (length >= 1 && textToLex[length - 1] == ' ')
                         {
                             length--;
                         }
-
                         var expression = textToLex.Substring(0, length);
 
                         return new Tuple<string, int>(expression, length);

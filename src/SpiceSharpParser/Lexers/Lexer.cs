@@ -81,7 +81,7 @@ namespace SpiceSharpParser.Lexers
                             }
 
                             result.Tokens.Add(new Token(
-                                (int)tokenType,
+                                tokenType,
                                 bestMatch,
                                 state?.LineNumber ?? 0,
                                 state?.StartColumnIndex ?? 0,

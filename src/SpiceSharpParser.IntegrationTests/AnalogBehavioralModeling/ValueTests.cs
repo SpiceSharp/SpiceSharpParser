@@ -8,7 +8,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_VoltageControlledVoltageSourceCasing_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Value test circuit",
                 "R1 1 0 100",
                 "V1 1 0 1",
@@ -35,7 +35,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_VoltageControlledVoltageSourceIsInsideSubckt_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Value test circuit",
                 "R1 1 0 100",
                 "V1 1 0 1",
@@ -62,7 +62,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_VoltageControlledVoltageSourcePower_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Value test circuit",
                 "R1 1 0 100",
                 "V1 1 0 1",
@@ -89,7 +89,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_TwoVoltageControlledVoltageSourceInSubcktSameVoltage_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Value test circuit",
                 "R1 1 0 100",
                 "V1 1 0 1",
@@ -120,7 +120,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_VoltageControlledVoltageSourceValueValue_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Value test circuit",
                 "R1 1 0 100",
                 "V1 1 0 2",
@@ -140,7 +140,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_VoltageControlledVoltageSourceValueWithoutEqual_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Value test circuit",
                 "R1 1 0 100",
                 "V1 1 0 2",
@@ -160,7 +160,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_VoltageControlledVoltageSourceValueSimpleDependency_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Value test circuit",
                 "R1 1 0 100",
                 "V1 1 0 2",
@@ -181,7 +181,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_VoltageControlledVoltageSourceValueLoop_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Value test circuit",
                 "R1 1 0 100",
                 "V1 1 0 2",
@@ -200,7 +200,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_CurrentControlledVoltageSourceValueParsing_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Value test circuit",
                 "R1 1 0 100",
                 "I1 1 0 2",
@@ -220,7 +220,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_CurrentControlledVoltageSourceValueParsingWithoutEqual_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Value test circuit",
                 "R1 1 0 100",
                 "I1 1 0 2",
@@ -240,7 +240,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_CurrentControlledVoltageSourceValueSimpleDependency_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Value test circuit",
                 "R1 1 0 100",
                 "I1 1 0 2",
@@ -261,7 +261,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_CurrentControlledVoltageSourceValueLoop_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Value test circuit",
                 "R1 1 0 100",
                 "V1 1 0 2",
@@ -280,7 +280,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_VoltageSourceValueParsing_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Value test circuit",
                 "R1 1 0 100",
                 "I1 1 0 2",
@@ -300,7 +300,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_VoltageSourceValueSimpleDependency_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Value test circuit",
                 "R1 1 0 100",
                 "I1 1 0 2",
@@ -321,7 +321,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_VoltageSourceValueLoop_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Value test circuit",
                 "R1 1 0 100",
                 "V1 1 0 2",
@@ -340,7 +340,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_VoltageSourceParsing_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Value test circuit",
                 "R1 1 0 100",
                 "I1 1 0 2",
@@ -360,7 +360,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_VoltageSourceParsingDifferentFormat_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Value test circuit",
                 "R1 1 0 100",
                 "I1 1 0 2",
@@ -380,7 +380,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_VoltageSourceSimpleDependency_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Value test circuit",
                 "R1 1 0 100",
                 "I1 1 0 2",
@@ -401,7 +401,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_VoltageSourceLoop_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Value test circuit",
                 "R1 1 0 100",
                 "V1 1 0 2",
@@ -420,7 +420,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_DCVoltageSweep_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Value - DC Sweep - Voltage",
                 "V1 in 0 0",
                 "V2 out 0 {V(in, 0) + 100}",
@@ -437,13 +437,14 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
 
             // Get references
             Func<double, double> reference = sweep => sweep + 100;
-            EqualsWithTol(exports, reference);
+
+            Assert.True(EqualsWithTol(exports, reference));
         }
 
         [Fact]
         public void When_TranComplexVoltage_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Value - TRAN - Voltage TIME",
                 "V1 in 0 {100 * sin(TIME * 10e6)}",
                 "V2 out 0 {V(in, 0) * V(in, 0)}",
@@ -460,13 +461,14 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
 
             // Get references
             Func<double, double> reference = time => (Math.Sin(time * 10e6) * 100) * (Math.Sin(time * 10e6) * 100);
-            EqualsWithTol(exports, reference);
+
+            Assert.True(EqualsWithTol(exports, reference));
         }
 
         [Fact]
         public void When_CurrentSourceValueParsing_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Current source value circuit",
                 "R1 2 1 100",
                 "R2 1 0 1000",
@@ -487,7 +489,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_CurrentSourceValueWithoutEqualParsing_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Current source value circuit",
                 "R1 1 0 100",
                 "I1 1 0 2",
@@ -508,7 +510,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_CurrentSourceParsing_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Current source value circuit",
                 "R0 1 0 10",
                 "R1 2 0 100",
@@ -529,7 +531,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_VoltageControlledCurrentSourceValueParsing_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Value test circuit",
                 "R1 1 0 100",
                 "V1 2 0 2",
@@ -549,7 +551,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_VoltageControlledCurrentSourceValueParsingWithoutEqual_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Value test circuit",
                 "R1 1 0 100",
                 "V1 2 0 2",
@@ -569,7 +571,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_CurrentControlledCurrentSourceValueParsing_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Value test circuit",
                 "R1 1 0 100",
                 "R2 2 0 200",
@@ -590,7 +592,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_CurrentControlledCurrentSourceValueParsingWithoutEqual_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Value test circuit",
                 "R1 1 0 100",
                 "R2 2 0 200",

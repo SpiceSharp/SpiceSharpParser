@@ -14,74 +14,66 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         public MosfetGenerator()
         {
             // MOS1
-            Mosfets.Add(typeof(Mosfet1Model), (string name) =>
+            Mosfets.Add(typeof(Mosfet1Model), name =>
             {
                 var mosfet = new Mosfet1(name);
-                return new MosfetDetails { Mosfet = mosfet, SetModelAction = (Context.Models.Model model) => mosfet.Model = model.Name };
+                return new MosfetDetails { Mosfet = mosfet, SetModelAction = (model) => mosfet.Model = model.Name };
             });
 
             // MOS2
-            Mosfets.Add(typeof(Mosfet2Model), (string name) =>
+            Mosfets.Add(typeof(Mosfet2Model), (name) =>
             {
                 var mosfet = new Mosfet2(name);
-                return new MosfetDetails { Mosfet = mosfet, SetModelAction = (Context.Models.Model model) => mosfet.Model = model.Name };
+                return new MosfetDetails { Mosfet = mosfet, SetModelAction = (model) => mosfet.Model = model.Name };
             });
 
             // MOS3
-            Mosfets.Add(typeof(Mosfet3Model), (string name) =>
+            Mosfets.Add(typeof(Mosfet3Model), (name) =>
             {
                 var mosfet = new Mosfet3(name);
-                return new MosfetDetails { Mosfet = mosfet, SetModelAction = (Context.Models.Model model) => mosfet.Model = model.Name };
+                return new MosfetDetails { Mosfet = mosfet, SetModelAction = (model) => mosfet.Model = model.Name };
             });
         }
 
-        protected Dictionary<Type, Func<string, MosfetDetails>> Mosfets { get; } = new Dictionary<Type, Func<string, MosfetDetails>>();
+        protected Dictionary<Type, Func<string, MosfetDetails>> Mosfets { get; } = new ();
 
-        public override IEntity Generate(string componentIdentifier, string originalName, string type, SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection parameters, IReadingContext context)
+        public override IEntity Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
             // Errors
             switch (parameters.Count)
             {
                 case 0:
-                    context.Result.ValidationResult.Add(
-                        new ValidationEntry(
-                            ValidationEntrySource.Reader,
-                            ValidationEntryLevel.Error,
-                            $"Node expected for component {componentIdentifier}",
-                            parameters.LineInfo));
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        $"Node expected for component {componentIdentifier}",
+                        parameters.LineInfo);
                     return null;
                 case 1:
                 case 2:
                 case 3:
-                    context.Result.ValidationResult.Add(
-                        new ValidationEntry(
-                            ValidationEntrySource.Reader,
-                            ValidationEntryLevel.Error,
-                            $"Node expected",
-                            parameters.LineInfo));
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        $"Node expected",
+                        parameters.LineInfo);
                     return null;
                 case 4:
-                    context.Result.ValidationResult.Add(
-                        new ValidationEntry(
-                            ValidationEntrySource.Reader,
-                            ValidationEntryLevel.Error,
-                            $"Model name expected",
-                            parameters.LineInfo));
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        $"Model name expected",
+                        parameters.LineInfo);
                     return null;
             }
 
             // Get the model and generate a component for it
-            SpiceSharp.Components.Component mosfet = null;
+            SpiceSharp.Components.Component mosfet;
             var modelNameParameter = parameters.Get(4);
             var model = context.ModelsRegistry.FindModel(modelNameParameter.Value);
             if (model == null)
             {
-                context.Result.ValidationResult.Add(
-                    new ValidationEntry(
-                        ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Error,
-                        $"Could not find model {modelNameParameter} for mosfet {originalName}",
-                        parameters.LineInfo));
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    $"Could not find model {modelNameParameter} for mosfet {originalName}",
+                    parameters.LineInfo);
 
                 return null;
             }
@@ -104,12 +96,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
             else
             {
-                context.Result.ValidationResult.Add(
-                    new ValidationEntry(
-                        ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Error,
-                        $"Invalid model {model.GetType()} for {componentIdentifier}",
-                        parameters.LineInfo));
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    $"Invalid model {model.GetType()} for {componentIdentifier}",
+                    parameters.LineInfo);
 
                 return null;
             }
@@ -130,11 +120,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                                 context.SetParameter(mosfet, "icvgs", ap.Values[1], true);
                                 context.SetParameter(mosfet, "icvbs", ap.Values[2], true);
                             }
+
                             if (ap.Values.Count == 2)
                             {
                                 context.SetParameter(mosfet, "icvds", ap.Values[0], true);
                                 context.SetParameter(mosfet, "icvgs", ap.Values[1], true);
                             }
+
                             if (ap.Values.Count == 1)
                             {
                                 context.SetParameter(mosfet, "icvds", ap.Values[0], true);
@@ -147,14 +139,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     }
                     catch (Exception ex)
                     {
-                        context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Problem with setting parameter: {parameter}", parameter.LineInfo, ex));
+                        context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, $"Problem with setting parameter: {parameter}", parameter.LineInfo, ex);
                     }
                 }
                 else
                 {
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Unsupported parameter: {parameter}", parameter.LineInfo));
+                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, $"Unsupported parameter: {parameter}", parameter.LineInfo);
                 }
             }
+
             return mosfet;
         }
 

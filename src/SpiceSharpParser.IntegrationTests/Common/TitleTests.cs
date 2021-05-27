@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void When_NetlistTitleAndEnd_Expect_Reference()
         {
-            var netlist = ParseNetlistToModel(
+            var netlist = ParseNetlist(
                 true,
                 true,
                 "Title test circuit",
@@ -19,7 +19,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void When_NetlistEmptyTitleAndEnd_Expect_Reference()
         {
-            var netlist = ParseNetlistToModel(
+            var netlist = ParseNetlist(
                 true,
                 true,
                 "",
@@ -31,7 +31,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void When_NetlistOnlyTitle_Expect_Reference()
         {
-            var netlist = ParseNetlistToModel(
+            var netlist = ParseNetlist(
                 false,
                 true,
                 "Title test circuit",
@@ -54,7 +54,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void When_NetlistWithoutTitle_Expect_Reference()
         {
-            var netlist = ParseNetlistToModel(
+            var netlist = ParseNetlist(
                 true,
                 false,
                 "v1 1 0 1",

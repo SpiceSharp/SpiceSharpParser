@@ -20,7 +20,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
         /// Gets or sets statements of subcircuit.
         /// </summary>
         public Statements Statements { get; set; }
-        
+
         public string Name { get; set; }
 
         /// <summary>

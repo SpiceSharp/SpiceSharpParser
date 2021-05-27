@@ -23,12 +23,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
             if (statement.Parameters.Count < 3)
             {
-                context.Result.ValidationResult.Add(
-                    new ValidationEntry(
-                        ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Warning,
-                        "Too less parameters for .ST_R",
-                        statement.LineInfo));
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    "Too less parameters for .ST_R",
+                    statement.LineInfo);
 
                 return;
             }
@@ -53,7 +51,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         private void RegisterParameter(ParameterCollection parameters, IReadingContext context)
         {
             var variableParameter = parameters[0];
-            context.Evaluator.SetParameter(variableParameter.Value, 0);
+            context.EvaluationContext.SetParameter(variableParameter.Value, 0);
         }
     }
 }

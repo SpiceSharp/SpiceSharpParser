@@ -8,7 +8,6 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Custom;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.Parsers.Expression;
 using Model = SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models.Model;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
@@ -39,7 +38,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             if (parameters.Count < 5)
             {
-                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Wrong parameter count for voltage switch", parameters.LineInfo));
+                context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, "Wrong parameter count for voltage switch", parameters.LineInfo);
                 return null;
             }
 
@@ -69,7 +68,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 resistor.Parameters.Expression = resExpression;
                 resistor.Parameters.ParseAction = (expression) =>
                 {
-                    var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
+                    var parser = context.CreateExpressionResolver(null);
                     return parser.Resolve(expression);
                 };
 
@@ -98,7 +97,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         resistor.Parameters.Expression = resExpression;
                         resistor.Parameters.ParseAction = (expression) =>
                         {
-                            var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(simulation), false, context.CaseSensitivity);
+                            var parser = context.CreateExpressionResolver(simulation);
                             return parser.Resolve(expression);
                         };
                     });
@@ -115,7 +114,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     simulation,
                     parameters.Get(4),
                     $"Could not find model {parameters.Get(4)} for voltage switch {name}",
-                    (Context.Models.Model model2) => { vsw.Model = model2.Name; },
+                    (model2) => { vsw.Model = model2.Name; },
                     context);
             });
 
@@ -185,7 +184,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             if (parameters.Count < 4)
             {
-                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Wrong parameter count for current switch", parameters.LineInfo));
+                context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, "Wrong parameter count for current switch", parameters.LineInfo);
                 return null;
             }
 
@@ -214,7 +213,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 resistor.Parameters.Expression = resExpression;
                 resistor.Parameters.ParseAction = (expression) =>
                 {
-                    var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
+                    var parser = context.CreateExpressionResolver(null);
                     return parser.Resolve(expression);
                 };
 
@@ -244,7 +243,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         resistor.Parameters.Expression = resExpression;
                         resistor.Parameters.ParseAction = (expression) =>
                         {
-                            var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(simulation), false, context.CaseSensitivity);
+                            var parser = context.CreateExpressionResolver(simulation);
                             return parser.Resolve(expression);
                         };
                     });
@@ -261,7 +260,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
             else
             {
-                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Voltage source name expected", parameters.LineInfo));
+                context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, "Voltage source name expected", parameters.LineInfo);
                 return null;
             }
 

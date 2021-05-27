@@ -59,20 +59,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
                 {
                     var type = bracketParameter.Name;
 
-                    if (!Mapper.TryGetValue(type, context.CaseSensitivity.IsEntityNamesCaseSensitive, out var generator))
+                    if (!Mapper.TryGetValue(type, context.ReaderSettings.CaseSensitivity.IsEntityNamesCaseSensitive, out var generator))
                     {
-                        context.Result.ValidationResult.Add(
-                            new ValidationEntry(
-                                ValidationEntrySource.Reader,
-                                ValidationEntryLevel.Warning,
-                                $"Unsupported model type: {type}",
-                                bracketParameter.LineInfo));
+                        context.Result.ValidationResult.AddError(
+                            ValidationEntrySource.Reader,
+                            $"Unsupported model type: {type}",
+                            bracketParameter.LineInfo);
                         return;
                     }
 
                     var model = ModelsGenerator.GenerateModel(
                         generator,
-                        context.ExpandSubcircuits ? context.NameGenerator.GenerateObjectName(name) : name,
+                        context.ReaderSettings.ExpandSubcircuits ? context.NameGenerator.GenerateObjectName(name) : name,
                         name,
                         type,
                         bracketParameter.Parameters,
@@ -88,21 +86,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
                 {
                     var type = parameter.Value;
 
-                    if (!Mapper.TryGetValue(type, context.CaseSensitivity.IsModelTypeCaseSensitive, out var generator))
+                    if (!Mapper.TryGetValue(type, context.ReaderSettings.CaseSensitivity.IsModelTypeCaseSensitive, out var generator))
                     {
-                        context.Result.ValidationResult.Add(
-                            new ValidationEntry(
-                                ValidationEntrySource.Reader,
-                                ValidationEntryLevel.Warning,
-                                $"Unsupported model type: {type}",
-                                parameter.LineInfo));
+                        context.Result.ValidationResult.AddError(
+                            ValidationEntrySource.Reader,
+                            $"Unsupported model type: {type}",
+                            parameter.LineInfo);
 
                         return;
                     }
 
                     var model = ModelsGenerator.GenerateModel(
                         generator,
-                        context.ExpandSubcircuits ? context.NameGenerator.GenerateObjectName(name) : name,
+                        context.ReaderSettings.ExpandSubcircuits ? context.NameGenerator.GenerateObjectName(name) : name,
                         name,
                         type,
                         statement.Parameters.Skip(1),

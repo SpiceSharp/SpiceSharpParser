@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void When_InvalidExportForSimulationWithoutFilter_Expect_Reference()
         {
-            var parseResult = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "PLOT - Lowpass RC circuit - The capacitor should act like an open circuit",
                 "V1 IN 0 10.0",
                 "R1 IN OUT 10e3",
@@ -16,14 +16,14 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".PLOT V(OUT) I(C1)",
                 ".END");
 
-            RunSimulations(parseResult);
-            Assert.Empty(parseResult.XyPlots);
+            RunSimulations(model);
+            Assert.Empty(model.XyPlots);
         }
 
         [Fact]
         public void When_InvalidExportForSimulationWithFilter_Expect_Reference()
         {
-            var parseResult = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "PLOT - Lowpass RC circuit - The capacitor should act like an open circuit",
                 "V1 IN 0 10.0",
                 "R1 IN OUT 10e3",
@@ -32,14 +32,14 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".PLOT OP V(OUT) I(C1)",
                 ".END");
 
-            RunSimulations(parseResult);
-            Assert.Empty(parseResult.XyPlots);
+            RunSimulations(model);
+            Assert.Empty(model.XyPlots);
         }
 
         [Fact]
         public void When_PrintTran_Expect_Reference()
         {
-            var parseResult = ParseNetlist(
+            var model = GetSpiceSharpModel(
                "PLOT - The initial voltage on capacitor is 0V. The result should be an exponential converging to dcVoltage.",
                 "C1 OUT 0 1e-6",
                 "R1 IN OUT 10e3",
@@ -49,15 +49,15 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".PLOT TRAN",
                 ".END");
 
-            RunSimulations(parseResult);
-            Assert.Single(parseResult.XyPlots);
-            Assert.Equal("#1 TRAN", parseResult.XyPlots[0].Name);
+            RunSimulations(model);
+            Assert.Single(model.XyPlots);
+            Assert.Equal("#1 TRAN", model.XyPlots[0].Name);
         }
 
         [Fact]
         public void When_PrintOpWithoutFilter_Expect_Reference()
         {
-            var parseResult = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "PLOT - Lowpass RC circuit - The capacitor should act like an open circuit",
                 "V1 IN 0 10.0",
                 "R1 IN OUT 10e3",
@@ -66,14 +66,14 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".PLOT V(OUT) I(V1)",
                 ".END");
 
-            RunSimulations(parseResult);
-            Assert.Empty(parseResult.XyPlots);
+            RunSimulations(model);
+            Assert.Empty(model.XyPlots);
         }
 
         [Fact]
         public void When_PrintOpWithoutArgumentsWithoutFilter_Expect_Reference()
         {
-            var parseResult = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "PLOT - Lowpass RC circuit - The capacitor should act like an open circuit",
                 "V1 IN 0 10.0",
                 "R1 IN OUT 10e3",
@@ -82,14 +82,14 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".PLOT",
                 ".END");
 
-            RunSimulations(parseResult);
-            Assert.Empty(parseResult.XyPlots);
+            RunSimulations(model);
+            Assert.Empty(model.XyPlots);
         }
 
         [Fact]
         public void When_PrintDcWithoutFilter_Expect_Reference()
         {
-            var parseResult = ParseNetlist(
+            var model = GetSpiceSharpModel(
               "PLOT - DC Sweep - Current",
               "I1 0 in 0",
               "R1 in 0 10",
@@ -97,31 +97,31 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
               ".PLOT V(in) I(R1)",
               ".END");
 
-            RunSimulations(parseResult);
-            Assert.Single(parseResult.XyPlots);
-            Assert.Equal("#1 DC", parseResult.XyPlots[0].Name);
+            RunSimulations(model);
+            Assert.Single(model.XyPlots);
+            Assert.Equal("#1 DC", model.XyPlots[0].Name);
         }
 
         [Fact]
         public void When_PrintDcWithFilter_Expect_Reference()
         {
-            var parseResult = ParseNetlist(
+            var model = GetSpiceSharpModel(
               "PLOT - DC Sweep - Current",
               "I1 0 in 0",
               "R1 in 0 10",
               ".DC I1 -10 10 1e-3",
               ".PLOT DC V(in) I(R1)",
               ".END");
-            RunSimulations(parseResult);
+            RunSimulations(model);
 
-            Assert.Single(parseResult.XyPlots);
-            Assert.Equal("#1 DC", parseResult.XyPlots[0].Name);
+            Assert.Single(model.XyPlots);
+            Assert.Equal("#1 DC", model.XyPlots[0].Name);
         }
 
         [Fact]
         public void When_LetIsUsedInPlot_Expect_Reference()
         {
-            var parseResult = ParseNetlist(
+            var model = GetSpiceSharpModel(
               "PLOT - DC Sweep - Current",
               "I1 0 in 0",
               "R1 in 0 10",
@@ -129,10 +129,10 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
               ".PLOT DC V(in) I(R1) V_in_db",
               ".LET V_in_db {log10(V(in))*2}",
               ".END");
-            RunSimulations(parseResult);
+            RunSimulations(model);
 
-            Assert.Single(parseResult.XyPlots);
-            Assert.Equal("#1 DC", parseResult.XyPlots[0].Name);
+            Assert.Single(model.XyPlots);
+            Assert.Equal("#1 DC", model.XyPlots[0].Name);
         }
     }
 }

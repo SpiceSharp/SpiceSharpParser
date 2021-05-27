@@ -1,6 +1,6 @@
-﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
-using System;
+﻿using System;
 using System.Text;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 {
@@ -20,6 +20,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// <param name="workingDirectoryProvider">
         /// Working directory provider.
         /// </param>
+        /// <param name="encoding"></param>
         /// <param name="separator">
         /// Separator for node and object names.
         /// </param>
@@ -27,13 +28,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// Expand subcircuits.
         /// </param>
         public SpiceNetlistReaderSettings(
-            ISpiceNetlistCaseSensitivitySettings caseSensitivitySettings,
+            SpiceNetlistCaseSensitivitySettings caseSensitivitySettings,
             Func<string> workingDirectoryProvider,
             Encoding encoding,
             string separator = ".",
             bool expandSubcircuits = true)
         {
-            EvaluatorMode = SpiceExpressionMode.Spice3f5;
             Mappings = new SpiceObjectMappings();
             Orderer = new SpiceStatementsOrderer();
 
@@ -44,12 +44,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             ExternalFilesEncoding = encoding;
         }
 
-        public Encoding ExternalFilesEncoding { get; set; }
+        public SpiceNetlistReaderSettings()
+        {
+            Mappings = new SpiceObjectMappings();
+            Orderer = new SpiceStatementsOrderer();
 
-        /// <summary>
-        /// Gets or sets the evaluator mode.
-        /// </summary>
-        public SpiceExpressionMode EvaluatorMode { get; set; }
+            CaseSensitivity = new SpiceNetlistCaseSensitivitySettings();
+            _workingDirectoryProvider = () => Environment.CurrentDirectory;
+            Separator = ".";
+            ExpandSubcircuits = true;
+            ExternalFilesEncoding = Encoding.Default;
+        }
+
+        public Encoding ExternalFilesEncoding { get; set; }
 
         /// <summary>
         /// Gets or sets the evaluator random seed.
@@ -69,15 +76,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// <summary>
         /// Gets the case-sensitivity settings.
         /// </summary>
-        public ISpiceNetlistCaseSensitivitySettings CaseSensitivity { get; }
-        
+        public SpiceNetlistCaseSensitivitySettings CaseSensitivity { get; }
+
         /// <summary>
         /// Gets or sets the separator for object and node names.
         /// </summary>
         public string Separator { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether subcircuts should be expaned.
+        /// Gets or sets a value indicating whether subcircuits should be expanded.
         /// </summary>
         public bool ExpandSubcircuits { get; set; }
 
@@ -85,5 +92,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// Gets working directory.
         /// </summary>
         public string WorkingDirectory => _workingDirectoryProvider();
+
+        public SpiceNetlistReaderSettings Clone()
+        {
+            var result = new SpiceNetlistReaderSettings(CaseSensitivity, _workingDirectoryProvider, ExternalFilesEncoding, Separator, ExpandSubcircuits);
+            return result;
+        }
     }
 }

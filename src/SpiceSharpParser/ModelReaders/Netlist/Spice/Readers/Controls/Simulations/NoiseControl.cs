@@ -14,7 +14,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
     /// </summary>
     public class NoiseControl : SimulationControl
     {
-        private IEnumerable<double> sweep;
+        private IEnumerable<double> _sweep;
 
         public NoiseControl(IMapper<Exporter> mapper)
             : base(mapper)
@@ -39,44 +39,43 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             switch (statement.Parameters.Count)
             {
                 case 0:
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "SpiceModel expected for .NOISE", statement.LineInfo));
+                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, "Parameters expected for .NOISE", statement.LineInfo);
                     return null;
                 case 1:
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Source expected", statement.LineInfo));
+                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, "Source expected", statement.LineInfo);
                     return null;
 
                 case 2:
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Step type expected", statement.LineInfo));
+                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, "Step type expected", statement.LineInfo);
                     return null;
                 case 3:
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Number of points expected", statement.LineInfo));
+                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, "Number of points expected", statement.LineInfo);
                     return null;
                 case 4:
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Starting frequency expected", statement.LineInfo));
+                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, "Starting frequency expected", statement.LineInfo);
                     return null;
-
                 case 5:
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Stopping frequency expected", statement.LineInfo));
+                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, "Stopping frequency expected", statement.LineInfo);
                     return null;
                 case 6: break;
                 case 7: break;
                 default:
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Too many parameters for .NOISE", statement.LineInfo));
+                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, "Too many parameters for .NOISE", statement.LineInfo);
                     return null;
             }
 
-            string type = statement.Parameters.Get(2).Value;
+            string type = statement.Parameters.Get(2).Value.ToLower();
             var numberSteps = context.Evaluator.EvaluateDouble(statement.Parameters.Get(3));
             var start = context.Evaluator.EvaluateDouble(statement.Parameters.Get(4));
             var stop = context.Evaluator.EvaluateDouble(statement.Parameters.Get(5));
 
             switch (type)
             {
-                case "lin": sweep = new LinearSweep(start, stop, (int)numberSteps); break;
-                case "oct": sweep = new OctaveSweep(start, stop, (int)numberSteps); break;
-                case "dec": sweep = new DecadeSweep(start, stop, (int)numberSteps); break;
+                case "lin": _sweep = new LinearSweep(start, stop, (int)numberSteps); break;
+                case "oct": _sweep = new OctaveSweep(start, stop, (int)numberSteps); break;
+                case "dec": _sweep = new DecadeSweep(start, stop, (int)numberSteps); break;
                 default:
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "LIN, DEC or OCT expected", statement.LineInfo));
+                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, "LIN, DEC or OCT expected", statement.LineInfo);
                     return null;
             }
 
@@ -94,32 +93,32 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                             {
                                 var output = v.Elements[0].Value;
                                 var reference = v.Elements[1].Value;
-                                var input = statement.Parameters[2].Value;
-                                noise = new Noise(name, output, reference, sweep);
+                                var input = statement.Parameters[1].Value;
+                                noise = new Noise(name, input, output, reference, _sweep);
                             }
                             else if (bracket.Parameters[0] is SingleParameter s)
                             {
                                 var output = s.Value;
                                 var input = statement.Parameters[1].Value;
-                                noise = new Noise(name, output, input, sweep);
+                                noise = new Noise(name, input, output, _sweep);
                             }
 
                             break;
 
                         default:
-                            context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "1 or 2 nodes expected", statement.LineInfo));
+                            context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, "1 or 2 nodes expected", statement.LineInfo);
                             return null;
                     }
                 }
                 else
                 {
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Invalid output", statement.LineInfo));
+                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader,  "Invalid output", statement.LineInfo);
                     return null;
                 }
             }
             else
             {
-                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Invalid output", statement.LineInfo));
+                context.Result.ValidationResult.AddError(ValidationEntrySource.Reader,  "Invalid output", statement.LineInfo);
                 return null;
             }
 

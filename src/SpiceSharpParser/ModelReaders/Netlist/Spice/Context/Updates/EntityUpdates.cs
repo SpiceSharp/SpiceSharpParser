@@ -1,6 +1,7 @@
 ﻿using SpiceSharp.Entities;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common.Evaluation.Expressions;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -9,18 +10,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 {
     public class EntityUpdates
     {
-        public EntityUpdates(bool isParameterNameCaseSensitive, SimulationEvaluationContexts contexts)
+        public EntityUpdates(bool isParameterNameCaseSensitive, EvaluationContext context)
         {
             IsParameterNameCaseSensitive = isParameterNameCaseSensitive;
-            Contexts = contexts ?? throw new ArgumentNullException(nameof(contexts));
+            Context = context;
             CommonUpdates = new ConcurrentDictionary<IEntity, EntityUpdate>();
             SimulationSpecificUpdates = new ConcurrentDictionary<Simulation, Dictionary<IEntity, EntityUpdate>>();
             SimulationEntityParametersCache = new ConcurrentDictionary<string, double>();
         }
 
-        protected bool IsParameterNameCaseSensitive { get; }
+        public EvaluationContext Context { get; }
 
-        protected SimulationEvaluationContexts Contexts { get; set; }
+        protected bool IsParameterNameCaseSensitive { get; }
 
         protected ConcurrentDictionary<IEntity, EntityUpdate> CommonUpdates { get; set; }
 
@@ -37,7 +38,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
             if (simulation is BiasingSimulation biasingSimulation)
             {
-                biasingSimulation.BeforeTemperature += (sender, args) =>
+                biasingSimulation.BeforeTemperature += (_, _) =>
                 {
                     foreach (var entity in CommonUpdates.Keys)
                     {
@@ -45,7 +46,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
                         foreach (var entityUpdate in beforeTemperature)
                         {
-                            Common.Evaluation.EvaluationContext context = GetEntityContext(simulation, entity.Name);
+                            EvaluationContext context = GetEntityContext(simulation, entity.Name);
                             if (context != null)
                             {
                                 var value = entityUpdate.GetValue(context);
@@ -58,7 +59,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                     }
                 };
 
-                biasingSimulation.BeforeTemperature += (sender, args) =>
+                biasingSimulation.BeforeTemperature += (_, _) =>
                 {
                     if (SimulationSpecificUpdates.ContainsKey(simulation))
                     {
@@ -68,7 +69,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
                             foreach (var entityUpdate in beforeTemperature)
                             {
-                                Common.Evaluation.EvaluationContext context = GetEntityContext(simulation, entityPair.Key.Name);
+                                EvaluationContext context = GetEntityContext(simulation, entityPair.Key.Name);
                                 if (context != null)
                                 {
                                     var value = entityUpdate.GetValue(context);
@@ -210,9 +211,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
             }
         }
 
-        private Common.Evaluation.EvaluationContext GetEntityContext(Simulation simulation, string entityName)
+        private EvaluationContext GetEntityContext(Simulation simulation, string entityName)
         {
-            var context = Contexts.GetContext(simulation).Find(entityName);
+            var context = Context.GetSimulationContext(simulation).Find(entityName);
             return context;
         }
     }

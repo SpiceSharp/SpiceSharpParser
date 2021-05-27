@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void PartialOnTest()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "VSwitch test",
                 "S1 1 0 2 0 smodel",
                 "V1 2 0 0.5",
@@ -17,16 +17,15 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(V2)",
                 ".END");
 
-            var export = RunOpSimulation(netlist, "I(V2)");
-            Assert.NotNull(netlist);
-
-            EqualsWithTol(-0.00316228, export);
+            var export = RunOpSimulation(model, "I(V2)");
+            Assert.NotNull(model);
+            Assert.True(EqualsWithTol(-0.00316228, export));
         }
 
         [Fact]
         public void PartialOnSecondTest()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "VSwitch test",
                 "S1 1 0 2 0 smodel",
                 "V1 2 0 11",
@@ -36,16 +35,16 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(V2)",
                 ".END");
 
-            var export = RunOpSimulation(netlist, "I(V2)");
-            Assert.NotNull(netlist);
-
-            EqualsWithTol(-0.00200258, export);
+            var export = RunOpSimulation(model, "I(V2)");
+            
+            Assert.NotNull(model);
+            Assert.True(EqualsWithTol(-0.00200258, export));
         }
 
         [Fact]
         public void OnTest()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "VSwitch test",
                 "S1 1 0 2 0 smodel",
                 "V1 2 0 2",
@@ -55,15 +54,15 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(V2)",
                 ".END");
 
-            var export = RunOpSimulation(netlist, "I(V2)");
-            Assert.NotNull(netlist);
+            var export = RunOpSimulation(model, "I(V2)");
+            Assert.NotNull(model);
             Assert.Equal(-1, export);
         }
 
         [Fact]
         public void OnMoreTest()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "VSwitch test",
                 "S1 1 0 2 0 smodel",
                 "V1 2 0 2000",
@@ -73,15 +72,15 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(V2)",
                 ".END");
 
-            var export = RunOpSimulation(netlist, "I(V2)");
-            Assert.NotNull(netlist);
+            var export = RunOpSimulation(model, "I(V2)");
+            Assert.NotNull(model);
             Assert.Equal(-1, export);
         }
 
         [Fact]
         public void OffTest()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "VSwitch test",
                 "S1 1 0 2 0 smodel",
                 "V1 2 0 0",
@@ -91,16 +90,16 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(V2)",
                 ".END");
 
-            var export = RunOpSimulation(netlist, "I(V2)");
-            Assert.NotNull(netlist);
-
-            EqualsWithTol(-10.0 / 1000000.0, export);
+            var export = RunOpSimulation(model, "I(V2)");
+            
+            Assert.NotNull(model);
+            Assert.True(EqualsWithTol(-10.0 / 1000000.0, export));
         }
 
         [Fact]
         public void OffMoreTest()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "VSwitch test",
                 "S1 1 0 2 0 smodel",
                 "V1 2 0 -1",
@@ -110,10 +109,10 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(V2)",
                 ".END");
 
-            var export = RunOpSimulation(netlist, "I(V2)");
-            Assert.NotNull(netlist);
-
-            EqualsWithTol(-10.0 / 1000000.0, export);
+            var export = RunOpSimulation(model, "I(V2)");
+            
+            Assert.NotNull(model);
+            Assert.True(EqualsWithTol(-10.0 / 1000000.0, export));
         }
     }
 }

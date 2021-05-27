@@ -20,10 +20,10 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         private static readonly int DefaultNormalLimit = 3;
 
         private readonly bool _isDistributionNameCaseSensitive;
-        private readonly Dictionary<string, Func<Pdf>> _pdfDictionary = null;
-        private readonly Dictionary<string, Pdf> _pdfInstancesDictionary = null;
-        private readonly Dictionary<string, Cdf> _cdfDictionary = null;
-        private readonly Dictionary<string, CustomRandomNumberProviderFactory> _customRandomNumberProviderFactories = null;
+        private readonly Dictionary<string, Func<Pdf>> _pdfDictionary;
+        private readonly Dictionary<string, Pdf> _pdfInstancesDictionary;
+        private readonly Dictionary<string, Cdf> _cdfDictionary;
+        private readonly Dictionary<string, CustomRandomNumberProviderFactory> _customRandomNumberProviderFactories;
         private readonly DefaultRandomNumberProviderFactory _defaultRandomNumberProviderFactory = new DefaultRandomNumberProviderFactory();
 
         /// <summary>
@@ -33,6 +33,10 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         /// <param name="cdfPoints">Number of cdf points.</param>
         /// <param name="normalLimit">Normal limit.</param>
         /// <param name="seed">Seed.</param>
+        /// <param name="pdfDictionary"></param>
+        /// <param name="pdfInstances"></param>
+        /// <param name="cdfDictionary"></param>
+        /// <param name="customRandomNumberProviderFactories"></param>
         public Randomizer(
             bool isDistributionNameCaseSensitive = false,
             int? cdfPoints = null,
@@ -135,7 +139,7 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
         /// </returns>
         public IRandomNumberProvider GetRandomProvider(string pdfName = null)
         {
-            string workingPdfName = null;
+            string workingPdfName;
 
             if (pdfName == null)
             {

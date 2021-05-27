@@ -8,7 +8,7 @@ namespace SpiceSharpParser.IntegrationTests.MultiThreading
         [Fact]
         public void OPSweep()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "ConcurrentSimulations - Diode circuit",
                 "D1 OUT 0 1N914",
                 "R1 OUT 1 100",
@@ -20,13 +20,15 @@ namespace SpiceSharpParser.IntegrationTests.MultiThreading
                 ".STEP X 1 10 1",
                 ".END");
 
-            Parallel.ForEach(netlist.Simulations, new ParallelOptions { MaxDegreeOfParallelism = 1 }, simulation => simulation.Run(netlist.Circuit));
+            var exception = Record.Exception(() => Parallel.ForEach(netlist.Simulations, new ParallelOptions { MaxDegreeOfParallelism = 1 }, simulation => simulation.Run(netlist.Circuit)));
+            
+            Assert.Null(exception);
         }
 
         [Fact]
         public void OPMonteCarlo()
         {
-            var result = ParseNetlist(
+            var result = GetSpiceSharpModel(
                 "ConcurrentSimulations - Monte Carlo Analysis - OP",
                 "V1 0 1 100",
                 "R1 1 0 {R}",
@@ -37,7 +39,9 @@ namespace SpiceSharpParser.IntegrationTests.MultiThreading
                 ".MC 1000 OP power MAX",
                 ".END");
 
-            Parallel.ForEach(result.Simulations, new ParallelOptions { MaxDegreeOfParallelism = 8 }, simulation => simulation.Run(result.Circuit));
+            var exception = Record.Exception(() => Parallel.ForEach(result.Simulations, new ParallelOptions { MaxDegreeOfParallelism = 8 }, simulation => simulation.Run(result.Circuit)));
+
+            Assert.Null(exception);
         }
     }
 }

@@ -42,7 +42,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
                     builder.Append(",");
                 }
 
-                builder.Append(parameter.ToString());
+                builder.Append(parameter);
             }
 
             return builder.ToString();

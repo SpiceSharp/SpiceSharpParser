@@ -34,11 +34,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             switch (statement.Parameters.Count)
             {
                 case 0:
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".tran control - Step expected", statement.LineInfo));
+                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, ".TRAN control - Step expected", statement.LineInfo);
                     break;
 
                 case 1:
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".tran control - Maximum time expected", statement.LineInfo));
+                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, ".TRAN control - Maximum time expected", statement.LineInfo);
                     break;
             }
 
@@ -51,36 +51,32 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 clonedParameters.RemoveAt(clonedParameters.Count - 1);
             }
 
-            Transient tran = null;
+            Transient tran;
 
             double? maxStep = null;
-            double? step = null;
-            double? final = null;
+            double? step;
+            double? final;
             double? start = null;
-            double[] args;
 
             switch (clonedParameters.Count)
             {
                 case 2:
                     step = context.Evaluator.EvaluateDouble(clonedParameters[0].Value);
                     final = context.Evaluator.EvaluateDouble(clonedParameters[1].Value);
-                    args = new double[] { step.Value, final.Value };
                     break;
                 case 3:
                     step = context.Evaluator.EvaluateDouble(clonedParameters[0].Value);
                     final = context.Evaluator.EvaluateDouble(clonedParameters[1].Value);
                     maxStep = context.Evaluator.EvaluateDouble(clonedParameters[2].Value);
-                    args = new double[] { step.Value, final.Value, maxStep.Value };
                     break;
                 case 4:
                     step = context.Evaluator.EvaluateDouble(clonedParameters[0].Value);
                     final = context.Evaluator.EvaluateDouble(clonedParameters[1].Value);
                     start = context.Evaluator.EvaluateDouble(clonedParameters[2].Value);
                     maxStep = context.Evaluator.EvaluateDouble(clonedParameters[3].Value);
-                    args = new double[] { step.Value, final.Value, maxStep.Value, start.Value };
                     break;
                 default:
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".TRAN control - Too many parameters for .TRAN", statement.LineInfo));
+                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, ".TRAN control - Too many parameters for .TRAN", statement.LineInfo);
                     return null;
             }
 
@@ -117,17 +113,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                                 StartTime = start ?? 0.0,
                                 StopTime = final.Value,
                                 MaxStep = maxStep ?? step.Value,
-                                InitialStep = step.Value
+                                InitialStep = step.Value,
                             });
                     }
                 }
             }
+
             tran.TimeParameters.UseIc = useIc;
 
             ConfigureCommonSettings(tran, context);
-            tran.BeforeLoad += (truncateSender, truncateArgs) =>
+            tran.BeforeLoad += (_, _) =>
             {
-                context.Evaluator.SetParameter("TIME", ((IStateful<IIntegrationMethod>)tran).State.Time, tran);
+                context.EvaluationContext.SetParameter("TIME", ((IStateful<IIntegrationMethod>)tran).State.Time, tran);
             };
             context.Result.Simulations.Add(tran);
 

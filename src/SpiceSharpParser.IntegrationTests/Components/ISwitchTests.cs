@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void PartialOnTest()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "ISwitch test",
                 "W1 1 0 V1 imodel",
                 "V2 1 0 10",
@@ -20,13 +20,35 @@ namespace SpiceSharpParser.IntegrationTests.Components
 
             var export = RunOpSimulation(netlist, "I(V2)");
             Assert.NotNull(netlist);
-            EqualsWithTol(-0.316228, export);
+            Assert.True(EqualsWithTol(-0.316228, export));
+        }
+
+        [Fact]
+        public void PartialOnInSubcktTest()
+        {
+            var netlist = GetSpiceSharpModel(
+                "ISwitch test",
+                ".SUBCKT customSwitch 1 2",
+                "W1 1 0 V1 imodel",
+                "V1 2 0 -1",
+                ".ENDS",
+                "X1 1 2 customSwitch",
+                "V2 1 0 10",
+                "R1 2 0 1",
+                ".model imodel ISWITCH (roff=100 ron=10 ioff = 0 ion = 2)",
+                ".OP",
+                ".SAVE I(V2)",
+                ".END");
+
+            var export = RunOpSimulation(netlist, "I(V2)");
+            Assert.NotNull(netlist);
+            Assert.True(EqualsWithTol(-0.316228, export));
         }
 
         [Fact]
         public void OnTest()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "ISwitch test",
                 "W1 1 0 R1 imodel",
                 "V2 1 0 10",
@@ -45,7 +67,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void OnMoreTest()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "ISwitch test",
                 "W1 1 0 R1 imodel",
                 "V2 1 0 10",
@@ -64,7 +86,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void OffTest()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "ISwitch test",
                 "W1 1 0 R1 imodel",
                 "V2 1 0 10",
@@ -77,13 +99,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
 
             var export = RunOpSimulation(netlist, "I(V2)");
             Assert.NotNull(netlist);
-            EqualsWithTol(-10.0 / 1000000.0, export);
+            Assert.True(EqualsWithTol(-10.0 / 1000000.0, export));
         }
 
         [Fact]
         public void OffMoreTest()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "ISwitch test",
                 "W1 1 0 R1 imodel",
                 "V2 1 0 10",
@@ -96,7 +118,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
 
             var export = RunOpSimulation(netlist, "I(V2)");
             Assert.NotNull(netlist);
-            EqualsWithTol(-10.0 / 1000000.0, export);
+            Assert.True(EqualsWithTol(-10.0 / 1000000.0, export));
         }
     }
 }

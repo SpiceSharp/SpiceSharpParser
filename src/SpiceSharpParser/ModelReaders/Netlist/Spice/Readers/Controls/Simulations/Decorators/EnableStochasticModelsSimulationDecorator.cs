@@ -1,10 +1,9 @@
-﻿using SpiceSharp;
-using SpiceSharp.Entities;
+﻿using SpiceSharp.Entities;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
-using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Collections.Concurrent;
@@ -15,7 +14,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
     public class EnableStochasticModelsSimulationDecorator
     {
         private readonly IReadingContext _context;
-        private readonly ConcurrentDictionary<string, Dictionary<string, double>> _lotValues = new ConcurrentDictionary<string, Dictionary<string, double>>();
+        private readonly ConcurrentDictionary<string, Dictionary<string, double>> _lotValues = new ();
 
         public EnableStochasticModelsSimulationDecorator(IReadingContext context)
         {
@@ -66,8 +65,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 {
                     var parameterName = asg.Name;
                     var currentValue = simulation.EntityBehaviors[componentModel.Name].GetProperty<double>(parameterName);
-                    var percentValue = _context.Evaluator.EvaluateDouble(parameterPercent.Tolerance.Value, simulation);
-                    double newValue = GetValueForLotParameter(_context.Evaluator.GetEvaluationContext(simulation), baseModel, parameterName, currentValue, percentValue, parameterPercent.RandomDistributionName, comparer);
+                    var percentValue = _context.EvaluationContext.GetSimulationContext(simulation).Evaluator.EvaluateDouble(parameterPercent.Tolerance.Value);
+
+                    double newValue = GetValueForLotParameter(_context.EvaluationContext.GetSimulationContext(simulation), baseModel, parameterName, currentValue, percentValue, parameterPercent.RandomDistributionName, comparer);
 
                     _context.SimulationPreparations.SetParameterBeforeTemperature(componentModel, parameterName, newValue, simulation);
                 }
@@ -85,9 +85,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 {
                     var parameterName = assignmentParameter.Name;
                     var currentValue = simulation.EntityBehaviors[componentModel.Name].GetProperty<double>(parameterName);
-                    var percentValue = _context.Evaluator.EvaluateDouble(parameterPercent.Tolerance.Value, simulation);
+                    var percentValue = _context.Evaluator.EvaluateDouble(parameterPercent.Tolerance.Value);
 
-                    var random = _context.Evaluator.GetEvaluationContext(simulation).Randomizer.GetRandomProvider(parameterPercent.RandomDistributionName);
+                    var random = _context.EvaluationContext.GetSimulationContext(simulation).Randomizer.GetRandomProvider(parameterPercent.RandomDistributionName);
                     var r = random.NextSignedDouble();
                     var newValue = currentValue + ((percentValue / 100.0) * currentValue * r);
 

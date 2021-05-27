@@ -1,4 +1,5 @@
-﻿using SpiceSharpParser.Common.Evaluation;
+﻿using SpiceSharpParser.Common;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 {
@@ -6,6 +7,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
     {
         EvaluationContext EvaluationContext { get; set; }
 
-        ISpiceNetlistCaseSensitivitySettings CaseSettings { get; set; }
+        SpiceNetlistCaseSensitivitySettings CaseSettings { get; set; }
     }
 }

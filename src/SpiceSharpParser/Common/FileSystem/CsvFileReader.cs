@@ -40,5 +40,10 @@ namespace SpiceSharpParser.Common.FileSystem
                 }
             }
         }
+
+        internal static object Read(string fullFilePath, bool v, object externalFilesEncoding)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using SpiceSharp.Simulations;
 using SpiceSharp.Simulations.IntegrationMethods;
-using System;
 using System.Linq;
 using Xunit;
 
@@ -11,7 +10,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void When_GearMethodIsSpecified_Expect_Gear()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Tran - Gear",
                 "V1 in 0 10",
                 "V2 out 0 10",
@@ -21,14 +20,14 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".OPTIONS method = gear",
                 ".END");
 
-            var tran = result.Simulations.First() as Transient;
+            var tran = model.Simulations.First() as Transient;
             Assert.True(tran.TimeParameters is Gear);
         }
 
         [Fact]
         public void When_TrapMethodIsSpecified_Expect_Trapezoidal()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Tran - Trap",
                 "V1 in 0 10",
                 "V2 out 0 10",
@@ -38,14 +37,14 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".OPTIONS method = trap",
                 ".END");
 
-            var tran = result.Simulations.First() as Transient;
+            var tran = model.Simulations.First() as Transient;
             Assert.True(tran.TimeParameters is Trapezoidal);
         }
 
         [Fact]
         public void When_TrapezoidalMethodIsSpecified_Expect_Trapezoidal()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Tran - Trap",
                 "V1 in 0 10",
                 "V2 out 0 10",
@@ -55,14 +54,14 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".OPTIONS method = trapezoidal",
                 ".END");
 
-            var tran = result.Simulations.First() as Transient;
+            var tran = model.Simulations.First() as Transient;
             Assert.True(tran.TimeParameters is Trapezoidal);
         }
 
         [Fact]
         public void When_EulerMethodIsSpecified_Expect_FixedEuler()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Tran - Trap",
                 "V1 in 0 10",
                 "V2 out 0 10",
@@ -72,7 +71,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".OPTIONS method = euler",
                 ".END");
 
-            var tran = result.Simulations.First() as Transient;
+            var tran = model.Simulations.First() as Transient;
             Assert.True(tran.TimeParameters is FixedEuler);
         }
 
@@ -80,7 +79,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         public void When_CdfPoints_GreaterThan3_Expect_NoException()
         {
             //TODO
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Monte Carlo Analysis - OP - POWER",
                 "V1 0 1 100",
                 "R1 1 0 {R}",
@@ -94,13 +93,14 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".DISTRIBUTION triangle_dist (-1,0) (0, 1) (1, 0)",
                 ".END");
 
-            RunSimulations(result);
+            var exception = Record.Exception(() => RunSimulations(model));
+            Assert.Null(exception);
         }
 
         [Fact]
         public void When_CdfPoints_LessThan4_Expect_Exception()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Monte Carlo Analysis - OP - POWER",
                 "V1 0 1 100",
                 "R1 1 0 {R}",
@@ -114,7 +114,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".DISTRIBUTION triangle_dist (-1,0) (0, 1) (1, 0)",
                 ".END");
 
-            Assert.True(result.ValidationResult.HasWarning);
+            Assert.True(model.ValidationResult.HasError);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.Expressions
         [Fact]
         public void Reference()
         {
-            var result = ParseNetlist(
+            var result = GetSpiceSharpModel(
                 "ExpressionTests - MC + OP + RANDOM",
                 "V1 0 1 100",
                 "R1 1 0 {R}",
@@ -24,7 +24,7 @@ namespace SpiceSharpParser.IntegrationTests.Expressions
         [Fact]
         public void CloningIssue()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "TABLE circuit",
                 "V1 1 0 1.5m",
                 "R1 1 0 10",

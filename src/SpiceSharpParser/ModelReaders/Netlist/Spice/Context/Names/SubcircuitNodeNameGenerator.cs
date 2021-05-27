@@ -21,13 +21,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
         /// <param name="pinInstanceNames">The names of pins.</param>
         /// <param name="globals">Global pin names.</param>
         /// <param name="isNodeNameCaseSensitive">Is node name case sensitive.</param>
+        /// <param name="separator">Separator.</param>
         public SubcircuitNodeNameGenerator(
-            string subcircuitFullName, 
-            string subCircuitName, 
-            SubCircuit currentSubCircuit, 
-            List<string> pinInstanceNames, 
+            string subcircuitFullName,
+            string subCircuitName,
+            SubCircuit currentSubCircuit,
+            List<string> pinInstanceNames,
             IEnumerable<string> globals,
-            bool isNodeNameCaseSensitive, 
+            bool isNodeNameCaseSensitive,
             string separator)
         {
             RootName = subCircuitName ?? throw new ArgumentNullException(nameof(subCircuitName));
@@ -57,14 +58,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
             IsNodeNameCaseSensitive = isNodeNameCaseSensitive;
             InitGlobals(globals);
             Separator = separator;
-        }
-
-        public Dictionary<string, string> PinMap
-        {
-            get
-            {
-                return _pinMap;
-            }
         }
 
         public bool IsNodeNameCaseSensitive { get; }
@@ -98,7 +91,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
         /// Gets or sets children of node name generator.
         /// </summary>
         public List<INodeNameGenerator> Children { get; set; } = new List<INodeNameGenerator>();
-        
+
         public string Separator { get; }
 
         /// <summary>

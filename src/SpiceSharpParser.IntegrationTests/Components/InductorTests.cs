@@ -11,7 +11,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double L = 1.0, R = 1.0e3, i0 = 1.0;
             var tau = L / R;
 
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Inductor circuit",
                 "V1 in 0 0.0",
                 $"L1 in out {L} ic = {i0}",
@@ -23,7 +23,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
 
             var exports = RunTransientSimulation(netlist, "V(out)");
             Func<double, double> references = t => t > 0 ? i0 * R * Math.Exp(-t / tau) : 0.0;
-            EqualsWithTol(exports, references);
+            Assert.True(EqualsWithTol(exports, references));
         }
 
         [Fact]
@@ -32,7 +32,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double L = 1.0, R = 1.0e3, i0 = 1.0;
             var tau = L / 2.0 / R;
 
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Inductor circuit",
                 "V1 in 0 0.0",
                 $"L1 in out {L} ic = {i0} m = 2",
@@ -44,7 +44,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
 
             var exports = RunTransientSimulation(netlist, "V(out)");
             Func<double, double> references = t => t > 0 ? i0 * R * Math.Exp(-t / tau) : 0.0;
-            EqualsWithTol(exports, references);
+            Assert.True(EqualsWithTol(exports, references));
         }
     }
 }

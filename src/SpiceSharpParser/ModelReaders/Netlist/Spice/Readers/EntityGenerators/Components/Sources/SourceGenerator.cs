@@ -17,7 +17,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             Component component,
             bool isCurrentSource)
         {
-            var originalParameters = parameters;
             parameters = parameters.Skip(VoltageSource.PinCount);
 
             var acParameter = parameters.FirstOrDefault(p => p.Value.ToLower() == "ac");
@@ -90,7 +89,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     }
                     else
                     {
-                        context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Unsupported waveform: {bp.Name}", bp.LineInfo));
+                        context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, $"Unsupported waveform: {bp.Name}", bp.LineInfo);
                     }
                 }
                 else
@@ -103,7 +102,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         }
                         else
                         {
-                            context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Unsupported waveform: {wp}", wp.LineInfo));
+                            context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, $"Unsupported waveform: {wp}", wp.LineInfo);
                         }
                     }
 
@@ -115,7 +114,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         }
                         else
                         {
-                            context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Unsupported waveform: {assignmentParameter.Name}", assignmentParameter.LineInfo));
+                            context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, $"Unsupported waveform: {assignmentParameter.Name}", assignmentParameter.LineInfo);
                         }
                     }
                 }
@@ -138,12 +137,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var mParameter = parameters.First(p => p is AssignmentParameter m && m.Name.ToLower() == "m");
                 context.SetParameter(component, "m", mParameter);
             }
-
-
-            context.CreateNodes(component, originalParameters);
         }
 
-        protected string CreatePolyExpression(int dimension, ParameterCollection parameters, bool isVoltageControlled, EvaluationContext context)
+        protected string CreatePolyExpression(int dimension, ParameterCollection parameters, bool isVoltageControlled, IEvaluationContext context)
         {
             if (isVoltageControlled)
             {

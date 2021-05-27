@@ -232,13 +232,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
             return null;
         }
 
-        public void SetModel(Entity entity, Simulation simulation, Parameter modelNameParameter, string exceptionMessage, Action<Context.Models.Model> setModelAction, IReadingContext context)
+        public void SetModel(Entity entity, Simulation simulation, Parameter modelNameParameter, string exceptionMessage, Action<Model> setModelAction, IReadingContext context)
         {
             var model = FindModelEntity(modelNameParameter.Value);
 
             if (model == null)
             {
-                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, exceptionMessage, modelNameParameter.LineInfo));
+                context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, exceptionMessage, modelNameParameter.LineInfo);
                 return;
             }
 

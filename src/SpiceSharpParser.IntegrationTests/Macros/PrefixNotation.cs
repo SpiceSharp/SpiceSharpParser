@@ -20,9 +20,8 @@ namespace SpiceSharpParser.IntegrationTests.Macros
                 ".OP",
                 ".END");
 
-            Assert.False(result.ValidationResult.Lexing.HasError);
-            Assert.False(result.ValidationResult.Reading.HasError);
-            Assert.False(result.ValidationResult.Reading.HasWarning);
+            Assert.False(result.ValidationResult.HasError);
+            Assert.False(result.ValidationResult.HasWarning);
         }
 
         [Fact]
@@ -41,9 +40,8 @@ namespace SpiceSharpParser.IntegrationTests.Macros
                 ".OP",
                 ".END");
 
-            Assert.False(result.ValidationResult.Lexing.HasError);
-            Assert.False(result.ValidationResult.Reading.HasError);
-            Assert.False(result.ValidationResult.Reading.HasWarning);
+            Assert.False(result.ValidationResult.HasError);
+            Assert.False(result.ValidationResult.HasWarning);
         }
 
         [Fact]
@@ -62,9 +60,8 @@ namespace SpiceSharpParser.IntegrationTests.Macros
                 ".OP",
                 ".END");
 
-            Assert.False(result.ValidationResult.Lexing.HasError);
-            Assert.False(result.ValidationResult.Reading.HasError);
-            Assert.False(result.ValidationResult.Reading.HasWarning);
+            Assert.False(result.ValidationResult.HasError);
+            Assert.False(result.ValidationResult.HasWarning);
         }
 
         [Fact]
@@ -83,9 +80,8 @@ namespace SpiceSharpParser.IntegrationTests.Macros
                 ".OP",
                 ".END");
 
-            Assert.False(result.ValidationResult.Lexing.HasError);
-            Assert.False(result.ValidationResult.Reading.HasError);
-            Assert.False(result.ValidationResult.Reading.HasWarning);
+            Assert.False(result.ValidationResult.HasError);
+            Assert.False(result.ValidationResult.HasWarning);
         }
 
         [Fact]
@@ -104,9 +100,8 @@ namespace SpiceSharpParser.IntegrationTests.Macros
                 ".OP",
                 ".END");
 
-            Assert.False(result.ValidationResult.Lexing.HasError);
-            Assert.False(result.ValidationResult.Reading.HasError);
-            Assert.False(result.ValidationResult.Reading.HasWarning);
+            Assert.False(result.ValidationResult.HasError);
+            Assert.False(result.ValidationResult.HasWarning);
         }
     }
 }

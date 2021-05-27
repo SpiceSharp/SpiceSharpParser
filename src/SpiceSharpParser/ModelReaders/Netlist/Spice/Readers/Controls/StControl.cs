@@ -28,12 +28,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
             if (statement.Parameters.Count < 3)
             {
-                context.Result.ValidationResult.Add(
-                    new ValidationEntry(
-                        ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Warning,
-                        "Too less parameters for .ST",
-                        statement.LineInfo));
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    "Too few parameters for .ST",
+                    statement.LineInfo);
             }
 
             string firstParam = statement.Parameters[0].Value;
@@ -69,9 +67,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 Parameter = variableParameter,
                 Sweep = new LinearSweep(
-                    context.Evaluator.EvaluateDouble(parameters[1].Value),
-                    context.Evaluator.EvaluateDouble(parameters[2].Value),
-                    context.Evaluator.EvaluateDouble(parameters[3].Value)),
+                    context.EvaluationContext.Evaluator.EvaluateDouble(parameters[1].Value),
+                    context.EvaluationContext.Evaluator.EvaluateDouble(parameters[2].Value),
+                    context.EvaluationContext.Evaluator.EvaluateDouble(parameters[3].Value)),
             };
 
             context.SimulationConfiguration.ParameterSweeps.Add(pSweep);
@@ -84,9 +82,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 Parameter = variableParameter,
                 Sweep = new DecadeSweep(
-                    context.Evaluator.EvaluateDouble(parameters[1].Value),
-                    context.Evaluator.EvaluateDouble(parameters[2].Value),
-                    (int)context.Evaluator.EvaluateDouble(parameters[3].Value)),
+                    context.EvaluationContext.Evaluator.EvaluateDouble(parameters[1].Value),
+                    context.EvaluationContext.Evaluator.EvaluateDouble(parameters[2].Value),
+                    (int)context.EvaluationContext.Evaluator.EvaluateDouble(parameters[3].Value)),
             };
 
             context.SimulationConfiguration.ParameterSweeps.Add(pSweep);
@@ -99,9 +97,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 Parameter = variableParameter,
                 Sweep = new OctaveSweep(
-                    context.Evaluator.EvaluateDouble(parameters[1].Value),
-                    context.Evaluator.EvaluateDouble(parameters[2].Value),
-                    (int)context.Evaluator.EvaluateDouble(parameters[3].Value)),
+                    context.EvaluationContext.Evaluator.EvaluateDouble(parameters[1].Value),
+                    context.EvaluationContext.Evaluator.EvaluateDouble(parameters[2].Value),
+                    (int)context.EvaluationContext.Evaluator.EvaluateDouble(parameters[3].Value)),
             };
 
             context.SimulationConfiguration.ParameterSweeps.Add(pSweep);
@@ -116,16 +114,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 if (!(parameter is SingleParameter))
                 {
-                    context.Result.ValidationResult.Add(
-                        new ValidationEntry(
-                            ValidationEntrySource.Reader,
-                            ValidationEntryLevel.Warning,
-                            ".ST list needs to have single parameters",
-                            parameter.LineInfo));
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        ".ST list needs to have single parameters",
+                        parameter.LineInfo);
                     continue;
                 }
 
-                values.Add(context.Evaluator.EvaluateDouble(parameter.Value));
+                values.Add(context.EvaluationContext.Evaluator.EvaluateDouble(parameter.Value));
             }
 
             context.SimulationConfiguration.ParameterSweeps.Add(

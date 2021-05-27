@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void CurrentControlledCurrentSource()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Current controlled current source",
                 "V1 1 0 100",
                 "R1 1 0 10",
@@ -25,7 +25,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void CurrentControlledVoltageSource()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Current controlled voltage source",
                 "V1 1 0 100",
                 "R1 1 0 10",

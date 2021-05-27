@@ -1,5 +1,4 @@
 ﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
-using System;
 using System.Text;
 
 namespace SpiceSharpParser.Models.Netlist.Spice

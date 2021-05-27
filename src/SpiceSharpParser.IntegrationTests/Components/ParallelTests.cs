@@ -28,17 +28,20 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".END"};
 
             var text = string.Join(Environment.NewLine, lines);
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = true;
-            parser.Settings.Reading.ExpandSubcircuits = false;
 
-            var netlist = parser.ParseNetlist(text).SpiceModel;
+            var parseResult = parser.ParseNetlist(text);
 
-            double export = RunOpSimulation(netlist, "I(V1)");
+            var reader = new SpiceSharpReader();
+            reader.Settings.ExpandSubcircuits = false;
+            var spiceModel = reader.Read(parseResult.FinalModel);
+
+            double export = RunOpSimulation(spiceModel, "I(V1)");
 
             double[] references = { -10.0 / 9.0 };
 
-            EqualsWithTol(new double[] { export }, references);
+            Assert.True(EqualsWithTol(new double[] { export }, references));
         }
 
         [Fact]
@@ -64,17 +67,19 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".END"};
 
             var text = string.Join(Environment.NewLine, lines);
-            var parser = new SpiceParser();
+            var parser = new SpiceNetlistParser();
             parser.Settings.Lexing.HasTitle = true;
-            parser.Settings.Reading.ExpandSubcircuits = false;
 
-            var netlist = parser.ParseNetlist(text).SpiceModel;
+            var parseResult = parser.ParseNetlist(text);
+            var reader = new SpiceSharpReader();
+            reader.Settings.ExpandSubcircuits = false;
+            var spiceModel = reader.Read(parseResult.FinalModel);
 
-            double export = RunOpSimulation(netlist, "I(V1)");
+            double export = RunOpSimulation(spiceModel, "I(V1)");
 
             double[] references = { -10.0 / 9.0 };
 
-            EqualsWithTol(new double[] { export }, references);
+            Assert.True(EqualsWithTol(new double[] { export }, references));
         }
     }
 }

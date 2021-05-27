@@ -12,7 +12,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
     /// </summary>
     public class Statements : SpiceObject, IEnumerable<Statement>
     {
-        private readonly List<Statement> _list = null;
+        private readonly List<Statement> _list;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Statements"/> class.
@@ -220,7 +220,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
 
                 if (_list.IndexOf(statement) == _list.Count - 1)
                 {
-                    builder.Append(statement.ToString());
+                    builder.Append(statement);
                 }
                 else
                 {

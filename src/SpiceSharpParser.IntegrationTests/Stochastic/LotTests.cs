@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
         [Fact]
         public void LotMultipleComponentsSameModel()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Lot - Diodes circuit",
                 "D1 OUT 0 1N914",
                 "D2 OUT 0 1N914",
@@ -32,7 +32,7 @@ namespace SpiceSharpParser.IntegrationTests.Stochastic
         [Fact]
         public void LotMultipleComponentsSameModelCustomDistribution()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Lot - Diodes circuit",
                 "D1 OUT 0 1N914",
                 "D2 OUT 0 1N914",

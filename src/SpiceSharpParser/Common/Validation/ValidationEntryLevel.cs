@@ -2,8 +2,8 @@
 {
     public enum ValidationEntryLevel
     {
-        Warning,
-
         Error,
+
+        Warning,
     }
 }

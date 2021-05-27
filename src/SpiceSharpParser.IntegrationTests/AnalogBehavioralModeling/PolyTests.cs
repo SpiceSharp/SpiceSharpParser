@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_OnlyPoly_Expect_Error()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Poly(1) E test circuit - first format",
                 "R1 1 0 100",
                 "V1 1 0 2",
@@ -24,7 +24,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void VoltageControlledVoltageSourceFormatWithoutDimension()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Poly(1) E test circuit - first format",
                 "R1 1 0 100",
                 "V1 1 0 2",
@@ -44,7 +44,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_PolyWithoutDimension_Expect_Error()
         {
-            var result = ParseNetlist(
+            var result = GetSpiceSharpModel(
                 "Poly(1) E test circuit - first format",
                 "R1 1 0 100",
                 "V1 1 0 2",
@@ -59,7 +59,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void VoltageControlledVoltageSourceFirstFormat()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Poly(1) E test circuit - first format",
                 "R1 1 0 100",
                 "V1 1 0 2",
@@ -79,7 +79,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void VoltageControlledVoltageSourceSecondFormat()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Poly(1) E test circuit - second format",
                 "R1 1 0 100",
                 "V1 1 0 2",
@@ -98,7 +98,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void VoltageControlledVoltageSourceFirstFormatSecondDimension()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Poly(1) E test circuit - first format",
                 "R1 1 0 100",
                 "V1 1 0 2",
@@ -119,7 +119,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void VoltageControlledVoltageSourceSecondFormatSecondDimension()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Poly(1) E test circuit - second format",
                 "R1 1 0 100",
                 "V1 1 0 2",
@@ -140,7 +140,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_MissingVariablePoint_Expect_Error()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Poly(1) E test circuit - second format",
                 "R1 1 0 100",
                 "V1 1 0 2",
@@ -157,7 +157,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_MissingVariableDouble_Expect_Error()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Poly(1) E test circuit - second format",
                 "R1 1 0 100",
                 "V1 1 0 2",
@@ -174,7 +174,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void VoltageControlledVoltageSourceThirdFormatSecondDimension()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Poly(1) E test circuit - third format",
                 "R1 1 0 100",
                 "V1 1 0 2",
@@ -195,7 +195,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void VoltageControlledCurrentSourceFormatWithoutDimension()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Poly(1) G test circuit",
                 "R1 1 0 100",
                 "V1 2 0 2",
@@ -215,7 +215,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void VoltageControlledCurrentSourceFirstFormat()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Poly(1) G test circuit",
                 "R1 1 0 100",
                 "V1 2 0 2",
@@ -235,7 +235,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void VoltageControlledCurrentSourceSecondFormat()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Poly(1) G test circuit",
                 "R1 1 0 100",
                 "V1 2 0 2",
@@ -255,7 +255,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void VoltageControlledCurrentSourceThirdFormat()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Poly(1) G test circuit",
                 "R1 1 0 100",
                 "V1 2 0 2",
@@ -275,7 +275,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void CurrentControlledCurrentSource()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Poly(1) F test circuit",
                 "R1 1 0 100",
                 "R2 1 0 200",
@@ -297,7 +297,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void CurrentControlledCurrentSourceWithoutDimension()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Poly(1) F test circuit",
                 "R1 1 0 100",
                 "R2 1 0 200",
@@ -319,7 +319,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void CurrentControlledVoltageSource()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Poly(1) H test circuit",
                 "R1 1 0 100",
                 "I1 1 0 2",
@@ -339,7 +339,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void CurrentControlledVoltageSourceWithoutDimension()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Poly(1) H test circuit",
                 "R1 1 0 100",
                 "I1 1 0 2",

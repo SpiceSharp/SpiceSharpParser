@@ -34,7 +34,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
             }
 
             // Apply common updates
-            simulation.BeforeSetup += (object sender, EventArgs args) =>
+            simulation.BeforeSetup += (_, _) =>
             {
                 foreach (var action in CommonBeforeSetupActions)
                 {
@@ -55,7 +55,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
             BiasingSimulation biasingSimulation = simulation as BiasingSimulation;
             if (biasingSimulation != null)
             {
-                biasingSimulation.BeforeTemperature += (object sender, TemperatureStateEventArgs args) =>
+                biasingSimulation.BeforeTemperature += (_, _) =>
                 {
                     foreach (var action in CommonBeforeTemperatureActions)
                     {

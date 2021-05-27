@@ -4,6 +4,7 @@ using System.Linq;
 using SpiceSharp.Components;
 using SpiceSharp.Entities;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
@@ -25,12 +26,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             SubCircuit subCircuit = FindSubcircuitDefinition(parameters, context);
             bool hasParameters = GetAssigmentParametersCount(parameters, out _) != 0;
 
-            if (context.ExpandSubcircuits || hasParameters)
+            if (context.ReaderSettings.ExpandSubcircuits || hasParameters)
             {
                 IReadingContext subCircuitContext = CreateExpandedSubcircuitContext(componentIdentifier, originalName, subCircuit, parameters, context);
                 context.Children.Add(subCircuitContext);
                 CreateSubcircuitContent(context, subCircuit, subCircuitContext);
-                subCircuitContext.Evaluator.SetEntites(subCircuitContext.ContextEntities);
+                subCircuitContext.EvaluationContext.SetEntities(subCircuitContext.ContextEntities);
 
                 foreach (var entity in subCircuitContext.ContextEntities)
                 {
@@ -47,7 +48,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 if (!subCircuitContext.AvailableSubcircuitDefinitions.TryGetValue(subCircuit.Name, out var subCircuitDefinition))
                 {
                     CreateSubcircuitContent(context, subCircuit, subCircuitContext);
-                    subCircuitContext.Evaluator.SetEntites(subCircuitContext.ContextEntities);
+                    subCircuitContext.EvaluationContext.SetEntities(subCircuitContext.ContextEntities);
                     subCircuitDefinition = new SubcircuitDefinition(subCircuitContext.ContextEntities, subCircuit.Pins.Select(p => p.ToString()).ToArray());
                     context.AvailableSubcircuitDefinitions[subCircuit.Name] = subCircuitDefinition;
                 }
@@ -62,13 +63,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
         private void CreateSubcircuitContent(IReadingContext context, SubCircuit subCircuit, IReadingContext subCircuitContext)
         {
-            var ifPreprocessor = new IfPreprocessor();
-            ifPreprocessor.CaseSettings = subCircuitContext.CaseSensitivity;
-            ifPreprocessor.Validation = new SpiceParserValidationResult()
-            {
-                Reading = context.Result.ValidationResult,
-            };
-            ifPreprocessor.EvaluationContext = subCircuitContext.Evaluator.GetEvaluationContext();
+            var ifPreprocessor = new IfProcessor();
+            ifPreprocessor.CaseSettings = subCircuitContext.ReaderSettings.CaseSensitivity;
+            ifPreprocessor.Validation = context.Result.ValidationResult;
+            ifPreprocessor.EvaluationContext = subCircuitContext.EvaluationContext;
             subCircuit.Statements = ifPreprocessor.Process(subCircuit.Statements);
 
             ReadParamControl(subCircuit, subCircuitContext);
@@ -194,12 +192,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             if (result == null)
             {
-                context.Result.ValidationResult.Add(
-                    new ValidationEntry(
-                        ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Error,
-                        $"Could not find '{subCircuitDefinitionName}' subcircuit",
-                        parameters.LineInfo));
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    $"Could not find '{subCircuitDefinitionName}' subcircuit",
+                    parameters.LineInfo);
             }
 
             return result;
@@ -223,7 +219,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return result;
         }
 
-        private static int GetAssigmentParametersCount(ParameterCollection parameters, out List<AssignmentParameter> subCktParameters)
+        private int GetAssigmentParametersCount(ParameterCollection parameters, out List<AssignmentParameter> subCktParameters)
         {
             var parameterParameters = 0;
             subCktParameters = new List<AssignmentParameter>();
@@ -253,13 +249,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </summary>
         /// <param name="subCiruitDefiniton">Subcircuit definition.</param>
         /// <param name="subCircuitParameters">Subcircuit parameters.</param>
-        /// <param name="circuitContext">Reading context.</param>
+        /// <param name="readingContext">Reading context.</param>
         /// <returns>
         /// A dictionary of parameters.
         /// </returns>
-        private Dictionary<string, string> CreateSubcircuitParameters(SubCircuit subCiruitDefiniton, List<AssignmentParameter> subCircuitParameters, IReadingContext circuitContext)
+        private Dictionary<string, string> CreateSubcircuitParameters(SubCircuit subCiruitDefiniton, List<AssignmentParameter> subCircuitParameters, IReadingContext readingContext)
         {
-            var result = new Dictionary<string, string>(StringComparerProvider.Get(circuitContext.CaseSensitivity.IsParameterNameCaseSensitive));
+            var result = new Dictionary<string, string>(StringComparerProvider.Get(readingContext.ReaderSettings.CaseSensitivity.IsParameterNameCaseSensitive));
 
             foreach (var defaultParameter in subCiruitDefiniton.DefaultParameters)
             {
@@ -275,7 +271,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 if (parameterName == result[parameterName])
                 {
-                    result[parameterName] = circuitContext.Evaluator.EvaluateDouble(parameterName).ToString(CultureInfo.InvariantCulture);
+                    result[parameterName] = readingContext.EvaluationContext.Evaluator.EvaluateDouble(parameterName).ToString(CultureInfo.InvariantCulture);
                 }
             }
 
@@ -314,7 +310,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 subCircuitDefinition,
                 pinInstanceIdentifiers,
                 context.NameGenerator.Globals,
-                context.CaseSensitivity.IsEntityNamesCaseSensitive,
+                context.ReaderSettings.CaseSensitivity.IsEntityNamesCaseSensitive,
                 context.NameGenerator.Separator);
 
             var subcircuitObjectNameGenerator = context.NameGenerator.CreateChildNameGenerator(subcircuitName);
@@ -323,27 +319,26 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 subcircuitObjectNameGenerator);
 
             context.NameGenerator.AddChild(subcircuitNodeNameGenerator);
-            var subcircuitEvaluationContext = context.Evaluator.CreateChildContext(subcircuitFullName, true);
+
+            var subcircuitEvaluationContext = context.EvaluationContext.CreateChildContext(subcircuitFullName, true);
             subcircuitEvaluationContext.SetParameters(subcircuitParameters);
             subcircuitEvaluationContext.NameGenerator = subcircuitNameGenerator;
 
-            var subcircuitEvaluator = new Evaluator(new SimulationEvaluationContexts(subcircuitEvaluationContext), subcircuitEvaluationContext);
+            var settings = context.ReaderSettings.Clone();
+            settings.ExpandSubcircuits = true;
 
             var subcircuitContext = new ReadingContext(
                 subcircuitName,
                 context,
-                subcircuitEvaluator,
+                subcircuitEvaluationContext,
                 context.SimulationPreparations,
                 subcircuitNameGenerator,
                 context.StatementsReader,
                 context.WaveformReader,
-                context.CaseSensitivity,
                 context.Exporters,
-                context.WorkingDirectory,
-                true,
                 context.SimulationConfiguration,
                 context.Result,
-                context.ExternalFilesEncoding);
+                settings);
 
             subcircuitEvaluationContext.CircuitContext = subcircuitContext;
 
@@ -366,27 +361,25 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             GetAssigmentParametersCount(parameters, out var subCktParameters);
             var subcircuitParameters = CreateSubcircuitParameters(subCircuitDefinition, subCktParameters, context);
 
-            var subcircuitEvaluationContext = context.Evaluator.CreateChildContext(subcircuitFullName, true);
+            var subcircuitEvaluationContext = context.EvaluationContext.CreateChildContext(subcircuitFullName, true);
             subcircuitEvaluationContext.SetParameters(subcircuitParameters);
+            subcircuitEvaluationContext.Evaluator = new Evaluator(subcircuitEvaluationContext, context.Evaluator.ExpressionValueProvider);
 
-            var subcircuitEvaluator = 
-                new Evaluator(new SimulationEvaluationContexts(subcircuitEvaluationContext), subcircuitEvaluationContext);
+            var settings = context.ReaderSettings.Clone();
+            settings.ExpandSubcircuits = false;
 
             var subcircuitContext = new ReadingContext(
                 subcircuitName,
                 context,
-                subcircuitEvaluator,
+                subcircuitEvaluationContext,
                 context.SimulationPreparations,
                 context.NameGenerator,
                 context.StatementsReader,
                 context.WaveformReader,
-                context.CaseSensitivity,
                 context.Exporters,
-                context.WorkingDirectory,
-                false,
                 context.SimulationConfiguration,
                 context.Result,
-                context.ExternalFilesEncoding);
+                settings);
 
             subcircuitEvaluationContext.CircuitContext = subcircuitContext;
 

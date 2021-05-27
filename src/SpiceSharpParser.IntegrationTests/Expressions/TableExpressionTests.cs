@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.Expressions
         [Fact]
         public void TableVoltage()
         {
-            var result = ParseNetlist(
+            var result = GetSpiceSharpModel(
                 "ExpressionTests - Table + Voltage",
                 "V1 0 1 1.5",
                 "V2 1 2 {X}",
@@ -28,7 +28,7 @@ namespace SpiceSharpParser.IntegrationTests.Expressions
         [Fact]
         public void TableMin()
         {
-            var result = ParseNetlist(
+            var result = GetSpiceSharpModel(
                 "ExpressionTests - Table min",
                 "V1 0 1 150",
                 "V2 1 2 1.5",
@@ -49,7 +49,7 @@ namespace SpiceSharpParser.IntegrationTests.Expressions
         [Fact]
         public void TableAvg()
         {
-            var result = ParseNetlist(
+            var result = GetSpiceSharpModel(
                 "ExpressionTests - Table interpolation",
                 "V1 0 1 150",
                 "V2 1 2 1.5",
@@ -70,7 +70,7 @@ namespace SpiceSharpParser.IntegrationTests.Expressions
         [Fact]
         public void TableMax()
         {
-            var result = ParseNetlist(
+            var result = GetSpiceSharpModel(
                 "ExpressionTests - Table max",
                 "V1 0 1 150",
                 "V2 1 2 1.5",

@@ -37,22 +37,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 case 0:
                     if (statement.Parameters.Count == 0)
                     {
-                        context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".dc - Source Name expected", statement.LineInfo));
+                        context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, ".dc - Source Name expected", statement.LineInfo);
                         return null;
                     }
 
                     break;
 
                 case 1:
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".dc - Start value expected", statement.LineInfo));
+                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, ".dc - Start value expected", statement.LineInfo);
                     return null;
 
                 case 2:
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".dc - Stop value expected", statement.LineInfo));
+                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, ".dc - Stop value expected", statement.LineInfo);
                     return null;
 
                 case 3:
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".dc - Step value expected", statement.LineInfo));
+                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, ".dc - Step value expected", statement.LineInfo);
                     return null;
             }
 

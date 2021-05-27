@@ -7,14 +7,17 @@ using SpiceSharp.Components;
 using SpiceSharp.Entities;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
+using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using SpiceSharpParser.Parsers.Expression;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -28,51 +31,49 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         /// <param name="contextName">Name of the context.</param>
         /// <param name="parent">Parent of the context.</param>
-        /// <param name="evaluator">Circuit evaluator.</param>
+        /// <param name="evaluationContext">Evaluation context.</param>
         /// <param name="simulationPreparations">Simulation preparations.</param>
-        /// <param name="resultService">SpiceModel service for the context.</param>
         /// <param name="nameGenerator">Name generator for the models.</param>
         /// <param name="statementsReader">Statements reader.</param>
         /// <param name="waveformReader">Waveform reader.</param>
-        /// <param name="caseSettings">Case settings.</param>
         /// <param name="exporters">Exporters.</param>
-        /// <param name="workingDirectory">Working directory.</param>
-        /// <param name="instanceData">Instance data.</param>
+        /// <param name="simulationConfiguration">Simulation configuration.</param>
+        /// <param name="result">Result.</param>
+        /// <param name="readerSettings">Reader settings.</param>
         public ReadingContext(
             string contextName,
             IReadingContext parent,
-            IEvaluator evaluator,
+            EvaluationContext evaluationContext,
             ISimulationPreparations simulationPreparations,
             INameGenerator nameGenerator,
             ISpiceStatementsReader statementsReader,
             IWaveformReader waveformReader,
-            ISpiceNetlistCaseSensitivitySettings caseSettings,
             IMapper<Exporter> exporters,
-            string workingDirectory,
-            bool expandSubcircuits,
             SimulationConfiguration simulationConfiguration,
-            SpiceModel<Circuit, Simulation> result,
-            Encoding encoding)
+            SpiceSharpModel result,
+            SpiceNetlistReaderSettings readerSettings)
         {
             Name = contextName ?? throw new ArgumentNullException(nameof(contextName));
-            Evaluator = evaluator;
+            EvaluationContext = evaluationContext;
             SimulationPreparations = simulationPreparations;
             NameGenerator = nameGenerator ?? throw new ArgumentNullException(nameof(nameGenerator));
             Parent = parent;
             Children = new List<IReadingContext>();
-            CaseSensitivity = caseSettings;
             StatementsReader = statementsReader;
             WaveformReader = waveformReader;
             AvailableSubcircuits = CreateAvailableSubcircuitsCollection();
             AvailableSubcircuitDefinitions = CreateAvailableSubcircuitDefinitions();
-            ModelsRegistry = CreateModelsRegistry();
+            ReaderSettings = readerSettings;
             Exporters = exporters;
-            WorkingDirectory = workingDirectory;
-            ContextEntities = new Circuit(new EntityCollection(StringComparerProvider.Get(caseSettings.IsEntityNamesCaseSensitive)));
-            ExpandSubcircuits = expandSubcircuits;
+            ContextEntities = new Circuit(new EntityCollection(StringComparerProvider.Get(readerSettings.CaseSensitivity.IsEntityNamesCaseSensitive)));
             SimulationConfiguration = simulationConfiguration;
             Result = result;
-            ExternalFilesEncoding = encoding;
+
+            ModelsRegistry = CreateModelsRegistry();
+
+            EvaluationContext.Seed = readerSettings.Seed;
+            EvaluationContext.SetEntities(ContextEntities);
+            EvaluationContext.CircuitContext = this;
         }
 
         /// <summary>
@@ -80,16 +81,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         public SimulationConfiguration SimulationConfiguration { get; }
 
-        public SpiceModel<Circuit, Simulation> Result { get; }
+        public SpiceSharpModel Result { get; }
 
-        public Encoding ExternalFilesEncoding { get; set; }
-
-        public string Separator { get; }
-
-        /// <summary>
-        /// Gets the working directory.
-        /// </summary>
-        public string WorkingDirectory { get; }
+        public SpiceNetlistReaderSettings ReaderSettings { get; }
 
         /// <summary>
         /// Gets the name of context.
@@ -105,11 +99,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// Gets exporter mapper.
         /// </summary>
         public IMapper<Exporter> Exporters { get; }
-
-        /// <summary>
-        /// Gets the evaluator.
-        /// </summary>
-        public IEvaluator Evaluator { get; }
 
         /// <summary>
         /// Gets simulation parameters.
@@ -148,14 +137,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         public IWaveformReader WaveformReader { get;  }
 
-        /// <summary>
-        /// Gets the case sensitivity settings.
-        /// </summary>
-        public ISpiceNetlistCaseSensitivitySettings CaseSensitivity { get; }
-
         public Circuit ContextEntities { get; set; }
 
-        public bool ExpandSubcircuits { get; }
+        public EvaluationContext EvaluationContext { get; set; }
+
+        public IEvaluator Evaluator => EvaluationContext.Evaluator;
 
         /// <summary>
         /// Sets voltage initial condition for node.
@@ -204,7 +190,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         /// <param name="component">A component.</param>
         /// <param name="parameters">Parameters of component.</param>
-        public void CreateNodes(SpiceSharp.Components.IComponent component, ParameterCollection parameters)
+        public void CreateNodes(IComponent component, ParameterCollection parameters)
         {
             if (component == null)
             {
@@ -225,7 +211,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             for (var i = 0; i < component.Nodes.Count; i++)
             {
                 string pinName = parameters.Get(i).Value;
-                if (ExpandSubcircuits)
+                if (ReaderSettings.ExpandSubcircuits)
                 {
                     nodes[i] = NameGenerator.GenerateNodeName(pinName);
                 }
@@ -275,7 +261,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
         }
 
-        public void SetParameter(IEntity entity, string parameterName, string expression, bool beforeTemperature = true, Simulation simulation = null)
+        public void SetParameter(IEntity entity, string parameterName, string expression, bool beforeTemperature = true, Simulation simulation = null, bool logError = true)
         {
             if (entity == null)
             {
@@ -292,18 +278,38 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            double value = Evaluator.EvaluateDouble(expression, simulation);
-            entity.SetParameter(parameterName, value);
-            var context = Evaluator.GetEvaluationContext(simulation);
-
-            bool shouldBeUpdatedBeforeTemperature = (context.HaveSpiceProperties(expression)
-                             || context.HaveFunctions(expression)
-                             || context.GetExpressionParameters(expression, false).Any())
-                             && beforeTemperature;
-
-            if (shouldBeUpdatedBeforeTemperature)
+            try
             {
-                SimulationPreparations.SetParameterBeforeTemperature(entity, parameterName, expression);
+                var context = simulation != null
+                    ? EvaluationContext.GetSimulationContext(simulation)
+                    : EvaluationContext;
+                double value = context.Evaluator.EvaluateDouble(expression);
+                entity.SetParameter(parameterName, value);
+
+                bool shouldBeUpdatedBeforeTemperature = (context.HaveSpiceProperties(expression)
+                                                         || context.HaveFunctions(expression)
+                                                         || context.GetExpressionParameters(expression, false).Any())
+                                                        && beforeTemperature;
+
+                if (shouldBeUpdatedBeforeTemperature)
+                {
+                    SimulationPreparations.SetParameterBeforeTemperature(entity, parameterName, expression);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (logError)
+                {
+                    Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        $"Problem with setting parameter {parameterName} for {entity.Name}",
+                        null,
+                        ex);
+                }
+                else
+                {
+                    throw;
+                }
             }
         }
 
@@ -338,18 +344,49 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             try
             {
-                SetParameter(entity, parameterName, expression, beforeTemperature, simulation);
+                SetParameter(entity, parameterName, expression, beforeTemperature, simulation, logError: false);
             }
             catch (Exception e)
             {
-                Result.ValidationResult.Add(
-                    new ValidationEntry(
-                        ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Warning,
-                        $"Problem with setting parameter {parameter}",
-                        parameter.LineInfo,
-                        exception: e));
+                Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    $"Problem with setting parameter {parameter}",
+                    parameter.LineInfo,
+                    exception: e);
             }
+        }
+
+        public ExpressionParser CreateExpressionParser(Simulation simulation)
+        {
+            var evalContext = simulation != null
+                ? EvaluationContext.GetSimulationContext(simulation)
+                : EvaluationContext;
+
+            var variablesFactory = new VariablesFactory();
+
+            var parser = new ExpressionParser(
+                new CustomRealBuilder(evalContext, ReaderSettings.CaseSensitivity, false, variablesFactory),
+                false);
+
+            return parser;
+        }
+
+        public ExpressionResolver CreateExpressionResolver(Simulation simulation)
+        {
+            var evalContext = simulation != null
+                ? EvaluationContext.GetSimulationContext(simulation)
+                : EvaluationContext;
+
+            var variablesFactory = new VariablesFactory();
+
+            var parser = new ExpressionResolver(
+                new CustomRealBuilder(evalContext,  ReaderSettings.CaseSensitivity, false, variablesFactory),
+                EvaluationContext,
+                false,
+                ReaderSettings.CaseSensitivity,
+                variablesFactory);
+
+            return parser;
         }
 
         protected ICollection<SubCircuit> CreateAvailableSubcircuitsCollection()
@@ -394,7 +431,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 var generators = new List<INameGenerator>();
                 generators.Add(NameGenerator);
-                return new StochasticModelsRegistry(generators, CaseSensitivity.IsEntityNamesCaseSensitive);
+                return new StochasticModelsRegistry(generators, ReaderSettings.CaseSensitivity.IsEntityNamesCaseSensitive);
             }
         }
     }

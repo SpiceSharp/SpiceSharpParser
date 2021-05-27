@@ -33,7 +33,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             Waveforms.Map("WAVE", new WaveGenerator());
             Waveforms.Map("wavefile", new WaveGenerator());
 
-
             // Register exporters
             Exporters.Map(new[] { "V", "VI", "VR", "VM", "VDB", "VPH", "VP" }, new VoltageExporter());
             Exporters.Map(new[] { "I", "IR", "II", "IM", "IDB", "IP" }, new CurrentExporter());
@@ -43,7 +42,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             Models.Map(new[] { "R", "C", "RES" }, new RLCModelGenerator());
             Models.Map("D", new DiodeModelGenerator());
             Models.Map(new[] { "NPN", "PNP" }, new BipolarModelGenerator());
-            Models.Map(new[] { "SW", "CS", "VSWITCH", "ISWITCH" }, new SwitchModelGenerator());
+            Models.Map(new[] { "SW", "CSW", "VSWITCH", "ISWITCH" }, new SwitchModelGenerator());
             Models.Map(new[] { "PMOS", "NMOS" }, new MosfetModelGenerator());
             Models.Map(new[] { "NJF", "PJF" }, new JFETModelGenerator());
 

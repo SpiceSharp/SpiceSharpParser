@@ -10,7 +10,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 
         protected List<string> ControlsAfterComponents { get; set; } = new List<string> { "plot", "print", "save", "wave" };
 
-        protected List<string> Controls { get; set; } = new List<string> { "temp", "step", "st", "nodeset", "ic", "mc", "op", "ac", "tran", "dc" };
+        protected List<string> Controls { get; set; } = new List<string> { "temp", "step", "st", "nodeset", "ic", "mc", "op", "ac", "tran", "dc", "noise" };
 
         /// <summary>
         /// Orders statements for reading.
@@ -31,6 +31,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 
         protected virtual int GetOrder(Statement statement)
         {
+            if (statement is null)
+            {
+                throw new ArgumentNullException(nameof(statement));
+            }
+
             if (statement is SubCircuit)
             {
                 return 1000;

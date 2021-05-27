@@ -9,7 +9,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void When_LineNumbers_Expect_Reference()
         {
-            var netlist = ParseNetlistToModel(
+            var netlist = ParseNetlist(
                 false,
                 true,
                 "Line numbers test circuit",
@@ -23,7 +23,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".END");
 
             Assert.Equal("Line numbers test circuit", netlist.Title);
-            Assert.Equal(5, netlist.Statements.Count());
+            Assert.Equal(5, netlist.Statements.Count);
 
             Assert.True(netlist.Statements[0] is CommentLine);
             Assert.True(netlist.Statements[0].LineInfo.LineNumber == 2);
@@ -44,7 +44,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         [Fact]
         public void When_BugInExpression_Expect_Reference()
         {
-            var result = ParseNetlist(
+            var result = GetSpiceSharpModel(
                 "Line numbers test circuit",
                 "* test1",
                 "* test2",
@@ -56,7 +56,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 "V1 OUT 0 0 $  test3.3 ; test4 $ test5",
                 ".END");
 
-            Assert.False(result.ValidationResult.HasError);
+            Assert.True(result.ValidationResult.HasError);
             Assert.Equal(7, result.ValidationResult.First().LineInfo.LineNumber);
         }
     }

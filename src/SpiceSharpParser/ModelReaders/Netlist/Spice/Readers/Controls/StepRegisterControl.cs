@@ -24,12 +24,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
             if (statement.Parameters.Count < 4)
             {
-                context.Result.ValidationResult.Add(
-                    new ValidationEntry(
-                        ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Warning,
-                        "Too less parameters for .STEP_R",
-                        statement.LineInfo));
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    "Too less parameters for .STEP_R",
+                    statement.LineInfo);
             }
 
             string firstParam = statement.Parameters[0].Value;
@@ -108,7 +106,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
         private void RegisterParameter(Parameter variableParameter, IReadingContext context)
         {
-            context.Evaluator.SetParameter(variableParameter.Value, 0);
+            context.EvaluationContext.SetParameter(variableParameter.Value, 0);
         }
     }
 }

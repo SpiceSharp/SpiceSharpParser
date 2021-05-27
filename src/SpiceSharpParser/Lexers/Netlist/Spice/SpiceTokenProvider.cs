@@ -8,10 +8,9 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
 
         public SpiceTokenProvider(bool hasTitle, bool isDotStatementCaseSensitive, bool enableBusSyntax)
         {
-            _lexer = new SpiceLexer(new SpiceLexerSettings
+            _lexer = new SpiceLexer(new SpiceLexerSettings(isDotStatementCaseSensitive)
             {
                 HasTitle = hasTitle,
-                IsDotStatementNameCaseSensitive = isDotStatementCaseSensitive,
                 EnableBusSyntax = enableBusSyntax,
             });
         }

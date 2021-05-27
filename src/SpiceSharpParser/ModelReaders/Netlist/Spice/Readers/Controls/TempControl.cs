@@ -19,7 +19,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             if (statement.Parameters.Count == 0)
             {
-                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "No parameters for .TEMP", statement.LineInfo));
+                context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, "No parameters for .TEMP", statement.LineInfo);
                 return;
             }
 
@@ -38,7 +38,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 }
                 else
                 {
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Wrong type of parameter for .TEMP: {param.GetType()}", param.LineInfo));
+                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, $"Wrong type of parameter for .TEMP: {param.GetType()}", param.LineInfo);
                 }
             }
         }

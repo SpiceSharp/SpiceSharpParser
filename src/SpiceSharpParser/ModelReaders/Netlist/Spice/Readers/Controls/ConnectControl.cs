@@ -19,7 +19,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             if (statement.Parameters.Count != 2)
             {
-                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Wrong parameter count for .CONNECT", statement.LineInfo));
+                context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, "Wrong parameter count for .CONNECT", statement.LineInfo);
                 return;
             }
 

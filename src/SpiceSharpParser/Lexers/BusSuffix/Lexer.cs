@@ -79,8 +79,8 @@ namespace SpiceSharpParser.Lexers.BusSuffix
                 '>' => TokenType.GreaterThan,
                 '(' => TokenType.LeftParenthesis,
                 ')' => TokenType.RightParenthesis,
-                char mc when mc >= '0' && mc <= '9' => TokenType.Digit,
-                char mc when (mc >= 'a' && mc <= 'z') || (mc >= 'A' && mc <= 'Z') || mc == '_' || mc == '$' => TokenType.Letter,
+                var mc when mc >= '0' && mc <= '9' => TokenType.Digit,
+                var mc when (mc >= 'a' && mc <= 'z') || (mc >= 'A' && mc <= 'Z') || mc == '_' || mc == '$' => TokenType.Letter,
                 _ => throw new Exception("Unrecognized character found: {0} at position {1}".FormatString(Current, _index)),
             };
         }

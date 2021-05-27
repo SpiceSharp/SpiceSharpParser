@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using SpiceSharpParser.Models.Netlist.Spice;
 
 namespace SpiceSharpParser.Common.Validation
 {
@@ -21,8 +23,18 @@ namespace SpiceSharpParser.Common.Validation
         {
             get
             {
-                return this.Where(c => c.Level == ValidationEntryLevel.Warning);
+                return this.Where(c => c.Level == ValidationEntryLevel.Error);
             }
+        }
+
+        public void AddError(ValidationEntrySource source, string message, SpiceLineInfo lineInfo = null, Exception exception = null)
+        {
+            Add(new ValidationEntry(source, ValidationEntryLevel.Error, message, lineInfo, exception));
+        }
+
+        public void AddWarning(ValidationEntrySource source, string message, SpiceLineInfo lineInfo = null)
+        {
+            Add(new ValidationEntry(source, ValidationEntryLevel.Warning, message, lineInfo));
         }
     }
 }

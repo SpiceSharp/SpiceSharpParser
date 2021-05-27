@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.Expressions
         [Fact]
         public void ExpressionOneVariableSimpleSum()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Poly in expression test circuit",
                 "R1 1 0 100",
                 "V1 1 0 2",
@@ -24,7 +24,7 @@ namespace SpiceSharpParser.IntegrationTests.Expressions
         [Fact]
         public void ExpressionOneVariableSquare()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Poly in expression test circuit",
                 "R1 1 0 100",
                 "V1 1 0 2",

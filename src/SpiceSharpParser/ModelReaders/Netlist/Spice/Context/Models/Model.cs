@@ -1,6 +1,5 @@
 ﻿using SpiceSharp.Entities;
 using SpiceSharp.ParameterSets;
-using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 {

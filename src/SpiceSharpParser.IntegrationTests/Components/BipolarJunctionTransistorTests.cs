@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void ParseNetlistTest()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
              "BJT parse test circuit",
              "Q23 10 24 13 QMOD IC=0.6, 5.0",
              "Q24 10 24 13 QMOD IC=0.6, 5.0 temp=1",

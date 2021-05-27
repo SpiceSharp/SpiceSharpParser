@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void UsingGlobalModel()
         {
-            var result = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "ST + SUBCKT + DIODE",
                 ".SUBCKT diode node1 node2",
                 "D1 node1 node2 1N914",
@@ -21,8 +21,8 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".ST LIST 1N914(N) 1.752 1.234 1.2 1.0 0.1",
                 ".END");
 
-            Assert.Equal(5, result.Exports.Count);
-            Assert.Equal(5, result.Simulations.Count);
+            Assert.Equal(5, model.Exports.Count);
+            Assert.Equal(5, model.Simulations.Count);
         }
     }
 }

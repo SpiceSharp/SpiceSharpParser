@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void PulseWithoutBracket_Expect_NoException()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Current source",
                 "I1 1 0 PULSE 0 6 3.68us 41ns 41ns 3.256us 6.52us",
                 "R1 1 0 10",
@@ -21,7 +21,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void PulseWithBracket_Expect_NoException()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Current source",
                 "I1 1 0 PULSE(0V 6V 3.68us 41ns 41ns 3.256us 6.52us)",
                 "R1 1 0 10",
@@ -35,7 +35,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void SineWithBracket_Expect_NoException()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Current source",
                 "I1 1 0 SINE(0 5 50 0 0 90)",
                 "R1 1 0 10",
@@ -49,7 +49,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void SineWithoutBracket_Expect_NoException()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Current source",
                 "I1 1 0 SINE 0 5 50 0 0 90",
                 "R1 1 0 10",
@@ -63,7 +63,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void SinWithBracket_Expect_NoException()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Current source",
                 "I1 1 0 SIN(0 5 50 0 0 90)",
                 "R1 1 0 10",
@@ -77,7 +77,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void SinWithoutBracket_Expect_NoException()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Current source",
                 "I1 1 0 SIN 0 5 50 0 0 90",
                 "R1 1 0 10",
@@ -91,7 +91,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void ACWithoutValue_Expect_NoException()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Voltage source",
                 "I1 1 0 AC",
                 "R1 1 0 10",
@@ -106,7 +106,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void ACWithDC_Expect_NoException()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Voltage source",
                 "I1 1 0 AC 1 DC 2",
                 "R1 1 0 10",
@@ -121,7 +121,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void DCWithoutValue_Expect_NoException()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Voltage source",
                 "I1 1 0 DC",
                 "R1 1 0 10",
@@ -135,7 +135,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void ACPlusSin_Expect_NoException()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Voltage source",
                 "I1 1 0 AC 0",
                 "+SIN 0 10 1000 0 0 0",
@@ -151,7 +151,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void ACPlusSine_Expect_NoException()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Voltage source",
                 "I1 1 0 AC 0",
                 "+SINE 0 10 1000 0 0 0",
@@ -167,7 +167,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void ACPlusPulse_Expect_NoException()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Voltage source",
                 "I1 1 0 AC 0",
                 "+PULSE 0V 5V 3.61us 41ns 41ns 4.255us 3.51us",
@@ -183,7 +183,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void ACPlusPwl_Expect_NoException()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Voltage source",
                 "I1 1 0 AC 0",
                 "+Pwl -1.0 0 1.0 2.0",
@@ -199,7 +199,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void DCAndAC_Expect_NoException()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Voltage source",
                 "I1 1 0 DC 1 AC 0",
                 "+Pwl -1.0 0 1.0 2.0",

@@ -8,7 +8,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
         [Fact]
         public void DCCurrentSweep()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "DC Sweep - Current",
                 "I1 0 in 0",
                 "R1 in 0 10",
@@ -16,17 +16,18 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".SAVE V(in)",
                 ".END");
 
-            var exports = RunDCSimulation(netlist, "V(in)");
+            var exports = RunDCSimulation(model, "V(in)");
 
             // Get references
             Func<double, double> reference = sweep => sweep * 10.0;
-            EqualsWithTol(exports, reference);
+            
+            Assert.True(EqualsWithTol(exports, reference));
         }
 
         [Fact]
         public void DCVoltageSweep()
         {
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "DC Sweep - Voltage",
                 "V1 in 0 0",
                 "R1 in 0 10",
@@ -34,11 +35,11 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".SAVE V(in)",
                 ".END");
 
-            var exports = RunDCSimulation(netlist, "V(in)");
+            var exports = RunDCSimulation(model, "V(in)");
 
             // Get references
-            Func<double, double> reference = sweep => sweep;
-            EqualsWithTol(exports, reference);
+            Func<double, double> references = sweep => sweep;
+            Assert.True(EqualsWithTol(exports, references));
         }
     }
 }

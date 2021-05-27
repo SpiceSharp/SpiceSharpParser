@@ -1,6 +1,5 @@
-﻿using SpiceSharp;
-using SpiceSharp.Simulations;
-using SpiceSharpParser.Common.Evaluation;
+﻿using SpiceSharp.Simulations;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -9,7 +8,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     public class SimulationEvaluationContexts
     {
-        private readonly ReaderWriterLockSlim _cacheLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
+        private readonly ReaderWriterLockSlim _cacheLock = new (LockRecursionPolicy.NoRecursion);
 
         public SimulationEvaluationContexts(EvaluationContext sourceContext)
         {

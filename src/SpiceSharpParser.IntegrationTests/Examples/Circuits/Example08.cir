@@ -1,0 +1,8 @@
+﻿Capacitor circuit 
+C1 OUT 0 1e-6
+R1 IN OUT 10e3
+V1 IN 0 10
+.IC V(OUT)=0.0
+.TRAN 1e-8 10e-6 uic
+.SAVE V(OUT)
+.END

@@ -8,7 +8,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void PmosLevel1()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Mosfet circuit",
                 "Md 0 1 2 3 my-pmos",
                 ".model my-pmos pmos level = 1",
@@ -23,7 +23,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void PmosLevel2()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Mosfet circuit",
                 "Md 0 1 2 3 my-pmos",
                 ".model my-pmos pmos level = 2",
@@ -37,7 +37,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void PmosLevel3()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Mosfet circuit",
                 "Md 0 1 2 3 my-pmos",
                 ".model my-pmos pmos level = 3",
@@ -51,7 +51,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void NmosLevel1()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Mosfet circuit",
                 "Md 0 1 2 3 my-nmos",
                 ".model my-nmos nmos level = 1",
@@ -65,7 +65,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void NmosLevel2()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Mosfet circuit",
                 "Md 0 1 2 3 my-nmos",
                 ".model my-nmos nmos level = 2",
@@ -79,7 +79,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void NmosLevel3()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Mosfet circuit",
                 "Md 0 1 2 3 my-nmos",
                 ".model my-nmos nmos level = 3",
@@ -94,7 +94,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void PmosLevel1Bracket()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Mosfet circuit",
                 "Md 0 1 2 3 my-pmos",
                 ".model my-pmos pmos (level = 1)",
@@ -108,7 +108,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void PmosLevel2Bracket()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Mosfet circuit",
                 "Md 0 1 2 3 my-pmos",
                 ".model my-pmos pmos (level = 2)",
@@ -122,7 +122,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void PmosLevel3Bracket()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Mosfet circuit",
                 "Md 0 1 2 3 my-pmos",
                 ".model my-pmos pmos(level = 3)",
@@ -136,7 +136,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void NmosLevel1Bracket()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Mosfet circuit",
                 "Md 0 1 2 3 my-nmos",
                 ".model my-nmos nmos(level = 1)",
@@ -150,7 +150,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void NmosLevel2Bracket()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Mosfet circuit",
                 "Md 0 1 2 3 my-nmos",
                 ".model my-nmos nmos(level = 2)",
@@ -164,7 +164,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void NmosLevel3Bracket()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "Mosfet circuit",
                 "Md 0 1 2 3 my-nmos",
                 ".model my-nmos nmos(level = 3)",

@@ -19,13 +19,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             if (statement.Parameters.Count != 2)
             {
-                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Wrong parameter count for .LET", statement.LineInfo));
+                context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, "Wrong parameter count for .LET", statement.LineInfo);
                 return;
             }
 
             if (!(statement.Parameters[1] is SingleParameter))
             {
-                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "First parameter for .LET should be an single", statement.LineInfo));
+                context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, "First parameter for .LET should be an single", statement.LineInfo);
                 return;
             }
 
@@ -33,12 +33,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
             if (!(statement.Parameters[1] is ExpressionParameter) && !(statement.Parameters[1] is StringParameter))
             {
-                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Second parameter for .LET should be an expression", statement.LineInfo));
+                context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, "Second parameter for .LET should be an expression", statement.LineInfo);
                 return;
             }
 
             string expression = statement.Parameters.Get(1).Value;
-            context.Evaluator.SetNamedExpression(expressionName, expression);
+            context.EvaluationContext.SetNamedExpression(expressionName, expression);
         }
     }
 }

@@ -122,7 +122,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
         protected void ProcessTempParameterSweep(IReadingContext context)
         {
-            var tempSweep = context.SimulationConfiguration.ParameterSweeps.SingleOrDefault(sweep => sweep.Parameter.Value == "TEMP");
+            var tempSweep = context.SimulationConfiguration.ParameterSweeps.SingleOrDefault(sweep => sweep.Parameter.Value.ToUpper() == "TEMP");
 
             if (tempSweep != null)
             {

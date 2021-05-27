@@ -4,9 +4,9 @@ using SpiceSharp.Components;
 using SpiceSharp.Entities;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.Parsers.Expression;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources
 {
@@ -125,7 +125,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </returns>
         protected IEntity GenerateVoltageSource(string name, ParameterCollection parameters, IReadingContext context)
         {
-            var evalContext = context.Evaluator.GetEvaluationContext();
+            var evalContext = context.EvaluationContext;
 
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
             {
@@ -156,14 +156,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return vs;
         }
 
-        protected static BehavioralVoltageSource CreateBehavioralVoltageSource(string name, ParameterCollection parameters, IReadingContext context, Common.Evaluation.EvaluationContext evalContext, string expression)
+        protected BehavioralVoltageSource CreateBehavioralVoltageSource(string name, ParameterCollection parameters, IReadingContext context, EvaluationContext evalContext, string expression)
         {
             var entity = new BehavioralVoltageSource(name);
             context.CreateNodes(entity, parameters.Take(BehavioralVoltageSource.BehavioralVoltageSourcePinCount));
             entity.Parameters.Expression = expression;
             entity.Parameters.ParseAction = (expression) =>
             {
-                var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
+                var parser = context.CreateExpressionResolver(null);
                 return parser.Resolve(expression);
             };
 
@@ -171,10 +171,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
                 {
-                    entity.Parameters.Expression = expression.ToString();
+                    entity.Parameters.Expression = expression;
                     entity.Parameters.ParseAction = (expression) =>
                     {
-                        var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(simulation), false, context.CaseSensitivity);
+                        var parser = context.CreateExpressionResolver(simulation);
                         return parser.Resolve(expression);
                     };
                 });
@@ -189,7 +189,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             IReadingContext context,
             bool isVoltageControlled)
         {
-            var evalContext = context.Evaluator.GetEvaluationContext();
+            var evalContext = context.EvaluationContext;
 
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
             {
@@ -213,7 +213,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 var polyParameters = parameters.Skip(VoltageSource.PinCount);
                 var dimension = 1;
-                var expression = CreatePolyExpression(dimension, polyParameters.Skip(1), isVoltageControlled, context.Evaluator.GetEvaluationContext());
+                var expression = CreatePolyExpression(dimension, polyParameters.Skip(1), isVoltageControlled, context.EvaluationContext);
                 BehavioralVoltageSource entity = CreateBehavioralVoltageSource(name, parameters, context, evalContext, expression);
                 return entity;
             }
@@ -224,12 +224,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (polyParameter.Parameters.Count != 1)
                 {
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "poly expects one argument => dimension", polyParameter.LineInfo));
+                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, "poly expects one argument => dimension", polyParameter.LineInfo);
                 }
 
                 var polyParameters = parameters.Skip(VoltageSource.PinCount);
                 var dimension = (int)context.Evaluator.EvaluateDouble(polyParameter.Parameters[0].Value);
-                var expression = CreatePolyExpression(dimension, polyParameters.Skip(1), isVoltageControlled, context.Evaluator.GetEvaluationContext());
+                var expression = CreatePolyExpression(dimension, polyParameters.Skip(1), isVoltageControlled, context.EvaluationContext);
 
                 BehavioralVoltageSource entity = CreateBehavioralVoltageSource(name, parameters, context, evalContext, expression);
                 return entity;
@@ -241,12 +241,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 int tableParameterPosition = parameters.IndexOf(tableParameter);
                 if (tableParameterPosition == parameters.Count - 1)
                 {
-                    context.Result.ValidationResult.Add(
-                        new ValidationEntry(
-                            ValidationEntrySource.Reader, 
-                            ValidationEntryLevel.Error, 
-                            "table expects expression parameter", 
-                            tableParameter.LineInfo));
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        "table expects expression parameter",
+                        tableParameter.LineInfo);
                 }
 
                 var nextParameter = parameters[tableParameterPosition + 1];
@@ -260,12 +258,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else
                 {
-                    context.Result.ValidationResult.Add(
-                        new ValidationEntry(
-                            ValidationEntrySource.Reader,
-                            ValidationEntryLevel.Error,
-                            "table expects expression equal parameter",
-                            parameters.LineInfo));
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        "table expects expression equal parameter",
+                        parameters.LineInfo);
                 }
             }
 

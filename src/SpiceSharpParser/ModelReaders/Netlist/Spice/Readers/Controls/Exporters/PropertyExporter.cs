@@ -1,5 +1,5 @@
 ﻿using SpiceSharpParser.Common;
-using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System;
@@ -22,7 +22,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <returns>
         /// A new export.
         /// </returns>
-        public override Export CreateExport(string name, string type, ParameterCollection parameters, EvaluationContext context, ISpiceNetlistCaseSensitivitySettings caseSettings)
+        public override Export CreateExport(string name, string type, ParameterCollection parameters, EvaluationContext context, SpiceNetlistCaseSensitivitySettings caseSettings)
         {
             if (name == null)
             {

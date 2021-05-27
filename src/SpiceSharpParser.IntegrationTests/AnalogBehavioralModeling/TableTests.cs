@@ -7,7 +7,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_ParsingFirstFormat_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "TABLE circuit",
                 "V1 1 0 1.5m",
                 "R1 1 0 10",
@@ -28,7 +28,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_MissingPoints_Expect_Error()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "TABLE circuit",
                 "V1 1 0 1.5m",
                 "R1 1 0 10",
@@ -45,7 +45,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_ParsingSecondFormat_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "TABLE circuit",
                 "V1 1 0 1.5m",
                 "R1 1 0 10",
@@ -65,7 +65,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_ParsingThirdFormat_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "TABLE circuit",
                 "V1 1 0 1.5m",
                 "R1 1 0 10",
@@ -86,7 +86,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_ParsingFourthFormat_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "TABLE circuit",
                 "V1 1 0 1.5m",
                 "R1 1 0 10",
@@ -107,7 +107,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_ParsingFifthFormat_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "TABLE circuit",
                 "V1 1 0 1.5m",
                 "R1 1 0 10",
@@ -128,7 +128,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_ParsingSixthFormat_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "TABLE circuit",
                 "V1 1 0 1.5m",
                 "R1 1 0 10",
@@ -149,7 +149,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_ParsingSeventhFormat_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "TABLE circuit",
                 "V1 1 0 1.5m",
                 "R1 1 0 10",
@@ -170,7 +170,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_ParsingEightFormat_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "TABLE circuit",
                 "V1 1 0 1.5m",
                 "R1 1 0 10",
@@ -190,7 +190,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         [Fact]
         public void When_ParsingAdvancedExpression_Expect_Reference()
         {
-            var netlist = ParseNetlist(
+            var netlist = GetSpiceSharpModel(
                 "TABLE circuit",
                 "V1 1 0 1.5",
                 "V2 2 1 2.5",

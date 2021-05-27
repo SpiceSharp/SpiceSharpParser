@@ -1,0 +1,15 @@
+﻿Subcircuit - ComplexSubcircuitWithParams
+
+V1 IN 0 4.0
+X1 IN OUT twoResistorsInSeries
+RX OUT 0 1
+.SUBCKT resistor input output params: R=1
+R1 input output {R}
+.ENDS resistor
+.SUBCKT twoResistorsInSeries input output params: R1=10 R2=20
+X1 input 1 resistor R=R1
+X2 1 output resistor R=R2
+.ENDS twoResistorsInSeries
+.OP
+.SAVE V(OUT)
+.END

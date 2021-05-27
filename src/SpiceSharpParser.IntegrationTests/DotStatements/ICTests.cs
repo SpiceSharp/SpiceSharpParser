@@ -13,7 +13,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             double capacitance = 1e-6; // 0.000001;
             double tau = resistorResistance * capacitance;
 
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Capacitor circuit - The initial voltage on capacitor is 0V. The result should be an exponential converging to dcVoltage.",
                 "C1 OUT 0 1e-6",
                 "R1 IN OUT 10e3",
@@ -23,9 +23,10 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".SAVE V(OUT)",
                 ".END");
 
-            var exports = RunTransientSimulation(netlist, "V(OUT)");
+            var exports = RunTransientSimulation(model, "V(OUT)");
             Func<double, double> reference = t => dcVoltage * (1.0 - Math.Exp(-t / tau));
-            EqualsWithTol(exports, reference);
+            
+            Assert.True(EqualsWithTol(exports, reference));
         }
 
         [Fact]
@@ -36,7 +37,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             double capacitance = 1e-6; // 0.000001;
             double tau = resistorResistance * capacitance;
 
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Capacitor circuit - The initial voltage on capacitor is 0V. The result should be an exponential converging to dcVoltage.",
                 "X1 IN OUT comp",
                 ".SUBCKT capacitor in out",
@@ -52,9 +53,10 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".SAVE V(OUT)",
                 ".END");
 
-            var exports = RunTransientSimulation(netlist, "V(OUT)");
+            var exports = RunTransientSimulation(model, "V(OUT)");
             Func<double, double> reference = t => dcVoltage * (1.0 - Math.Exp(-t / tau));
-            EqualsWithTol(exports, reference);
+
+            Assert.True(EqualsWithTol(exports, reference));
         }
 
         [Fact]
@@ -65,7 +67,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             double capacitance = 1e-6; // 0.000001;
             double tau = resistorResistance * capacitance;
 
-            var netlist = ParseNetlist(
+            var model = GetSpiceSharpModel(
                 "Capacitor circuit - The initial voltage on capacitor is 0V. The result should be an exponential converging to dcVoltage.",
                 "X1 IN OUT comp",
                 ".SUBCKT capacitor in out",
@@ -81,9 +83,10 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".SAVE V(OUT)",
                 ".END");
 
-            var exports = RunTransientSimulation(netlist, "V(OUT)");
+            var exports = RunTransientSimulation(model, "V(OUT)");
             Func<double, double> reference = t => dcVoltage * (1.0 - Math.Exp(-t / tau));
-            EqualsWithTol(exports, reference);
+
+            Assert.True(EqualsWithTol(exports, reference));
         }
     }
 }

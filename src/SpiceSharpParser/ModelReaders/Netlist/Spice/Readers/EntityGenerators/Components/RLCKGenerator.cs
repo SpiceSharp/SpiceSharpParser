@@ -8,7 +8,6 @@ using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.Parsers.Expression;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components
 {
@@ -43,51 +42,42 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             switch (parameters.Count)
             {
                 case 0:
-                    context.Result.ValidationResult.Add(
-                        new ValidationEntry(
-                            ValidationEntrySource.Reader,
-                            ValidationEntryLevel.Warning,
-                            $"Inductor name expected for mutual inductance \"{name}\"",
-                            parameters.LineInfo));
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        $"Inductor name expected for mutual inductance \"{name}\"",
+                        parameters.LineInfo);
+
                     return null;
                 case 1:
-                    context.Result.ValidationResult.Add(
-                        new ValidationEntry(
-                            ValidationEntrySource.Reader,
-                            ValidationEntryLevel.Warning,
-                            $"Inductor name expected",
-                            parameters.LineInfo));
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        $"Inductor name expected",
+                        parameters.LineInfo);
                     return null;
 
                 case 2:
-                    context.Result.ValidationResult.Add(
-                        new ValidationEntry(
-                            ValidationEntrySource.Reader,
-                            ValidationEntryLevel.Warning,
-                            $"Coupling factor expected",
-                            parameters.LineInfo));
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        $"Coupling factor expected",
+                        parameters.LineInfo);
                     return null;
             }
 
             if (!(parameters[0] is SingleParameter))
             {
-                context.Result.ValidationResult.Add(
-                    new ValidationEntry(
-                        ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Warning,
-                        $"Component name expected",
-                        parameters.LineInfo));
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    $"Component name expected",
+                    parameters.LineInfo);
                 return null;
             }
 
             if (!(parameters[1] is SingleParameter))
             {
-                context.Result.ValidationResult.Add(
-                    new ValidationEntry(
-                        ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Warning,
-                        $"Component name expected",
-                        parameters.LineInfo));
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    $"Component name expected",
+                    parameters.LineInfo);
                 return null;
             }
 
@@ -108,15 +98,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of capacitor.
         /// </returns>
-        protected SpiceSharp.Components.IComponent GenerateCap(string name, ParameterCollection parameters, IReadingContext context)
+        protected IComponent GenerateCap(string name, ParameterCollection parameters, IReadingContext context)
         {
             if (parameters.Count >= 3)
             {
                 // CXXXXXXX N1 N2 VALUE
-                var evalContext = context.Evaluator.GetEvaluationContext();
+                var evalContext = context.EvaluationContext;
 
                 var something = parameters[2];
-                string expression = null;
+                string expression;
 
                 if (something is AssignmentParameter asp)
                 {
@@ -141,7 +131,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     behavioralCapacitor.Parameters.Expression = expression;
                     behavioralCapacitor.Parameters.ParseAction = (expression) =>
                     {
-                        var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
+                        var parser = context.CreateExpressionResolver(null);
                         return parser.Resolve(expression);
                     };
 
@@ -151,11 +141,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     {
                         context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
                         {
-                            behavioralCapacitor.Parameters.Expression = expression.ToString();
+                            behavioralCapacitor.Parameters.Expression = expression;
 
                             behavioralCapacitor.Parameters.ParseAction = (expression) =>
                             {
-                                var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(simulation), false, context.CaseSensitivity);
+                                var parser = context.CreateExpressionResolver(simulation);
                                 return parser.Resolve(expression);
                             };
                         });
@@ -174,7 +164,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             Parameter tcParameter = parameters.FirstOrDefault(
                 p => p is AssignmentParameter ap && ap.Name.Equals(
                          "tc",
-                         false ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase));
+                         context.ReaderSettings.CaseSensitivity.IsParameterNameCaseSensitive ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase));
 
             if (tcParameter != null)
             {
@@ -192,12 +182,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else
                 {
-                    context.Result.ValidationResult.Add(
-                        new ValidationEntry(
-                            ValidationEntrySource.Reader,
-                            ValidationEntryLevel.Warning,
-                            $"Wrong parameter value for capacitance",
-                            parameters.LineInfo));
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        $"Wrong parameter value for capacitance",
+                        parameters.LineInfo);
                     return null;
                 }
             }
@@ -233,14 +221,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (modelBased)
                 {
-                    var bp = capacitor.GetParameterSet<ModelParameters>();
-                    /*if (bp == null || !bp.Length.Given)
+                    var length = capacitor.Parameters.Length;
+                    if (!length.Given)
                     {
-                        context.Result.Validation.Add(new ValidationEntry(ValidationEntrySource.Reader,
-                            ValidationEntryLevel.Warning,
-                            $"L needs to be specified", parameters.LineInfo));
+                        context.Result.ValidationResult.AddError(
+                            ValidationEntrySource.Reader,
+                            $"L needs to be specified",
+                            parameters.LineInfo);
+
                         return null;
-                    }*/
+                    }
                 }
             }
 
@@ -250,12 +240,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (tcParameterAssignment == null)
                 {
-                    context.Result.ValidationResult.Add(
-                        new ValidationEntry(
-                            ValidationEntrySource.Reader,
-                            ValidationEntryLevel.Warning,
-                            $"TC needs to be assignment parameter",
-                            parameters.LineInfo));
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        $"TC needs to be assignment parameter",
+                        parameters.LineInfo);
                     return null;
                 }
 
@@ -311,12 +299,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             if (parameters.Count < 3)
             {
-                context.Result.ValidationResult.Add(
-                    new ValidationEntry(
-                        ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Error,
-                        $"Inductor expects at least 3 parameters",
-                        parameters.LineInfo));
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    $"Inductor expects at least 3 parameters",
+                    parameters.LineInfo);
 
                 return null;
             }
@@ -342,7 +328,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             if (parameters.Count >= 3)
             {
-                var evalContext = context.Evaluator.GetEvaluationContext();
+                var evalContext = context.EvaluationContext;
 
                 // RName Node1 Node2 something
                 var something = parameters[2];
@@ -370,7 +356,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     behavioralResistor.Parameters.Expression = expression;
                     behavioralResistor.Parameters.ParseAction = (expression) =>
                     {
-                        var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(null), false, context.CaseSensitivity);
+                        var parser = context.CreateExpressionResolver(null);
                         return parser.Resolve(expression);
                     };
 
@@ -382,7 +368,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                             behavioralResistor.Parameters.ParseAction = (expression) =>
                             {
-                                var parser = new ExpressionParser(context.Evaluator.GetEvaluationContext(simulation), false, context.CaseSensitivity);
+                                var parser = context.CreateExpressionResolver(simulation);
                                 return parser.Resolve(expression);
                             };
                         });
@@ -412,10 +398,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 // Check if something can be resistance
                 if (!modelBased && (something is WordParameter
-                     || something is IdentifierParameter
-                     || something is ValueParameter
-                     || something is ExpressionParameter
-                     || (something is AssignmentParameter ap && (ap.Name.ToLower() == "r" || ap.Name.ToLower() == "resistance"))))
+                                    || something is IdentifierParameter
+                                    || something is ValueParameter
+                                    || something is ExpressionParameter
+                                    || (something is AssignmentParameter ap &&
+                                        (ap.Name.ToLower() == "r" || ap.Name.ToLower() == "resistance"))))
                 {
                     resistanceBased = true;
                 }
@@ -442,18 +429,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     return res;
                 }
 
-                if (!modelBased && !resistanceBased)
-                {
-                    // RName Node1 Node2 something
-                    context.Result.ValidationResult.Add(
-                        new ValidationEntry(
-                            ValidationEntrySource.Reader,
-                            ValidationEntryLevel.Warning,
-                            $"Resistancee or model name needs to be specified for resistor",
-                            parameters.LineInfo));
-
-                    return null;
-                }
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    $"Resistance or model name needs to be specified for resistor",
+                    parameters.LineInfo);
+                return null;
             }
             else
             {
@@ -462,12 +442,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 // RName Node1 Node2 something param1 ...
                 if (resistorParameters.Count == 0)
                 {
-                    context.Result.ValidationResult.Add(
-                        new ValidationEntry(
-                            ValidationEntrySource.Reader,
-                            ValidationEntryLevel.Warning,
-                            $"Resistor doesn't have at least 3 parameters",
-                            parameters.LineInfo));
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        $"Resistor doesn't have at least 3 parameters",
+                        parameters.LineInfo);
                     return null;
                 }
 
@@ -548,12 +526,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                          || resistanceParameter is ExpressionParameter
                          || (resistanceParameter is AssignmentParameter ap && (ap.Name.ToLower() == "r" || ap.Name.ToLower() == "resistance"))))
                     {
-                        context.Result.ValidationResult.Add(
-                            new ValidationEntry(
-                                ValidationEntrySource.Reader,
-                                ValidationEntryLevel.Warning,
-                                $"Invalid value for resistance",
-                                parameters.LineInfo));
+                        context.Result.ValidationResult.AddError(
+                            ValidationEntrySource.Reader,
+                            $"Invalid value for resistance",
+                            parameters.LineInfo);
                         return null;
                     }
 
@@ -579,25 +555,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         }
                         catch (Exception e)
                         {
-                            context.Result.ValidationResult.Add(
-                                new ValidationEntry(
-                                    ValidationEntrySource.Reader,
-                                    ValidationEntryLevel.Error,
-                                    $"Can't set parameter for resistor: '{parameter}'",
-                                    parameters.LineInfo,
-                                    exception: e));
+                            context.Result.ValidationResult.AddError(
+                                ValidationEntrySource.Reader,
+                                $"Can't set parameter for resistor: '{parameter}'",
+                                parameters.LineInfo,
+                                exception: e);
 
                             return null;
                         }
                     }
                     else
                     {
-                        context.Result.ValidationResult.Add(
-                            new ValidationEntry(
-                                ValidationEntrySource.Reader,
-                                ValidationEntryLevel.Error,
-                                $"Invalid parameter for resistor: '{parameter}'",
-                                parameters.LineInfo));
+                        context.Result.ValidationResult.AddError(
+                            ValidationEntrySource.Reader,
+                            $"Invalid parameter for resistor: '{parameter}'",
+                            parameters.LineInfo);
 
                         return null;
                     }

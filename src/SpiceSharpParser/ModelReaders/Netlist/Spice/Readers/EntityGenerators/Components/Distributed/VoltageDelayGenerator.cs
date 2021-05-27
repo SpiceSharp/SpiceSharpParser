@@ -1,6 +1,5 @@
 ﻿using SpiceSharp.Components;
 using SpiceSharp.Entities;
-using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -14,7 +13,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             if (parameters.Count < 5)
             {
-                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "Wrong parameter count for voltage delay", parameters.LineInfo));
+                context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, "Wrong parameter count for voltage delay", parameters.LineInfo);
                 return null;
             }
 
@@ -43,7 +42,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     }
                     else
                     {
-                        context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Wrong parameter {paramName} for voltage delay", parameters.LineInfo));
+                        context.Result.ValidationResult.AddError(ValidationEntrySource.Reader,  $"Wrong parameter {paramName} for voltage delay", parameters.LineInfo);
                         return null;
                     }
                 }

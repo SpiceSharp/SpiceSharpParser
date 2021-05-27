@@ -50,14 +50,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
                 throw new ArgumentNullException(nameof(context));
             }
 
-            if (!Mapper.TryGetValue(type, context.CaseSensitivity.IsFunctionNameCaseSensitive, out var reader))
+            if (!Mapper.TryGetValue(type, context.ReaderSettings.CaseSensitivity.IsFunctionNameCaseSensitive, out var reader))
             {
-                context.Result.ValidationResult.Add(
-                    new ValidationEntry(
-                        ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Warning,
-                        $"Unsupported waveform '{type}'",
-                        parameters.LineInfo));
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    $"Unsupported waveform '{type}'",
+                    parameters.LineInfo);
 
                 return null;
             }
@@ -72,7 +70,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
                 throw new ArgumentNullException(nameof(type));
             }
 
-            if (Mapper.TryGetValue(type, context.CaseSensitivity.IsFunctionNameCaseSensitive, out _))
+            if (Mapper.TryGetValue(type, context.ReaderSettings.CaseSensitivity.IsFunctionNameCaseSensitive, out _))
             {
                 return true;
             }

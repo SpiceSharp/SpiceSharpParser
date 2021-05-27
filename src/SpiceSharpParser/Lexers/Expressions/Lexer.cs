@@ -1,319 +1,247 @@
-﻿using SpiceSharp;
-using System;
-using System.Text;
+﻿using System;
 
 namespace SpiceSharpParser.Lexers.Expressions
 {
     /// <summary>
-    /// A lexer that will tokenize expressions.
+    /// A lexer that can tokenize Spice expressions.
     /// </summary>
+    /// <remarks>
+    /// Code from SpiceSharpBehavioral.
+    /// </remarks>
     public class Lexer
     {
-        private const int _initialWordSize = 16;
-        private readonly StringBuilder _builder = new StringBuilder(_initialWordSize);
         private readonly string _expression;
-        private int _index;
+
+        /// <summary>
+        /// Creates a lexer for a Spice behavioral expression.
+        /// </summary>
+        public static Lexer FromString(string expression)
+            => new(expression);
+
+        /// <summary>
+        /// Gets the current token type.
+        /// </summary>
+        public TokenType Type { get; private set; }
+
+        /// <summary>
+        /// Gets the contents of the token.
+        /// </summary>
+        public string Content => Length == 0 ? "" : _expression.Substring(Index - Length, Length);
+
+        /// <summary>
+        /// Gets the current index in the expression.
+        /// </summary>
+        public int Index { get; private set; }
+
+        /// <summary>
+        /// Gets the length of the token.
+        /// </summary>
+        public int Length { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Lexer"/> class.
         /// </summary>
         /// <param name="expression">The expression.</param>
-        public Lexer(string expression)
+        private Lexer(string expression)
         {
-            _expression = expression;
-            _index = 0;
+            _expression = expression ?? throw new ArgumentNullException(nameof(expression));
+            Index = 0;
+            Next();
         }
 
         /// <summary>
-        /// Gets the current character.
+        /// Go to the next token.
         /// </summary>
-        /// <value>
-        /// The current character.
-        /// </value>
-        public char Current
+        public void Next()
         {
-            get
+            Length = 0;
+            if (Index >= _expression.Length)
             {
-                return _index < _expression.Length ? _expression[_index] : '\0';
-            }
-        }
-
-        /// <summary>
-        /// Gets the token.
-        /// </summary>
-        /// <value>
-        /// The type.
-        /// </value>
-        public TokenType Token { get; private set; }
-
-        /// <summary>
-        /// Gets the last token.
-        /// </summary>
-        /// <value>
-        /// The last token.
-        /// </value>
-        public TokenType LastToken { get; private set; }
-
-        /// <summary>
-        /// Gets the content.
-        /// </summary>
-        /// <value>
-        /// The content.
-        /// </value>
-        public string Content => _builder.ToString();
-
-        /// <summary>
-        /// Gets or sets the index.
-        /// </summary>
-        public int Index { get => _index; set => _index = value; }
-
-        /// <summary>
-        /// Gets the builder length.
-        /// </summary>
-        public int BuilderLength => _builder.Length;
-
-        /// <summary>
-        /// Reads the next token.
-        /// </summary>
-        public void ReadToken()
-        {
-            LastToken = Token;
-            _builder.Clear();
-
-            // Skip spaces
-            while (Current == ' ')
-            {
-                _index++;
-            }
-
-            // Nothing left to read!
-            if (Current == '\0')
-            {
-                Token = TokenType.EndOfExpression;
+                Type = TokenType.EndOfExpression;
                 return;
             }
 
-            if (Current == '\r' || Current == '\n')
+            // Skip any spaces
+            char c = _expression[Index];
+            if (c == ' ')
             {
-                Token = TokenType.EndOfExpression;
+                Index++;
+                while (Index < _expression.Length && (c = _expression[Index]) == ' ')
+                    Index++;
+            }
+
+            // End of the expression
+            if (Index >= _expression.Length)
+            {
+                Type = TokenType.EndOfExpression;
                 return;
             }
 
-            // Initial classification of the current token
-            _builder.Append(Current);
-            Token = Current switch
+            // Please forgive the spaghetti code for number parsing...
+            switch (c)
             {
-                '+' => TokenType.Plus,
-                '-' => TokenType.Minus,
-                '*' => TokenType.Times,
-                '/' => TokenType.Divide,
-                '%' => TokenType.Mod,
-                '^' => TokenType.Power,
-                '?' => TokenType.Huh,
-                ':' => TokenType.Colon,
-                '(' => TokenType.LeftParenthesis,
-                ')' => TokenType.RightParenthesis,
-                '[' => TokenType.LeftIndex,
-                ']' => TokenType.RightIndex,
-                '!' => TokenType.Bang,
-                ',' => TokenType.Comma,
-                '<' => TokenType.LessThan,
-                '>' => TokenType.GreaterThan,
-                '=' => TokenType.Assign,
-                '@' => TokenType.At,
-                '.' => TokenType.Dot,
-                '&' => TokenType.And,
-                '|' => TokenType.Or,
-                char mc when mc >= '0' && mc <= '9' => TokenType.Number,
-                char mc when (mc >= 'a' && mc <= 'z') || (mc >= 'A' && mc <= 'Z') || mc == '_' => TokenType.Identifier,
-                _ => throw new Exception("Unrecognized character found: {0} at position {1}".FormatString(Current, _index)),
-            };
-            _index++; // Consume the character
-
-            // For some cases, the follow-up character may change the type of token!
-            var prevToken = Token;
-            switch (Token)
-            {
-                case TokenType.Bang:
-                    if (One(c => c == '='))
+                case '+': Type = TokenType.Plus; Continue(); break;
+                case '-': Type = TokenType.Minus; Continue(); break;
+                case '*':
+                    Type = TokenType.Times;
+                    Continue();
+                    if (Index < _expression.Length && _expression[Index] == '*')
                     {
-                        Token = TokenType.NotEquals;
+                        Type = TokenType.Power;
+                        Continue();
                     }
-
                     break;
-                case TokenType.LessThan:
-                    if (One(c => c == '='))
+                case '/': Type = TokenType.Divide; Continue(); break;
+                case '%': Type = TokenType.Mod; Continue(); break;
+                case '^': Type = TokenType.Power; Continue(); break;
+                case '?': Type = TokenType.Huh; Continue(); break;
+                case ':': Type = TokenType.Colon; Continue(); break;
+                case '(': Type = TokenType.LeftParenthesis; Continue(); break;
+                case ')': Type = TokenType.RightParenthesis; Continue(); break;
+                case '[': Type = TokenType.LeftIndex; Continue(); break;
+                case ']': Type = TokenType.RightIndex; Continue(); break;
+                case '!':
+                    Type = TokenType.Bang;
+                    Continue();
+                    if (Index < _expression.Length && _expression[Index] == '=')
                     {
-                        Token = TokenType.LessEqual;
+                        Type = TokenType.NotEquals;
+                        Continue();
                     }
-
                     break;
-                case TokenType.GreaterThan:
-                    if (One(c => c == '='))
+                case ',': Type = TokenType.Comma; Continue(); break;
+                case '<':
+                    Type = TokenType.LessThan;
+                    Continue();
+                    if (Index < _expression.Length && _expression[Index] == '=')
                     {
-                        Token = TokenType.GreaterEqual;
+                        Type = TokenType.LessEqual;
+                        Continue();
                     }
-
                     break;
-                case TokenType.Assign:
-                    if (One(c => c == '='))
+                case '>':
+                    Type = TokenType.GreaterThan;
+                    Continue();
+                    if (Index < _expression.Length && _expression[Index] == '=')
                     {
-                        Token = TokenType.Equals;
+                        Type = TokenType.GreaterEqual;
+                        Continue();
                     }
-
                     break;
-                case TokenType.And:
-                    if (!One(c => c == '&'))
+                case '=':
+                    Type = TokenType.Assign;
+                    Continue();
+                    if (Index < _expression.Length && _expression[Index] == '=')
                     {
-                        throw new Exception("Invalid AND operator at position {0}".FormatString(_index));
+                        Type = TokenType.Equals;
+                        Continue();
                     }
-
                     break;
-                case TokenType.Or:
-                    if (!One(c => c == '|'))
+                case '&':
+                    Type = TokenType.Unknown;
+                    Continue();
+                    if (Index < _expression.Length && _expression[Index] == '&')
                     {
-                        throw new Exception("Invalid OR operator at position {0}".FormatString(_index));
+                        Type = TokenType.And;
+                        Continue();
                     }
-
+                    Continue();
                     break;
-                case TokenType.Number:
-                    Any(char.IsDigit); // whole number part
-                    if (Current == '.')
+                case '|':
+                    Type = TokenType.Unknown;
+                    Continue();
+                    if (Index < _expression.Length && _expression[Index] == '|')
                     {
-                        Consume();
-                        Any(char.IsDigit); // Fraction
+                        Type = TokenType.Or;
+                        Continue();
                     }
-
-                    if (One(c => c == 'e' || c == 'E'))
-                    {
-                        // Exponential notation (possibly)
-                        // If a +/- is specified, then digits HAVE to follow because it has to be an exponential notation
-                        if (One(c => c == '+' || Current == '-') && !Any(char.IsDigit))
-                        {
-                            throw new Exception("Invalid exponential notation at position {0}".FormatString(_index));
-                        }
-                        else
-                        {
-                            Any(char.IsDigit);
-                        }
-                    }
-
-                    Any(char.IsLetter); // Trailing letters are included
                     break;
-                case TokenType.Identifier:
-                    Any(c => char.IsLetterOrDigit(c) || c == '_');
+                case '@': Type = TokenType.At; Continue(); break;
+                case '.':
+                    Type = TokenType.Dot;
+                    Continue();
+                    if (Index < _expression.Length && _expression[Index] >= '0' && _expression[Index] <= '9')
+                    {
+                        Type = TokenType.Number;
+                        Continue();
+                        while (Index < _expression.Length && char.IsDigit(_expression[Index]))
+                            Continue();
+                        goto caseNumberPostfix;
+                    }
+                    break;
+                case char number when char.IsDigit(number):
+                    Type = TokenType.Number;
+                    Continue();
+                    while (Index < _expression.Length && char.IsDigit(_expression[Index]))
+                        Continue();
+                    if (Index < _expression.Length && _expression[Index] == '.')
+                    {
+                        Continue();
+                        while (Index < _expression.Length && char.IsDigit(_expression[Index]))
+                            Continue();
+                    }
+
+                    caseNumberPostfix:
+                    // Exponential notation
+                    if (Index < _expression.Length && ((number = _expression[Index]) == 'e' || number == 'E'))
+                    {
+                        Continue();
+                        if (Index < _expression.Length && ((number = _expression[Index]) == '+' || number == '-'))
+                            Continue();
+                        while (Index < _expression.Length && char.IsDigit(_expression[Index]))
+                            Continue();
+                    }
+
+                    // Just any subsequent stuff
+                    while (Index < _expression.Length && (
+                        (number = _expression[Index]) >= 'a' && number <= 'z' ||
+                        number >= 'A' && number <= 'Z'))
+                        Continue();
+                    break;
+                case char letter when letter >= 'a' && letter <= 'z' || letter >= 'A' && letter <= 'Z' || letter == '_':
+                    Type = TokenType.Identifier;
+                    Continue();
+                    while ((Index < _expression.Length) && ((
+                        letter = _expression[Index]) >= 'a' && letter <= 'z' ||
+                        letter >= 'A' && letter <= 'Z' ||
+                        letter >= '0' && letter <= '9' ||
+                        letter == '_'))
+                        Continue();
+                    break;
+
+                default:
+                    Type = TokenType.Unknown;
+                    Continue();
                     break;
             }
         }
 
         /// <summary>
-        /// Resets the lexer to the start of the input.
+        /// Keep reading the node.
         /// </summary>
-        public void Reset()
+        public void ContinueWhileNode()
         {
-            _index = 0;
-            _builder.Clear();
-        }
-
-        /// <summary>
-        /// Reads the next node.
-        /// </summary>
-        public void ReadNode()
-        {
-            _builder.Clear();
-            Token = TokenType.Node;
-
-            // Skip spaces
-            while (Current == ' ')
-            {
-                _index++;
-            }
-
-            // Nothing left to read!
-            if (Current == '\0')
-            {
-                Token = TokenType.EndOfExpression;
+            Type = TokenType.Node;
+            if (Index >= _expression.Length)
                 return;
-            }
 
-            if (Current == '\r' || Current == '\n')
-            {
-                Token = TokenType.EndOfExpression;
-                return;
-            }
-
-            // Nodes can be anything except a few characters
-            Any(c =>
-            {
-                switch (c)
-                {
-                    case ' ':
-                    case '(':
-                    case ')':
-                    case '[':
-                    case ']':
-                    case ',':
-                        return false;
-                    default:
-                        return true;
-                }
-            });
-            return;
-        }
-
-        /// <summary>
-        /// Tries to read any characters that match the predicate.
-        /// </summary>
-        /// <param name="predicate">The predicate.</param>
-        /// <returns>
-        /// <c>true</c> if at one or more characters were consumed; otherwise <c>false</c>.
-        /// </returns>
-        private bool Any(Func<char, bool> predicate)
-        {
-            bool result = false;
+            // Read the node contents
             char c;
-            while ((c = Current) != '\0' && predicate(c))
-            {
-                _builder.Append(c);
-                _index++;
-                result = true;
-            }
-
-            return result;
+            while (Index < _expression.Length &&
+                (c = _expression[Index]) != ' ' &&
+                    c != '(' && c != ')' &&
+                    c != '[' && c != ']' &&
+                    c != ',')
+                Continue();
         }
 
         /// <summary>
-        /// Tries to read a character that matches the predicate.
+        /// Go to the next character.
         /// </summary>
-        /// <param name="predicate">The predicate.</param>
-        /// <returns>
-        /// <c>true</c> if a character was consumed; otherwise <c>false</c>.
-        /// </returns>
-        private bool One(Func<char, bool> predicate)
+        private void Continue()
         {
-            var c = Current;
-            if (c == '\0')
-            {
-                return false;
-            }
-
-            if (predicate(c))
-            {
-                _builder.Append(c);
-                _index++;
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Consumes the current character..
-        /// </summary>
-        private void Consume()
-        {
-            _builder.Append(Current);
-            _index++;
+            Index++;
+            Length++;
         }
     }
 }

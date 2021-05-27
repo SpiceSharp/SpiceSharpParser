@@ -43,7 +43,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
 
                 for (var i = 0; i < Parameters.Count; i++)
                 {
-                    builder.Append(Parameters[i].ToString());
+                    builder.Append(Parameters[i]);
 
                     if (i != Parameters.Count - 1)
                     {

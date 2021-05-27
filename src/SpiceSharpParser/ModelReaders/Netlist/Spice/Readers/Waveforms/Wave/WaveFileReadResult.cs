@@ -65,7 +65,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.Wave
 
         public WaveFileChannelData[] ChannelData { get; set; }
 
-
         public (double, double)[] ConverToPwl(int channel, double amplitude)
         {
             if (NumberOfChannels <= channel)
@@ -79,7 +78,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.Wave
 
             for (var i = 0; i < ChannelData[channel].Data.Count; i++)
             {
-                result.Add((step * i, ((double)ChannelData[channel].Data[i] / (double)short.MaxValue) * amplitude));
+                result.Add((step * i, (ChannelData[channel].Data[i] / (double)short.MaxValue) * amplitude));
             }
 
             return result.ToArray();

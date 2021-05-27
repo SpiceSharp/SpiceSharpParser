@@ -22,14 +22,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
             {
                 string type = bp.Name;
 
-                if (mapper.TryGetValue(type, context.CaseSensitivity.IsFunctionNameCaseSensitive, out var exporter))
+                if (mapper.TryGetValue(type, context.ReaderSettings.CaseSensitivity.IsFunctionNameCaseSensitive, out var exporter))
                 {
                     return exporter.CreateExport(
                         exportParameter.Value,
                         type,
                         bp.Parameters,
-                        context.Evaluator.GetEvaluationContext(simulation),
-                        context.CaseSensitivity);
+                        context.EvaluationContext.GetSimulationContext(simulation),
+                        context.ReaderSettings.CaseSensitivity);
                 }
             }
 
@@ -53,33 +53,33 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
                         exportParameter.Value,
                         type,
                         parameters,
-                        context.Evaluator.GetEvaluationContext(simulation),
-                        context.CaseSensitivity);
+                        context.EvaluationContext.GetSimulationContext(simulation),
+                        context.ReaderSettings.CaseSensitivity);
                 }
             }
 
             if (exportParameter is SingleParameter s)
             {
                 string expressionName = s.Value;
-                var expressionNames = context.Evaluator.GetExpressionNames();
+                var expressionNames = context.EvaluationContext.GetExpressionNames();
 
                 if (expressionNames.Any(e => e == expressionName))
                 {
                     var export = new ExpressionExport(
                         simulation.Name,
                         expressionName,
-                        context.Evaluator.GetEvaluationContext(simulation));
+                        context.EvaluationContext.GetSimulationContext(simulation));
 
                     return export;
                 }
                 else
                 {
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"There is no {expressionName} expression", exportParameter.LineInfo));
+                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, $"There is no {expressionName} expression", exportParameter.LineInfo);
                     return null;
                 }
             }
 
-            context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Unsupported export: {exportParameter}", exportParameter.LineInfo));
+            context.Result.ValidationResult.AddError(ValidationEntrySource.Reader,  $"Unsupported export: {exportParameter}", exportParameter.LineInfo);
             return null;
         }
     }

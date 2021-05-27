@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using SpiceSharpParser.Common;
-using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
@@ -25,7 +25,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             string type,
             ParameterCollection parameters,
             EvaluationContext context,
-            ISpiceNetlistCaseSensitivitySettings caseSettings)
+            SpiceNetlistCaseSensitivitySettings caseSettings)
         {
             if (parameters.Count != 1 || (!(parameters[0] is VectorParameter) && !(parameters[0] is SingleParameter)))
             {
@@ -34,7 +34,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
 
             // Get the nodes
             string node, reference = null;
-            string nodePath = null, referencePath = null;
+            string nodePath, referencePath;
 
             if (parameters[0] is VectorParameter vector)
             {

@@ -29,7 +29,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
         }
 
-        protected ICollection<string> SupportedPlotTypes { get; } = new List<string>() { "dc", "ac", "tran" };
+        protected ICollection<string> SupportedPlotTypes { get; } = new List<string>() { "dc", "ac", "tran", "noise" };
 
         /// <summary>
         /// Reads <see cref="Control"/> statement and modifies the context.
@@ -95,7 +95,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 if ((simulation is DC && typeLowered == "dc")
                     || (simulation is Transient && typeLowered == "tran")
-                    || (simulation is AC && typeLowered == "ac"))
+                    || (simulation is AC && typeLowered == "ac")
+                    || (simulation is Noise && typeLowered == "noise"))
                 {
                     yield return simulation;
                 }
@@ -153,7 +154,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
             else
             {
-                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"{plotImage} is not valid for: {simulation.Name}"));
+                context.Result.ValidationResult.AddError(ValidationEntrySource.Reader,  $"{plotImage} is not valid for: {simulation.Name}");
             }
         }
 
@@ -171,16 +172,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 x = eventArgs.Frequency;
             }
 
-            if (simulation is DC dc)
+            if (simulation is Noise)
+            {
+                x = eventArgs.Frequency;
+            }
+
+            if (simulation is DC)
             {
                 if (eventArgs.GetSweepValues().Length > 1)
                 {
                     // TODO: Add support for DC Sweeps > 1
-                    context.Result.ValidationResult.Add(
-                        new ValidationEntry(
-                            ValidationEntrySource.Reader,
-                            ValidationEntryLevel.Warning,
-                            ".PLOT doesn't support sweep count > 1"));
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        ".PLOT doesn't support sweep count > 1");
                     return;
                 }
 
