@@ -34,11 +34,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             switch (statement.Parameters.Count)
             {
                 case 0:
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".tran control - Step expected", statement.LineInfo));
+                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, ".TRAN control - Step expected", statement.LineInfo);
                     break;
 
                 case 1:
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".tran control - Maximum time expected", statement.LineInfo));
+                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, ".TRAN control - Maximum time expected", statement.LineInfo);
                     break;
             }
 
@@ -76,7 +76,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     maxStep = context.Evaluator.EvaluateDouble(clonedParameters[3].Value);
                     break;
                 default:
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".TRAN control - Too many parameters for .TRAN", statement.LineInfo));
+                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, ".TRAN control - Too many parameters for .TRAN", statement.LineInfo);
                     return null;
             }
 

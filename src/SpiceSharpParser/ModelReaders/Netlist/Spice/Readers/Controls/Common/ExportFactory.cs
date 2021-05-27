@@ -74,12 +74,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
                 }
                 else
                 {
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"There is no {expressionName} expression", exportParameter.LineInfo));
+                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, $"There is no {expressionName} expression", exportParameter.LineInfo);
                     return null;
                 }
             }
 
-            context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Unsupported export: {exportParameter}", exportParameter.LineInfo));
+            context.Result.ValidationResult.AddError(ValidationEntrySource.Reader,  $"Unsupported export: {exportParameter}", exportParameter.LineInfo);
             return null;
         }
     }

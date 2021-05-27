@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SpiceSharp;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.FileSystem;
 using SpiceSharpParser.Common.Mathematics.Probability;
@@ -109,21 +110,23 @@ namespace SpiceSharpParser
             }
             catch (LexerException e)
             {
-                result.ValidationResult.Add(
-                    new ValidationEntry(
-                        ValidationEntrySource.Lexer,
-                        ValidationEntryLevel.Error,
-                        e.ToString(),
-                        e.LineInfo));
+                result.ValidationResult.AddError(
+                    ValidationEntrySource.Lexer,
+                    "General error during lexing",
+                    e.LineInfo,
+                    e);
             }
             catch (ParseException e)
             {
-                result.ValidationResult.Add(
-                    new ValidationEntry(
-                        ValidationEntrySource.Parser,
-                        ValidationEntryLevel.Error,
-                        e.ToString(),
-                        e.LineInfo));
+                result.ValidationResult.AddError(
+                    ValidationEntrySource.Parser,
+                    "General error during parsing",
+                    e.LineInfo,
+                    e);
+            }
+            catch (Exception ex)
+            {
+                throw new SpiceSharpException("Unhandled exception in SpiceSharpParser", ex);
             }
 
             return result;

@@ -47,7 +47,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     }
                     else
                     {
-                        context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Invalid parameter: {parameter}", parameter.LineInfo));
+                        context.Result.ValidationResult.AddError(ValidationEntrySource.Reader,  $"Invalid parameter: {parameter}", parameter.LineInfo);
                     }
                 }
             }

@@ -153,7 +153,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
             else
             {
-                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"{plotImage} is not valid for: {simulation.Name}"));
+                context.Result.ValidationResult.AddError(ValidationEntrySource.Reader,  $"{plotImage} is not valid for: {simulation.Name}");
             }
         }
 
@@ -176,11 +176,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 if (eventArgs.GetSweepValues().Length > 1)
                 {
                     // TODO: Add support for DC Sweeps > 1
-                    context.Result.ValidationResult.Add(
-                        new ValidationEntry(
-                            ValidationEntrySource.Reader,
-                            ValidationEntryLevel.Warning,
-                            ".PLOT doesn't support sweep count > 1"));
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        ".PLOT doesn't support sweep count > 1");
                     return;
                 }
 

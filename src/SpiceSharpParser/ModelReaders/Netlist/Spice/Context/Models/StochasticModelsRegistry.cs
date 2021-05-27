@@ -238,7 +238,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 
             if (model == null)
             {
-                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, exceptionMessage, modelNameParameter.LineInfo));
+                context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, exceptionMessage, modelNameParameter.LineInfo);
                 return;
             }
 

@@ -351,7 +351,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         }
 
         [Fact]
-        public void ParamNamesException()
+        public void ParamNameError()
         {
             var parser = new SpiceNetlistParser();
 
@@ -375,7 +375,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
             reader.Settings.CaseSensitivity.IsParameterNameCaseSensitive = true;
             var spiceModel = reader.Read(parseResult.FinalModel);
 
-            Assert.True(spiceModel.ValidationResult.HasWarning);
+            Assert.True(spiceModel.ValidationResult.HasError);
         }
 
         [Fact]
@@ -410,7 +410,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
         }
 
         [Fact]
-        public void LetNameException()
+        public void LetNameError()
         {
             var parser = new SpiceNetlistParser();
 
@@ -435,7 +435,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
             reader.Settings.CaseSensitivity.IsExpressionNameCaseSensitive = true;
             var spiceModel = reader.Read(parseResult.FinalModel);
 
-            Assert.True(spiceModel.ValidationResult.HasWarning);
+            Assert.True(spiceModel.ValidationResult.HasError);
         }
 
         [Fact]

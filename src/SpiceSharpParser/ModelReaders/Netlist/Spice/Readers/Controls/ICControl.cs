@@ -30,7 +30,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     }
                     else
                     {
-                        context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, ".IC supports only V(X)=Y", statement.LineInfo));
+                        context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, ".IC supports only V(X)=Y", statement.LineInfo);
                     }
                 }
             }

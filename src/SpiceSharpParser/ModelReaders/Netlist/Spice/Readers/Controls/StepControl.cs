@@ -28,12 +28,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
             if (statement.Parameters.Count < 4)
             {
-                context.Result.ValidationResult.Add(
-                    new ValidationEntry(
-                        ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Warning,
-                        "Too less parameters for .STEP",
-                        statement.LineInfo));
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    "Too few parameters for .STEP",
+                    statement.LineInfo);
             }
 
             string firstParam = statement.Parameters[0].Value;
@@ -199,12 +197,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 if (!(parameter is SingleParameter))
                 {
-                    context.Result.ValidationResult.Add(
-                        new ValidationEntry(
-                            ValidationEntrySource.Reader,
-                            ValidationEntryLevel.Warning,
-                            ".STEP list needs to have single parameters",
-                            parameter.LineInfo));
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        ".STEP list needs to have single parameters",
+                        parameter.LineInfo);
                     continue;
                 }
 

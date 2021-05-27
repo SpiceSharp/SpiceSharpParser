@@ -52,12 +52,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
             if (!Mapper.TryGetValue(type, context.ReaderSettings.CaseSensitivity.IsFunctionNameCaseSensitive, out var reader))
             {
-                context.Result.ValidationResult.Add(
-                    new ValidationEntry(
-                        ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Warning,
-                        $"Unsupported waveform '{type}'",
-                        parameters.LineInfo));
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    $"Unsupported waveform '{type}'",
+                    parameters.LineInfo);
 
                 return null;
             }

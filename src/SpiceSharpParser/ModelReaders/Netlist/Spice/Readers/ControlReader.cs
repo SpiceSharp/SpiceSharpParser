@@ -47,12 +47,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
             if (!Mapper.TryGetValue(type, context.ReaderSettings.CaseSensitivity.IsDotStatementNameCaseSensitive, out var controlReader))
             {
-                context.Result.ValidationResult.Add(
-                    new ValidationEntry(
-                        ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Warning,
-                        $"Unsupported control: {statement.Name}",
-                        statement.LineInfo));
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    $"Unsupported control: {statement.Name}",
+                    statement.LineInfo);
             }
             else
             {

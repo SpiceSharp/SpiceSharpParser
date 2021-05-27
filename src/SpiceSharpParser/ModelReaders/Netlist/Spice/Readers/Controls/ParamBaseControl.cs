@@ -57,13 +57,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         {
                             if (validate)
                             {
-                                validation.Add(
-                                    new ValidationEntry(
-                                        ValidationEntrySource.Reader,
-                                        ValidationEntryLevel.Warning,
-                                        $"Problem with setting param `{assignmentParameter.Name}` with expression =`{assignmentParameter.Value}`",
-                                        statement.LineInfo,
-                                        exception: e));
+                                validation.AddError(
+                                    ValidationEntrySource.Reader,
+                                    $"Problem with setting param `{assignmentParameter.Name}` with expression =`{assignmentParameter.Value}`",
+                                    statement.LineInfo,
+                                    exception: e);
                             }
                         }
                     }
@@ -83,12 +81,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 }
                 else
                 {
-                    validation.Add(
-                        new ValidationEntry(
-                            ValidationEntrySource.Reader,
-                            ValidationEntryLevel.Warning,
-                            ".PARAM supports only assignments",
-                            statement.LineInfo));
+                    validation.AddError(
+                        ValidationEntrySource.Reader,
+                        ".PARAM supports only assignments",
+                        statement.LineInfo);
                 }
             }
         }

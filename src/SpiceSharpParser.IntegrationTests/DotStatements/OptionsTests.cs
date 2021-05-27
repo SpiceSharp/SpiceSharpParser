@@ -114,7 +114,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".DISTRIBUTION triangle_dist (-1,0) (0, 1) (1, 0)",
                 ".END");
 
-            Assert.True(model.ValidationResult.HasWarning);
+            Assert.True(model.ValidationResult.HasError);
         }
     }
 }

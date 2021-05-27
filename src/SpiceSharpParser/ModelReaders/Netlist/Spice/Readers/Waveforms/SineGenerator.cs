@@ -35,12 +35,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 
             if (parameters.Count > 6 || (parameters.Count == 1 && parameters[0] is VectorParameter vp && vp.Elements.Count > 6))
             {
-                context.Result.ValidationResult.Add(
-                    new ValidationEntry(
-                        ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Warning,
-                        "Wrong number of arguments for SINE waveform",
-                        parameters.LineInfo));
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    "Wrong number of arguments for SINE waveform",
+                    parameters.LineInfo);
             }
 
             var w = new Sine();

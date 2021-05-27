@@ -126,12 +126,10 @@ namespace SpiceSharpParser.Common.Processors
             // check if file exists
             if (!File.Exists(includeFullPath))
             {
-                Validation.Add(
-                    new ValidationEntry(
-                        ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Warning,
-                        $"Netlist include at {includeFullPath}  is not found",
-                        include.LineInfo));
+                Validation.AddError(
+                    ValidationEntrySource.Processor,
+                    $"Netlist include at {includeFullPath} is not found",
+                    include.LineInfo);
                 return;
             }
 
@@ -167,12 +165,10 @@ namespace SpiceSharpParser.Common.Processors
             }
             else
             {
-                Validation.Add(
-                    new ValidationEntry(
-                        ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Warning,
-                        $"Netlist include at {includeFullPath} could not be read",
-                        include.LineInfo));
+                Validation.AddError(
+                    ValidationEntrySource.Processor,
+                    $"Netlist include at {includeFullPath} could not be read",
+                    include.LineInfo);
             }
         }
     }

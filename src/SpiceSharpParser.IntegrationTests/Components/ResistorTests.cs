@@ -6,7 +6,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
     public class ResistorTests : BaseTests
     {
         [Fact]
-        public void When_NoResistance_Expect_Exception()
+        public void When_NoResistance_Expect_Error()
         {
             var model = GetSpiceSharpModel(
                 "Resistor circuit",
@@ -17,7 +17,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".END");
 
             Assert.NotNull(model);
-            Assert.True(model.ValidationResult.HasWarning);
+            Assert.True(model.ValidationResult.HasError);
         }
 
         [Fact]

@@ -333,12 +333,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
             else
             {
-                context.Result.ValidationResult.Add(
-                    new ValidationEntry(
-                        ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Warning,
-                        $"There is no {expressionName} expression",
-                        parameter.LineInfo));
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    $"There is no {expressionName} expression",
+                    parameter.LineInfo);
             }
         }
 

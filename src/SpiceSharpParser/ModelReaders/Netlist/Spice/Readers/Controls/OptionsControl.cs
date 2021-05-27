@@ -114,7 +114,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
                             if (points < 4)
                             {
-                                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "CDFPOINTS needs to be greater than 3", statement.LineInfo));
+                                context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, "CDFPOINTS needs to be greater than 3", statement.LineInfo);
                                 return;
                             }
 
@@ -126,7 +126,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                             break;
 
                         default:
-                            context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Unsupported option: {name}", statement.LineInfo));
+                            context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, $"Unsupported option: {name}", statement.LineInfo);
                             break;
                     }
                 }

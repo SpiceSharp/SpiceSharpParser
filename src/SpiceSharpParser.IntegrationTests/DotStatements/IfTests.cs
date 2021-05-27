@@ -70,7 +70,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".PARAM a = 1",
                 ".END");
 
-            Assert.True(result.ValidationResult.HasWarning);
+            Assert.True(result.ValidationResult.HasError);
         }
 
         [Fact]

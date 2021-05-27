@@ -261,7 +261,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
         }
 
-        public void SetParameter(IEntity entity, string parameterName, string expression, bool beforeTemperature = true, Simulation simulation = null)
+        public void SetParameter(IEntity entity, string parameterName, string expression, bool beforeTemperature = true, Simulation simulation = null, bool logError = true)
         {
             if (entity == null)
             {
@@ -278,18 +278,38 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            var context = simulation != null ? EvaluationContext.GetSimulationContext(simulation) : EvaluationContext;
-            double value = context.Evaluator.EvaluateDouble(expression);
-            entity.SetParameter(parameterName, value);
-
-            bool shouldBeUpdatedBeforeTemperature = (context.HaveSpiceProperties(expression)
-                             || context.HaveFunctions(expression)
-                             || context.GetExpressionParameters(expression, false).Any())
-                             && beforeTemperature;
-
-            if (shouldBeUpdatedBeforeTemperature)
+            try
             {
-                SimulationPreparations.SetParameterBeforeTemperature(entity, parameterName, expression);
+                var context = simulation != null
+                    ? EvaluationContext.GetSimulationContext(simulation)
+                    : EvaluationContext;
+                double value = context.Evaluator.EvaluateDouble(expression);
+                entity.SetParameter(parameterName, value);
+
+                bool shouldBeUpdatedBeforeTemperature = (context.HaveSpiceProperties(expression)
+                                                         || context.HaveFunctions(expression)
+                                                         || context.GetExpressionParameters(expression, false).Any())
+                                                        && beforeTemperature;
+
+                if (shouldBeUpdatedBeforeTemperature)
+                {
+                    SimulationPreparations.SetParameterBeforeTemperature(entity, parameterName, expression);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (logError)
+                {
+                    Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        $"Problem with setting parameter {parameterName} for {entity.Name}",
+                        null,
+                        ex);
+                }
+                else
+                {
+                    throw;
+                }
             }
         }
 
@@ -324,17 +344,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
             try
             {
-                SetParameter(entity, parameterName, expression, beforeTemperature, simulation);
+                SetParameter(entity, parameterName, expression, beforeTemperature, simulation, logError: false);
             }
             catch (Exception e)
             {
-                Result.ValidationResult.Add(
-                    new ValidationEntry(
-                        ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Warning,
-                        $"Problem with setting parameter {parameter}",
-                        parameter.LineInfo,
-                        exception: e));
+                Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    $"Problem with setting parameter {parameter}",
+                    parameter.LineInfo,
+                    exception: e);
             }
         }
 

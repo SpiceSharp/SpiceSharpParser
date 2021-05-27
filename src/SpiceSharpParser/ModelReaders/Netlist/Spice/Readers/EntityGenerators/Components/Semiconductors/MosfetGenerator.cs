@@ -43,30 +43,24 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             switch (parameters.Count)
             {
                 case 0:
-                    context.Result.ValidationResult.Add(
-                        new ValidationEntry(
-                            ValidationEntrySource.Reader,
-                            ValidationEntryLevel.Error,
-                            $"Node expected for component {componentIdentifier}",
-                            parameters.LineInfo));
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        $"Node expected for component {componentIdentifier}",
+                        parameters.LineInfo);
                     return null;
                 case 1:
                 case 2:
                 case 3:
-                    context.Result.ValidationResult.Add(
-                        new ValidationEntry(
-                            ValidationEntrySource.Reader,
-                            ValidationEntryLevel.Error,
-                            $"Node expected",
-                            parameters.LineInfo));
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        $"Node expected",
+                        parameters.LineInfo);
                     return null;
                 case 4:
-                    context.Result.ValidationResult.Add(
-                        new ValidationEntry(
-                            ValidationEntrySource.Reader,
-                            ValidationEntryLevel.Error,
-                            $"Model name expected",
-                            parameters.LineInfo));
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        $"Model name expected",
+                        parameters.LineInfo);
                     return null;
             }
 
@@ -76,12 +70,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             var model = context.ModelsRegistry.FindModel(modelNameParameter.Value);
             if (model == null)
             {
-                context.Result.ValidationResult.Add(
-                    new ValidationEntry(
-                        ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Error,
-                        $"Could not find model {modelNameParameter} for mosfet {originalName}",
-                        parameters.LineInfo));
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    $"Could not find model {modelNameParameter} for mosfet {originalName}",
+                    parameters.LineInfo);
 
                 return null;
             }
@@ -104,12 +96,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
             else
             {
-                context.Result.ValidationResult.Add(
-                    new ValidationEntry(
-                        ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Error,
-                        $"Invalid model {model.GetType()} for {componentIdentifier}",
-                        parameters.LineInfo));
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    $"Invalid model {model.GetType()} for {componentIdentifier}",
+                    parameters.LineInfo);
 
                 return null;
             }
@@ -149,12 +139,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     }
                     catch (Exception ex)
                     {
-                        context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Problem with setting parameter: {parameter}", parameter.LineInfo, ex));
+                        context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, $"Problem with setting parameter: {parameter}", parameter.LineInfo, ex);
                     }
                 }
                 else
                 {
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Unsupported parameter: {parameter}", parameter.LineInfo));
+                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, $"Unsupported parameter: {parameter}", parameter.LineInfo);
                 }
             }
 

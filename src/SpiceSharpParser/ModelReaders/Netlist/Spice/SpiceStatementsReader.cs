@@ -77,22 +77,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 }
                 catch (Exception e)
                 {
-                    circuitContext.Result.ValidationResult.Add(
-                        new ValidationEntry(
-                            ValidationEntrySource.Reader,
-                            ValidationEntryLevel.Error,
-                            $"There was a problem during reading statement: {statement.GetType()} : {e}",
-                            statement.LineInfo));
+                    circuitContext.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        $"There was a problem during reading statement: {statement}",
+                        statement.LineInfo,
+                        e);
                 }
             }
             else
             {
-                circuitContext.Result.ValidationResult.Add(
-                    new ValidationEntry(
-                        ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Warning,
-                        $"There is no reader for the statement of type: {statement.GetType()}",
-                        statement.LineInfo));
+                circuitContext.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    $"There is no reader for the statement: {statement}",
+                    statement.LineInfo);
             }
         }
     }

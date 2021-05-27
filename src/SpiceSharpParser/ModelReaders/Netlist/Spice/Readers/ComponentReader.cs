@@ -105,7 +105,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
             if (generator == null)
             {
-                context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, $"Unsupported component {componentName}", lineInfo));
+                context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, $"Unsupported component {componentName}", lineInfo);
             }
 
             return generator;

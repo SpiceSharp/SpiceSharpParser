@@ -5,7 +5,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
     public class ErrorsTests : BaseTests
     {
         [Fact]
-        public void When_UnknownComponent_Expect_Warning()
+        public void When_UnknownComponent_Expect_Error()
         {
             var result = GetSpiceSharpModel(
                 "Errors",
@@ -15,7 +15,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
                 ".SAVE i(V1_a) v(1,0)",
                 ".END");
 
-            Assert.True(result.ValidationResult.HasWarning);
+            Assert.True(result.ValidationResult.HasError);
         }
 
         [Fact]

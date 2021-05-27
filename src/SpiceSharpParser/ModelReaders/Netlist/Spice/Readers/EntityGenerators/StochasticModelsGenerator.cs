@@ -57,12 +57,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
 
             if (!(context.ModelsRegistry is IStochasticModelsRegistry stochasticModelRegistry))
             {
-                context.Result.ValidationResult.Add(
-                    new ValidationEntry(
-                        ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Warning,
-                        "Model registry is not stochastic models registry",
-                        parameters.LineInfo));
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    "Model registry is not stochastic models registry",
+                    parameters.LineInfo);
 
                 return null;
             }
@@ -71,12 +69,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
             var model = modelGenerator.Generate(id, type, filteredParameters, context);
             if (model == null)
             {
-                context.Result.ValidationResult.Add(
-                    new ValidationEntry(
-                        ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Warning,
-                        $"Couldn't generate model {id}",
-                        parameters.LineInfo));
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    $"Couldn't generate model {id}",
+                    parameters.LineInfo);
 
                 return null;
             }

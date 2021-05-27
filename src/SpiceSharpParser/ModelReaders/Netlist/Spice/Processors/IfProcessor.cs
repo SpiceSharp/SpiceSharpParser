@@ -84,7 +84,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Processors
 
             if (matchedEndIfIndex == statements.Count)
             {
-                Validation.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Error, "Cannot find matched .endif"));
+                Validation.AddError(ValidationEntrySource.Processor, "Cannot find matched .endif");
                 return result;
             }
 

@@ -247,7 +247,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (polyParameter.Parameters.Count != 1)
                 {
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "poly expects one argument => dimension", polyParameter.LineInfo));
+                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, "poly expects one argument => dimension", polyParameter.LineInfo);
                     return null;
                 }
 
@@ -263,7 +263,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 int tableParameterPosition = parameters.IndexOf(tableParameter);
                 if (tableParameterPosition == parameters.Count - 1)
                 {
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "table expects expression parameter", tableParameter.LineInfo));
+                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader,  "table expects expression parameter", tableParameter.LineInfo);
                     return null;
                 }
 
@@ -278,7 +278,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else
                 {
-                    context.Result.ValidationResult.Add(new ValidationEntry(ValidationEntrySource.Reader, ValidationEntryLevel.Warning, "table expects equal parameter", tableParameter.LineInfo));
+                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader,  "table expects equal parameter", tableParameter.LineInfo);
                     return null;
                 }
             }

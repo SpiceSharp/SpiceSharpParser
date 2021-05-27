@@ -192,12 +192,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             if (result == null)
             {
-                context.Result.ValidationResult.Add(
-                    new ValidationEntry(
-                        ValidationEntrySource.Reader,
-                        ValidationEntryLevel.Error,
-                        $"Could not find '{subCircuitDefinitionName}' subcircuit",
-                        parameters.LineInfo));
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    $"Could not find '{subCircuitDefinitionName}' subcircuit",
+                    parameters.LineInfo);
             }
 
             return result;

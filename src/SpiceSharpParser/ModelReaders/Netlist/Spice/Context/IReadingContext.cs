@@ -88,7 +88,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="expression">Value expression.</param>
         /// <param name="beforeTemperature">Should be re-evaluated before temperature.</param>
         /// <param name="simulation">Simulation.</param>
-        void SetParameter(IEntity entity, string parameterName, string expression, bool beforeTemperature = true,  Simulation simulation = null);
+        /// <param name="logError">Should log the error.</param>
+        void SetParameter(IEntity entity, string parameterName, string expression, bool beforeTemperature = true,  Simulation simulation = null, bool logError = false);
 
         /// <summary>
         /// Sets parameter of entity to value of expression.
