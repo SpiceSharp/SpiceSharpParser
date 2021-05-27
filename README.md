@@ -43,7 +43,7 @@ namespace SpiceSharpParserExample
             var parseResult = parser.ParseNetlist(netlistText);
             var netlist = parseResult.FinalModel;
 
-            // Translating model to SpiceSharp
+            // Translating netlist model to SpiceSharp
             var reader = new SpiceSharpReader();
             var spiceSharpModel = reader.Read(netlist);
 
