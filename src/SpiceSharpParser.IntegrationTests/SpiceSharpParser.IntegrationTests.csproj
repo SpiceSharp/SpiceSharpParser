@@ -51,6 +51,9 @@
     <None Update="Examples\Circuits\example03.cir">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Examples\Circuits\Example12.cir">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Examples\Circuits\Example11.cir">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

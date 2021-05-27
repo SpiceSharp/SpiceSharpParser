@@ -1,0 +1,6 @@
+﻿PWL file voltage source
+V1 1 0 Pwl file = Resources\\pwl_comma.txt
+R1 1 0 10
+.SAVE V(1,0)
+.TRAN 1e-8 1e-5
+.END

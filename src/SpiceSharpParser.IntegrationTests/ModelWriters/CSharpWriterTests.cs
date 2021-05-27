@@ -220,5 +220,22 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
             Assert.NotNull(classText);
             Assert.NotNull(circuit);
         }
+
+        [Fact]
+        public void Example12()
+        {
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "Examples/Circuits/Example12.cir");
+            var netlistContent = File.ReadAllText(path);
+            var parser = new SpiceNetlistParser();
+            parser.Settings.Lexing.HasTitle = true;
+            var parseResult = parser.ParseNetlist(netlistContent);
+            var spiceSharpWriter = new SpiceSharpCSharpWriter();
+            var classNode = spiceSharpWriter.WriteCreateCircuitClass("Example", parseResult.FinalModel);
+            var classText = classNode.GetText().ToString();
+            var circuit = spiceSharpWriter.CreateCircuit(parseResult.FinalModel);
+
+            Assert.NotNull(classText);
+            Assert.NotNull(circuit);
+        }
     }
 }
