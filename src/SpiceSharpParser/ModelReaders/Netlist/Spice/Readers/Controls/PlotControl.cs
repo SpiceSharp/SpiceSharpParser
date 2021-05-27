@@ -29,7 +29,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
         }
 
-        protected ICollection<string> SupportedPlotTypes { get; } = new List<string>() { "dc", "ac", "tran" };
+        protected ICollection<string> SupportedPlotTypes { get; } = new List<string>() { "dc", "ac", "tran", "noise" };
 
         /// <summary>
         /// Reads <see cref="Control"/> statement and modifies the context.
@@ -95,7 +95,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 if ((simulation is DC && typeLowered == "dc")
                     || (simulation is Transient && typeLowered == "tran")
-                    || (simulation is AC && typeLowered == "ac"))
+                    || (simulation is AC && typeLowered == "ac")
+                    || (simulation is Noise && typeLowered == "noise"))
                 {
                     yield return simulation;
                 }
@@ -167,6 +168,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
 
             if (simulation is AC)
+            {
+                x = eventArgs.Frequency;
+            }
+
+            if (simulation is Noise)
             {
                 x = eventArgs.Frequency;
             }
