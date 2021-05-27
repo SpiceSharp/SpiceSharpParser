@@ -29,7 +29,7 @@ namespace SpiceSharpParserExample
     {
         static void Main(string[] programArgs)
         {
-            var netlist = string.Join(Environment.NewLine,
+            var netlistText = string.Join(Environment.NewLine,
                 "Diode circuit",
                 "D1 OUT 0 1N914",
                 "V1 OUT 0 0",
@@ -38,16 +38,20 @@ namespace SpiceSharpParserExample
                 ".SAVE i(V1)",
                 ".END");
 
-            // Parsing part - SpiceSharpParser
-            var parser = new SpiceParser();
-            var parseResult = parser.ParseNetlist(netlist);
-            var spiceModel = parseResult.SpiceModel;
+            // Parsing part
+            var parser = new SpiceNetlistParser();
+            var parseResult = parser.ParseNetlist(netlistText);
+            var netlist = parseResult.FinalModel;
 
-            // Simulation part - SpiceSharp
-            var simulation = spiceModel.Simulations.Single();
-            var export = spiceModel.Exports.Find(e => e.Name == "i(V1)");
+            // Translating model to SpiceSharp
+            var reader = new SpiceSharpReader();
+            var spiceSharpModel = reader.Read(netlist);
+
+            // Simulation part using SpiceSharp
+            var simulation = spiceSharpModel.Simulations.Single();
+            var export = spiceSharpModel.Exports.Find(e => e.Name == "i(V1)");
             simulation.ExportSimulationData += (sender, args) => Console.WriteLine(export.Extract());
-            simulation.Run(spiceModel.Circuit);
+            simulation.Run(spiceSharpModel.Circuit);
         }
     }
 }    
