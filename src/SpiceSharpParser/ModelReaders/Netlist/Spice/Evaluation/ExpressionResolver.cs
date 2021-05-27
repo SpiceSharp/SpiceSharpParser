@@ -3,7 +3,6 @@ using SpiceSharpBehavioral.Parsers.Nodes;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Lexers.Expressions;
-using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.ResolverFunctions;
 using System;
 using System.Collections.Generic;
@@ -47,67 +46,41 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
                 var resolver = new Resolver();
                 var comparer = StringComparerProvider.Get(CaseSettings.IsParameterNameCaseSensitive);
 
-                if (Context.NameGenerator.NodeNameGenerator is SubcircuitNodeNameGenerator)
+                resolver.UnknownVariableFound += (_, args) =>
                 {
-                    resolver.UnknownVariableFound += (_, args) =>
+                    if (args.Node.NodeType == NodeTypes.Voltage)
                     {
-                        if (args.Node.NodeType == NodeTypes.Voltage)
+                        if (resolver.VariableMap.Any(v => comparer.Equals(v.Key, args.Node.Name)))
                         {
-                            if (resolver.VariableMap.Any(v => comparer.Equals(v.Key, args.Node.Name)))
+                            var variableNode = resolver.VariableMap.First(v => comparer.Equals(v.Key, args.Node.Name)).Value;
+                            args.Result = VariableNode.Voltage(variableNode.ToString());
+                        }
+                        else
+                        {
+                            if (Context.CircuitContext.ReaderSettings.ExpandSubcircuits)
                             {
-                                var variableNode = resolver.VariableMap.First(v => comparer.Equals(v.Key, args.Node.Name)).Value;
-                                args.Result = VariableNode.Voltage(variableNode.ToString());
+                                args.Result = VariableNode.Voltage(Context.NameGenerator.ParseNodeName(args.Node.Name));
                             }
                             else
                             {
-                                if (Context.CircuitContext.ReaderSettings.ExpandSubcircuits)
-                                {
-                                    args.Result = VariableNode.Voltage(Context.NameGenerator.ParseNodeName(args.Node.Name));
-                                }
-                                else
-                                {
-                                    args.Result = args.Node;
-                                }
+                                args.Result = args.Node;
                             }
                         }
+                    }
 
-                        if (args.Node.NodeType == NodeTypes.Current)
-                        {
-                            args.Result = args.Node; //TODO
-                        }
-                    };
-                }
-                else
-                {
-                    resolver.UnknownVariableFound += (_, args) =>
+                    if (args.Node.NodeType == NodeTypes.Current)
                     {
-                        if (args.Node.NodeType == NodeTypes.Voltage)
+                        if (Context.CircuitContext.ReaderSettings.ExpandSubcircuits)
                         {
-                            if (resolver.VariableMap.Any(v => comparer.Equals(v.Key, args.Node.Name)))
-                            {
-                                var variableNode = resolver.VariableMap.First(v => comparer.Equals(v.Key, args.Node.Name)).Value;
-                                args.Result = VariableNode.Voltage(variableNode.ToString());
-                            }
-                            else
-                            {
-                                if (Context.CircuitContext.ReaderSettings.ExpandSubcircuits)
-                                {
-                                    args.Result = VariableNode.Voltage(Context.NameGenerator.ParseNodeName(args.Node.Name));
-                                }
-                                else
-                                {
-                                    args.Result = VariableNode.Voltage(args.Node.Name);
-                                }
-                            }
+                            args.Result = VariableNode.Current(Context.NameGenerator.GenerateObjectName(args.Node.Name));
                         }
-
-                        if (args.Node.NodeType == NodeTypes.Current)
+                        else
                         {
-                            args.Result = args.Node; //TODO
+                            args.Result = args.Node;
                         }
-                    };
-                }
-
+                    }
+                };
+               
                 resolver.FunctionMap = CreateFunctions();
                 resolver.VariableMap = new Dictionary<string, Node>(StringComparerProvider.Get(CaseSettings.IsParameterNameCaseSensitive));
 

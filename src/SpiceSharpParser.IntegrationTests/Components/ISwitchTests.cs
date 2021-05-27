@@ -24,6 +24,28 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
+        public void PartialOnInSubcktTest()
+        {
+            var netlist = GetSpiceSharpModel(
+                "ISwitch test",
+                ".SUBCKT customSwitch 1 2",
+                "W1 1 0 V1 imodel",
+                "V1 2 0 -1",
+                ".ENDS",
+                "X1 1 2 customSwitch",
+                "V2 1 0 10",
+                "R1 2 0 1",
+                ".model imodel ISWITCH (roff=100 ron=10 ioff = 0 ion = 2)",
+                ".OP",
+                ".SAVE I(V2)",
+                ".END");
+
+            var export = RunOpSimulation(netlist, "I(V2)");
+            Assert.NotNull(netlist);
+            Assert.True(EqualsWithTol(-0.316228, export));
+        }
+
+        [Fact]
         public void OnTest()
         {
             var netlist = GetSpiceSharpModel(
