@@ -105,7 +105,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
         protected List<Export> GenerateExports(ParameterCollection parameterCollection, Simulation simulation, IReadingContext context)
         {
-            if (parameterCollection.Count == 0 || parameterCollection.Count == 1 && parameterCollection[0].Value.ToLower() == "merge")
+            if (parameterCollection == null || parameterCollection.Count == 0 || (parameterCollection.Count == 1 && parameterCollection[0].Value.ToLower() == "merge"))
             {
                 return CreateExportsForAllVoltageAndCurrents(simulation, context);
             }

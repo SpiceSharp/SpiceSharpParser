@@ -3,7 +3,7 @@
     /// <summary>
     /// Case-sensitivity settings.
     /// </summary>
-    public class SpiceNetlistCaseSensitivitySettings 
+    public class SpiceNetlistCaseSensitivitySettings
     {
         /// <summary>
         /// Gets or sets a value indicating whether names are case-sensitive.
@@ -11,7 +11,7 @@
         public bool IsEntityNamesCaseSensitive { get; set; } = false;
 
         /// <summary>
-        /// Gets a value indicating whether dot statements names are case-sensitive.
+        /// Gets or sets a value indicating whether dot statements names are case-sensitive.
         /// </summary>
         public bool IsDotStatementNameCaseSensitive { get; set; } = false;
 

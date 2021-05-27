@@ -1,9 +1,9 @@
 ﻿using SpiceSharpBehavioral.Builders.Direct;
 using SpiceSharpParser.Common.Evaluation.Expressions;
+using SpiceSharpParser.Lexers.Expressions;
 using SpiceSharpParser.Parsers.Expression;
 using System;
 using System.Collections.Generic;
-using SpiceSharpParser.Lexers.Expressions;
 
 namespace SpiceSharpParser.Common.Evaluation
 {

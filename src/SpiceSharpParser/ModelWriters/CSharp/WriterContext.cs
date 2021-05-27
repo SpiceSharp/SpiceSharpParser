@@ -1,19 +1,18 @@
-﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
+﻿using SpiceSharpParser.Common;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelWriters.CSharp
 {
     public class WriterContext : IWriterContext
     {
         public const string RootCircuitName = "Circuit";
-
-        private readonly Dictionary<string, string> _idCache = new();
-        private readonly Dictionary<string, string> _idCacheReversed = new();
-        private readonly Dictionary<string, int> _idCacheCounter = new();
-        private readonly Dictionary<string, List<string>> _subcircuitDependencies = new();
+        private readonly Dictionary<string, string> _idCache = new ();
+        private readonly Dictionary<string, string> _idCacheReversed = new ();
+        private readonly Dictionary<string, int> _idCacheCounter = new ();
+        private readonly Dictionary<string, List<string>> _subcircuitDependencies = new ();
         private readonly Dictionary<string, string> _models = new (StringComparer.OrdinalIgnoreCase);
 
         public SpiceNetlistCaseSensitivitySettings CaseSettings { get; set; }
@@ -22,7 +21,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
 
         public bool SubcircuitDictionaryPresent { get; set; }
 
-        public List<(string, CSharpStatement)> SubcircuitCreateStatements { get; set; } = new();
+        public List<(string, CSharpStatement)> SubcircuitCreateStatements { get; set; } = new ();
 
         public string WorkingDirectory { get; set; } = Environment.CurrentDirectory;
 

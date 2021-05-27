@@ -29,9 +29,9 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
         public bool HasTitle { get; set; } = true;
 
         /// <summary>
-        /// Gets a value indicating whether dot statements names are case-sensitive.
+        /// Gets or sets a value indicating whether dot statements names are case-sensitive.
         /// </summary>
-        public bool IsDotStatementNameCaseSensitive {  get; set;  } 
+        public bool IsDotStatementNameCaseSensitive { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether bus syntax is enabled.

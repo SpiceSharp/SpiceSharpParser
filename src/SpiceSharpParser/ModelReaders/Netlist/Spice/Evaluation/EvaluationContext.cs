@@ -16,8 +16,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
     {
         private readonly SpiceNetlistCaseSensitivitySettings _caseSettings;
         private readonly ConcurrentDictionary<string, EvaluationContext> _cache;
-        private Simulation _simulation;
         private readonly SimulationEvaluationContexts _simulationEvaluationContexts;
+        private Simulation _simulation;
 
         public EvaluationContext(
             string name,
@@ -40,8 +40,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             Functions = new Dictionary<string, List<IFunction>>(
                 StringComparerProvider.Get(caseSettings.IsFunctionNameCaseSensitive));
             Children = new List<EvaluationContext>();
-            ExpressionRegistry = new ExpressionRegistry(caseSettings.IsParameterNameCaseSensitive,
-                caseSettings.IsExpressionNameCaseSensitive);
+            ExpressionRegistry = new ExpressionRegistry(caseSettings.IsParameterNameCaseSensitive, caseSettings.IsExpressionNameCaseSensitive);
             FunctionsBody = new Dictionary<string, string>();
             FunctionArguments = new Dictionary<string, List<string>>();
             Randomizer = randomizer;
@@ -52,24 +51,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             _simulationEvaluationContexts = new SimulationEvaluationContexts(this);
         }
 
-        public SimulationEvaluationContexts SimulationEvaluationContexts => _simulationEvaluationContexts;
-
-        public EvaluationContext GetSimulationContext(Simulation simulation)
-        {
-            return _simulationEvaluationContexts.GetContext(simulation);
-        }
-
-        public void SetEntities(Circuit contextEntities)
-        {
-            ContextEntities = contextEntities;
-        }
-
         public IExpressionFeaturesReader ExpressionFeaturesReader { get; }
 
         /// <summary>
         /// Gets the name of the context.
         /// </summary>
         public string Name { get; }
+
+        public SimulationEvaluationContexts SimulationEvaluationContexts => _simulationEvaluationContexts;
 
         public IEvaluator Evaluator { get; set; }
 
@@ -141,7 +130,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
         }
 
         public INameGenerator NameGenerator { get; set; }
-
 
         public Circuit ContextEntities { get; set; }
 
@@ -442,6 +430,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
         public List<string> GetExpressionParameters(string expression, bool @throw)
         {
             return ExpressionFeaturesReader.GetParameters(expression, this, @throw).ToList();
+        }
+
+        public EvaluationContext GetSimulationContext(Simulation simulation)
+        {
+            return _simulationEvaluationContexts.GetContext(simulation);
+        }
+
+        public void SetEntities(Circuit contextEntities)
+        {
+            ContextEntities = contextEntities;
         }
 
         protected void SetParameter(string parameterName, string expression, Expression parameter)

@@ -36,7 +36,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// </summary>
         IMapper<Exporter> Exporters { get; }
 
-
         EvaluationContext EvaluationContext { get; }
 
         /// <summary>
@@ -77,7 +76,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         IWaveformReader WaveformReader { get; }
 
         SpiceNetlistReaderSettings ReaderSettings { get; }
-        
+
         IEvaluator Evaluator { get; }
 
         /// <summary>

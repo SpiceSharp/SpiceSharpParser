@@ -1,8 +1,8 @@
-﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
+﻿using SpiceSharpParser.Common;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.ModelWriters.CSharp.Language;
 using System;
 using System.Linq;
-using SpiceSharpParser.Common;
-using SpiceSharpParser.ModelWriters.CSharp.Language;
 
 namespace SpiceSharpParser.ModelWriters.CSharp
 {

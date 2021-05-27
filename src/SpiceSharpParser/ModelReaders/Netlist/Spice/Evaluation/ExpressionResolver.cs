@@ -2,12 +2,12 @@
 using SpiceSharpBehavioral.Parsers.Nodes;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.Lexers.Expressions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.ResolverFunctions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SpiceSharpParser.Lexers.Expressions;
 using Parser = SpiceSharpParser.Parsers.Expression.Parser;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation

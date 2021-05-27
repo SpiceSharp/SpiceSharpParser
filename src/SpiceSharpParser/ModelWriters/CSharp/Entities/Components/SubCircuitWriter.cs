@@ -1,9 +1,9 @@
-﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
+﻿using SpiceSharpParser.Lexers.Expressions;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using SpiceSharpParser.Parsers.Expression;
 using System.Collections.Generic;
 using System.Linq;
-using SpiceSharpParser.Lexers.Expressions;
-using SpiceSharpParser.Parsers.Expression;
 using Component = SpiceSharpParser.Models.Netlist.Spice.Objects.Component;
 
 namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
@@ -16,7 +16,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
             context.RegisterDependency(context.CurrentSubcircuitName, subCircuitDefinitionName);
 
             var subCircuitId = context.GetNewIdentifier(@object.Name);
-            GetAssigmentParametersCount(@object.PinsAndParameters, out var parameters);
+            GetAssignmentParametersCount(@object.PinsAndParameters, out var parameters);
 
             if (context.EvaluationContext.Variables.ContainsKey("M"))
             {
@@ -97,7 +97,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
             return result;
         }
 
-        private static int GetAssigmentParametersCount(ParameterCollection parameters, out List<AssignmentParameter> subCktParameters)
+        private static int GetAssignmentParametersCount(ParameterCollection parameters, out List<AssignmentParameter> subCktParameters)
         {
             var parameterParameters = 0;
             subCktParameters = new List<AssignmentParameter>();
@@ -127,7 +127,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
             var result = new List<string>();
 
             // setting evaluator
-            var parameterParameters = GetAssigmentParametersCount(parameters, out _);
+            var parameterParameters = GetAssignmentParametersCount(parameters, out _);
 
             // setting node name generator
             for (var i = 0; i < parameters.Count - parameterParameters - 1; i++)

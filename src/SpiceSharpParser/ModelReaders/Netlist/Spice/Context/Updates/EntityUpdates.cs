@@ -19,9 +19,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
             SimulationEntityParametersCache = new ConcurrentDictionary<string, double>();
         }
 
-        protected bool IsParameterNameCaseSensitive { get; }
-
         public EvaluationContext Context { get; }
+
+        protected bool IsParameterNameCaseSensitive { get; }
 
         protected ConcurrentDictionary<IEntity, EntityUpdate> CommonUpdates { get; set; }
 

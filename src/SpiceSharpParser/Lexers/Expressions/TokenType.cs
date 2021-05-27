@@ -156,6 +156,6 @@
         /// <summary>
         /// The end of the expression.
         /// </summary>
-        EndOfExpression
+        EndOfExpression,
     }
 }

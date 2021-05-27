@@ -67,7 +67,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             IExpressionParserFactory expressionParserFactory = new ExpressionParserFactory(Settings.CaseSensitivity);
             IExpressionResolverFactory expressionResolverFactory = new ExpressionResolverFactory(Settings.CaseSensitivity);
             IExpressionFeaturesReader expressionFeaturesReader = new ExpressionFeaturesReader(expressionParserFactory, expressionResolverFactory);
-            
 
             EvaluationContext evaluationContext = new SpiceEvaluationContext(
                 string.Empty,
@@ -76,14 +75,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 expressionParserFactory,
                 expressionFeaturesReader,
                 nameGenerator);
-            evaluationContext.Evaluator =  new Evaluator(evaluationContext, new ExpressionValueProvider(expressionParserFactory));
+            evaluationContext.Evaluator = new Evaluator(evaluationContext, new ExpressionValueProvider(expressionParserFactory));
 
             ISpiceStatementsReader statementsReader = new SpiceStatementsReader(
                 Settings.Mappings.Controls,
                 Settings.Mappings.Models,
                 Settings.Mappings.Components);
             IWaveformReader waveformReader = new WaveformReader(Settings.Mappings.Waveforms);
-
 
             ISimulationPreparations simulationPreparations = new SimulationPreparations(
                 new EntityUpdates(Settings.CaseSensitivity.IsParameterNameCaseSensitive, evaluationContext),

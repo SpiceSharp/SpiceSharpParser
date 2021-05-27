@@ -14,7 +14,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
     public class EnableStochasticModelsSimulationDecorator
     {
         private readonly IReadingContext _context;
-        private readonly ConcurrentDictionary<string, Dictionary<string, double>> _lotValues = new ConcurrentDictionary<string, Dictionary<string, double>>();
+        private readonly ConcurrentDictionary<string, Dictionary<string, double>> _lotValues = new ();
 
         public EnableStochasticModelsSimulationDecorator(IReadingContext context)
         {
@@ -85,7 +85,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 {
                     var parameterName = assignmentParameter.Name;
                     var currentValue = simulation.EntityBehaviors[componentModel.Name].GetProperty<double>(parameterName);
-                    var percentValue = _context.Evaluator.EvaluateDouble(parameterPercent.Tolerance.Value); //TODO TODO
+                    var percentValue = _context.Evaluator.EvaluateDouble(parameterPercent.Tolerance.Value);
 
                     var random = _context.EvaluationContext.GetSimulationContext(simulation).Randomizer.GetRandomProvider(parameterPercent.RandomDistributionName);
                     var r = random.NextSignedDouble();

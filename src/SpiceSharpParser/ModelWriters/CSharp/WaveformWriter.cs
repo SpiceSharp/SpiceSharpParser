@@ -7,21 +7,21 @@ namespace SpiceSharpParser.ModelWriters.CSharp
 {
     public class WaveformWriter
     {
-        private Dictionary<string, IWaveformWriter> _waveforms;
+        private readonly Dictionary<string, IWaveformWriter> _waveforms;
 
         public WaveformWriter()
         {
-            _waveforms = new Dictionary<string, IWaveformWriter>(StringComparer.OrdinalIgnoreCase);
-
-            // Register waveform generators
-            _waveforms["SINE"] = new SineWriter();
-            _waveforms["SIN"] = new SineWriter();
-            _waveforms["PULSE"] = new PulseWriter();
-            _waveforms["PWL"] = new PwlWriter();
-            _waveforms["AM"] = new AMWriter();
-            _waveforms["SFFM"] = new SFFMWriter();
-            _waveforms["WAVE"] = new WaveWriter();
-            _waveforms["wavefile"] = new WaveWriter();
+            _waveforms = new Dictionary<string, IWaveformWriter>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["SINE"] = new SineWriter(),
+                ["SIN"] = new SineWriter(),
+                ["PULSE"] = new PulseWriter(),
+                ["PWL"] = new PwlWriter(),
+                ["AM"] = new AMWriter(),
+                ["SFFM"] = new SFFMWriter(),
+                ["WAVE"] = new WaveWriter(),
+                ["wavefile"] = new WaveWriter()
+            };
         }
 
         public bool IsWaveFormSupported(string waveformName)

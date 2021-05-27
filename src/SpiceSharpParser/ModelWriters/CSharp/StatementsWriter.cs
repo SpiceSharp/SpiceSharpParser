@@ -1,4 +1,5 @@
-﻿using SpiceSharpParser.Models.Netlist.Spice.Objects;
+﻿using SpiceSharpParser.Common.Mathematics.Graphs;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharpParser.ModelWriters.CSharp.Controls;
 using SpiceSharpParser.ModelWriters.CSharp.Entities;
@@ -8,66 +9,64 @@ using SpiceSharpParser.ModelWriters.CSharp.Language;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SpiceSharpParser.Common.Mathematics.Graphs;
 
 namespace SpiceSharpParser.ModelWriters.CSharp
 {
     public class StatementsWriter
     {
-        private Dictionary<string, IWriter<Model>> ModelWriters = new Dictionary<string, IWriter<Model>>(StringComparer.OrdinalIgnoreCase);
-        private Dictionary<string, IWriter<Component>> ComponentWriters = new Dictionary<string, IWriter<Component>>(StringComparer.OrdinalIgnoreCase);
-        private Dictionary<string, IWriter<Control>> ControlWriters = new Dictionary<string, IWriter<Control>>(StringComparer.OrdinalIgnoreCase);
-
-        private SubCircuitDefintionWriter _subCircuitDefintionWriter;
+        private readonly Dictionary<string, IWriter<Model>> _modelWriters = new (StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, IWriter<Component>> _componentWriters = new (StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, IWriter<Control>> _controlWriters = new (StringComparer.OrdinalIgnoreCase);
+        private readonly SubCircuitDefintionWriter _subCircuitDefinitionWriter;
 
         public StatementsWriter()
         {
-            _subCircuitDefintionWriter = new SubCircuitDefintionWriter(this);
+            _subCircuitDefinitionWriter = new SubCircuitDefintionWriter(this);
 
-            ModelWriters["R"] = new ResistorModelWriter();
-            ModelWriters["RES"] = ModelWriters["R"];
-            ModelWriters["C"] = new CapacitorModelWriter();
-            ModelWriters["D"] = new DiodeModelWriter();
-            ModelWriters["NPN"] = new BipolarModelWriter();
-            ModelWriters["PNP"] = ModelWriters["NPN"];
-            ModelWriters["NJF"] = new JFETModelWriter();
-            ModelWriters["PJF"] = ModelWriters["NJF"];
-            ModelWriters["SW"] = new SwitchModelWriter();
-            ModelWriters["CSW"] = ModelWriters["SW"];
-            ModelWriters["PMOS"] = new MosfetModelWriter();
-            ModelWriters["NMOS"] = ModelWriters["PMOS"];
+            _modelWriters["R"] = new ResistorModelWriter();
+            _modelWriters["RES"] = _modelWriters["R"];
+            _modelWriters["C"] = new CapacitorModelWriter();
+            _modelWriters["D"] = new DiodeModelWriter();
+            _modelWriters["NPN"] = new BipolarModelWriter();
+            _modelWriters["PNP"] = _modelWriters["NPN"];
+            _modelWriters["NJF"] = new JFETModelWriter();
+            _modelWriters["PJF"] = _modelWriters["NJF"];
+            _modelWriters["SW"] = new SwitchModelWriter();
+            _modelWriters["CSW"] = _modelWriters["SW"];
+            _modelWriters["PMOS"] = new MosfetModelWriter();
+            _modelWriters["NMOS"] = _modelWriters["PMOS"];
             //ModelWriters["VSWITCH"] TODO
             //ModelWriters["ISWITCH"] TODO
 
-            ComponentWriters["R"] = new ResistorWriter();
-            ComponentWriters["L"] = new InductorWriter();
-            ComponentWriters["K"] = new MutualInductanceWriter();
-            ComponentWriters["C"] = new CapacitorWriter();
+            _componentWriters["R"] = new ResistorWriter();
+            _componentWriters["L"] = new InductorWriter();
+            _componentWriters["K"] = new MutualInductanceWriter();
+            _componentWriters["C"] = new CapacitorWriter();
 
-            ComponentWriters["V"] = new VoltageSourceWriter(new WaveformWriter());
-            ComponentWriters["I"] = new CurrentSourceWriter(new WaveformWriter());
-            ComponentWriters["Q"] = new BipolarJunctionTransistorWriter();
-            ComponentWriters["D"] = new DiodeWriter();
-            ComponentWriters["M"] = new MosfetWriter();
-            ComponentWriters["J"] = new JFETWriter();
-            ComponentWriters["X"] = new SubCircuitWriter();
-            ComponentWriters["G"] = new VoltageControlledCurrentSourceWriter();
-            ComponentWriters["F"] = new CurrentControlledCurrentSourceWriter();
-            ComponentWriters["E"] = new VoltageControlledVoltageSourceWriter();
-            ComponentWriters["H"] = new CurrentControlledVoltageSourceWriter();
-            ComponentWriters["B"] = new ArbitraryBehavioralWriter();
-            ComponentWriters["T"] = new LosslessTransmissionLineWriter();
-            ComponentWriters["S"] = new VoltageSwitchWriter();
-            ComponentWriters["W"] = new CurrentSwitchWriter();
+            _componentWriters["V"] = new VoltageSourceWriter(new WaveformWriter());
+            _componentWriters["I"] = new CurrentSourceWriter(new WaveformWriter());
+            _componentWriters["Q"] = new BipolarJunctionTransistorWriter();
+            _componentWriters["D"] = new DiodeWriter();
+            _componentWriters["M"] = new MosfetWriter();
+            _componentWriters["J"] = new JFETWriter();
+            _componentWriters["X"] = new SubCircuitWriter();
+            _componentWriters["G"] = new VoltageControlledCurrentSourceWriter();
+            _componentWriters["F"] = new CurrentControlledCurrentSourceWriter();
+            _componentWriters["E"] = new VoltageControlledVoltageSourceWriter();
+            _componentWriters["H"] = new CurrentControlledVoltageSourceWriter();
+            _componentWriters["B"] = new ArbitraryBehavioralWriter();
+            _componentWriters["T"] = new LosslessTransmissionLineWriter();
+            _componentWriters["S"] = new VoltageSwitchWriter();
+            _componentWriters["W"] = new CurrentSwitchWriter();
 
-            ControlWriters["DC"] = new DcWriter();
-            ControlWriters["AC"] = new AcWriter();
-            ControlWriters["TRAN"] = new TransientWriter();
-            ControlWriters["IC"] = new ICWriter();
-            ControlWriters["OP"] = new OpWriter();
-            ControlWriters["PARAM"] = new ParamWriter();
-            ControlWriters["FUNC"] = new FuncWriter();
-            ControlWriters["OPTIONS"] = new OptionsWriter();
+            _controlWriters["DC"] = new DcWriter();
+            _controlWriters["AC"] = new AcWriter();
+            _controlWriters["TRAN"] = new TransientWriter();
+            _controlWriters["IC"] = new ICWriter();
+            _controlWriters["OP"] = new OpWriter();
+            _controlWriters["PARAM"] = new ParamWriter();
+            _controlWriters["FUNC"] = new FuncWriter();
+            _controlWriters["OPTIONS"] = new OptionsWriter();
         }
 
         public List<CSharpStatement> Write(bool? @public, bool local, string methodName, Statements statements, List<AssignmentParameter> assignmentParameters, IWriterContext context, bool createSubCircuitDefinitions = true, bool optionalParameters = true)
@@ -93,7 +92,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
                         context.EvaluationContext.Variables[asg.Name] = asg.Value;
                     }
 
-                    cSharpStatements.AddRange(_subCircuitDefintionWriter.Write(subCircuitDefinition, context));
+                    cSharpStatements.AddRange(_subCircuitDefinitionWriter.Write(subCircuitDefinition, context));
 
                     foreach (var asg in subCircuitDefinition.DefaultParameters)
                     {
@@ -105,9 +104,9 @@ namespace SpiceSharpParser.ModelWriters.CSharp
                 {
                     var type = ModelWriter.GetType(model);
 
-                    if (ModelWriters.ContainsKey(type))
+                    if (_modelWriters.ContainsKey(type))
                     {
-                        var writer = ModelWriters[type];
+                        var writer = _modelWriters[type];
                         cSharpStatements.AddRange(writer.Write(model, context));
                     }
                     else
@@ -119,9 +118,9 @@ namespace SpiceSharpParser.ModelWriters.CSharp
                 if (statement is Component component)
                 {
                     var type = component.Name.Substring(0, 1);
-                    if (ComponentWriters.ContainsKey(type))
+                    if (_componentWriters.ContainsKey(type))
                     {
-                        var writer = ComponentWriters[type];
+                        var writer = _componentWriters[type];
                         cSharpStatements.AddRange(writer.Write(component, context));
                     }
                     else
@@ -133,9 +132,9 @@ namespace SpiceSharpParser.ModelWriters.CSharp
                 if (statement is Control control)
                 {
                     var type = control.Name;
-                    if (ControlWriters.ContainsKey(type))
+                    if (_controlWriters.ContainsKey(type))
                     {
-                        var writer = ControlWriters[type];
+                        var writer = _controlWriters[type];
                         cSharpStatements.AddRange(writer.Write(control, context));
                     }
                     else
@@ -191,7 +190,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
                         createCircuitDefinitionStatementsOrdered.ToList(),
                         false)
                     {
-                        Local = true
+                        Local = true,
                     };
 
                     methodStatements.Add(createSubCircuitMethod);

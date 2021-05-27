@@ -5,10 +5,12 @@ namespace SpiceSharpParser.Common.Evaluation
 {
     public interface IEvaluator
     {
-        double EvaluateDouble(string expression);
-        double EvaluateDouble(Parameter parameter);
-        double EvaluateDouble(Expression expression);
-        
         IExpressionValueProvider ExpressionValueProvider { get; }
+
+        double EvaluateDouble(string expression);
+
+        double EvaluateDouble(Parameter parameter);
+
+        double EvaluateDouble(Expression expression);
     }
 }

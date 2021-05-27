@@ -18,7 +18,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
 
             foreach (var createSimulation in simulationStatements.Where(s => s.Kind == CSharpStatementKind.CreateSimulation))
             {
-                var variableName = (createSimulation as CSharpNewStatement).VariableName;
+                var variableName = ((CSharpNewStatement)createSimulation).VariableName;
 
                 methodStatements.AddRange(simulationStatements.Where(s =>
                   s.Kind == CSharpStatementKind.CreateSimulationInitBefore
@@ -58,7 +58,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
             result.Add(new CSharpMethod(true, methodName, "List<Simulation>", new string[0], new string[0], new Type[0], methodStatements, false));
             var configurationStatements = simulationStatements.Where(s => s.Kind == CSharpStatementKind.Configuration).ToList();
 
-            result.Add(new CSharpMethod(true, "CreateConfiguration", "void", new string[0], new string[0], new Type[0], configurationStatements.Where(s =>!(s is CSharpFieldDeclaration)).ToList(), false));
+            result.Add(new CSharpMethod(true, "CreateConfiguration", "void", new string[0], new string[0], new Type[0], configurationStatements.Where(s => !(s is CSharpFieldDeclaration)).ToList(), false));
             return result;
         }
     }

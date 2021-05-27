@@ -48,7 +48,7 @@ namespace SpiceSharpParser
             var compilation
             = CSharpCompilation.Create(
                 "Simulation.dll",
-                new [] { rootNode.SyntaxTree },
+                new[] { rootNode.SyntaxTree },
                 null,
                 new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
@@ -81,11 +81,22 @@ namespace SpiceSharpParser
             var assembly = CreateCircuitAssembly(className, model);
             if (assembly == null)
             {
-                throw new System.Exception("Generation of circuit assembly failed");
+                throw new SpiceSharpException("Generation of circuit assembly failed");
             }
 
             var factory = assembly.CreateInstance(className);
+
+            if (factory == null)
+            {
+                throw new SpiceSharpException("Creating instance of class failed");
+            }
+
             MethodInfo magicMethod = factory.GetType().GetMethod("CreateCircuit");
+            if (magicMethod == null)
+            {
+                throw new SpiceSharpException("Getting handle to CreateCircuit method failed");
+            }
+
             return (EntityCollection)magicMethod.Invoke(factory, new object[0]);
         }
 
@@ -95,11 +106,23 @@ namespace SpiceSharpParser
             var assembly = CreateCircuitAssembly(className, model);
             if (assembly == null)
             {
-                throw new System.Exception("Generation of circuit assembly failed");
+                throw new SpiceSharpException("Generation of circuit assembly failed");
             }
 
             var factory = assembly.CreateInstance(className);
+
+            if (factory == null)
+            {
+                throw new SpiceSharpException("Creating instance of class failed");
+            }
+
             MethodInfo magicMethod = factory.GetType().GetMethod("CreateSimulations");
+
+            if (magicMethod == null)
+            {
+                throw new SpiceSharpException("Getting handle to CreateSimulations method failed");
+            }
+
             return (List<Simulation>)magicMethod.Invoke(factory, new object[0]);
         }
     }
