@@ -48,7 +48,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
                 MathFunctions.CreateInt(),
                 MathFunctions.CreateInv(),
                 MathFunctions.CreateLimit(),
-                RandomFunctions.CreateLimit(),
                 RandomFunctions.CreateMc(),
                 MathFunctions.CreateNint(),
                 RandomFunctions.CreateRandom(),
