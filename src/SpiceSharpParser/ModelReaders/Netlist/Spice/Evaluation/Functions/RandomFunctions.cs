@@ -60,17 +60,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
-        /// Get a limit() function.
-        /// </summary>
-        /// <returns>
-        /// A new instance of limit function.
-        /// </returns>
-        public static IFunction<double, double> CreateLimit()
-        {
-            return new LimitFunction();
-        }
-
-        /// <summary>
         /// Get a unif() function.
         /// </summary>
         /// <returns>
