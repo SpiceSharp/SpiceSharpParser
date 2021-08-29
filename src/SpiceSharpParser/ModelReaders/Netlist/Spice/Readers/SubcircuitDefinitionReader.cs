@@ -26,7 +26,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
                 throw new ArgumentNullException(nameof(context));
             }
 
-            context.AvailableSubcircuits.Add(statement);
+            context.AvailableSubcircuits[statement.Name] = statement;
         }
     }
 }

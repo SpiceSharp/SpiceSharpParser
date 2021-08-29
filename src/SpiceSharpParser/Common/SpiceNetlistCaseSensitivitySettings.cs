@@ -44,5 +44,10 @@
         /// Gets or sets a value indicating whether expression names are case-sensitive.
         /// </summary>
         public bool IsExpressionNameCaseSensitive { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether subcircuit names are case-sensitive.
+        /// </summary>
+        public bool IsSubcircuitNameCaseSensitive { get; set; } = false;
     }
 }

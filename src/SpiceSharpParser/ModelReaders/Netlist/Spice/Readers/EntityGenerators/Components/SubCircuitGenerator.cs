@@ -188,17 +188,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
 
             string subCircuitDefinitionName = parameters.Get(parameters.Count - skipCount - 1).Value;
-            var result = context.AvailableSubcircuits.ToList().Find(subCkt => subCkt.Name == subCircuitDefinitionName);
 
-            if (result == null)
+            if (context.AvailableSubcircuits.TryGetValue(subCircuitDefinitionName, out var result))
             {
-                context.Result.ValidationResult.AddError(
-                    ValidationEntrySource.Reader,
-                    $"Could not find '{subCircuitDefinitionName}' subcircuit",
-                    parameters.LineInfo);
+                if (result == null)
+                {
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        $"Could not find '{subCircuitDefinitionName}' subcircuit",
+                        parameters.LineInfo);
+                }
+                return result;
             }
 
-            return result;
+            return null;
         }
 
         private List<string> GetPinNames(ParameterCollection parameters)
