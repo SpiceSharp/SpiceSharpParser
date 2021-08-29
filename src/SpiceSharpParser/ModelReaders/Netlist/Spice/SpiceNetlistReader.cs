@@ -1,5 +1,8 @@
 ﻿using SpiceSharp;
 using SpiceSharp.Entities;
+using SpiceSharpBehavioral.Builders.Direct;
+using SpiceSharpBehavioral.Builders.Functions;
+using SpiceSharpBehavioral.Parsers.Nodes;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Mathematics.Probability;
@@ -52,6 +55,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 
             // Set the separator.
             Utility.Separator = Settings.Separator;
+
+            // Set functions case-sensitivity
+            ComplexBuilderHelper.RemapFunctions(StringComparerProvider.Get(Settings.CaseSensitivity.IsFunctionNameCaseSensitive));
+            ComplexFunctionBuilderHelper.RemapFunctions(StringComparerProvider.Get(Settings.CaseSensitivity.IsFunctionNameCaseSensitive));
+            RealBuilderHelper.RemapFunctions(StringComparerProvider.Get(Settings.CaseSensitivity.IsFunctionNameCaseSensitive));
+            RealFunctionBuilderHelper.RemapFunctions(StringComparerProvider.Get(Settings.CaseSensitivity.IsFunctionNameCaseSensitive));
+            DerivativesHelper.RemapFunctions(StringComparerProvider.Get(Settings.CaseSensitivity.IsFunctionNameCaseSensitive));
 
             // Get reading context
             var nodeNameGenerator = new MainCircuitNodeNameGenerator(

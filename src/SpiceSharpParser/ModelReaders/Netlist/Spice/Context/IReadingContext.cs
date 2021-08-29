@@ -44,9 +44,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         ICollection<IReadingContext> Children { get; }
 
         /// <summary>
-        /// Gets the list of available subcircuit for the context.
+        /// Gets the dictionary of available subcircuit for the context.
         /// </summary>
-        ICollection<SubCircuit> AvailableSubcircuits { get; }
+        Dictionary<string, SubCircuit> AvailableSubcircuits { get; }
 
         /// <summary>
         /// Gets the list of available subcircuit for the context.

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using SpiceSharp;
 using SpiceSharp.Components;
 using SpiceSharp.Entities;
@@ -17,7 +16,6 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Configurations;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using SpiceSharpParser.Parsers.Expression;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
@@ -61,9 +59,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             Children = new List<IReadingContext>();
             StatementsReader = statementsReader;
             WaveformReader = waveformReader;
+            ReaderSettings = readerSettings;
             AvailableSubcircuits = CreateAvailableSubcircuitsCollection();
             AvailableSubcircuitDefinitions = CreateAvailableSubcircuitDefinitions();
-            ReaderSettings = readerSettings;
             Exporters = exporters;
             ContextEntities = new Circuit(new EntityCollection(StringComparerProvider.Get(readerSettings.CaseSensitivity.IsEntityNamesCaseSensitive)));
             SimulationConfiguration = simulationConfiguration;
@@ -108,7 +106,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <summary>
         /// Gets available subcircuits in context.
         /// </summary>
-        public ICollection<SubCircuit> AvailableSubcircuits { get; }
+        public Dictionary<string, SubCircuit> AvailableSubcircuits { get; }
 
         public Dictionary<string, SubcircuitDefinition> AvailableSubcircuitDefinitions { get; }
 
@@ -389,15 +387,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             return parser;
         }
 
-        protected ICollection<SubCircuit> CreateAvailableSubcircuitsCollection()
+        protected Dictionary<string, SubCircuit> CreateAvailableSubcircuitsCollection()
         {
             if (Parent != null)
             {
-                return new List<SubCircuit>(Parent.AvailableSubcircuits);
+                return new Dictionary<string, SubCircuit>(Parent.AvailableSubcircuits, StringComparerProvider.Get(ReaderSettings.CaseSensitivity.IsSubcircuitNameCaseSensitive));
             }
             else
             {
-                return new List<SubCircuit>();
+                return new Dictionary<string, SubCircuit>(StringComparerProvider.Get(ReaderSettings.CaseSensitivity.IsSubcircuitNameCaseSensitive));
             }
         }
 
@@ -405,11 +403,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         {
             if (Parent != null)
             {
-                return new Dictionary<string, SubcircuitDefinition>(Parent.AvailableSubcircuitDefinitions);
+                return new Dictionary<string, SubcircuitDefinition>(Parent.AvailableSubcircuitDefinitions, StringComparerProvider.Get(ReaderSettings.CaseSensitivity.IsSubcircuitNameCaseSensitive));
             }
             else
             {
-                return new Dictionary<string, SubcircuitDefinition>();
+                return new Dictionary<string, SubcircuitDefinition>(StringComparerProvider.Get(ReaderSettings.CaseSensitivity.IsSubcircuitNameCaseSensitive));
             }
         }
 

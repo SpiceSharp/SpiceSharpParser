@@ -1,4 +1,8 @@
+using SpiceSharpParser.Common;
+using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using System;
+using System.IO;
+using System.Text;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.Common
@@ -51,6 +55,35 @@ namespace SpiceSharpParser.IntegrationTests.Common
             Assert.False(parseResult.ValidationResult.HasError);
             Assert.False(parseResult.ValidationResult.HasWarning);
 
+            spiceModel.Simulations[0].Run(spiceModel.Circuit);
+        }
+
+        [Fact]
+        public void FunctionNamePositiveTest2()
+        {
+            var parser = new SpiceNetlistParser();
+
+            parser.Settings.Lexing.HasTitle = true;
+            parser.Settings.Parsing.IsEndRequired = true;
+
+            var text = string.Join(
+                Environment.NewLine,
+                "CaseSensitivity",
+                "R1 0 1 1",
+                "V1 0 1 {PWR(V(2),2)}",
+                "V2 0 2 10",
+                ".OP",
+                ".End");
+
+            var parseResult = parser.ParseNetlist(text);
+            var reader = new SpiceSharpReader();
+            reader.Settings.CaseSensitivity.IsFunctionNameCaseSensitive = false;
+
+            var spiceModel = reader.Read(parseResult.FinalModel);
+
+            Assert.NotNull(parseResult);
+            Assert.False(parseResult.ValidationResult.HasError);
+            Assert.False(parseResult.ValidationResult.HasWarning);
             spiceModel.Simulations[0].Run(spiceModel.Circuit);
         }
 
@@ -541,6 +574,53 @@ namespace SpiceSharpParser.IntegrationTests.Common
             };
 
             Assert.True(EqualsWithTol(export, references));
+        }
+
+        [Fact]
+        public void SubcircuitPositive()
+        {
+            var text = string.Join(Environment.NewLine, "Subcircuit - Case",
+                "V1 IN 0 4.0",
+                "X1 IN OUT resistor",
+                "RX OUT 0 1",
+                ".SUBCKT RESISTOR input output params: R=1",
+                "R1 input output {R}",
+                ".ENDS RESISTOR",
+                ".OP",
+                ".SAVE V(OUT)",
+                ".END");
+            var parser = new SpiceNetlistParser();
+            var netlist = parser.ParseNetlist(text);
+
+            var spiceSharpSettings = new SpiceNetlistReaderSettings(new SpiceNetlistCaseSensitivitySettings() { IsSubcircuitNameCaseSensitive = false }, () => parser.Settings.WorkingDirectory, Encoding.Default);
+            var spiceSharpReader = new SpiceNetlistReader(spiceSharpSettings);
+
+            var model = spiceSharpReader.Read(netlist.FinalModel);
+            Assert.False(model.ValidationResult.HasError);
+        }
+
+        [Fact]
+        public void SubcircuitPositive2()
+        {
+            var text = string.Join(Environment.NewLine, "Subcircuit - Case",
+                "V1 IN 0 4.0",
+                "X1 IN OUT resistor",
+                "RX OUT 0 1",
+                ".SUBCKT RESISTOR input output params: R=1",
+                "R1 input output {R}",
+                ".ENDS RESISTOR",
+                ".OP",
+                ".SAVE V(OUT)",
+                ".END");
+
+            var parser = new SpiceNetlistParser();
+            var netlist = parser.ParseNetlist(text);
+
+            var spiceSharpSettings = new SpiceNetlistReaderSettings(new SpiceNetlistCaseSensitivitySettings() { IsSubcircuitNameCaseSensitive = true }, () => parser.Settings.WorkingDirectory, Encoding.Default);
+            var spiceSharpReader = new SpiceNetlistReader(spiceSharpSettings);
+
+            var model = spiceSharpReader.Read(netlist.FinalModel);
+            Assert.True(model.ValidationResult.HasError);
         }
     }
 }
