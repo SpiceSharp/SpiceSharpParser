@@ -4,7 +4,7 @@ using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.ModelWriters
 {
-    public class CSharpWriterTests
+    public class CSharpWriterTests : BaseTests
     {
         [Fact]
         public void Example01()

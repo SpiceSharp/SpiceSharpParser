@@ -7,6 +7,7 @@ using System.Linq;
 using Xunit;
 using System.Text;
 using SpiceSharpParser.Common;
+using System.Threading;
 
 namespace SpiceSharpParser.IntegrationTests
 {
@@ -21,6 +22,11 @@ namespace SpiceSharpParser.IntegrationTests
         /// Relative tolerance used
         /// </summary>
         private double RelTol = 1e-3;
+
+        public BaseTests()
+        {
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+        }
 
         public static SpiceSharpModel GetSpiceSharpModelWithWorkingDirectoryParameter(string workingDirectory, params string[] lines)
         {
