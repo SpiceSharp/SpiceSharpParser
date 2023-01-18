@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using SpiceSharp.Components;
 using SpiceSharp.Entities;
@@ -146,11 +147,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             string resExpression;
             if (iOn >= iOff)
             {
-                resExpression = $"{ic} >= {iOn} ? {rOn} : ({ic} <= {iOff} ? {rOff} : (exp({lm} + 3 * {lr} * ({ic}-{im})/(2*{id}) - 2 * {lr} * pow({ic}-{im}, 3)/(pow({id},3)))))";
+                resExpression = $"{ic.ToString(CultureInfo.InvariantCulture)} >= {iOn.ToString(CultureInfo.InvariantCulture)} ? {rOn.ToString(CultureInfo.InvariantCulture)} : ({ic.ToString(CultureInfo.InvariantCulture)} <= {iOff.ToString(CultureInfo.InvariantCulture)} ? {rOff.ToString(CultureInfo.InvariantCulture)} : (exp({lm.ToString(CultureInfo.InvariantCulture)} + 3 * {lr.ToString(CultureInfo.InvariantCulture)} * ({ic.ToString(CultureInfo.InvariantCulture)}-{im.ToString(CultureInfo.InvariantCulture)})/(2*{id.ToString(CultureInfo.InvariantCulture)}) - 2 * {lr.ToString(CultureInfo.InvariantCulture)} * pow({ic.ToString(CultureInfo.InvariantCulture)}-{im.ToString(CultureInfo.InvariantCulture)}, 3)/(pow({id.ToString(CultureInfo.InvariantCulture)},3)))))";
             }
             else
             {
-                resExpression = $"{ic} < {iOn} ? {rOn} : ({ic} > {iOff} ? {rOff} : (exp({lm} - 3 * {lr} * ({ic}-{im})/(2*{id}) + 2 * {lr} * pow({ic}-{im}, 3)/(pow({id},3)))))";
+                resExpression = $"{ic.ToString(CultureInfo.InvariantCulture)} < {iOn.ToString(CultureInfo.InvariantCulture)} ? {rOn.ToString(CultureInfo.InvariantCulture)} : ({ic.ToString(CultureInfo.InvariantCulture)} > {iOff.ToString(CultureInfo.InvariantCulture)} ? {rOff.ToString(CultureInfo.InvariantCulture)} : (exp({lm.ToString(CultureInfo.InvariantCulture)} - 3 * {lr.ToString(CultureInfo.InvariantCulture)} * ({ic.ToString(CultureInfo.InvariantCulture)}-{im.ToString(CultureInfo.InvariantCulture)})/(2*{id.ToString(CultureInfo.InvariantCulture)}) + 2 * {lr.ToString(CultureInfo.InvariantCulture)} * pow({ic.ToString(CultureInfo.InvariantCulture)}-{im.ToString(CultureInfo.InvariantCulture)}, 3)/(pow({id.ToString(CultureInfo.InvariantCulture)},3)))))";
             }
 
             return MultiplyIfNeeded(resExpression, m);
@@ -161,11 +162,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             string resExpression;
             if (vOn >= vOff)
             {
-                resExpression = $"{vc} >= {vOn} ? {rOn} : ({vc} <= {vOff} ? {rOff} : (exp({lm} + 3 * {lr} * ({vc}-{vm})/(2*{vd}) - 2 * {lr} * pow({vc}-{vm}, 3)/(pow({vd},3)))))";
+                resExpression = $"{vc.ToString(CultureInfo.InvariantCulture)} >= {vOn.ToString(CultureInfo.InvariantCulture)} ? {rOn.ToString(CultureInfo.InvariantCulture)} : ({vc.ToString(CultureInfo.InvariantCulture)} <= {vOff.ToString(CultureInfo.InvariantCulture)} ? {rOff.ToString(CultureInfo.InvariantCulture)} : (exp({lm.ToString(CultureInfo.InvariantCulture)} + 3 * {lr.ToString(CultureInfo.InvariantCulture)} * ({vc.ToString(CultureInfo.InvariantCulture)}-{vm.ToString(CultureInfo.InvariantCulture)})/(2*{vd.ToString(CultureInfo.InvariantCulture)}) - 2 * {lr.ToString(CultureInfo.InvariantCulture)} * pow({vc.ToString(CultureInfo.InvariantCulture)}-{vm.ToString(CultureInfo.InvariantCulture)}, 3)/(pow({vd.ToString(CultureInfo.InvariantCulture)},3)))))";
             }
             else
             {
-                resExpression = $"{vc} < {vOn} ? {rOn} : ({vc} > {vOff} ? {rOff} : (exp({lm} - 3 * {lr} * ({vc}-{vm})/(2*{vd}) + 2 * {lr} * pow({vc}-{vm}, 3)/(pow({vd},3)))))";
+                resExpression = $"{vc.ToString(CultureInfo.InvariantCulture)} < {vOn.ToString(CultureInfo.InvariantCulture)} ? {rOn.ToString(CultureInfo.InvariantCulture)} : ({vc.ToString(CultureInfo.InvariantCulture)} > {vOff.ToString(CultureInfo.InvariantCulture)} ? {rOff.ToString(CultureInfo.InvariantCulture)} : (exp({lm.ToString(CultureInfo.InvariantCulture)} - 3 * {lr.ToString(CultureInfo.InvariantCulture)} * ({vc.ToString(CultureInfo.InvariantCulture)}-{vm.ToString(CultureInfo.InvariantCulture)})/(2*{vd.ToString(CultureInfo.InvariantCulture)}) + 2 * {lr.ToString(CultureInfo.InvariantCulture)} * pow({vc.ToString(CultureInfo.InvariantCulture)}-{vm.ToString(CultureInfo.InvariantCulture)}, 3)/(pow({vd.ToString(CultureInfo.InvariantCulture)},3)))))";
             }
 
             return MultiplyIfNeeded(resExpression, m);

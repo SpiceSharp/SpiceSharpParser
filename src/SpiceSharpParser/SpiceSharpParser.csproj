@@ -5,7 +5,7 @@
     <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
     <Authors>SpiceSharp</Authors>
     <PackageProjectUrl>https://github.com/SpiceSharp/SpiceSharpParser</PackageProjectUrl>
-    <Copyright>Copyright 2021</Copyright>
+    <Copyright>Copyright 2022</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/SpiceSharp/SpiceSharpParser</RepositoryUrl>
     <RepositoryType></RepositoryType>
@@ -22,7 +22,7 @@
     <StartupObject />
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <LangVersion>latest</LangVersion>
-    <Version>3.1.4</Version>
+    <Version>3.1.5</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.5|AnyCPU'">
