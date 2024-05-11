@@ -1,12 +1,5 @@
 # <img src="https://spicesharp.github.io/SpiceSharp/api/images/logo_full.svg" width="45px" /> Spice#/SpiceSharpParser
  [<img src="https://img.shields.io/nuget/vpre/SpiceSharp-Parser.svg">]( https://www.nuget.org/packages/SpiceSharp-Parser)
-[![CodeFactor](https://www.codefactor.io/repository/github/spicesharp/spicesharpparser/badge/main)](https://www.codefactor.io/repository/github/spicesharp/spicesharpparser/overview/main)
-[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=SpiceSharp_SpiceSharpParser&metric=ncloc)](https://sonarcloud.io/dashboard?id=SpiceSharp_SpiceSharpParser)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=SpiceSharp_SpiceSharpParser&metric=code_smells)](https://sonarcloud.io/dashboard?id=SpiceSharp_SpiceSharpParser)
-[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=SpiceSharp_SpiceSharpParser&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=SpiceSharp_SpiceSharpParser)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=SpiceSharp_SpiceSharpParser&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=SpiceSharp_SpiceSharpParser)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=SpiceSharp_SpiceSharpParser&metric=coverage)](https://sonarcloud.io/dashboard?id=SpiceSharp_SpiceSharpParser)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FSpiceSharp%2FSpiceSharpParser.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FSpiceSharp%2FSpiceSharpParser?ref=badge_shield)
 
 SpiceSharpParser is a .NET library that allows to parse SPICE netlists and to simulate them using SpiceSharp.
 
