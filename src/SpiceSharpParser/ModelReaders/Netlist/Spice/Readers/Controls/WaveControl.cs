@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp.Components;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
@@ -34,11 +35,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// <param name="context">A context to modify.</param>
         public override void Read(Control statement, IReadingContext context)
         {
-            var transient = (Transient)context.Result.Simulations.FirstOrDefault(s => s is Transient);
+            var transient = (ISimulationWithEvents)context.Result.Simulations.FirstOrDefault(s => s is Transient);
 
             if (transient != null)
             {
-                var timeParameters = transient.TimeParameters;
+                var timeParameters = ((Transient)transient).TimeParameters;
                 if (statement.Parameters.Count < 3)
                 {
                     throw new Exception("Too few parameters for WAV");
@@ -53,12 +54,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     var monoChannel = statement.Parameters[3];
                     var monoChannelExport = GenerateExport(monoChannel, context, transient);
                     var pwlData = new List<(double, double)>();
-                    transient.ExportSimulationData += (sender, args) =>
+                    transient.EventExportData += (sender, args) =>
                     {
                         pwlData.Add((args.Time, monoChannelExport.Extract()));
                     };
 
-                    transient.AfterExecute += (sender, args) =>
+                    transient.EventAfterExecute += (sender, args) =>
                     {
                         var writer = new WaveFileWriter();
                         writer.Write(filePath, sampleRate, 1.0, bitPerSample, pwlData.ToArray());
@@ -73,13 +74,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
                     var leftData = new List<(double, double)>();
                     var rightData = new List<(double, double)>();
-                    transient.ExportSimulationData += (sender, args) =>
+                    transient.EventExportData += (sender, args) =>
                     {
                         leftData.Add((args.Time, leftChannelExport.Extract()));
                         rightData.Add((args.Time, rightChannelExport.Extract()));
                     };
 
-                    transient.AfterExecute += (sender, args) =>
+                    transient.EventAfterExecute += (sender, args) =>
                     {
                         var writer = new WaveFileWriter();
                         writer.Write(

@@ -1,5 +1,4 @@
 ﻿using SpiceSharp;
-using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps;
@@ -34,9 +33,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// <param name="statement">Statement.</param>
         /// <param name="context">Context.</param>
         /// <param name="createSimulation">Create simulation factory.</param>
-        public List<Simulation> CreateSimulations(Control statement, IReadingContext context, Func<string, Control, IReadingContext, Simulation> createSimulation)
+        public List<ISimulationWithEvents> CreateSimulations(Control statement, IReadingContext context, Func<string, Control, IReadingContext, ISimulationWithEvents> createSimulation)
         {
-            var result = new List<Simulation>();
+            var result = new List<ISimulationWithEvents>();
 
             ProcessTempParameterSweep(context);
 
@@ -66,7 +65,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             {
                 int[] indexes = NumberSystem.GetValueInSystem(i, system);
 
-                Func<string, Control, IReadingContext, Simulation> createSimulationWithSweepParametersFactory =
+                Func<string, Control, IReadingContext, ISimulationWithEvents> createSimulationWithSweepParametersFactory =
                     (name, control, modifiedContext) =>
                     {
                         List<KeyValuePair<Parameter, double>> parameterValues =
@@ -143,7 +142,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             }
         }
 
-        protected void SetSweepSimulation(IReadingContext context, List<KeyValuePair<Parameter, double>> parameterValues, Simulation simulation)
+        protected void SetSweepSimulation(IReadingContext context, List<KeyValuePair<Parameter, double>> parameterValues, ISimulationWithEvents simulation)
         {
             ParameterUpdater.Update(simulation, context, parameterValues);
         }

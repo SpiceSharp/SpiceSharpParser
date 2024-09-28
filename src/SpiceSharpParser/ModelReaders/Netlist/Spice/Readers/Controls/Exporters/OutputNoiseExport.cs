@@ -5,7 +5,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
 {
     public class OutputNoiseExport : Export
     {
-        public OutputNoiseExport(Simulation simulation)
+        public OutputNoiseExport(ISimulationWithEvents simulation)
             : base(simulation)
         {
             ExportImpl = new OutputNoiseDensityExport((Noise)simulation);
@@ -18,16 +18,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
 
         public override double Extract()
         {
-            if (!ExportImpl.IsValid)
-            {
-                if (ExceptionsEnabled)
-                {
-                    throw new SpiceSharpParserException($"Output noise density export {Name} is invalid");
-                }
-
-                return double.NaN;
-            }
-
             return ExportImpl.Value;
         }
     }

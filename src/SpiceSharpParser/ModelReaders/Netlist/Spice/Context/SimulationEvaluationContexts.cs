@@ -1,4 +1,5 @@
 ﻿using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using System;
 using System.Collections.Generic;
@@ -13,12 +14,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         public SimulationEvaluationContexts(EvaluationContext sourceContext)
         {
             SourceContext = sourceContext ?? throw new ArgumentNullException(nameof(sourceContext));
-            Contexts = new Dictionary<Simulation, EvaluationContext>();
+            Contexts = new Dictionary<ISimulationWithEvents, EvaluationContext>();
         }
 
         protected EvaluationContext SourceContext { get; }
 
-        protected Dictionary<Simulation, EvaluationContext> Contexts { get; }
+        protected Dictionary<ISimulationWithEvents, EvaluationContext> Contexts { get; }
 
         /// <summary>
         /// Gets the expression context for simulation.
@@ -27,7 +28,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <returns>
         /// Expression context.
         /// </returns>
-        public EvaluationContext GetContext(Simulation simulation)
+        public EvaluationContext GetContext(ISimulationWithEvents simulation)
         {
             if (simulation == null)
             {

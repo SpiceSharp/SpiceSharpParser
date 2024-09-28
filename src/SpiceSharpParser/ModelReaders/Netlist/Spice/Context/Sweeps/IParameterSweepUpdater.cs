@@ -1,4 +1,5 @@
 ﻿using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using System.Collections.Generic;
 
@@ -12,6 +13,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
         /// <param name="simulation">Simulation to set.</param>
         /// <param name="context">Reading context.</param>
         /// <param name="parameterValues">Parameter values.</param>
-        void Update(Simulation simulation, IReadingContext context, List<KeyValuePair<Parameter, double>> parameterValues);
+        void Update(ISimulationWithEvents simulation, IReadingContext context, List<KeyValuePair<Parameter, double>> parameterValues);
     }
 }

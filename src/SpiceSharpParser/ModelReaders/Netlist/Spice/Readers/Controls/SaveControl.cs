@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using SpiceSharp.Entities;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
@@ -228,7 +229,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
         private void AddOpPointToSeries(Context.Sweeps.ParameterSweep firstParameterSweep, Export export, IReadingContext context, Series series)
         {
-            export.Simulation.ExportSimulationData += (object sender, ExportDataEventArgs e) =>
+            export.Simulation.EventExportData += (object sender, ExportData e) =>
             {
                 var expressionContext = context.EvaluationContext.GetSimulationContext(export.Simulation);
                 var firstParameterSweepParameter = expressionContext.Parameters[firstParameterSweep.Parameter.Value];
@@ -240,7 +241,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
         private void AddTranPointsToSeries(Export export, Series series)
         {
-            export.Simulation.ExportSimulationData += (object sender, ExportDataEventArgs e) =>
+            export.Simulation.EventExportData += (object sender, ExportData e) =>
             {
                 series.Points.Add(new Point() { X = e.Time, Y = export.Extract() });
             };
@@ -248,7 +249,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
         private void AddAcPointsToSeries(Export export, Series series)
         {
-            export.Simulation.ExportSimulationData += (object sender, ExportDataEventArgs e) =>
+            export.Simulation.EventExportData += (object sender, ExportData e) =>
             {
                 series.Points.Add(new Point() { X = e.Frequency, Y = export.Extract() });
             };
@@ -340,7 +341,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private IEnumerable<Simulation> Filter(IEnumerable<Simulation> simulations, Type simulationType)
+        private IEnumerable<ISimulationWithEvents> Filter(IEnumerable<ISimulationWithEvents> simulations, Type simulationType)
         {
             if (simulationType == null)
             {

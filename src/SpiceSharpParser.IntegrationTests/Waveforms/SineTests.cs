@@ -25,7 +25,7 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
             frequency = 2.0 * Math.PI;
             phase = phase * Math.PI / 180;
 
-            simulation.ExportSimulationData += (sender, args) =>
+            simulation.EventExportData += (sender, args) =>
             {
                 var time = args.Time;
                 time -= delay;
@@ -43,7 +43,9 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
 
                 // Return result (with offset)
                 var expected = offset + result;
-                Assert.True(EqualsWithTol(expected, args.GetVoltage("1")));
+                //Assert.True(EqualsWithTol(expected, args.GetVoltage("1")));
+
+                throw new Exception("TODO");
             };
 
             simulation.Run(netlist.Circuit);
@@ -65,7 +67,7 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
             frequency = 2.0 * Math.PI;
             phase = phase * Math.PI / 180;
 
-            simulation.ExportSimulationData += (sender, args) =>
+            simulation.EventExportData += (sender, args) =>
             {
                 var time = args.Time;
                 time -= delay;
@@ -83,7 +85,9 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
 
                 // Return result (with offset)
                 var expected = offset + result;
-                Assert.True(EqualsWithTol(expected, args.GetVoltage("1")));
+                //Assert.True(EqualsWithTol(expected, args.GetVoltage("1")));
+                //TODO
+                throw new Exception("TODO");
             };
 
             simulation.Run(netlist.Circuit);

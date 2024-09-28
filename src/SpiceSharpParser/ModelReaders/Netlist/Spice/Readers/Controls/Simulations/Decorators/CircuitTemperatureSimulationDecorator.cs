@@ -1,4 +1,5 @@
 ﻿using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using System;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators
@@ -12,16 +13,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             _circuitTemperature = circuitTemperature;
         }
 
-        public Simulation Decorate(Simulation simulation)
+        public ISimulationWithEvents Decorate(ISimulationWithEvents simulation)
         {
-            EventHandler<TemperatureStateEventArgs> setState = (object sender, TemperatureStateEventArgs e) =>
+            OnBeforeTemperature setState = (object sender, TemperatureStateEventArgs e) =>
             {
               e.State.Temperature = _circuitTemperature;
             };
 
-            if (simulation is BiasingSimulation biasingSimulation)
+            if (simulation is ISimulationWithEvents biasingSimulation)
             {
-                biasingSimulation.BeforeTemperature += setState;
+                biasingSimulation.EventBeforeTemperature += setState;
             }
 
             return simulation;

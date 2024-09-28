@@ -1,5 +1,6 @@
 ﻿using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
+using System;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports
 {
@@ -15,7 +16,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <param name="simulation">Simulation.</param>
         /// <param name="node">Positive node.</param>
         /// <param name="reference">Negative reference node.</param>
-        public VoltageDecibelExport(string name, Simulation simulation, string node, string reference = null)
+        public VoltageDecibelExport(string name, ISimulationWithEvents simulation, string node, string reference = null)
             : base(simulation)
         {
             Name = name ?? throw new System.ArgumentNullException(nameof(name));
@@ -52,17 +53,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// </returns>
         public override double Extract()
         {
-            if (!ExportImpl.IsValid)
-            {
-                if (ExceptionsEnabled)
-                {
-                    throw new SpiceSharpParserException($"Voltage decibel export '{Name}' is invalid");
-                }
-
-                return double.NaN;
-            }
-
-            return ExportImpl.Decibels;
+            return Math.Log10(ExportImpl.Value.Magnitude);
         }
     }
 }

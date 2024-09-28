@@ -1,0 +1,113 @@
+﻿using SpiceSharp.Simulations;
+using System;
+using System.Collections.Generic;
+
+namespace SpiceSharpParser.Common
+{
+    public class TransientWithEvents : Transient, ISimulationWithEvents
+    {
+        public TransientWithEvents(string name) : base(name)
+        {
+        }
+
+        public TransientWithEvents(string name, TimeParameters parameters) : base(name, parameters)
+        {
+
+        }
+        public TransientWithEvents(string name, double step, double final)
+            : base(name, step, final)
+        {
+        }
+
+        //
+        // Summary:
+        //     Initializes a new instance of the SpiceSharp.Simulations.Transient class.
+        //
+        // Parameters:
+        //   name:
+        //     The name of the simulation.
+        //
+        //   step:
+        //     The step size.
+        //
+        //   final:
+        //     The final time.
+        //
+        //   maxStep:
+        //     The maximum step.
+        public TransientWithEvents(string name, double step, double final, double maxStep)
+            : base(name, step, final, maxStep)
+        {
+            
+        }
+
+        public event OnBeforeSetup EventBeforeSetup;
+
+        public event OnBeforeSetup EventBeforeUnSetup;
+
+        public event OnAfterSetup EventAfterSetup;
+
+        public event OnBeforeValidation EventBeforeValidation;
+
+        public event OnBeforeValidation EventAfterValidation;
+
+        public event OnBeforeTemperature EventBeforeTemperature;
+
+        public event OnAfterTemperature EventAfterTemperature;
+
+        public event OnBeforeExecute EventBeforeExecute;
+
+        public event OnAfterExecute EventAfterExecute;
+
+        public event OnExportData EventExportData;
+
+        public IEnumerable<int> RunWithEvents(IEnumerable<int> codes)
+        {
+            EventBeforeSetup.Invoke(this, EventArgs.Empty);
+            foreach (var code in codes)
+            {
+                switch (code)
+                {
+                    case Simulation.BeforeValidation:
+                        EventBeforeValidation.Invoke(this, EventArgs.Empty);
+                        break;
+
+                    case Simulation.AfterValidation:
+                        EventAfterValidation.Invoke(this, EventArgs.Empty);
+                        break;
+
+                    case Simulation.BeforeSetup:
+                        EventBeforeSetup.Invoke(this, EventArgs.Empty);
+                        break;
+                    case Simulation.AfterSetup:
+                        EventAfterSetup.Invoke(this, EventArgs.Empty);
+                        break;
+                    case Simulation.BeforeUnsetup:
+                        EventBeforeUnSetup.Invoke(this, EventArgs.Empty);
+                        break;
+
+                    case Simulation.BeforeExecute:
+                        EventBeforeExecute.Invoke(this, EventArgs.Empty);
+
+                        if (this is IBiasingSimulation)
+                        {
+                            EventBeforeTemperature?.Invoke(this, null);
+                        }
+
+                        break;
+
+                    case Simulation.AfterExecute:
+                        EventAfterExecute.Invoke(this, EventArgs.Empty);
+                        break;
+
+
+                    case Transient.Exports:
+
+                        EventExportData.Invoke(this, new ExportData { }); //TODO });
+                        break;
+                }
+                yield return code;
+            }
+        }
+    }
+}

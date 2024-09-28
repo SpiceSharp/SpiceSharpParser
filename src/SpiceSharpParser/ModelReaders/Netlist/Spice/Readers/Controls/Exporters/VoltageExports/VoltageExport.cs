@@ -1,4 +1,5 @@
 ﻿using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters.VoltageExports
 {
@@ -14,7 +15,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <param name="simulation">Simulation.</param>
         /// <param name="node">Positive node.</param>
         /// <param name="reference">Negative reference node.</param>
-        public VoltageExport(string name, Simulation simulation, string node, string reference = null)
+        public VoltageExport(string name, ISimulationWithEvents simulation, string node, string reference = null)
             : base(simulation)
         {
             Name = name ?? throw new System.ArgumentNullException(nameof(name));
@@ -66,20 +67,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         {
             if (ExportImpl != null)
             {
-                if (!ExportImpl.IsValid)
-                {
-                    return double.NaN;
-                }
-
                 return ExportImpl.Value.Real;
             }
             else
             {
-                if (!ExportRealImpl.IsValid)
-                {
-                    return double.NaN;
-                }
-
                 return ExportRealImpl.Value;
             }
         }

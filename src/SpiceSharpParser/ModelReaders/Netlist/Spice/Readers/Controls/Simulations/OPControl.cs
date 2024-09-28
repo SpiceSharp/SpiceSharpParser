@@ -1,4 +1,5 @@
 ﻿using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
@@ -26,9 +27,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             CreateSimulations(statement, context, CreateOperatingPointSimulation);
         }
 
-        private OP CreateOperatingPointSimulation(string name, Control statement, IReadingContext context)
+        private ISimulationWithEvents CreateOperatingPointSimulation(string name, Control statement, IReadingContext context)
         {
-            var op = new OP(name);
+            var op = new OpWithEvents(name);
             ConfigureCommonSettings(op, context);
             context.Result.Simulations.Add(op);
 

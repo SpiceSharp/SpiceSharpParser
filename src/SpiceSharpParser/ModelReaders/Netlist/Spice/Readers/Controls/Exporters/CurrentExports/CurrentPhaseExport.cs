@@ -15,7 +15,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <param name="name">Name of export.</param>
         /// <param name="simulation">A simulation</param>
         /// <param name="source">An identifier</param>
-        public CurrentPhaseExport(string name, Simulation simulation, string source)
+        public CurrentPhaseExport(string name, ISimulationWithEvents simulation, string source)
             : base(simulation)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
@@ -46,16 +46,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// </returns>
         public override double Extract()
         {
-            if (!ExportImpl.IsValid)
-            {
-                if (ExceptionsEnabled)
-                {
-                    throw new SpiceSharpParserException($"Current phase export '{Name}' is invalid");
-                }
-
-                return double.NaN;
-            }
-
             return ExportImpl.Value.Phase;
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
@@ -87,7 +88,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private IEnumerable<Simulation> FilterSimulations(IEnumerable<Simulation> simulations, string type)
+        private IEnumerable<ISimulationWithEvents> FilterSimulations(IEnumerable<ISimulationWithEvents> simulations, string type)
         {
             var typeLowered = type.ToLower();
 
@@ -103,7 +104,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void CreatePlot(string plotImage, ParameterCollection parameters, IReadingContext context, Simulation simulation)
+        private void CreatePlot(string plotImage, ParameterCollection parameters, IReadingContext context, ISimulationWithEvents simulation)
         {
             var plot = new XyPlot(simulation.Name);
             List<Export> exports = GenerateExports(parameters, simulation, context);
@@ -113,11 +114,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 plot.Series.Add(new Series(export.Name));
             }
 
-            simulation.ExportSimulationData += (sender, args) => CreatePointForSeries(simulation, context, args, exports, plot.Series);
-            simulation.AfterExecute += (sender, args) => AddPlotToResultIfValid(plotImage, context, plot, simulation);
+            simulation.EventExportData += (sender, args) => CreatePointForSeries(simulation, context, args, exports, plot.Series);
+            simulation.EventAfterExecute += (sender, args) => AddPlotToResultIfValid(plotImage, context, plot, simulation);
         }
 
-        private void CreatePlot(string plotImage, ParameterCollection parameters, IReadingContext context, IEnumerable<Simulation> simulations)
+        private void CreatePlot(string plotImage, ParameterCollection parameters, IReadingContext context, IEnumerable<ISimulationWithEvents> simulations)
         {
             var plot = new XyPlot($"Merged: {plotImage}");
             foreach (var simulation in simulations)
@@ -131,13 +132,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 }
 
                 plot.Series.AddRange(series);
-                simulation.ExportSimulationData += (sender, args) => CreatePointForSeries(simulation, context, args, exports, series);
+                simulation.EventExportData += (sender, args) => CreatePointForSeries(simulation, context, args, exports, series);
             }
 
             context.Result.XyPlots.Add(plot);
         }
 
-        private void AddPlotToResultIfValid(string plotImage, IReadingContext context, XyPlot plot, Simulation simulation)
+        private void AddPlotToResultIfValid(string plotImage, IReadingContext context, XyPlot plot, ISimulationWithEvents simulation)
         {
             for (int i = plot.Series.Count - 1; i >= 0; i--)
             {
@@ -158,38 +159,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void CreatePointForSeries(Simulation simulation, IReadingContext context, ExportDataEventArgs eventArgs, List<Export> exports, List<Series> series)
+        private void CreatePointForSeries(ISimulationWithEvents simulation, IReadingContext context, object eventArgs, List<Export> exports, List<Series> series)
         {
             double x = 0;
 
-            if (simulation is Transient)
-            {
-                x = eventArgs.Time;
-            }
-
-            if (simulation is AC)
-            {
-                x = eventArgs.Frequency;
-            }
-
-            if (simulation is Noise)
-            {
-                x = eventArgs.Frequency;
-            }
-
-            if (simulation is DC)
-            {
-                if (eventArgs.GetSweepValues().Length > 1)
-                {
-                    // TODO: Add support for DC Sweeps > 1
-                    context.Result.ValidationResult.AddError(
-                        ValidationEntrySource.Reader,
-                        ".PLOT doesn't support sweep count > 1");
-                    return;
-                }
-
-                x = eventArgs.GetSweepValues().FirstOrDefault();
-            }
+            //TODO
 
             for (var i = 0; i < exports.Count; i++)
             {

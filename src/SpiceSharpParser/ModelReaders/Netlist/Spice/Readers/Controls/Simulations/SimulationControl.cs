@@ -1,4 +1,5 @@
 ﻿using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
@@ -25,7 +26,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// <summary>
         /// Creates simulations.
         /// </summary>
-        protected void CreateSimulations(Control statement, IReadingContext context, Func<string, Control, IReadingContext, Simulation> createSimulation)
+        protected void CreateSimulations(Control statement, IReadingContext context, Func<string, Control, IReadingContext, ISimulationWithEvents> createSimulation)
         {
             _factory.Create(statement, context, createSimulation);
         }

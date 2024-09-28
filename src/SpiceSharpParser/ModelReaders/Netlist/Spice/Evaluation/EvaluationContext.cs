@@ -17,7 +17,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
         private readonly SpiceNetlistCaseSensitivitySettings _caseSettings;
         private readonly ConcurrentDictionary<string, EvaluationContext> _cache;
         private readonly SimulationEvaluationContexts _simulationEvaluationContexts;
-        private Simulation _simulation;
+        private ISimulationWithEvents _simulation;
 
         public EvaluationContext(
             string name,
@@ -116,7 +116,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
         /// </summary>
         public List<EvaluationContext> Children { get; set; }
 
-        public Simulation Simulation
+        public ISimulationWithEvents Simulation
         {
             get => _simulation;
             set
@@ -160,7 +160,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             }
         }
 
-        public void SetParameter(string parameterName, double value, Simulation simulation)
+        public void SetParameter(string parameterName, double value, ISimulationWithEvents simulation)
         {
             if (simulation != null)
             {
@@ -432,7 +432,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             return ExpressionFeaturesReader.GetParameters(expression, this, @throw).ToList();
         }
 
-        public EvaluationContext GetSimulationContext(Simulation simulation)
+        public EvaluationContext GetSimulationContext(ISimulationWithEvents simulation)
         {
             return _simulationEvaluationContexts.GetContext(simulation);
         }

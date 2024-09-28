@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
@@ -52,7 +53,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             string printImage = statement.Name + ":" + statement.Parameters;
             if (type != null && SupportedPrintTypes.Contains(type))
             {
-                foreach (Simulation simulation in FilterSimulations(context.Result.Simulations, type))
+                foreach (ISimulationWithEvents simulation in FilterSimulations(context.Result.Simulations, type))
                 {
                     string firstColumnName = GetFirstDimensionLabel(simulation);
                     CreatePrint(printImage, statement.Parameters.Skip(1), context, simulation, firstColumnName, true);
@@ -60,7 +61,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
             else
             {
-                foreach (Simulation simulation in context.Result.Simulations)
+                foreach (ISimulationWithEvents simulation in context.Result.Simulations)
                 {
                     string firstColumnName = GetFirstDimensionLabel(simulation);
                     CreatePrint(printImage, statement.Parameters, context, simulation, firstColumnName, false);
@@ -68,32 +69,32 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private static void CreateRowInPrint(ref int rowIndex, Simulation simulation, IReadingContext context, ExportDataEventArgs eventArgs, List<Export> exports, Print print)
+        private static void CreateRowInPrint(ref int rowIndex, ISimulationWithEvents simulation, IReadingContext context, ExportData eventArgs, List<Export> exports, Print print)
         {
             Row row = new Row(rowIndex++);
 
             double x = 0;
 
-            if (simulation is Transient)
+            if (simulation is Transient t)
             {
-                x = eventArgs.Time;
+                x = t.Time;
             }
 
-            if (simulation is AC)
+            if (simulation is AC a)
             {
-                x = eventArgs.Frequency;
+                x = a.Frequency;
             }
 
             if (simulation is DC)
             {
-                if (eventArgs.GetSweepValues().Length > 1)
+                /*if (eventArgs.GetSweepValues().Length > 1)
                 {
                     // TODO: Add support for DC Sweeps > 1
                     context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, ".PRINT doesn't support sweep count > 1");
                     return;
                 }
 
-                x = eventArgs.GetSweepValues().FirstOrDefault();
+                x = eventArgs.GetSweepValues().FirstOrDefault();*/
             }
 
             if (!(simulation is OP))
@@ -117,7 +118,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             print.Rows.Add(row);
         }
 
-        private IEnumerable<Simulation> FilterSimulations(IEnumerable<Simulation> simulations, string type)
+        private IEnumerable<ISimulationWithEvents> FilterSimulations(IEnumerable<ISimulationWithEvents> simulations, string type)
         {
             var typeLowered = type.ToLower();
 
@@ -133,7 +134,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private void CreatePrint(string printImage, ParameterCollection parameters, IReadingContext context, Simulation simulation, string firstColumnName, bool filterSpecified)
+        private void CreatePrint(string printImage, ParameterCollection parameters, IReadingContext context, ISimulationWithEvents simulation, string firstColumnName, bool filterSpecified)
         {
             var print = new Print(simulation.Name);
 
@@ -150,11 +151,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
 
             int rowIndex = 0;
-            simulation.ExportSimulationData += (_, args) => CreateRowInPrint(ref rowIndex, simulation, context, args, exports, print);
-            simulation.AfterExecute += (_, _) => AddPrintToResultIfValid(printImage, context, print, simulation, filterSpecified);
+            simulation.EventExportData += (_, args) => CreateRowInPrint(ref rowIndex, simulation, context, args, exports, print);
+            simulation.EventAfterExecute += (_, _) => AddPrintToResultIfValid(printImage, context, print, simulation, filterSpecified);
         }
 
-        private void AddPrintToResultIfValid(string printImage, IReadingContext context, Print print, Simulation simulation, bool filterSpecified)
+        private void AddPrintToResultIfValid(string printImage, IReadingContext context, Print print, ISimulationWithEvents simulation, bool filterSpecified)
         {
             if (!filterSpecified)
             {

@@ -27,7 +27,7 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
             var wasHit1 = false;
             var wasHit2 = false;
 
-            simulation.ExportSimulationData += (sender, args) =>
+            simulation.EventExportData += (sender, args) =>
             {
                 if (args.Time == 1.111)
                 {
@@ -39,7 +39,10 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
                     wasHit2 = true;
                 }
 
-                Assert.True(EqualsWithTol(2.0, args.GetVoltage("a")));
+                //Assert.True(EqualsWithTol(2.0, args.GetVoltage("a")));
+
+                //
+                throw new Exception("TODO");
             };
 
             simulation.Run(netlist.Circuit);

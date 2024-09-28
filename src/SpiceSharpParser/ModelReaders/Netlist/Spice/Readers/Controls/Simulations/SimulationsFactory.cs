@@ -1,4 +1,5 @@
 ﻿using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
@@ -36,7 +37,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// <param name="statement">Simulation statement.</param>
         /// <param name="context">Context.</param>
         /// <param name="createSimulation">Simulation factory.</param>
-        public void Create(Control statement, IReadingContext context, Func<string, Control, IReadingContext, Simulation> createSimulation)
+        public void Create(Control statement, IReadingContext context, Func<string, Control, IReadingContext, ISimulationWithEvents> createSimulation)
         {
             if (!IsMonteCarloEnabledForSimulation(statement, context))
             {

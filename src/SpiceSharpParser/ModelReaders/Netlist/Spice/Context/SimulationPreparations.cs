@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SpiceSharp.Entities;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
@@ -12,26 +13,26 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         {
             EntityUpdates = entityUpdates ?? throw new ArgumentNullException(nameof(entityUpdates));
             SimulationUpdates = simulationUpdates ?? throw new ArgumentNullException(nameof(simulationUpdates));
-            BeforeSetup = new List<Action<Simulation>>();
-            AfterSetup = new List<Action<Simulation>>();
+            BeforeSetup = new List<Action<ISimulationWithEvents>>();
+            AfterSetup = new List<Action<ISimulationWithEvents>>();
         }
 
         protected EntityUpdates EntityUpdates { get; }
 
         protected SimulationUpdates SimulationUpdates { get; }
 
-        protected List<Action<Simulation>> BeforeSetup { get; }
+        protected List<Action<ISimulationWithEvents>> BeforeSetup { get; }
 
-        protected List<Action<Simulation>> AfterSetup { get; }
+        protected List<Action<ISimulationWithEvents>> AfterSetup { get; }
 
-        public void Prepare(Simulation simulation)
+        public void Prepare(ISimulationWithEvents simulation)
         {
             if (simulation == null)
             {
                 throw new ArgumentNullException(nameof(simulation));
             }
 
-            simulation.BeforeSetup += (_, _) =>
+            simulation.EventBeforeSetup += (_, _) =>
             {
                 foreach (var action in BeforeSetup)
                 {
@@ -39,7 +40,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                 }
             };
 
-            simulation.AfterSetup += (_, _) =>
+            simulation.EventAfterSetup += (_, _) =>
             {
                 foreach (var action in AfterSetup)
                 {
@@ -99,12 +100,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             });
         }
 
-        public void ExecuteActionBeforeSetup(Action<Simulation> action)
+        public void ExecuteActionBeforeSetup(Action<ISimulationWithEvents> action)
         {
             BeforeSetup.Add(action);
         }
 
-        public void ExecuteActionAfterSetup(Action<Simulation> action)
+        public void ExecuteActionAfterSetup(Action<ISimulationWithEvents> action)
         {
             AfterSetup.Add(action);
         }
@@ -144,7 +145,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             EntityUpdates.Add(@object, paramName, value, true);
         }
 
-        public void SetParameterBeforeTemperature(IEntity @object, string paramName, double value, Simulation simulation)
+        public void SetParameterBeforeTemperature(IEntity @object, string paramName, double value, ISimulationWithEvents simulation)
         {
             if (@object == null)
             {

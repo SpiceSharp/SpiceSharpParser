@@ -1,4 +1,5 @@
 ﻿using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
 {
@@ -13,12 +14,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <param name="simulation">
         /// The simulation.
         /// </param>
-        protected Export(Simulation simulation)
+        protected Export(ISimulationWithEvents simulation)
         {
             Simulation = simulation;
         }
 
-        public Simulation Simulation { get; }
+        public ISimulationWithEvents Simulation { get; }
 
         /// <summary>
         /// Gets or sets the name.

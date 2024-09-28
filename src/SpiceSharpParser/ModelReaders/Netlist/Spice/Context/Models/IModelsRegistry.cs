@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using SpiceSharp.Entities;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 {
     public interface IModelsRegistry
     {
-        void SetModel(Entity entity, Simulation simulation, Parameter modelNameParameter, string exceptionMessage, Action<Model> setModelAction, IReadingContext context);
+        void SetModel(Entity entity, ISimulationWithEvents simulation, Parameter modelNameParameter, string exceptionMessage, Action<Model> setModelAction, IReadingContext context);
 
         Model FindModel(string modelName);
 

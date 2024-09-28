@@ -15,7 +15,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <param name="simulation">Simulation</param>
         /// <param name="node">Positive node</param>
         /// <param name="reference">Negative reference node</param>
-        public VoltageImaginaryExport(string name, Simulation simulation, string node, string reference = null)
+        public VoltageImaginaryExport(string name, ISimulationWithEvents simulation, string node, string reference = null)
             : base(simulation)
         {
             Name = name ?? throw new System.ArgumentNullException(nameof(name));
@@ -53,16 +53,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// </returns>
         public override double Extract()
         {
-            if (!ExportImpl.IsValid)
-            {
-                if (ExceptionsEnabled)
-                {
-                    throw new SpiceSharpParserException($"Voltage imaginary export {Name} is invalid");
-                }
-
-                return double.NaN;
-            }
-
             return ExportImpl.Value.Imaginary;
         }
     }

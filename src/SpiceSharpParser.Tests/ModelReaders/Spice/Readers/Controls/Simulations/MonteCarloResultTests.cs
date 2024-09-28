@@ -1,4 +1,5 @@
 ﻿using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations;
 using Xunit;
 
@@ -11,8 +12,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
         {
             var monteCarloResult = new MonteCarloResult();
 
-            var op1 = new OP("op1");
-            var op2 = new OP("op2");
+            var op1 = new OpWithEvents("op1");
+            var op2 = new OpWithEvents("op2");
             monteCarloResult.Collect(op1, 1);
             monteCarloResult.Collect(op1, 2);
 
@@ -31,7 +32,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
         {
             var monteCarloResult = new MonteCarloResult();
 
-            var sim = new OP("op1");
+            var sim = new OpWithEvents("op1");
 
             monteCarloResult.Collect(sim, -1);
             monteCarloResult.Collect(sim, 4);
@@ -47,8 +48,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
         {
             var monteCarloResult = new MonteCarloResult();
 
-            var sim = new OP("op1");
-            var sim2 = new OP("op2");
+            var sim = new OpWithEvents("op1");
+            var sim2 = new OpWithEvents("op2");
 
             monteCarloResult.Collect(sim, -1);
             monteCarloResult.Collect(sim, 4);
@@ -65,7 +66,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
         {
             var monteCarloResult = new MonteCarloResult();
 
-            var sim = new OP("op1");
+            var sim = new OpWithEvents("op1");
 
             monteCarloResult.Collect(sim, -1);
             monteCarloResult.Collect(sim, 4);
@@ -81,8 +82,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.Controls.Simulations
         {
             var monteCarloResult = new MonteCarloResult();
 
-            var sim = new OP("op1");
-            var sim2 = new OP("op2");
+            var sim = new OpWithEvents("op1");
+            var sim2 = new OpWithEvents("op2");
 
             monteCarloResult.Collect(sim, -1);
             monteCarloResult.Collect(sim, 4);

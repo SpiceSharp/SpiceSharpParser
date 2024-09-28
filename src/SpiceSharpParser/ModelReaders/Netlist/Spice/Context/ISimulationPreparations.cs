@@ -1,12 +1,13 @@
 ﻿using SpiceSharp.Entities;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using System;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 {
     public interface ISimulationPreparations
     {
-        void Prepare(Simulation simulation);
+        void Prepare(ISimulationWithEvents simulation);
 
         void SetNodeSetVoltage(string nodeId, string expression);
 
@@ -16,10 +17,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         void SetParameterBeforeTemperature(IEntity @object, string paramName, double value);
 
-        void SetParameterBeforeTemperature(IEntity @object, string paramName, double value, Simulation simulation);
+        void SetParameterBeforeTemperature(IEntity @object, string paramName, double value, ISimulationWithEvents simulation);
 
-        void ExecuteActionBeforeSetup(Action<Simulation> action);
+        void ExecuteActionBeforeSetup(Action<ISimulationWithEvents> action);
 
-        void ExecuteActionAfterSetup(Action<Simulation> action);
+        void ExecuteActionAfterSetup(Action<ISimulationWithEvents> action);
     }
 }
