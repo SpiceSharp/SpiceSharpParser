@@ -8,6 +8,7 @@ using Xunit;
 using System.Text;
 using SpiceSharpParser.Common;
 using System.Threading;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace SpiceSharpParser.IntegrationTests
 {
@@ -168,7 +169,10 @@ namespace SpiceSharpParser.IntegrationTests
 
             foreach (var simulation in readerResult.Simulations)
             {
-                simulation.Run(readerResult.Circuit);
+                var codes = simulation.Run(readerResult.Circuit);
+                codes = simulation.AttachEvents(codes);
+
+                codes.ToArray(); //eval
             }
 
             return result;
@@ -185,7 +189,10 @@ namespace SpiceSharpParser.IntegrationTests
         {
             foreach (var simulation in readerResult.Simulations)
             {
-                simulation.Run(readerResult.Circuit);
+                var codes = simulation.Run(readerResult.Circuit);
+                codes = simulation.AttachEvents(codes);
+
+                codes.ToArray(); // eval
             }
         }
 
@@ -199,8 +206,9 @@ namespace SpiceSharpParser.IntegrationTests
                 result = export.Extract();
             };
 
-            simulation.Run(readerResult.Circuit);
-
+            var codes = simulation.Run(readerResult.Circuit);
+            codes = simulation.AttachEvents(codes);
+            codes.ToArray(); // eval
             return result;
         }
 
@@ -217,8 +225,10 @@ namespace SpiceSharpParser.IntegrationTests
                     result[i] = export.Extract();
                 }
             };
-
-            simulation.Run(readerResult.Circuit);
+            
+            var codes = simulation.Run(readerResult.Circuit);
+            var attached = simulation.AttachEvents(codes);
+            attached.ToArray(); // eval
 
             return result;
         }
@@ -244,7 +254,9 @@ namespace SpiceSharpParser.IntegrationTests
                 }
             };
 
-            simulation.Run(readerResult.Circuit);
+            var codes = simulation.Run(readerResult.Circuit);
+            var attached = simulation.AttachEvents(codes);
+            attached.ToArray(); // eval
 
             return result;
         }
@@ -260,7 +272,9 @@ namespace SpiceSharpParser.IntegrationTests
                 list.Add(new Tuple<double, double>(e.Time, export.Extract()));
             };
 
-            simulation.Run(readerResult.Circuit);
+            var codes = simulation.Run(readerResult.Circuit);
+            var attached = simulation.AttachEvents(codes);
+            attached.ToArray(); // eval
 
             return list.ToArray();
         }
@@ -277,7 +291,9 @@ namespace SpiceSharpParser.IntegrationTests
                 throw new Exception("TODO");
             };
 
-            simulation.Run(readerResult.Circuit);
+            var codes = simulation.Run(readerResult.Circuit);
+            var attached = simulation.AttachEvents(codes);
+            attached.ToArray(); // eval
 
             return list.ToArray();
         }

@@ -39,13 +39,13 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
                     wasHit2 = true;
                 }
 
-                //Assert.True(EqualsWithTol(2.0, args.GetVoltage("a")));
-
-                //
-                throw new Exception("TODO");
+                Assert.True(EqualsWithTol(2.0, simulation.GetVoltage("a")));
             };
 
-            simulation.Run(netlist.Circuit);
+            var codes = simulation.Run(netlist.Circuit);
+            var withEvents = simulation.AttachEvents(codes);
+
+            withEvents.ToArray(); //eval
 
             Assert.True(wasHit1);
             Assert.True(wasHit2);

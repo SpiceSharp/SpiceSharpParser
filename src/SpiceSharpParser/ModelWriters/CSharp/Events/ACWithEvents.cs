@@ -34,7 +34,7 @@ namespace SpiceSharpParser.Common
 
         public event OnExportData EventExportData;
 
-        public IEnumerable<int> RunWithEvents(IEnumerable<int> codes)
+        public IEnumerable<int> AttachEvents(IEnumerable<int> codes)
         {
             EventBeforeSetup.Invoke(this, EventArgs.Empty);
             foreach (var code in codes)

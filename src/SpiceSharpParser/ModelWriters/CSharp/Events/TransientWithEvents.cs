@@ -61,28 +61,28 @@ namespace SpiceSharpParser.Common
 
         public event OnExportData EventExportData;
 
-        public IEnumerable<int> RunWithEvents(IEnumerable<int> codes)
+        public IEnumerable<int> AttachEvents(IEnumerable<int> codes)
         {
             EventBeforeSetup.Invoke(this, EventArgs.Empty);
             foreach (var code in codes)
             {
                 switch (code)
                 {
-                    case Simulation.BeforeValidation:
+                    case Transient.BeforeValidation:
                         EventBeforeValidation.Invoke(this, EventArgs.Empty);
                         break;
 
-                    case Simulation.AfterValidation:
+                    case Transient.AfterValidation:
                         EventAfterValidation.Invoke(this, EventArgs.Empty);
                         break;
 
-                    case Simulation.BeforeSetup:
+                    case Transient.BeforeSetup:
                         EventBeforeSetup.Invoke(this, EventArgs.Empty);
                         break;
-                    case Simulation.AfterSetup:
+                    case Transient.AfterSetup:
                         EventAfterSetup.Invoke(this, EventArgs.Empty);
                         break;
-                    case Simulation.BeforeUnsetup:
+                    case Transient.BeforeUnsetup:
                         EventBeforeUnSetup.Invoke(this, EventArgs.Empty);
                         break;
 
@@ -101,9 +101,9 @@ namespace SpiceSharpParser.Common
                         break;
 
 
-                    case Transient.Exports:
+                    case Transient.ExportTransient:
 
-                        EventExportData.Invoke(this, new ExportData { }); //TODO });
+                        EventExportData.Invoke(this, new ExportData { Time = this.Time }); //TODO });
                         break;
                 }
                 yield return code;

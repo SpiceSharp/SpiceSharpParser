@@ -85,16 +85,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 x = a.Frequency;
             }
 
-            if (simulation is DC)
+            if (simulation is DC d)
             {
-                /*if (eventArgs.GetSweepValues().Length > 1)
-                {
-                    // TODO: Add support for DC Sweeps > 1
-                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, ".PRINT doesn't support sweep count > 1");
-                    return;
-                }
-
-                x = eventArgs.GetSweepValues().FirstOrDefault();*/
+                x = d.GetCurrentSweepValue().Last();
             }
 
             if (!(simulation is OP))

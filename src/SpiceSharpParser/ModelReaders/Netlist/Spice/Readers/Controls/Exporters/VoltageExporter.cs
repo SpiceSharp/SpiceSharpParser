@@ -33,8 +33,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             }
 
             // Get the nodes
-            string node, reference = null;
-            string nodePath, referencePath;
+            string node, reference = "0"; // default ground
+            string nodePath, referencePath = "O";
 
             if (parameters[0] is VectorParameter vector)
             {
@@ -51,6 +51,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                     case 1:
                         nodePath = vector.Elements[0].Value;
                         node = context.NameGenerator.ParseNodeName(nodePath);
+                        referencePath = "0";
+                        referencePath = "0";
                         break;
 
                     default:

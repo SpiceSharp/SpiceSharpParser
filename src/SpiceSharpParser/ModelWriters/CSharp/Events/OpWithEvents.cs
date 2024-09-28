@@ -30,53 +30,23 @@ namespace SpiceSharpParser.Common
 
         public event OnExportData EventExportData;
 
-        public IEnumerable<int> RunWithEvents(IEnumerable<int> codes)
+        public IEnumerable<int> AttachEvents(IEnumerable<int> codes)
         {
             EventBeforeSetup.Invoke(this, EventArgs.Empty);
+
             foreach (var code in codes)
             {
                 switch (code)
                 {
-                    case Simulation.BeforeValidation:
-                        EventBeforeValidation.Invoke(this, EventArgs.Empty);
-                        break;
+                    case OP.ExportOperatingPoint:
 
-                    case Simulation.AfterValidation:
-                        EventAfterValidation.Invoke(this, EventArgs.Empty);
-                        break;
-
-                    case Simulation.BeforeSetup:
-                        EventBeforeSetup.Invoke(this, EventArgs.Empty);
-                        break;
-                    case Simulation.AfterSetup:
-                        EventAfterSetup.Invoke(this, EventArgs.Empty);
-                        break;
-                    case Simulation.BeforeUnsetup:
-                        EventBeforeUnSetup.Invoke(this, EventArgs.Empty);
-                        break;
-
-                    case Simulation.BeforeExecute:
-                        EventBeforeExecute.Invoke(this, EventArgs.Empty);
-
-                        if (this is IBiasingSimulation)
-                        {
-                            EventBeforeTemperature?.Invoke(this, null);
-                        }
-
-                        break;
-
-                    case Simulation.AfterExecute:
-                        EventAfterExecute.Invoke(this, EventArgs.Empty);
-                        break;
-
-
-                    case OP.Exports:
-
-                        EventExportData.Invoke(this, new ExportData { }); //TODO });
+                        EventExportData.Invoke(this, new ExportData() { });
                         break;
                 }
                 yield return code;
             }
+
+            EventAfterExecute.Invoke(this, EventArgs.Empty);
         }
     }
 }

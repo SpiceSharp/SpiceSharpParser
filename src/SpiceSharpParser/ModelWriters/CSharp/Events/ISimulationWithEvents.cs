@@ -32,7 +32,6 @@ namespace SpiceSharpParser.Common
 
     public interface ISimulationWithEvents : ISimulation
     {
-
         event OnAfterSetup EventAfterSetup;
         
         event OnAfterTemperature EventAfterTemperature;
@@ -53,8 +52,6 @@ namespace SpiceSharpParser.Common
         
         event OnExportData EventExportData;
 
-        IEnumerable<int> RunWithEvents(IEnumerable<int> codes);
-
-        IEnumerable<int> Run(IEntityCollection entities, int mask = 65535);
+        IEnumerable<int> AttachEvents(IEnumerable<int> codes);
     }
 }

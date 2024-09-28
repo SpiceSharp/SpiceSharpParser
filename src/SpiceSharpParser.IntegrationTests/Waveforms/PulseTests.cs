@@ -35,8 +35,7 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
             };
 
             var events = simulation.Run(netlist.Circuit);
-
-            simulation.RunWithEvents(events);
+            simulation.AttachEvents(events).ToArray();
 
             Assert.True(riseHit);
             Assert.True(risenHit);
@@ -71,7 +70,12 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
                     fallenHit = true;
             };
 
-            simulation.RunWithEvents(simulation.Run(netlist.Circuit));
+
+            var events = simulation.Run(netlist.Circuit);
+            var codes = simulation.AttachEvents(events);
+
+            //eval
+            codes.ToArray();
 
             Assert.True(riseHit);
             Assert.True(risenHit);
