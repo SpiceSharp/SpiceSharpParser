@@ -11,7 +11,7 @@ namespace SpiceSharpParser.Common
         {
         }
 
-        public DcWithEvents(string name, IEnumerable<ISweep> sweeps): this(name)
+        public DcWithEvents(string name, IEnumerable<ISweep> sweeps) : this(name)
         {
             sweeps.ThrowIfNull("sweeps");
             foreach (ISweep sweep in sweeps)
@@ -47,25 +47,25 @@ namespace SpiceSharpParser.Common
             {
                 switch (code)
                 {
-                    case Simulation.BeforeValidation:
+                    case DC.BeforeValidation:
                         EventBeforeValidation.Invoke(this, EventArgs.Empty);
                         break;
 
-                    case Simulation.AfterValidation:
+                    case DC.AfterValidation:
                         EventAfterValidation.Invoke(this, EventArgs.Empty);
                         break;
 
-                    case Simulation.BeforeSetup:
+                    case DC.BeforeSetup:
                         EventBeforeSetup.Invoke(this, EventArgs.Empty);
                         break;
-                    case Simulation.AfterSetup:
+                    case DC.AfterSetup:
                         EventAfterSetup.Invoke(this, EventArgs.Empty);
                         break;
-                    case Simulation.BeforeUnsetup:
+                    case DC.BeforeUnsetup:
                         EventBeforeUnSetup.Invoke(this, EventArgs.Empty);
                         break;
 
-                    case Simulation.BeforeExecute:
+                    case DC.BeforeExecute:
                         EventBeforeExecute.Invoke(this, EventArgs.Empty);
 
                         if (this is IBiasingSimulation)
@@ -75,18 +75,20 @@ namespace SpiceSharpParser.Common
 
                         break;
 
-                    case Simulation.AfterExecute:
+                    case DC.AfterExecute:
                         EventAfterExecute.Invoke(this, EventArgs.Empty);
                         break;
 
+                    case DC.ExportSweep:
 
-                    case DC.Exports:
-
-                        EventExportData.Invoke(this, new ExportData { }); //TODO });
+                        EventExportData.Invoke(this, new ExportData { });
                         break;
                 }
                 yield return code;
             }
+
+            EventAfterExecute?.Invoke(this, EventArgs.Empty);
+
         }
     }
 }

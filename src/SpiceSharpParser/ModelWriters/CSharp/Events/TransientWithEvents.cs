@@ -108,6 +108,8 @@ namespace SpiceSharpParser.Common
                 }
                 yield return code;
             }
+
+            EventAfterExecute?.Invoke(this, EventArgs.Empty);
         }
     }
 }

@@ -284,11 +284,10 @@ namespace SpiceSharpParser.IntegrationTests
             var list = new List<Tuple<double, double>>();
 
             var export = readerResult.Exports.Find(e => e.Name == nameOfExport && e.Simulation is DC);
-            var simulation = readerResult.Simulations.First(s => s is DC);
+            var simulation = readerResult.Simulations.First(s => s is DC d);
             simulation.EventExportData += (sender, e) =>
             {
-                //list.Add(new Tuple<double, double>(e.GetSweepValues().First(), export.Extract()));
-                throw new Exception("TODO");
+                list.Add(new Tuple<double, double>(((DC)simulation).GetCurrentSweepValue().Last(), export.Extract()));
             };
 
             var codes = simulation.Run(readerResult.Circuit);

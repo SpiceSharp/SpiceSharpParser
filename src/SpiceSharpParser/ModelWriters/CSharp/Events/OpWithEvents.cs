@@ -32,7 +32,7 @@ namespace SpiceSharpParser.Common
 
         public IEnumerable<int> AttachEvents(IEnumerable<int> codes)
         {
-            EventBeforeSetup.Invoke(this, EventArgs.Empty);
+            EventBeforeSetup?.Invoke(this, EventArgs.Empty);
 
             foreach (var code in codes)
             {
@@ -40,13 +40,13 @@ namespace SpiceSharpParser.Common
                 {
                     case OP.ExportOperatingPoint:
 
-                        EventExportData.Invoke(this, new ExportData() { });
+                        EventExportData?.Invoke(this, new ExportData() { });
                         break;
                 }
                 yield return code;
             }
 
-            EventAfterExecute.Invoke(this, EventArgs.Empty);
+            EventAfterExecute?.Invoke(this, EventArgs.Empty);
         }
     }
 }
