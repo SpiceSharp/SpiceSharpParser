@@ -64,6 +64,8 @@ namespace SpiceSharpParser.Common
         public IEnumerable<int> AttachEvents(IEnumerable<int> codes)
         {
             EventBeforeSetup.Invoke(this, EventArgs.Empty);
+            EventBeforeTemperature?.Invoke(this, null);
+
             foreach (var code in codes)
             {
                 switch (code)
@@ -88,12 +90,6 @@ namespace SpiceSharpParser.Common
 
                     case Simulation.BeforeExecute:
                         EventBeforeExecute.Invoke(this, EventArgs.Empty);
-
-                        if (this is IBiasingSimulation)
-                        {
-                            EventBeforeTemperature?.Invoke(this, null);
-                        }
-
                         break;
 
                     case Simulation.AfterExecute:

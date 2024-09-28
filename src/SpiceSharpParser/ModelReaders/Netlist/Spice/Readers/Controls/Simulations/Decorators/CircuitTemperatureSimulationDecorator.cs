@@ -17,7 +17,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         {
             OnBeforeTemperature setState = (object sender, TemperatureStateEventArgs e) =>
             {
-              e.State.Temperature = _circuitTemperature;
+                if (e != null)
+                {
+                    e.State.Temperature = _circuitTemperature;
+                }
             };
 
             if (simulation is ISimulationWithEvents biasingSimulation)

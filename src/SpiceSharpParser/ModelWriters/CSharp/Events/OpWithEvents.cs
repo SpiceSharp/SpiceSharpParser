@@ -33,13 +33,30 @@ namespace SpiceSharpParser.Common
         public IEnumerable<int> AttachEvents(IEnumerable<int> codes)
         {
             EventBeforeSetup?.Invoke(this, EventArgs.Empty);
+            EventBeforeTemperature?.Invoke(this, null);
 
             foreach (var code in codes)
             {
                 switch (code)
                 {
-                    case OP.ExportOperatingPoint:
+                    case Transient.BeforeValidation:
+                        EventBeforeValidation.Invoke(this, EventArgs.Empty);
+                        break;
 
+                    case Transient.AfterValidation:
+                        EventAfterValidation.Invoke(this, EventArgs.Empty);
+                        break;
+
+                    case Transient.BeforeSetup:
+                        EventBeforeSetup.Invoke(this, EventArgs.Empty);
+                        break;
+                    case Transient.AfterSetup:
+                        EventAfterSetup.Invoke(this, EventArgs.Empty);
+                        break;
+                    case Transient.BeforeUnsetup:
+                        EventBeforeUnSetup.Invoke(this, EventArgs.Empty);
+                        break;
+                    case OP.ExportOperatingPoint:
                         EventExportData?.Invoke(this, new ExportData() { });
                         break;
                 }
