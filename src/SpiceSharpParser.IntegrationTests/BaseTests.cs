@@ -169,7 +169,7 @@ namespace SpiceSharpParser.IntegrationTests
 
             foreach (var simulation in readerResult.Simulations)
             {
-                var codes = simulation.Run(readerResult.Circuit);
+                var codes = simulation.Run(readerResult.Circuit, -1);
                 codes = simulation.AttachEvents(codes);
 
                 codes.ToArray(); //eval
@@ -189,7 +189,7 @@ namespace SpiceSharpParser.IntegrationTests
         {
             foreach (var simulation in readerResult.Simulations)
             {
-                var codes = simulation.Run(readerResult.Circuit);
+                var codes = simulation.Run(readerResult.Circuit, -1);
                 codes = simulation.AttachEvents(codes);
 
                 codes.ToArray(); // eval
@@ -206,7 +206,7 @@ namespace SpiceSharpParser.IntegrationTests
                 result = export.Extract();
             };
 
-            var codes = simulation.Run(readerResult.Circuit);
+            var codes = simulation.Run(readerResult.Circuit, -1);
             codes = simulation.AttachEvents(codes);
             codes.ToArray(); // eval
             return result;
@@ -226,7 +226,7 @@ namespace SpiceSharpParser.IntegrationTests
                 }
             };
             
-            var codes = simulation.Run(readerResult.Circuit);
+            var codes = simulation.Run(readerResult.Circuit, -1);
             var attached = simulation.AttachEvents(codes);
             attached.ToArray(); // eval
 
@@ -254,7 +254,7 @@ namespace SpiceSharpParser.IntegrationTests
                 }
             };
 
-            var codes = simulation.Run(readerResult.Circuit);
+            var codes = simulation.Run(readerResult.Circuit, -1);
             var attached = simulation.AttachEvents(codes);
             attached.ToArray(); // eval
 
@@ -272,7 +272,7 @@ namespace SpiceSharpParser.IntegrationTests
                 list.Add(new Tuple<double, double>(e.Time, export.Extract()));
             };
 
-            var codes = simulation.Run(readerResult.Circuit);
+            var codes = simulation.Run(readerResult.Circuit, -1);
             var attached = simulation.AttachEvents(codes);
             attached.ToArray(); // eval
 

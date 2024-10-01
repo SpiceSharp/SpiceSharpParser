@@ -40,31 +40,30 @@ namespace SpiceSharpParser.Common
 
         public IEnumerable<int> AttachEvents(IEnumerable<int> codes)
         {
-            EventBeforeSetup.Invoke(this, EventArgs.Empty);
             foreach (var code in codes)
             {
                 switch (code)
                 {
-                    case Simulation.BeforeValidation:
-                        EventBeforeValidation.Invoke(this, EventArgs.Empty);
+                    case Noise.BeforeValidation:
+                        EventBeforeValidation?.Invoke(this, EventArgs.Empty);
                         break;
 
-                    case Simulation.AfterValidation:
-                        EventAfterValidation.Invoke(this, EventArgs.Empty);
+                    case Noise.AfterValidation:
+                        EventAfterValidation?.Invoke(this, EventArgs.Empty);
                         break;
 
-                    case Simulation.BeforeSetup:
-                        EventBeforeSetup.Invoke(this, EventArgs.Empty);
+                    case Noise.BeforeSetup:
+                        EventBeforeSetup?.Invoke(this, EventArgs.Empty);
                         break;
-                    case Simulation.AfterSetup:
-                        EventAfterSetup.Invoke(this, EventArgs.Empty);
+                    case Noise.AfterSetup:
+                        EventAfterSetup?.Invoke(this, EventArgs.Empty);
                         break;
-                    case Simulation.BeforeUnsetup:
-                        EventBeforeUnSetup.Invoke(this, EventArgs.Empty);
+                    case Noise.BeforeUnsetup:
+                        EventBeforeUnSetup?.Invoke(this, EventArgs.Empty);
                         break;
 
-                    case Simulation.BeforeExecute:
-                        EventBeforeExecute.Invoke(this, EventArgs.Empty);
+                    case Noise.BeforeExecute:
+                        EventBeforeExecute?.Invoke(this, EventArgs.Empty);
 
                         if (this is IBiasingSimulation)
                         {
@@ -73,14 +72,14 @@ namespace SpiceSharpParser.Common
 
                         break;
 
-                    case Simulation.AfterExecute:
-                        EventAfterExecute.Invoke(this, EventArgs.Empty);
+                    case Noise.AfterExecute:
+                        EventAfterExecute?.Invoke(this, EventArgs.Empty);
                         break;
 
 
-                    case Transient.Exports:
+                    case Noise.ExportNoise:
 
-                        EventExportData.Invoke(this, new ExportData { }); //TODO });
+                        EventExportData?.Invoke(this, new ExportData { }); 
                         break;
                 }
                 yield return code;

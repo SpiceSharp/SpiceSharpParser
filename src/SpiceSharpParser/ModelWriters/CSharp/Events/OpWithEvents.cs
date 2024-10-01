@@ -32,31 +32,40 @@ namespace SpiceSharpParser.Common
 
         public IEnumerable<int> AttachEvents(IEnumerable<int> codes)
         {
-            
-
             foreach (var code in codes)
             {
                 switch (code)
                 {
+                    case OP.AfterExecute:
+                        EventAfterExecute?.Invoke(this, EventArgs.Empty);
+                        break;
+
+                    case OP.BeforeExecute:
+                        EventBeforeExecute?.Invoke(this, EventArgs.Empty);
+                        break;
+
                     case OP.BeforeValidation:
-                        EventBeforeValidation.Invoke(this, EventArgs.Empty);
+                        EventBeforeValidation?.Invoke(this, EventArgs.Empty);
                         break;
 
                     case OP.AfterValidation:
-                        EventAfterValidation.Invoke(this, EventArgs.Empty);
+                        EventAfterValidation?.Invoke(this, EventArgs.Empty);
                         break;
-
                     case OP.BeforeSetup:
-                        EventBeforeSetup.Invoke(this, EventArgs.Empty);
-
+                        EventBeforeSetup?.Invoke(this, EventArgs.Empty);
+                        break;
+                    case OP.AfterSetup:
+                        EventAfterSetup?.Invoke(this, EventArgs.Empty);
+                        break;
+                    case OP.BeforeTemperature:
                         var state = this.GetState<ITemperatureSimulationState>();
                         EventBeforeTemperature?.Invoke(this, new TemperatureStateEventArgs(state));
                         break;
-                    case OP.AfterSetup:
-                        EventAfterSetup.Invoke(this, EventArgs.Empty);
+                    case OP.AfterTemperature:
+                        EventAfterTemperature?.Invoke(this, EventArgs.Empty);
                         break;
                     case OP.BeforeUnsetup:
-                        EventBeforeUnSetup.Invoke(this, EventArgs.Empty);
+                        EventBeforeUnSetup?.Invoke(this, EventArgs.Empty);
                         break;
                     case OP.ExportOperatingPoint:
                         EventExportData?.Invoke(this, new ExportData() { });
@@ -64,8 +73,6 @@ namespace SpiceSharpParser.Common
                 }
                 yield return code;
             }
-
-            EventAfterExecute?.Invoke(this, EventArgs.Empty);
         }
     }
 }

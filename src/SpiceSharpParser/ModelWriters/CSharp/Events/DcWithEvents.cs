@@ -48,25 +48,25 @@ namespace SpiceSharpParser.Common
                 switch (code)
                 {
                     case DC.BeforeValidation:
-                        EventBeforeValidation.Invoke(this, EventArgs.Empty);
+                        EventBeforeValidation?.Invoke(this, EventArgs.Empty);
                         break;
 
                     case DC.AfterValidation:
-                        EventAfterValidation.Invoke(this, EventArgs.Empty);
+                        EventAfterValidation?.Invoke(this, EventArgs.Empty);
                         break;
 
                     case DC.BeforeSetup:
-                        EventBeforeSetup.Invoke(this, EventArgs.Empty);
+                        EventBeforeSetup?.Invoke(this, EventArgs.Empty);
                         break;
                     case DC.AfterSetup:
-                        EventAfterSetup.Invoke(this, EventArgs.Empty);
+                        EventAfterSetup?.Invoke(this, EventArgs.Empty);
                         break;
                     case DC.BeforeUnsetup:
-                        EventBeforeUnSetup.Invoke(this, EventArgs.Empty);
+                        EventBeforeUnSetup?.Invoke(this, EventArgs.Empty);
                         break;
 
                     case DC.BeforeExecute:
-                        EventBeforeExecute.Invoke(this, EventArgs.Empty);
+                        EventBeforeExecute?.Invoke(this, EventArgs.Empty);
 
                         if (this is IBiasingSimulation)
                         {
@@ -76,19 +76,16 @@ namespace SpiceSharpParser.Common
                         break;
 
                     case DC.AfterExecute:
-                        EventAfterExecute.Invoke(this, EventArgs.Empty);
+                        EventAfterExecute?.Invoke(this, EventArgs.Empty);
                         break;
 
                     case DC.ExportSweep:
 
-                        EventExportData.Invoke(this, new ExportData { });
+                        EventExportData?.Invoke(this, new ExportData { });
                         break;
                 }
                 yield return code;
             }
-
-            EventAfterExecute?.Invoke(this, EventArgs.Empty);
-
         }
     }
 }

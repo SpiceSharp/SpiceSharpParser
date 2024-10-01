@@ -71,35 +71,35 @@ namespace SpiceSharpParser.Common
                 switch (code)
                 {
                     case Transient.BeforeValidation:
-                        EventBeforeValidation.Invoke(this, EventArgs.Empty);
+                        EventBeforeValidation?.Invoke(this, EventArgs.Empty);
                         break;
 
                     case Transient.AfterValidation:
-                        EventAfterValidation.Invoke(this, EventArgs.Empty);
+                        EventAfterValidation?.Invoke(this, EventArgs.Empty);
                         break;
 
                     case Transient.BeforeSetup:
-                        EventBeforeSetup.Invoke(this, EventArgs.Empty);
+                        EventBeforeSetup?.Invoke(this, EventArgs.Empty);
                         break;
                     case Transient.AfterSetup:
-                        EventAfterSetup.Invoke(this, EventArgs.Empty);
+                        EventAfterSetup?.Invoke(this, EventArgs.Empty);
                         break;
                     case Transient.BeforeUnsetup:
-                        EventBeforeUnSetup.Invoke(this, EventArgs.Empty);
+                        EventBeforeUnSetup?.Invoke(this, EventArgs.Empty);
                         break;
 
                     case Simulation.BeforeExecute:
-                        EventBeforeExecute.Invoke(this, EventArgs.Empty);
+                        EventBeforeExecute?.Invoke(this, EventArgs.Empty);
                         break;
 
                     case Simulation.AfterExecute:
-                        EventAfterExecute.Invoke(this, EventArgs.Empty);
+                        EventAfterExecute?.Invoke(this, EventArgs.Empty);
                         break;
 
 
                     case Transient.ExportTransient:
 
-                        EventExportData.Invoke(this, new ExportData { Time = this.Time }); //TODO });
+                        EventExportData?.Invoke(this, new ExportData { Time = this.Time }); //TODO });
                         break;
                 }
                 yield return code;
