@@ -53,6 +53,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// </returns>
         public override double Extract()
         {
+            if (!ExportImpl.IsValid)
+            {
+                if (ExceptionsEnabled)
+                {
+                    throw new SpiceSharpParserException($"Voltage (db) export {Name} is invalid");
+                }
+
+                return double.NaN;
+            }
+
             return Math.Log10(ExportImpl.Value.Magnitude);
         }
     }

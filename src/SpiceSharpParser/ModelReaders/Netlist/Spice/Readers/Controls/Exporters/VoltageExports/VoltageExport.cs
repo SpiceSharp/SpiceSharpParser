@@ -67,10 +67,30 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         {
             if (ExportImpl != null)
             {
+                if (!ExportImpl.IsValid)
+                {
+                    if (ExceptionsEnabled)
+                    {
+                        throw new SpiceSharpParserException($"Voltage export {Name} is invalid");
+                    }
+
+                    return double.NaN;
+                }
+
                 return ExportImpl.Value.Real;
             }
             else
             {
+                if (!ExportRealImpl.IsValid)
+                {
+                    if (ExceptionsEnabled)
+                    {
+                        throw new SpiceSharpParserException($"Voltage export {Name} is invalid");
+                    }
+
+                    return double.NaN;
+                }
+
                 return ExportRealImpl.Value;
             }
         }

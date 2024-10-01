@@ -1,7 +1,9 @@
+using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Xunit;
 
@@ -129,7 +131,10 @@ namespace SpiceSharpParser.IntegrationTests.Common
             reader.Settings.CaseSensitivity.IsDistributionNameCaseSensitive = true;
             var spiceModel = reader.Read(parseResult.FinalModel);
 
-            spiceModel.Simulations[0].Run(spiceModel.Circuit);
+            var codes = spiceModel.Simulations[0].Run(spiceModel.Circuit, -1);
+            codes = spiceModel.Simulations[0].AttachEvents(codes);
+
+            codes.ToArray();
         }
 
         [Fact]
@@ -153,8 +158,11 @@ namespace SpiceSharpParser.IntegrationTests.Common
             reader.Settings.CaseSensitivity.IsDistributionNameCaseSensitive = true;
             var spiceModel = reader.Read(parseResult.FinalModel);
 
-            Assert.Throws<ArgumentException>(() =>
-                spiceModel.Simulations[0].Run(spiceModel.Circuit));
+            var codes = spiceModel.Simulations[0].Run(spiceModel.Circuit, -1);
+            codes = spiceModel.Simulations[0].AttachEvents(codes);
+
+
+            Assert.Throws<ArgumentException>(() => codes.ToArray());
         }
 
         [Fact]
@@ -179,7 +187,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
             reader.Settings.CaseSensitivity.IsDistributionNameCaseSensitive = true;
             var spiceModel = reader.Read(parseResult.FinalModel);
 
-            var exception = Record.Exception(() => spiceModel.Simulations[0].Run(spiceModel.Circuit));
+            var exception = Record.Exception(() => spiceModel.Simulations[0].Run(spiceModel.Circuit).ToArray());
             Assert.Null(exception);
 
         }
@@ -291,7 +299,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
             reader.Settings.CaseSensitivity.IsEntityNamesCaseSensitive = true;
             var spiceModel = reader.Read(parseResult.FinalModel);
 
-            Assert.Throws<SpiceSharp.BehaviorsNotFoundException>(() => RunOpSimulation(spiceModel, "I(r1)"));
+            Assert.Throws<SpiceSharpParserException>(() => RunOpSimulation(spiceModel, "I(r1)"));
         }
 
         [Fact]

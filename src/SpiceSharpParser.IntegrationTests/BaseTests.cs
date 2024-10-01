@@ -290,7 +290,7 @@ namespace SpiceSharpParser.IntegrationTests
                 list.Add(new Tuple<double, double>(((DC)simulation).GetCurrentSweepValue().Last(), export.Extract()));
             };
 
-            var codes = simulation.Run(readerResult.Circuit);
+            var codes = simulation.Run(readerResult.Circuit, -1);
             var attached = simulation.AttachEvents(codes);
             attached.ToArray(); // eval
 

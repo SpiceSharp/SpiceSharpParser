@@ -20,7 +20,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
     <PackageReference Include="NSubstitute" Version="5.1.0" />
-    <PackageReference Include="SpiceSharp" Version="3.2.2" />
+    <PackageReference Include="SpiceSharp" Version="3.2.3" />
     <PackageReference Include="SpiceSharpBehavioral" Version="3.2.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>

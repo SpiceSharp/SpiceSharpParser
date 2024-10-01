@@ -42,7 +42,6 @@ namespace SpiceSharpParser.Common
 
         public IEnumerable<int> AttachEvents(IEnumerable<int> codes)
         {
-            EventBeforeSetup.Invoke(this, EventArgs.Empty);
             foreach (var code in codes)
             {
                 switch (code)
@@ -55,7 +54,7 @@ namespace SpiceSharpParser.Common
                         EventAfterValidation?.Invoke(this, EventArgs.Empty);
                         break;
 
-                    case DC.BeforeSetup:
+                    case 65536:
                         EventBeforeSetup?.Invoke(this, EventArgs.Empty);
                         break;
                     case DC.AfterSetup:
@@ -80,7 +79,6 @@ namespace SpiceSharpParser.Common
                         break;
 
                     case DC.ExportSweep:
-
                         EventExportData?.Invoke(this, new ExportData { });
                         break;
                 }

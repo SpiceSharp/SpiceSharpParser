@@ -78,6 +78,15 @@ namespace SpiceSharpParser.Common
                         EventAfterValidation?.Invoke(this, EventArgs.Empty);
                         break;
 
+                    case Transient.BeforeTemperature:
+                        var state = this.GetState<ITemperatureSimulationState>();
+                        EventBeforeTemperature?.Invoke(this, new TemperatureStateEventArgs(state));
+                        break;
+
+                    case Transient.AfterTemperature:
+                        EventAfterTemperature?.Invoke(this, EventArgs.Empty);
+                        break;
+
                     case Transient.BeforeSetup:
                         EventBeforeSetup?.Invoke(this, EventArgs.Empty);
                         break;
@@ -88,24 +97,19 @@ namespace SpiceSharpParser.Common
                         EventBeforeUnSetup?.Invoke(this, EventArgs.Empty);
                         break;
 
-                    case Simulation.BeforeExecute:
+                    case Transient.BeforeExecute:
                         EventBeforeExecute?.Invoke(this, EventArgs.Empty);
                         break;
-
                     case Simulation.AfterExecute:
                         EventAfterExecute?.Invoke(this, EventArgs.Empty);
                         break;
-
-
                     case Transient.ExportTransient:
 
-                        EventExportData?.Invoke(this, new ExportData { Time = this.Time }); //TODO });
+                        EventExportData?.Invoke(this, new ExportData { Time = this.Time }); 
                         break;
                 }
                 yield return code;
             }
-
-            EventAfterExecute?.Invoke(this, EventArgs.Empty);
         }
     }
 }

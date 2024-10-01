@@ -52,6 +52,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// </returns>
         public override double Extract()
         {
+            if (!ExportImpl.IsValid)
+            {
+                if (ExceptionsEnabled)
+                {
+                    throw new SpiceSharpParserException($"Voltage phase export {Name} is invalid");
+                }
+
+                return double.NaN;
+            }
             return ExportImpl.Value.Magnitude;
         }
     }

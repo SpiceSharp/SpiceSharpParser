@@ -102,7 +102,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     double val = exports[i].Extract();
                     row.Columns.Add(val);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     row.Columns.Add(double.NaN);
                 }

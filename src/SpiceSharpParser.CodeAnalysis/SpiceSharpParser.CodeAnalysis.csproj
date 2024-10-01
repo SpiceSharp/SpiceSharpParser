@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
-    <PackageReference Include="SpiceSharp" Version="3.2.2" />
+    <PackageReference Include="SpiceSharp" Version="3.2.3" />
     <PackageReference Include="SpiceSharpBehavioral" Version="3.2.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
