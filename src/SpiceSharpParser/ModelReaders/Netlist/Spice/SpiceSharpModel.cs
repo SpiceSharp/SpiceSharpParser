@@ -1,5 +1,6 @@
 ﻿using SpiceSharp;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
@@ -33,7 +34,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// <summary>
         /// Gets the list of simulation from the netlist.
         /// </summary>
-        public List<Simulation> Simulations { get; } = new List<Simulation>();
+        public List<ISimulationWithEvents> Simulations { get; } = new List<ISimulationWithEvents>();
 
         /// <summary>
         /// Gets the list of comments from the netlist.

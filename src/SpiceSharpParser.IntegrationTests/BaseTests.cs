@@ -8,6 +8,7 @@ using Xunit;
 using System.Text;
 using SpiceSharpParser.Common;
 using System.Threading;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace SpiceSharpParser.IntegrationTests
 {
@@ -140,7 +141,7 @@ namespace SpiceSharpParser.IntegrationTests
                 {
                     var dcResult = new List<double>();
                     result.Add(dcResult);
-                    simulation.ExportSimulationData += (sender, e) =>
+                    simulation.EventExportData += (sender, e) =>
                     {
                         dcResult.Add(export.Extract());
                     };
@@ -148,7 +149,7 @@ namespace SpiceSharpParser.IntegrationTests
 
                 if (simulation is OP)
                 {
-                    simulation.ExportSimulationData += (sender, e) =>
+                    simulation.EventExportData += (sender, e) =>
                     {
                         var opResult = export.Extract();
                         result.Add(opResult);
@@ -159,7 +160,7 @@ namespace SpiceSharpParser.IntegrationTests
                 {
                     var tranResult = new List<Tuple<double, double>>();
                     result.Add(tranResult);
-                    simulation.ExportSimulationData += (sender, e) =>
+                    simulation.EventExportData += (sender, e) =>
                     {
                         tranResult.Add(new Tuple<double, double>(e.Time, export.Extract()));
                     };
@@ -168,7 +169,10 @@ namespace SpiceSharpParser.IntegrationTests
 
             foreach (var simulation in readerResult.Simulations)
             {
-                simulation.Run(readerResult.Circuit);
+                var codes = simulation.Run(readerResult.Circuit, -1);
+                codes = simulation.AttachEvents(codes);
+
+                codes.ToArray(); //eval
             }
 
             return result;
@@ -185,7 +189,10 @@ namespace SpiceSharpParser.IntegrationTests
         {
             foreach (var simulation in readerResult.Simulations)
             {
-                simulation.Run(readerResult.Circuit);
+                var codes = simulation.Run(readerResult.Circuit, -1);
+                codes = simulation.AttachEvents(codes);
+
+                codes.ToArray(); // eval
             }
         }
 
@@ -194,13 +201,14 @@ namespace SpiceSharpParser.IntegrationTests
             double result = double.NaN;
             var export = readerResult.Exports.Find(e => e.Name == nameOfExport);
             var simulation = readerResult.Simulations.Single();
-            simulation.ExportSimulationData += (sender, e) =>
+            simulation.EventExportData += (sender, e) =>
             {
                 result = export.Extract();
             };
 
-            simulation.Run(readerResult.Circuit);
-
+            var codes = simulation.Run(readerResult.Circuit, -1);
+            codes = simulation.AttachEvents(codes);
+            codes.ToArray(); // eval
             return result;
         }
 
@@ -209,7 +217,7 @@ namespace SpiceSharpParser.IntegrationTests
             var simulation = readerResult.Simulations.Single();
             double[] result = new double[nameOfExport.Length];
 
-            simulation.ExportSimulationData += (sender, e) =>
+            simulation.EventExportData += (sender, e) =>
             {
                 for (var i = 0; i < nameOfExport.Length; i++)
                 {
@@ -217,8 +225,10 @@ namespace SpiceSharpParser.IntegrationTests
                     result[i] = export.Extract();
                 }
             };
-
-            simulation.Run(readerResult.Circuit);
+            
+            var codes = simulation.Run(readerResult.Circuit, -1);
+            var attached = simulation.AttachEvents(codes);
+            attached.ToArray(); // eval
 
             return result;
         }
@@ -228,7 +238,7 @@ namespace SpiceSharpParser.IntegrationTests
             var simulation = readerResult.Simulations.First(s => s is OP);
             Tuple<string, double>[] result = new Tuple<string, double>[readerResult.Exports.Count];
 
-            simulation.ExportSimulationData += (sender, e) =>
+            simulation.EventExportData += (sender, e) =>
             {
                 for (var i = 0; i < readerResult.Exports.Count; i++)
                 {
@@ -244,7 +254,9 @@ namespace SpiceSharpParser.IntegrationTests
                 }
             };
 
-            simulation.Run(readerResult.Circuit);
+            var codes = simulation.Run(readerResult.Circuit, -1);
+            var attached = simulation.AttachEvents(codes);
+            attached.ToArray(); // eval
 
             return result;
         }
@@ -255,12 +267,14 @@ namespace SpiceSharpParser.IntegrationTests
 
             var export = readerResult.Exports.Find(e => e.Name == nameOfExport && e.Simulation is Transient);
             var simulation = readerResult.Simulations.First(s => s is Transient);
-            simulation.ExportSimulationData += (sender, e) =>
+            simulation.EventExportData += (sender, e) =>
             {
                 list.Add(new Tuple<double, double>(e.Time, export.Extract()));
             };
 
-            simulation.Run(readerResult.Circuit);
+            var codes = simulation.Run(readerResult.Circuit, -1);
+            var attached = simulation.AttachEvents(codes);
+            attached.ToArray(); // eval
 
             return list.ToArray();
         }
@@ -270,13 +284,15 @@ namespace SpiceSharpParser.IntegrationTests
             var list = new List<Tuple<double, double>>();
 
             var export = readerResult.Exports.Find(e => e.Name == nameOfExport && e.Simulation is DC);
-            var simulation = readerResult.Simulations.First(s => s is DC);
-            simulation.ExportSimulationData += (sender, e) =>
+            var simulation = readerResult.Simulations.First(s => s is DC d);
+            simulation.EventExportData += (sender, e) =>
             {
-                list.Add(new Tuple<double, double>(e.GetSweepValues().First(), export.Extract()));
+                list.Add(new Tuple<double, double>(((DC)simulation).GetCurrentSweepValue().Last(), export.Extract()));
             };
 
-            simulation.Run(readerResult.Circuit);
+            var codes = simulation.Run(readerResult.Circuit, -1);
+            var attached = simulation.AttachEvents(codes);
+            attached.ToArray(); // eval
 
             return list.ToArray();
         }

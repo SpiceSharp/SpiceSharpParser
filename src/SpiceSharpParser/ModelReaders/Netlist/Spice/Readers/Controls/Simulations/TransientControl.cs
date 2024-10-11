@@ -1,5 +1,6 @@
 ﻿using SpiceSharp.Simulations;
 using SpiceSharp.Simulations.IntegrationMethods;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
@@ -29,7 +30,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             CreateSimulations(statement, context, CreateTransientSimulation);
         }
 
-        private Transient CreateTransientSimulation(string name, Control statement, IReadingContext context)
+        private ISimulationWithEvents CreateTransientSimulation(string name, Control statement, IReadingContext context)
         {
             switch (statement.Parameters.Count)
             {
@@ -51,7 +52,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 clonedParameters.RemoveAt(clonedParameters.Count - 1);
             }
 
-            Transient tran;
+            TransientWithEvents tran;
 
             double? maxStep = null;
             double? step;
@@ -90,23 +91,23 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 config.MaxStep = maxStep;
                 config.Start = start;
                 config.UseIc = useIc;
-                tran = new Transient(name, factory(config));
+                tran = new TransientWithEvents(name, factory(config));
             }
             else
             {
                 if (clonedParameters.Count == 2)
                 {
-                    tran = new Transient(name, step.Value, final.Value);
+                    tran = new TransientWithEvents(name, step.Value, final.Value);
                 }
                 else
                 {
                     if (clonedParameters.Count == 3)
                     {
-                        tran = new Transient(name, step.Value, final.Value, maxStep ?? step.Value);
+                        tran = new TransientWithEvents(name, step.Value, final.Value, maxStep ?? step.Value);
                     }
                     else
                     {
-                        tran = new Transient(
+                        tran = new TransientWithEvents(
                             name,
                             new Trapezoidal()
                             {

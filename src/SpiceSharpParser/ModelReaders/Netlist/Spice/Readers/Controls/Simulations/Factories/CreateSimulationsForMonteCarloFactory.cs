@@ -1,4 +1,5 @@
 ﻿using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
@@ -43,14 +44,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// <param name="statement">Statement.</param>
         /// <param name="context">Context.</param>
         /// <param name="createSimulation">Simulation factory.</param>
-        public List<Simulation> Create(Control statement, IReadingContext context, Func<string, Control, IReadingContext, Simulation> createSimulation)
+        public List<ISimulationWithEvents> Create(Control statement, IReadingContext context, Func<string, Control, IReadingContext, ISimulationWithEvents> createSimulation)
         {
             context.Result.MonteCarloResult.Enabled = true;
             context.Result.MonteCarloResult.Seed = context.SimulationConfiguration.MonteCarloConfiguration.Seed;
             context.Result.MonteCarloResult.OutputVariable = context.SimulationConfiguration.MonteCarloConfiguration.OutputVariable.Value;
             context.Result.MonteCarloResult.Function = context.SimulationConfiguration.MonteCarloConfiguration.Function;
 
-            var result = new List<Simulation>();
+            var result = new List<ISimulationWithEvents>();
 
             for (var i = 0; i < context.SimulationConfiguration.MonteCarloConfiguration.Runs; i++)
             {
@@ -62,7 +63,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             return result;
         }
 
-        protected void AttachMonteCarloDataGathering(IReadingContext context, IEnumerable<Simulation> simulations)
+        protected void AttachMonteCarloDataGathering(IReadingContext context, IEnumerable<ISimulationWithEvents> simulations)
         {
             foreach (var simulation in simulations)
             {
@@ -70,11 +71,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             }
         }
 
-        protected void AttachMonteCarloDataGatheringForSimulation(IReadingContext context, Simulation simulation)
+        protected void AttachMonteCarloDataGatheringForSimulation(IReadingContext context, ISimulationWithEvents simulation)
         {
             var exportParam = context.SimulationConfiguration.MonteCarloConfiguration.OutputVariable;
 
-            simulation.BeforeSetup += (sender, args) =>
+            simulation.EventBeforeSetup += (sender, args) =>
             {
                 Export export = context.Result.Exports.FirstOrDefault(e => e.Simulation == simulation && e.Name == exportParam.Value);
 
@@ -83,7 +84,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     export = ExportFactory.Create(exportParam, context, simulation, MapperExporter);
                 }
 
-                simulation.ExportSimulationData += (exportSender, exportArgs) =>
+                simulation.EventExportData += (exportSender, exportArgs) =>
                 {
                     if (export != null)
                     {

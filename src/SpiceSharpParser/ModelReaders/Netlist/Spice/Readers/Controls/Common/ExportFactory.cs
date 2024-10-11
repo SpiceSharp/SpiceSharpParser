@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
@@ -15,7 +16,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
         public Export Create(
             Parameter exportParameter,
             IReadingContext context,
-            Simulation simulation,
+            ISimulationWithEvents simulation,
             IMapper<Exporter> mapper)
         {
             if (exportParameter is BracketParameter bp)

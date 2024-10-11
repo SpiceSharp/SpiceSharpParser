@@ -1,5 +1,5 @@
 ﻿using SpiceSharp.Simulations;
-using System;
+using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations.Decorators
 {
@@ -12,16 +12,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             _nominalTemperatureInKelvins = nominalTemperatureInKelvins;
         }
 
-        public Simulation Decorate(Simulation simulation)
+        public ISimulationWithEvents Decorate(ISimulationWithEvents simulation)
         {
-            EventHandler<TemperatureStateEventArgs> setState = (_, e) =>
+            OnBeforeTemperature setState = (_, e) =>
             {
                 e.State.NominalTemperature = _nominalTemperatureInKelvins;
             };
 
             if (simulation is BiasingSimulation biasingSimulation)
             {
-                biasingSimulation.BeforeTemperature += setState;
+                simulation.EventBeforeTemperature += setState;
             }
 
             return simulation;

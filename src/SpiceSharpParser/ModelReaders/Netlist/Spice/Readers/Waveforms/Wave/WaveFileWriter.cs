@@ -161,12 +161,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.Wave
                 for (var i = 0; i < numberOfSamples; i++)
                 {
                     byte leftChannelValue = (byte)((Pwl(currentTime, leftChannel) / amplitude) * byte.MaxValue);
-                    result.AddRange(BitConverter.GetBytes(leftChannelValue));
+                    result.AddRange(BitConverter.GetBytes((short)leftChannelValue));
 
                     if (rightChannel != null)
                     {
                         byte rightChannelValue = (byte)((Pwl(currentTime, rightChannel) / amplitude) * byte.MaxValue);
-                        result.AddRange(BitConverter.GetBytes(rightChannelValue));
+                        result.AddRange(BitConverter.GetBytes((short)rightChannelValue));
                     }
 
                     currentTime += step;

@@ -1,5 +1,6 @@
 ﻿using SpiceSharp.Entities;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation.Expressions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using System;
@@ -15,7 +16,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
             IsParameterNameCaseSensitive = isParameterNameCaseSensitive;
             Context = context;
             CommonUpdates = new ConcurrentDictionary<IEntity, EntityUpdate>();
-            SimulationSpecificUpdates = new ConcurrentDictionary<Simulation, Dictionary<IEntity, EntityUpdate>>();
+            SimulationSpecificUpdates = new ConcurrentDictionary<ISimulationWithEvents, Dictionary<IEntity, EntityUpdate>>();
             SimulationEntityParametersCache = new ConcurrentDictionary<string, double>();
         }
 
@@ -25,20 +26,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
         protected ConcurrentDictionary<IEntity, EntityUpdate> CommonUpdates { get; set; }
 
-        protected ConcurrentDictionary<Simulation, Dictionary<IEntity, EntityUpdate>> SimulationSpecificUpdates { get; set; }
+        protected ConcurrentDictionary<ISimulationWithEvents, Dictionary<IEntity, EntityUpdate>> SimulationSpecificUpdates { get; set; }
 
         protected ConcurrentDictionary<string, double> SimulationEntityParametersCache { get; }
 
-        public void Apply(Simulation simulation)
+        public void Apply(ISimulationWithEvents simulation)
         {
             if (simulation == null)
             {
                 throw new ArgumentNullException(nameof(simulation));
             }
 
-            if (simulation is BiasingSimulation biasingSimulation)
+            if (simulation is ISimulationWithEvents biasingSimulation && biasingSimulation is BiasingSimulation)
             {
-                biasingSimulation.BeforeTemperature += (_, _) =>
+                biasingSimulation.EventBeforeTemperature += (_, _) =>
                 {
                     foreach (var entity in CommonUpdates.Keys)
                     {
@@ -46,7 +47,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
                         foreach (var entityUpdate in beforeTemperature)
                         {
-                            EvaluationContext context = GetEntityContext(simulation, entity.Name);
+                            EvaluationContext context = GetEntityContext(biasingSimulation, entity.Name);
                             if (context != null)
                             {
                                 var value = entityUpdate.GetValue(context);
@@ -59,7 +60,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                     }
                 };
 
-                biasingSimulation.BeforeTemperature += (_, _) =>
+                biasingSimulation.EventBeforeTemperature += (_, _) =>
                 {
                     if (SimulationSpecificUpdates.ContainsKey(simulation))
                     {
@@ -69,7 +70,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
 
                             foreach (var entityUpdate in beforeTemperature)
                             {
-                                EvaluationContext context = GetEntityContext(simulation, entityPair.Key.Name);
+                                EvaluationContext context = GetEntityContext(biasingSimulation, entityPair.Key.Name);
                                 if (context != null)
                                 {
                                     var value = entityUpdate.GetValue(context);
@@ -85,7 +86,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
             }
         }
 
-        public void Add(IEntity entity, string parameterName, string expression, bool beforeTemperature, Simulation simulation)
+        public void Add(IEntity entity, string parameterName, string expression, bool beforeTemperature, ISimulationWithEvents simulation)
         {
             if (entity == null)
             {
@@ -178,7 +179,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
             }
         }
 
-        public void Add(IEntity entity, string parameterName, double value, bool beforeTemperature, Simulation simulation)
+        public void Add(IEntity entity, string parameterName, double value, bool beforeTemperature, ISimulationWithEvents simulation)
         {
             if (entity == null)
             {
@@ -211,7 +212,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
             }
         }
 
-        private EvaluationContext GetEntityContext(Simulation simulation, string entityName)
+        private EvaluationContext GetEntityContext(ISimulationWithEvents simulation, string entityName)
         {
             var context = Context.GetSimulationContext(simulation).Find(entityName);
             return context;

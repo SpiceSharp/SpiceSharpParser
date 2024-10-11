@@ -22,7 +22,7 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
             var simulation = netlist.Simulations.First(s => s is Transient);
             bool riseHit = false, risenHit = false, fallHit = false, fallenHit = false;
 
-            simulation.ExportSimulationData += (sender, args) =>
+            simulation.EventExportData += (sender, args) =>
             {
                 if (Math.Abs(args.Time - 0.2) < 1e-12)
                     riseHit = true;
@@ -34,7 +34,8 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
                     fallenHit = true;
             };
 
-            simulation.Run(netlist.Circuit);
+            var events = simulation.Run(netlist.Circuit);
+            simulation.AttachEvents(events).ToArray();
 
             Assert.True(riseHit);
             Assert.True(risenHit);
@@ -57,7 +58,7 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
             var simulation = netlist.Simulations.First(s => s is Transient);
             bool riseHit = false, risenHit = false, fallHit = false, fallenHit = false;
 
-            simulation.ExportSimulationData += (sender, args) =>
+            simulation.EventExportData += (sender, args) =>
             {
                 if (Math.Abs(args.Time - 0.2) < 1e-12)
                     riseHit = true;
@@ -69,7 +70,12 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
                     fallenHit = true;
             };
 
-            simulation.Run(netlist.Circuit);
+
+            var events = simulation.Run(netlist.Circuit);
+            var codes = simulation.AttachEvents(events);
+
+            //eval
+            codes.ToArray();
 
             Assert.True(riseHit);
             Assert.True(risenHit);

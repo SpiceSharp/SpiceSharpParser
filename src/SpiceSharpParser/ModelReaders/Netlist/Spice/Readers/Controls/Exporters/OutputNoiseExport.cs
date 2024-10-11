@@ -5,7 +5,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
 {
     public class OutputNoiseExport : Export
     {
-        public OutputNoiseExport(Simulation simulation)
+        public OutputNoiseExport(ISimulationWithEvents simulation)
             : base(simulation)
         {
             ExportImpl = new OutputNoiseDensityExport((Noise)simulation);

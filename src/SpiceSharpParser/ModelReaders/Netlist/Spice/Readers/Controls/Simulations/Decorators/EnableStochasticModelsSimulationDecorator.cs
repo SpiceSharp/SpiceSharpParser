@@ -21,11 +21,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             _context = context;
         }
 
-        public Simulation Decorate(Simulation simulation)
+        public ISimulationWithEvents Decorate(ISimulationWithEvents simulation)
         {
             if (_context.ModelsRegistry is IStochasticModelsRegistry modelsRegistry)
             {
-                simulation.BeforeExecute += (object sender, BeforeExecuteEventArgs arg) =>
+                simulation.EventBeforeExecute += (object sender, object arg) =>
                 {
                     foreach (var stochasticModels in modelsRegistry.GetStochasticModels(simulation))
                     {
@@ -53,7 +53,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             return simulation;
         }
 
-        private void SetModelLotModelParameters(Simulation simulation, string baseModel, IEntity componentModel, Dictionary<Parameter, ParameterRandomness> stochasticLotParameters)
+        private void SetModelLotModelParameters(ISimulationWithEvents simulation, string baseModel, IEntity componentModel, Dictionary<Parameter, ParameterRandomness> stochasticLotParameters)
         {
             var comparer = StringComparerProvider.Get(false);
             foreach (var stochasticParameter in stochasticLotParameters)
@@ -74,7 +74,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             }
         }
 
-        private void SetModelDevModelParameters(Simulation simulation, IEntity componentModel, Dictionary<Parameter, ParameterRandomness> stochasticDevParameters)
+        private void SetModelDevModelParameters(ISimulationWithEvents simulation, IEntity componentModel, Dictionary<Parameter, ParameterRandomness> stochasticDevParameters)
         {
             foreach (var stochasticParameter in stochasticDevParameters)
             {

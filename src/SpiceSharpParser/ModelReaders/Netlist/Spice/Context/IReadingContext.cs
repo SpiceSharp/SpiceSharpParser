@@ -2,6 +2,7 @@
 using SpiceSharp.Components;
 using SpiceSharp.Entities;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
@@ -88,7 +89,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="beforeTemperature">Should be re-evaluated before temperature.</param>
         /// <param name="simulation">Simulation.</param>
         /// <param name="logError">Should log the error.</param>
-        void SetParameter(IEntity entity, string parameterName, string expression, bool beforeTemperature = true,  Simulation simulation = null, bool logError = false);
+        void SetParameter(IEntity entity, string parameterName, string expression, bool beforeTemperature = true, ISimulationWithEvents simulation = null, bool logError = false);
 
         /// <summary>
         /// Sets parameter of entity to value of expression.
@@ -98,7 +99,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
         /// <param name="valueExpression">Value expression.</param>
         /// <param name="beforeTemperature">Should be re-evaluated before temperature.</param>
         /// <param name="simulation">Simulation.</param>
-        void SetParameter(IEntity entity, string parameterName, Parameter valueExpression, bool beforeTemperature = true, Simulation simulation = null);
+        void SetParameter(IEntity entity, string parameterName, Parameter valueExpression, bool beforeTemperature = true, ISimulationWithEvents simulation = null);
 
         /// <summary>
         /// Sets the initial voltage.
@@ -125,8 +126,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
 
         bool FindObject(string objectId, out IEntity entity);
 
-        ExpressionParser CreateExpressionParser(Simulation simulation);
+        ExpressionParser CreateExpressionParser(ISimulationWithEvents simulation);
 
-        ExpressionResolver CreateExpressionResolver(Simulation simulation);
+        ExpressionResolver CreateExpressionResolver(ISimulationWithEvents simulation);
     }
 }

@@ -27,12 +27,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// <summary>
         /// Gets or sets the dictionary of max values.
         /// </summary>
-        public Dictionary<Simulation, double> Max { get; protected set; } = new Dictionary<Simulation, double>();
+        public Dictionary<ISimulationWithEvents, double> Max { get; protected set; } = new Dictionary<ISimulationWithEvents, double>();
 
         /// <summary>
         /// Gets or sets the dictionary of min values.
         /// </summary>
-        public Dictionary<Simulation, double> Min { get; protected set; } = new Dictionary<Simulation, double>();
+        public Dictionary<ISimulationWithEvents, double> Min { get; protected set; } = new Dictionary<ISimulationWithEvents, double>();
 
         /// <summary>
         /// Gets or sets the output variable name.
@@ -49,7 +49,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
         /// </summary>
         /// <param name="simulation">Simulation of the result.</param>
         /// <param name="result">Result value.</param>
-        public void Collect(Simulation simulation, double result)
+        public void Collect(ISimulationWithEvents simulation, double result)
         {
             if (simulation == null)
             {

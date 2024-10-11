@@ -1,5 +1,6 @@
 ﻿using SpiceSharp.Entities;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common;
@@ -37,12 +38,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         /// <summary>
         /// Generates a new export.
         /// </summary>
-        protected Export GenerateExport(Parameter parameter, IReadingContext context, Simulation simulation)
+        protected Export GenerateExport(Parameter parameter, IReadingContext context, ISimulationWithEvents simulation)
         {
             return ExportFactory.Create(parameter, context, simulation, Mapper);
         }
 
-        protected List<Export> CreateExportsForAllVoltageAndCurrents(Simulation simulation, IReadingContext context)
+        protected List<Export> CreateExportsForAllVoltageAndCurrents(ISimulationWithEvents simulation, IReadingContext context)
         {
             var result = new List<Export>();
             var nodes = new List<string>();
@@ -103,7 +104,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             return result;
         }
 
-        protected List<Export> GenerateExports(ParameterCollection parameterCollection, Simulation simulation, IReadingContext context)
+        protected List<Export> GenerateExports(ParameterCollection parameterCollection, ISimulationWithEvents simulation, IReadingContext context)
         {
             if (parameterCollection == null || parameterCollection.Count == 0 || (parameterCollection.Count == 1 && parameterCollection[0].Value.ToLower() == "merge"))
             {
@@ -137,7 +138,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             return result;
         }
 
-        protected string GetFirstDimensionLabel(Simulation simulation)
+        protected string GetFirstDimensionLabel(ISimulationWithEvents simulation)
         {
             string firstColumnName = null;
 

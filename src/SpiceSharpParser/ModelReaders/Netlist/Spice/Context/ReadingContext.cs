@@ -259,7 +259,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
         }
 
-        public void SetParameter(IEntity entity, string parameterName, string expression, bool beforeTemperature = true, Simulation simulation = null, bool logError = true)
+        public void SetParameter(IEntity entity, string parameterName, string expression, bool beforeTemperature = true, ISimulationWithEvents simulation = null, bool logError = true)
         {
             if (entity == null)
             {
@@ -311,7 +311,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
         }
 
-        public void SetParameter(IEntity entity, string parameterName, Parameter parameter, bool beforeTemperature = true, Simulation simulation = null)
+        public void SetParameter(IEntity entity, string parameterName, Parameter parameter, bool beforeTemperature = true, ISimulationWithEvents simulation = null)
         {
             if (entity == null)
             {
@@ -354,7 +354,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             }
         }
 
-        public ExpressionParser CreateExpressionParser(Simulation simulation)
+        public ExpressionParser CreateExpressionParser(ISimulationWithEvents simulation)
         {
             var evalContext = simulation != null
                 ? EvaluationContext.GetSimulationContext(simulation)
@@ -369,7 +369,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             return parser;
         }
 
-        public ExpressionResolver CreateExpressionResolver(Simulation simulation)
+        public ExpressionResolver CreateExpressionResolver(ISimulationWithEvents simulation)
         {
             var evalContext = simulation != null
                 ? EvaluationContext.GetSimulationContext(simulation)

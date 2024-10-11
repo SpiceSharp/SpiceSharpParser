@@ -1,4 +1,5 @@
 ﻿using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
@@ -27,7 +28,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             CreateSimulations(statement, context, CreateAcSimulation);
         }
 
-        private AC CreateAcSimulation(string name, Control statement, IReadingContext context)
+        private ACWithEvents CreateAcSimulation(string name, Control statement, IReadingContext context)
         {
             switch (statement.Parameters.Count)
             {
@@ -47,7 +48,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                     return null;
             }
 
-            AC ac;
+            ACWithEvents ac;
 
             string type = statement.Parameters.Get(0).Value.ToLower();
             var numberSteps = context.Evaluator.EvaluateDouble(statement.Parameters.Get(1));
@@ -56,9 +57,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
             switch (type)
             {
-                case "lin": ac = new AC(name, new LinearSweep(start, stop, (int)numberSteps)); break;
-                case "oct": ac = new AC(name, new OctaveSweep(start, stop, (int)numberSteps)); break;
-                case "dec": ac = new AC(name, new DecadeSweep(start, stop, (int)numberSteps)); break;
+                case "lin": ac = new ACWithEvents(name, new LinearSweep(start, stop, (int)numberSteps)); break;
+                case "oct": ac = new ACWithEvents(name, new OctaveSweep(start, stop, (int)numberSteps)); break;
+                case "dec": ac = new ACWithEvents(name, new DecadeSweep(start, stop, (int)numberSteps)); break;
                 default:
                     context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, "LIN, DEC or OCT expected", statement.LineInfo);
                     return null;

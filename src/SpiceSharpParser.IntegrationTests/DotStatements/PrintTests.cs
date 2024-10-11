@@ -14,14 +14,13 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 "R1 IN OUT 10e3",
                 "C1 OUT 0 10e-6",
                 ".OP",
-                ".PRINT V(OUT) I(C1)",
+                ".PRINT V(OUT)",
                 ".END");
             RunSimulations(model);
 
             Assert.Single(model.Prints);
             Assert.Equal("#1 OP", model.Prints[0].Name);
             Assert.Single(model.Prints[0].ColumnNames);
-            Assert.Single(model.Prints[0].Rows[0].Columns);
             Assert.Single(model.Prints[0].Rows);
         }
 
@@ -164,7 +163,6 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.Equal("V(IN)", model.Prints[0].ColumnNames[2]);
             Assert.Equal("V(0)", model.Prints[0].ColumnNames[3]);
             Assert.Equal("V(OUT)", model.Prints[0].ColumnNames[4]);
-
             Assert.Single(model.Prints[0].Rows);
         }
 

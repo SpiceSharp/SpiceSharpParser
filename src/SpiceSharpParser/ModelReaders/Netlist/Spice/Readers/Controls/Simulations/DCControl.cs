@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
@@ -29,7 +30,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             CreateSimulations(statement, context, CreateDCSimulation);
         }
 
-        private DC CreateDCSimulation(string name, Control statement, IReadingContext context)
+        private ISimulationWithEvents CreateDCSimulation(string name, Control statement, IReadingContext context)
         {
             int count = statement.Parameters.Count / 4;
             switch (statement.Parameters.Count - (4 * count))
@@ -69,7 +70,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 sweeps.Add(sweep);
             }
 
-            DC dc = new DC(name, sweeps);
+            DcWithEvents dc = new DcWithEvents(name, sweeps);
 
             // TODO: Consult with Sven
             /*dc.OnParameterSearch += (sender, e) =>

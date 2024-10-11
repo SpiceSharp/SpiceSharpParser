@@ -16,7 +16,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <param name="simulation">A simulation.</param>
         /// <param name="source">A identifier of component.</param>
         /// <param name="property">Name of property for export.</param>
-        public PropertyExport(string name, Simulation simulation, string source, string property)
+        public PropertyExport(string name, ISimulationWithEvents simulation, string source, string property)
             : base(simulation)
         {
             Name = name ?? throw new NullReferenceException(nameof(name));
@@ -52,16 +52,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// </returns>
         public override double Extract()
         {
-            if (!ExportRealImpl.IsValid)
-            {
-                if (ExceptionsEnabled)
-                {
-                    throw new SpiceSharpParserException($"Property export {Name} is invalid");
-                }
-
-                return double.NaN;
-            }
-
             return ExportRealImpl.Value;
         }
     }

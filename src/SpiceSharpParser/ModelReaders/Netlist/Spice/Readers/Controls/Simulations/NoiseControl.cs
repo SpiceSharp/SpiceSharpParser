@@ -1,4 +1,5 @@
 ﻿using SpiceSharp.Simulations;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
@@ -31,9 +32,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             CreateSimulations(statement, context, CreateNoiseSimulation);
         }
 
-        private Noise CreateNoiseSimulation(string name, Control statement, IReadingContext context)
+        private ISimulationWithEvents CreateNoiseSimulation(string name, Control statement, IReadingContext context)
         {
-            Noise noise = null;
+            NoiseWithEvents noise = null;
 
             // Check parameter count
             switch (statement.Parameters.Count)
@@ -94,13 +95,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                                 var output = v.Elements[0].Value;
                                 var reference = v.Elements[1].Value;
                                 var input = statement.Parameters[1].Value;
-                                noise = new Noise(name, input, output, reference, _sweep);
+                                noise = new NoiseWithEvents(name, input, output, reference, _sweep);
                             }
                             else if (bracket.Parameters[0] is SingleParameter s)
                             {
                                 var output = s.Value;
                                 var input = statement.Parameters[1].Value;
-                                noise = new Noise(name, input, output, _sweep);
+                                noise = new NoiseWithEvents(name, input, output, _sweep);
                             }
 
                             break;

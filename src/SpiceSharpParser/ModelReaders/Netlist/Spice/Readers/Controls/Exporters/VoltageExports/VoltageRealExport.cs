@@ -15,7 +15,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         /// <param name="simulation">Simulation</param>
         /// <param name="node">Positive node</param>
         /// <param name="reference">Negative reference node</param>
-        public VoltageRealExport(string name, Simulation simulation, string node, string reference = null)
+        public VoltageRealExport(string name, ISimulationWithEvents simulation, string node, string reference = null)
             : base(simulation)
         {
             Name = name ?? throw new System.ArgumentNullException(nameof(name));
@@ -56,7 +56,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             {
                 if (ExceptionsEnabled)
                 {
-                    throw new SpiceSharpParserException($"Voltage real export '{Name}' is invalid");
+                    throw new SpiceSharpParserException($"Voltage real export {Name} is invalid");
                 }
 
                 return double.NaN;
