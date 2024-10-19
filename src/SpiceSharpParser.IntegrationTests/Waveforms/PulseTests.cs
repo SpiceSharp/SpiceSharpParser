@@ -20,22 +20,23 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
             Assert.NotNull(netlist);
 
             var simulation = netlist.Simulations.First(s => s is Transient);
+            var raw = (Transient)simulation;
             bool riseHit = false, risenHit = false, fallHit = false, fallenHit = false;
 
             simulation.EventExportData += (sender, args) =>
             {
-                if (Math.Abs(args.Time - 0.2) < 1e-12)
+                if (Math.Abs(raw.Time - 0.2) < 1e-12)
                     riseHit = true;
-                if (Math.Abs(args.Time - 0.3) < 1e-12)
+                if (Math.Abs(raw.Time - 0.3) < 1e-12)
                     risenHit = true;
-                if (Math.Abs(args.Time - 0.7) < 1e-12)
+                if (Math.Abs(raw.Time - 0.7) < 1e-12)
                     fallHit = true;
-                if (Math.Abs(args.Time - 0.8) < 1e-12)
+                if (Math.Abs(raw.Time - 0.8) < 1e-12)
                     fallenHit = true;
             };
 
             var events = simulation.Run(netlist.Circuit);
-            simulation.AttachEvents(events).ToArray();
+            simulation.InvokeEvents(events).ToArray();
 
             Assert.True(riseHit);
             Assert.True(risenHit);
@@ -56,23 +57,25 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
             Assert.NotNull(netlist);
 
             var simulation = netlist.Simulations.First(s => s is Transient);
+            var raw = (Transient)simulation;
+
             bool riseHit = false, risenHit = false, fallHit = false, fallenHit = false;
 
             simulation.EventExportData += (sender, args) =>
             {
-                if (Math.Abs(args.Time - 0.2) < 1e-12)
+                if (Math.Abs(raw.Time - 0.2) < 1e-12)
                     riseHit = true;
-                if (Math.Abs(args.Time - 0.3) < 1e-12)
+                if (Math.Abs(raw.Time - 0.3) < 1e-12)
                     risenHit = true;
-                if (Math.Abs(args.Time - 0.7) < 1e-12)
+                if (Math.Abs(raw.Time - 0.7) < 1e-12)
                     fallHit = true;
-                if (Math.Abs(args.Time - 0.8) < 1e-12)
+                if (Math.Abs(raw.Time - 0.8) < 1e-12)
                     fallenHit = true;
             };
 
 
             var events = simulation.Run(netlist.Circuit);
-            var codes = simulation.AttachEvents(events);
+            var codes = simulation.InvokeEvents(events);
 
             //eval
             codes.ToArray();

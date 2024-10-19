@@ -46,7 +46,7 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
                 Assert.True(EqualsWithTol(expected, simulation.GetVoltage("1")));
             };
 
-            foreach (var code in simulation.AttachEvents(simulation.Run(netlist.Circuit)))
+            foreach (var code in simulation.InvokeEvents(simulation.Run(netlist.Circuit)))
             { 
             }
 
@@ -69,7 +69,7 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
 
             simulation.EventExportData += (sender, args) =>
             {
-                var time = args.Time;
+                var time = ((Transient)simulation).Time;
                 time -= delay;
 
                 // Calculate sine wave result (no offset)
@@ -89,7 +89,7 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
             };
 
             var events = simulation.Run(netlist.Circuit);
-            foreach (var code in simulation.AttachEvents(events))
+            foreach (var code in simulation.InvokeEvents(events))
             {
 
             }

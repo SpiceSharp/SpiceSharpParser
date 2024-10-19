@@ -38,7 +38,7 @@ namespace SpiceSharpParser.Common
 
         public event OnExportData EventExportData;
 
-        public IEnumerable<int> AttachEvents(IEnumerable<int> codes)
+        public IEnumerable<int> InvokeEvents(IEnumerable<int> codes)
         {
             foreach (var code in codes)
             {
@@ -79,7 +79,7 @@ namespace SpiceSharpParser.Common
 
                     case Noise.ExportNoise:
 
-                        EventExportData?.Invoke(this, new ExportData { }); 
+                        EventExportData?.Invoke(this, EventArgs.Empty);
                         break;
                 }
                 yield return code;

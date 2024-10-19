@@ -1,6 +1,4 @@
-﻿using SpiceSharp;
-using SpiceSharp.Entities;
-using SpiceSharp.Simulations;
+﻿using SpiceSharp.Simulations;
 using System.Collections.Generic;
 
 namespace SpiceSharpParser.Common
@@ -21,14 +19,7 @@ namespace SpiceSharpParser.Common
 
     public delegate void OnAfterExecute(object sender, object argument);
 
-    public delegate void OnExportData(object sender, ExportData argument);
-
-    public class ExportData
-    {
-        public double Time { get; set; }
-        public double Frequency { get; internal set; }
-    }
-
+    public delegate void OnExportData(object sender, object argument);
 
     public interface ISimulationWithEvents : ISimulation
     {
@@ -52,6 +43,6 @@ namespace SpiceSharpParser.Common
         
         event OnExportData EventExportData;
 
-        IEnumerable<int> AttachEvents(IEnumerable<int> codes);
+        IEnumerable<int> InvokeEvents(IEnumerable<int> codes);
     }
 }

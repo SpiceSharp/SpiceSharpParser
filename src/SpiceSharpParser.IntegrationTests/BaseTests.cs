@@ -156,13 +156,13 @@ namespace SpiceSharpParser.IntegrationTests
                     };
                 }
 
-                if (simulation is Transient)
+                if (simulation is Transient transient)
                 {
                     var tranResult = new List<Tuple<double, double>>();
                     result.Add(tranResult);
                     simulation.EventExportData += (sender, e) =>
                     {
-                        tranResult.Add(new Tuple<double, double>(e.Time, export.Extract()));
+                        tranResult.Add(new Tuple<double, double>(transient.Time, export.Extract()));
                     };
                 }
             }
@@ -170,7 +170,7 @@ namespace SpiceSharpParser.IntegrationTests
             foreach (var simulation in readerResult.Simulations)
             {
                 var codes = simulation.Run(readerResult.Circuit, -1);
-                codes = simulation.AttachEvents(codes);
+                codes = simulation.InvokeEvents(codes);
 
                 codes.ToArray(); //eval
             }
@@ -190,7 +190,7 @@ namespace SpiceSharpParser.IntegrationTests
             foreach (var simulation in readerResult.Simulations)
             {
                 var codes = simulation.Run(readerResult.Circuit, -1);
-                codes = simulation.AttachEvents(codes);
+                codes = simulation.InvokeEvents(codes);
 
                 codes.ToArray(); // eval
             }
@@ -207,7 +207,7 @@ namespace SpiceSharpParser.IntegrationTests
             };
 
             var codes = simulation.Run(readerResult.Circuit, -1);
-            codes = simulation.AttachEvents(codes);
+            codes = simulation.InvokeEvents(codes);
             codes.ToArray(); // eval
             return result;
         }
@@ -227,7 +227,7 @@ namespace SpiceSharpParser.IntegrationTests
             };
             
             var codes = simulation.Run(readerResult.Circuit, -1);
-            var attached = simulation.AttachEvents(codes);
+            var attached = simulation.InvokeEvents(codes);
             attached.ToArray(); // eval
 
             return result;
@@ -255,7 +255,7 @@ namespace SpiceSharpParser.IntegrationTests
             };
 
             var codes = simulation.Run(readerResult.Circuit, -1);
-            var attached = simulation.AttachEvents(codes);
+            var attached = simulation.InvokeEvents(codes);
             attached.ToArray(); // eval
 
             return result;
@@ -269,11 +269,11 @@ namespace SpiceSharpParser.IntegrationTests
             var simulation = readerResult.Simulations.First(s => s is Transient);
             simulation.EventExportData += (sender, e) =>
             {
-                list.Add(new Tuple<double, double>(e.Time, export.Extract()));
+                list.Add(new Tuple<double, double>(((Transient)simulation).Time, export.Extract()));
             };
 
             var codes = simulation.Run(readerResult.Circuit, -1);
-            var attached = simulation.AttachEvents(codes);
+            var attached = simulation.InvokeEvents(codes);
             attached.ToArray(); // eval
 
             return list.ToArray();
@@ -291,7 +291,7 @@ namespace SpiceSharpParser.IntegrationTests
             };
 
             var codes = simulation.Run(readerResult.Circuit, -1);
-            var attached = simulation.AttachEvents(codes);
+            var attached = simulation.InvokeEvents(codes);
             attached.ToArray(); // eval
 
             return list.ToArray();

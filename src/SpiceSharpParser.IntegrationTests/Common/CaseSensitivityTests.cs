@@ -132,7 +132,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
             var spiceModel = reader.Read(parseResult.FinalModel);
 
             var codes = spiceModel.Simulations[0].Run(spiceModel.Circuit, -1);
-            codes = spiceModel.Simulations[0].AttachEvents(codes);
+            codes = spiceModel.Simulations[0].InvokeEvents(codes);
 
             codes.ToArray();
         }
@@ -159,7 +159,7 @@ namespace SpiceSharpParser.IntegrationTests.Common
             var spiceModel = reader.Read(parseResult.FinalModel);
 
             var codes = spiceModel.Simulations[0].Run(spiceModel.Circuit, -1);
-            codes = spiceModel.Simulations[0].AttachEvents(codes);
+            codes = spiceModel.Simulations[0].InvokeEvents(codes);
 
 
             Assert.Throws<ArgumentException>(() => codes.ToArray());
