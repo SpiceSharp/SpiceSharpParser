@@ -61,7 +61,7 @@ namespace SpiceSharpParser.Common
 
         public event OnExportData EventExportData;
 
-        public IEnumerable<int> AttachEvents(IEnumerable<int> codes)
+        public IEnumerable<int> InvokeEvents(IEnumerable<int> codes)
         {
             EventBeforeSetup.Invoke(this, EventArgs.Empty);
             EventBeforeTemperature?.Invoke(this, null);
@@ -100,12 +100,12 @@ namespace SpiceSharpParser.Common
                     case Transient.BeforeExecute:
                         EventBeforeExecute?.Invoke(this, EventArgs.Empty);
                         break;
-                    case Simulation.AfterExecute:
+                    case Transient.AfterExecute:
                         EventAfterExecute?.Invoke(this, EventArgs.Empty);
                         break;
                     case Transient.ExportTransient:
 
-                        EventExportData?.Invoke(this, new ExportData { Time = this.Time }); 
+                        EventExportData?.Invoke(this, EventArgs.Empty); 
                         break;
                 }
                 yield return code;

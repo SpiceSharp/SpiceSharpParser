@@ -6,7 +6,8 @@ namespace SpiceSharpParser.Common
 {
     public class ACWithEvents : AC, ISimulationWithEvents
     {
-        protected ACWithEvents(string name) : base(name)
+        protected ACWithEvents(string name) 
+            : base(name)
         {
         }
 
@@ -34,9 +35,8 @@ namespace SpiceSharpParser.Common
 
         public event OnExportData EventExportData;
 
-        public IEnumerable<int> AttachEvents(IEnumerable<int> codes)
+        public IEnumerable<int> InvokeEvents(IEnumerable<int> codes)
         {
-            EventBeforeSetup.Invoke(this, EventArgs.Empty);
             foreach (var code in codes)
             {
                 switch (code)
@@ -73,11 +73,10 @@ namespace SpiceSharpParser.Common
                         EventAfterExecute.Invoke(this, EventArgs.Empty);
                         break;
 
+                    case AC.ExportSmallSignal:
 
-                    case AC.Exports:
-
-                        double frequency = base.Frequency;
-                        EventExportData.Invoke(this, new ExportData { Frequency = frequency });
+                        double frequency = Frequency;
+                        EventExportData?.Invoke(this, EventArgs.Empty);
                         break;
                 }
                 yield return code;

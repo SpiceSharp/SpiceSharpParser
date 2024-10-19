@@ -36,6 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         public override void Read(Control statement, IReadingContext context)
         {
             var transient = (ISimulationWithEvents)context.Result.Simulations.FirstOrDefault(s => s is Transient);
+            var sim = (Transient)transient;
 
             if (transient != null)
             {
@@ -56,7 +57,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     var pwlData = new List<(double, double)>();
                     transient.EventExportData += (sender, args) =>
                     {
-                        pwlData.Add((args.Time, monoChannelExport.Extract()));
+                        pwlData.Add((sim.Time, monoChannelExport.Extract()));
                     };
 
                     transient.EventAfterExecute += (sender, args) =>
@@ -76,8 +77,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     var rightData = new List<(double, double)>();
                     transient.EventExportData += (sender, args) =>
                     {
-                        leftData.Add((args.Time, leftChannelExport.Extract()));
-                        rightData.Add((args.Time, rightChannelExport.Extract()));
+                        leftData.Add((sim.Time, leftChannelExport.Extract()));
+                        rightData.Add((sim.Time, rightChannelExport.Extract()));
                     };
 
                     transient.EventAfterExecute += (sender, args) =>

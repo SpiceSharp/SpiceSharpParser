@@ -69,7 +69,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
         }
 
-        private static void CreateRowInPrint(ref int rowIndex, ISimulationWithEvents simulation, IReadingContext context, ExportData eventArgs, List<Export> exports, Print print)
+        private static void CreateRowInPrint(ref int rowIndex, ISimulationWithEvents simulation, IReadingContext context, object eventArgs, List<Export> exports, Print print)
         {
             Row row = new Row(rowIndex++);
 
