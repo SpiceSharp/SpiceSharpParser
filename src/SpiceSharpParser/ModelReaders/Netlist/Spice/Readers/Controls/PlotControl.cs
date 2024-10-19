@@ -155,7 +155,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             }
             else
             {
-                context.Result.ValidationResult.AddError(ValidationEntrySource.Reader,  $"{plotImage} is not valid for: {simulation.Name}");
+                context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, $"{plotImage} is not valid for: {simulation.Name}");
             }
         }
 
@@ -163,7 +163,25 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             double x = 0;
 
-            //TODO
+            if (simulation is Transient transient)
+            {
+                x = transient.Time;
+            }
+
+            if (simulation is AC frequency)
+            {
+                x = frequency.Frequency;
+            }
+
+            if (simulation is Noise noise)
+            {
+                x = noise.Frequency;
+            }
+
+            if (simulation is DC dc)
+            {
+                x = dc.GetCurrentSweepValue().FirstOrDefault();
+            }
 
             for (var i = 0; i < exports.Count; i++)
             {
