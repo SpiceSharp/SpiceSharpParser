@@ -43,8 +43,10 @@ namespace SpiceSharpParserExample
             // Simulation using SpiceSharp
             var simulation = spiceSharpModel.Simulations.Single();
             var export = spiceSharpModel.Exports.Find(e => e.Name == "i(V1)");
-            simulation.ExportSimulationData += (sender, args) => Console.WriteLine(export.Extract());
-            simulation.Run(spiceSharpModel.Circuit, -1).ToArray();
+            simulation.EventExportData += (sender, args) => Console.WriteLine(export.Extract());
+            var codes = simulation.Run(spiceSharpModel.Circuit, -1);
+            codes = simulation.InvokeEvents(codes);
+            codes.ToArray(); //eval
         }
     }
 }    
