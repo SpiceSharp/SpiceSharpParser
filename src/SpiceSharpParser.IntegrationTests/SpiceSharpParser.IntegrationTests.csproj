@@ -90,6 +90,9 @@
     <None Update="Examples\Circuits\Example04_reversed.cir">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Examples\Circuits\MosfetExample.cir">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\pwl_reference.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

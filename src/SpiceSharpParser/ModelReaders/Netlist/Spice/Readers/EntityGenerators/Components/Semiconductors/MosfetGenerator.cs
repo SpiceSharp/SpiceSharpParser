@@ -78,9 +78,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 return null;
             }
 
-            if (Mosfets.ContainsKey(model.GetType()))
+            if (Mosfets.ContainsKey(model.Entity.GetType()))
             {
-                var mosfetDetails = Mosfets[model.GetType()].Invoke(componentIdentifier);
+                var mosfetDetails = Mosfets[model.Entity.GetType()].Invoke(componentIdentifier);
                 mosfet = mosfetDetails.Mosfet;
 
                 context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
