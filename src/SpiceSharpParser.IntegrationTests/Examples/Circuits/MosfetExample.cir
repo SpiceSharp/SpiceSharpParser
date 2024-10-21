@@ -1,0 +1,4 @@
+Mosfet circuit
+Md 0 1 2 3 my-pmos
+.model my-pmos pmos(level = 4)
+.END
