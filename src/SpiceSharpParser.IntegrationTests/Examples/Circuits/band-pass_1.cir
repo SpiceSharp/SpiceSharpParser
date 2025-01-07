@@ -1,4 +1,4 @@
-* Band pass filter - AC simulation stepping with mc()
+* Band pass filter - AC simulation 
 V1 IN 0 AC 1
 LI IN MIDDLE {mc(0.6, tol)}
 C1 MIDDLE OUT {mc(10e-6, tol)}
