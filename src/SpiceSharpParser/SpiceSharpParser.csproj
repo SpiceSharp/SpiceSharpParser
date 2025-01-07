@@ -2,10 +2,10 @@
 
   <PropertyGroup>
     <ProjectGuid>{DF3DD787-71CC-4C89-9E33-DC4536A52278}</ProjectGuid>
-    <TargetFrameworks>netstandard2.0;net6.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
     <Authors>SpiceSharp</Authors>
     <PackageProjectUrl>https://github.com/SpiceSharp/SpiceSharpParser</PackageProjectUrl>
-    <Copyright>Copyright 2024</Copyright>
+    <Copyright>Copyright 2025</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/SpiceSharp/SpiceSharpParser</RepositoryUrl>
     <RepositoryType></RepositoryType>
@@ -22,7 +22,7 @@
     <StartupObject />
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <LangVersion>latest</LangVersion>
-    <Version>3.2.3</Version>
+    <Version>3.2.4</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.5|AnyCPU'">
@@ -35,10 +35,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0" />
     <PackageReference Include="SpiceSharp" Version="3.2.3" />
     <PackageReference Include="SpiceSharpBehavioral" Version="3.2.0" />
-    <PackageReference Include="SpiceSharpGenerator" Version="1.0.7">
+    <PackageReference Include="SpiceSharpGenerator" Version="1.0.9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
