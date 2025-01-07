@@ -42,6 +42,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Examples\Circuits\band-pass_2.cir">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Examples\Circuits\band-pass_1.cir">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Examples\Circuits\example02.cir">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

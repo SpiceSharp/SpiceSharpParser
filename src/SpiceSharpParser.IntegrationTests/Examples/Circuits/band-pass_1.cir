@@ -1,0 +1,9 @@
+* Band pass filter - AC simulation stepping with mc()
+V1 IN 0 AC 1
+LI IN MIDDLE {mc(0.6, tol)}
+C1 MIDDLE OUT {mc(10e-6, tol)}
+R1 OUT 0 {mc(1000, tol)}
+.ac oct 100 1 500 
+.param tol=0.2
+.plot ac v(OUT)
+.end

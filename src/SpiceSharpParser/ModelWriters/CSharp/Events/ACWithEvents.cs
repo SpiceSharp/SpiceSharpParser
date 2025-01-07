@@ -42,25 +42,25 @@ namespace SpiceSharpParser.Common
                 switch (code)
                 {
                     case Simulation.BeforeValidation:
-                        EventBeforeValidation.Invoke(this, EventArgs.Empty);
+                        EventBeforeValidation?.Invoke(this, EventArgs.Empty);
                         break;
 
                     case Simulation.AfterValidation:
-                        EventAfterValidation.Invoke(this, EventArgs.Empty);
+                        EventAfterValidation?.Invoke(this, EventArgs.Empty);
                         break;
 
                     case Simulation.BeforeSetup:
-                        EventBeforeSetup.Invoke(this, EventArgs.Empty);
+                        EventBeforeSetup?.Invoke(this, EventArgs.Empty);
                         break;
                     case Simulation.AfterSetup:
-                        EventAfterSetup.Invoke(this, EventArgs.Empty);
+                        EventAfterSetup?.Invoke(this, EventArgs.Empty);
                         break;
                     case Simulation.BeforeUnsetup:
-                        EventBeforeUnSetup.Invoke(this, EventArgs.Empty);
+                        EventBeforeUnSetup?.Invoke(this, EventArgs.Empty);
                         break;
 
                     case Simulation.BeforeExecute:
-                        EventBeforeExecute.Invoke(this, EventArgs.Empty);
+                        EventBeforeExecute?.Invoke(this, EventArgs.Empty);
 
                         if (this is IBiasingSimulation)
                         {
@@ -70,7 +70,7 @@ namespace SpiceSharpParser.Common
                         break;
 
                     case Simulation.AfterExecute:
-                        EventAfterExecute.Invoke(this, EventArgs.Empty);
+                        EventAfterExecute?.Invoke(this, EventArgs.Empty);
                         break;
 
                     case AC.ExportSmallSignal:
