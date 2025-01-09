@@ -198,14 +198,15 @@ namespace SpiceSharpParser.Lexers.Expressions
                         number >= 'A' && number <= 'Z'))
                         Continue();
                     break;
-                case char letter when letter >= 'a' && letter <= 'z' || letter >= 'A' && letter <= 'Z' || letter == '_':
+                case char letter when letter >= 'a' && letter <= 'z' || letter >= 'A' && letter <= 'Z' || letter == '_' || letter == '&':
                     Type = TokenType.Identifier;
                     Continue();
                     while ((Index < _expression.Length) && ((
                         letter = _expression[Index]) >= 'a' && letter <= 'z' ||
                         letter >= 'A' && letter <= 'Z' ||
                         letter >= '0' && letter <= '9' ||
-                        letter == '_'))
+                        letter == '_' ||
+                        letter == '&'))
                         Continue();
                     break;
 

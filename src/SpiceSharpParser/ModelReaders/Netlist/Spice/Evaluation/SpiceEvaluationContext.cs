@@ -79,6 +79,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             Parameters.Add("c", new ConstantExpression(299792500));
             Parameters.Add("boltz", new ConstantExpression(1.38062e-23));
             Parameters.Add("NaN", new ConstantExpression(double.NaN));
+            Parameters.Add("Alpha_&_Omega", new ConstantExpression(double.PositiveInfinity));
         }
     }
 }

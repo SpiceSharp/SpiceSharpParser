@@ -60,7 +60,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
         {
             var builder = new LexerGrammarBuilder<SpiceLexerState>();
             builder.AddRegexRule(new LexerInternalRule("LETTER", "[a-zA-Zµ]"));
-            builder.AddRegexRule(new LexerInternalRule("CHARACTER", @"[a-zA-Z0-9\-\+§µ]"));
+            builder.AddRegexRule(new LexerInternalRule("CHARACTER", @"[a-zA-Z0-9\-\+§µ_&]"));
             builder.AddRegexRule(new LexerInternalRule("DIGIT", "[0-9]"));
             builder.AddRegexRule(new LexerInternalRule("SPECIAL", @"[\/\\_\.:%!\#\-;\<\>\^\*\[\]]"));
             builder.AddRegexRule(new LexerTokenRule<SpiceLexerState>(
