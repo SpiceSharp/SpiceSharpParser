@@ -48,10 +48,17 @@ namespace SpiceSharpParser.Common.Mathematics.Probability
                         _cacheLock.EnterWriteLock();
                         try
                         {
-                            var randomGenerator = new DefaultRandomNumberProvider(new Random(randomSeed.Value));
-                            _randomGenerators[randomSeed.Value] = randomGenerator;
-
-                            return randomGenerator;
+                            // Double-check after entering write lock
+                            if (!_randomGenerators.ContainsKey(randomSeed.Value))
+                            {
+                                var randomGenerator = new DefaultRandomNumberProvider(new Random(randomSeed.Value));
+                                _randomGenerators[randomSeed.Value] = randomGenerator;
+                                return randomGenerator;
+                            }
+                            else
+                            {
+                                return _randomGenerators[randomSeed.Value];
+                            }
                         }
                         finally
                         {
