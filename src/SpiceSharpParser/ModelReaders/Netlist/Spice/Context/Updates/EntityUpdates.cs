@@ -103,19 +103,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            if (!SimulationSpecificUpdates.ContainsKey(simulation))
-            {
-                SimulationSpecificUpdates[simulation] = new Dictionary<IEntity, EntityUpdate>();
-            }
-
-            if (!SimulationSpecificUpdates[simulation].ContainsKey(entity))
-            {
-                SimulationSpecificUpdates[simulation][entity] = new EntityUpdate();
-            }
+            var simulationUpdates = SimulationSpecificUpdates.GetOrAdd(simulation, _ => new Dictionary<IEntity, EntityUpdate>());
+            var entityUpdate = simulationUpdates.ContainsKey(entity)
+                ? simulationUpdates[entity]
+                : (simulationUpdates[entity] = new EntityUpdate());
 
             if (beforeTemperature)
             {
-                SimulationSpecificUpdates[simulation][entity].ParameterUpdatesBeforeTemperature.Add(new EntityParameterExpressionValueUpdate()
+                entityUpdate.ParameterUpdatesBeforeTemperature.Add(new EntityParameterExpressionValueUpdate()
                 {
                     Expression = new DynamicExpression(expression),
                     ParameterName = parameterName,
@@ -140,14 +135,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            if (!CommonUpdates.ContainsKey(entity))
-            {
-                CommonUpdates[entity] = new EntityUpdate();
-            }
+            var entityUpdate = CommonUpdates.GetOrAdd(entity, _ => new EntityUpdate());
 
             if (beforeTemperature)
             {
-                CommonUpdates[entity].ParameterUpdatesBeforeTemperature.Add(new EntityParameterExpressionValueUpdate()
+                entityUpdate.ParameterUpdatesBeforeTemperature.Add(new EntityParameterExpressionValueUpdate()
                 {
                     Expression = new DynamicExpression(expression),
                     ParameterName = parameterName,
@@ -167,14 +159,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                 throw new ArgumentNullException(nameof(parameterName));
             }
 
-            if (!CommonUpdates.ContainsKey(entity))
-            {
-                CommonUpdates[entity] = new EntityUpdate();
-            }
+            var entityUpdate = CommonUpdates.GetOrAdd(entity, _ => new EntityUpdate());
 
             if (beforeTemperature)
             {
-                CommonUpdates[entity].ParameterUpdatesBeforeTemperature.Add(
+                entityUpdate.ParameterUpdatesBeforeTemperature.Add(
                     new EntityParameterDoubleValueUpdate() { ParameterName = parameterName, Value = value });
             }
         }
@@ -196,19 +185,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                 throw new ArgumentNullException(nameof(parameterName));
             }
 
-            if (!SimulationSpecificUpdates.ContainsKey(simulation))
-            {
-                SimulationSpecificUpdates[simulation] = new Dictionary<IEntity, EntityUpdate>();
-            }
-
-            if (!SimulationSpecificUpdates[simulation].ContainsKey(entity))
-            {
-                SimulationSpecificUpdates[simulation][entity] = new EntityUpdate();
-            }
+            var simulationUpdates = SimulationSpecificUpdates.GetOrAdd(simulation, _ => new Dictionary<IEntity, EntityUpdate>());
+            var entityUpdate = simulationUpdates.ContainsKey(entity)
+                ? simulationUpdates[entity]
+                : (simulationUpdates[entity] = new EntityUpdate());
 
             if (beforeTemperature)
             {
-                SimulationSpecificUpdates[simulation][entity].ParameterUpdatesBeforeTemperature.Add(new EntityParameterDoubleValueUpdate { ParameterName = parameterName, Value = value });
+                entityUpdate.ParameterUpdatesBeforeTemperature.Add(new EntityParameterDoubleValueUpdate { ParameterName = parameterName, Value = value });
             }
         }
 

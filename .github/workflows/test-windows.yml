@@ -55,7 +55,7 @@ jobs:
           args:
             # Unique keys of your project and organization. You can find them in SonarCloud > Information (bottom-left menu)
             # mandatory
-            -Dsonar.projectKey="SpiceSharp_SpiceSharpParser"
+            -Dsonar.projectKey="SpiceSharp_SpiceSharpParserNew"
             -Dsonar.organization="spicesharp"
             # Comma-separated paths to directories containing main source files.
             #-Dsonar.sources= # optional, default is project base directory

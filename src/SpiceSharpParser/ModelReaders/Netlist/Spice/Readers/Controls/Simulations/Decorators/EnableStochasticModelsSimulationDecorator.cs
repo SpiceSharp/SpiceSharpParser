@@ -1,5 +1,4 @@
 ﻿using SpiceSharp.Entities;
-using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
@@ -14,7 +13,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
     public class EnableStochasticModelsSimulationDecorator
     {
         private readonly IReadingContext _context;
-        private readonly ConcurrentDictionary<string, Dictionary<string, double>> _lotValues = new ();
+        private readonly ConcurrentDictionary<string, ConcurrentDictionary<string, double>> _lotValues = new ();
 
         public EnableStochasticModelsSimulationDecorator(IReadingContext context)
         {
@@ -98,22 +97,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
         private double GetValueForLotParameter(EvaluationContext evaluationContext, string baseModel, string parameterName, double currentValue, double percentValue, string distributionName, IEqualityComparer<string> comparer)
         {
-            if (_lotValues.ContainsKey(baseModel) && _lotValues[baseModel].ContainsKey(parameterName))
+            var modelValues = _lotValues.GetOrAdd(baseModel, _ => new ConcurrentDictionary<string, double>(comparer));
+
+            return modelValues.GetOrAdd(parameterName, _ =>
             {
-                return _lotValues[baseModel][parameterName];
-            }
-
-            var random = evaluationContext.Randomizer.GetRandomProvider(distributionName);
-            double newValue = currentValue + ((percentValue / 100.0) * currentValue * random.NextSignedDouble());
-
-            if (!_lotValues.ContainsKey(baseModel))
-            {
-                _lotValues[baseModel] = new Dictionary<string, double>(comparer);
-            }
-
-            _lotValues[baseModel][parameterName] = newValue;
-
-            return newValue;
+                var random = evaluationContext.Randomizer.GetRandomProvider(distributionName);
+                return currentValue + ((percentValue / 100.0) * currentValue * random.NextSignedDouble());
+            });
         }
     }
 }

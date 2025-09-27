@@ -83,14 +83,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                 throw new ArgumentNullException(nameof(simulation));
             }
 
-            if (!SimulationBeforeSetupActions.ContainsKey(simulation))
-            {
-                SimulationBeforeSetupActions[simulation] = new List<SimulationUpdateAction>() { new SimulationUpdateAction(action) };
-            }
-            else
-            {
-                SimulationBeforeSetupActions[simulation].Add(new SimulationUpdateAction(action));
-            }
+            var actions = SimulationBeforeSetupActions.GetOrAdd(simulation, _ => new List<SimulationUpdateAction>());
+            actions.Add(new SimulationUpdateAction(action));
         }
 
         public void AddBeforeTemperature(ISimulationWithEvents simulation, Action<ISimulationWithEvents, SimulationEvaluationContexts> action)
@@ -100,14 +94,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                 throw new ArgumentNullException(nameof(simulation));
             }
 
-            if (!SimulationBeforeTemperatureActions.ContainsKey(simulation))
-            {
-                SimulationBeforeTemperatureActions[simulation] = new List<SimulationUpdateAction>() { new SimulationUpdateAction(action) };
-            }
-            else
-            {
-                SimulationBeforeTemperatureActions[simulation].Add(new SimulationUpdateAction(action));
-            }
+            var actions = SimulationBeforeTemperatureActions.GetOrAdd(simulation, _ => new List<SimulationUpdateAction>());
+            actions.Add(new SimulationUpdateAction(action));
         }
 
         public void AddBeforeSetup(Action<ISimulationWithEvents, SimulationEvaluationContexts> action)
