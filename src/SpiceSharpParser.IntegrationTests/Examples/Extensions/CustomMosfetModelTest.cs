@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models;
+using System.IO;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.Examples.Extensions
@@ -18,9 +20,19 @@ namespace SpiceSharpParser.IntegrationTests.Examples.Extensions
             // Convert to Spice#
             var spiceSharpReader = new SpiceSharpReader();
             spiceSharpReader.Settings.CaseSensitivity.IsModelTypeCaseSensitive = false;
-            spiceSharpReader.Settings.Mappings.Models.Map(new[] { "PMOS", "NMOS" }, new CustomMosfetModelGenerator());
-            var spiceSharpModel = spiceSharpReader.Read(parseResult.FinalModel);
 
+
+            // custom mappings
+            var modelGenerator = new MosfetModelGenerator();
+            modelGenerator.AddLevel<SpiceSharp.Components.Mosfet1Model, SpiceSharp.Components.Mosfets.Level1.ModelParameters>(39);
+            spiceSharpReader.Settings.Mappings.Models.Map(new[] { "PMOS", "NMOS" }, modelGenerator);
+            var mosfetGenerator = new MosfetGenerator();
+            mosfetGenerator.AddMosfet<SpiceSharp.Components.Mosfet1Model, SpiceSharp.Components.Mosfet1>();
+            spiceSharpReader.Settings.Mappings.Components.Map("M", mosfetGenerator);
+
+
+            var spiceSharpModel = spiceSharpReader.Read(parseResult.FinalModel);
+            
             Assert.False(spiceSharpModel.ValidationResult.HasError);
             Assert.False(spiceSharpModel.ValidationResult.HasWarning);
         }

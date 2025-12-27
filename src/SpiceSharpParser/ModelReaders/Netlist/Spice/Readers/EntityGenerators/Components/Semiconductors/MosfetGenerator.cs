@@ -35,11 +35,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             });
         }
 
-        protected static Dictionary<Type, Func<string, MosfetDetails>> Mosfets { get; } = new ();
+        protected Dictionary<Type, Func<string, MosfetDetails>> Mosfets { get; } = new ();
 
-        public static void AddMosfet<TModel, TMosfet>()
+        public void AddMosfet<TModel, TMosfet>()
             where TMosfet : SpiceSharp.Components.Component
-            where TModel : Context.Models.Model
         {
             Mosfets.Add(typeof(TModel), (name) =>
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SpiceSharp;
 using SpiceSharp.Components;
 using SpiceSharp.Components.Mosfets;
 using SpiceSharp.Entities;
@@ -56,10 +57,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
         /// Gets available model generators indexed by their LEVEL.
         /// The parameters passed are name, type (nmos or pmos) and the version.
         /// </summary>
-        protected static Dictionary<int, Func<string, string, string, Context.Models.Model>> Levels { get; } = new Dictionary<int, Func<string, string, string, Context.Models.Model>>();
+        protected Dictionary<int, Func<string, string, string, Context.Models.Model>> Levels { get; } = new Dictionary<int, Func<string, string, string, Context.Models.Model>>();
 
-        public static void AddLevel<TModel>(int level)
-            where TModel : Entity<Parameters>
+        public void AddLevel<TModel, TParameters>(int level)
+            where TModel : Entity<TParameters>
+            where TParameters : ModelParameters, ICloneable<TParameters>, new()
         {
             Levels[level] = (name, type, _) =>
             {
