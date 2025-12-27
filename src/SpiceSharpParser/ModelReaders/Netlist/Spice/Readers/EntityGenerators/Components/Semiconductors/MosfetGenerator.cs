@@ -35,7 +35,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             });
         }
 
-        protected Dictionary<Type, Func<string, MosfetDetails>> Mosfets { get; } = new ();
+        protected static Dictionary<Type, Func<string, MosfetDetails>> Mosfets { get; } = new ();
+
+        public static void AddMosfet<TModel, TMosfet>()
+            where TMosfet : SpiceSharp.Components.Component
+            where TModel : Context.Models.Model
+        {
+            Mosfets.Add(typeof(TModel), (name) =>
+            {
+                var mosfet = (TMosfet)Activator.CreateInstance(typeof(TMosfet), name);
+                return new MosfetDetails { Mosfet = mosfet, SetModelAction = (model) => mosfet.Model = model.Name };
+            });
+        }
 
         public override IEntity Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {

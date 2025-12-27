@@ -54,7 +54,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
         /// Gets available model generators indexed by their LEVEL.
         /// The parameters passed are name, type (nmos or pmos) and the version.
         /// </summary>
-        protected Dictionary<int, Func<string, string, string, Context.Models.Model>> Levels { get; } = new Dictionary<int, Func<string, string, string, Context.Models.Model>>();
+        protected static Dictionary<int, Func<string, string, string, Context.Models.Model>> Levels { get; } = new Dictionary<int, Func<string, string, string, Context.Models.Model>>();
+
+        public static void AddLevel(int level, Func<string, string, string, Context.Models.Model> generator)
+        {
+            Levels[level] = generator;
+        }
 
         public override Context.Models.Model Generate(string id, string type, ParameterCollection parameters, IReadingContext context)
         {
