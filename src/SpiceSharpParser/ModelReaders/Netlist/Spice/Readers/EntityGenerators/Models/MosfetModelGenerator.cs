@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using SpiceSharp.Components;
+using SpiceSharp.Components.Mosfets;
+using SpiceSharp.Entities;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -56,9 +58,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
         /// </summary>
         protected static Dictionary<int, Func<string, string, string, Context.Models.Model>> Levels { get; } = new Dictionary<int, Func<string, string, string, Context.Models.Model>>();
 
-        public static void AddLevel(int level, Func<string, string, string, Context.Models.Model> generator)
+        public static void AddLevel<TModel>(int level)
+            where TModel : Entity<Parameters>
         {
-            Levels[level] = generator;
+            Levels[level] = (name, type, _) =>
+            {
+                var mosfet = (TModel)Activator.CreateInstance(typeof(TModel), name);
+                switch (type.ToLower())
+                {
+                    case "nmos": mosfet.SetParameter("nmos", true); break;
+                    case "pmos": mosfet.SetParameter("pmos", true); break;
+                }
+
+                return new Context.Models.Model(name, mosfet, mosfet.Parameters);
+            };
         }
 
         public override Context.Models.Model Generate(string id, string type, ParameterCollection parameters, IReadingContext context)
