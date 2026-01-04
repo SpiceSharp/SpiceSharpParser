@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using SpiceSharp;
+﻿using SpiceSharp;
 using SpiceSharp.Components;
 using SpiceSharp.Components.Mosfets;
 using SpiceSharp.Entities;
+using SpiceSharp.ParameterSets;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using System;
+using System.Collections.Generic;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Models
 {
@@ -62,6 +63,23 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
         public void AddLevel<TModel, TParameters>(int level)
             where TModel : Entity<TParameters>
             where TParameters : ModelParameters, ICloneable<TParameters>, new()
+        {
+            Levels[level] = (name, type, _) =>
+            {
+                var mosfet = (TModel)Activator.CreateInstance(typeof(TModel), name);
+                switch (type.ToLower())
+                {
+                    case "nmos": mosfet.SetParameter("nmos", true); break;
+                    case "pmos": mosfet.SetParameter("pmos", true); break;
+                }
+
+                return new Context.Models.Model(name, mosfet, mosfet.Parameters);
+            };
+        }
+
+        public void AddGenericLevel<TModel, TParameters>(int level)
+            where TModel : Entity<TParameters>
+            where TParameters : ParameterSet<TParameters>, new()
         {
             Levels[level] = (name, type, _) =>
             {
