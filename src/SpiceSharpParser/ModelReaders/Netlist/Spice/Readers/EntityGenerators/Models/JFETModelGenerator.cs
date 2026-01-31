@@ -8,15 +8,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
     {
         public override Context.Models.Model Generate(string id, string type, ParameterCollection parameters, IReadingContext context)
         {
-            var model = new JFETModel(id);
+            var jfetModel = new JFETModel(id);
             switch (type.ToLower())
             {
-                case "pjf": model.SetParameter("pjf", true); break;
-                case "njf": model.SetParameter("njf", true); break;
+                case "pjf": jfetModel.SetParameter("pjf", true); break;
+                case "njf": jfetModel.SetParameter("njf", true); break;
             }
 
-            SetParameters(context, model, parameters);
-            return new Context.Models.Model(id, model, model.Parameters);
+            var contextModel = new Context.Models.Model(id, jfetModel, jfetModel.Parameters);
+            SetParameters(context, jfetModel, parameters);
+            SetDimensionParameters(context, contextModel, parameters);
+            return contextModel;
         }
     }
 }

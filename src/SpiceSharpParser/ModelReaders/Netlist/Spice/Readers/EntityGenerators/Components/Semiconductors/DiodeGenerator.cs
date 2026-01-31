@@ -3,6 +3,7 @@ using SpiceSharp.Entities;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using System.Linq;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Semiconductors
 {
@@ -20,8 +21,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
             {
+                double? l = GetLengthFromParameters(parameters, context);
+                double? w = GetWidthFromParameters(parameters, context);
+
                 context.ModelsRegistry.SetModel(
                     diode,
+                    l,
+                    w,
                     simulation,
                     parameters.Get(2),
                     $"Could not find model {parameters.Get(2)} for diode {originalName}",
@@ -51,6 +57,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (parameters[i] is AssignmentParameter asg)
                 {
+                    // Skip L and W parameters - they are used for model selection only
+                    if (asg.Name.ToLower() == "l" || asg.Name.ToLower() == "w")
+                    {
+                        continue;
+                    }
                     context.SetParameter(diode, asg.Name, asg);
                 }
 
@@ -69,6 +80,26 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
 
             return diode;
+        }
+
+        private double? GetLengthFromParameters(ParameterCollection parameters, IReadingContext context)
+        {
+            var lParameter = parameters.FirstOrDefault(p => p is AssignmentParameter ap && ap.Name.ToLower() == "l");
+            if (lParameter != null && lParameter is AssignmentParameter lap)
+            {
+                return context.Evaluator.EvaluateDouble(lap.Value);
+            }
+            return null;
+        }
+
+        private double? GetWidthFromParameters(ParameterCollection parameters, IReadingContext context)
+        {
+            var wParameter = parameters.FirstOrDefault(p => p is AssignmentParameter ap && ap.Name.ToLower() == "w");
+            if (wParameter != null && wParameter is AssignmentParameter wap)
+            {
+                return context.Evaluator.EvaluateDouble(wap.Value);
+            }
+            return null;
         }
     }
 }

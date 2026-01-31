@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using SpiceSharp.Entities;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Validation;
@@ -231,9 +232,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
             return null;
         }
 
-        public void SetModel(Entity entity, ISimulationWithEvents simulation, Parameter modelNameParameter, string exceptionMessage, Action<Model> setModelAction, IReadingContext context)
+        public void SetModel(Entity entity, double? l, double? w, ISimulationWithEvents simulation, Parameter modelNameParameter, string exceptionMessage, Action<Model> setModelAction, IReadingContext context)
         {
-            var model = FindModelEntity(modelNameParameter.Value);
+            var model = FindModelEntity(modelNameParameter.Value, l, w);
 
             if (model == null)
             {
@@ -263,16 +264,48 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
                 {
                     return model;
                 }
+
+                // Check for dimension-based model naming convention (e.g., MODELNAME.0, MODELNAME.1)
+                for (var i = 0; i < AllModels.Count; i++)
+                {
+                    var key = AllModels.Keys.ElementAt(i);
+
+                    if (key == modelNameToSearch + "." + i)
+                    {
+                        if (AllModels.TryGetValue(key, out var modelInstance))
+                        {
+                            return modelInstance;
+                        }
+                    }
+                }
             }
 
             return null;
         }
 
-        public IEntity FindModelEntity(string modelName)
+        public IEntity FindModelEntity(string modelName, double? l, double? w)
         {
             foreach (var generator in NamesGenerators)
             {
                 var modelNameToSearch = generator.GenerateObjectName(modelName);
+
+                for (var i = 0; i < AllModels.Count; i++)
+                {
+                    var key = AllModels.Keys.ElementAt(i);
+
+                    if (key == modelNameToSearch + "." + i)
+                    {
+                        if (AllModels.TryGetValue(key, out var modelInstance))
+                        {
+                            if (HasGoodSize(modelInstance, l, w))
+                            {
+                                return modelInstance.Entity;
+                            }
+                        }
+                    }
+                }
+
+
 
                 if (AllModels.TryGetValue(modelNameToSearch, out var model))
                 {
@@ -281,6 +314,43 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
             }
 
             return null;
+        }
+
+        private bool HasGoodSize(Model model, double? l, double? w)
+        {
+            model.TryGetDimensionParameter("lmin", out double lminValue);
+            model.TryGetDimensionParameter("lmax", out double lmaxValue);
+            model.TryGetDimensionParameter("wmin", out double wminValue);
+            model.TryGetDimensionParameter("wmax", out double wmaxValue);
+
+            // Check L dimension
+            if (l.HasValue)
+            {
+                if (lminValue > 0 && l.Value < lminValue)
+                {
+                    return false;
+                }
+
+                if (lmaxValue > 0 && l.Value > lmaxValue)
+                {
+                    return false;
+                }
+            }
+
+            // Check W dimension
+            if (w.HasValue)
+            {
+                if (wminValue > 0 && w.Value < wminValue)
+                {
+                    return false;
+                }
+                if (wmaxValue > 0 && w.Value > wmaxValue)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public IModelsRegistry CreateChildRegistry(List<INameGenerator> generators)

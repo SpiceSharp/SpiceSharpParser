@@ -82,18 +82,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
             RegisterDevAndLotModels(parameters, stochasticModelRegistry, model, (modelId) =>
             {
                 var stochasticCandidate = modelGenerator.Generate(modelId, type, filteredParameters, context);
-
-                if (modelGenerator is ICustomModelGenerator custom)
-                {
-                    var model = custom.Process(stochasticCandidate, context.ModelsRegistry);
-                    context.ModelsRegistry.RegisterModelInstance(model);
-                    return model;
-                }
-                else
-                {
-                    context.ModelsRegistry.RegisterModelInstance(stochasticCandidate);
-                    return stochasticCandidate;
-                }
+                context.ModelsRegistry.RegisterModelInstance(stochasticCandidate);
+                return stochasticCandidate;
             });
             return model;
         }

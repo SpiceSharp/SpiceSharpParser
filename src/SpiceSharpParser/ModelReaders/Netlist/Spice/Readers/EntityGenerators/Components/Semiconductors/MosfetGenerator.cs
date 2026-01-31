@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using SpiceSharp.Components;
 using SpiceSharp.Entities;
 using SpiceSharpParser.Common.Validation;
@@ -95,8 +96,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
                 {
+                    double? l = GetLengthFromParameters(parameters, context);
+                    double? w = GetWidthFromParameters(parameters, context);
+
                     context.ModelsRegistry.SetModel(
                         mosfetDetails.Mosfet,
+                        l,
+                        w,
                         simulation,
                         modelNameParameter,
                         $"Could not find model {modelNameParameter} for mosfet {componentIdentifier}",
@@ -159,6 +165,26 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
 
             return mosfet;
+        }
+
+        private double? GetLengthFromParameters(ParameterCollection parameters, IReadingContext context)
+        {
+            var lParameter = parameters.FirstOrDefault(p => p is AssignmentParameter ap && ap.Name.ToLower() == "l");
+            if (lParameter != null && lParameter is AssignmentParameter lap)
+            {
+                return context.Evaluator.EvaluateDouble(lap.Value);
+            }
+            return null;
+        }
+
+        private double? GetWidthFromParameters(ParameterCollection parameters, IReadingContext context)
+        {
+            var wParameter = parameters.FirstOrDefault(p => p is AssignmentParameter ap && ap.Name.ToLower() == "w");
+            if (wParameter != null && wParameter is AssignmentParameter wap)
+            {
+                return context.Evaluator.EvaluateDouble(wap.Value);
+            }
+            return null;
         }
 
         protected class MosfetDetails

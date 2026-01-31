@@ -12,14 +12,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
             {
                 case "res":
                 case "r":
-                    var model = new ResistorModel(id);
-                    SetParameters(context, model, parameters);
-                    return new Context.Models.Model(id, model, model.Parameters);
+                    var resistorModel = new ResistorModel(id);
+                    var resistorContextModel = new Context.Models.Model(id, resistorModel, resistorModel.Parameters);
+                    SetParameters(context, resistorModel, parameters);
+                    SetDimensionParameters(context, resistorContextModel, parameters);
+                    return resistorContextModel;
 
                 case "c":
-                    var model2 = new CapacitorModel(id);
-                    SetParameters(context, model2, parameters);
-                    return new Context.Models.Model(id, model2, model2.Parameters);
+                    var capacitorModel = new CapacitorModel(id);
+                    var capacitorContextModel = new Context.Models.Model(id, capacitorModel, capacitorModel.Parameters);
+                    SetParameters(context, capacitorModel, parameters);
+                    SetDimensionParameters(context, capacitorContextModel, parameters);
+                    return capacitorContextModel;
             }
 
             return null;

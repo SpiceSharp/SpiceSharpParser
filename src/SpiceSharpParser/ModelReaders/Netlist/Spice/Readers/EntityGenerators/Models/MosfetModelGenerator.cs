@@ -149,6 +149,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
             // Read all the parameters
             SetParameters(context, model.Entity, clonedParameters);
 
+            // Set dimension parameters for model selection (lmin, lmax, wmin, wmax)
+            SetDimensionParameters(context, model, clonedParameters);
+
             return model;
         }
     }
