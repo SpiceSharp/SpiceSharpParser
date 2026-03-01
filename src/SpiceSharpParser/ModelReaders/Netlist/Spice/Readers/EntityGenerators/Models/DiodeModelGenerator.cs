@@ -9,10 +9,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
     {
         public override Model Generate(string id, string type, ParameterCollection parameters, IReadingContext context)
         {
-            var model = new DiodeModel(id);
-            SetParameters(context, model, parameters);
+            var diodeModel = new DiodeModel(id);
+            var contextModel = new Model(id, diodeModel, diodeModel.Parameters);
+            SetParameters(context, diodeModel, contextModel, parameters);
 
-            return new Model(id, model, model.Parameters);
+            return contextModel;
         }
     }
 }

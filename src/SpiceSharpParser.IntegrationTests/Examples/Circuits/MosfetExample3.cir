@@ -1,0 +1,5 @@
+Mosfet circuit
+Md 0 1 2 3 my-pmos
+.model my-pmos.1 pmos(level = 49 lmin=0.18u)
+.model my-pmos.2 pmos(level = 49 lmin=1.18u)
+.END

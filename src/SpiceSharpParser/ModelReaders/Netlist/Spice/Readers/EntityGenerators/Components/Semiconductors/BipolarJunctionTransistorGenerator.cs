@@ -2,6 +2,7 @@
 using SpiceSharp.Entities;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Linq;
@@ -38,8 +39,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             context.CreateNodes(bjt, parameters.Take(BipolarJunctionTransistor.PinCount));
             context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
             {
+                double? l = ComponentGenerator.GetAssignmentParameterValue("l", parameters, context);
+                double? w = ComponentGenerator.GetAssignmentParameterValue("w", parameters, context);
+
                 context.ModelsRegistry.SetModel(
                     bjt,
+                    ComponentGenerator.CreateRangePredicate(("l", l), ("w", w)),
                     simulation,
                     parameters.Get(4),
                     $"Could not find model {parameters.Get(4)} for BJT {originalName}",
@@ -93,6 +98,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             context.SetParameter(bjt, "icvbe", asg.Values[0]);
                         }
                     }
+                    else if (asg.Name.ToLower() == "l" || asg.Name.ToLower() == "w")
+                    {
+                        // Skip L and W parameters - they are used for model selection only
+                    }
                     else
                     {
                         context.SetParameter(bjt, asg.Name, asg);
@@ -102,5 +111,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             return bjt;
         }
+
     }
 }

@@ -112,6 +112,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 context.ModelsRegistry.SetModel(
                     vsw,
+                    null,
                     simulation,
                     parameters.Get(4),
                     $"Could not find model {parameters.Get(4)} for voltage switch {name}",
@@ -270,6 +271,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 context.ModelsRegistry.SetModel(
                     csw,
+                    null,
                     simulation,
                     parameters.Get(3),
                     $"Could not find model {parameters.Get(3)} for current switch {name}",

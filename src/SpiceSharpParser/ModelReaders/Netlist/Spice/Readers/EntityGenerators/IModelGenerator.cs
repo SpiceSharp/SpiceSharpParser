@@ -7,4 +7,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
     {
         Model Generate(string id, string type, SpiceSharpParser.Models.Netlist.Spice.Objects.ParameterCollection parameters, IReadingContext context);
     }
+
+    public interface ICustomModelGenerator : IModelGenerator
+    {
+        Context.Models.Model Process(Context.Models.Model model, IModelsRegistry models);
+    }
 }

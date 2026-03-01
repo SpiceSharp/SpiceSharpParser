@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using SpiceSharp.Components;
 using SpiceSharp.Entities;
 using SpiceSharpParser.Common.Validation;
@@ -95,8 +96,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
                 {
+                    double? l = GetAssignmentParameterValue("l", parameters, context);
+                    double? w = GetAssignmentParameterValue("w", parameters, context);
+
                     context.ModelsRegistry.SetModel(
                         mosfetDetails.Mosfet,
+                        CreateRangePredicate(("l", l), ("w", w)),
                         simulation,
                         modelNameParameter,
                         $"Could not find model {modelNameParameter} for mosfet {componentIdentifier}",

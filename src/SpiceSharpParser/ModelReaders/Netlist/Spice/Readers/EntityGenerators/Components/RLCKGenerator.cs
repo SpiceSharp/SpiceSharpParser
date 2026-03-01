@@ -205,8 +205,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
                     {
+                        double? l = GetAssignmentParameterValue("l", parameters, context);
+                        double? w = GetAssignmentParameterValue("w", parameters, context);
+
                         context.ModelsRegistry.SetModel(
                             capacitor,
+                            CreateRangePredicate(("l", l), ("w", w)),
                             simulation,
                             parameters.Get(2),
                             $"Could not find model {parameters.Get(2)} for capacitor {name}",
@@ -249,7 +253,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (modelBased)
                 {
-                    var model = context.ModelsRegistry.FindModelEntity(parameters.Get(2).Value);
+                    double? l = GetAssignmentParameterValue("l", parameters, context);
+                    double? w = GetAssignmentParameterValue("w", parameters, context);
+                    var model = context.ModelsRegistry.FindModelEntity(parameters.Get(2).Value, CreateRangePredicate(("l", l), ("w", w)));
 
                     if (tcParameterAssignment.Values.Count == 2)
                     {
@@ -417,8 +423,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
                     {
+                        double? l = GetAssignmentParameterValue("l", parameters, context);
+                        double? w = GetAssignmentParameterValue("w", parameters, context);
+
                         context.ModelsRegistry.SetModel(
                             res,
+                            CreateRangePredicate(("l", l), ("w", w)),
                             simulation,
                             something,
                             $"Could not find model {something} for resistor {name}",
@@ -477,8 +487,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     // Ignore tc parameter on resistor ...
                     context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
                     {
+                        double? l = GetAssignmentParameterValue("l", parameters, context);
+                        double? w = GetAssignmentParameterValue("w", parameters, context);
+
                         context.ModelsRegistry.SetModel(
                             res,
+                            CreateRangePredicate(("l", l), ("w", w)),
                             simulation,
                             modelNameParameter,
                             $"Could not find model {modelNameParameter} for resistor {name}",
@@ -598,5 +612,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             return expression;
         }
+
     }
 }

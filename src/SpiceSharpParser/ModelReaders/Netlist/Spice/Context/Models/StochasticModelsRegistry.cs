@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using SpiceSharp.Entities;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Validation;
@@ -231,9 +232,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
             return null;
         }
 
-        public void SetModel(Entity entity, ISimulationWithEvents simulation, Parameter modelNameParameter, string exceptionMessage, Action<Model> setModelAction, IReadingContext context)
+        public void SetModel(Entity entity, Func<Model, bool> predicate, ISimulationWithEvents simulation, Parameter modelNameParameter, string exceptionMessage, Action<Model> setModelAction, IReadingContext context)
         {
-            var model = FindModelEntity(modelNameParameter.Value);
+            var model = FindModelWithPredicate(modelNameParameter.Value, predicate);
 
             if (model == null)
             {
@@ -241,7 +242,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
                 return;
             }
 
-            var stochasticModel = ProvideStochasticModel(entity.Name, simulation, new Model(model.Name, model, model.ParameterSets.First()));
+            var stochasticModel = ProvideStochasticModel(entity.Name, simulation, model);
             setModelAction(stochasticModel);
 
             if (stochasticModel != null)
@@ -255,28 +256,39 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 
         public Model FindModel(string modelName)
         {
+            return FindModelWithPredicate(modelName, null);
+        }
+
+        public IEntity FindModelEntity(string modelName, Func<Model, bool> predicate)
+        {
+            return FindModelWithPredicate(modelName, predicate)?.Entity;
+        }
+
+        private Model FindModelWithPredicate(string modelName, Func<Model, bool> predicate)
+        {
+            var comparison = IsModelNameCaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+
             foreach (var generator in NamesGenerators)
             {
                 var modelNameToSearch = generator.GenerateObjectName(modelName);
+                var prefix = modelNameToSearch + ".";
 
+                // Check suffixed models (e.g., MODELNAME.small, MODELNAME.0)
+                foreach (var kvp in AllModels)
+                {
+                    if (kvp.Key.StartsWith(prefix, comparison) && kvp.Key.Length > prefix.Length)
+                    {
+                        if (predicate == null || predicate(kvp.Value))
+                        {
+                            return kvp.Value;
+                        }
+                    }
+                }
+
+                // Fall back to exact match (base model without suffix)
                 if (AllModels.TryGetValue(modelNameToSearch, out var model))
                 {
                     return model;
-                }
-            }
-
-            return null;
-        }
-
-        public IEntity FindModelEntity(string modelName)
-        {
-            foreach (var generator in NamesGenerators)
-            {
-                var modelNameToSearch = generator.GenerateObjectName(modelName);
-
-                if (AllModels.TryGetValue(modelNameToSearch, out var model))
-                {
-                    return model.Entity;
                 }
             }
 
