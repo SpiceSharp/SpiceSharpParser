@@ -4,7 +4,8 @@ using Xunit;
 namespace SpiceSharpParser.IntegrationTests.Components
 {
     /// <summary>
-    /// Integration tests for model selection based on L and W parameters with lmin, lmax, wmin, wmax constraints.
+    /// Integration tests for model selection (binning) based on instance parameters
+    /// and model selection parameters (e.g. lmin, lmax, wmin, wmax).
     /// </summary>
     public class ModelDimensionTests : BaseTests
     {
@@ -39,14 +40,14 @@ namespace SpiceSharpParser.IntegrationTests.Components
             Assert.NotNull(netlist);
             Assert.False(netlist.ValidationResult.HasError);
 
-            // Both MOSFETs should be created
+            // M1 L=0.5u should match NMOS.0 (lmin=0.1u lmax=1u)
             var mosfet1 = netlist.Circuit["m1"] as Mosfet1;
             Assert.NotNull(mosfet1);
 
+            // M2 L=5u should match NMOS.1 (lmin=1u lmax=10u)
             var mosfet2 = netlist.Circuit["m2"] as Mosfet1;
             Assert.NotNull(mosfet2);
 
-            // Verify models exist in circuit
             Assert.NotNull(netlist.Circuit["NMOS.0"]);
             Assert.NotNull(netlist.Circuit["NMOS.1"]);
         }
@@ -65,9 +66,11 @@ namespace SpiceSharpParser.IntegrationTests.Components
             Assert.NotNull(netlist);
             Assert.False(netlist.ValidationResult.HasError);
 
+            // M1 W=2u should match PMOS.0 (wmin=1u wmax=10u)
             var mosfet1 = netlist.Circuit["m1"] as Mosfet1;
             Assert.NotNull(mosfet1);
 
+            // M2 W=20u should match PMOS.1 (wmin=10u wmax=100u)
             var mosfet2 = netlist.Circuit["m2"] as Mosfet1;
             Assert.NotNull(mosfet2);
         }
@@ -86,18 +89,21 @@ namespace SpiceSharpParser.IntegrationTests.Components
             Assert.NotNull(netlist);
             Assert.False(netlist.ValidationResult.HasError);
 
+            // M1 L=0.5u W=5u should match NMOS.0
             var mosfet1 = netlist.Circuit["m1"] as Mosfet1;
             Assert.NotNull(mosfet1);
 
+            // M2 L=5u W=50u should match NMOS.1
             var mosfet2 = netlist.Circuit["m2"] as Mosfet1;
             Assert.NotNull(mosfet2);
         }
 
         [Fact]
-        public void MosfetFallsBackToDefaultModelWhenNoMatch()
+        public void MosfetFallsBackToBaseModelWhenNoMatch()
         {
+            // L=100u exceeds NMOS.0's lmax=1u, should fall back to base NMOS
             var netlist = GetSpiceSharpModel(
-                "MOSFET falls back to default model",
+                "MOSFET falls back to base model",
                 "M1 D G S B NMOS L=100u W=100u",
                 ".model NMOS.0 NMOS level=1 lmin=0.1u lmax=1u",
                 ".model NMOS NMOS level=1",
@@ -106,8 +112,8 @@ namespace SpiceSharpParser.IntegrationTests.Components
             Assert.NotNull(netlist);
             Assert.False(netlist.ValidationResult.HasError);
 
-            var mosfet1 = netlist.Circuit["m1"] as Mosfet1;
-            Assert.NotNull(mosfet1);
+            var mosfet = netlist.Circuit["m1"] as Mosfet1;
+            Assert.NotNull(mosfet);
         }
 
         #endregion
@@ -151,10 +157,11 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void ResistorWithOnlyLengthParameter()
+        public void ResistorModelWithOnlyLengthConstraints()
         {
+            // Models only constrain L (no wmin/wmax), so W is irrelevant for selection
             var netlist = GetSpiceSharpModel(
-                "Resistor with only L parameter",
+                "Resistor model with only length constraints",
                 "R1 1 0 RMOD L=0.5u W=1u",
                 "R2 1 0 RMOD L=5u W=1u",
                 ".model RMOD.0 R RSH=1 lmin=0.1u lmax=1u",
@@ -172,10 +179,11 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void ResistorWithOnlyWidthParameter()
+        public void ResistorModelWithOnlyWidthConstraints()
         {
+            // Models only constrain W (no lmin/lmax), so L is irrelevant for selection
             var netlist = GetSpiceSharpModel(
-                "Resistor with only W parameter",
+                "Resistor model with only width constraints",
                 "R1 1 0 RMOD L=1u W=5u",
                 "R2 1 0 RMOD L=1u W=50u",
                 ".model RMOD.0 R RSH=1 wmin=1u wmax=10u",
@@ -273,10 +281,11 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void BJTWithOnlyLengthParameter()
+        public void BJTModelWithOnlyLengthConstraints()
         {
+            // Models only constrain L, component has only L
             var netlist = GetSpiceSharpModel(
-                "BJT with only L parameter",
+                "BJT model with only length constraints",
                 "Q1 C B E QMOD L=0.5u",
                 "Q2 C B E QMOD L=5u",
                 ".model QMOD.0 NPN lmin=0.1u lmax=1u",
@@ -334,10 +343,11 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void DiodeWithOnlyWidthParameter()
+        public void DiodeModelWithOnlyWidthConstraints()
         {
+            // Models only constrain W, component has only W
             var netlist = GetSpiceSharpModel(
-                "Diode with only W parameter",
+                "Diode model with only width constraints",
                 "D1 A K DMOD W=5u",
                 "D2 A K DMOD W=50u",
                 ".model DMOD.0 D wmin=1u wmax=10u",
@@ -395,10 +405,11 @@ namespace SpiceSharpParser.IntegrationTests.Components
         }
 
         [Fact]
-        public void JFETWithOnlyLengthParameter()
+        public void JFETModelWithOnlyLengthConstraints()
         {
+            // Models only constrain L, component has only L
             var netlist = GetSpiceSharpModel(
-                "JFET with only L parameter",
+                "JFET model with only length constraints",
                 "J1 D G S JMOD L=0.5u",
                 "J2 D G S JMOD L=5u",
                 ".model JMOD.0 PJF lmin=0.1u lmax=1u",
@@ -488,6 +499,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void FallsBackToBaseModelWhenNoSuffixedModelMatches()
         {
+            // L=100u exceeds both suffixed models' lmax, should fall back to base NMOS
             var netlist = GetSpiceSharpModel(
                 "Falls back to base model when no suffixed model matches",
                 "M1 D G S B NMOS L=100u W=100u",
@@ -550,10 +562,11 @@ namespace SpiceSharpParser.IntegrationTests.Components
         #region Edge Cases
 
         [Fact]
-        public void ComponentWithoutLWParametersUsesDefaultModel()
+        public void MosfetWithoutLWParametersMatchesFirstSuffixedModel()
         {
+            // Without L/W, predicate is null — first suffixed model is selected (not base model)
             var netlist = GetSpiceSharpModel(
-                "Component without L/W uses default",
+                "MOSFET without L/W matches first suffixed model",
                 "M1 D G S B NMOS",
                 ".model NMOS.0 NMOS level=1 lmin=0.1u lmax=1u",
                 ".model NMOS NMOS level=1",
@@ -569,6 +582,8 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void ModelWithOnlyLminConstraint()
         {
+            // RMOD.0 has lmin=1u: R1 L=0.5u fails (below min), falls back to base RMOD
+            // R2 L=5u passes (above min), matches RMOD.0
             var netlist = GetSpiceSharpModel(
                 "Model with only lmin constraint",
                 "R1 1 0 RMOD L=0.5u W=1u",
@@ -590,6 +605,8 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void ModelWithOnlyLmaxConstraint()
         {
+            // CMOD.0 has lmax=1u: C1 L=0.5u passes (below max), matches CMOD.0
+            // C2 L=5u fails (above max), falls back to base CMOD
             var netlist = GetSpiceSharpModel(
                 "Model with only lmax constraint",
                 "C1 1 0 CMOD L=0.5u W=1u",
@@ -611,6 +628,8 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void ModelWithOnlyWminConstraint()
         {
+            // NMOS.0 has wmin=1u: M1 W=0.5u fails (below min), falls back to base NMOS
+            // M2 W=5u passes (above min), matches NMOS.0
             var netlist = GetSpiceSharpModel(
                 "Model with only wmin constraint",
                 "M1 D G S B NMOS L=1u W=0.5u",
@@ -632,6 +651,8 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void ModelWithOnlyWmaxConstraint()
         {
+            // QMOD.0 has wmax=10u: Q1 W=5u passes (below max), matches QMOD.0
+            // Q2 W=50u fails (above max), falls back to base QMOD
             var netlist = GetSpiceSharpModel(
                 "Model with only wmax constraint",
                 "Q1 C B E QMOD W=5u",
@@ -653,6 +674,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
         [Fact]
         public void MultipleModelsWithOverlappingRanges()
         {
+            // D1 matches both DMOD.0 and DMOD.1; first match wins
             var netlist = GetSpiceSharpModel(
                 "Multiple models with overlapping ranges",
                 "D1 A K DMOD L=0.8u W=8u",
