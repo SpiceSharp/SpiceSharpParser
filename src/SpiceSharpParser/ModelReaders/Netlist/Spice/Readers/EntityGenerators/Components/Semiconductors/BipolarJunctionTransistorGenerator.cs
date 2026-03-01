@@ -2,6 +2,7 @@
 using SpiceSharp.Entities;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System.Linq;
@@ -38,13 +39,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             context.CreateNodes(bjt, parameters.Take(BipolarJunctionTransistor.PinCount));
             context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
             {
-                double? l = GetLengthFromParameters(parameters, context);
-                double? w = GetWidthFromParameters(parameters, context);
+                double? l = ComponentGenerator.GetAssignmentParameterValue("l", parameters, context);
+                double? w = ComponentGenerator.GetAssignmentParameterValue("w", parameters, context);
 
                 context.ModelsRegistry.SetModel(
                     bjt,
-                    l,
-                    w,
+                    ComponentGenerator.CreateRangePredicate(("l", l), ("w", w)),
                     simulation,
                     parameters.Get(4),
                     $"Could not find model {parameters.Get(4)} for BJT {originalName}",
@@ -112,24 +112,5 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return bjt;
         }
 
-        private double? GetLengthFromParameters(ParameterCollection parameters, IReadingContext context)
-        {
-            var lParameter = parameters.FirstOrDefault(p => p is AssignmentParameter ap && ap.Name.ToLower() == "l");
-            if (lParameter != null && lParameter is AssignmentParameter lap)
-            {
-                return context.Evaluator.EvaluateDouble(lap.Value);
-            }
-            return null;
-        }
-
-        private double? GetWidthFromParameters(ParameterCollection parameters, IReadingContext context)
-        {
-            var wParameter = parameters.FirstOrDefault(p => p is AssignmentParameter ap && ap.Name.ToLower() == "w");
-            if (wParameter != null && wParameter is AssignmentParameter wap)
-            {
-                return context.Evaluator.EvaluateDouble(wap.Value);
-            }
-            return null;
-        }
     }
 }

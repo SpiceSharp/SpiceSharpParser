@@ -14,28 +14,24 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
                 case "sw":
                     var vsModel = new VoltageSwitchModel(id);
                     var vsContextModel = new Context.Models.Model(id, vsModel, vsModel.Parameters);
-                    SetParameters(context, vsModel, parameters);
-                    SetDimensionParameters(context, vsContextModel, parameters);
+                    SetParameters(context, vsModel, vsContextModel, parameters);
                     return vsContextModel;
                 case "csw":
                     var csModel = new CurrentSwitchModel(id);
                     var csContextModel = new Context.Models.Model(id, csModel, csModel.Parameters);
-                    SetParameters(context, csModel, parameters);
-                    SetDimensionParameters(context, csContextModel, parameters);
+                    SetParameters(context, csModel, csContextModel, parameters);
                     return csContextModel;
 
                 case "vswitch":
                     var vSwitchModel = new VSwitchModel(id);
                     var vSwitchContextModel = new Context.Models.Model(id, vSwitchModel, vSwitchModel.Parameters);
-                    SetParameters(context, vSwitchModel, parameters);
-                    SetDimensionParameters(context, vSwitchContextModel, parameters);
+                    SetParameters(context, vSwitchModel, vSwitchContextModel, parameters);
                     return vSwitchContextModel;
 
                 case "iswitch":
                     var iSwitchModel = new ISwitchModel(id);
                     var iSwitchContextModel = new Context.Models.Model(id, iSwitchModel, iSwitchModel.Parameters);
-                    SetParameters(context, iSwitchModel, parameters);
-                    SetDimensionParameters(context, iSwitchContextModel, parameters);
+                    SetParameters(context, iSwitchModel, iSwitchContextModel, parameters);
                     return iSwitchContextModel;
             }
 

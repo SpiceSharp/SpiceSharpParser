@@ -232,9 +232,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
             return null;
         }
 
-        public void SetModel(Entity entity, double? l, double? w, ISimulationWithEvents simulation, Parameter modelNameParameter, string exceptionMessage, Action<Model> setModelAction, IReadingContext context)
+        public void SetModel(Entity entity, Func<Model, bool> predicate, ISimulationWithEvents simulation, Parameter modelNameParameter, string exceptionMessage, Action<Model> setModelAction, IReadingContext context)
         {
-            var model = FindModelEntity(modelNameParameter.Value, l, w);
+            var model = FindModelWithPredicate(modelNameParameter.Value, predicate);
 
             if (model == null)
             {
@@ -242,7 +242,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
                 return;
             }
 
-            var stochasticModel = ProvideStochasticModel(entity.Name, simulation, new Model(model.Name, model, model.ParameterSets.First()));
+            var stochasticModel = ProvideStochasticModel(entity.Name, simulation, model);
             setModelAction(stochasticModel);
 
             if (stochasticModel != null)
@@ -256,101 +256,43 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 
         public Model FindModel(string modelName)
         {
+            return FindModelWithPredicate(modelName, null);
+        }
+
+        public IEntity FindModelEntity(string modelName, Func<Model, bool> predicate)
+        {
+            return FindModelWithPredicate(modelName, predicate)?.Entity;
+        }
+
+        private Model FindModelWithPredicate(string modelName, Func<Model, bool> predicate)
+        {
+            var comparison = IsModelNameCaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+
             foreach (var generator in NamesGenerators)
             {
                 var modelNameToSearch = generator.GenerateObjectName(modelName);
+                var prefix = modelNameToSearch + ".";
 
+                // Check suffixed models (e.g., MODELNAME.small, MODELNAME.0)
+                foreach (var kvp in AllModels)
+                {
+                    if (kvp.Key.StartsWith(prefix, comparison) && kvp.Key.Length > prefix.Length)
+                    {
+                        if (predicate == null || predicate(kvp.Value))
+                        {
+                            return kvp.Value;
+                        }
+                    }
+                }
+
+                // Fall back to exact match (base model without suffix)
                 if (AllModels.TryGetValue(modelNameToSearch, out var model))
                 {
                     return model;
                 }
-
-                // Check for dimension-based model naming convention (e.g., MODELNAME.0, MODELNAME.1)
-                for (var i = 0; i < AllModels.Count; i++)
-                {
-                    var key = AllModels.Keys.ElementAt(i);
-
-                    if (key == modelNameToSearch + "." + i)
-                    {
-                        if (AllModels.TryGetValue(key, out var modelInstance))
-                        {
-                            return modelInstance;
-                        }
-                    }
-                }
             }
 
             return null;
-        }
-
-        public IEntity FindModelEntity(string modelName, double? l, double? w)
-        {
-            foreach (var generator in NamesGenerators)
-            {
-                var modelNameToSearch = generator.GenerateObjectName(modelName);
-
-                for (var i = 0; i < AllModels.Count; i++)
-                {
-                    var key = AllModels.Keys.ElementAt(i);
-
-                    if (key == modelNameToSearch + "." + i)
-                    {
-                        if (AllModels.TryGetValue(key, out var modelInstance))
-                        {
-                            if (HasGoodSize(modelInstance, l, w))
-                            {
-                                return modelInstance.Entity;
-                            }
-                        }
-                    }
-                }
-
-
-
-                if (AllModels.TryGetValue(modelNameToSearch, out var model))
-                {
-                    return model.Entity;
-                }
-            }
-
-            return null;
-        }
-
-        private bool HasGoodSize(Model model, double? l, double? w)
-        {
-            model.TryGetDimensionParameter("lmin", out double lminValue);
-            model.TryGetDimensionParameter("lmax", out double lmaxValue);
-            model.TryGetDimensionParameter("wmin", out double wminValue);
-            model.TryGetDimensionParameter("wmax", out double wmaxValue);
-
-            // Check L dimension
-            if (l.HasValue)
-            {
-                if (lminValue > 0 && l.Value < lminValue)
-                {
-                    return false;
-                }
-
-                if (lmaxValue > 0 && l.Value > lmaxValue)
-                {
-                    return false;
-                }
-            }
-
-            // Check W dimension
-            if (w.HasValue)
-            {
-                if (wminValue > 0 && w.Value < wminValue)
-                {
-                    return false;
-                }
-                if (wmaxValue > 0 && w.Value > wmaxValue)
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
 
         public IModelsRegistry CreateChildRegistry(List<INameGenerator> generators)

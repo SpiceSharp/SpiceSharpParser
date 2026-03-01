@@ -8,11 +8,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 {
     public interface IModelsRegistry
     {
-        void SetModel(Entity entity, double? l, double? w, ISimulationWithEvents simulation, Parameter modelNameParameter, string exceptionMessage, Action<Model> setModelAction, IReadingContext context);
+        void SetModel(Entity entity, Func<Model, bool> predicate, ISimulationWithEvents simulation, Parameter modelNameParameter, string exceptionMessage, Action<Model> setModelAction, IReadingContext context);
 
         Model FindModel(string modelName);
 
-        IEntity FindModelEntity(string modelName, double? l, double? w);
+        IEntity FindModelEntity(string modelName, Func<Model, bool> predicate);
 
         void RegisterModelInstance(Model model);
 

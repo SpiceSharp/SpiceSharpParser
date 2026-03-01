@@ -417,6 +417,136 @@ namespace SpiceSharpParser.IntegrationTests.Components
 
         #endregion
 
+        #region Non-Numeric Model Suffix Tests
+
+        [Fact]
+        public void MosfetSelectsModelWithNonNumericSuffix()
+        {
+            var netlist = GetSpiceSharpModel(
+                "MOSFET model selection with non-numeric suffix",
+                "M1 D G S B NMOS L=0.5u W=10u",
+                "M2 D G S B NMOS L=5u W=10u",
+                ".model NMOS.small NMOS level=1 lmin=0.1u lmax=1u",
+                ".model NMOS.large NMOS level=1 lmin=1u lmax=10u",
+                ".END");
+
+            Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasError);
+
+            var mosfet1 = netlist.Circuit["m1"] as Mosfet1;
+            Assert.NotNull(mosfet1);
+
+            var mosfet2 = netlist.Circuit["m2"] as Mosfet1;
+            Assert.NotNull(mosfet2);
+
+            Assert.NotNull(netlist.Circuit["NMOS.small"]);
+            Assert.NotNull(netlist.Circuit["NMOS.large"]);
+        }
+
+        [Fact]
+        public void MosfetSelectsModelWithArbitrarySuffix()
+        {
+            var netlist = GetSpiceSharpModel(
+                "MOSFET model selection with arbitrary suffix",
+                "M1 D G S B NMOS L=0.5u W=10u",
+                "M2 D G S B NMOS L=5u W=10u",
+                ".model NMOS.hp NMOS level=1 lmin=0.1u lmax=1u",
+                ".model NMOS.lp NMOS level=1 lmin=1u lmax=10u",
+                ".END");
+
+            Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasError);
+
+            var mosfet1 = netlist.Circuit["m1"] as Mosfet1;
+            Assert.NotNull(mosfet1);
+
+            var mosfet2 = netlist.Circuit["m2"] as Mosfet1;
+            Assert.NotNull(mosfet2);
+        }
+
+        [Fact]
+        public void ModelWithNonSequentialNumericSuffixes()
+        {
+            var netlist = GetSpiceSharpModel(
+                "Model with non-sequential numeric suffixes",
+                "M1 D G S B NMOS L=0.5u W=10u",
+                "M2 D G S B NMOS L=5u W=10u",
+                ".model NMOS.3 NMOS level=1 lmin=0.1u lmax=1u",
+                ".model NMOS.7 NMOS level=1 lmin=1u lmax=10u",
+                ".END");
+
+            Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasError);
+
+            var mosfet1 = netlist.Circuit["m1"] as Mosfet1;
+            Assert.NotNull(mosfet1);
+
+            var mosfet2 = netlist.Circuit["m2"] as Mosfet1;
+            Assert.NotNull(mosfet2);
+        }
+
+        [Fact]
+        public void FallsBackToBaseModelWhenNoSuffixedModelMatches()
+        {
+            var netlist = GetSpiceSharpModel(
+                "Falls back to base model when no suffixed model matches",
+                "M1 D G S B NMOS L=100u W=100u",
+                ".model NMOS.small NMOS level=1 lmin=0.1u lmax=1u",
+                ".model NMOS.large NMOS level=1 lmin=1u lmax=10u",
+                ".model NMOS NMOS level=1",
+                ".END");
+
+            Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasError);
+
+            var mosfet = netlist.Circuit["m1"] as Mosfet1;
+            Assert.NotNull(mosfet);
+        }
+
+        [Fact]
+        public void DiodeSelectsModelWithNonNumericSuffix()
+        {
+            var netlist = GetSpiceSharpModel(
+                "Diode model selection with non-numeric suffix",
+                "D1 A K DMOD L=0.5u W=5u",
+                "D2 A K DMOD L=5u W=50u",
+                ".model DMOD.fast D lmin=0.1u lmax=1u wmin=1u wmax=10u",
+                ".model DMOD.slow D lmin=1u lmax=10u wmin=10u wmax=100u",
+                ".END");
+
+            Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasError);
+
+            var diode1 = netlist.Circuit["d1"] as Diode;
+            Assert.NotNull(diode1);
+
+            var diode2 = netlist.Circuit["d2"] as Diode;
+            Assert.NotNull(diode2);
+        }
+
+        [Fact]
+        public void ResistorSelectsModelWithNonNumericSuffix()
+        {
+            var netlist = GetSpiceSharpModel(
+                "Resistor model selection with non-numeric suffix",
+                "R1 1 0 RMOD L=0.5u W=5u",
+                "R2 1 0 RMOD L=5u W=50u",
+                ".model RMOD.thin R RSH=1 lmin=0.1u lmax=1u wmin=1u wmax=10u",
+                ".model RMOD.wide R RSH=1 lmin=1u lmax=10u wmin=10u wmax=100u",
+                ".END");
+
+            Assert.NotNull(netlist);
+            Assert.False(netlist.ValidationResult.HasError);
+
+            var resistor1 = netlist.Circuit["r1"] as Resistor;
+            Assert.NotNull(resistor1);
+
+            var resistor2 = netlist.Circuit["r2"] as Resistor;
+            Assert.NotNull(resistor2);
+        }
+
+        #endregion
+
         #region Edge Cases
 
         [Fact]

@@ -205,13 +205,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
                     {
-                        double? l = GetLengthFromParameters(parameters, context);
-                        double? w = GetWidthFromParameters(parameters, context);
+                        double? l = GetAssignmentParameterValue("l", parameters, context);
+                        double? w = GetAssignmentParameterValue("w", parameters, context);
 
                         context.ModelsRegistry.SetModel(
                             capacitor,
-                            l,
-                            w,
+                            CreateRangePredicate(("l", l), ("w", w)),
                             simulation,
                             parameters.Get(2),
                             $"Could not find model {parameters.Get(2)} for capacitor {name}",
@@ -254,9 +253,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (modelBased)
                 {
-                    double? l = GetLengthFromParameters(parameters, context);
-                    double? w = GetWidthFromParameters(parameters, context);
-                    var model = context.ModelsRegistry.FindModelEntity(parameters.Get(2).Value, l, w);
+                    double? l = GetAssignmentParameterValue("l", parameters, context);
+                    double? w = GetAssignmentParameterValue("w", parameters, context);
+                    var model = context.ModelsRegistry.FindModelEntity(parameters.Get(2).Value, CreateRangePredicate(("l", l), ("w", w)));
 
                     if (tcParameterAssignment.Values.Count == 2)
                     {
@@ -424,13 +423,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
                     {
-                        double? l = GetLengthFromParameters(parameters, context);
-                        double? w = GetWidthFromParameters(parameters, context);
+                        double? l = GetAssignmentParameterValue("l", parameters, context);
+                        double? w = GetAssignmentParameterValue("w", parameters, context);
 
                         context.ModelsRegistry.SetModel(
                             res,
-                            l,
-                            w,
+                            CreateRangePredicate(("l", l), ("w", w)),
                             simulation,
                             something,
                             $"Could not find model {something} for resistor {name}",
@@ -489,13 +487,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     // Ignore tc parameter on resistor ...
                     context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
                     {
-                        double? l = GetLengthFromParameters(parameters, context);
-                        double? w = GetWidthFromParameters(parameters, context);
+                        double? l = GetAssignmentParameterValue("l", parameters, context);
+                        double? w = GetAssignmentParameterValue("w", parameters, context);
 
                         context.ModelsRegistry.SetModel(
                             res,
-                            l,
-                            w,
+                            CreateRangePredicate(("l", l), ("w", w)),
                             simulation,
                             modelNameParameter,
                             $"Could not find model {modelNameParameter} for resistor {name}",
@@ -616,24 +613,5 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return expression;
         }
 
-        private double? GetLengthFromParameters(ParameterCollection parameters, IReadingContext context)
-        {
-            var lParameter = parameters.FirstOrDefault(p => p is AssignmentParameter ap && ap.Name.ToLower() == "l");
-            if (lParameter != null && lParameter is AssignmentParameter lap)
-            {
-                return context.Evaluator.EvaluateDouble(lap.Value);
-            }
-            return null;
-        }
-
-        private double? GetWidthFromParameters(ParameterCollection parameters, IReadingContext context)
-        {
-            var wParameter = parameters.FirstOrDefault(p => p is AssignmentParameter ap && ap.Name.ToLower() == "w");
-            if (wParameter != null && wParameter is AssignmentParameter wap)
-            {
-                return context.Evaluator.EvaluateDouble(wap.Value);
-            }
-            return null;
-        }
     }
 }

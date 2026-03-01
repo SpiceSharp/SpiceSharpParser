@@ -16,8 +16,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
             }
 
             var contextModel = new Context.Models.Model(id, jfetModel, jfetModel.Parameters);
-            SetParameters(context, jfetModel, parameters);
-            SetDimensionParameters(context, contextModel, parameters);
+            SetParameters(context, jfetModel, contextModel, parameters);
             return contextModel;
         }
     }

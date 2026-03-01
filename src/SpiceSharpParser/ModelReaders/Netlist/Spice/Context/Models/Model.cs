@@ -1,4 +1,4 @@
-﻿using SpiceSharp.Entities;
+using SpiceSharp.Entities;
 using SpiceSharp.ParameterSets;
 using System.Collections.Generic;
 
@@ -6,7 +6,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 {
     public class Model
     {
-        private readonly Dictionary<string, double> _dimensionParameters = new Dictionary<string, double>(System.StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, double> _selectionParameters = new Dictionary<string, double>(System.StringComparer.OrdinalIgnoreCase);
 
         public Model(string name, IEntity entity, IParameterSet parameters)
         {
@@ -22,24 +22,29 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
         public IParameterSet Parameters { get; }
 
         /// <summary>
-        /// Sets a dimension parameter (lmin, lmax, wmin, wmax) for model selection.
+        /// Gets all selection parameters as a read-only dictionary.
+        /// </summary>
+        public IReadOnlyDictionary<string, double> SelectionParameters => _selectionParameters;
+
+        /// <summary>
+        /// Sets a selection parameter for model matching.
         /// </summary>
         /// <param name="parameterName">The parameter name.</param>
         /// <param name="value">The parameter value.</param>
-        public void SetDimensionParameter(string parameterName, double value)
+        public void SetSelectionParameter(string parameterName, double value)
         {
-            _dimensionParameters[parameterName] = value;
+            _selectionParameters[parameterName] = value;
         }
 
         /// <summary>
-        /// Gets a dimension parameter (lmin, lmax, wmin, wmax) for model selection.
+        /// Gets a selection parameter for model matching.
         /// </summary>
         /// <param name="parameterName">The parameter name.</param>
         /// <param name="value">The parameter value.</param>
         /// <returns>True if the parameter exists.</returns>
-        public bool TryGetDimensionParameter(string parameterName, out double value)
+        public bool TryGetSelectionParameter(string parameterName, out double value)
         {
-            return _dimensionParameters.TryGetValue(parameterName, out value);
+            return _selectionParameters.TryGetValue(parameterName, out value);
         }
     }
 }
