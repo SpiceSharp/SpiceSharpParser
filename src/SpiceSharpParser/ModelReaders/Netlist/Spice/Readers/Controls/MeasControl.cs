@@ -69,6 +69,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         private IEnumerable<ISimulationWithEvents> FilterSimulations(IEnumerable<ISimulationWithEvents> simulations, string type)
         {
             var typeLowered = type.ToLower();
+            bool matched = false;
 
             foreach (var simulation in simulations)
             {
@@ -78,8 +79,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     || (simulation is OP && typeLowered == "op")
                     || (simulation is Noise && typeLowered == "noise"))
                 {
+                    matched = true;
                     yield return simulation;
                 }
+            }
+
+            if (!matched && typeLowered != "dc" && typeLowered != "tran" && typeLowered != "ac" && typeLowered != "op" && typeLowered != "noise")
+            {
+                // Unknown analysis type — likely a typo
+                yield break;
             }
         }
 
@@ -241,7 +249,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 
             if (simulation is DC d)
             {
-                return d.GetCurrentSweepValue().Last();
+                var sweepValues = d.GetCurrentSweepValue();
+                if (sweepValues != null && sweepValues.Any())
+                {
+                    return sweepValues.Last();
+                }
+
+                return 0;
             }
 
             return 0;
@@ -273,11 +287,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 {
                     var results = kvp.Value;
 
-                    // Find the result for this simulation, or the first/last available
+                    // Find the latest result for this simulation name
                     MeasurementResult matchingResult = null;
                     lock (results)
                     {
-                        matchingResult = results.FirstOrDefault(r => r.SimulationName == simulationName)
+                        matchingResult = results.LastOrDefault(r => r.SimulationName == simulationName)
                                          ?? results.LastOrDefault();
                     }
 
@@ -291,8 +305,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 var result = new MeasurementResult(definition.Name, value, true, "PARAM", simulationName);
                 AddMeasurementResult(context, result);
             }
-            catch
+            catch (Exception ex)
             {
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    $".MEAS PARAM '{definition.Name}': Expression evaluation failed — {ex.Message}");
                 var result = new MeasurementResult(definition.Name, double.NaN, false, "PARAM", simulationName);
                 AddMeasurementResult(context, result);
             }
@@ -442,15 +459,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                             break;
                         case "RISE":
                             edge = EdgeType.Rise;
-                            edgeNumber = (int)context.Evaluator.EvaluateDouble(ap.Value);
+                            edgeNumber = Math.Max(1, (int)context.Evaluator.EvaluateDouble(ap.Value));
                             break;
                         case "FALL":
                             edge = EdgeType.Fall;
-                            edgeNumber = (int)context.Evaluator.EvaluateDouble(ap.Value);
+                            edgeNumber = Math.Max(1, (int)context.Evaluator.EvaluateDouble(ap.Value));
                             break;
                         case "CROSS":
                             edge = EdgeType.Cross;
-                            edgeNumber = (int)context.Evaluator.EvaluateDouble(ap.Value);
+                            edgeNumber = Math.Max(1, (int)context.Evaluator.EvaluateDouble(ap.Value));
                             break;
                         case "TD":
                             td = context.Evaluator.EvaluateDouble(ap.Value);
@@ -517,6 +534,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 }
             }
 
+            if (definition.FindSignal == null)
+            {
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    ".MEAS FIND/WHEN: Missing signal between FIND and WHEN keywords");
+                return null;
+            }
+
             // Parse the WHEN condition
             var whenParams = specParams.GetRange(whenIndex, specParams.Count - whenIndex);
             ParseWhenCondition(whenParams, 1, definition, context);
@@ -563,38 +588,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 // Separate syntax: WHEN V(out) VAL=0.5 CROSS=1
                 definition.WhenSignal = bp;
-
-                // Parse remaining qualifiers
-                for (int i = startIndex + 1; i < specParams.Count; i++)
-                {
-                    if (specParams[i] is AssignmentParameter qap)
-                    {
-                        switch (qap.Name.ToUpper())
-                        {
-                            case "VAL":
-                                definition.WhenVal = context.Evaluator.EvaluateDouble(qap.Value);
-                                break;
-                            case "RISE":
-                                definition.WhenEdge = EdgeType.Rise;
-                                definition.WhenEdgeNumber = (int)context.Evaluator.EvaluateDouble(qap.Value);
-                                break;
-                            case "FALL":
-                                definition.WhenEdge = EdgeType.Fall;
-                                definition.WhenEdgeNumber = (int)context.Evaluator.EvaluateDouble(qap.Value);
-                                break;
-                            case "CROSS":
-                                definition.WhenEdge = EdgeType.Cross;
-                                definition.WhenEdgeNumber = (int)context.Evaluator.EvaluateDouble(qap.Value);
-                                break;
-                            case "FROM":
-                                definition.From = context.Evaluator.EvaluateDouble(qap.Value);
-                                break;
-                            case "TO":
-                                definition.To = context.Evaluator.EvaluateDouble(qap.Value);
-                                break;
-                        }
-                    }
-                }
             }
             else
             {
@@ -602,24 +595,27 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 definition.WhenSignal = param;
             }
 
-            // Parse edge qualifiers after the combined syntax
+            // Parse edge/window qualifiers
             for (int i = startIndex + 1; i < specParams.Count; i++)
             {
                 if (specParams[i] is AssignmentParameter edgeAp)
                 {
                     switch (edgeAp.Name.ToUpper())
                     {
+                        case "VAL":
+                            definition.WhenVal = context.Evaluator.EvaluateDouble(edgeAp.Value);
+                            break;
                         case "RISE":
                             definition.WhenEdge = EdgeType.Rise;
-                            definition.WhenEdgeNumber = (int)context.Evaluator.EvaluateDouble(edgeAp.Value);
+                            definition.WhenEdgeNumber = Math.Max(1, (int)context.Evaluator.EvaluateDouble(edgeAp.Value));
                             break;
                         case "FALL":
                             definition.WhenEdge = EdgeType.Fall;
-                            definition.WhenEdgeNumber = (int)context.Evaluator.EvaluateDouble(edgeAp.Value);
+                            definition.WhenEdgeNumber = Math.Max(1, (int)context.Evaluator.EvaluateDouble(edgeAp.Value));
                             break;
                         case "CROSS":
                             definition.WhenEdge = EdgeType.Cross;
-                            definition.WhenEdgeNumber = (int)context.Evaluator.EvaluateDouble(edgeAp.Value);
+                            definition.WhenEdgeNumber = Math.Max(1, (int)context.Evaluator.EvaluateDouble(edgeAp.Value));
                             break;
                         case "FROM":
                             definition.From = context.Evaluator.EvaluateDouble(edgeAp.Value);
@@ -659,6 +655,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 }
             }
 
+            if (definition.Signal == null)
+            {
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    $".MEAS {type}: Missing signal parameter");
+                return null;
+            }
+
             return definition;
         }
 
@@ -691,6 +695,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 }
             }
 
+            if (definition.Signal == null)
+            {
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    ".MEAS DERIV: Missing signal parameter");
+                return null;
+            }
+
+            if (!definition.At.HasValue)
+            {
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    ".MEAS DERIV: Missing required AT= parameter");
+                return null;
+            }
+
             return definition;
         }
 
@@ -720,6 +740,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 }
 
                 definition.ParamExpression = expr;
+            }
+
+            if (string.IsNullOrWhiteSpace(definition.ParamExpression))
+            {
+                return null;
             }
 
             return definition;

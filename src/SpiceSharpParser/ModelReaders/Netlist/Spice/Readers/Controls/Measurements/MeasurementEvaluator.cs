@@ -56,7 +56,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Measureme
             switch (Definition.Type)
             {
                 case MeasType.TrigTarg:
-                    return ComputeTrigTarg(simulationName);
+                    // TrigTarg is handled inline in MeasControl — should not reach here
+                    return new MeasurementResult(Definition.Name, double.NaN, false, "TRIG_TARG", simulationName);
                 case MeasType.When:
                     return ComputeWhen(simulationName);
                 case MeasType.FindWhen:
@@ -122,7 +123,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Measureme
                     continue;
                 }
 
-                bool crosses = y0 * y1 < 0 || (y0 == 0.0 && y1 != 0.0);
+                bool crosses = y0 * y1 < 0 || (y0 == 0.0 && y1 != 0.0) || (y0 != 0.0 && y1 == 0.0);
 
                 if (!crosses)
                 {
@@ -232,23 +233,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Measureme
             return result;
         }
 
-        private MeasurementResult ComputeTrigTarg(string simulationName)
-        {
-            double? trigX = FindCrossing(_data, Definition.TrigVal, Definition.TrigEdge, Definition.TrigEdgeNumber, Definition.TrigTd, null, null);
-            if (!trigX.HasValue)
-            {
-                return new MeasurementResult(Definition.Name, double.NaN, false, "TRIG_TARG", simulationName);
-            }
-
-            double? targX = FindCrossing(_data, Definition.TargVal, Definition.TargEdge, Definition.TargEdgeNumber, Definition.TargTd, null, null);
-            if (!targX.HasValue)
-            {
-                return new MeasurementResult(Definition.Name, double.NaN, false, "TRIG_TARG", simulationName);
-            }
-
-            double value = targX.Value - trigX.Value;
-            return new MeasurementResult(Definition.Name, value, true, "TRIG_TARG", simulationName);
-        }
+        // Note: TrigTarg measurements are handled inline in MeasControl.SetupMeasurement()
+        // because they may require separate data collection for trigger and target signals.
 
         private MeasurementResult ComputeWhen(string simulationName)
         {
@@ -375,7 +361,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Measureme
                 return new MeasurementResult(Definition.Name, Math.Abs(windowed[0].Y), true, "RMS", simulationName);
             }
 
-            return new MeasurementResult(Definition.Name, Math.Sqrt(integral / span), true, "RMS", simulationName);
+            return new MeasurementResult(Definition.Name, Math.Sqrt(Math.Max(0, integral / span)), true, "RMS", simulationName);
         }
 
         private MeasurementResult ComputePp(string simulationName)
@@ -430,33 +416,48 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Measureme
                 return new MeasurementResult(Definition.Name, double.NaN, false, "DERIV", simulationName);
             }
 
-            // Find the interval containing targetX
+            // Find the interval containing targetX and compute derivative using
+            // the slope of the interval (linear interpolation derivative).
+            // For interior points where central difference is available, use it
+            // for better accuracy.
             for (int i = 1; i < windowed.Count; i++)
             {
                 if (windowed[i].X >= targetX)
                 {
-                    // Use central difference if possible
-                    if (i > 0 && i < windowed.Count - 1)
-                    {
-                        double dx = windowed[i + 1].X - windowed[i - 1].X;
-                        if (Math.Abs(dx) < 1e-30)
-                        {
-                            return new MeasurementResult(Definition.Name, double.NaN, false, "DERIV", simulationName);
-                        }
-
-                        double deriv = (windowed[i + 1].Y - windowed[i - 1].Y) / dx;
-                        return new MeasurementResult(Definition.Name, deriv, true, "DERIV", simulationName);
-                    }
-
-                    // Forward/backward difference as fallback
-                    double dxFb = windowed[i].X - windowed[i - 1].X;
-                    if (Math.Abs(dxFb) < 1e-30)
+                    // Compute slope of the interval [i-1, i] containing targetX
+                    double dxInterval = windowed[i].X - windowed[i - 1].X;
+                    if (Math.Abs(dxInterval) < 1e-30)
                     {
                         return new MeasurementResult(Definition.Name, double.NaN, false, "DERIV", simulationName);
                     }
 
-                    double derivFb = (windowed[i].Y - windowed[i - 1].Y) / dxFb;
-                    return new MeasurementResult(Definition.Name, derivFb, true, "DERIV", simulationName);
+                    double intervalSlope = (windowed[i].Y - windowed[i - 1].Y) / dxInterval;
+
+                    // If targetX is very close to point i and central difference is available, use it
+                    double distToI = Math.Abs(windowed[i].X - targetX);
+                    if (distToI < dxInterval * 0.01 && i > 0 && i < windowed.Count - 1)
+                    {
+                        double dxCentral = windowed[i + 1].X - windowed[i - 1].X;
+                        if (Math.Abs(dxCentral) >= 1e-30)
+                        {
+                            double centralDeriv = (windowed[i + 1].Y - windowed[i - 1].Y) / dxCentral;
+                            return new MeasurementResult(Definition.Name, centralDeriv, true, "DERIV", simulationName);
+                        }
+                    }
+
+                    return new MeasurementResult(Definition.Name, intervalSlope, true, "DERIV", simulationName);
+                }
+            }
+
+            // targetX is beyond data range — use slope of last interval
+            if (windowed.Count >= 2)
+            {
+                int last = windowed.Count - 1;
+                double dxLast = windowed[last].X - windowed[last - 1].X;
+                if (Math.Abs(dxLast) >= 1e-30)
+                {
+                    double lastSlope = (windowed[last].Y - windowed[last - 1].Y) / dxLast;
+                    return new MeasurementResult(Definition.Name, lastSlope, true, "DERIV", simulationName);
                 }
             }
 
