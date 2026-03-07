@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
@@ -13,6 +14,23 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
 {
     public class ExportFactory : IExportFactory
     {
+        private static readonly Dictionary<string, string> WrapperSuffixes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            { "mag", "M" },
+            { "db", "DB" },
+            { "phase", "P" },
+            { "ph", "P" },
+            { "real", "R" },
+            { "re", "R" },
+            { "imag", "I" },
+            { "im", "I" },
+        };
+
+        private static readonly HashSet<string> BaseExportNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "V", "I",
+        };
+
         public Export Create(
             Parameter exportParameter,
             IReadingContext context,
@@ -22,8 +40,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
             if (exportParameter is BracketParameter bp)
             {
                 string type = bp.Name;
+                bool caseSensitive = context.ReaderSettings.CaseSensitivity.IsFunctionNameCaseSensitive;
 
-                if (mapper.TryGetValue(type, context.ReaderSettings.CaseSensitivity.IsFunctionNameCaseSensitive, out var exporter))
+                if (mapper.TryGetValue(type, caseSensitive, out var exporter))
                 {
                     return exporter.CreateExport(
                         exportParameter.Value,
@@ -31,6 +50,25 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Common
                         bp.Parameters,
                         context.EvaluationContext.GetSimulationContext(simulation),
                         context.ReaderSettings.CaseSensitivity);
+                }
+
+                // Support nested function syntax: mag(V(out)) → VM(out), db(I(R1)) → IDB(R1), etc.
+                if (WrapperSuffixes.TryGetValue(type, out var suffix)
+                    && bp.Parameters.Count == 1
+                    && bp.Parameters[0] is BracketParameter inner
+                    && BaseExportNames.Contains(inner.Name))
+                {
+                    string flatType = inner.Name.ToUpper() + suffix;
+
+                    if (mapper.TryGetValue(flatType, caseSensitive, out var flatExporter))
+                    {
+                        return flatExporter.CreateExport(
+                            exportParameter.Value,
+                            flatType,
+                            inner.Parameters,
+                            context.EvaluationContext.GetSimulationContext(simulation),
+                            context.ReaderSettings.CaseSensitivity);
+                    }
                 }
             }
 

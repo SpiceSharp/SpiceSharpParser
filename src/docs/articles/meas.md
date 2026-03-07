@@ -562,7 +562,20 @@ For AC analysis, standard `V(node)` is a complex number, so you need specific ex
 .MEAS AC bw_db WHEN VDB(out)=-3
 ```
 
-> **Note:** The nested function syntax `mag(V(out))` is **not** supported. Use `VM(out)`, `VDB(out)`, etc. instead.
+Both the prefix syntax and nested function syntax are supported:
+
+| Prefix Syntax | Nested Syntax | Description |
+|---------------|---------------|-------------|
+| `VM(out)` | `mag(V(out))` | Voltage magnitude |
+| `VDB(out)` | `db(V(out))` | Voltage in decibels |
+| `VP(out)` | `phase(V(out))` or `ph(V(out))` | Voltage phase |
+| `VR(out)` | `real(V(out))` or `re(V(out))` | Voltage real part |
+| `VI(out)` | `imag(V(out))` or `im(V(out))` | Voltage imaginary part |
+| `IM(R1)` | `mag(I(R1))` | Current magnitude |
+| `IDB(R1)` | `db(I(R1))` | Current in decibels |
+| `IP(R1)` | `phase(I(R1))` | Current phase |
+
+The nested syntax also works in `.PRINT`, `.PLOT`, `.SAVE`, and `.WAVE` statements.
 
 ---
 
@@ -649,6 +662,5 @@ C1 OUT 0 1u
 
 ## Known Limitations
 
-- `mag(V(out))` nested function syntax is not supported — use `VM(out)` instead
 - PARAM measurements must be declared **after** the measurements they reference (results are computed in declaration order, not via dependency resolution)
 - When a threshold crossing is not found in the data, the measurement returns `Success = false` and `Value = NaN` rather than raising an error

@@ -1310,5 +1310,86 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.Single(results);
             Assert.False(string.IsNullOrEmpty(results[0].SimulationName));
         }
+
+        // =====================================================================
+        // Group I: Nested function syntax — mag(V()), db(V()), etc.
+        // =====================================================================
+
+        [Fact]
+        public void NestedMagVoltageEqualsVM()
+        {
+            // mag(V(OUT)) should produce the same result as VM(OUT)
+            var model = GetSpiceSharpModel(
+                "MEAS Nested mag(V()) vs VM()",
+                "V1 IN 0 AC 1",
+                "R1 IN OUT 1e3",
+                "C1 OUT 0 1e-9",
+                ".AC DEC 10 1k 100MEG",
+                ".MEAS AC gain_vm MAX VM(OUT)",
+                ".MEAS AC gain_mag MAX mag(V(OUT))",
+                ".END");
+
+            RunSimulations(model);
+
+            Assert.True(model.Measurements.ContainsKey("gain_vm"));
+            Assert.True(model.Measurements.ContainsKey("gain_mag"));
+
+            double vmResult = model.Measurements["gain_vm"][0].Value;
+            double magResult = model.Measurements["gain_mag"][0].Value;
+
+            Assert.True(model.Measurements["gain_vm"][0].Success);
+            Assert.True(model.Measurements["gain_mag"][0].Success);
+            Assert.True(EqualsWithTol(vmResult, magResult));
+        }
+
+        [Fact]
+        public void NestedDbVoltageEqualsVDB()
+        {
+            // db(V(OUT)) should produce the same result as VDB(OUT)
+            var model = GetSpiceSharpModel(
+                "MEAS Nested db(V()) vs VDB()",
+                "V1 IN 0 AC 1",
+                "R1 IN OUT 1e3",
+                "C1 OUT 0 1e-9",
+                ".AC DEC 10 1k 100MEG",
+                ".MEAS AC max_db_vdb MAX VDB(OUT)",
+                ".MEAS AC max_db_nested MAX db(V(OUT))",
+                ".END");
+
+            RunSimulations(model);
+
+            Assert.True(model.Measurements.ContainsKey("max_db_vdb"));
+            Assert.True(model.Measurements.ContainsKey("max_db_nested"));
+
+            double vdbResult = model.Measurements["max_db_vdb"][0].Value;
+            double nestedResult = model.Measurements["max_db_nested"][0].Value;
+
+            Assert.True(model.Measurements["max_db_vdb"][0].Success);
+            Assert.True(model.Measurements["max_db_nested"][0].Success);
+            Assert.True(EqualsWithTol(vdbResult, nestedResult));
+        }
+
+        [Fact]
+        public void NestedRealImagPhaseVoltage()
+        {
+            // real(V(OUT)), imag(V(OUT)), phase(V(OUT)) should match VR, VI, VP
+            var model = GetSpiceSharpModel(
+                "MEAS Nested real/imag/phase",
+                "V1 IN 0 AC 1",
+                "R1 IN OUT 1e3",
+                "C1 OUT 0 1e-9",
+                ".AC DEC 10 1k 100MEG",
+                ".MEAS AC max_vr MAX VR(OUT)",
+                ".MEAS AC max_real MAX real(V(OUT))",
+                ".END");
+
+            RunSimulations(model);
+
+            Assert.True(model.Measurements["max_vr"][0].Success);
+            Assert.True(model.Measurements["max_real"][0].Success);
+            Assert.True(EqualsWithTol(
+                model.Measurements["max_vr"][0].Value,
+                model.Measurements["max_real"][0].Value));
+        }
     }
 }
