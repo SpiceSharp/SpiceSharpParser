@@ -283,6 +283,34 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
             }
 
+            var laplaceParameter = parameters.FirstOrDefault(p => p is WordParameter wp && wp.Value.ToLower() == "laplace");
+            if (laplaceParameter != null)
+            {
+                int laplacePosition = parameters.IndexOf(laplaceParameter);
+                if (laplacePosition < parameters.Count - 1)
+                {
+                    var nextParameter = parameters[laplacePosition + 1];
+                    if (nextParameter is LaplaceParameter lp)
+                    {
+                        return LaplaceSourceHelper.CreateLaplaceCurrentSource(name, parameters, context, lp);
+                    }
+                    else
+                    {
+                        context.Result.ValidationResult.AddError(
+                            ValidationEntrySource.Reader,
+                            "LAPLACE expects {input_expression} = {transfer_function} syntax",
+                            laplaceParameter.LineInfo);
+                    }
+                }
+                else
+                {
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        "LAPLACE expects {input_expression} = {transfer_function} syntax",
+                        laplaceParameter.LineInfo);
+                }
+            }
+
             return null;
         }
     }

@@ -990,6 +990,22 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
             {
                 if (nextToken.Is(SpiceTokenType.EQUAL))
                 {
+                    // Check if after '=' we have another expression (e.g., {V(in)} = {1/(1+s/1e6)} for LAPLACE)
+                    if (currentTokenIndex + 2 < tokens.Length)
+                    {
+                        var tokenAfterEqual = tokens[currentTokenIndex + 2];
+                        if (tokenAfterEqual.Is(SpiceTokenType.EXPRESSION_BRACKET)
+                            || tokenAfterEqual.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES))
+                        {
+                            PushProductionExpression(
+                                stack,
+                                CreateTerminalNode(currentToken.SpiceTokenType, currentNode),
+                                CreateTerminalNode(SpiceTokenType.EQUAL, currentNode, "="),
+                                CreateTerminalNode(tokenAfterEqual.SpiceTokenType, currentNode));
+                            return;
+                        }
+                    }
+
                     PushProductionExpression(
                             stack,
                             CreateTerminalNode(currentToken.SpiceTokenType, currentNode),

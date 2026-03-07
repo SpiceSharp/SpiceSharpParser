@@ -279,6 +279,11 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
                     return eep;
                 }
 
+                if (values.TryToGetSpiceObject(0, out LaplaceParameter lp))
+                {
+                    return lp;
+                }
+
                 if (values.TryToGetSpiceObject(0, out PointParameter pp))
                 {
                     return pp;
@@ -759,6 +764,15 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
         {
             if (values.Count == 2)
             {
+                if (values.TryToGetToken(1, out _))
+                {
+                    // {expr} {expr} pattern (two expressions without '=')
+                    return new LaplaceParameter(
+                        values.GetLexem(0).Trim('{', '}', '\''),
+                        values.GetLexem(1).Trim('{', '}', '\''),
+                        new SpiceLineInfo(values));
+                }
+
                 return new ExpressionEqualParameter(
                     values.GetLexem(0).Trim('{', '}'),
                     values.GetSpiceObject<Points>(1),
@@ -766,6 +780,15 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
             }
             else if (values.Count == 3)
             {
+                if (values.TryToGetToken(2, out _))
+                {
+                    // {expr} = {expr} pattern (e.g., LAPLACE {V(in)} = {1/(1+s/1e6)})
+                    return new LaplaceParameter(
+                        values.GetLexem(0).Trim('{', '}', '\''),
+                        values.GetLexem(2).Trim('{', '}', '\''),
+                        new SpiceLineInfo(values));
+                }
+
                 return new ExpressionEqualParameter(
                     values.GetLexem(0).Trim('{', '}'),
                     values.GetSpiceObject<Points>(2),
