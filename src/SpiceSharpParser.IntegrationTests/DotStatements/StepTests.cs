@@ -16,6 +16,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".PARAM S=3",
                 ".PARAM R={table(N, 1, 10, 2, 20, 3, 30)}",
                 ".STEP PARAM N LIST 1 2 {S}",
+                ".MEAS OP meas_i MAX i(R1)",
                 ".END");
 
             Assert.Equal(3, model.Exports.Count);
@@ -27,6 +28,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             {
                 Assert.Equal(-100 / (10.00 * (i + 1)), exports[i]);
             }
+            AssertMeasurement(model, "meas_i", (double)exports[0]);
         }
 
         [Fact]
@@ -41,6 +43,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".PARAM N=0",
                 ".PARAM R={table(N, 1, 10, 2, 20, 3, 30)}",
                 ".STEP PARAM N LIST 1 2 3",
+                ".MEAS OP meas_i MAX i(R1)",
                 ".END");
 
             Assert.Equal(3, model.Exports.Count);
@@ -52,6 +55,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             {
                 Assert.Equal(-100 / (10.00 * (i + 1)), exports[i]);
             }
+            AssertMeasurement(model, "meas_i", (double)exports[0]);
         }
 
         [Fact]
@@ -68,6 +72,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".PARAM S={M+0*100}",
                 ".PARAM R={table(S, 1, 10, 2, 20, 3, 30)}",
                 ".STEP PARAM N LIST 1 2 3",
+                ".MEAS OP meas_i MAX i(R1)",
                 ".END");
 
             Assert.Equal(3, model.Exports.Count);
@@ -79,6 +84,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             {
                 Assert.Equal(-100 / (10.00 * (i + 1)), exports[i]);
             }
+            AssertMeasurement(model, "meas_i", (double)exports[0]);
         }
 
         [Fact]
@@ -93,6 +99,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".PARAM N=0",
                 ".PARAM R={table(N, 1, 10, 3, 30)}",
                 ".STEP PARAM N LIST 1 2 3",
+                ".MEAS OP meas_i MAX i(R1)",
                 ".END");
 
             Assert.Equal(3, model.Exports.Count);
@@ -104,6 +111,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             {
                 Assert.Equal(-100 / (10.00 * (i + 1)), exports[i]);
             }
+            AssertMeasurement(model, "meas_i", (double)exports[0]);
         }
 
         [Fact]
@@ -118,6 +126,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".PARAM N=0",
                 ".PARAM R={table(N, 1, 10, 2, 20, 3, 30, 4, 40)}",
                 ".STEP PARAM N 1 4 1",
+                ".MEAS OP meas_i MAX i(R1)",
                 ".END");
 
             Assert.Equal(4, model.Exports.Count);
@@ -129,6 +138,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             {
                 Assert.Equal(-100 / (10.00 * (i + 1)), exports[i]);
             }
+            AssertMeasurement(model, "meas_i", (double)exports[0]);
         }
 
         [Fact]
@@ -146,6 +156,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".OP",
                 ".SAVE V(OUT)",
                 ".STEP PARAM X LIST 1 5",
+                ".MEAS OP meas_v MAX V(OUT)",
                 ".END");
 
             Assert.Equal(2, model.Exports.Count);
@@ -160,6 +171,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             {
                 Assert.True(EqualsWithTol((double)exports[i], references[i]));
             }
+            AssertMeasurement(model, "meas_v", (double)exports[0]);
         }
 
         [Fact]
@@ -177,6 +189,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".OP",
                 ".SAVE V(OUT)",
                 ".STEP PARAM X LIST 1 5",
+                ".MEAS OP meas_v MAX V(OUT)",
                 ".END");
 
             Assert.Equal(2, model.Exports.Count);
@@ -191,6 +204,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             {
                 Assert.True(EqualsWithTol((double)exports[i], references[i]));
             }
+            AssertMeasurement(model, "meas_v", (double)exports[0]);
         }
 
         [Fact]
@@ -211,6 +225,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".OP",
                 ".SAVE V(OUT)",
                 ".STEP PARAM X LIST 1 5",
+                ".MEAS OP meas_v MAX V(OUT)",
                 ".END");
 
             Assert.Equal(2, model.Exports.Count);
@@ -225,6 +240,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             {
                 Assert.True(EqualsWithTol((double)exports[i], references[i]));
             }
+            AssertMeasurement(model, "meas_v", (double)exports[0]);
         }
 
         [Fact]
@@ -237,6 +253,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".OP",
                 ".SAVE i(R1)",
                 ".STEP V1 1 100 1",
+                ".MEAS OP meas_i MAX i(R1)",
                 ".END");
 
             Assert.Equal(100, model.Exports.Count);
@@ -248,6 +265,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             {
                 Assert.True(EqualsWithTol(-1.0 * (i + 1) / 100.0, (double)exports[i]));
             }
+            AssertMeasurement(model, "meas_i", (double)exports[0]);
         }
 
         [Fact]
@@ -260,6 +278,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".OP",
                 ".SAVE i(R1)",
                 ".STEP LIN V1 1 100 1",
+                ".MEAS OP meas_i MAX i(R1)",
                 ".END");
 
             Assert.Equal(100, model.Exports.Count);
@@ -271,6 +290,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             {
                 Assert.True(EqualsWithTol(-1.0 * (i + 1) / 100.0, (double)exports[i]));
             }
+            AssertMeasurement(model, "meas_i", (double)exports[0]);
         }
 
         [Fact]
@@ -283,6 +303,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".OP",
                 ".SAVE i(R1)",
                 ".STEP V1 LIST 1 2 3 4",
+                ".MEAS OP meas_i MAX i(R1)",
                 ".END");
 
             Assert.Equal(4, model.Exports.Count);
@@ -294,6 +315,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             {
                 Assert.True(EqualsWithTol(-1.0 * (i + 1) / 100.0, (double)exports[i]));
             }
+            AssertMeasurement(model, "meas_i", (double)exports[0]);
         }
 
         [Fact]
@@ -306,6 +328,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".OP",
                 ".SAVE i(R1)",
                 ".STEP DEC V1 1 100 1",
+                ".MEAS OP meas_i MAX i(R1)",
                 ".END");
 
             Assert.Equal(3, model.Exports.Count);
@@ -316,6 +339,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.True(EqualsWithTol(-1 / 100.0, (double)exports[0]));
             Assert.True(EqualsWithTol(-10.000000000000002 / 100.0, (double)exports[1]));
             Assert.True(EqualsWithTol(-100.00000000000004 / 100.0, (double)exports[2]));
+            AssertMeasurement(model, "meas_i", (double)exports[0]);
         }
 
         [Fact]
@@ -330,6 +354,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".OP",
                 ".SAVE i(V1)",
                 ".STEP D 1N914(N) LIST 1.752 1.234 1.2 1.0 0.1",
+                ".MEAS OP meas_i MAX i(V1)",
                 ".END");
 
             Assert.Equal(5, model.Exports.Count);
@@ -342,6 +367,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.True(EqualsWithTol(2.52089871893846E-09, (double)exports[2]));
             Assert.True(EqualsWithTol(2.5209413879318E-09, (double)exports[3]));
             Assert.True(EqualsWithTol(2.520999941788E-09, (double)exports[4]));
+            AssertMeasurement(model, "meas_i", (double)exports[0]);
         }
 
         [Fact]

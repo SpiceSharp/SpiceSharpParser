@@ -362,5 +362,21 @@ namespace SpiceSharpParser.IntegrationTests
 
             return true;
         }
+
+        protected void AssertMeasurement(SpiceSharpModel model, string name, double expectedValue)
+        {
+            Assert.True(model.Measurements.ContainsKey(name), $"Measurement '{name}' not found");
+            var results = model.Measurements[name];
+            Assert.True(results.Count > 0, $"Measurement '{name}' has no results");
+            Assert.True(results[0].Success, $"Measurement '{name}' failed");
+            Assert.True(EqualsWithTol(expectedValue, results[0].Value),
+                $"Measurement '{name}': expected {expectedValue}, got {results[0].Value}");
+        }
+
+        protected void AssertMeasurementSuccess(SpiceSharpModel model, string name)
+        {
+            Assert.True(model.Measurements.ContainsKey(name), $"Measurement '{name}' not found");
+            Assert.True(model.Measurements[name][0].Success, $"Measurement '{name}' failed");
+        }
     }
 }

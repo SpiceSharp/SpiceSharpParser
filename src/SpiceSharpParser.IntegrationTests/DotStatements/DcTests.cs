@@ -14,6 +14,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 "R1 in 0 10",
                 ".DC I1 -10 10 1e-3",
                 ".SAVE V(in)",
+                ".MEAS DC meas_vmax MAX V(in)",
                 ".END");
 
             var exports = RunDCSimulation(model, "V(in)");
@@ -22,6 +23,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Func<double, double> reference = sweep => sweep * 10.0;
             
             Assert.True(EqualsWithTol(exports, reference));
+            AssertMeasurement(model, "meas_vmax", reference(10));
         }
 
         [Fact]
@@ -33,6 +35,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 "R1 in 0 10",
                 ".DC V1 -10 10 1e-3",
                 ".SAVE V(in)",
+                ".MEAS DC meas_vmax MAX V(in)",
                 ".END");
 
             var exports = RunDCSimulation(model, "V(in)");
@@ -40,6 +43,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             // Get references
             Func<double, double> references = sweep => sweep;
             Assert.True(EqualsWithTol(exports, references));
+            AssertMeasurement(model, "meas_vmax", references(10));
         }
     }
 }

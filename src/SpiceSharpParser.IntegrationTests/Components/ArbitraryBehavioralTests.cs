@@ -13,11 +13,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 "R1 1 0 10",
                 ".SAVE V(1,0)",
                 ".OP",
+                ".MEAS OP meas_v MAX V(1,0)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "V(1,0)");
             Assert.Equal(100, export);
+            AssertMeasurement(model, "meas_v", export);
         }
 
         [Fact]
@@ -29,11 +31,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                "R1 1 0 10",
                ".SAVE V(1,0)",
                ".OP",
+               ".MEAS OP meas_v MAX V(1,0)",
                ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "V(1,0)");
             Assert.Equal(-1000, export);
+            AssertMeasurement(model, "meas_v", export);
         }
     }
 }

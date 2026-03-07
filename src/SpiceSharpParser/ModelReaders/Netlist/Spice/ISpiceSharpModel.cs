@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using SpiceSharp;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Measurements;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulations;
@@ -56,6 +58,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// Gets or sets the used random seed.
         /// </summary>
         int? Seed { get; set; }
+
+        /// <summary>
+        /// Gets the measurement results from .MEAS/.MEASURE statements.
+        /// </summary>
+        ConcurrentDictionary<string, List<MeasurementResult>> Measurements { get; }
 
         ValidationEntryCollection ValidationResult { get; }
     }

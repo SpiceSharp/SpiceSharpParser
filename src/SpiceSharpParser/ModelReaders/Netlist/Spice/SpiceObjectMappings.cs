@@ -69,6 +69,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
             Controls.Map("SAVE", new SaveControl(Exporters, new ExportFactory()));
             Controls.Map("PLOT", new PlotControl(Exporters, new ExportFactory()));
             Controls.Map("PRINT", new PrintControl(Exporters, new ExportFactory()));
+            Controls.Map("MEAS", new MeasControl(Exporters, new ExportFactory()));
+            Controls.Map("MEASURE", new MeasControl(Exporters, new ExportFactory()));
             Controls.Map("IC", new ICControl());
             Controls.Map("NODESET", new NodeSetControl());
             Controls.Map("WAVE", new WaveControl(Exporters, new ExportFactory()));

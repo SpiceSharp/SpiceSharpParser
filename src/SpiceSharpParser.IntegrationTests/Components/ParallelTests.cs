@@ -25,6 +25,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".OP",
                 ".OPTIONS localsolver = on",
                 ".SAVE I(V1)",
+                ".MEAS OP meas_i MAX I(V1)",
                 ".END"};
 
             var text = string.Join(Environment.NewLine, lines);
@@ -42,6 +43,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double[] references = { -10.0 / 9.0 };
 
             Assert.True(EqualsWithTol(new double[] { export }, references));
+            AssertMeasurement(spiceModel, "meas_i", export);
         }
 
         [Fact]
@@ -64,6 +66,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".OP",
                 ".OPTIONS localsolver=on",
                 ".SAVE I(V1)",
+                ".MEAS OP meas_i MAX I(V1)",
                 ".END"};
 
             var text = string.Join(Environment.NewLine, lines);
@@ -80,6 +83,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double[] references = { -10.0 / 9.0 };
 
             Assert.True(EqualsWithTol(new double[] { export }, references));
+            AssertMeasurement(spiceModel, "meas_i", export);
         }
     }
 }
