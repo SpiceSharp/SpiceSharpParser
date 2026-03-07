@@ -67,61 +67,63 @@ At the moment due to lack of implementation of LAPLACE and FREQ (part of analog 
 ### Dot statements supported:
 |  Statement  |  Documentation   |
 |:------------|-----------------------:|
-|.AC          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.AC)|
-|.APPENDMODEL |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.APPENDMODEL)|
-|.DC          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.DC)|
-|.DISTRIBUTION|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.DISTRIBUTION)|
-|.ELSE        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.ELSE)|
-|.ENDIF       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.ENDIF)|
-|.FUNC        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.FUNC)|
-|.GLOBAL      |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.GLOBAL)|         
-|.IC          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.IC)|
-|.IF          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.IF)|
-|.INCLUDE     |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.INCLUDE)|
-|.LET         |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.LET)|
-|.LIB         |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.LIB)|
-|.MC          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.MC)|
-|.NODESET     |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.NODESET)|
-|.NOISE       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.NOISE)|
-|.OP          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.OP)|
-|.OPTIONS     |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.OPTIONS)|
-|.PARAM       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.PARAM)|
-|.PLOT        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.PLOT)|
-|.PRINT       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.PRINT)|
-|.TRAN        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.TRAN)|
-|.SAVE        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.SAVE)|
-|.SPARAM       |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.SPARAM)|
-|.ST          |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.ST)||
-|.STEP        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.STEP)|
-|.SUBCKT      |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.SUBCKT)|
-|.TEMP        |[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/.TEMP)|
+|.AC          |[Docs](src/docs/articles/ac.md)|
+|.APPENDMODEL |[Docs](src/docs/articles/appendmodel.md)|
+|.DC          |[Docs](src/docs/articles/dc.md)|
+|.DISTRIBUTION|[Docs](src/docs/articles/distribution.md)|
+|.ELSE        |[Docs](src/docs/articles/if.md)|
+|.ENDIF       |[Docs](src/docs/articles/if.md)|
+|.FUNC        |[Docs](src/docs/articles/func.md)|
+|.GLOBAL      |[Docs](src/docs/articles/global.md)|
+|.IC          |[Docs](src/docs/articles/ic.md)|
+|.IF          |[Docs](src/docs/articles/if.md)|
+|.INCLUDE     |[Docs](src/docs/articles/include.md)|
+|.LET         |[Docs](src/docs/articles/let.md)|
+|.LIB         |[Docs](src/docs/articles/lib.md)|
+|.MC          |[Docs](src/docs/articles/mc.md)|
+|.MEAS        |[Docs](src/docs/articles/meas.md)|
+|.MEASURE     |[Docs](src/docs/articles/meas.md)|
+|.NODESET     |[Docs](src/docs/articles/nodeset.md)|
+|.NOISE       |[Docs](src/docs/articles/noise.md)|
+|.OP          |[Docs](src/docs/articles/op.md)|
+|.OPTIONS     |[Docs](src/docs/articles/options.md)|
+|.PARAM       |[Docs](src/docs/articles/param.md)|
+|.PLOT        |[Docs](src/docs/articles/plot.md)|
+|.PRINT       |[Docs](src/docs/articles/print.md)|
+|.TRAN        |[Docs](src/docs/articles/tran.md)|
+|.SAVE        |[Docs](src/docs/articles/save.md)|
+|.SPARAM      |[Docs](src/docs/articles/sparam.md)|
+|.ST          |[Docs](src/docs/articles/st.md)|
+|.STEP        |[Docs](src/docs/articles/step.md)|
+|.SUBCKT      |[Docs](src/docs/articles/subckt.md)|
+|.TEMP        |[Docs](src/docs/articles/temp.md)|
 
 ### Device statements supported:
 | Device Statement  |  Documentation   |
 |:------------|-----------------------:|
-|B (Arbitrary Behavioral Voltage or Current Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/B)|
-|C (Capacitor)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/C)|
-|D (Diode)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/D)|
-|E (Voltage-Controlled Voltage Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/E)|
-|F (Current-Controlled Current Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/F)|
-|G (Voltage-Controlled Current Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/G)|
-|H (Current-Controlled Voltage Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/H)|
-|I (Independent Current Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/I)|
-|J (JFET)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/J)|
-|K (Mutual Inductance)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/K)|
-|L (Inductor)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/L)|
-|M (Mosfet)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/M)|
-|Q (Bipolar Junction Transistor)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/Q)|
-|R (Resistor)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/R)|
-|S (Voltage Switch)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/S)|
-|T (Lossless Transmission Line)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/T)|
-|V (Independent Voltage Source)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/V)|
-|W (Current Switch)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/W)|
-|X (Subcircuit)|[Wiki](https://github.com/SpiceSharp/SpiceSharpParser/wiki/X)|
+|B (Arbitrary Behavioral Voltage or Current Source)|[Docs](src/docs/articles/behavioral-source.md)|
+|C (Capacitor)|[Docs](src/docs/articles/capacitor.md)|
+|D (Diode)|[Docs](src/docs/articles/diode.md)|
+|E (Voltage-Controlled Voltage Source)|[Docs](src/docs/articles/vcvs.md)|
+|F (Current-Controlled Current Source)|[Docs](src/docs/articles/cccs.md)|
+|G (Voltage-Controlled Current Source)|[Docs](src/docs/articles/vccs.md)|
+|H (Current-Controlled Voltage Source)|[Docs](src/docs/articles/ccvs.md)|
+|I (Independent Current Source)|[Docs](src/docs/articles/current-source.md)|
+|J (JFET)|[Docs](src/docs/articles/jfet.md)|
+|K (Mutual Inductance)|[Docs](src/docs/articles/mutual-inductance.md)|
+|L (Inductor)|[Docs](src/docs/articles/inductor.md)|
+|M (Mosfet)|[Docs](src/docs/articles/mosfet.md)|
+|Q (Bipolar Junction Transistor)|[Docs](src/docs/articles/bjt.md)|
+|R (Resistor)|[Docs](src/docs/articles/resistor.md)|
+|S (Voltage Switch)|[Docs](src/docs/articles/voltage-switch.md)|
+|T (Lossless Transmission Line)|[Docs](src/docs/articles/transmission-line.md)|
+|V (Independent Voltage Source)|[Docs](src/docs/articles/voltage-source.md)|
+|W (Current Switch)|[Docs](src/docs/articles/current-switch.md)|
+|X (Subcircuit)|[Docs](src/docs/articles/subcircuit-instance.md)|
 
 ## Documentation
+* Documentation articles are available in [src/docs/articles](src/docs/articles).
 * API documentation is available at <https://spicesharp.github.io/SpiceSharpParser/api/index.html>.
-* Wiki is available at <https://github.com/SpiceSharp/SpiceSharpParser/wiki>
 
 ## License
 SpiceSharpParser is under MIT License
