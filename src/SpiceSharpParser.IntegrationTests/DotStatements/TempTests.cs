@@ -15,6 +15,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".model 1N914 D(Is={TEMP == 26 ? 2.52e-9 : 2.24e-9} N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)",
                 ".OP",
                 ".SAVE i(V1)",
+                ".MEAS OP meas_i MAX i(V1)",
                 ".TEMP 26 27",
                 ".END");
 
@@ -24,6 +25,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.Equal(2, export.Count);
             Assert.True(EqualsWithTol(2.30935768424922E-09, (double)export[0]));
             Assert.True(EqualsWithTol(2.2407198249641E-09, (double)export[1]));
+            AssertMeasurement(model, "meas_i", (double)export[0]);
         }
 
         [Fact]
@@ -36,6 +38,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".OP",
                 ".PARAM X=\"TEMP/2\"",
                 ".SAVE i(V1)",
+                ".MEAS OP meas_i MAX i(V1)",
                 ".TEMP 26 27",
                 ".END");
 
@@ -46,6 +49,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             Assert.Equal(2, export.Count);
             Assert.True(EqualsWithTol(-0.769230769230769, (double)export[0]));
             Assert.True(EqualsWithTol(-0.740740740740741, (double)export[1]));
+            AssertMeasurement(netlist, "meas_i", (double)export[0]);
         }
 
         [Fact]
@@ -79,11 +83,13 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".SAVE i(V1)",
                 ".OPTIONS TEMP=27",
                 ".TEMP 26",
+                ".MEAS OP meas_i MAX i(V1)",
                 ".END");
 
             var export = RunOpSimulation(netlist, "i(V1)");
 
             Assert.True(EqualsWithTol(2.30935768424922E-09, export));
+            AssertMeasurement(netlist, "meas_i", export);
         }
 
         [Fact]
@@ -98,10 +104,12 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".OP",
                 ".SAVE i(V1)",
                 ".OPTIONS TEMP=27",
+                ".MEAS OP meas_i MAX i(V1)",
                 ".END");
 
             var export = RunOpSimulation(netlist, "i(V1)");
             Assert.True(EqualsWithTol(2.5206849402909E-09, export));
+            AssertMeasurement(netlist, "meas_i", export);
         }
 
         [Fact]
@@ -116,10 +124,12 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".OP",
                 ".SAVE i(V1)",
                 ".OPTIONS TEMP=26",
+                ".MEAS OP meas_i MAX i(V1)",
                 ".END");
 
             var export = RunOpSimulation(netlist, "i(V1)");
             Assert.True(EqualsWithTol(2.30935768424922E-09, export));
+            AssertMeasurement(netlist, "meas_i", export);
         }
 
         [Fact]
@@ -134,10 +144,12 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".OP",
                 ".SAVE i(V1)",
                 ".OPTIONS Tnom=27",
+                ".MEAS OP meas_i MAX i(V1)",
                 ".END");
 
             var export = RunOpSimulation(netlist, "i(V1)");
             Assert.True(EqualsWithTol(2.5206849402909E-09, export));
+            AssertMeasurement(netlist, "meas_i", export);
         }
 
         [Fact]
@@ -152,10 +164,12 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".OP",
                 ".SAVE i(V1)",
                 ".OPTIONS Tnom=26",
+                ".MEAS OP meas_i MAX i(V1)",
                 ".END");
 
             var export = RunOpSimulation(netlist, "i(V1)");
             Assert.True(EqualsWithTol(2.75136240873719E-09, export)); 
+            AssertMeasurement(netlist, "meas_i", export);
         }
 
         [Fact]
@@ -169,10 +183,12 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".model 1N914 D(Is=2.52e-9 Rs=0.568 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)",
                 ".OP",
                 ".SAVE i(V1)",
+                ".MEAS OP meas_i MAX i(V1)",
                 ".END");
 
             var export = RunOpSimulation(netlist, "i(V1)");
             Assert.True(EqualsWithTol(2.5206849402909E-09, export));
+            AssertMeasurement(netlist, "meas_i", export);
         }
     }
 }

@@ -16,12 +16,14 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".SAVE VOUT_db V(OUT)",
                 ".PARAM decibels_plus_param(value,x)={log10(value)*2+x} add(x,y)={x+y}",
                 ".LET VOUT_db {add(decibels_plus_param(V(OUT),1), -0.5)}",
+                ".MEAS OP meas_v MAX V(OUT)",
                 ".END");
 
             double[] export = RunOpSimulation(model, "VOUT_db", "V(OUT)");
 
             Assert.Equal(2.5, export[0]);
             Assert.Equal(10, export[1]);
+            AssertMeasurement(model, "meas_v", export[1]);
         }
 
         [Fact]
@@ -36,11 +38,13 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".OP",
                 ".SAVE V(OUT)",
                 ".PARAM X = { V(1) }",
+                ".MEAS OP meas_v MAX V(OUT)",
                 ".END");
 
             double[] export = RunOpSimulation(model, new[] { "V(OUT)" });
 
             Assert.Equal(10, export[0]);
+            AssertMeasurement(model, "meas_v", export[0]);
         }
 
         [Fact]
@@ -55,11 +59,13 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".SAVE some_output_vector",
                 ".PARAM somemagicfunction(x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13) = { x1 + x2 + x3  + x4  + x5  + x6  + x7  + x8  + x9 + x10 + x11 + x12 + x13 }",
                 ".LET some_output_vector {somemagicfunction(1,2,3,4,5,6,7,8,9,10,11,12,13)}",
+                ".MEAS OP meas_v MAX V(OUT)",
                 ".END");
 
             double[] export = RunOpSimulation(model, new[] { "some_output_vector" });
 
             Assert.Equal(13 * (13 + 1) / 2.0, export[0]);
+            AssertMeasurement(model, "meas_v", 10.0);
         }
 
         [Fact]
@@ -72,12 +78,14 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 ".OP",
                 ".SAVE V(OUT) @R1[i]",
                 ".PARAM somefunction() = {17}",
+                ".MEAS OP meas_v MAX V(OUT)",
                 ".END");
 
             double[] export = RunOpSimulation(model, "V(OUT)", "@R1[i]");
 
             Assert.Equal(10.0, export[0]);
             Assert.Equal(10.0 / 17.0, export[1]);
+            AssertMeasurement(model, "meas_v", export[0]);
         }
 
         [Fact]
@@ -94,7 +102,8 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                ".ENDS twoResistorsInSeries",
                ".OP",
                ".SAVE V(OUT)",
-               ".END");
+                ".MEAS OP meas_v MAX V(OUT)",
+                ".END");
 
             double export = RunOpSimulation(model, "V(OUT)");
 
@@ -102,6 +111,7 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
             double[] references = { 1.0 };
 
             Assert.True(EqualsWithTol(new double[] { export }, references));
+            AssertMeasurement(model, "meas_v", export);
         }
 
         [Fact(Skip = "Resolver doesn't support recursive function yet")]

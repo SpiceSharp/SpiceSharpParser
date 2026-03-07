@@ -19,11 +19,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".TRAN 1e-6 1e-3 uic",
                 ".IC V(out)=0.0",
                 ".SAVE V(out)",
+                ".MEAS TRAN meas_vmax MAX V(out)",
                 ".END");
 
             var exports = RunTransientSimulation(netlist, "V(out)");
             Func<double, double> references = t => t > 0 ? i0 * R * Math.Exp(-t / tau) : 0.0;
             Assert.True(EqualsWithTol(exports, references));
+            AssertMeasurementSuccess(netlist, "meas_vmax");
         }
 
         [Fact]
@@ -40,11 +42,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".TRAN 1e-6 1e-3 uic",
                 ".IC V(out)=0.0",
                 ".SAVE V(out)",
+                ".MEAS TRAN meas_vmax MAX V(out)",
                 ".END");
 
             var exports = RunTransientSimulation(netlist, "V(out)");
             Func<double, double> references = t => t > 0 ? i0 * R * Math.Exp(-t / tau) : 0.0;
             Assert.True(EqualsWithTol(exports, references));
+            AssertMeasurementSuccess(netlist, "meas_vmax");
         }
     }
 }

@@ -14,11 +14,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 "E1 (2, 0) (1, 0) 1.5",
                 ".SAVE V(2,0)",
                 ".OP",
+                ".MEAS OP meas_v MAX V(2,0)",
                 ".END");
 
             var export = RunOpSimulation(model, "V(2,0)");
             Assert.NotNull(model);
             Assert.Equal(150, export);
+            AssertMeasurement(model, "meas_v", export);
         }
 
         [Fact]
@@ -32,11 +34,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 "R2 2 0 100",
                 ".SAVE I(R2)",
                 ".OP",
+                ".MEAS OP meas_i MAX I(R2)",
                 ".END");
 
             var export = RunOpSimulation(model, "I(R2)");
             Assert.NotNull(model);
             Assert.Equal(-150, export);
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -50,11 +54,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 "R2 2 0 100",
                 ".SAVE I(R2)",
                 ".OP",
+                ".MEAS OP meas_i MAX I(R2)",
                 ".END");
 
             var export = RunOpSimulation(model, "I(R2)");
             Assert.NotNull(model);
             Assert.Equal(-300, export);
+            AssertMeasurement(model, "meas_i", export);
         }
     }
 }

@@ -15,11 +15,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 "R2 2 0 2",
                 ".SAVE I(R2)",
                 ".OP",
+                ".MEAS OP meas_i MAX I(R2)",
                 ".END");
 
             var export = RunOpSimulation(netlist, "I(R2)");
             Assert.NotNull(netlist);
             Assert.Equal(15, export);
+            AssertMeasurement(netlist, "meas_i", export);
         }
 
         [Fact]
@@ -33,11 +35,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 "R2 2 0 2",
                 ".SAVE I(R2)",
                 ".OP",
+                ".MEAS OP meas_i MAX I(R2)",
                 ".END");
 
             var export = RunOpSimulation(netlist, "I(R2)");
             Assert.NotNull(netlist);
             Assert.Equal(-7.5, export);
+            AssertMeasurement(netlist, "meas_i", export);
         }
     }
 }

@@ -29,11 +29,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 "R1 1 0 10",
                 ".SAVE I(R1)",
                 ".OP",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.Equal(15, export);
+            AssertMeasurement(model, "meas_i", export);
         }
 
 
@@ -46,11 +48,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 "R1 1 0 10 m=10", // parallel
                 ".SAVE I(R1)",
                 ".OP",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.Equal(100.0, export);
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -62,11 +66,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 "R1 1 0 r=10",
                 ".SAVE I(R1)",
                 ".OP",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.Equal(15, export);
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -78,11 +84,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 "R1 1 0 r=10 m=2",
                 ".SAVE I(R1)",
                 ".OP",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.Equal(15*2, export);
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -94,11 +102,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 "R1 1 0 resistance=10",
                 ".SAVE I(R1)",
                 ".OP",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.Equal(15, export);
+            AssertMeasurement(model, "meas_i", export);
         }
 
 
@@ -111,11 +121,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 "R1 1 0 resistance=10 m = 2",
                 ".SAVE I(R1)",
                 ".OP",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.Equal(15 * 2, export);
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -128,11 +140,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(R1)",
                 ".PARAM a = 10",
                 ".OP",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.Equal(15, export);
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -145,11 +159,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(R1)",
                 ".PARAM a = 10",
                 ".OP",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.Equal(15 * 2, export);
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -162,11 +178,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(R1)",
                 ".PARAM a = 10",
                 ".OP",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.Equal(15, export);
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -179,11 +197,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(R1)",
                 ".PARAM a = 10",
                 ".OP",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.Equal(15 * 2, export);
+            AssertMeasurement(model, "meas_i", export);
         }
 
 
@@ -197,11 +217,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(R1)",
                 ".PARAM a = 10",
                 ".OP",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.Equal(15, export);
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -214,11 +236,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(R1)",
                 ".PARAM a = 10",
                 ".OP",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.Equal(15*2, export);
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -231,11 +255,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".MODEL myresistor R RSH=0.1",
                 ".SAVE I(R1)",
                 ".OP",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.True(EqualsWithTol(300.0, export));
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -248,11 +274,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".MODEL myresistor R RSH=0.1",
                 ".SAVE I(R1)",
                 ".OP",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.True(EqualsWithTol(300.0 * 2.0, export));
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -265,11 +293,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".MODEL myresistor R RSH=0.1 defw=2u",
                 ".SAVE I(R1)",
                 ".OP",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.True(EqualsWithTol(300.0, export));
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -282,11 +312,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".MODEL myresistor R RSH=0.1 defw=2u",
                 ".SAVE I(R1)",
                 ".OP",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.True(EqualsWithTol(300.0 * 2, export));
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -300,11 +332,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                     ".MODEL myresistor R RSH=0.1 defw=2u",
                     ".SAVE I(R1)",
                     ".OP",
+                    ".MEAS OP meas_i MAX I(R1)",
                     ".END");
 
             Assert.False(result.ValidationResult.HasError);
             var export = RunOpSimulation(result, "I(R1)");
             Assert.True(EqualsWithTol(0.15, export));
+            AssertMeasurement(result, "meas_i", export);
         }
 
         [Fact]
@@ -318,12 +352,14 @@ namespace SpiceSharpParser.IntegrationTests.Components
                     ".MODEL myresistor R RSH=0.1 defw=2u",
                     ".SAVE I(R1)",
                     ".OP",
+                    ".MEAS OP meas_i MAX I(R1)",
                     ".END");
 
             Assert.NotNull(result);
             Assert.False(result.ValidationResult.HasError);
             var export = RunOpSimulation(result, "I(R1)");
             Assert.True(EqualsWithTol(0.6, export));
+            AssertMeasurement(result, "meas_i", export);
         }
 
         [Fact]
@@ -336,11 +372,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                     ".MODEL myresistor R RSH=0.1 defw=2u",
                     ".SAVE I(R1)",
                     ".OP",
+                    ".MEAS OP meas_i MAX I(R1)",
                     ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.True(EqualsWithTol(300.0, export));
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -353,11 +391,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                     ".MODEL myresistor R RSH=0.1 defw=2u",
                     ".SAVE I(R1)",
                     ".OP",
+                    ".MEAS OP meas_i MAX I(R1)",
                     ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.True(EqualsWithTol(300.0 * 2.0, export));
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -370,11 +410,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(R1)",
                 ".OP",
                 ".OPTIONS TEMP=10",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.Equal(15, export);
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -387,11 +429,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(R1)",
                 ".OP",
                 ".OPTIONS TEMP=10",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.Equal(15*2, export);
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -404,11 +448,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(R1)",
                 ".OP",
                 ".OPTIONS TEMP=10",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.NotEqual(15, export);
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -421,11 +467,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(R1)",
                 ".OP",
                 ".OPTIONS TEMP=10",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.NotEqual(15*2, export);
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -438,11 +486,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(R1)",
                 ".OP",
                 ".OPTIONS TEMP=10",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.True(EqualsWithTol(18.0722891566265, export));
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -455,11 +505,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(R1)",
                 ".OP",
                 ".OPTIONS TEMP=10",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.True(EqualsWithTol(18.0722891566265 * 2, export));
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -473,11 +525,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(R1)",
                 ".OP",
                 ".OPTIONS TEMP=10",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.True(EqualsWithTol(300, export));
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -491,11 +545,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(R1)",
                 ".OP",
                 ".OPTIONS TEMP=10",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.True(EqualsWithTol(300 * 2, export));
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -509,11 +565,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(R1)",
                 ".OP",
                 ".OPTIONS TEMP=10",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.True(EqualsWithTol(10.0334448160535, export));
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -527,11 +585,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(R1)",
                 ".OP",
                 ".OPTIONS TEMP=10",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.True(EqualsWithTol(10.0334448160535 * 2, export));
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -544,11 +604,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".MODEL myresistor R RSH=0.1 TC1=0.0 TC2=0.1",
                 ".SAVE I(R1)",
                 ".OP",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.True(EqualsWithTol(10.0334448160535, export));
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -561,11 +623,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".MODEL myresistor R RSH=0.1 TC1=0.0 TC2=0.1",
                 ".SAVE I(R1)",
                 ".OP",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(model);
             var export = RunOpSimulation(model, "I(R1)");
             Assert.True(EqualsWithTol(10.0334448160535 * 2, export));
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -579,11 +643,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(R1)",
                 ".OP",
                 ".OPTIONS TEMP=10",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             var export = RunOpSimulation(model, "I(R1)");
             Assert.NotNull(model);
             Assert.True(EqualsWithTol(10.0908173562059, export));
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -597,11 +663,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(R1)",
                 ".OP",
                 ".OPTIONS TEMP=10",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             var export = RunOpSimulation(model, "I(R1)");
             Assert.NotNull(model);
             Assert.True(EqualsWithTol(10.0908173562059, export));
+            AssertMeasurement(model, "meas_i", export);
         }
 
 
@@ -616,11 +684,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(R1)",
                 ".OP",
                 ".OPTIONS TEMP=10",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             var export = RunOpSimulation(model, "I(R1)");
             Assert.NotNull(model);
             Assert.True(EqualsWithTol(10.0908173562059 * 2.0, export));
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -634,11 +704,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(R1)",
                 ".OP",
                 ".OPTIONS TEMP=10",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             var export = RunOpSimulation(model, "I(R1)");
             Assert.NotNull(model);
             Assert.True(EqualsWithTol(10.0908173562059, export));
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -652,11 +724,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".SAVE I(R1)",
                 ".OP",
                 ".OPTIONS TEMP=10",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             var export = RunOpSimulation(model, "I(R1)");
             Assert.NotNull(model);
             Assert.True(EqualsWithTol(10.0908173562059 * 2.0, export));
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -669,6 +743,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 "R1 out 0 {max(V(in), 1e-3)}",
                 ".DC V1 0 10 1e-3",
                 ".SAVE I(R1)",
+                ".MEAS DC meas_imax MAX I(R1)",
                 ".END");
 
             var exports = RunDCSimulation(model, "I(R1)");
@@ -676,6 +751,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             // Get references
             Func<double, double> reference = sweep => 10.0 / Math.Max(1e-3, (sweep));
             Assert.True(EqualsWithTol(exports, reference));
+            AssertMeasurement(model, "meas_imax", reference(0));
         }
 
         [Fact]
@@ -688,6 +764,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 "R1 out 0 {max(V(in), 1e-3)} m = 2",
                 ".DC V1 0 10 1e-3",
                 ".SAVE I(R1)",
+                ".MEAS DC meas_imax MAX I(R1)",
                 ".END");
 
             var exports = RunDCSimulation(model, "I(R1)");
@@ -695,6 +772,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             // Get references
             Func<double, double> reference = sweep => 10.0 / ((0.5) * Math.Max(1e-3, (sweep)));
             Assert.True(EqualsWithTol(exports, reference));
+            AssertMeasurement(model, "meas_imax", reference(0));
         }
 
 
@@ -708,6 +786,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 "R1 out 0 {max(1e-4, 1e-3)} m = 2",
                 ".DC V1 0 10 1e-3",
                 ".SAVE I(R1)",
+                ".MEAS DC meas_imax MAX I(R1)",
                 ".END");
 
             var exports = RunDCSimulation(model, "I(R1)");
@@ -715,6 +794,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             // Get references
             Func<double, double> reference = sweep => 10.0 / ((0.5) * Math.Max(1e-3, 1e-4));
             Assert.True(EqualsWithTol(exports, reference));
+            AssertMeasurement(model, "meas_imax", reference(0));
         }
 
         [Fact]
@@ -727,6 +807,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 "R1 out 0 {max(1e-4, 1e-3)} m = 2 n = 3",
                 ".DC V1 0 10 1e-3",
                 ".SAVE I(R1)",
+                ".MEAS DC meas_imax MAX I(R1)",
                 ".END");
 
             var exports = RunDCSimulation(model, "I(R1)");
@@ -734,6 +815,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             // Get references
             Func<double, double> reference = sweep => 10.0 / ((0.5) * 3.0 * Math.Max(1e-3, 1e-4));
             Assert.True(EqualsWithTol(exports, reference));
+            AssertMeasurement(model, "meas_imax", reference(0));
         }
     }
 }

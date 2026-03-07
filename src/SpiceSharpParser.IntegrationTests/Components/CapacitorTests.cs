@@ -15,6 +15,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 "C1 OUT 0 10e-6",
                 ".OP",
                 ".SAVE V(OUT)",
+                ".MEAS OP meas_v MAX V(OUT)",
                 ".END");
 
             double export = RunOpSimulation(netlist, "V(OUT)");
@@ -23,6 +24,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double[] references = { 1.0 };
 
             Assert.True(EqualsWithTol(new double[] { export }, references));
+            AssertMeasurement(netlist, "meas_v", export);
         }
 
         [Fact]
@@ -35,6 +37,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 "C1 OUT 0 10e-6 m = 2",
                 ".OP",
                 ".SAVE V(OUT)",
+                ".MEAS OP meas_v MAX V(OUT)",
                 ".END");
 
             double export = RunOpSimulation(netlist, "V(OUT)");
@@ -43,6 +46,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double[] references = { 1.0 };
 
             Assert.True(EqualsWithTol(new double[] { export }, references));
+            AssertMeasurement(netlist, "meas_v", export);
         }
 
         [Fact]
@@ -61,11 +65,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".IC V(OUT)=0.0",
                 ".TRAN 1e-8 10e-6",
                 ".SAVE V(OUT)",
+                ".MEAS TRAN meas_vmax MAX V(OUT)",
                 ".END");
 
             var exports = RunTransientSimulation(netlist, "V(OUT)");
             Func<double, double> reference = t => dcVoltage * (1.0 - Math.Exp(-t / tau));
             Assert.True(EqualsWithTol(exports, reference));
+            AssertMeasurement(netlist, "meas_vmax", reference(10e-6));
         }
 
 
@@ -85,11 +91,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".IC V(OUT)=0.0",
                 ".TRAN 1e-8 10e-6",
                 ".SAVE V(OUT)",
+                ".MEAS TRAN meas_vmax MAX V(OUT)",
                 ".END");
 
             var exports = RunTransientSimulation(netlist, "V(OUT)");
             Func<double, double> reference = t => dcVoltage * (1.0 - Math.Exp(-t / tau));
             Assert.True(EqualsWithTol(exports, reference));
+            AssertMeasurement(netlist, "meas_vmax", reference(10e-6));
         }
 
         [Fact]
@@ -109,11 +117,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".IC V(OUT)=0.0",
                 ".TRAN 1e-12 10e-6",
                 ".SAVE V(OUT)",
+                ".MEAS TRAN meas_vmax MAX V(OUT)",
                 ".END");
 
             var exports = RunTransientSimulation(netlist, "V(OUT)");
             Func<double, double> reference = t => dcVoltage * (1.0 - Math.Exp(-t / tau));
             Assert.True(EqualsWithTol(exports, reference));
+            AssertMeasurement(netlist, "meas_vmax", reference(10e-6));
         }
 
         [Fact]
@@ -133,11 +143,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".IC V(OUT)=0.0",
                 ".TRAN 1e-12 10e-6",
                 ".SAVE V(OUT)",
+                ".MEAS TRAN meas_vmax MAX V(OUT)",
                 ".END");
 
             var exports = RunTransientSimulation(netlist, "V(OUT)");
             Func<double, double> reference = t => dcVoltage * (1.0 - Math.Exp(-t / tau));
             Assert.True(EqualsWithTol(exports, reference));
+            AssertMeasurement(netlist, "meas_vmax", reference(10e-6));
         }
 
         [Fact]
@@ -157,11 +169,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".TRAN 1e-8 10e-6",
                 ".SAVE V(OUT)",
                 ".OPTIONS TEMP = 10",
+                ".MEAS TRAN meas_vmax MAX V(OUT)",
                 ".END");
 
             var exports = RunTransientSimulation(netlist, "V(OUT)");
             Func<double, double> reference = t => dcVoltage * (1.0 - Math.Exp(-t / tau));
             Assert.True(EqualsWithTol(exports, reference));
+            AssertMeasurement(netlist, "meas_vmax", reference(10e-6));
         }
 
         [Fact]
@@ -181,11 +195,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".TRAN 1e-8 10e-6",
                 ".SAVE V(OUT)",
                 ".OPTIONS TEMP = 10",
+                ".MEAS TRAN meas_vmax MAX V(OUT)",
                 ".END");
 
             var exports = RunTransientSimulation(netlist, "V(OUT)");
             Func<double, double> reference = t => dcVoltage * (1.0 - Math.Exp(-t / tau));
             Assert.True(EqualsWithTol(exports, reference));
+            AssertMeasurement(netlist, "meas_vmax", reference(10e-6));
         }
 
         [Fact]
@@ -205,11 +221,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".TRAN 1e-8 10e-6",
                 ".SAVE V(OUT)",
                 ".OPTIONS TEMP = 30",
+                ".MEAS TRAN meas_vmax MAX V(OUT)",
                 ".END");
 
             var exports = RunTransientSimulation(netlist, "V(OUT)");
             Func<double, double> reference = t => dcVoltage * (1.0 - Math.Exp(-t / tau));
             Assert.True(EqualsWithTol(exports, reference));
+            AssertMeasurement(netlist, "meas_vmax", reference(10e-6));
         }
 
         [Fact]
@@ -229,11 +247,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".TRAN 1e-8 10e-6",
                 ".SAVE V(OUT)",
                 ".OPTIONS TEMP = 30",
+                ".MEAS TRAN meas_vmax MAX V(OUT)",
                 ".END");
 
             var exports = RunTransientSimulation(netlist, "V(OUT)");
             Func<double, double> reference = t => dcVoltage * (1.0 - Math.Exp(-t / tau));
             Assert.True(EqualsWithTol(exports, reference));
+            AssertMeasurement(netlist, "meas_vmax", reference(10e-6));
         }
 
         [Fact]
@@ -253,11 +273,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".TRAN 1e-8 10e-6",
                 ".SAVE V(OUT)",
                 ".OPTIONS TEMP = 30",
+                ".MEAS TRAN meas_vmax MAX V(OUT)",
                 ".END");
 
             var exports = RunTransientSimulation(netlist, "V(OUT)");
             Func<double, double> reference = t => dcVoltage * (1.0 - Math.Exp(-t / tau));
             Assert.True(EqualsWithTol(exports, reference));
+            AssertMeasurement(netlist, "meas_vmax", reference(10e-6));
         }
 
         [Fact]
@@ -277,11 +299,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".TRAN 1e-8 10e-6",
                 ".SAVE V(OUT)",
                 ".OPTIONS TEMP = 30",
+                ".MEAS TRAN meas_vmax MAX V(OUT)",
                 ".END");
 
             var exports = RunTransientSimulation(netlist, "V(OUT)");
             Func<double, double> reference = t => dcVoltage * (1.0 - Math.Exp(-t / tau));
             Assert.True(EqualsWithTol(exports, reference));
+            AssertMeasurement(netlist, "meas_vmax", reference(10e-6));
         }
     }
 }

@@ -16,11 +16,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".model imodel ISWITCH (roff=100 ron=10 ioff = 0 ion = 2)",
                 ".OP",
                 ".SAVE I(V2)",
+                ".MEAS OP meas_i MAX I(V2)",
                 ".END");
 
             var export = RunOpSimulation(netlist, "I(V2)");
             Assert.NotNull(netlist);
             Assert.True(EqualsWithTol(-0.316228, export));
+            AssertMeasurement(netlist, "meas_i", export);
         }
 
         [Fact]
@@ -38,11 +40,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".model imodel ISWITCH (roff=100 ron=10 ioff = 0 ion = 2)",
                 ".OP",
                 ".SAVE I(V2)",
+                ".MEAS OP meas_i MAX I(V2)",
                 ".END");
 
             var export = RunOpSimulation(netlist, "I(V2)");
             Assert.NotNull(netlist);
             Assert.True(EqualsWithTol(-0.316228, export));
+            AssertMeasurement(netlist, "meas_i", export);
         }
 
         [Fact]
@@ -57,11 +61,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".model imodel ISWITCH (roff=1000000 ron=10 ioff = 0 ion = 2)",
                 ".OP",
                 ".SAVE I(V2)",
+                ".MEAS OP meas_i MAX I(V2)",
                 ".END");
 
             var export = RunOpSimulation(netlist, "I(V2)");
             Assert.NotNull(netlist);
             Assert.Equal(-1, export);
+            AssertMeasurement(netlist, "meas_i", export);
         }
 
         [Fact]
@@ -76,11 +82,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".model imodel ISWITCH (roff=1000000 ron=10 ioff = 0 ion = 2)",
                 ".OP",
                 ".SAVE I(V2)",
+                ".MEAS OP meas_i MAX I(V2)",
                 ".END");
 
             var export = RunOpSimulation(netlist, "I(V2)");
             Assert.NotNull(netlist);
             Assert.Equal(-1, export);
+            AssertMeasurement(netlist, "meas_i", export);
         }
 
         [Fact]
@@ -95,11 +103,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".model imodel ISWITCH (roff=1000000 ron=10 ioff = 0 ion = 2)",
                 ".OP",
                 ".SAVE I(V2)",
+                ".MEAS OP meas_i MAX I(V2)",
                 ".END");
 
             var export = RunOpSimulation(netlist, "I(V2)");
             Assert.NotNull(netlist);
             Assert.True(EqualsWithTol(-10.0 / 1000000.0, export));
+            AssertMeasurement(netlist, "meas_i", export);
         }
 
         [Fact]
@@ -114,11 +124,13 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".model imodel ISWITCH (roff=1000000 ron=10 ioff = 0 ion = 2)",
                 ".OP",
                 ".SAVE I(V2)",
+                ".MEAS OP meas_i MAX I(V2)",
                 ".END");
 
             var export = RunOpSimulation(netlist, "I(V2)");
             Assert.NotNull(netlist);
             Assert.True(EqualsWithTol(-10.0 / 1000000.0, export));
+            AssertMeasurement(netlist, "meas_i", export);
         }
     }
 }

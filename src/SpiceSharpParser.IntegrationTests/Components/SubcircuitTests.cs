@@ -21,6 +21,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".ENDS twoResistorsInSeries",
                 ".OP",
                 ".SAVE I(V1)",
+                ".MEAS OP meas_i MAX I(V1)",
                 ".END");
 
             double export = RunOpSimulation(model, "I(V1)");
@@ -29,6 +30,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double[] references = { -4.0 / ((10.0 + 20.0) / 10.0) };
 
             Assert.True(EqualsWithTol(new double[] { export }, references));
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -47,6 +49,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".ENDS twoResistorsInSeries",
                 ".OP",
                 ".SAVE I(V1)",
+                ".MEAS OP meas_i MAX I(V1)",
                 ".END");
 
             double export = RunOpSimulation(model, "I(V1)");
@@ -55,6 +58,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double[] references = { -4.0 / ( (10.0 + 20.0) / 30.0) };
 
             Assert.True(EqualsWithTol(new double[] { export }, references));
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -73,6 +77,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
 
                 ".OP",
                 ".SAVE I(V1)",
+                ".MEAS OP meas_i MAX I(V1)",
                 ".END");
 
             double export = RunOpSimulation(model, "I(V1)");
@@ -80,6 +85,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double[] references = { -10.0 / (((1.0 + 2.0) / 10.0)) };
 
             Assert.True(EqualsWithTol(new double[] { export }, references));
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -101,6 +107,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
 
                 ".OP",
                 ".SAVE I(V1)",
+                ".MEAS OP meas_i MAX I(V1)",
                 ".END");
 
             double export = RunOpSimulation(model, "I(V1)");
@@ -108,6 +115,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double[] references = { -10.0 / (((1.0 + 2.0) / 10.0)) };
 
             Assert.True(EqualsWithTol(new double[] { export }, references));
+            AssertMeasurement(model, "meas_i", export);
         }
 
         [Fact]
@@ -129,6 +137,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".ENDS twoResistorsInSeries",
                 ".OP",
                 ".SAVE V(OUT)",
+                ".MEAS OP meas_v MAX V(OUT)",
                 ".END");
 
             double export = RunOpSimulation(model, "V(OUT)");
@@ -137,6 +146,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double[] references = {1.0};
 
             Assert.True(EqualsWithTol(new double[] { export }, references));
+            AssertMeasurement(model, "meas_v", export);
         }
 
         [Fact]
@@ -158,6 +168,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".ENDS twoResistorsInSeries",
                 ".OP",
                 ".SAVE V(OUT)",
+                ".MEAS OP meas_v MAX V(OUT)",
                 ".END");
 
             double export = RunOpSimulation(model, "V(OUT)");
@@ -166,6 +177,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double[] references = {1.0};
 
             Assert.True(EqualsWithTol(new double[] { export }, references));
+            AssertMeasurement(model, "meas_v", export);
         }
 
         [Fact]
@@ -187,6 +199,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".ENDS twoResistorsInSeries",
                 ".OP",
                 ".SAVE V(OUT)",
+                ".MEAS OP meas_v MAX V(OUT)",
                 ".END");
 
             double export = RunOpSimulation(model, "V(OUT)");
@@ -195,6 +208,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double[] references = {1.0};
 
             Assert.True(EqualsWithTol(new double[] { export }, references));
+            AssertMeasurement(model, "meas_v", export);
         }
 
         [Fact]
@@ -211,6 +225,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".ENDS twoResistorsInSeries",
                 ".OP",
                 ".SAVE V(OUT)",
+                ".MEAS OP meas_v MAX V(OUT)",
                 ".END");
 
             double export = RunOpSimulation(model, "V(OUT)");
@@ -219,6 +234,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double[] references = {1.0};
 
             Assert.True(EqualsWithTol(new double[] { export }, references));
+            AssertMeasurement(model, "meas_v", export);
         }
 
         [Fact]
@@ -237,6 +253,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".ENDS voltometr2",
                 ".OP",
                 ".SAVE V(OUT) V(OUT2)",
+                ".MEAS OP meas_v MAX V(OUT)",
                 ".END");
 
             double[] exports = RunOpSimulation(model, "V(OUT)", "V(OUT2)");
@@ -245,6 +262,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double[] references = {2.4, 2.0};
 
             Assert.True(EqualsWithTol(exports, references));
+            AssertMeasurement(model, "meas_v", exports[0]);
         }
 
         [Fact]
@@ -264,6 +282,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".ENDS something2",
                 ".OP",
                 ".SAVE V(OUT) V(OUT2)",
+                ".MEAS OP meas_v MAX V(OUT)",
                 ".END");
 
             double[] exports = RunOpSimulation(model, "V(OUT)", "V(OUT2)");
@@ -272,6 +291,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double[] references = {5.0, 0.5};
 
             Assert.True(EqualsWithTol(exports, references));
+            AssertMeasurement(model, "meas_v", exports[0]);
         }
 
         [Fact]
@@ -288,6 +308,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".ENDS twoResistorsInSeries",
                 ".OP",
                 ".SAVE V(OUT)",
+                ".MEAS OP meas_v MAX V(OUT)",
                 ".END");
 
             double export = RunOpSimulation(model, "V(OUT)");
@@ -296,6 +317,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double[] references = {1.0};
 
             Assert.True(EqualsWithTol(new double[] { export }, references));
+            AssertMeasurement(model, "meas_v", export);
         }
 
         [Fact]
@@ -312,6 +334,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".ENDS twoResistorsInSeries",
                 ".OP",
                 ".SAVE V(OUT)",
+                ".MEAS OP meas_v MAX V(OUT)",
                 ".END");
 
             double export = RunOpSimulation(model, "V(OUT)");
@@ -320,6 +343,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double[] references = {(1.0 / (10.0 + 20.0 + 1.0)) * 4.0};
 
             Assert.True(EqualsWithTol(new double[] { export }, references));
+            AssertMeasurement(model, "meas_v", export);
         }
 
         [Fact]
@@ -339,6 +363,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".ENDS twoResistorsInSeries",
                 ".OP",
                 ".SAVE V(OUT)",
+                ".MEAS OP meas_v MAX V(OUT)",
                 ".END");
 
             double export = RunOpSimulation(model, "V(OUT)");
@@ -347,6 +372,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double[] references = {(1.0 / (10.0 + 20.0 + 1.0)) * 4.0};
 
             Assert.True(EqualsWithTol(new double[] { export }, references));
+            AssertMeasurement(model, "meas_v", export);
         }
 
         [Fact]
@@ -366,6 +392,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".ENDS twoResistorsInSeries",
                 ".OP",
                 ".SAVE V(OUT)",
+                ".MEAS OP meas_v MAX V(OUT)",
                 ".END");
 
             double export = RunOpSimulation(model, "V(OUT)");
@@ -374,6 +401,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double[] references = {(1.0 / (10.0 + 20.0 + 1.0)) * 4.0};
 
             Assert.True(EqualsWithTol(new double[] { export }, references));
+            AssertMeasurement(model, "meas_v", export);
         }
 
         [Fact]
@@ -394,6 +422,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".ENDS twoResistorsInSeries",
                 ".OP",
                 ".SAVE V(OUT)",
+                ".MEAS OP meas_v MAX V(OUT)",
                 ".END");
 
             double export = RunOpSimulation(model, "V(OUT)");
@@ -402,6 +431,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             double[] references = {(1.0 / (10.0 + 20.0 + 1.0)) * 4.0};
 
             Assert.True(EqualsWithTol(new double[] { export }, references));
+            AssertMeasurement(model, "meas_v", export);
         }
 
         [Fact]

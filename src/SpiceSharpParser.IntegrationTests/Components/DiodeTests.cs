@@ -14,6 +14,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".model 1N914 D(Is=2.52e-9 Rs=0.568 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)",
                 ".DC V1 -1 1 10e-3",
                 ".SAVE i(V1)",
+                ".MEAS DC meas_imax MAX i(V1)",
                 ".END");
 
             var export = RunDCSimulation(netlist, "i(V1)");
@@ -25,6 +26,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             };
 
             Assert.True(EqualsWithTol(export, references));
+            AssertMeasurementSuccess(netlist, "meas_imax");
         }
 
         [Fact]
@@ -37,6 +39,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".model 1N914 D(Is=2.52e-9 Rs=0.568 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)",
                 ".DC V1 -1 1 10e-3",
                 ".SAVE i(V1)",
+                ".MEAS DC meas_imax MAX i(V1)",
                 ".END");
 
             var export = RunDCSimulation(netlist, "i(V1)");
@@ -48,6 +51,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             };
 
             Assert.True(EqualsWithTol(export, references));
+            AssertMeasurementSuccess(netlist, "meas_imax");
         }
 
         [Fact]
@@ -60,6 +64,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".model default D",
                 ".DC V1 -1 1 0.5",
                 ".SAVE i(V1)",
+                ".MEAS DC meas_imax MAX i(V1)",
                 ".END");
 
             var export = RunDCSimulation(netlist, "i(V1)");
@@ -75,6 +80,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             };
 
             Assert.True(EqualsWithTol(export, references));
+            AssertMeasurementSuccess(netlist, "meas_imax");
         }
     }
 }

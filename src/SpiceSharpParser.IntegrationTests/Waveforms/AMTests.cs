@@ -15,6 +15,7 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
                 $"V1 a 0 AM({va} {vo} {mf} {fc} {td} {phasec} {phases})",
                 ".SAVE V(a)",
                 ".TRAN 1e-6 1",
+                ".MEAS TRAN meas_vmax MAX V(a)",
                 ".END");
 
             Assert.NotNull(netlist);
@@ -23,6 +24,7 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
                         Math.Sin(2.0 * Math.PI * fc * (time - td) + phasec * Math.PI / 180.0);
 
             Assert.True(EqualsWithTol(exports, reference));
+            AssertMeasurementSuccess(netlist, "meas_vmax");
         }
 
         [Theory]
@@ -35,6 +37,7 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
                 $"V1 a 0 AM({va}, {vo}, {mf}, {fc}, {td}, {phasec}, {phases})",
                 ".SAVE V(a)",
                 ".TRAN 1e-6 1",
+                ".MEAS TRAN meas_vmax MAX V(a)",
                 ".END");
 
             Assert.NotNull(netlist);
@@ -42,6 +45,7 @@ namespace SpiceSharpParser.IntegrationTests.Waveforms
             Func<double, double> reference = time => time < td ? 0.0 : va * (vo + Math.Sin(2.0 * Math.PI * mf * (time - td) + phases * Math.PI / 180.0)) *
                         Math.Sin(2.0 * Math.PI * fc * (time - td) + phasec * Math.PI / 180.0);
             Assert.True(EqualsWithTol(exports, reference));
+            AssertMeasurementSuccess(netlist, "meas_vmax");
         }
     }
 }

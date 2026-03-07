@@ -24,6 +24,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".model RMOD.0 R RSH=100 lmin=0.1u lmax=5u",
                 ".OP",
                 ".SAVE I(R1)",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(netlist);
@@ -33,6 +34,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             // Expected current: 10V / 100 ohm = 0.1 A
             var current1 = RunOpSimulation(netlist, "I(R1)");
             Assert.True(EqualsWithTol(0.1, Math.Abs(current1)), $"R1 current expected ~0.1A, got {current1}");
+            AssertMeasurementSuccess(netlist, "meas_i");
         }
 
         [Fact]
@@ -45,6 +47,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".model RMOD.0 R RSH=50 wmin=1u wmax=10u",
                 ".OP",
                 ".SAVE I(R1)",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(netlist);
@@ -53,6 +56,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             // R1: L=2u, W=2u -> RMOD.0 (RSH=50) -> R = 50 * 2 / 2 = 50 ohms -> I = 5V / 50 = 0.1 A
             var current1 = RunOpSimulation(netlist, "I(R1)");
             Assert.True(EqualsWithTol(0.1, Math.Abs(current1)), $"R1 current expected ~0.1A, got {current1}");
+            AssertMeasurementSuccess(netlist, "meas_i");
         }
 
         [Fact]
@@ -66,6 +70,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".model RMOD R RSH=500",
                 ".OP",
                 ".SAVE I(R1)",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(netlist);
@@ -74,6 +79,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             // R1: L=0.5u (< lmin=1u) -> should use RMOD (default, RSH=500) -> R = 500 * 0.5 / 1 = 250 ohms
             var current1 = RunOpSimulation(netlist, "I(R1)");
             Assert.True(EqualsWithTol(10.0 / 250.0, Math.Abs(current1)), $"R1 current expected ~0.04A, got {current1}");
+            AssertMeasurementSuccess(netlist, "meas_i");
         }
 
         [Fact]
@@ -86,6 +92,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".model RMOD.0 R RSH=60 lmin=0.5u lmax=5u wmin=1u wmax=10u",
                 ".OP",
                 ".SAVE I(R1)",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(netlist);
@@ -94,6 +101,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             // R1: L=1u, W=2u -> RMOD.0 (RSH=60) -> R = 60 * 1 / 2 = 30 ohms -> I = 12V / 30 = 0.4 A
             var current1 = RunOpSimulation(netlist, "I(R1)");
             Assert.True(EqualsWithTol(0.4, Math.Abs(current1)), $"R1 current expected ~0.4A, got {current1}");
+            AssertMeasurementSuccess(netlist, "meas_i");
         }
 
         #endregion
@@ -112,6 +120,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".model CMOD.0 C CJ=1e-6 lmin=0.5u lmax=5u wmin=0.5u wmax=5u",
                 ".TRAN 1n 30n",
                 ".SAVE V(OUT1)",
+                ".MEAS TRAN meas_v MAX V(OUT1)",
                 ".END");
 
             Assert.NotNull(netlist);
@@ -120,6 +129,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             var exports1 = RunTransientSimulation(netlist, "V(OUT1)");
             Assert.NotNull(exports1);
             Assert.True(exports1.Length > 0);
+            AssertMeasurementSuccess(netlist, "meas_v");
         }
 
         [Fact]
@@ -133,6 +143,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".model CMOD.0 C CJ=5e-7 wmin=1u wmax=10u",
                 ".TRAN 1n 40n",
                 ".SAVE V(OUT1)",
+                ".MEAS TRAN meas_v MAX V(OUT1)",
                 ".END");
 
             Assert.NotNull(netlist);
@@ -141,6 +152,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             var exports1 = RunTransientSimulation(netlist, "V(OUT1)");
             Assert.NotNull(exports1);
             Assert.True(exports1.Length > 0);
+            AssertMeasurementSuccess(netlist, "meas_v");
         }
 
         [Fact]
@@ -155,6 +167,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".model CMOD C CJ=5e-7",
                 ".TRAN 1n 30n",
                 ".SAVE V(OUT1)",
+                ".MEAS TRAN meas_v MAX V(OUT1)",
                 ".END");
 
             Assert.NotNull(netlist);
@@ -163,6 +176,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             var exports1 = RunTransientSimulation(netlist, "V(OUT1)");
             Assert.NotNull(exports1);
             Assert.True(exports1.Length > 0);
+            AssertMeasurementSuccess(netlist, "meas_v");
         }
 
         #endregion
@@ -180,6 +194,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 "L1 OUT 0 1u",
                 ".TRAN 1n 30n",
                 ".SAVE V(OUT) I(L1)",
+                ".MEAS TRAN meas_i MAX I(L1)",
                 ".END");
 
             Assert.NotNull(netlist);
@@ -188,6 +203,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             var exports = RunTransientSimulation(netlist, "I(L1)");
             Assert.NotNull(exports);
             Assert.True(exports.Length > 0);
+            AssertMeasurementSuccess(netlist, "meas_i");
         }
 
         [Fact]
@@ -201,6 +217,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 "L1 OUT 0 1u",
                 ".TRAN 0.5n 60n",
                 ".SAVE I(L1)",
+                ".MEAS TRAN meas_i MAX I(L1)",
                 ".END");
 
             Assert.NotNull(netlist);
@@ -219,6 +236,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 Assert.True(exports[index30n].Item2 > exports[10].Item2, 
                     $"Current should increase: I(t=5ns)={exports[10].Item2}, I(t=30ns)={exports[index30n].Item2}");
             }
+            AssertMeasurementSuccess(netlist, "meas_i");
         }
 
         [Fact]
@@ -234,6 +252,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 "L2 OUT2 0 10u",
                 ".TRAN 0.5n 60n",
                 ".SAVE I(L1) I(L2)",
+                ".MEAS TRAN meas_i MAX I(L1)",
                 ".END");
 
             Assert.NotNull(netlist);
@@ -249,6 +268,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 Assert.True(exports1[index20n].Item2 > exports2[index20n].Item2,
                     $"Smaller inductor should have higher current earlier: I(L1)={exports1[index20n].Item2}, I(L2)={exports2[index20n].Item2}");
             }
+            AssertMeasurementSuccess(netlist, "meas_i");
         }
 
         #endregion
@@ -267,6 +287,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".model RMOD.0 R RSH=50 lmin=1u lmax=10u",
                 ".TRAN 0.5n 50n",
                 ".SAVE V(N2)",
+                ".MEAS TRAN meas_v MAX V(N2)",
                 ".END");
 
             Assert.NotNull(netlist);
@@ -286,6 +307,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                     maxVoltage = Math.Abs(v.Item2);
             }
             Assert.True(maxVoltage > 0.1, $"Circuit should respond to input, max voltage: {maxVoltage}");
+            AssertMeasurementSuccess(netlist, "meas_v");
         }
 
         [Fact]
@@ -300,6 +322,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".model RMOD.1 R RSH=1000 lmin=5u lmax=50u",
                 ".OP",
                 ".SAVE V(MID)",
+                ".MEAS OP meas_v MAX V(MID)",
                 ".END");
 
             Assert.NotNull(netlist);
@@ -313,6 +336,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             var expected = 9.9;
             var tolerance = 0.1;
             Assert.True(Math.Abs(expected - voltage) < tolerance, $"V(MID) expected ~{expected}V, got {voltage}");
+            AssertMeasurementSuccess(netlist, "meas_v");
         }
 
         [Fact]
@@ -326,6 +350,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".model CMOD.0 C CJ=1e-6 lmin=1u lmax=10u wmin=1u wmax=10u",
                 ".TRAN 1n 80n",
                 ".SAVE V(OUT)",
+                ".MEAS TRAN meas_v MAX V(OUT)",
                 ".END");
 
             Assert.NotNull(netlist);
@@ -345,6 +370,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             }
             
             Assert.True(peakVoltage > 5.0, $"Capacitor should charge significantly, peak: {peakVoltage}V");
+            AssertMeasurementSuccess(netlist, "meas_v");
         }
 
         #endregion
@@ -362,6 +388,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".model RMOD R RSH=200",
                 ".OP",
                 ".SAVE I(R1)",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(netlist);
@@ -370,6 +397,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             // R1: L=1.01u (>= lmin) -> should use RMOD.0 (RSH=100) -> R = 100 * 1.01 / 1 = 101 ohms
             var current1 = RunOpSimulation(netlist, "I(R1)");
             Assert.True(EqualsWithTol(10.0 / 101.0, Math.Abs(current1)), $"R1 current expected ~0.099A, got {current1}");
+            AssertMeasurementSuccess(netlist, "meas_i");
         }
 
         [Fact]
@@ -383,6 +411,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
                 ".model RMOD R RSH=200",
                 ".OP",
                 ".SAVE I(R1)",
+                ".MEAS OP meas_i MAX I(R1)",
                 ".END");
 
             Assert.NotNull(netlist);
@@ -391,6 +420,7 @@ namespace SpiceSharpParser.IntegrationTests.Components
             // R1: L=9.99u (<= lmax) -> should use RMOD.0 (RSH=100) -> R = 100 * 9.99 / 1 = 999 ohms
             var current1 = RunOpSimulation(netlist, "I(R1)");
             Assert.True(EqualsWithTol(10.0 / 999.0, Math.Abs(current1)), $"R1 current expected ~0.01A, got {current1}");
+            AssertMeasurementSuccess(netlist, "meas_i");
         }
 
         #endregion
