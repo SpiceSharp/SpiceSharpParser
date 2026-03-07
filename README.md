@@ -55,9 +55,7 @@ var model = reader.Read(parseResult.FinalModel);
 var simulation = model.Simulations.Single();
 var export = model.Exports.Find(e => e.Name == "i(V1)");
 simulation.EventExportData += (sender, args) => Console.WriteLine(export.Extract());
-var codes = simulation.Run(model.Circuit, -1);
-codes = simulation.InvokeEvents(codes);
-codes.ToArray();
+simulation.Execute(model.Circuit);
 ```
 
 ### How It Works
@@ -66,7 +64,7 @@ codes.ToArray();
 |------|-----|--------|
 | **Parse** | `SpiceNetlistParser.ParseNetlist()` | Parse-tree model of the netlist |
 | **Read** | `SpiceSharpReader.Read()` | `SpiceSharpModel` with Circuit, Simulations, Exports, Measurements |
-| **Simulate** | `simulation.Run()` / `InvokeEvents()` | Data available via exports and event callbacks |
+| **Simulate** | `simulation.Execute()` | Data available via exports and event callbacks |
 
 ## Compatibility
 

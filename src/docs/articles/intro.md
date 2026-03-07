@@ -44,9 +44,7 @@ var spiceModel = reader.Read(parseResult.FinalModel);
 var sim = spiceModel.Simulations.Single();
 var export = spiceModel.Exports.Find(e => e.Name == "V(OUT)");
 sim.EventExportData += (sender, args) => Console.WriteLine(export.Extract());
-var codes = sim.Run(spiceModel.Circuit, -1);
-codes = sim.InvokeEvents(codes);
-codes.ToArray();
+sim.Execute(spiceModel.Circuit);
 ```
 
 ## Workflow Overview

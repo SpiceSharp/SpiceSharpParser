@@ -140,9 +140,7 @@ var model = reader.Read(netlist);
 // Run simulations
 foreach (var sim in model.Simulations)
 {
-    var codes = sim.Run(model.Circuit, -1);
-    codes = sim.InvokeEvents(codes);
-    codes.ToArray();
+    sim.Execute(model.Circuit);
 }
 
 // Access measurement results
