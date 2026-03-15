@@ -62,6 +62,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Measureme
                     return ComputeWhen(simulationName);
                 case MeasType.FindWhen:
                     return ComputeFindWhen(simulationName);
+                case MeasType.FindAt:
+                    return ComputeFindAt(simulationName);
                 case MeasType.Min:
                     return ComputeMin(simulationName);
                 case MeasType.Max:
@@ -93,7 +95,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Measureme
             double? fromX,
             double? toX)
         {
+            bool findLast = edgeNumber == EdgeConstants.Last;
             int edgeCount = 0;
+            double? lastCrossing = null;
 
             for (int i = 1; i < data.Count; i++)
             {
@@ -152,21 +156,31 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Measureme
                 }
 
                 edgeCount++;
-                if (edgeCount == edgeNumber)
-                {
-                    // Linear interpolation to find precise crossing point
-                    double dy = data[i].Y - data[i - 1].Y;
-                    if (Math.Abs(dy) < 1e-30)
-                    {
-                        return data[i].X;
-                    }
 
+                // Linear interpolation to find precise crossing point
+                double crossX;
+                double dy = data[i].Y - data[i - 1].Y;
+                if (Math.Abs(dy) < 1e-30)
+                {
+                    crossX = data[i].X;
+                }
+                else
+                {
                     double fraction = (threshold - data[i - 1].Y) / dy;
-                    return data[i - 1].X + fraction * (data[i].X - data[i - 1].X);
+                    crossX = data[i - 1].X + fraction * (data[i].X - data[i - 1].X);
+                }
+
+                if (findLast)
+                {
+                    lastCrossing = crossX;
+                }
+                else if (edgeCount == edgeNumber)
+                {
+                    return crossX;
                 }
             }
 
-            return null;
+            return findLast ? lastCrossing : null;
         }
 
         /// <summary>
@@ -238,7 +252,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Measureme
 
         private MeasurementResult ComputeWhen(string simulationName)
         {
-            double? crossX = FindCrossing(_data, Definition.WhenVal, Definition.WhenEdge, Definition.WhenEdgeNumber, null, Definition.From, Definition.To);
+            double? crossX = FindCrossing(_data, Definition.WhenVal, Definition.WhenEdge, Definition.WhenEdgeNumber, Definition.WhenTd, Definition.From, Definition.To);
             if (!crossX.HasValue)
             {
                 return new MeasurementResult(Definition.Name, double.NaN, false, "WHEN", simulationName);
@@ -250,7 +264,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Measureme
         private MeasurementResult ComputeFindWhen(string simulationName)
         {
             // Use the primary data (_data) for the WHEN condition
-            double? crossX = FindCrossing(_data, Definition.WhenVal, Definition.WhenEdge, Definition.WhenEdgeNumber, null, Definition.From, Definition.To);
+            double? crossX = FindCrossing(_data, Definition.WhenVal, Definition.WhenEdge, Definition.WhenEdgeNumber, Definition.WhenTd, Definition.From, Definition.To);
             if (!crossX.HasValue)
             {
                 return new MeasurementResult(Definition.Name, double.NaN, false, "FIND_WHEN", simulationName);
@@ -260,6 +274,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Measureme
             var findSource = _findData.Count > 0 ? _findData : _data;
             double value = InterpolateY(findSource, crossX.Value);
             return new MeasurementResult(Definition.Name, value, true, "FIND_WHEN", simulationName);
+        }
+
+        private MeasurementResult ComputeFindAt(string simulationName)
+        {
+            if (!Definition.At.HasValue)
+            {
+                return new MeasurementResult(Definition.Name, double.NaN, false, "FIND_AT", simulationName);
+            }
+
+            if (_data.Count == 0)
+            {
+                return new MeasurementResult(Definition.Name, double.NaN, false, "FIND_AT", simulationName);
+            }
+
+            double value = InterpolateY(_data, Definition.At.Value);
+            return new MeasurementResult(Definition.Name, value, true, "FIND_AT", simulationName);
         }
 
         private MeasurementResult ComputeMin(string simulationName)
@@ -403,13 +433,31 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Measureme
 
         private MeasurementResult ComputeDeriv(string simulationName)
         {
-            if (!Definition.At.HasValue)
+            double targetX;
+
+            if (Definition.At.HasValue)
+            {
+                targetX = Definition.At.Value;
+            }
+            else if (Definition.WhenSignal != null)
+            {
+                // DERIV ... WHEN: find the crossing point first using _data (the WHEN signal)
+                double? crossX = FindCrossing(_data, Definition.WhenVal, Definition.WhenEdge, Definition.WhenEdgeNumber, Definition.WhenTd, Definition.From, Definition.To);
+                if (!crossX.HasValue)
+                {
+                    return new MeasurementResult(Definition.Name, double.NaN, false, "DERIV", simulationName);
+                }
+
+                targetX = crossX.Value;
+            }
+            else
             {
                 return new MeasurementResult(Definition.Name, double.NaN, false, "DERIV", simulationName);
             }
 
-            double targetX = Definition.At.Value;
-            var windowed = GetWindowedData(_data);
+            // Use _findData for the derivative signal when WHEN is used, otherwise _data
+            var derivData = _findData.Count > 0 ? _findData : _data;
+            var windowed = GetWindowedData(derivData);
 
             if (windowed.Count < 2)
             {

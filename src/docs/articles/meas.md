@@ -13,7 +13,7 @@ The `.MEAS` (or `.MEASURE`) statement extracts a single scalar number from simul
 |-------|---------|--------|
 | `analysis_type` | Which simulation type to measure | `TRAN`, `AC`, `DC`, `OP`, `NOISE` |
 | `name` | A label you choose — this is the key used to look up the result in C# | Any identifier (e.g. `rise_time`, `vmax`) |
-| `measurement_spec` | What to measure and how (described in detail below) | One of the 11 measurement types |
+| `measurement_spec` | What to measure and how (described in detail below) | One of the 12 measurement types |
 
 ## Quick Reference — All Measurement Types
 
@@ -22,6 +22,7 @@ The `.MEAS` (or `.MEASURE`) statement extracts a single scalar number from simul
 | `TRIG … TARG` | Time (or sweep) difference between two threshold crossings | [TRIG/TARG](#trigtarg--timing-measurements) |
 | `WHEN` | Time (or sweep value) at which a signal crosses a threshold | [WHEN](#when--threshold-crossing-time) |
 | `FIND … WHEN` | Value of signal A at the moment signal B crosses a threshold | [FIND/WHEN](#findwhen--value-at-a-threshold-crossing) |
+| `FIND … AT` | Value of a signal at a specific point on the abscissa | [FIND/AT](#findat--value-at-a-specific-point) |
 | `MAX` | Maximum value of a signal | [MAX](#max--maximum-value) |
 | `MIN` | Minimum value of a signal | [MIN](#min--minimum-value) |
 | `AVG` | Time-weighted average (trapezoidal mean) | [AVG](#avg--average-value) |
@@ -39,12 +40,15 @@ These qualifiers can be combined with most measurement types:
 |-----------|---------|---------|
 | `VAL=<v>` | Threshold voltage/current value | `VAL=5.0` |
 | `RISE=<n>` | Match the *n*th **rising** crossing | `RISE=1` (first rising edge) |
+| `RISE=LAST` | Match the **last** rising crossing | `RISE=LAST` |
 | `FALL=<n>` | Match the *n*th **falling** crossing | `FALL=2` (second falling edge) |
+| `FALL=LAST` | Match the **last** falling crossing | `FALL=LAST` |
 | `CROSS=<n>` | Match the *n*th crossing in **either** direction | `CROSS=3` |
-| `TD=<time>` | Ignore data before this time (start searching later) | `TD=5u` |
+| `CROSS=LAST` | Match the **last** crossing in either direction | `CROSS=LAST` |
+| `TD=<time>` | Ignore data before this time (start searching later); works with TRIG/TARG and WHEN/FIND | `TD=5u` |
 | `FROM=<x>` | Start of the measurement window | `FROM=2u` |
 | `TO=<x>` | End of the measurement window | `TO=8u` |
-| `AT=<x>` | Evaluate at a specific point (DERIV only) | `AT=5u` |
+| `AT=<x>` | Evaluate at a specific point (used in DERIV and FIND) | `AT=5u` |
 
 ---
 
@@ -62,8 +66,8 @@ These qualifiers can be combined with most measurement types:
 
 **Syntax:**
 ```
-.MEAS <analysis> <name> TRIG <signal> VAL=<v> [RISE|FALL|CROSS=<n>] [TD=<t>]
-+                       TARG <signal> VAL=<v> [RISE|FALL|CROSS=<n>]
+.MEAS <analysis> <name> TRIG <signal> VAL=<v> [RISE|FALL|CROSS=<n>|LAST] [TD=<t>]
++                       TARG <signal> VAL=<v> [RISE|FALL|CROSS=<n>|LAST] [TD=<t>]
 ```
 
 #### Example 1 — Rise time of an RC circuit
@@ -163,10 +167,10 @@ C1 OUT 0 1u
 **Syntax — two forms:**
 ```
 * Combined syntax: signal=value in one expression
-.MEAS <analysis> <name> WHEN <signal>=<value> [RISE|FALL|CROSS=<n>]
+.MEAS <analysis> <name> WHEN <signal>=<value> [RISE|FALL|CROSS=<n>|LAST] [TD=<t>]
 
 * Separate syntax: signal and VAL as separate tokens
-.MEAS <analysis> <name> WHEN <signal> VAL=<value> [RISE|FALL|CROSS=<n>]
+.MEAS <analysis> <name> WHEN <signal> VAL=<value> [RISE|FALL|CROSS=<n>|LAST] [TD=<t>]
 ```
 
 Both forms produce the same result.
@@ -217,7 +221,40 @@ R1 OUT 0 1k
 
 **Expected result:** ~10 µs.
 
-#### Example 4 — What happens when the signal never crosses the threshold?
+#### Example 4 — Using TD to skip early crossings
+
+`TD` (time delay) works with WHEN just as it does with TRIG/TARG. Only crossings after `TD` are counted:
+
+```spice
+* Sine wave crosses 0V many times. With TD=0.8ms, skip crossings before 0.8ms
+V1 OUT 0 SIN(0 1 1e3)
+R1 OUT 0 1k
+.TRAN 1e-6 5e-3
+
+.MEAS TRAN t_first WHEN V(OUT)=0 CROSS=1
+.MEAS TRAN t_after_td WHEN V(OUT)=0 CROSS=1 TD=0.8m
+.END
+```
+
+**Result:** `t_first` is the first crossing (~0.5 ms), while `t_after_td` is the first crossing after 0.8 ms (~1 ms).
+
+#### Example 5 — Finding the LAST crossing
+
+Use `CROSS=LAST`, `RISE=LAST`, or `FALL=LAST` to find the final matching crossing in the simulation data:
+
+```spice
+* Find the last time V(OUT) crosses 0V
+V1 OUT 0 SIN(0 1 1e3)
+R1 OUT 0 1k
+.TRAN 1e-6 5e-3
+
+.MEAS TRAN t_last WHEN V(OUT)=0 CROSS=LAST
+.END
+```
+
+**Result:** `t_last` is near 5 ms (the last zero crossing before end of simulation).
+
+#### Example 6 — What happens when the signal never crosses the threshold?
 
 If the threshold is never reached, the measurement result has `Success = false` and `Value = NaN`:
 
@@ -247,7 +284,7 @@ R1 OUT 0 1k
 
 **Syntax:**
 ```
-.MEAS <analysis> <name> FIND <signal_A> WHEN <signal_B>=<value> [RISE|FALL|CROSS=<n>]
+.MEAS <analysis> <name> FIND <signal_A> WHEN <signal_B>=<value> [RISE|FALL|CROSS=<n>|LAST] [TD=<t>]
 ```
 
 #### Example 1 — Output voltage when input crosses 2.5 V
@@ -295,6 +332,47 @@ C1 OUT 0 10n
 .MEAS TRAN v_at_rise2 FIND V(OUT) WHEN V(IN)=2.5 RISE=2
 .END
 ```
+
+---
+
+### FIND/AT — Value at a Specific Point
+
+**Purpose:** Find the value of a signal at a specific point on the abscissa (e.g., a specific time in a transient analysis, or a specific frequency in an AC analysis). The signal value is computed via linear interpolation between data points.
+
+**Syntax:**
+```
+.MEAS <analysis> <name> FIND <signal> AT=<value>
+```
+
+#### Example 1 — Voltage at a specific time
+
+```spice
+* RC charge — what is V(OUT) at t=5ms?
+V1 IN 0 10.0
+R1 IN OUT 10k
+C1 OUT 0 1u
+.IC V(OUT)=0.0
+.TRAN 1e-5 50e-3
+
+.MEAS TRAN v_at_5ms FIND V(OUT) AT=5m
+.END
+```
+
+**Expected result:** ~3.935 V ($10 \times (1 - e^{-5/10}) \approx 3.935$).
+
+#### Example 2 — Constant voltage check
+
+```spice
+* Constant 5V — FIND AT any time returns 5V
+V1 OUT 0 5.0
+R1 OUT 0 1k
+.TRAN 1e-4 10e-3
+
+.MEAS TRAN v_check FIND V(OUT) AT=5m
+.END
+```
+
+**Expected result:** 5.0 V.
 
 ---
 
@@ -457,14 +535,18 @@ R1 OUT 0 1k
 
 ### DERIV — Derivative at a Point
 
-**Purpose:** Compute the instantaneous derivative (slope) of a signal at a specific time point, using central-difference interpolation.
+**Purpose:** Compute the instantaneous derivative (slope) of a signal at a specific point, using central-difference interpolation.
 
-**Syntax:**
+**Syntax — two forms:**
 ```
+* At a specific point
 .MEAS <analysis> <name> DERIV <signal> AT=<time>
+
+* At the point where a condition is met
+.MEAS <analysis> <name> DERIV <signal> WHEN <condition_signal>=<value> [RISE|FALL|CROSS=<n>|LAST] [TD=<t>]
 ```
 
-#### Example — Slope of a linear ramp
+#### Example 1 — Slope of a linear ramp
 
 A PWL source ramps from 0 V to 10 V over 10 µs. The slope is constant at $10 / 10 \times 10^{-6} = 10^{6}$ V/s:
 
@@ -479,6 +561,24 @@ R1 OUT 0 1k
 ```
 
 **Expected result:** 1 × 10⁶ V/s.
+
+#### Example 2 — Derivative at a threshold crossing (DERIV with WHEN)
+
+Compute the slope of V(OUT) at the moment it crosses 5 V:
+
+```spice
+* RC charge — derivative when V(OUT) reaches 5V
+V1 IN 0 10.0
+R1 IN OUT 10k
+C1 OUT 0 1u
+.IC V(OUT)=0.0
+.TRAN 1e-5 50e-3
+
+.MEAS TRAN slope_at_5v DERIV V(OUT) WHEN V(OUT)=5
+.END
+```
+
+**Expected result:** ~500 V/s (at $t = \tau \ln 2$, the slope is $\frac{10}{\tau} \cdot e^{-\ln 2} = \frac{10}{0.01} \cdot 0.5 = 500$).
 
 ---
 
@@ -610,7 +710,7 @@ Each `MeasurementResult` contains:
 | `Name` | `string` | The measurement name from your `.MEAS` statement |
 | `Value` | `double` | The numeric result (`double.NaN` if the measurement failed) |
 | `Success` | `bool` | `true` if the measurement found a valid result |
-| `MeasurementType` | `string` | One of: `TRIG_TARG`, `WHEN`, `FIND_WHEN`, `MIN`, `MAX`, `AVG`, `RMS`, `PP`, `INTEG`, `DERIV`, `PARAM` |
+| `MeasurementType` | `string` | One of: `TRIG_TARG`, `WHEN`, `FIND_WHEN`, `FIND_AT`, `MIN`, `MAX`, `AVG`, `RMS`, `PP`, `INTEG`, `DERIV`, `PARAM` |
 | `SimulationName` | `string` | Identifies which simulation produced this result |
 
 ---

@@ -37,8 +37,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Measureme
         /// <summary>Compute the derivative of a signal at a point.</summary>
         Deriv,
 
+        /// <summary>Find the value of a signal at a specific point (FIND ... AT=).</summary>
+        FindAt,
+
         /// <summary>Compute a parameter expression from other measurement results.</summary>
         Param,
+    }
+
+    /// <summary>
+    /// Sentinel value for RISE/FALL/CROSS=LAST.
+    /// </summary>
+    public static class EdgeConstants
+    {
+        /// <summary>Indicates the last matching edge should be used.</summary>
+        public const int Last = -1;
     }
 
     /// <summary>
@@ -119,8 +131,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Measureme
         /// <summary>Gets or sets the WHEN edge type.</summary>
         public EdgeType WhenEdge { get; set; } = EdgeType.Cross;
 
-        /// <summary>Gets or sets the WHEN edge number (1-based).</summary>
+        /// <summary>Gets or sets the WHEN edge number (1-based, or EdgeConstants.Last).</summary>
         public int WhenEdgeNumber { get; set; } = 1;
+
+        /// <summary>Gets or sets the WHEN time delay offset.</summary>
+        public double? WhenTd { get; set; }
 
         // --- FIND/WHEN properties ---
 
