@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.Components
@@ -454,6 +455,49 @@ namespace SpiceSharpParser.IntegrationTests.Components
 
             var model = parser.ParseNetlist(text);
             Assert.True(model.ValidationResult.HasError);
+        }
+
+        [Fact]
+        public void When_GND_Port_Used_In_Behavioral_Source_With_Tran()
+        {
+            // Regression test: SUBCKT with GND port name + behavioral source
+            // must work in .TRAN, not just .OP. Previously, Generate() bypassed
+            // the pin map for "GND", creating a floating node instead of mapping
+            // to the external ground node "0".
+            var model = GetSpiceSharpModel(
+                "Subcircuit GND Port TRAN Test",
+                "V1 IN 0 4.0",
+                "X1 0 IN OUT test_subckt",
+                ".SUBCKT test_subckt GND INPUT OUTPUT",
+                "R1 INPUT mid 5k",
+                "R2 mid GND 5k",
+                "B1 OUTPUT GND V={0.5 * V(INPUT,GND)}",
+                ".ENDS test_subckt",
+                ".TRAN 1u 100u",
+                ".SAVE V(OUT)",
+                ".END");
+
+            var simulations = model.Simulations;
+            Assert.Single(simulations);
+
+            var tran = simulations[0];
+            double lastValue = double.NaN;
+
+            tran.EventExportData += (sender, e) =>
+            {
+                var exports = model.Exports.Where(ex => ex.Simulation == tran).ToList();
+                foreach (var export in exports)
+                {
+                    lastValue = export.Extract();
+                }
+            };
+
+            var codes = tran.Run(model.Circuit, -1);
+            codes = tran.InvokeEvents(codes);
+            codes.ToArray();
+
+            // B1 = 0.5 * V(IN,0) = 0.5 * 4.0 = 2.0V
+            Assert.InRange(lastValue, 1.9, 2.1);
         }
     }
 }

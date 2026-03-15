@@ -108,6 +108,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
                 throw new ArgumentNullException(nameof(nodeName));
             }
 
+            // Pin map takes priority — subcircuit port mapping must override
+            // the GND alias below, otherwise a port named "GND" mapped to
+            // external "0" would create a floating node instead of connecting
+            // to the real ground.
+            var pinIdentifier = nodeName;
+
+            if (_pinMap.ContainsKey(pinIdentifier))
+            {
+                return _pinMap[pinIdentifier];
+            }
+
             if (nodeName.ToUpper() == "GND")
             {
                 return nodeName;
@@ -118,16 +129,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names
                 return nodeName;
             }
 
-            var pinIdentifier = nodeName;
-
-            if (_pinMap.ContainsKey(pinIdentifier))
-            {
-                return _pinMap[pinIdentifier];
-            }
-            else
-            {
-                return $"{SubCircuitFullName}{Separator}{nodeName}";
-            }
+            return $"{SubCircuitFullName}{Separator}{nodeName}";
         }
 
         /// <summary>
