@@ -122,6 +122,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 findExport = GenerateExport(definition.FindSignal, context, simulation);
             }
 
+            // For DERIV with WHEN, collect the derivative signal separately
+            if (definition.Type == MeasType.Deriv && definition.WhenSignal != null && definition.Signal != null)
+            {
+                findExport = GenerateExport(definition.Signal, context, simulation);
+            }
+
             // For TRIG/TARG, we might need separate exports for trigger and target signals
             Export trigExport = null;
             Export targExport = null;
@@ -222,13 +228,23 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     return definition.WhenSignal;
                 case MeasType.FindWhen:
                     return definition.WhenSignal;
+                case MeasType.FindAt:
+                    return definition.FindSignal;
                 case MeasType.Min:
                 case MeasType.Max:
                 case MeasType.Avg:
                 case MeasType.Rms:
                 case MeasType.Pp:
                 case MeasType.Integ:
+                    return definition.Signal;
                 case MeasType.Deriv:
+                    // If DERIV has a WHEN condition, the primary signal is the WHEN signal
+                    // and we collect the derivative signal separately via findExport
+                    if (definition.WhenSignal != null)
+                    {
+                        return definition.WhenSignal;
+                    }
+
                     return definition.Signal;
                 default:
                     return null;
@@ -459,15 +475,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                             break;
                         case "RISE":
                             edge = EdgeType.Rise;
-                            edgeNumber = Math.Max(1, (int)context.Evaluator.EvaluateDouble(ap.Value));
+                            edgeNumber = ParseEdgeNumber(ap.Value, context);
                             break;
                         case "FALL":
                             edge = EdgeType.Fall;
-                            edgeNumber = Math.Max(1, (int)context.Evaluator.EvaluateDouble(ap.Value));
+                            edgeNumber = ParseEdgeNumber(ap.Value, context);
                             break;
                         case "CROSS":
                             edge = EdgeType.Cross;
-                            edgeNumber = Math.Max(1, (int)context.Evaluator.EvaluateDouble(ap.Value));
+                            edgeNumber = ParseEdgeNumber(ap.Value, context);
                             break;
                         case "TD":
                             td = context.Evaluator.EvaluateDouble(ap.Value);
@@ -499,10 +515,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         private MeasurementDefinition ParseFindWhen(MeasurementDefinition definition, List<Parameter> specParams, IReadingContext context)
         {
             // .MEAS TRAN name FIND V(out) WHEN V(in)=0.5 [RISE|FALL|CROSS=<n>]
-            definition.Type = MeasType.FindWhen;
+            // .MEAS TRAN name FIND V(out) AT=5m
 
-            // Find the WHEN keyword
+            // Find the WHEN keyword or AT= parameter
             int whenIndex = -1;
+            int atIndex = -1;
             for (int i = 1; i < specParams.Count; i++)
             {
                 if (specParams[i].Value.ToUpper() == "WHEN")
@@ -510,18 +527,26 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     whenIndex = i;
                     break;
                 }
+
+                if (specParams[i] is AssignmentParameter ap && ap.Name.ToUpper() == "AT")
+                {
+                    atIndex = i;
+                    break;
+                }
             }
 
-            if (whenIndex < 0)
+            if (whenIndex < 0 && atIndex < 0)
             {
                 context.Result.ValidationResult.AddError(
                     ValidationEntrySource.Reader,
-                    ".MEAS FIND: Missing WHEN keyword");
+                    ".MEAS FIND: Missing WHEN or AT= keyword");
                 return null;
             }
 
-            // The FIND signal is between FIND keyword and WHEN keyword
-            for (int i = 1; i < whenIndex; i++)
+            int signalEnd = whenIndex >= 0 ? whenIndex : atIndex;
+
+            // The FIND signal is between FIND keyword and WHEN/AT keyword
+            for (int i = 1; i < signalEnd; i++)
             {
                 if (specParams[i] is BracketParameter || specParams[i] is ReferenceParameter)
                 {
@@ -538,13 +563,24 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 context.Result.ValidationResult.AddError(
                     ValidationEntrySource.Reader,
-                    ".MEAS FIND/WHEN: Missing signal between FIND and WHEN keywords");
+                    ".MEAS FIND: Missing signal after FIND keyword");
                 return null;
             }
 
-            // Parse the WHEN condition
-            var whenParams = specParams.GetRange(whenIndex, specParams.Count - whenIndex);
-            ParseWhenCondition(whenParams, 1, definition, context);
+            if (atIndex >= 0)
+            {
+                // FIND ... AT= form
+                definition.Type = MeasType.FindAt;
+                var atParam = (AssignmentParameter)specParams[atIndex];
+                definition.At = context.Evaluator.EvaluateDouble(atParam.Value);
+            }
+            else
+            {
+                // FIND ... WHEN form
+                definition.Type = MeasType.FindWhen;
+                var whenParams = specParams.GetRange(whenIndex, specParams.Count - whenIndex);
+                ParseWhenCondition(whenParams, 1, definition, context);
+            }
 
             return definition;
         }
@@ -607,15 +643,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                             break;
                         case "RISE":
                             definition.WhenEdge = EdgeType.Rise;
-                            definition.WhenEdgeNumber = Math.Max(1, (int)context.Evaluator.EvaluateDouble(edgeAp.Value));
+                            definition.WhenEdgeNumber = ParseEdgeNumber(edgeAp.Value, context);
                             break;
                         case "FALL":
                             definition.WhenEdge = EdgeType.Fall;
-                            definition.WhenEdgeNumber = Math.Max(1, (int)context.Evaluator.EvaluateDouble(edgeAp.Value));
+                            definition.WhenEdgeNumber = ParseEdgeNumber(edgeAp.Value, context);
                             break;
                         case "CROSS":
                             definition.WhenEdge = EdgeType.Cross;
-                            definition.WhenEdgeNumber = Math.Max(1, (int)context.Evaluator.EvaluateDouble(edgeAp.Value));
+                            definition.WhenEdgeNumber = ParseEdgeNumber(edgeAp.Value, context);
+                            break;
+                        case "TD":
+                            definition.WhenTd = context.Evaluator.EvaluateDouble(edgeAp.Value);
                             break;
                         case "FROM":
                             definition.From = context.Evaluator.EvaluateDouble(edgeAp.Value);
@@ -669,9 +708,23 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         private MeasurementDefinition ParseDeriv(MeasurementDefinition definition, List<Parameter> specParams, IReadingContext context)
         {
             // .MEAS TRAN name DERIV V(out) AT=<t>
+            // .MEAS TRAN name DERIV V(out) WHEN V(in)=0.5
             definition.Type = MeasType.Deriv;
 
+            // Check for WHEN keyword
+            int whenIndex = -1;
             for (int i = 1; i < specParams.Count; i++)
+            {
+                if (specParams[i].Value.ToUpper() == "WHEN")
+                {
+                    whenIndex = i;
+                    break;
+                }
+            }
+
+            int parseEnd = whenIndex >= 0 ? whenIndex : specParams.Count;
+
+            for (int i = 1; i < parseEnd; i++)
             {
                 var param = specParams[i];
                 if (param is AssignmentParameter ap)
@@ -703,15 +756,31 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 return null;
             }
 
-            if (!definition.At.HasValue)
+            if (whenIndex >= 0)
+            {
+                // DERIV ... WHEN form: find crossing point, then compute derivative there
+                var whenParams = specParams.GetRange(whenIndex, specParams.Count - whenIndex);
+                ParseWhenCondition(whenParams, 1, definition, context);
+            }
+            else if (!definition.At.HasValue)
             {
                 context.Result.ValidationResult.AddError(
                     ValidationEntrySource.Reader,
-                    ".MEAS DERIV: Missing required AT= parameter");
+                    ".MEAS DERIV: Missing required AT= or WHEN parameter");
                 return null;
             }
 
             return definition;
+        }
+
+        private static int ParseEdgeNumber(string value, IReadingContext context)
+        {
+            if (value.Equals("LAST", StringComparison.OrdinalIgnoreCase))
+            {
+                return EdgeConstants.Last;
+            }
+
+            return Math.Max(1, (int)context.Evaluator.EvaluateDouble(value));
         }
 
         private MeasurementDefinition ParseParam(MeasurementDefinition definition, List<Parameter> specParams)

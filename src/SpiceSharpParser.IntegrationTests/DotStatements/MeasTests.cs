@@ -2636,5 +2636,195 @@ namespace SpiceSharpParser.IntegrationTests.DotStatements
                 model.Measurements["m5"][0].Value,
                 model.Measurements["m14"][0].Value));
         }
+        // =====================================================================
+        // Group O: FIND ... AT= Measurements
+        // =====================================================================
+
+        [Fact]
+        public void FindAtConstantVoltage()
+        {
+            // Constant 5V source — FIND V(out) AT=any_time should return 5.0
+            var model = GetSpiceSharpModel(
+                "MEAS FIND AT Constant Voltage",
+                "V1 OUT 0 5.0",
+                "R1 OUT 0 1e3",
+                ".TRAN 1e-4 10e-3",
+                ".MEAS TRAN res1 FIND V(OUT) AT=5m",
+                ".END");
+
+            RunSimulations(model);
+
+            Assert.True(model.Measurements.ContainsKey("res1"));
+            var results = model.Measurements["res1"];
+            Assert.Single(results);
+            Assert.True(results[0].Success);
+            Assert.True(EqualsWithTol(5.0, results[0].Value));
+        }
+
+        [Fact]
+        public void FindAtRCCharging()
+        {
+            // RC circuit: V(out) = 10*(1-exp(-t/RC)), RC=10ms
+            // At t=10ms: V(out) = 10*(1-exp(-1)) ≈ 6.3212
+            double rc = 10e3 * 1e-6; // 10ms
+            double expected = 10.0 * (1.0 - Math.Exp(-10e-3 / rc));
+
+            var model = GetSpiceSharpModel(
+                "MEAS FIND AT RC Charging",
+                "V1 IN 0 10.0",
+                "R1 IN OUT 10e3",
+                "C1 OUT 0 1e-6",
+                ".IC V(OUT)=0.0",
+                ".TRAN 1e-5 50e-3",
+                ".MEAS TRAN res1 FIND V(OUT) AT=10m",
+                ".END");
+
+            RunSimulations(model);
+
+            Assert.True(model.Measurements.ContainsKey("res1"));
+            var results = model.Measurements["res1"];
+            Assert.Single(results);
+            Assert.True(results[0].Success);
+            Assert.True(EqualsWithTol(expected, results[0].Value));
+        }
+
+        // =====================================================================
+        // Group P: TD on WHEN Measurements
+        // =====================================================================
+
+        [Fact]
+        public void WhenWithTD()
+        {
+            // Oscillating signal: crosses 0V many times. With TD, skip early crossings.
+            // V(out) = sin(2*pi*1000*t) crosses 0 at t=0, 0.5ms, 1ms, 1.5ms, ...
+            // With TD=0.8ms, the first crossing after 0.8ms is at t=1ms
+            var model = GetSpiceSharpModel(
+                "MEAS WHEN with TD",
+                "V1 OUT 0 SIN(0 1 1e3)",
+                "R1 OUT 0 1e3",
+                ".TRAN 1e-6 5e-3",
+                ".MEAS TRAN res_notd WHEN V(OUT)=0 CROSS=1",
+                ".MEAS TRAN res_td WHEN V(OUT)=0 CROSS=1 TD=0.8m",
+                ".END");
+
+            RunSimulations(model);
+
+            Assert.True(model.Measurements.ContainsKey("res_notd"));
+            Assert.True(model.Measurements.ContainsKey("res_td"));
+            Assert.True(model.Measurements["res_notd"][0].Success);
+            Assert.True(model.Measurements["res_td"][0].Success);
+            // Without TD, first crossing is near t=0.5ms (first positive-to-negative)
+            // With TD=0.8ms, first crossing after 0.8ms should be at ~1ms
+            Assert.True(model.Measurements["res_td"][0].Value > 0.8e-3);
+        }
+
+        // =====================================================================
+        // Group Q: RISE/FALL/CROSS=LAST
+        // =====================================================================
+
+        [Fact]
+        public void WhenCrossLast()
+        {
+            // Oscillating signal: find the last crossing of 0V
+            var model = GetSpiceSharpModel(
+                "MEAS WHEN CROSS LAST",
+                "V1 OUT 0 SIN(0 1 1e3)",
+                "R1 OUT 0 1e3",
+                ".TRAN 1e-6 5e-3",
+                ".MEAS TRAN res_last WHEN V(OUT)=0 CROSS=LAST",
+                ".MEAS TRAN res_first WHEN V(OUT)=0 CROSS=1",
+                ".END");
+
+            RunSimulations(model);
+
+            Assert.True(model.Measurements.ContainsKey("res_last"));
+            Assert.True(model.Measurements.ContainsKey("res_first"));
+            Assert.True(model.Measurements["res_last"][0].Success);
+            Assert.True(model.Measurements["res_first"][0].Success);
+            // Last crossing should be much later than first
+            Assert.True(model.Measurements["res_last"][0].Value > model.Measurements["res_first"][0].Value);
+            // Last crossing should be near end of simulation (5ms)
+            Assert.True(model.Measurements["res_last"][0].Value > 4e-3);
+        }
+
+        [Fact]
+        public void FindWhenRiseLast()
+        {
+            // Find V(out) at the last rising crossing of 0V
+            var model = GetSpiceSharpModel(
+                "MEAS FIND WHEN RISE LAST",
+                "V1 OUT 0 SIN(0 1 1e3)",
+                "R1 OUT 0 1e3",
+                ".TRAN 1e-6 5e-3",
+                ".MEAS TRAN res1 FIND V(OUT) WHEN V(OUT)=0 RISE=LAST",
+                ".END");
+
+            RunSimulations(model);
+
+            Assert.True(model.Measurements.ContainsKey("res1"));
+            Assert.True(model.Measurements["res1"][0].Success);
+            // At a rising zero crossing, V(OUT) ≈ 0
+            Assert.True(Math.Abs(model.Measurements["res1"][0].Value) < 0.1);
+        }
+
+        [Fact]
+        public void TrigTargCrossLast()
+        {
+            // Use CROSS=LAST on TARG for TRIG/TARG measurement
+            var model = GetSpiceSharpModel(
+                "MEAS TRIG/TARG CROSS LAST",
+                "V1 OUT 0 SIN(0 1 1e3)",
+                "R1 OUT 0 1e3",
+                ".TRAN 1e-6 5e-3",
+                ".MEAS TRAN res1 TRIG V(OUT) VAL=0 CROSS=1 TARG V(OUT) VAL=0 CROSS=LAST",
+                ".END");
+
+            RunSimulations(model);
+
+            Assert.True(model.Measurements.ContainsKey("res1"));
+            Assert.True(model.Measurements["res1"][0].Success);
+            // Should be a large positive value (last crossing - first crossing)
+            Assert.True(model.Measurements["res1"][0].Value > 3e-3);
+        }
+
+        // =====================================================================
+        // Group R: DERIV with WHEN
+        // =====================================================================
+
+        [Fact]
+        public void DerivWithWhen()
+        {
+            // RC circuit: V(out) = 10*(1-exp(-t/RC))
+            // dV/dt = (10/RC)*exp(-t/RC)
+            // Use DERIV WHEN V(OUT)=5 to find the derivative at the point where V=5V
+            // V=5 when t = -RC*ln(0.5) = RC*ln(2) ≈ 6.93ms
+            // dV/dt at that point = (10/RC)*exp(-ln(2)) = (10/RC)*0.5 = 500 V/s
+            double rc = 10e3 * 1e-6; // 10ms
+
+            var model = GetSpiceSharpModel(
+                "MEAS DERIV with WHEN",
+                "V1 IN 0 10.0",
+                "R1 IN OUT 10e3",
+                "C1 OUT 0 1e-6",
+                ".IC V(OUT)=0.0",
+                ".TRAN 1e-5 50e-3",
+                ".MEAS TRAN res1 DERIV V(OUT) AT=6.93m",
+                ".MEAS TRAN res2 DERIV V(OUT) WHEN V(OUT)=5",
+                ".END");
+
+            RunSimulations(model);
+
+            Assert.True(model.Measurements.ContainsKey("res1"));
+            Assert.True(model.Measurements.ContainsKey("res2"));
+            Assert.True(model.Measurements["res1"][0].Success);
+            Assert.True(model.Measurements["res2"][0].Success);
+            // Both should give approximately the same derivative (around 500 V/s)
+            // Use a 5% tolerance since discrete derivative is approximate
+            double expected = (10.0 / rc) * 0.5; // 500 V/s
+            Assert.True(Math.Abs(model.Measurements["res1"][0].Value - expected) / expected < 0.05,
+                $"res1 derivative {model.Measurements["res1"][0].Value} not within 5% of {expected}");
+            Assert.True(Math.Abs(model.Measurements["res2"][0].Value - expected) / expected < 0.05,
+                $"res2 derivative {model.Measurements["res2"][0].Value} not within 5% of {expected}");
+        }
     }
 }
