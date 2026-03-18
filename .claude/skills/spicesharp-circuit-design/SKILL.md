@@ -71,18 +71,20 @@ tests/
    ```csharp
    using System.Text;
    using SpiceSharp.Simulations;
-   using SpiceSharpParser;
+   using SpiceSharpParser;                              // SpiceSharpReader (simple path)
    using SpiceSharpParser.Common;
-   using SpiceSharpParser.ModelReaders.Netlist.Spice;
+   using SpiceSharpParser.ModelReaders.Netlist.Spice;   // SpiceNetlistReader (advanced path)
    ```
 
 2. Create `CircuitTestHelper.cs` with shared methods:
    - `ParseAndRead(string netlist)` → parses, reads, validates, returns `SpiceSharpModel`
    - `RunOP(string netlist)` → returns `Dictionary<string, double>` of export values
    - `RunDC(string netlist)` → returns `Dictionary<string, List<(double SweepValue, double Value)>>`
-   - `RunAC(string netlist)` → returns `Dictionary<string, List<(double Frequency, double Value)>>`
+   - `RunAC(string netlist)` → returns `Dictionary<string, List<(double Frequency, double Value)>>` (no AC helper in `BaseTests.cs` — implement using `((AC)simulation).Frequency`)
    - `RunTran(string netlist)` → returns `Dictionary<string, List<(double Time, double Value)>>`
    - `GetMeasurements(string netlist)` → returns `Dictionary<string, double>` of successful .MEAS results
+   - `AssertMeasurement(SpiceSharpModel model, string name, double expectedValue)` → checks measurement exists, succeeded, and value is within tolerance (RelTol=1e-3, AbsTol=1e-12). Mirrors `BaseTests.AssertMeasurement` from `src/SpiceSharpParser.IntegrationTests/BaseTests.cs`.
+   - `AssertMeasurementSuccess(SpiceSharpModel model, string name)` → checks measurement exists and succeeded (for measurements where you only care it found a value)
    - Each method handles: parse → read → validate → attach exports → run with InvokeEvents → collect results
 
 3. Verify the toolchain by writing and running a trivial RC filter test with assertions.
@@ -250,13 +252,25 @@ Title Line (required, first line)
 
 **Devices**: R, C, L, K (mutual inductance), D (diode), Q (BJT), M (MOSFET), J (JFET), V (voltage source), I (current source), E (VCVS), F (CCCS), G (VCCS), H (CCVS), B (behavioral), S (voltage switch), W (current switch), T (transmission line)
 
+**Behavioral Sources (B element)**
+B elements define voltage or current as arbitrary expressions of other circuit variables:
+```spice
+B1 out 0 V={V(in1)*V(in2)}            * Voltage = product of two node voltages (ideal multiplier)
+B2 out 0 I={V(ctrl)/1k}               * Current = voltage-controlled (ideal VCCS)
+B3 out 0 V={IF(V(in)>0.5, 5, 0)}     * Conditional logic (ideal comparator)
+B4 out 0 V={V(in)*sin(6.28*1e6*TIME)} * Time-dependent (ideal mixer/modulator)
+```
+B elements are the recommended approach for modeling ideal functional blocks (op-amps, multipliers, comparators, VCOs) when full transistor-level simulation is unnecessary or impractical. See `src/SpiceSharpParser.IntegrationTests/AnalogBehavioralModeling/` tests for more examples.
+
 **Value suffixes**: `T`=1e12, `G`=1e9, `MEG`=1e6, `k`=1e3, `m`=1e-3, `u`=1e-6, `n`=1e-9, `p`=1e-12, `f`=1e-15
 
-**Analyses**: `.OP`, `.DC`, `.AC DEC|OCT|LIN <points> <fstart> <fstop>`, `.TRAN <tstep> <tstop> [tstart] [UIC]`, `.NOISE`
+**Analyses**: `.OP`, `.DC`, `.AC DEC|OCT|LIN <points> <fstart> <fstop>`, `.TRAN <tstep> <tstop> [tstart] [UIC]`, `.NOISE V(<node>) <src> <type> <points> <fstart> <fstop>` (limited — no RunNoise helper; only verified to not throw exceptions)
 
 **Output**: `.SAVE V(<node>) I(<source>)`, `.MEAS <type> <name> <function>`, `.PRINT`
 
 **Controls**: `.PARAM`, `.FUNC`, `.SUBCKT`/`.ENDS`, `.INCLUDE`, `.LIB`, `.STEP`, `.MC`, `.MODEL`, `.IC`, `.NODESET`, `.OPTIONS`
+
+**Expressions**: Use `{expression}` syntax in component values when `.PARAM` defines the variables (e.g., `R1 in out {Rval*2}` with `.PARAM Rval=1k`). Expressions support arithmetic, built-in math functions, and references to other parameters.
 
 **Waveforms**: `DC <value>`, `AC <mag> [phase]`, `SIN(offset amp freq [delay damping phase])`, `PULSE(v1 v2 td tr tf pw period)`, `PWL(t1 v1 t2 v2 ...)`, `AM(amp freq fc [delay phase])`, `SFFM(offset amp fc mod_index fsig)`
 
@@ -461,15 +475,33 @@ public void Hypothesis_R1_Controls_CutoffFrequency()
        netlist.Split('\n').Select(l => l.Trim()).Where(l => l.Length > 0));
    ```
 
+   **Alternative: String-array construction** (avoids trimming entirely):
+   ```csharp
+   public static SpiceSharpModel ParseAndRead(params string[] lines)
+   {
+       var text = string.Join(Environment.NewLine, lines);
+       // ... parse and read as below ...
+   }
+   ```
+   This is the pattern used by `BaseTests.GetSpiceSharpModel()` — each line is a standalone string, so no trimming is needed.
+
 2. **Parse** with required settings (without these, parsing fails or produces wrong results):
    ```csharp
    var parser = new SpiceNetlistParser();
    parser.Settings.Lexing.HasTitle = true;
-   parser.Settings.Parsing.IsEndRequired = true;
+   parser.Settings.Parsing.IsEndRequired = true;  // Without this, parser silently accepts incomplete netlists missing .END
    var parseResult = parser.ParseNetlist(trimmed);
    ```
 
-3. **Read** using `SpiceNetlistReader` (not `SpiceSharpReader`) with required settings:
+3. **Read** — two options:
+
+   **Simple path (recommended)** — `SpiceSharpReader` with sensible defaults:
+   ```csharp
+   var reader = new SpiceSharpReader();
+   var model = reader.Read(parseResult.FinalModel);
+   ```
+
+   **Advanced path** — `SpiceNetlistReader` when you need custom settings (working directory, encoding, random seed):
    ```csharp
    var readerSettings = new SpiceNetlistReaderSettings(
        new SpiceNetlistCaseSensitivitySettings(),
@@ -503,12 +535,39 @@ public void Hypothesis_R1_Controls_CutoffFrequency()
    codes.ToArray();                           // forces enumeration
    ```
 
+   **Multi-analysis netlists:** If a netlist contains multiple analysis types (e.g., `.OP` and `.AC`), iterate all simulations:
+   ```csharp
+   foreach (var simulation in model.Simulations)
+   {
+       var exports = model.Exports.Where(ex => ex.Simulation == simulation).ToList();
+       // ... attach EventExportData handlers for these exports ...
+       var codes = simulation.Run(model.Circuit, -1);
+       codes = simulation.InvokeEvents(codes);
+       codes.ToArray();
+   }
+   ```
+   The `RunOP`/`RunDC`/`RunAC`/`RunTran` helpers assume a single simulation of the expected type.
+
 7. **Extract sweep/time/frequency values** per simulation type:
    - DC sweep value: `((DC)simulation).GetCurrentSweepValue().Last()`
    - AC frequency: `((AC)simulation).Frequency` (cast to `AC`, not `FrequencySimulation`)
    - TRAN time: `((Transient)simulation).Time`
 
 8. **Measurements**: `model.Measurements` is a `ConcurrentDictionary<string, List<MeasurementResult>>`. Each `MeasurementResult` has `.Success`, `.Value`, and `.Name`. Always check `.Success` before reading `.Value`.
+
+### Tolerance Comparison Patterns
+
+**For spec verification** (values from requirements.md):
+Use `Assert.InRange(actual, min, max)` with explicit bounds from the spec table.
+
+**For reference function comparison** (comparing simulation output against an analytical formula):
+Use the relative+absolute tolerance pattern from `BaseTests.cs`:
+```csharp
+double tol = Math.Max(Math.Abs(actual), Math.Abs(expected)) * 1e-3 + 1e-12;
+Assert.True(Math.Abs(expected - actual) < tol,
+    $"Expected {expected}, got {actual}, tolerance {tol}");
+```
+This handles both large and small values correctly — the relative term (1e-3) dominates for large values, while the absolute term (1e-12) prevents false failures near zero.
 
 ### AC Analysis: Voltage Export Types
 
@@ -727,6 +786,8 @@ SpiceSharp has no built-in op-amp device. You must build from discrete transisto
 
 ### Convergence Tips
 - Start with `.OPTIONS reltol=1e-3 abstol=1e-12 gmin=1e-12`
+- For circuits that fail to find a DC operating point, increase iteration limits: `.OPTIONS itl1=200` (default ~100)
+- For transient convergence issues, increase per-timepoint iterations: `.OPTIONS itl4=50` (default ~10)
 - Use `.IC V(node)=<value>` or `.NODESET V(node)=<value>` for known DC operating points
 - Add 1GΩ resistors from floating nodes to ground
 - For oscillators, apply a small initial perturbation: `.IC V(tank)=0.1`
