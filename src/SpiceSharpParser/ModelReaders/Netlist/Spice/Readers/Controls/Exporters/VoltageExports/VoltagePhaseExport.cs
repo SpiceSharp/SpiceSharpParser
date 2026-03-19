@@ -61,7 +61,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
 
                 return double.NaN;
             }
-            return ExportImpl.Value.Magnitude;
+            return ExportImpl.Value.Phase;
         }
     }
 }

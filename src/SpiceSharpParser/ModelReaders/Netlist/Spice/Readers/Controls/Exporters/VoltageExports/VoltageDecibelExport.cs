@@ -63,7 +63,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                 return double.NaN;
             }
 
-            return Math.Log10(ExportImpl.Value.Magnitude);
+            return 20.0 * Math.Log10(ExportImpl.Value.Magnitude);
         }
     }
 }
