@@ -21,7 +21,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
             Name = name ?? throw new System.ArgumentNullException(nameof(name));
             Node = node ?? throw new System.ArgumentNullException(nameof(node));
             Reference = reference;
-            ExportImpl = new RealVoltageExport((IBiasingSimulation)simulation, node, reference);
+            ExportImpl = new ComplexVoltageExport((FrequencySimulation)simulation, node, reference);
         }
 
         /// <summary>
@@ -40,15 +40,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
         public override string QuantityUnit => "Voltage (V)";
 
         /// <summary>
-        /// Gets the real voltage export that provides voltage
+        /// Gets the complex voltage export that provides voltage real part
         /// </summary>
-        protected RealVoltageExport ExportImpl { get; }
+        protected ComplexVoltageExport ExportImpl { get; }
 
         /// <summary>
-        /// Extracts the voltage at the main node
+        /// Extracts the real part of the voltage at the main node
         /// </summary>
         /// <returns>
-        /// A voltage (real) at the main node
+        /// The real part of the complex voltage at the main node
         /// </returns>
         public override double Extract()
         {
@@ -62,7 +62,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters
                 return double.NaN;
             }
 
-            return ExportImpl.Value;
+            return ExportImpl.Value.Real;
         }
     }
 }

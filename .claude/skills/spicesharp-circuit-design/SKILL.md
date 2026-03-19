@@ -30,6 +30,7 @@ The workbench supports multiple concurrent circuit designs. Maintain this struct
 
 ```
 backlog.md                          — global task tracker across all active designs
+discoveries.md                      — key lessons learned across designs (read before starting work)
 circuits/
   <name>/
     requirements.md                 — quantitative specs, constraints, acceptance criteria
@@ -45,7 +46,7 @@ tests/
     <CircuitName>Tests.cs           — xUnit test class per circuit design
 ```
 
-**On every invocation**, read `backlog.md` first to understand what work is in progress across all active designs. Each backlog task references which circuit it belongs to.
+**On every invocation**, read `backlog.md` and `discoveries.md` first — the backlog shows what work is in progress, and discoveries contain hard-won lessons that prevent repeating past mistakes.
 
 ---
 
@@ -135,7 +136,7 @@ Before designing anything, build a complete specification.
 - [ ] .TRAN — <reason>
 
 ## Acceptance Criteria
-<Specific pass/fail conditions that map directly to test assertions>
+<Specific pass-fail conditions that map directly to test assertions>
 
 ## Constraints
 <Component availability, power budget, size, cost>
