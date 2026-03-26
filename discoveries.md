@@ -15,7 +15,7 @@ Lessons learned during circuit design that apply across projects. Read this befo
 .TRAN 100u 2 0 100u UIC
 *      ^step ^stop ^start ^tmax
 ```
-Rule of thumb: tmax ≤ 1/10 of the AC period (for 50Hz: tmax ≤ 2ms; 100µs works well).
+Rule of thumb: tmax <= 1/10 of the AC period (for 50Hz: tmax <= 2ms; 100us works well).
 
 ---
 
@@ -32,4 +32,3 @@ Rule of thumb: tmax ≤ 1/10 of the AC period (for 50Hz: tmax ≤ 2ms; 100µs wo
 .MEAS TRAN settle_95 WHEN V(out) = 21.47 RISE=1
 ```
 Then in tests: `var meas = CircuitTestHelper.GetMeasurements(netlist);` and assert on named values.
-
