@@ -209,6 +209,410 @@ For full API details, read the source files directly — don't rely on this summ
 
 ---
 
+### Tool Details and Examples
+
+#### StandardValues — Snap to Real Component Values
+
+Snap calculated values to E12 (±10%), E24 (±5%), or E96 (±1%) standard resistor/capacitor series. Use in Phase 3 after computing values from design equations.
+
+**Key methods:**
+- `NearestE12(value)`, `NearestE24(value)`, `NearestE96(value)` — nearest standard value
+- `BracketE12(value)`, `BracketE24(value)` — returns `(Below, Above)` tuple for manual selection
+- `GetValuesInRange(min, max, series)` — all standard values in a range
+
+```csharp
+// Snap a calculated 4.85k resistor to standard E24
+double R = StandardValues.NearestE24(4850); // => 4700
+
+// Get bracketing values when you need to choose direction
+var (below, above) = StandardValues.BracketE24(4850); // => (4700, 5100)
+
+// Enumerate all E24 capacitor values between 1nF and 100nF
+var caps = StandardValues.GetValuesInRange(1e-9, 100e-9, StandardValues.E24Multipliers);
+// => [1.0e-9, 1.1e-9, 1.2e-9, ... 82e-9, 91e-9, 100e-9]
+```
+
+---
+
+#### CircuitBuilder — Fluent Netlist Construction
+
+Programmatically build netlists with a chainable API. Preferable to string concatenation for complex or parameterized circuits.
+
+**Key methods:** `Resistor()`, `Capacitor()`, `Inductor()`, `VoltageSource()`, `VoltageSourceSine()`, `VoltageSourcePulse()`, `VoltageSourcePWL()`, `CurrentSource()`, `Diode()`, `BJT()`, `MOSFET()`, `JFET()`, `VCVS()`, `VCCS()`, `BehavioralVoltageSource()`, `BehavioralCurrentSource()`, `Model()`, `ModelRaw()`, `OP()`, `DC()`, `AC()`, `Tran()`, `Save()`, `Meas()`, `Print()`, `Param()`, `IC()`, `Options()`, `RawLine()`, `SetValue()`, `RemoveComponent()`, `ToNetlist()`, `Build()`
+
+```csharp
+// Build a bandpass filter netlist
+var netlist = CircuitBuilder.Create("Bandpass Filter")
+    .VoltageSource("Vin", "in", "0", dc: 0, ac: 1)
+    .Resistor("R1", "in", "mid", 10e3)
+    .Capacitor("C1", "mid", "out", 10e-9)
+    .Resistor("R2", "out", "0", 10e3)
+    .Capacitor("C2", "out", "0", 10e-9)
+    .AC("DEC", 100, 1, 1e6)
+    .Save("VDB(out)", "VP(out)")
+    .Meas("AC", "peak_gain", "MAX VDB(out)")
+    .Meas("AC", "f_center", "WHEN VDB(out)=MAX")
+    .ToNetlist();
+
+// Build and parse in one step
+var model = CircuitBuilder.Create("RC Filter")
+    .VoltageSource("V1", "in", "0", dc: 0, ac: 1)
+    .Resistor("R1", "in", "out", 1e3)
+    .Capacitor("C1", "out", "0", 159e-9)
+    .AC("DEC", 50, 1, 1e6)
+    .Save("VDB(out)")
+    .Build();  // returns SpiceSharpModel directly
+
+// Modify an existing builder — change R1 and remove C2
+builder.SetValue("R1", 15e3).RemoveComponent("C2");
+
+// BJT amplifier with model and initial conditions
+var amp = CircuitBuilder.Create("CE Amplifier")
+    .ModelRaw(".MODEL 2N2222 NPN(BF=200 IS=1e-14 VAF=100)")
+    .VoltageSource("VCC", "vcc", "0", dc: 12)
+    .VoltageSourceSine("Vin", "in", "0", 0, 10e-3, 1e3)
+    .Resistor("RC", "vcc", "col", 4.7e3)
+    .Resistor("RB", "vcc", "base", 470e3)
+    .BJT("Q1", "col", "base", "0", "2N2222")
+    .Capacitor("Cin", "in", "base", 10e-6)
+    .Tran(1e-6, 5e-3)
+    .Save("V(col)", "V(base)")
+    .IC("col", 6.0)
+    .Options("reltol=1e-3")
+    .ToNetlist();
+```
+
+---
+
+#### SmokeTester — Quick Parse + Lint + OP Check
+
+One-call validation: parses the netlist, runs the linter, attempts an OP simulation, and reports node voltages and device operating regions. Use immediately after writing a netlist.
+
+**Key types:**
+- `SmokeTestResult.IsPass` — `true` if parse + lint (no errors) + OP all succeed
+- `SmokeTestResult.NodeVoltages` — `Dictionary<string, double>` of DC operating point
+- `SmokeTestResult.DeviceRegions` — `Dictionary<string, DeviceRegion>` (Active/Saturation/Cutoff/Linear)
+- `SmokeTestResult.DiagnosticSummary()` — human-readable string report
+
+```csharp
+// Quick-check a netlist string (most common usage)
+var result = SmokeTester.QuickCheck(netlist);
+
+if (!result.IsPass)
+{
+    _output.WriteLine(result.DiagnosticSummary());
+    // Shows parse errors, lint issues, convergence errors
+}
+
+// Inspect DC bias points
+Assert.True(result.OPConverges, result.ConvergenceError);
+double vCollector = result.NodeVoltages["col"];   // e.g., 6.2V
+double vBase = result.NodeVoltages["base"];       // e.g., 0.7V
+
+// Check device operating regions
+Assert.Equal(DeviceRegion.Active, result.DeviceRegions["Q1"]);
+
+// Also accepts an already-parsed model
+var model = CircuitTestHelper.ParseAndRead(netlist);
+var result2 = SmokeTester.QuickCheck(model);
+```
+
+---
+
+#### NetlistLinter — Structural Validation
+
+Detects structural problems in a parsed model: floating nodes, missing DC paths, missing `.MODEL` definitions, duplicate components, missing AC magnitudes, large capacitors without `.TRAN` maxstep, empty circuits, and missing simulation commands.
+
+**Key types:**
+- `LintResult.HasErrors` / `LintResult.HasWarnings` — quick checks
+- `LintResult.Errors` / `LintResult.Warnings` — filtered issue lists
+- `LintIssue.Category` — one of: `FloatingNode`, `MissingDCPath`, `MissingModel`, `DuplicateComponent`, `MissingACMagnitude`, `MissingTranMaxStep`, `EmptyCircuit`, `NoSimulation`, `NoExports`
+- `LintIssue.SuggestedFix` — actionable fix suggestion (may be null)
+
+```csharp
+var model = CircuitTestHelper.ParseAndRead(netlist);
+var lint = NetlistLinter.Lint(model);
+
+// Quick pass/fail check
+Assert.False(lint.HasErrors, lint.ToString());
+
+// Inspect specific warnings
+foreach (var warning in lint.Warnings)
+{
+    _output.WriteLine($"[{warning.Category}] {warning.Message}");
+    if (warning.SuggestedFix != null)
+        _output.WriteLine($"  Fix: {warning.SuggestedFix}");
+}
+
+// Filter by category
+var dcPathIssues = lint.Issues
+    .Where(i => i.Category == LintCategory.MissingDCPath);
+
+// Common issue: node "out" has no DC path to ground
+// LintIssue: Severity=Warning, Category=MissingDCPath,
+//   Message="Node 'out' has no DC path to ground",
+//   SuggestedFix="Add a large resistor (1GΩ) from 'out' to ground"
+```
+
+---
+
+#### CircuitInspector — Topology and Bias Queries
+
+Instance-based inspector for querying circuit structure, reading/writing component values, and checking semiconductor operating regions.
+
+**Key methods:**
+- `GetNodes()` — all node names
+- `GetComponentNames()` — all component names
+- `GetComponentsConnectedTo(node)` — components touching a node
+- `GetComponentInfo(name)` — full details (type, nodes, parameters, model)
+- `GetComponentValue(name)` / `SetComponentValue(name, value)` — R/L/C values
+- `GetBJTRegion(name, nodeVoltages)` — Active/Saturation/Cutoff
+- `GetMOSFETRegion(name, nodeVoltages, vth)` — Cutoff/Linear/Saturation
+- `GetComponentCounts()` — summary by type
+
+```csharp
+var model = CircuitTestHelper.ParseAndRead(netlist);
+var inspector = new CircuitInspector(model);
+
+// Enumerate topology
+var nodes = inspector.GetNodes();           // ["0", "in", "out", "vcc", "base", "col"]
+var components = inspector.GetComponentNames(); // ["V1", "R1", "R2", "C1", "Q1", ...]
+
+// What's connected to the output node?
+var atOutput = inspector.GetComponentsConnectedTo("out");
+// => ["R2", "C1"]
+
+// Read component details
+var info = inspector.GetComponentInfo("R1");
+// info.Type = "Resistor", info.Nodes = ["in", "mid"],
+// info.Parameters = { "resistance": 10000.0 }
+
+// Read/write passive values
+double rVal = inspector.GetComponentValue("R1"); // 10000.0
+inspector.SetComponentValue("R1", 12000.0);      // modify in-place
+
+// Check BJT region using node voltages from SmokeTester
+var smoke = SmokeTester.QuickCheck(netlist);
+var region = inspector.GetBJTRegion("Q1", smoke.NodeVoltages);
+// => DeviceRegion.Active
+
+// MOSFET region with custom threshold
+var mosRegion = inspector.GetMOSFETRegion("M1", smoke.NodeVoltages, vth: 1.0);
+// => DeviceRegion.Saturation
+
+// Circuit summary
+var counts = inspector.GetComponentCounts();
+// => { "Resistor": 4, "Capacitor": 2, "BJT": 1, "VoltageSource": 2 }
+```
+
+---
+
+#### WaveformAnalyzer — Post-Simulation Metrics
+
+All-static methods for analyzing simulation output waveforms. Data is passed as `List<(double, double)>` tuples collected from simulation exports.
+
+**Time-domain methods:**
+- `RiseTime(data, lowPct=0.1, highPct=0.9)` — 10%-90% rise time
+- `FallTime(data, highPct=0.9, lowPct=0.1)` — 90%-10% fall time
+- `SettlingTime(data, finalValue, tolerancePct=0.02)` — time to stay within ±2% of final value
+- `Overshoot(data, finalValue)` — percentage overshoot
+- `PeakToPeak(data, fromTime, toTime)` — peak-to-peak in optional time window
+- `RMS(data, fromTime, toTime)` — RMS value (trapezoidal integration)
+- `Average(data, fromTime, toTime)` — average value
+- `DCOffset(data)` — average over entire waveform
+
+**Frequency-domain methods:**
+- `FFT(data)` — returns `List<(Frequency, Magnitude)>` (Cooley-Tukey radix-2)
+- `THD(data, fundamentalFreq, numHarmonics=10)` — total harmonic distortion as %
+- `SNR(data, signalFreq)` — signal-to-noise ratio in dB
+
+**AC response methods:**
+- `BandwidthFrom3dBPoints(data)` — -3dB bandwidth from gain-vs-frequency data
+- `StabilityMargins(gain, phase)` — returns `(GainMarginDb, PhaseMarginDeg)`
+- `GainAt(data, frequency)` — interpolated gain at a frequency
+- `PhaseAt(data, frequency)` — interpolated phase at a frequency
+- `FrequencyAtGain(data, gainDb)` — frequency where gain equals a value
+
+**Utilities:**
+- `InterpolateAt(data, x)` — linear interpolation
+- `FindCrossing(data, threshold, occurrence=1)` — Nth threshold crossing
+
+```csharp
+// === Time-domain analysis (transient simulation) ===
+// Collect data from simulation exports
+var tranData = new List<(double Time, double Value)>();
+// ... populate from simulation run ...
+
+double tRise = WaveformAnalyzer.RiseTime(tranData);         // 10%-90% rise time
+double tFall = WaveformAnalyzer.FallTime(tranData);         // 90%-10% fall time
+double tSettle = WaveformAnalyzer.SettlingTime(tranData, finalValue: 3.3, tolerancePct: 0.02);
+double overshoot = WaveformAnalyzer.Overshoot(tranData, finalValue: 3.3);  // percent
+double vpp = WaveformAnalyzer.PeakToPeak(tranData, fromTime: 1e-3, toTime: 5e-3);
+double vRms = WaveformAnalyzer.RMS(tranData, fromTime: 1e-3, toTime: 5e-3);
+
+// === Frequency-domain analysis (from time-domain data) ===
+var spectrum = WaveformAnalyzer.FFT(tranData);
+double thd = WaveformAnalyzer.THD(tranData, fundamentalFreq: 1000, numHarmonics: 5);
+double snr = WaveformAnalyzer.SNR(tranData, signalFreq: 1000);
+
+// === AC response analysis (from AC simulation) ===
+var gainData = new List<(double Freq, double GainDb)>();
+var phaseData = new List<(double Freq, double PhaseDeg)>();
+// ... populate from AC simulation exports (VDB, VP) ...
+
+double bw = WaveformAnalyzer.BandwidthFrom3dBPoints(gainData);  // -3dB bandwidth in Hz
+var (gm, pm) = WaveformAnalyzer.StabilityMargins(gainData, phaseData);
+// gm = gain margin in dB, pm = phase margin in degrees (positive = stable)
+
+double gainAt1k = WaveformAnalyzer.GainAt(gainData, 1000);      // gain at 1kHz in dB
+double phaseAt1k = WaveformAnalyzer.PhaseAt(phaseData, 1000);   // phase at 1kHz in degrees
+double fUnity = WaveformAnalyzer.FrequencyAtGain(gainData, 0);  // unity-gain frequency
+
+// === General utilities ===
+double tCross = WaveformAnalyzer.FindCrossing(tranData, threshold: 2.5, occurrence: 3);
+// Time of 3rd crossing of 2.5V threshold
+```
+
+---
+
+#### SensitivityAnalyzer — Find Which Component Matters
+
+Computes normalized sensitivity of a `.MEAS` result to each passive component using central finite differences (±perturbation). A sensitivity of 1.0 means a 1% change in the component causes a 1% change in the spec.
+
+**Key types:**
+- `ComponentSensitivity` — `.Sensitivity` (normalized), `.SpecAtMinus`, `.SpecAtPlus`, `.NominalComponentValue`
+- `SensitivityResult` — `.NominalValue`, `.Sensitivities` dict, `.RankedByImpact()` sorted list
+
+```csharp
+// Netlist must include .MEAS directives for the specs you want to analyze
+string netlist = @"
+    Bandpass Filter
+    V1 in 0 DC 0 AC 1
+    R1 in mid 10k
+    C1 mid out 10n
+    R2 out 0 10k
+    C2 out 0 10n
+    .AC DEC 100 1 1MEG
+    .MEAS AC peak_gain MAX VDB(out)
+    .MEAS AC center_freq WHEN VDB(out)=MAX
+    .END";
+
+var analyzer = new SensitivityAnalyzer(netlist);
+
+// Which components most affect center frequency?
+var result = analyzer.ComputeSensitivity("center_freq", perturbationPct: 1.0);
+
+_output.WriteLine($"Nominal center freq: {result.NominalValue} Hz");
+foreach (var (comp, sens) in result.RankedByImpact())
+{
+    _output.WriteLine($"  {comp}: sensitivity = {sens:F3}");
+}
+// Example output:
+//   Nominal center freq: 15915 Hz
+//   C1: sensitivity = -1.002   (1% increase in C1 => ~1% decrease in freq)
+//   R1: sensitivity = -0.498
+//   C2: sensitivity = -0.501
+//   R2: sensitivity = 0.003    (negligible effect)
+
+// Single-component check
+double dGain_dR1 = analyzer.ComputePartialDerivative("peak_gain", "R1", perturbationPct: 2.0);
+```
+
+---
+
+#### DesignSpaceExplorer — Multi-Parameter Optimization
+
+Grid-search optimizer that sweeps component values, evaluates `.MEAS` results, and finds the best feasible design point. Uses logarithmic spacing for ranges > 1 decade.
+
+**Fluent API:**
+- `AddParameter(componentName, min, max, steps=10)` — parameter to sweep
+- `AddObjective(measurementName, target, weight=1.0)` — minimize distance to target
+- `AddConstraint(measurementName, min, max)` — hard constraint on result
+- `Explore()` — run grid search, returns `ExplorationResult`
+
+**Key types:**
+- `DesignPoint` — `.ComponentValues`, `.MeasurementValues`, `.ObjectiveScore`, `.ConstraintsSatisfied`
+- `ExplorationResult` — `.Best` (best feasible point), `.AllPoints`, `.FeasibleCount`, `.BestValues`
+
+```csharp
+string netlist = @"
+    Bandpass Filter
+    V1 in 0 DC 0 AC 1
+    R1 in mid 10k
+    C1 mid out 10n
+    R2 out 0 10k
+    C2 out 0 10n
+    .AC DEC 100 1 1MEG
+    .MEAS AC peak_gain MAX VDB(out)
+    .MEAS AC bw TRIG VDB(out) VAL=-3 RISE=1 TARG VDB(out) VAL=-3 FALL=1
+    .END";
+
+var explorer = new DesignSpaceExplorer(netlist);
+
+var result = explorer
+    .AddParameter("R1", 1e3, 100e3, steps: 10)   // sweep R1 from 1k to 100k
+    .AddParameter("C1", 1e-9, 100e-9, steps: 10)  // sweep C1 from 1nF to 100nF
+    .AddObjective("bw", target: 5000, weight: 1.0) // want 5kHz bandwidth
+    .AddConstraint("peak_gain", min: -6, max: 0)   // gain between -6dB and 0dB
+    .Explore();
+
+if (result.Best != null)
+{
+    _output.WriteLine($"Best design (score={result.Best.ObjectiveScore:F4}):");
+    foreach (var (comp, val) in result.BestValues)
+        _output.WriteLine($"  {comp} = {val}");
+    foreach (var (meas, val) in result.Best.MeasurementValues)
+        _output.WriteLine($"  {meas} = {val}");
+}
+_output.WriteLine($"Feasible points: {result.FeasibleCount} / {result.AllPoints.Count}");
+
+// Use the best values in the final design
+double bestR1 = StandardValues.NearestE24(result.BestValues["R1"]);
+double bestC1 = StandardValues.NearestE24(result.BestValues["C1"]);
+```
+
+---
+
+### Typical Workflow: Combining Tools
+
+```csharp
+// 1. Build netlist programmatically
+var netlist = CircuitBuilder.Create("Low-Pass Filter")
+    .VoltageSource("V1", "in", "0", dc: 0, ac: 1)
+    .Resistor("R1", "in", "out", StandardValues.NearestE24(1590))  // snap to E24
+    .Capacitor("C1", "out", "0", StandardValues.NearestE24(100e-9))
+    .AC("DEC", 100, 1, 1e6)
+    .Meas("AC", "f3db", "WHEN VDB(out)=-3")
+    .Save("VDB(out)", "VP(out)")
+    .ToNetlist();
+
+// 2. Smoke test — parse, lint, and check OP convergence
+var smoke = SmokeTester.QuickCheck(netlist);
+Assert.True(smoke.IsPass, smoke.DiagnosticSummary());
+
+// 3. Inspect topology and bias
+var inspector = new CircuitInspector(smoke.Model);
+Assert.Equal(2, inspector.GetComponentsConnectedTo("out").Count);
+
+// 4. Run AC simulation and analyze response
+// ... (run simulation, collect gain/phase data) ...
+double bw = WaveformAnalyzer.BandwidthFrom3dBPoints(gainData);
+
+// 5. If spec not met, find which component to adjust
+var sensitivity = new SensitivityAnalyzer(netlist);
+var impact = sensitivity.ComputeSensitivity("f3db");
+var topComponent = impact.RankedByImpact().First().Component;
+
+// 6. Optimize the most impactful components
+var explorer = new DesignSpaceExplorer(netlist)
+    .AddParameter("R1", 1e3, 10e3, steps: 15)
+    .AddParameter("C1", 10e-9, 1e-6, steps: 15)
+    .AddObjective("f3db", target: 1000)
+    .Explore();
+```
+
+---
+
 ## Known Limitations
 
 ### Works Well
