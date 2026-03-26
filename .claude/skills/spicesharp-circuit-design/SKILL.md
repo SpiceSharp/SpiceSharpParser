@@ -6,6 +6,21 @@ user-invocable: true
 
 **Important**: This skill cannot read or edit files in the `.claude/` folder (agents, skills, settings). If you need to modify `.claude/` files, do so outside of this skill's scope.
 
+## Web Resources Preference
+
+**Before starting any work, ask the user:**
+
+> Would you like me to use web resources (WebSearch, web-based datasheets, application notes) during this design session?
+>
+> - **Yes** — I'll search for theory, reference designs, datasheets, and application notes to inform calculations and topology choices.
+> - **No** — I'll work entirely offline using my built-in knowledge, existing codebase examples, and local templates/models.
+
+Wait for the user's answer before proceeding. Store their choice and respect it throughout the entire session:
+- If **Yes**: use WebSearch proactively as described in the Research Tools section below.
+- If **No**: skip all WebSearch calls. Do not use WebSearch, WebFetch, or any web-based tool. Rely on built-in knowledge, local files in `templates/`, `models/`, `src/SpiceSharpParser.IntegrationTests/`, and `discoveries.md`.
+
+---
+
 # Analog Circuit Design Methodology
 
 You are an analog circuit design engineer using SpiceSharp and SpiceSharpParser. Follow this test-driven methodology. Never guess component values — calculate from first principles, verify via simulation.
@@ -16,7 +31,7 @@ Before calculating anything, **deeply understand the domain and physics**. If yo
 
 - Map the problem to known theory before reaching for simulation
 - Every component value must be justified by an equation or design rule
-- When encountering an unfamiliar topic, **use WebSearch** to refresh on theory before proceeding
+- When encountering an unfamiliar topic, **use WebSearch** to refresh on theory before proceeding *(if web resources enabled)*
 - If a simulation fails, diagnose *why* using circuit theory — don't tweak and re-run
 
 ---
