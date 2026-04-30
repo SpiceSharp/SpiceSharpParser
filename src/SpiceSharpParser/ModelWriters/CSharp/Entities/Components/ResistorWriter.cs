@@ -46,6 +46,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
 
                     expression = MultiplyIfNeeded(expression, ((AssignmentParameter)mParameter)?.Value, ((AssignmentParameter)nParameter)?.Value);
                     result.Add(new CSharpNewStatement(resistorId, $@"new BehavioralResistor(""{name}"", ""{pins[0].Value}"", ""{pins[1].Value}"",""{expression}"")"));
+                    return result;
                 }
 
                 bool modelBased = (something is WordParameter || something is IdentifierParameter)
@@ -59,7 +60,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                 else
                 {
                     var modelName = something.Value;
-                    result.Add(new CSharpNewStatement(resistorId, $@"new Resistor(""{name}"", ""{pins[0].Value}"", ""{pins[1].Value}"", ""{modelName})"""));
+                    result.Add(new CSharpNewStatement(resistorId, $@"new Resistor(""{name}"", ""{pins[0].Value}"", ""{pins[1].Value}"", ""{modelName}"")"));
                 }
 
                 for (var i = 1; i < parameters.Count; i++)

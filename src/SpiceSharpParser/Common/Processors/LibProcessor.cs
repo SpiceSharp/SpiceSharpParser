@@ -102,7 +102,7 @@ namespace SpiceSharpParser.Common.Processors
                 int position = allStatements.IndexOf(libEntry);
                 int libPosition = position;
 
-                for (; !(allStatements[position] is Control c && c.Name.ToLower() == "endl") && position < allStatements.Count; position++)
+                for (; position < allStatements.Count && !(allStatements[position] is Control c && c.Name.Equals("endl", StringComparison.OrdinalIgnoreCase)); position++)
                 {
                     // iterate to find position
                 }
@@ -113,7 +113,7 @@ namespace SpiceSharpParser.Common.Processors
                 }
                 else
                 {
-                    var libStatements = allStatements.Skip(libPosition + 1).Take(position - libPosition);
+                    var libStatements = allStatements.Skip(libPosition + 1).Take(position - libPosition - 1);
                     statements.Replace(lib, libStatements);
                 }
             }

@@ -46,6 +46,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
 
                     expression = MultiplyIfNeeded(expression, ((AssignmentParameter)mParameter)?.Value, ((AssignmentParameter)nParameter)?.Value);
                     result.Add(new CSharpNewStatement(capacitorId, $@"new BehavioralCapacitor(""{name}"", ""{pins[0].Value}"", ""{pins[1].Value}"",""{expression}"")"));
+                    return result;
                 }
 
                 bool modelBased = (something is WordParameter || something is IdentifierParameter)

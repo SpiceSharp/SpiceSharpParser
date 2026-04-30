@@ -32,13 +32,13 @@ namespace SpiceSharpParser.ModelWriters.CSharp
             }
             else
             {
-                return new CSharpCallStatement(identifier, $@"SetParameter(""{parameter}"", {context.EvaluationContext.Evaluate(expression)}d)");
+                return new CSharpCallStatement(identifier, $@"SetParameter(""{parameter}"", {context.EvaluationContext.Evaluate(expression).ToString(CultureInfo.InvariantCulture)}d)");
             }
         }
 
         public CSharpStatement SetParameter(string identifier, string parameter, double value, IWriterContext context)
         {
-            return new CSharpCallStatement(identifier, $@"SetParameter(""{parameter}"", {value}d)");
+            return new CSharpCallStatement(identifier, $@"SetParameter(""{parameter}"", {value.ToString(CultureInfo.InvariantCulture)}d)");
         }
 
         public CSharpStatement SetParameter(string identifier, string parameter, bool value, IWriterContext context)

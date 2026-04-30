@@ -33,7 +33,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
         {
             if (!caseSensitive)
             {
-                return string.Equals(token.Lexem, lexem, StringComparison.CurrentCultureIgnoreCase);
+                return string.Equals(token.Lexem, lexem, StringComparison.OrdinalIgnoreCase);
             }
 
             return token.Lexem == lexem;
