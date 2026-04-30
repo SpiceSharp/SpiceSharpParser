@@ -430,7 +430,8 @@ The initial version should support:
 - Input probes that are exactly `V(node)` or `V(node1,node2)`
 - Mapping the input probe to `controlPos` and `controlNeg` nodes
 - Transfer expression parsed by a new rational-polynomial parser
-- Built-in SpiceSharpBehavioral OP/DC, AC, and transient behavior through `LaplaceVoltageControlledVoltageSource` and `LaplaceVoltageControlledCurrentSource`
+- Built-in SpiceSharpBehavioral OP/DC and AC behavior through `LaplaceVoltageControlledVoltageSource` and `LaplaceVoltageControlledCurrentSource`
+- Transient behavior only after step-response tests prove the built-in time behavior matches expectations
 - `delay = 0.0` until PSpice delay syntax is deliberately designed and tested
 
 Defer these until after the first version works:
@@ -441,6 +442,68 @@ Defer these until after the first version works:
 - Exotic PSpice syntax aliases
 - Non-rational transfer expressions
 - Initial-condition options for transfer-function state
+
+### MVP Semantic Contract
+
+The MVP should have a deliberately small and testable semantic contract:
+
+```text
+Output = H(s) * V(controlPos, controlNeg)
+H(s)  = Numerator(s) / Denominator(s)
+```
+
+For `E` sources, `Output` is a controlled voltage between `out+` and `out-`.
+
+For `G` sources, `Output` is a controlled current flowing through the source pins according to SpiceSharp's existing current-source convention.
+
+The parser's responsibilities are:
+
+- Recognize the `LAPLACE` source form without disturbing existing `VALUE`, `POLY`, `TABLE`, and linear controlled-source forms.
+- Extract output nodes from the normal source pins.
+- Extract control nodes from a simple voltage probe input expression.
+- Convert the transfer expression into finite `double[]` numerator and denominator arrays.
+- Preserve line information and source name for diagnostics.
+- Create the built-in SpiceSharpBehavioral component.
+
+The parser should not be responsible for:
+
+- Evaluating `H(s)` during AC.
+- Stamping matrices for OP, AC, or transient.
+- Solving state-space equations.
+- Emulating arbitrary behavioral input expressions in the first release.
+
+That division of responsibility keeps the feature small enough to implement with confidence and makes each failure easier to locate.
+
+### First Development Spike
+
+Before implementing the full parser, do a tiny branch or scratch test that proves these three facts inside this repository's test harness:
+
+1. `LaplaceVoltageControlledVoltageSource` can be constructed, connected, and run through `.AC` when added by reader code.
+2. `LaplaceVoltageControlledCurrentSource` can be constructed, connected, and run through `.AC` when added by reader code.
+3. `Denominator = [1, tau]` produces the expected `1 / (1 + s*tau)` response.
+
+The fastest proof is an integration-style low-pass test using `.MEAS AC` exports already covered by `VoltageExportTests` patterns:
+
+```spice
+Laplace smoke test
+.PARAM tau=1u
+VIN in 0 AC 1
+ELOW out 0 LAPLACE {V(in)} = {1/(1+s*tau)}
+RLOAD out 0 1k
+.AC LIN 1 {1/(2*pi*tau)} {1/(2*pi*tau)}
+.MEAS AC vm_cut FIND VM(out) AT={1/(2*pi*tau)}
+.MEAS AC vp_cut FIND VP(out) AT={1/(2*pi*tau)}
+.END
+```
+
+Expected values:
+
+```text
+VM(out) ~= 0.70710678
+VP(out) ~= -0.78539816 radians
+```
+
+If this test cannot be made to pass with a manually constructed entity, stop and investigate the dependency behavior before spending time on grammar work.
 
 ### Proposed File Layout
 
@@ -603,13 +666,35 @@ PSpice `LAPLACE` needs:
 InputExpression = TransferExpression
 ```
 
-That means the generic netlist grammar may fail before `VoltageSourceGenerator` or `CurrentSourceGenerator` ever sees a usable parameter object. If it fails, add a dedicated expression-to-expression parameter shape, for example:
+That means the generic netlist grammar may fail before `VoltageSourceGenerator` or `CurrentSourceGenerator` ever sees a usable parameter object. If it fails, add a dedicated expression-to-expression parameter shape following the existing public parameter-object style, for example:
 
 ```csharp
-internal sealed class ExpressionAssignmentParameter : Parameter
+public class ExpressionAssignmentParameter : Parameter
 {
+    public ExpressionAssignmentParameter(
+        string leftExpression,
+        string rightExpression,
+        SpiceLineInfo lineInfo)
+        : base(lineInfo)
+    {
+        LeftExpression = leftExpression;
+        RightExpression = rightExpression;
+    }
+
     public string LeftExpression { get; }
     public string RightExpression { get; }
+
+    public override string Value => ToString();
+
+    public override string ToString()
+    {
+        return $"{{{LeftExpression}}} = {{{RightExpression}}}";
+    }
+
+    public override SpiceObject Clone()
+    {
+        return new ExpressionAssignmentParameter(LeftExpression, RightExpression, LineInfo);
+    }
 }
 ```
 
@@ -623,6 +708,14 @@ Concrete parser areas to inspect:
 - `src/SpiceSharpParser/Models/Netlist/Spice/Objects/Parameters/ExpressionEqualParameter.cs`
 
 This grammar spike should be done before the source-generator mapping work. Otherwise the implementation can look correct in `CreateCustomVoltageSource` while real PSpice lines still fail during the earlier parse stage.
+
+Recommended test order:
+
+1. Add a parser test in `ParseTreeGeneratorTests` that tokenizes and parses the full component line without throwing.
+2. Add an evaluator test that confirms the `ParameterCollection` contains `WordParameter("LAPLACE")` followed by the expression-assignment parameter.
+3. Add a reader test that confirms unsupported Laplace syntax produces a validation error instead of a generic parse exception.
+
+Do not reuse `ExpressionEqualParameter` for expression-to-expression syntax unless it can be extended without breaking `TABLE`. `TABLE` currently relies on the right side being a `Points` collection, and mixing that with a transfer expression would make both call sites harder to reason about.
 
 ### Parsing The Source Syntax
 
@@ -644,6 +737,29 @@ Implementation details:
 - Reject arbitrary input expressions with a clear unsupported diagnostic.
 - Parse the transfer expression with the new rational-polynomial parser.
 
+The input parser should not use a loose regular expression that accepts malformed functions. Prefer one of these:
+
+- Parse the input expression with the existing expression lexer/parser and accept only a function call node named `v` with one or two scalar arguments.
+- Or write a tiny balanced-parentheses scanner that accepts only `V(...)`, splits top-level comma arguments, and rejects nested operators or extra tokens.
+
+Accepted input examples:
+
+```text
+V(in)       -> controlPos = in, controlNeg = 0
+v(in,0)     -> controlPos = in, controlNeg = 0
+V(n001,n002)-> controlPos = n001, controlNeg = n002
+```
+
+Rejected input examples:
+
+```text
+V(a)-V(b)
+I(Vsense)
+V(a,b,c)
+V(a+1)
+V({node})
+```
+
 Validation messages should be specific:
 
 - `laplace expects input expression`
@@ -656,6 +772,15 @@ Validation messages should be specific:
 ### Laplace Transfer Expression Parser
 
 Reuse the existing expression lexer/parser to get an AST if practical, but use a new AST visitor/builder that returns `RationalPolynomial` instead of `double`.
+
+The existing expression pipeline already uses:
+
+```text
+SpiceSharpParser.Lexers.Expressions.Lexer.FromString(...)
+SpiceSharpParser.Parsers.Expression.Parser.Parse(...)
+```
+
+`CustomRealBuilder` then converts the parsed AST into scalar `double` behavior. For Laplace, use the same lexer/parser entry point if possible, but introduce a separate builder so the symbolic `s` handling does not leak into normal scalar expression evaluation.
 
 The builder should apply these rules:
 
@@ -689,6 +814,24 @@ E1 out 0 LAPLACE {V(in)} = {wc/(s+wc)}
 ```
 
 `wc` can be evaluated by the existing parameter evaluator, while `s+wc` is handled by the rational-polynomial builder.
+
+Important parameter rule: evaluate a parameter reference to a scalar only when that parameter's expansion does not contain the symbolic `s`. If a `.PARAM` expands to an expression containing `s`, reject it for the MVP unless the design explicitly chooses recursive symbolic expansion.
+
+Good:
+
+```spice
+.PARAM wc={2*pi*1k}
+E1 out 0 LAPLACE {V(in)} = {wc/(s+wc)}
+```
+
+Reject for MVP:
+
+```spice
+.PARAM pole={s+1000}
+E1 out 0 LAPLACE {V(in)} = {1/pole}
+```
+
+That rejection avoids a hidden symbolic macro system in the first implementation.
 
 ### Polynomial Implementation Details
 
@@ -727,6 +870,22 @@ while highest-order coefficient is abs(coefficient) < tolerance:
     remove highest-order coefficient
 ```
 
+Use two related but distinct operations:
+
+- `TrimTrailingZeros(tolerance)` removes insignificant high-order terms.
+- `NormalizeScale()` optionally divides numerator and denominator by a common scalar for cleaner output.
+
+Do not trim interior zero coefficients. For example, `s^2 + 1` must remain `[1, 0, 1]`, not `[1, 1]`.
+
+Recommended tolerances:
+
+```text
+zeroTolerance = 1e-18 for exact-ish generated zeros
+relativeTolerance = 1e-12 * max(abs(coefficients)) for scale-aware trimming
+```
+
+Always reject `NaN` and infinities immediately. They usually mean a bad parameter value or division by zero.
+
 Complex evaluation with Horner's method:
 
 ```csharp
@@ -757,6 +916,26 @@ After every operation:
 - Optionally divide out a common scalar factor, especially if the denominator leading coefficient is not `1`.
 
 Avoid full symbolic polynomial greatest-common-divisor simplification in the first version. It is not needed for most SPICE transfer functions and adds complexity.
+
+### Coefficient Normalization Contract
+
+The coefficient arrays passed to SpiceSharpBehavioral should satisfy this contract:
+
+- Arrays are non-null and non-empty.
+- Arrays are in ascending powers of `s`.
+- Interior zeros are preserved.
+- Highest-order near-zero coefficients are trimmed.
+- Denominator is not the zero polynomial.
+- All coefficients are finite `double` values.
+- Numerator degree is allowed to be less than, equal to, or greater than denominator degree only after checking what the built-in component accepts.
+
+Initial conservative policy:
+
+```text
+degree(numerator) <= degree(denominator)
+```
+
+Reject ideal differentiators and other improper transfer functions unless a dedicated Spike proves the built-in component handles them in all intended analyses. Proper transfer functions are more likely to behave sensibly in transient analysis.
 
 ### OP/DC Runtime Behavior
 
@@ -870,9 +1049,45 @@ private IEntity CreateLaplaceSourceEntity(
 out+, out-, control+, control-
 ```
 
+Pseudocode:
+
+```csharp
+private static ParameterCollection CreateLaplaceNodeParameters(
+    ParameterCollection sourceParameters,
+    LaplaceSourceDefinition definition)
+{
+    return new ParameterCollection(new List<Parameter>
+    {
+        sourceParameters[0],
+        sourceParameters[1],
+        new WordParameter(definition.Input.ControlPositiveNode, definition.LineInfo),
+        new WordParameter(definition.Input.ControlNegativeNode, definition.LineInfo),
+    });
+}
+```
+
+The exact constructor arguments may need small adjustments to match available `Parameter` constructors, but the important point is that `context.CreateNodes` sees exactly four node parameters. That lets existing subcircuit expansion and node-name generation happen in one place.
+
 Use the same node creation/name-generation path as the existing source generators. Do not pass raw node names through the full constructor unless they have already been transformed the same way `context.CreateNodes` would transform them, especially inside subcircuits.
 
 For the first scope, prefer only `E` and `G` because the built-in components are voltage-controlled. A PSpice input expression of `V(in)` maps cleanly to `controlPos = in` and `controlNeg = 0`.
+
+### Source Generator Edge Cases
+
+Be careful with these branch-order and parameter-count issues:
+
+- Put the `LAPLACE` branch before `POLY` and `TABLE` branches in `CreateCustomVoltageSource` and `CreateCustomCurrentSource`.
+- Do not put the branch in the simple five-parameter linear controlled-source path, because `E out 0 in 0 gain` and `G out 0 in 0 gain` should keep their current fast path.
+- For `E` and `G`, the output pins are still the first two parameters.
+- The control nodes come from the `V(...)` input expression, not from positional source parameters.
+- Ignore `M=` multiplier support at first unless tests define exactly how it should combine with the transfer function. If supported later, multiply the numerator coefficients by `M` rather than wrapping the source in a behavioral expression.
+- If the parser sees `LAPLACE` on `F`, `H`, `V`, `I`, or `B`, emit a targeted unsupported-source diagnostic.
+
+Suggested unsupported diagnostic:
+
+```text
+F1: laplace source supports only E and G voltage-controlled forms in this version
+```
 
 ### Generated C# Writer Support
 
@@ -886,6 +1101,21 @@ The writer must be able to emit the equivalent SpiceSharp entity construction fo
 - Serialize `Delay`.
 
 Do not update writer support first. It should follow the runtime entity shape after that shape is proven by tests.
+
+The emitted code should look roughly like this:
+
+```csharp
+var eLow = new LaplaceVoltageControlledVoltageSource("ELOW");
+eLow.Connect("out", "0", "in", "0");
+eLow.Parameters.Numerator = new[] { 1.0 };
+eLow.Parameters.Denominator = new[] { 1.0, 1e-6 };
+eLow.Parameters.Delay = 0.0;
+circuit.Add(eLow);
+```
+
+Writer support should be added in the same family as existing controlled-source writers and `SourceWriterHelper`. If the writer currently reconstructs `POLY` or `TABLE` from original `Component.PinsAndParameters`, the Laplace writer should either reuse `LaplaceSourceParser` in writer mode or store enough parsed information to avoid duplicating parser logic.
+
+Avoid emitting culture-dependent coefficient strings. Use invariant formatting, and add a generated-code test with a small coefficient such as `1e-6` so comma-decimal cultures cannot break output.
 
 ### Documentation Updates
 
@@ -938,6 +1168,70 @@ The first useful implementation should meet these criteria:
 - Matches analytic magnitude and phase for first-order low-pass, first-order high-pass, and second-order low-pass examples.
 - Includes transient tests or documents that transient compatibility has not yet been verified.
 
+### Implementation Checklist
+
+Use this checklist as a concrete coding order:
+
+```text
+[ ] Add parser grammar coverage for `LAPLACE {V(in)} = {1/(1+s*tau)}`.
+[ ] Add an expression-to-expression parameter model if current grammar cannot represent it.
+[ ] Add Laplace source syntax extraction and diagnostics.
+[ ] Add simple input-probe parser for `V(node)` and `V(node1,node2)`.
+[ ] Add polynomial and rational-polynomial types.
+[ ] Add transfer-expression builder for constants, parameters, `s`, `+`, `-`, `*`, `/`, and integer `^`.
+[ ] Add coefficient validation and normalization.
+[ ] Add `E` source mapping to `LaplaceVoltageControlledVoltageSource`.
+[ ] Add `G` source mapping to `LaplaceVoltageControlledCurrentSource`.
+[ ] Add OP finite-DC-gain tests.
+[ ] Add AC magnitude/phase tests.
+[ ] Decide singular-DC policy from tests.
+[ ] Decide improper-transfer policy from tests.
+[ ] Add transient step-response tests or document transient as unverified.
+[ ] Add generated C# writer support.
+[ ] Update docs and release notes.
+```
+
+### Test By Layer
+
+Parser grammar tests:
+
+- `ParseTreeGeneratorTests` should prove the tokenizer and parse-tree generator accept the raw PSpice syntax.
+- A parse-tree evaluator test should prove the parameter object keeps both input and transfer expressions intact.
+
+Math unit tests:
+
+- `1/(1+s*tau)` -> numerator `[1]`, denominator `[1, tau]`.
+- `s/(s+wc)` -> numerator `[0, 1]`, denominator `[wc, 1]`.
+- `w0*w0/(s*s+s*w0/q+w0*w0)` -> numerator `[w0*w0]`, denominator `[w0*w0, w0/q, 1]`.
+- `(1+s/wz)/(1+s/wp)` -> rational multiplication/division with parameter constants.
+- `s^0.5`, `sin(s)`, `V(x)*s`, and `random()*s` are rejected.
+
+Reader integration tests:
+
+- Add a new `LaplaceTests.cs` beside existing `PolyTests.cs` and `TableTests.cs` under `AnalogBehavioralModeling`.
+- Verify `E` low-pass OP gain is near `1`.
+- Verify `G` low-pass transconductance by loading a resistor and checking voltage/current.
+- Verify unsupported input expression `V(a)-V(b)` gives a validation error.
+- Verify unsupported source type gives a targeted validation error.
+
+AC integration tests:
+
+- Use `.MEAS AC VM(out)` and `.MEAS AC VP(out)` patterns similar to `VoltageExportTests`.
+- At cutoff for `1/(1+s*tau)`, check magnitude near `0.70710678` and phase near `-pi/4`.
+- For high-pass `s/(s+wc)`, check magnitude near `0.70710678` and phase near `+pi/4` at `fc`.
+- Add one second-order low-pass test at `f0` for the Butterworth case.
+
+Generated-code tests:
+
+- Generate C# for a low-pass `E` source and compile/run if there is an existing generated-code test path.
+- Assert emitted code uses `LaplaceVoltageControlledVoltageSource` or `LaplaceVoltageControlledCurrentSource` and ascending coefficient arrays.
+
+Transient tests:
+
+- For `1/(1+s*tau)`, compare a step response against `1 - exp(-t/tau)` at a few times after the input edge.
+- Use loose tolerances initially because timestep and integration method affect transient results.
+- If transient does not match, document OP/AC-only support and keep transient work separate.
+
 ## Worked Transfer-Function Examples
 
 These examples are useful both for implementation tests and for validating the coefficient normalization logic.
@@ -973,6 +1267,30 @@ Expected behavior:
 Implementation note:
 
 - This should be the first AC integration test because the expected response is simple and easy to verify analytically.
+
+### Differential-Input Low-Pass
+
+Netlist form:
+
+```spice
+.PARAM tau=1u
+ELOW out 0 LAPLACE {V(inp,inn)} = {1 / (1 + s*tau)}
+```
+
+Expected control mapping:
+
+```text
+out+       = out
+out-       = 0
+control+   = inp
+control-   = inn
+Numerator  = [1]
+Denominator= [1, tau]
+```
+
+Implementation note:
+
+- This verifies that the input expression is not assumed to be single-ended and that `V(a,b)` maps to the built-in component's two control nodes.
 
 ### First-Order High-Pass
 
@@ -1125,6 +1443,36 @@ Implementation note:
 
 - This verifies that both numerator and denominator may have missing powers of `s`.
 
+### Laplace Voltage-Controlled Current Source
+
+Netlist form:
+
+```spice
+.PARAM gm=1m
+.PARAM fc=10k
+.PARAM wc={2*pi*fc}
+GGM out 0 LAPLACE {V(in)} = {gm*wc / (s + wc)}
+RLOAD out 0 1k
+```
+
+Expected coefficients:
+
+```text
+Numerator   = [gm*wc]
+Denominator = [wc, 1]
+```
+
+Expected low-frequency behavior:
+
+```text
+I(GGM) ~= gm * V(in)
+V(out) ~= gm * RLOAD * V(in)
+```
+
+Implementation note:
+
+- This validates `LaplaceVoltageControlledCurrentSource`, sign conventions, and current-source loading.
+
 ### Integrator
 
 Netlist form:
@@ -1191,6 +1539,37 @@ EDIFF out 0 LAPLACE {V(in)} = {s / (1 + s/wp)}
 ```
 
 This turns the ideal differentiator into a proper high-pass-like differentiator with finite high-frequency gain.
+
+### Delay
+
+PSpice examples may include explicit delay-like behavior, but the common expression form does not always make the delay syntax obvious.
+
+Built-in SpiceSharpBehavioral Laplace components expose a `Delay` parameter, so a future syntax could map to it if PSpice compatibility is confirmed.
+
+MVP recommendation:
+
+```text
+Delay = 0.0
+```
+
+Reject unknown `TD=`, `DELAY=`, or extra trailing arguments until the expected PSpice syntax and SpiceSharpBehavioral semantics are tested.
+
+### Arbitrary Input Expression Lowering
+
+Later, if users need this:
+
+```spice
+E1 out 0 LAPLACE {V(a)-V(b)+0.5*I(Vsense)} = {1/(1+s*tau)}
+```
+
+one possible lowering is:
+
+```spice
+B__laplace_in_E1 n__laplace_E1 0 V={V(a)-V(b)+0.5*I(Vsense)}
+E1 out 0 LAPLACE {V(n__laplace_E1)} = {1/(1+s*tau)}
+```
+
+This is not recommended for the MVP because it introduces generated helper names, internal nodes, extra topology, and possible ordering issues. If added later, helper names must go through the existing name generator and avoid collisions with user nodes.
 
 ## Sample Netlists For Validation
 
@@ -1343,13 +1722,14 @@ E2 out 0 LAPLACE {V(in)} = {(s + 1) / s}
 Practical solution for MVP:
 
 - Detect `abs(D(0)) < tolerance`.
-- Reject OP/DC use with a clear validation error.
-- If AC simulation requires an operating point first, decide whether this source can be excluded from OP or whether it must be rejected until transient/state support exists.
+- Run a targeted built-in-component test for `1/s` before choosing final behavior.
+- If operating-point setup fails or produces unstable behavior, reject singular DC gain with a clear validation error.
+- If AC can run safely despite singular OP gain, document that distinction explicitly and add tests.
 
 Possible later solution:
 
-- Implement dynamic state and initial conditions for integrators.
 - Allow AC transfer evaluation independently of finite DC gain if SpiceSharp permits the source behavior to participate in AC after OP.
+- Add explicit initial-condition support for integrator-like transient behavior if PSpice syntax and built-in behavior allow it.
 
 ### Problem: Improper Transfer Function
 
@@ -1409,6 +1789,15 @@ Practical solution:
 - For AC evaluation, use Horner evaluation and avoid explicit powers.
 - Consider scaling numerator and denominator by a common factor when values are extremely large or small.
 - Add tests for both low-frequency and high-frequency evaluation to catch overflow.
+
+For the built-in-component MVP, prefer passing mathematically equivalent but reasonably scaled coefficients when a common scalar scale is obvious. If a user writes `1e24/(s*s+1e12*s+1e24)`, dividing numerator and denominator by `1e24` gives:
+
+```text
+Numerator   = [1]
+Denominator = [1, 1e-12, 1e-24]
+```
+
+only if that normalization is verified not to change the built-in component's behavior. If normalization creates worse conditioning for transient, keep original coefficients and document the tradeoff.
 
 ### Problem: AC Input Expression Is Not A Simple Node Voltage
 
@@ -1532,6 +1921,7 @@ Simulation tests for the built-in-component MVP should cover:
 - negative gain phase inversion
 - singular DC rejection
 - improper transfer-function rejection
+- transient low-pass step response if transient is claimed as supported
 
 Regression tests should include imported PSpice-style examples that motivated the feature, once available.
 
@@ -1570,6 +1960,28 @@ Estimated effort: **1-3 weeks**, depending mostly on transient validation, gener
 
 Transient may already be covered by the built-in time behavior, but it still needs careful validation. Arbitrary input expressions are likely the expensive part because the built-in components only accept voltage-control nodes.
 
+## Compatibility Decision Table
+
+Use this as the initial compatibility policy:
+
+| Feature | MVP behavior | Later behavior |
+| --- | --- | --- |
+| `E ... LAPLACE {V(n)} = {H(s)}` | Support | Keep |
+| `E ... LAPLACE {V(n1,n2)} = {H(s)}` | Support | Keep |
+| `G ... LAPLACE {V(n)} = {H(s)}` | Support | Keep |
+| `G ... LAPLACE {V(n1,n2)} = {H(s)}` | Support | Keep |
+| `F`/`H` current-controlled Laplace | Reject with diagnostic | Consider custom lowering or current-controlled components if available |
+| `B` source Laplace syntax | Reject with diagnostic | Investigate PSpice ABM syntax |
+| Arbitrary input expression | Reject with diagnostic | Lower through helper source or custom behavior |
+| Rational polynomial in `s` | Support | Keep |
+| Non-rational functions of `s` | Reject | Maybe never support unless PSpice-compatible semantics are clear |
+| Singular DC gain | Test, then reject or document | Possible AC-only or IC-aware support |
+| Improper transfer | Reject initially | Allow only if built-in behavior is proven safe |
+| Explicit delay | Reject initially | Map to `Delay` after syntax confirmation |
+| Transient | Test before claiming | Document verified subset |
+
+Good diagnostics are part of compatibility. A rejected feature with a precise message is much better than falling through to a misleading source-parser error.
+
 ## Recommended Implementation Plan
 
 1. Define the supported syntax subset: `E`/`G` with `V(node)` or `V(node1,node2)` input.
@@ -1585,6 +1997,74 @@ Transient may already be covered by the built-in time behavior, but it still nee
 11. Add transient step-response tests and document the verified behavior.
 12. Update generated C# writer support.
 13. Document the supported syntax and limitations.
+
+## Development Debugging Guide
+
+When a Laplace test fails, narrow it by layer:
+
+Parser failure:
+
+- Check whether the lexer emits `{V(in)}` and `{1/(1+s*tau)}` as expression tokens or splits them unexpectedly.
+- Check whether `ParseTreeGenerator` selected `ExpressionEqual`, `ParameterEqual`, or `ParameterSingle`.
+- Check whether `ParseTreeEvaluator` preserved both sides of the `=`.
+
+Source-reader failure:
+
+- Inspect `ParameterCollection.ToString()` for the component.
+- Confirm `LAPLACE` is present as a `WordParameter` and is not swallowed by the preceding output pins.
+- Confirm the source type is `e` or `g` after case handling.
+- Confirm `CreateLaplaceNodeParameters` builds exactly four node parameters.
+
+Math failure:
+
+- Print numerator and denominator arrays before creating the entity.
+- Verify arrays are ascending powers of `s`.
+- Evaluate the rational polynomial at `s = 0` and `s = j*2*pi*fc` in a unit test.
+- Check for trimmed interior zeros, which should never happen.
+
+Simulation failure:
+
+- First run the same circuit with a manually constructed built-in Laplace entity.
+- If manual construction works but parser construction fails, inspect node ordering and coefficient arrays.
+- If both fail, investigate SpiceSharpBehavioral behavior, properness, singular DC gain, and transient support assumptions.
+
+Generated-code failure:
+
+- Compare generated code against the parser-created entity: same type, same node order, same coefficient arrays, same delay.
+- Check invariant-culture coefficient formatting.
+- Check that generated code includes the namespace needed for the Laplace source type.
+
+## Suggested PR Breakdown
+
+PR 1, grammar and diagnostics:
+
+- Parser test for expression-to-expression Laplace syntax.
+- Parameter model for expression assignment if needed.
+- Validation errors for unsupported `LAPLACE` rather than parse exceptions.
+
+PR 2, math parser:
+
+- Polynomial and rational-polynomial types.
+- Laplace transfer-expression parser.
+- Coefficient normalization and validation tests.
+
+PR 3, `E` source runtime mapping:
+
+- Input probe parser.
+- `LaplaceVoltageControlledVoltageSource` creation.
+- OP and AC tests for low-pass and high-pass.
+
+PR 4, `G` source runtime mapping:
+
+- `LaplaceVoltageControlledCurrentSource` creation.
+- Current-source sign/loading tests.
+
+PR 5, compatibility polish:
+
+- Singular DC and improper-transfer diagnostics.
+- Transient validation or explicit documentation gap.
+- Generated C# writer support.
+- User docs.
 
 ## Key Files
 
@@ -1623,8 +2103,10 @@ Recommended new test areas:
 
 Likely test templates:
 
+- `src/SpiceSharpParser.Tests/Parsers/ParseTreeGeneratorTests.cs`
 - `src/SpiceSharpParser.IntegrationTests/AnalogBehavioralModeling/PolyTests.cs`
 - `src/SpiceSharpParser.IntegrationTests/AnalogBehavioralModeling/TableTests.cs`
+- `src/SpiceSharpParser.IntegrationTests/VoltageExportTests.cs`
 - `src/SpiceSharpParser.IntegrationTests/Expressions/PolyExpressionTests.cs`
 - `src/SpiceSharpParser.IntegrationTests/DotStatements/FuncTests.cs`
 
