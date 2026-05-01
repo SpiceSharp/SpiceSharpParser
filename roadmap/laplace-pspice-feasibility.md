@@ -98,6 +98,105 @@ Behavioral source parsing currently flows through these areas:
 
 However, the expression evaluation path is currently real-valued. `CustomRealBuilder` evaluates expressions as `double`, which is not enough for Laplace-domain transfer functions.
 
+## Parser And Tokenizer Research Findings
+
+The tokenizer probably does **not** need new token types for the recommended MVP.
+
+`LAPLACE` can remain a normal `WORD` token that later becomes a `WordParameter`. That matches the existing handling for source-level keywords such as `VALUE`, `POLY`, and `TABLE`. Adding a dedicated `LAPLACE` token would make the lexer more specialized without reducing parser complexity.
+
+Braced expressions are already handled by the netlist lexer. A line such as:
+
+```spice
+ELOW out 0 LAPLACE {V(in)} = {1/(1+s*tau)}
+```
+
+should tokenize conceptually as:
+
+```text
+WORD("ELOW")
+WORD("out")
+VALUE/WORD("0")
+WORD("LAPLACE")
+EXPRESSION_BRACKET("{V(in)}")
+EQUAL("=")
+EXPRESSION_BRACKET("{1/(1+s*tau)}")
+NEWLINE/EOF
+```
+
+The continuation-line path should also be enough as-is. The lexer already supports SPICE continuation lines, so the required tokenizer work should be limited to regression tests proving that a split Laplace transfer expression remains one logical statement:
+
+```spice
+ELOW out 0 LAPLACE {V(in)} =
++ {1/(1+s*tau)}
+```
+
+The real gap is in parse-tree generation and evaluation, not tokenization.
+
+Current TABLE syntax uses this form:
+
+```spice
+TABLE {V(in)} = (0,0) (1,1)
+```
+
+That maps naturally to the existing `ExpressionEqualParameter`:
+
+```text
+Expression = Points
+```
+
+LAPLACE needs a different shape:
+
+```spice
+LAPLACE {V(in)} = {1/(1+s*tau)}
+```
+
+which should map to:
+
+```text
+LeftExpression = RightExpression
+```
+
+Today, an expression followed by `=` is routed through the `ExpressionEqual` parse symbol. That path is hard-wired to call `ReadExpressionEqual`, and `ReadExpressionEqual` expects the right-hand side to be `Points`. Therefore `{V(in)} = {1/(1+s*tau)}` is forced into the TABLE grammar and cannot produce a clean transfer-expression parameter.
+
+The safest parser change is to add a new model and parse symbol rather than overloading `ExpressionEqualParameter`:
+
+```text
+ExpressionAssignmentParameter
+  LeftExpression
+  RightExpression
+
+Symbols.ExpressionAssignment
+  EXPRESSION "=" EXPRESSION
+```
+
+Then disambiguate in `ParseTreeGenerator.ReadParameter`:
+
+- `{expr} = (` keeps the existing `ExpressionEqual` / `ExpressionEqualParameter` path for `TABLE`.
+- `{expr} (` keeps the existing no-equals TABLE point-list path.
+- `{expr} = {expr}` creates the new `ExpressionAssignmentParameter`.
+- `{expr} = 'expr'` can also create `ExpressionAssignmentParameter` if single-quoted expression tokens are intentionally supported.
+
+This keeps `TABLE` behavior stable and gives `LAPLACE` a parameter model that says what it means.
+
+Concrete parser files to change in a future implementation:
+
+- `src/SpiceSharpParser/Parsers/Netlist/Spice/Symbols.cs`: add `ExpressionAssignment`.
+- `src/SpiceSharpParser/Parsers/Netlist/Spice/Internals/ParseTreeGenerator.cs`: register the new symbol, add `ReadExpressionAssignment`, and update `ReadParameter` disambiguation.
+- `src/SpiceSharpParser/Parsers/Netlist/Spice/Internals/ParseTreeEvaluator.cs`: register evaluator support and construct `ExpressionAssignmentParameter`.
+- `src/SpiceSharpParser/Models/Netlist/Spice/Objects/Parameters/ExpressionAssignmentParameter.cs`: add the new parameter model.
+- `src/SpiceSharpParser/Parsers/Netlist/Spice/SpiceGrammarBNF.txt`: document the new production.
+
+Concrete parser tests to add before source-generator work:
+
+- Lexer: `LAPLACE {V(in)} = {1/(1+s*tau)}` keeps `LAPLACE` as a normal word and both braced expressions as expression tokens.
+- Lexer: a continuation-line version keeps the transfer expression on the same logical statement.
+- Parse tree: `{V(in)} = {1/(1+s*tau)}` chooses `ExpressionAssignment`.
+- Parse evaluator: the evaluated parameter has `LeftExpression == "V(in)"` and `RightExpression == "1/(1+s*tau)"`.
+- Regression: `TABLE {V(in)} = (0,0)` still evaluates to `ExpressionEqualParameter`.
+- Regression: `TABLE {V(in)} (0,0)` still evaluates to `ExpressionEqualParameter`.
+
+Important implementation rule: do not parse the Laplace right-hand expression as `Points`, and do not put transfer-function semantics into the tokenizer. The tokenizer only identifies the braced expression; the Laplace source parser and rational-polynomial parser should interpret it later.
+
 ## Why LAPLACE Is Harder Than POLY Or TABLE
 
 `POLY` and `TABLE` are static nonlinear mappings. They can be expressed as real-valued functions of voltage, current, or parameters.
@@ -1984,19 +2083,28 @@ Good diagnostics are part of compatibility. A rejected feature with a precise me
 
 ## Recommended Implementation Plan
 
-1. Define the supported syntax subset: `E`/`G` with `V(node)` or `V(node1,node2)` input.
-2. Add a parser grammar test for expression-to-expression syntax after `LAPLACE`.
-3. Add or adapt the parameter object needed to represent `{V(in)} = {1/(1+s*tau)}`.
-4. Add source-level syntax detection beside the existing `POLY` and `TABLE` handling.
-5. Parse the Laplace transfer expression separately from normal real-valued expressions.
-6. Treat `s` as a reserved symbolic variable only inside the Laplace transfer expression.
-7. Normalize the transfer expression into numerator and denominator coefficient arrays in ascending powers of `s`.
-8. Map `E` sources to `LaplaceVoltageControlledVoltageSource`.
-9. Map `G` sources to `LaplaceVoltageControlledCurrentSource`.
-10. Add OP and AC tests for analytic examples.
-11. Add transient step-response tests and document the verified behavior.
-12. Update generated C# writer support.
-13. Document the supported syntax and limitations.
+1. Freeze the MVP syntax contract: support only `E`/`G ... LAPLACE {V(node)}` and `E`/`G ... LAPLACE {V(node1,node2)}` with a rational transfer expression in `s`.
+2. Add tokenizer tests first. Confirm `LAPLACE` remains a normal `WORD`, `{V(in)}` and `{1/(1+s*tau)}` remain expression tokens, and continuation lines do not split the logical statement.
+3. Add parse-tree tests for the grammar gap. `{V(in)} = {1/(1+s*tau)}` must not be parsed as TABLE points.
+4. Add `ExpressionAssignmentParameter` with `LeftExpression` and `RightExpression`.
+5. Add `Symbols.ExpressionAssignment` and document the production in `SpiceGrammarBNF.txt`.
+6. Update `ParseTreeGenerator.ReadParameter` so `{expr} = {expr}` routes to `ExpressionAssignment`, while `{expr} = (` and `{expr} (` keep the existing `ExpressionEqual` path for `TABLE`.
+7. Update `ParseTreeEvaluator` to construct `ExpressionAssignmentParameter`. Add a regression test proving `TABLE {V(in)} = (0,0)` still creates `ExpressionEqualParameter`.
+8. Add `LaplaceSourceParser` near the source generators. It should find `WordParameter("laplace")`, require the next parameter to be `ExpressionAssignmentParameter`, and preserve line info for diagnostics.
+9. Parse the input expression with the existing expression parser. Accept only `V(node)` and the existing `Subtract(Voltage(node1), Voltage(node2))` AST shape produced by `V(node1,node2)`.
+10. Reject arbitrary input expressions for the MVP with a clear validation error.
+11. Add a separate Laplace transfer-expression builder. Reuse the existing expression lexer/parser for AST creation, but do not use `CustomRealBuilder`.
+12. In the transfer builder, support constants, parameters, symbolic `s`, unary signs, `+`, `-`, `*`, `/`, and non-negative integer `^`.
+13. Reject functions, voltage/current/property nodes, `TIME`, `FREQ`, non-integer powers, negative powers, non-constant coefficients, zero denominators, and improper transfer functions unless a later decision explicitly allows them.
+14. Normalize transfer expressions into numerator and denominator coefficient arrays in ascending powers of `s`.
+15. Add source-generator detection before the existing `POLY` and `TABLE` custom-source branches.
+16. Map `E` sources to `LaplaceVoltageControlledVoltageSource` with node order `out+`, `out-`, `control+`, `control-`.
+17. Map `G` sources to `LaplaceVoltageControlledCurrentSource` with the same node order and an explicit decision about `M=` handling.
+18. Set `Numerator`, `Denominator`, and `Delay = 0.0`.
+19. Add integration tests for low-pass and high-pass AC magnitude and phase, including parameterized coefficients and differential input.
+20. Add malformed syntax and unsupported-feature diagnostics tests.
+21. Add transient step-response tests only before claiming transient compatibility.
+22. Update generated C# writer support and user docs after runtime behavior is verified.
 
 ## Development Debugging Guide
 
@@ -2005,7 +2113,7 @@ When a Laplace test fails, narrow it by layer:
 Parser failure:
 
 - Check whether the lexer emits `{V(in)}` and `{1/(1+s*tau)}` as expression tokens or splits them unexpectedly.
-- Check whether `ParseTreeGenerator` selected `ExpressionEqual`, `ParameterEqual`, or `ParameterSingle`.
+- Check whether `ParseTreeGenerator` selected `ExpressionAssignment`, `ExpressionEqual`, `ParameterEqual`, or `ParameterSingle`.
 - Check whether `ParseTreeEvaluator` preserved both sides of the `=`.
 
 Source-reader failure:
@@ -2038,8 +2146,11 @@ Generated-code failure:
 
 PR 1, grammar and diagnostics:
 
+- Lexer tests for the `LAPLACE` keyword, braced RHS expression, and continuation lines.
 - Parser test for expression-to-expression Laplace syntax.
-- Parameter model for expression assignment if needed.
+- `ExpressionAssignmentParameter`.
+- `ExpressionAssignment` parse-tree symbol and evaluator support.
+- TABLE regression tests proving `ExpressionEqualParameter` behavior is unchanged.
 - Validation errors for unsupported `LAPLACE` rather than parse exceptions.
 
 PR 2, math parser:
@@ -2124,3 +2235,9 @@ Likely test templates:
 Implement `LAPLACE` in phases.
 
 Start with a **built-in component MVP** for `E` and `G` sources whose input is `V(node)` or `V(node1,node2)`. That gives useful PSpice compatibility by adding parser and coefficient support while relying on SpiceSharpBehavioral for the analysis-specific runtime behavior. Then validate transient behavior, generated C# output, and broader input-expression support as separate follow-up milestones.
+
+## References
+
+- Cadence PSpice User Guide, LAPLACE ABM semantics: https://resources.pcb.cadence.com/i/1180526-pspice-user-guide/370
+- Cadence Analog Behavioral Modeling overview: https://resources.pcb.cadence.com/pspiceuserguide/06-analog-behavioral-modeling
+- Local dependency: `SpiceSharpBehavioral 3.2.0` exposes `LaplaceVoltageControlledVoltageSource`, `LaplaceVoltageControlledCurrentSource`, and shared `Numerator`, `Denominator`, `Delay` parameters.
