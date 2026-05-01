@@ -40,14 +40,15 @@ Where `H(s)` is a finite rational polynomial in `s` whose coefficients reduce to
 8. [Reader Integration](#reader-integration)
 9. [Diagnostics](#diagnostics)
 10. [Compatibility Policy](#compatibility-policy)
-11. [Implementation Plan](#implementation-plan)
-12. [Acceptance Criteria](#acceptance-criteria)
-13. [Test Plan](#test-plan)
-14. [Worked Examples](#worked-examples)
-15. [Sample Netlists](#sample-netlists)
-16. [Debugging Guide](#debugging-guide)
-17. [Key Files](#key-files)
-18. [References](#references)
+11. [Multiple Syntax Strategy](#multiple-syntax-strategy)
+12. [Implementation Plan](#implementation-plan)
+13. [Acceptance Criteria](#acceptance-criteria)
+14. [Test Plan](#test-plan)
+15. [Worked Examples](#worked-examples)
+16. [Sample Netlists](#sample-netlists)
+17. [Debugging Guide](#debugging-guide)
+18. [Key Files](#key-files)
+19. [References](#references)
 
 ---
 
@@ -154,6 +155,8 @@ Input-expression subset:
 - `F` and `H` current-controlled Laplace sources.
 - `B` source Laplace forms.
 - Arbitrary input expressions such as `V(a)-V(b)+I(Vsense)`.
+- Alternative `E` / `G` Laplace syntax variants that omit `=` or put `=` directly after `LAPLACE`.
+- `VALUE={LAPLACE(...)}` / function-like ABM forms.
 - Non-rational transfer expressions.
 - Explicit delay syntax such as `TD=` or `DELAY=`.
 - Initial-condition syntax for Laplace internal state.
@@ -492,6 +495,8 @@ laplace transfer coefficients must be constant expressions
 laplace transfer expression reserves symbol 's'; use a different parameter name
 laplace delay syntax is not supported yet
 laplace multiplier M is not supported yet
+laplace syntax variant is recognized but not supported yet
+laplace function-like VALUE form is not supported yet; use E/G LAPLACE {V(...)} = {H(s)}
 laplace source supports only E and G voltage-controlled forms in this version
 ```
 
@@ -512,8 +517,11 @@ Good diagnostics are part of compatibility. A precise rejection is better than f
 | `E ... LAPLACE {V(n1,n2)} = {H(s)}` | Support | Keep |
 | `G ... LAPLACE {V(n)} = {H(s)}` | Support | Keep |
 | `G ... LAPLACE {V(n1,n2)} = {H(s)}` | Support | Keep |
+| `E` / `G ... LAPLACE {V(n)} {H(s)}` | Targeted unsupported diagnostic until canonical form is stable | Add recognizer that lowers to the same model |
+| `E` / `G ... LAPLACE = {V(n)} {H(s)}` | Targeted unsupported diagnostic until canonical form is stable | Add recognizer that lowers to the same model |
 | `F` / `H` current-controlled forms | Targeted unsupported diagnostic | Map to built-in current-controlled Laplace entities |
 | `B` source Laplace forms | Targeted unsupported diagnostic | Investigate PSpice ABM syntax |
+| `VALUE={LAPLACE(...)}` function-like form | Targeted unsupported diagnostic | Investigate as source-level special form |
 | Arbitrary input expression | Reject | Lower through helper behavioral source or custom behavior |
 | Rational polynomial in `s` | Support | Keep |
 | Non-rational functions of `s` | Reject | Likely keep rejected |
@@ -532,6 +540,71 @@ E1 out 0 LAPLACE {V(in)} {1/(1+s*tau)}
 E1 out 0 LAPLACE = {V(in)} {1/(1+s*tau)}
 E1 out 0 VALUE = {LAPLACE(V(in), 1/(1+s*tau))}
 ```
+
+## Multiple Syntax Strategy
+
+Treat multiple PSpice spellings as a compatibility layer over one internal model. The runtime and coefficient builder should not care which syntax variant was used.
+
+All supported forms should normalize into the same `LaplaceSourceDefinition`:
+
+```csharp
+internal sealed class LaplaceSourceDefinition
+{
+    public string SourceName { get; }
+    public string SourceKind { get; }
+    public LaplaceSourceInput Input { get; }
+    public string InputExpression { get; }
+    public string TransferExpression { get; }
+    public LaplaceTransferFunction TransferFunction { get; }
+    public double Delay { get; }
+    public SpiceLineInfo LineInfo { get; }
+}
+```
+
+Use small syntax recognizers rather than one large parser branch:
+
+```csharp
+internal interface ILaplaceSyntaxRecognizer
+{
+    bool TryParse(
+        string sourceName,
+        string sourceKind,
+        ParameterCollection parameters,
+        IReadingContext context,
+        out LaplaceSourceDefinition definition);
+}
+```
+
+Recognizer priority should be explicit and tested:
+
+1. `CanonicalExpressionAssignmentRecognizer` for `LAPLACE {V(in)} = {H(s)}`.
+2. `NoEqualsExpressionPairRecognizer` for `LAPLACE {V(in)} {H(s)}`.
+3. `EqualsExpressionPairRecognizer` for `LAPLACE = {V(in)} {H(s)}`.
+4. `CurrentControlledRecognizer` for later `F` / `H` forms using `I(Vsense)`.
+5. `ValueLaplaceFunctionRecognizer` for later `VALUE={LAPLACE(...)}` and `B`-source ABM forms.
+6. `UnsupportedKnownVariantRecognizer` for recognized-but-deferred forms.
+
+The last recognizer is deliberate. If a user writes a known PSpice Laplace variant that is not implemented yet, emit a targeted diagnostic instead of letting the line fall through to `VALUE`, `TABLE`, or generic parameter-count handling.
+
+### Syntax Families
+
+| Family | Example | Near-term behavior | Notes |
+|--------|---------|--------------------|-------|
+| Canonical assignment | `E1 out 0 LAPLACE {V(in)} = {1/(1+s*tau)}` | Support first | Exercises grammar gap and runtime mapping. |
+| No-equals expression pair | `E1 out 0 LAPLACE {V(in)} {1/(1+s*tau)}` | Add after canonical | Should normalize to the same definition and coefficients. |
+| Equals-after-keyword pair | `E1 out 0 LAPLACE = {V(in)} {1/(1+s*tau)}` | Add after canonical | Likely parses differently; keep syntax handling isolated in a recognizer. |
+| Current-controlled | `F1 out 0 LAPLACE {I(Vsense)} = {H(s)}` | Later milestone | Runtime entities exist, but controlling-source parsing and PSpice compatibility need tests. |
+| Function-like `VALUE` | `E1 out 0 VALUE = {LAPLACE(V(in), H(s))}` | Investigate later | Must be handled as source-level Laplace, not a scalar expression function. |
+| `B` source ABM | `B1 out 0 V = {LAPLACE(V(in), H(s))}` | Investigate later | May require arbitrary input-expression lowering or custom behavior. |
+| Delay/options | `TD=...`, `DELAY=...` | Reject initially | Runtime has `Delay`; PSpice syntax and semantics need confirmation. |
+
+### Normalization Rules
+
+- Equivalent `E` / `G` syntax variants must produce identical input nodes, transfer coefficients, delay, and entity type.
+- Syntax recognizers should only parse surface shape. They should call the same input parser and transfer-expression builder.
+- The canonical recognizer is the only recognizer needed for the MVP.
+- Later recognizers should be added one at a time with compatibility matrix tests.
+- Function-like forms must not be registered in the normal scalar function table. They are analysis-dependent source constructs.
 
 ## Implementation Plan
 
@@ -571,11 +644,12 @@ If manual entity construction fails, stop and investigate the dependency before 
 ### Phase 3: `E` Source Mapping
 
 1. Add `LaplaceSourceParser` and source definition models.
-2. Detect `LAPLACE` in `VoltageSourceGenerator.CreateCustomVoltageSource(...)`.
-3. Parse `V(node)` / `V(node1,node2)` input.
-4. Map to `LaplaceVoltageControlledVoltageSource`.
-5. Add OP and AC integration tests.
-6. Add malformed syntax and unsupported-feature diagnostics.
+2. Add `CanonicalExpressionAssignmentRecognizer` as the first syntax recognizer.
+3. Detect `LAPLACE` in `VoltageSourceGenerator.CreateCustomVoltageSource(...)`.
+4. Parse `V(node)` / `V(node1,node2)` input.
+5. Map to `LaplaceVoltageControlledVoltageSource`.
+6. Add OP and AC integration tests.
+7. Add malformed syntax and unsupported-feature diagnostics.
 
 ### Phase 4: `G` Source Mapping
 
@@ -584,7 +658,16 @@ If manual entity construction fails, stop and investigate the dependency before 
 3. Map to `LaplaceVoltageControlledCurrentSource`.
 4. Add sign-convention and load-resistor tests.
 
-### Phase 5: Polish
+### Phase 5: Syntax Compatibility Layer
+
+1. Add `UnsupportedKnownVariantRecognizer` so common deferred forms receive targeted diagnostics.
+2. Add `NoEqualsExpressionPairRecognizer` for `LAPLACE {input} {transfer}` only after canonical tests pass.
+3. Add `EqualsExpressionPairRecognizer` for `LAPLACE = {input} {transfer}` only after no-equals tests pass.
+4. Verify supported variants normalize to identical `LaplaceSourceDefinition` values.
+5. Keep function-like `VALUE={LAPLACE(...)}` forms diagnostic-only until their PSpice semantics are confirmed.
+6. Keep `F` / `H` recognizers diagnostic-only until current-controlled tests are planned.
+
+### Phase 6: Polish
 
 1. Decide and document transient support based on step-response results.
 2. Add generated C# writer support if parity is required for the release.
@@ -598,8 +681,10 @@ The MVP is ready when all of these are true:
 - `E` and `G` Laplace sources parse without disturbing existing `VALUE`, `POLY`, or `TABLE` behavior.
 - Transfer coefficients are generated in ascending powers of `s`.
 - Parameterized low-pass, high-pass, and biquad examples produce expected coefficients.
+- Any supported alternate PSpice syntax variants normalize to the same definitions and coefficients as the canonical form.
 - AC integration tests match expected magnitude and phase at key frequencies.
 - Unsupported syntax produces targeted validation errors with line info.
+- Recognized-but-deferred PSpice variants produce targeted diagnostics rather than falling through to unrelated source handling.
 - No supported user mistake falls through to a generic parser exception.
 - Transient support is either verified by tests or explicitly documented as not yet claimed.
 - User documentation states syntax, supported analyses, limitations, and examples.
@@ -646,6 +731,22 @@ Place near [src/SpiceSharpParser.Tests/Parsers](../src/SpiceSharpParser.Tests/Pa
 - Unsupported `F`, `H`, and `B` forms.
 - Unsupported arbitrary input expression.
 - Unsupported delay and `M=` parameters.
+
+### Compatibility Matrix Tests
+
+For every supported syntax variant, verify:
+
+- It maps to the same `LaplaceSourceDefinition` as the canonical form.
+- It produces the same numerator and denominator arrays.
+- It creates the same SpiceSharpBehavioral entity type.
+- It uses the same output and control-node ordering.
+- It keeps existing `VALUE`, `POLY`, and `TABLE` behavior unchanged.
+
+For every recognized but deferred syntax variant, verify:
+
+- It reports a targeted validation error.
+- It does not fall through to unrelated source generation.
+- It includes source name and line information.
 
 ### Integration Tests
 
@@ -921,6 +1022,8 @@ When a Laplace test fails, narrow the problem by layer.
 ### Source Reader
 
 - Is `LAPLACE` a `WordParameter`?
+- Which `ILaplaceSyntaxRecognizer` matched?
+- Did a recognized-but-deferred syntax go through `UnsupportedKnownVariantRecognizer`?
 - Is the next parameter an `ExpressionAssignmentParameter`?
 - Did source type normalize to `e` or `g`?
 - Did input parsing produce exactly two control nodes?
