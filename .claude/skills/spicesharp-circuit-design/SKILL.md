@@ -150,6 +150,44 @@ Create xUnit test project in `tests/CircuitTests/` targeting **net8.0**:
 - AC analysis: use `VM()`/`VDB()`/`VP()`, never plain `V()`
 - Prefer `.MEAS` over `.SAVE` for spec verification
 
+#### LAPLACE Transfer Sources
+
+Use `LAPLACE` when a block is mostly linear and the desired transfer function is known: anti-alias poles, finite-bandwidth amplifier approximations, lead/lag compensation, simplified transconductance stages, sensor front ends, and other gain/pole/zero models.
+
+Supported source-level spellings:
+
+In the examples below, `E/G<name>` means choose either an `E` or `G` source prefix, and `F/H<name>` means choose either an `F` or `H` source prefix.
+
+```spice
+E/G<name> <out+> <out-> LAPLACE {V(<node>)} = {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+E/G<name> <out+> <out-> LAPLACE {V(<node1>,<node2>)} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+E/G<name> <out+> <out-> LAPLACE = {V(<node1>,<node2>)} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+
+F/H<name> <out+> <out-> LAPLACE {I(<source>)} = {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+F/H<name> <out+> <out-> LAPLACE {I(<source>)} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+F/H<name> <out+> <out-> LAPLACE = {I(<source>)} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+```
+
+Function-style forms are also supported:
+
+```spice
+ELOW OUT 0 VALUE={LAPLACE(V(IN), 1/(1+s*tau))}
+BLOW OUT 0 V={LAPLACE(V(IN), wc/(s+wc))}
+BGM OUT 0 I={LAPLACE(V(IN), gm/(1+s*tau))}
+BMIX OUT 0 V={1 + 2*LAPLACE(V(IN), 1/(1+s))}
+```
+
+Rules and gotchas:
+- `E` and `G` use voltage input `V(node)` or `V(node1,node2)`; `F` and `H` use current input `I(source)`.
+- The transfer must be a finite, proper rational polynomial in `s` with non-singular DC gain.
+- Use `s/(s+wc)` for high-pass behavior; bare `s` is improper and rejected.
+- Avoid unsupported forms such as `1/s`, `sin(s)`, `V(a)-V(b)`, and `V(node)` on `F`/`H`.
+- `M=<m>` is a finite multiplier folded into the numerator. It may be positive, negative, or zero.
+- `TD=<delay>` and `DELAY=<delay>` are aliases; use only one, with assignment syntax, and a non-negative value.
+- Function-style delay options require exactly one `LAPLACE(...)` call.
+- `G` and `F` current is defined from `out+` to `out-`; with a grounded load this may produce inverted output voltage.
+- For details and examples, read `src/docs/articles/laplace.md`, `src/docs/articles/laplace-basics.md`, and `src/SpiceSharpParser.IntegrationTests/AnalogBehavioralModeling/LaplaceTests.cs`.
+
 ### Phase 5: Simulation & Verification
 
 **Every design MUST produce `tests/<CircuitName>Tests.cs`.**
@@ -631,14 +669,14 @@ var explorer = new DesignSpaceExplorer(netlist)
 ## Known Limitations
 
 ### Works Well
-RC/RL/RLC filters, amplifier stages (CE/CB/CC/CS/diff pair), diode circuits, voltage regulators, AM envelope detection, Wien bridge/phase-shift oscillators, DC power supply, BJT/MOSFET biasing
+RC/RL/RLC filters, LAPLACE transfer-function blocks, amplifier stages (CE/CB/CC/CS/diff pair), diode circuits, voltage regulators, AM envelope detection, Wien bridge/phase-shift oscillators, DC power supply, BJT/MOSFET biasing
 
 ### Use With Caution
 - **FM/PLLs** — convergence issues, use behavioral-source approximations
 - **RF Mixers** — very small timesteps needed, keep frequencies low or use B elements
 - **>100 MHz** — no parasitic/skin effect modeling, treat as approximate
 - **Crystal oscillators** — startup transients impractical, use `.IC` or short sims
-- **Op-amps** — no built-in device; use discrete transistors or B/E elements
+- **Op-amps** — no built-in device; use `E ... LAPLACE` for finite closed-loop bandwidth approximations, or use detailed behavioral/transistor models for full macro-model behavior
 
 ### Convergence Tips
 - `.OPTIONS reltol=1e-3 abstol=1e-12 gmin=1e-12`
@@ -655,6 +693,7 @@ When writing tests, consult these for patterns and inspiration:
 
 - **SpiceSharp**: `d:\dev\SpiceSharp\SpiceSharpTest\` — `BasicExampleTests.cs`, `Helper.cs`, `Models/`
 - **SpiceSharpParser**: `d:\dev\SpiceSharpParser\src\SpiceSharpParser.IntegrationTests\` — `BaseTests.cs`, `Components/`, `DotStatements/`, `AnalogBehavioralModeling/`, `Examples/Circuits/*.cir`
+- **LAPLACE**: `src/docs/articles/laplace.md`, `src/docs/articles/laplace-basics.md`, `src/SpiceSharpParser.IntegrationTests/AnalogBehavioralModeling/LaplaceTests.cs`
 
 Key patterns: tolerance-based assertions (RelTol=1e-3, AbsTol=1e-12), reference function comparison, `.MEAS` validation, string-array netlist construction.
 
