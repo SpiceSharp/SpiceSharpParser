@@ -2,7 +2,7 @@
 
 `LAPLACE` sources model a linear transfer function in the Laplace domain. They are useful when you know the desired gain, poles, zeros, or filter response and want to describe it directly instead of building the same behavior from resistors, capacitors, inductors, or op-amp subcircuits.
 
-SpiceSharpParser supports voltage-controlled `E` and `G` source LAPLACE forms.
+SpiceSharpParser supports voltage-controlled `E` and `G` source LAPLACE forms with `V(node)` or `V(node1,node2)` input, three equivalent spellings, and finite constant `M=`, `TD=`, and `DELAY=` options.
 
 If you are new to Laplace transforms, start with [Laplace Transform Basics for Circuit Simulation](laplace-basics.md). This article is the syntax and reference page.
 
@@ -56,7 +56,7 @@ V(node)
 V(node1,node2)
 ```
 
-`V(node)` means `V(node,0)`. `V(node1,node2)` means the differential voltage `V(node1) - V(node2)`.
+`V(node)` means `V(node,0)`. `V(node1,node2)` means the differential voltage `V(node1) - V(node2)`. Every supported spelling below accepts either input shape.
 
 ### E Source
 
@@ -69,10 +69,9 @@ V(out+,out-) = H(s) * V(ctrl+,ctrl-)
 Supported spellings:
 
 ```spice
-E<name> <out+> <out-> LAPLACE {V(<ctrl+>)} = {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
-E<name> <out+> <out-> LAPLACE {V(<ctrl+>)} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
-E<name> <out+> <out-> LAPLACE = {V(<ctrl+>)} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
-E<name> <out+> <out-> LAPLACE {V(<ctrl+>,<ctrl->)} = {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+E<name> <out+> <out-> LAPLACE {<input>} = {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+E<name> <out+> <out-> LAPLACE {<input>} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+E<name> <out+> <out-> LAPLACE = {<input>} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
 ```
 
 ### G Source
@@ -92,10 +91,9 @@ V(out) = -Iout * Rload
 Supported spellings:
 
 ```spice
-G<name> <out+> <out-> LAPLACE {V(<ctrl+>)} = {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
-G<name> <out+> <out-> LAPLACE {V(<ctrl+>)} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
-G<name> <out+> <out-> LAPLACE = {V(<ctrl+>)} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
-G<name> <out+> <out-> LAPLACE {V(<ctrl+>,<ctrl->)} = {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+G<name> <out+> <out-> LAPLACE {<input>} = {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+G<name> <out+> <out-> LAPLACE {<input>} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+G<name> <out+> <out-> LAPLACE = {<input>} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
 ```
 
 ### Options
@@ -104,11 +102,11 @@ Supported options must use assignment syntax:
 
 | Option | Meaning |
 |--------|---------|
-| `M=<m>` | Constant multiplier. SpiceSharpParser folds it into the numerator coefficients. |
-| `TD=<delay>` | Constant non-negative runtime delay parameter in seconds. |
+| `M=<m>` | Finite constant multiplier. It may be positive, negative, or zero. SpiceSharpParser folds it into the numerator coefficients. |
+| `TD=<delay>` | Finite constant non-negative runtime delay parameter in seconds. |
 | `DELAY=<delay>` | Alias for `TD`. |
 
-Use either `TD` or `DELAY`, not both. Bare forms such as `TD 1n` are not supported.
+Use either `TD` or `DELAY`, not both, and specify delay only once. Bare forms such as `TD 1n` are not supported.
 
 ## Transfer Polynomials
 
@@ -466,7 +464,7 @@ E1 OUT 0 LAPLACE {V(IN)} {1/(1+s*1u)}
 E1 OUT 0 LAPLACE = {V(IN)} {1/(1+s*1u)}
 ```
 
-The same spelling variants are supported for `G` sources.
+The same spelling variants are supported for `G` sources and for differential inputs such as `{V(INP,INN)}`.
 
 ## Common Mistakes
 
@@ -477,7 +475,9 @@ The same spelling variants are supported for `G` sources.
 | `sin(s)` | Not a rational polynomial in `s` | Use polynomial/rational expressions only |
 | `V(a)-V(b)` | Input expression shape is unsupported | Use `V(a,b)` |
 | `I(Vsense)` | Current-controlled LAPLACE is not supported yet | Use supported `E`/`G` voltage input forms |
+| `M=inf` | The multiplier must be finite | Use a finite constant expression |
 | `TD=1n DELAY=2n` | Only one delay option may be used | Use either `TD` or `DELAY` |
+| `TD=-1n` | Delay must be non-negative | Use `TD=0` or a positive delay |
 | `TD 1n` | Options require assignment syntax | Use `TD=1n` |
 | `VALUE={LAPLACE(...)}` | Function-like LAPLACE syntax is not supported yet | Use source-level `E`/`G ... LAPLACE ...` |
 
@@ -498,5 +498,5 @@ These references are useful for the engineering context behind transfer-function
 - `B`, `F`, and `H` LAPLACE forms are not supported yet.
 - Function-like `VALUE={LAPLACE(...)}` syntax is not supported yet.
 - Explicit internal-state options are not supported yet.
-- Transient response is verified for undelayed first-order `E` / `G` low-pass sources; delayed transient response shape is not currently claimed.
+- Transient response is verified for undelayed first-order `E` / `G` low-pass sources. Delayed transient sources are validated as runnable, but delayed response shape is not currently claimed.
 - Transfers must be finite, proper rational polynomials in `s` with non-singular DC gain.

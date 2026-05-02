@@ -26,13 +26,12 @@ G<name> <out+> <out-> TABLE={<expression>} = (<x1>,<y1>) (<x2>,<y2>) ...
 ### Laplace
 
 ```
-G<name> <out+> <out-> LAPLACE {V(<ctrl+>)} = {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
-G<name> <out+> <out-> LAPLACE {V(<ctrl+>,<ctrl->)} = {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
-G<name> <out+> <out-> LAPLACE {V(<ctrl+>)} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
-G<name> <out+> <out-> LAPLACE = {V(<ctrl+>)} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+G<name> <out+> <out-> LAPLACE {<input>} = {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+G<name> <out+> <out-> LAPLACE {<input>} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+G<name> <out+> <out-> LAPLACE = {<input>} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
 ```
 
-`<transfer>` is a rational polynomial in `s`. It maps the controlling voltage to output current, so its units are transconductance.
+`<input>` is `V(node)` or `V(node1,node2)`. `<transfer>` is a rational polynomial in `s`. It maps the controlling voltage to output current, so its units are transconductance.
 
 Examples:
 
@@ -50,6 +49,7 @@ GDIFF OUT 0 LAPLACE {V(INP,INN)} = {gm/(1+s*1u)}
 Current limitations:
 
 - Only input expressions `V(node)` and `V(node1,node2)` are accepted.
+- `F` and `H` current-controlled LAPLACE forms are not supported yet.
 - Function-like `VALUE={LAPLACE(...)}` and `B`-source LAPLACE syntax are not supported yet.
 - Explicit internal-state options are not supported yet.
 - Transfers must be proper, finite rational polynomials in `s` with non-singular DC gain.
@@ -61,7 +61,7 @@ Current limitations:
 | `transconductance` | Gain in siemens (Iout = gm × Vctrl) |
 | `M=m` | Multiplier. For linear `G` sources it scales the effective transconductance/current contribution, like multiple equivalent parallel instances. |
 
-For LAPLACE sources, `M=` is folded into the numerator coefficients. `TD=` and `DELAY=` are supported aliases for a constant non-negative runtime delay parameter; use only one delay option.
+For LAPLACE sources, `M=` is a finite constant multiplier folded into the numerator coefficients; it may be positive, negative, or zero. `TD=` and `DELAY=` are supported aliases for a finite constant non-negative runtime delay parameter; use only one delay option and assignment syntax such as `DELAY=1n`.
 
 For the transfer-function math, current-source sign convention, frequency response, and phase examples, see [LAPLACE Transfer Sources](laplace.md).
 
@@ -79,6 +79,9 @@ G3 OUT 0 LAPLACE {V(IN)} = {1m/(1+s*1u)}
 
 * Laplace with multiplier and delay
 G3D OUTD 0 LAPLACE {V(IN)} = {1m/(1+s*1u)} M=2 DELAY=1n
+
+* Laplace with zero multiplier
+G3OFF OUTOFF 0 LAPLACE {V(IN)} = {1m/(1+s*1u)} M=0
 
 * Equivalent supported spellings
 G4 OUT 0 LAPLACE {V(IN)} {1m/(1+s*1u)}

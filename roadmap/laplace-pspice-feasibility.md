@@ -28,6 +28,8 @@ Gname out+ out- LAPLACE {V(ctrl+,ctrl-)} = {H(s)}
 
 Where `H(s)` is a finite rational polynomial in `s` whose coefficients reduce to constants after parameter evaluation.
 
+Implemented compatibility also accepts `LAPLACE {V(...)} {H(s)}` and `LAPLACE = {V(...)} {H(s)}` for the same `E` / `G` voltage-controlled forms, plus finite constant `M=`, `TD=`, and `DELAY=` options.
+
 ## Table of Contents
 
 1. [Decision](#decision)
@@ -68,7 +70,7 @@ This approach keeps the implementation small, aligns with existing source-genera
 
 ## Current Status
 
-`E`-source and `G`-source `LAPLACE` support is implemented by SpiceSharpParser for canonical assignment, no-equals expression-pair, and equals-after-keyword expression-pair syntax. Constant `M=`, `TD=`, and `DELAY=` options are implemented for those supported voltage-controlled forms. `F`, `H`, `B`, function-like `VALUE={LAPLACE(...)}`, and explicit internal-state options remain deferred.
+`E`-source and `G`-source `LAPLACE` support is implemented by SpiceSharpParser for canonical assignment, no-equals expression-pair, and equals-after-keyword expression-pair syntax. Finite constant `M=`, `TD=`, and `DELAY=` options are implemented for those supported voltage-controlled forms. `F`, `H`, `B`, function-like `VALUE={LAPLACE(...)}`, and explicit internal-state options remain deferred.
 
 Phase 1 grammar groundwork is implemented: expression-to-expression assignments such as `{V(in)} = {1/(1+s*tau)}` and `{V(in1,in2)} = {1/(1+s*tau)}` are preserved as `ExpressionAssignmentParameter`.
 
@@ -80,7 +82,7 @@ Phase 4 `G`-source mapping is implemented: canonical `Gname out+ out- LAPLACE {V
 
 Phase 5 syntax compatibility is implemented: `E` / `G` sources accept `LAPLACE {V(...)} = {H(s)}`, `LAPLACE {V(...)} {H(s)}`, and `LAPLACE = {V(...)} {H(s)}` as equivalent voltage-controlled forms, while known deferred `VALUE={LAPLACE(...)}` and `B`-source forms produce targeted reader diagnostics.
 
-Phase 6 option and transient verification is implemented: supported `E` / `G` Laplace forms accept one constant `M=` multiplier and either `TD=` or `DELAY=` as a constant non-negative runtime delay parameter. Transient first-order step-response tests cover undelayed `E` / `G` low-pass behavior; delayed transient response shape is not currently claimed.
+Phase 6 option and transient verification is implemented: supported `E` / `G` Laplace forms accept one finite constant `M=` multiplier and either `TD=` or `DELAY=` as a finite constant non-negative runtime delay parameter. Transient first-order step-response tests cover undelayed `E` / `G` low-pass behavior; delayed transient sources are validated as runnable, but delayed response shape is not currently claimed.
 
 Adjacent features already exist:
 
@@ -141,11 +143,19 @@ An AC probe at `f = 1/(2*pi*tau)` produced the expected magnitude near `0.707106
 ### Supported
 
 ```spice
-Ename out+ out- LAPLACE {V(ctrl+)}       = {transfer_expr}
-Ename out+ out- LAPLACE {V(ctrl+,ctrl-)} = {transfer_expr}
-Gname out+ out- LAPLACE {V(ctrl+)}       = {transfer_expr}
-Gname out+ out- LAPLACE {V(ctrl+,ctrl-)} = {transfer_expr}
+Ename out+ out- LAPLACE {input_expr} = {transfer_expr}
+Ename out+ out- LAPLACE {input_expr}   {transfer_expr}
+Ename out+ out- LAPLACE = {input_expr} {transfer_expr}
+Gname out+ out- LAPLACE {input_expr} = {transfer_expr}
+Gname out+ out- LAPLACE {input_expr}   {transfer_expr}
+Gname out+ out- LAPLACE = {input_expr} {transfer_expr}
 ```
+
+Supported options on those forms:
+
+- One finite constant `M=<expr>` multiplier, folded into the numerator coefficients. It may be positive, negative, or zero.
+- Either `TD=<expr>` or `DELAY=<expr>` as a finite constant non-negative delay parameter.
+- Options must use assignment syntax.
 
 Transfer-expression subset:
 
@@ -167,7 +177,6 @@ Input-expression subset:
 - `F` and `H` current-controlled Laplace sources.
 - `B` source Laplace forms.
 - Arbitrary input expressions such as `V(a)-V(b)+I(Vsense)`.
-- Alternative `E` / `G` Laplace syntax variants that omit `=` or put `=` directly after `LAPLACE`.
 - `VALUE={LAPLACE(...)}` / function-like ABM forms.
 - Non-rational transfer expressions.
 - Explicit internal-state syntax.
@@ -381,7 +390,7 @@ Transient cannot be implemented by substituting `s=j*omega`. It requires a time-
 For the MVP:
 
 - Delegate transient runtime behavior to the built-in `Laplace...Time` behaviors.
-- Do not claim transient support until step-response tests pass.
+- Claim transient behavior only where it is covered by tests. Current coverage verifies undelayed first-order `E` / `G` low-pass step responses and validates delayed transient sources as runnable.
 - Require proper transfer functions (`deg N <= deg D`).
 - Document any observed initial-condition behavior.
 
@@ -614,14 +623,14 @@ The last recognizer is deliberate. If a user writes a known PSpice Laplace varia
 | Current-controlled | `F1 out 0 LAPLACE {I(Vsense)} = {H(s)}` | Later milestone | Runtime entities exist, but controlling-source parsing and PSpice compatibility need tests. |
 | Function-like `VALUE` | `E1 out 0 VALUE = {LAPLACE(V(in), H(s))}` | Investigate later | Must be handled as source-level Laplace, not a scalar expression function. |
 | `B` source ABM | `B1 out 0 V = {LAPLACE(V(in), H(s))}` | Investigate later | May require arbitrary input-expression lowering or custom behavior. |
-| Delay/options | `TD=...`, `DELAY=...`, `M=...` | Supported for `E` / `G` voltage-controlled forms | Values must be constant; only one delay option may be used. |
+| Delay/options | `TD=...`, `DELAY=...`, `M=...` | Supported for `E` / `G` voltage-controlled forms | Values must be finite constants; delay must be non-negative, and only one delay option may be used. |
 
 ### Normalization Rules
 
 - Equivalent `E` / `G` syntax variants must produce identical input nodes, transfer coefficients, delay, and entity type.
 - Syntax recognizers should only parse surface shape. They should call the same input parser and transfer-expression builder.
-- The canonical recognizer is the only recognizer needed for the MVP.
-- Later recognizers should be added one at a time with compatibility matrix tests.
+- Canonical, no-equals, and equals-after-keyword recognizers are implemented for `E` / `G` voltage-controlled forms.
+- Future recognizers should be added one at a time with compatibility matrix tests.
 - Function-like forms must not be registered in the normal scalar function table. They are analysis-dependent source constructs.
 
 ## Implementation Plan
@@ -677,7 +686,7 @@ Status: implemented for canonical `E` source syntax.
 
 ### Phase 4: `G` Source Mapping
 
-Status: implemented for canonical `G` source syntax and constant `M=` / delay options. `F` and `H` remain deferred.
+Status: implemented for canonical `G` source syntax, no-equals and equals-after-keyword syntax, and constant `M=` / delay options. `F` and `H` remain deferred.
 
 1. Detect `LAPLACE` in `CurrentSourceGenerator.CreateCustomCurrentSource(...)`.
 2. Reuse the same source parser and transfer-function builder.
@@ -697,10 +706,11 @@ Status: implemented for `E` / `G` no-equals and equals-after-keyword voltage-con
 
 ### Phase 6: Polish
 
-1. Decide and document transient support based on step-response results.
+Status: partially implemented. Option handling, transient verification, and user documentation have been updated; generated C# writer support remains deferred unless parity is required for a release.
+
+1. Keep transient documentation aligned with tests: undelayed first-order `E` / `G` low-pass response is verified, and delayed transient sources are validated as runnable without claiming delayed response shape.
 2. Add generated C# writer support if parity is required for the release.
-3. Update [src/docs/articles/behavioral-source.md](../src/docs/articles/behavioral-source.md).
-4. Add release-note text listing supported and unsupported Laplace forms.
+3. Keep release-note text listing supported and unsupported Laplace forms in public docs / README until a dedicated changelog exists.
 
 ## Acceptance Criteria
 

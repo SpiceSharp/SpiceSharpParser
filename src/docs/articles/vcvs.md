@@ -26,13 +26,12 @@ E<name> <out+> <out-> TABLE={<expression>} = (<x1>,<y1>) (<x2>,<y2>) ...
 ### Laplace
 
 ```
-E<name> <out+> <out-> LAPLACE {V(<ctrl+>)} = {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
-E<name> <out+> <out-> LAPLACE {V(<ctrl+>,<ctrl->)} = {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
-E<name> <out+> <out-> LAPLACE {V(<ctrl+>)} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
-E<name> <out+> <out-> LAPLACE = {V(<ctrl+>)} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+E<name> <out+> <out-> LAPLACE {<input>} = {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+E<name> <out+> <out-> LAPLACE {<input>} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+E<name> <out+> <out-> LAPLACE = {<input>} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
 ```
 
-`<transfer>` is a rational polynomial in `s`. Coefficients are evaluated from constants and `.PARAM` values, and are stored in ascending powers of `s`.
+`<input>` is `V(node)` or `V(node1,node2)`. `<transfer>` is a rational polynomial in `s`. Coefficients are evaluated from constants and `.PARAM` values, and are stored in ascending powers of `s`.
 
 Examples:
 
@@ -55,7 +54,7 @@ Current limitations:
 - Explicit internal-state options are not supported yet.
 - Transfers must be proper, finite rational polynomials in `s` with non-singular DC gain.
 
-For LAPLACE sources, `M=` is folded into the numerator coefficients. `TD=` and `DELAY=` are supported aliases for a constant non-negative runtime delay parameter; use only one delay option.
+For LAPLACE sources, `M=` is a finite constant multiplier folded into the numerator coefficients; it may be positive, negative, or zero. `TD=` and `DELAY=` are supported aliases for a finite constant non-negative runtime delay parameter; use only one delay option and assignment syntax such as `TD=1n`.
 
 For the transfer-function math, DC gain, frequency response, and phase examples, see [LAPLACE Transfer Sources](laplace.md).
 
@@ -85,6 +84,9 @@ E5 OUT 0 LAPLACE {V(IN)} = {1/(1+s*1u)}
 
 * Laplace with multiplier and delay
 E5D OUTD 0 LAPLACE {V(IN)} = {1/(1+s*1u)} M=2 TD=1n
+
+* Laplace with negative multiplier
+E5INV OUTINV 0 LAPLACE {V(IN)} = {1/(1+s*1u)} M=-1
 
 * Equivalent supported spellings
 E6 OUT 0 LAPLACE {V(IN)} {1/(1+s*1u)}

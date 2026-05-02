@@ -12,7 +12,7 @@ The transfer function describes how a linear block changes a signal. It can say 
 
 If you want the exact syntax supported by SpiceSharpParser, see [LAPLACE Transfer Sources](laplace.md). This page focuses on the intuition.
 
-Keep one practical boundary in mind as you read: SpiceSharpParser supports a focused `LAPLACE` subset. The transfer must be used on an `E` or `G` source, the input must be `V(node)` or `V(node1,node2)`, and the transfer must be a proper rational polynomial in `s` with finite DC gain. The examples below stay inside that subset.
+Keep one practical boundary in mind as you read: SpiceSharpParser supports a focused `LAPLACE` subset. The transfer must be used on an `E` or `G` source, the input must be `V(node)` or `V(node1,node2)`, and the transfer must be a proper rational polynomial in `s` with finite DC gain. Constant `M=`, `TD=`, and `DELAY=` options are supported for those source-level forms. The examples below stay inside that subset.
 
 ## Running Example: Sensor To ADC
 
@@ -509,5 +509,6 @@ SpiceSharpParser intentionally supports the practical subset introduced near the
 - Voltage input expressions: `V(node)` and `V(node1,node2)`.
 - Proper rational polynomials in `s`.
 - Finite DC gain.
+- Constant `M=`, `TD=`, and `DELAY=` options on supported `E` / `G` forms.
 
-That means many web examples need adaptation before they are valid here. Avoid unsupported forms such as `exp()`, `sqrt()`, pure `1/s`, ideal delay forms outside the supported `TD=` / `DELAY=` options, and function-like `VALUE={LAPLACE(...)}` syntax.
+That means many web examples need adaptation before they are valid here. Avoid unsupported forms such as `exp()`, `sqrt()`, pure `1/s`, current-controlled LAPLACE, ideal delay forms outside the supported `TD=` / `DELAY=` options, and function-like `VALUE={LAPLACE(...)}` syntax.

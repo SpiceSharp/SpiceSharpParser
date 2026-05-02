@@ -58,8 +58,8 @@ SpiceSharpParser supports these analog behavioral modeling constructs:
 | `E/G ... LAPLACE {V(...)} {H(s)}` | Alternate supported LAPLACE spelling |
 | `E/G ... LAPLACE = {V(...)} {H(s)}` | Alternate supported LAPLACE spelling |
 
-`LAPLACE` support is currently limited to `E` and `G` voltage-controlled sources with `V(node)` or `V(node1,node2)` input. `B`, `F`, `H`, and function-like `VALUE={LAPLACE(...)}` syntax are not supported yet.
+`LAPLACE` support is currently limited to source-level `E` and `G` voltage-controlled sources with `V(node)` or `V(node1,node2)` input. `B`, `F`, `H`, current-controlled LAPLACE, and function-like `VALUE={LAPLACE(...)}` syntax are not supported yet.
 
-For LAPLACE sources, `M=` is a constant multiplier folded into the transfer numerator. `TD=` and `DELAY=` are supported aliases for a constant non-negative runtime delay parameter; use only one delay option.
+For LAPLACE sources, `M=` is a finite constant multiplier folded into the transfer numerator and may be positive, negative, or zero. `TD=` and `DELAY=` are supported aliases for a finite constant non-negative runtime delay parameter; use only one delay option and assignment syntax.
 
 For the transfer-function math, DC gain, frequency response, and worked examples, see [LAPLACE Transfer Sources](laplace.md).
