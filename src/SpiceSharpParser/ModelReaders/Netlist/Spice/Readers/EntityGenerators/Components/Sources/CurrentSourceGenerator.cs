@@ -211,6 +211,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         private IEntity CreateCustomCurrentSource(string name, ParameterCollection parameters, IReadingContext context, bool isVoltageControlled)
         {
             var evalContext = context.EvaluationContext;
+            var laplaceParser = new LaplaceSourceParser();
+
+            if (laplaceParser.IsLaplaceSource(parameters))
+            {
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    "laplace is currently supported only for E voltage-controlled voltage sources; G mapping remains unsupported",
+                    parameters[2].LineInfo);
+                return null;
+            }
 
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
             {

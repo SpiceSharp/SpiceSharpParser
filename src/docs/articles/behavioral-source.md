@@ -53,3 +53,6 @@ SpiceSharpParser supports these analog behavioral modeling constructs:
 | `VALUE={expr}` | Expression-based source (equivalent to `V=` or `I=`) |
 | `TABLE={expr}` | Lookup table with piecewise-linear interpolation |
 | `POLY(n)` | Polynomial transfer function |
+| `E ... LAPLACE {V(...)} = {H(s)}` | E-source transfer function with `V(node)` or `V(node1,node2)` input |
+
+`LAPLACE` support is currently limited to canonical `E` voltage-controlled voltage sources. `G`, `B`, `F`, `H`, alternate LAPLACE syntaxes, `M=`, `TD=`, and `DELAY=` are not supported yet.

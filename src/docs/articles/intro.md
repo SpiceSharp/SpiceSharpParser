@@ -102,5 +102,5 @@ SpiceSharpParser supports a comprehensive set of SPICE statements and devices. S
 - **Parameters**: `.PARAM`, `.FUNC`, `.LET`, `.SPARAM`
 - **Circuit structure**: `.SUBCKT`, `.INCLUDE`, `.LIB`, `.GLOBAL`
 - **Simulation control**: `.STEP`, `.MC`, `.TEMP`, `.OPTIONS`, `.IC`, `.NODESET`
-- **Behavioral modeling**: `VALUE`, `TABLE`, `POLY(n)`, `B` sources
+- **Behavioral modeling**: `VALUE`, `TABLE`, `POLY(n)`, `B` sources, canonical `E`-source `LAPLACE`
 - **Devices**: R, L, C, K, D, Q, M, J, V, I, E, F, G, H, B, S, W, T, X

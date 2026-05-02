@@ -68,11 +68,13 @@ This approach keeps the implementation small, aligns with existing source-genera
 
 ## Current Status
 
-`LAPLACE` source support is not currently implemented by SpiceSharpParser.
+Canonical `E`-source `LAPLACE` support is implemented by SpiceSharpParser. `G` source mapping remains Phase 4.
 
 Phase 1 grammar groundwork is implemented: expression-to-expression assignments such as `{V(in)} = {1/(1+s*tau)}` and `{V(in1,in2)} = {1/(1+s*tau)}` are preserved as `ExpressionAssignmentParameter`.
 
-Phase 2 transfer-function math is implemented: internal polynomial, rational-polynomial, transfer-function, and expression-parser types convert rational expressions in `s` into ascending numerator / denominator coefficients with focused validation and broad unit coverage. Source-reader mapping, validation-entry diagnostics, and simulation support remain later-phase work.
+Phase 2 transfer-function math is implemented: internal polynomial, rational-polynomial, transfer-function, and expression-parser types convert rational expressions in `s` into ascending numerator / denominator coefficients with focused validation and broad unit coverage.
+
+Phase 3 `E`-source mapping is implemented: canonical `Ename out+ out- LAPLACE {V(ctrl)}` `= {H(s)}` and `V(ctrl+,ctrl-)` forms map to `LaplaceVoltageControlledVoltageSource`, produce reader validation errors for semantic failures, and have OP / AC integration coverage. `G` mapping remains Phase 4.
 
 Adjacent features already exist:
 
@@ -650,6 +652,8 @@ Status: implemented.
 7. Add coefficient-generation tests for worked examples.
 
 ### Phase 3: `E` Source Mapping
+
+Status: implemented for canonical `E` source syntax. `G` mapping remains Phase 4.
 
 1. Add `LaplaceSourceParser` and source definition models.
 2. Add `CanonicalExpressionAssignmentRecognizer` as the first syntax recognizer.
