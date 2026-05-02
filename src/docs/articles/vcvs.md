@@ -48,8 +48,9 @@ EDIFF OUT 0 LAPLACE {V(INP,INN)} = {wc/(s+wc)}
 
 Current limitations:
 
-- `B`, `F`, and `H` LAPLACE forms are not supported yet.
 - Only input expressions `V(node)` and `V(node1,node2)` are accepted.
+- `F` and `H` LAPLACE forms use current input and are documented separately.
+- `B` source LAPLACE forms are not supported yet.
 - Function-like `VALUE={LAPLACE(...)}` syntax is not supported yet.
 - Explicit internal-state options are not supported yet.
 - Transfers must be proper, finite rational polynomials in `s` with non-singular DC gain.

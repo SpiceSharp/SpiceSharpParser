@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using SpiceSharp.Components;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.ModelWriters
@@ -236,6 +237,40 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
 
             Assert.NotNull(classText);
             Assert.NotNull(circuit);
+        }
+
+        [Fact]
+        public void When_LaplaceSourcesAreWritten_Expect_GeneratedCircuitContainsLaplaceEntities()
+        {
+            var parseResult = ParseNetlistRaw(
+                lines: new[]
+                {
+                    "Generated LAPLACE writer",
+                    ".PARAM tau=1e-6",
+                    "VIN in 0 1",
+                    "ELOW eout 0 LAPLACE {V(in)} = {1/(1+s*tau)} M=2 TD=1e-9",
+                    "GLOW gout 0 LAPLACE = {V(in)} {0.001/(1+s*tau)}",
+                    "FLOW fout 0 LAPLACE {I(VIN)} {1/(1+s*tau)}",
+                    "HLOW hout 0 LAPLACE {I(VIN)} = {1/(1+s*tau)}",
+                    ".OP",
+                    ".END",
+                });
+
+            var spiceSharpWriter = new SpiceSharpCSharpWriter();
+            var classNode = spiceSharpWriter.WriteCreateCircuitClass("Example", parseResult.FinalModel);
+            var classText = classNode.GetText().ToString();
+            var circuit = spiceSharpWriter.CreateCircuit(parseResult.FinalModel);
+
+            Assert.NotNull(classText);
+            Assert.IsType<LaplaceVoltageControlledVoltageSource>(circuit["ELOW"]);
+            Assert.IsType<LaplaceVoltageControlledCurrentSource>(circuit["GLOW"]);
+            Assert.IsType<LaplaceCurrentControlledCurrentSource>(circuit["FLOW"]);
+            Assert.IsType<LaplaceCurrentControlledVoltageSource>(circuit["HLOW"]);
+
+            var e = (LaplaceVoltageControlledVoltageSource)circuit["ELOW"];
+            Assert.Equal(new[] { 2.0 }, e.Parameters.Numerator);
+            Assert.Equal(new[] { 1.0, 1e-6 }, e.Parameters.Denominator);
+            Assert.Equal(1e-9, e.Parameters.Delay);
         }
     }
 }

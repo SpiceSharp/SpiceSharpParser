@@ -6,6 +6,7 @@ using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.Lexers.Expressions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Laplace;
 using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
@@ -17,6 +18,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
     internal sealed class LaplaceSourceParser
     {
         private const string InputErrorMessage = "laplace input expression must be V(node) or V(node1,node2)";
+        private const string CurrentInputErrorMessage = "laplace input expression must be I(source)";
         private const string UnsupportedLaplaceFunctionMessage = "laplace function syntax is recognized but not supported yet";
         private static readonly IReadOnlyList<ILaplaceSyntaxRecognizer> SyntaxRecognizers =
             new ILaplaceSyntaxRecognizer[]
@@ -52,12 +54,82 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             ParameterCollection parameters,
             IReadingContext context)
         {
+            return ParseSource(
+                sourceName,
+                parameters,
+                context.EvaluationContext,
+                context.ReaderSettings.CaseSensitivity,
+                context.Evaluator.EvaluateDouble,
+                (message, lineInfo, exception) => AddError(context, message, lineInfo, exception),
+                LaplaceSourceInputKind.Voltage);
+        }
+
+        public LaplaceSourceDefinition ParseCurrentControlledSource(
+            string sourceName,
+            ParameterCollection parameters,
+            IReadingContext context)
+        {
+            return ParseSource(
+                sourceName,
+                parameters,
+                context.EvaluationContext,
+                context.ReaderSettings.CaseSensitivity,
+                context.Evaluator.EvaluateDouble,
+                (message, lineInfo, exception) => AddError(context, message, lineInfo, exception),
+                LaplaceSourceInputKind.Current);
+        }
+
+        public LaplaceSourceDefinition ParseVoltageControlledSource(
+            string sourceName,
+            ParameterCollection parameters,
+            EvaluationContext evaluationContext,
+            SpiceNetlistCaseSensitivitySettings caseSettings,
+            Func<string, double> evaluateDouble,
+            Action<string, SpiceLineInfo, Exception> addError)
+        {
+            return ParseSource(
+                sourceName,
+                parameters,
+                evaluationContext,
+                caseSettings,
+                evaluateDouble,
+                addError,
+                LaplaceSourceInputKind.Voltage);
+        }
+
+        public LaplaceSourceDefinition ParseCurrentControlledSource(
+            string sourceName,
+            ParameterCollection parameters,
+            EvaluationContext evaluationContext,
+            SpiceNetlistCaseSensitivitySettings caseSettings,
+            Func<string, double> evaluateDouble,
+            Action<string, SpiceLineInfo, Exception> addError)
+        {
+            return ParseSource(
+                sourceName,
+                parameters,
+                evaluationContext,
+                caseSettings,
+                evaluateDouble,
+                addError,
+                LaplaceSourceInputKind.Current);
+        }
+
+        private LaplaceSourceDefinition ParseSource(
+            string sourceName,
+            ParameterCollection parameters,
+            EvaluationContext evaluationContext,
+            SpiceNetlistCaseSensitivitySettings caseSettings,
+            Func<string, double> evaluateDouble,
+            Action<string, SpiceLineInfo, Exception> addError,
+            LaplaceSourceInputKind expectedInputKind)
+        {
             if (!IsLaplaceSource(parameters))
             {
                 return null;
             }
 
-            if (!HasOutputNodes(parameters, context))
+            if (!HasOutputNodes(parameters, addError))
             {
                 return null;
             }
@@ -65,19 +137,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             var syntax = RecognizeSyntax(parameters);
             if (!syntax.IsMatch)
             {
-                AddError(context, "laplace syntax variant is recognized but not supported yet", parameters[2].LineInfo);
+                addError("laplace syntax variant is recognized but not supported yet", parameters[2].LineInfo, null);
                 return null;
             }
 
             if (syntax.ErrorMessage != null)
             {
-                AddError(context, syntax.ErrorMessage, syntax.LineInfo);
+                addError(syntax.ErrorMessage, syntax.LineInfo, null);
                 return null;
             }
 
             if (!TryParseOptions(
                 parameters.Skip(syntax.ExtraParameterStartIndex),
-                context,
+                evaluateDouble,
+                addError,
                 out var options))
             {
                 return null;
@@ -85,19 +158,24 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             if (string.IsNullOrWhiteSpace(syntax.InputExpression))
             {
-                AddError(context, "laplace expects input expression", syntax.LineInfo);
+                addError("laplace expects input expression", syntax.LineInfo, null);
                 return null;
             }
 
             if (string.IsNullOrWhiteSpace(syntax.TransferExpression))
             {
-                AddError(context, "laplace expects transfer expression", syntax.LineInfo);
+                addError("laplace expects transfer expression", syntax.LineInfo, null);
                 return null;
             }
 
-            if (!TryParseVoltageInput(syntax.InputExpression, context, out var input))
+            if (!TryParseInput(syntax.InputExpression, expectedInputKind, caseSettings, out var input))
             {
-                AddError(context, InputErrorMessage, syntax.LineInfo);
+                addError(
+                    expectedInputKind == LaplaceSourceInputKind.Voltage
+                        ? InputErrorMessage
+                        : CurrentInputErrorMessage,
+                    syntax.LineInfo,
+                    null);
                 return null;
             }
 
@@ -105,18 +183,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             try
             {
                 transferFunction = new LaplaceExpressionParser(
-                    context.EvaluationContext,
+                    evaluationContext,
                     lineInfo: syntax.LineInfo).Parse(syntax.TransferExpression);
             }
             catch (LaplaceExpressionException ex)
             {
-                AddError(context, ex.Message, syntax.LineInfo, ex);
+                addError(ex.Message, syntax.LineInfo, ex);
                 return null;
             }
             catch (Exception ex)
             {
-                AddError(
-                    context,
+                addError(
                     "laplace transfer expression must be a rational polynomial in s",
                     syntax.LineInfo,
                     ex);
@@ -137,11 +214,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 syntax.LineInfo);
         }
 
-        private static bool HasOutputNodes(ParameterCollection parameters, IReadingContext context)
+        private static bool HasOutputNodes(
+            ParameterCollection parameters,
+            Action<string, SpiceLineInfo, Exception> addError)
         {
             if (parameters.Count < 2 || !parameters.IsValueString(0) || !parameters.IsValueString(1))
             {
-                AddError(context, "laplace expects output nodes before LAPLACE", parameters.LineInfo);
+                addError("laplace expects output nodes before LAPLACE", parameters.LineInfo, null);
                 return false;
             }
 
@@ -164,7 +243,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
         private static bool TryParseOptions(
             IEnumerable<Parameter> extraParameters,
-            IReadingContext context,
+            Func<string, double> evaluateDouble,
+            Action<string, SpiceLineInfo, Exception> addError,
             out LaplaceSourceOptions options)
         {
             options = new LaplaceSourceOptions();
@@ -180,13 +260,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     {
                         if (hasMultiplier)
                         {
-                            AddError(context, "laplace multiplier M can be specified only once", assignmentParameter.LineInfo);
+                            addError("laplace multiplier M can be specified only once", assignmentParameter.LineInfo, null);
                             return false;
                         }
 
                         if (!TryEvaluateFiniteOption(
                             assignmentParameter,
-                            context,
+                            evaluateDouble,
+                            addError,
                             "laplace multiplier M must be a finite constant expression",
                             out var multiplier))
                         {
@@ -202,13 +283,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     {
                         if (hasDelay)
                         {
-                            AddError(context, "laplace delay can be specified only once", assignmentParameter.LineInfo);
+                            addError("laplace delay can be specified only once", assignmentParameter.LineInfo, null);
                             return false;
                         }
 
                         if (!TryEvaluateFiniteOption(
                             assignmentParameter,
-                            context,
+                            evaluateDouble,
+                            addError,
                             "laplace delay must be a finite constant expression",
                             out var delay))
                         {
@@ -217,7 +299,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                         if (delay < 0.0)
                         {
-                            AddError(context, "laplace delay must be non-negative", assignmentParameter.LineInfo);
+                            addError("laplace delay must be non-negative", assignmentParameter.LineInfo, null);
                             return false;
                         }
 
@@ -226,24 +308,24 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         continue;
                     }
 
-                    AddError(
-                        context,
+                    addError(
                         "laplace syntax variant is recognized but not supported yet",
-                        assignmentParameter.LineInfo);
+                        assignmentParameter.LineInfo,
+                        null);
                     return false;
                 }
 
                 var wordParameter = parameter as WordParameter;
                 if (wordParameter != null && (IsDelayName(wordParameter.Value) || IsName(wordParameter.Value, "m")))
                 {
-                    AddError(context, "laplace options must use assignment syntax", wordParameter.LineInfo);
+                    addError("laplace options must use assignment syntax", wordParameter.LineInfo, null);
                     return false;
                 }
 
-                AddError(
-                    context,
+                addError(
                     "laplace syntax variant is recognized but not supported yet",
-                    parameter.LineInfo);
+                    parameter.LineInfo,
+                    null);
                 return false;
             }
 
@@ -252,7 +334,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
         private static bool TryEvaluateFiniteOption(
             AssignmentParameter parameter,
-            IReadingContext context,
+            Func<string, double> evaluateDouble,
+            Action<string, SpiceLineInfo, Exception> addError,
             string errorMessage,
             out double value)
         {
@@ -260,17 +343,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             try
             {
-                value = context.Evaluator.EvaluateDouble(parameter.Value);
+                value = evaluateDouble(parameter.Value);
             }
             catch (Exception ex)
             {
-                AddError(context, errorMessage, parameter.LineInfo, ex);
+                addError(errorMessage, parameter.LineInfo, ex);
                 return false;
             }
 
             if (double.IsNaN(value) || double.IsInfinity(value))
             {
-                AddError(context, errorMessage, parameter.LineInfo);
+                addError(errorMessage, parameter.LineInfo, null);
                 return false;
             }
 
@@ -399,7 +482,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
         private static bool TryParseVoltageInput(
             string expression,
-            IReadingContext context,
+            SpiceNetlistCaseSensitivitySettings caseSettings,
             out LaplaceSourceInput input)
         {
             input = null;
@@ -409,12 +492,47 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 return false;
             }
 
-            if (!IsVoltageInputAst(expression, positiveNode, negativeNode, context))
+            if (!IsVoltageInputAst(expression, positiveNode, negativeNode, caseSettings))
             {
                 return false;
             }
 
-            input = new LaplaceSourceInput(positiveNode, negativeNode);
+            input = LaplaceSourceInput.Voltage(positiveNode, negativeNode);
+            return true;
+        }
+
+        private static bool TryParseInput(
+            string expression,
+            LaplaceSourceInputKind expectedInputKind,
+            SpiceNetlistCaseSensitivitySettings caseSettings,
+            out LaplaceSourceInput input)
+        {
+            if (expectedInputKind == LaplaceSourceInputKind.Voltage)
+            {
+                return TryParseVoltageInput(expression, caseSettings, out input);
+            }
+
+            return TryParseCurrentInput(expression, caseSettings, out input);
+        }
+
+        private static bool TryParseCurrentInput(
+            string expression,
+            SpiceNetlistCaseSensitivitySettings caseSettings,
+            out LaplaceSourceInput input)
+        {
+            input = null;
+
+            if (!TryParseRawCurrentInput(expression, out var controllingSource))
+            {
+                return false;
+            }
+
+            if (!IsCurrentInputAst(expression, controllingSource, caseSettings))
+            {
+                return false;
+            }
+
+            input = LaplaceSourceInput.Current(controllingSource);
             return true;
         }
 
@@ -473,6 +591,56 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return IsValidNodeName(positiveNode) && IsValidNodeName(negativeNode);
         }
 
+        private static bool TryParseRawCurrentInput(
+            string expression,
+            out string controllingSource)
+        {
+            controllingSource = null;
+
+            if (expression == null)
+            {
+                return false;
+            }
+
+            var text = expression.Trim();
+            if (text.Length < 4 || text[0] != 'i' && text[0] != 'I')
+            {
+                return false;
+            }
+
+            var openParenthesisIndex = 1;
+            while (openParenthesisIndex < text.Length && char.IsWhiteSpace(text[openParenthesisIndex]))
+            {
+                openParenthesisIndex++;
+            }
+
+            if (openParenthesisIndex >= text.Length || text[openParenthesisIndex] != '(')
+            {
+                return false;
+            }
+
+            var closeParenthesisIndex = text.Length - 1;
+            if (text[closeParenthesisIndex] != ')')
+            {
+                return false;
+            }
+
+            if (text.IndexOf(')', openParenthesisIndex + 1) != closeParenthesisIndex
+                || text.IndexOf('(', openParenthesisIndex + 1) >= 0)
+            {
+                return false;
+            }
+
+            var inner = text.Substring(openParenthesisIndex + 1, closeParenthesisIndex - openParenthesisIndex - 1);
+            if (inner.IndexOf(',') >= 0)
+            {
+                return false;
+            }
+
+            controllingSource = inner.Trim();
+            return IsValidNodeName(controllingSource);
+        }
+
         private static bool IsValidNodeName(string nodeName)
         {
             if (string.IsNullOrWhiteSpace(nodeName))
@@ -508,12 +676,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             string expression,
             string positiveNode,
             string negativeNode,
-            IReadingContext context)
+            SpiceNetlistCaseSensitivitySettings caseSettings)
         {
             try
             {
                 var node = ExpressionParser.Parse(Lexer.FromString(expression), true);
-                var comparer = StringComparerProvider.Get(context.ReaderSettings.CaseSensitivity.IsNodeNameCaseSensitive);
+                var comparer = StringComparerProvider.Get(caseSettings.IsNodeNameCaseSensitive);
                 if (string.Equals(negativeNode, "0", StringComparison.Ordinal)
                     && node is VariableNode singleNode
                     && singleNode.NodeType == NodeTypes.Voltage)
@@ -536,6 +704,26 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     && rightNode.NodeType == NodeTypes.Voltage
                     && comparer.Equals(leftNode.Name, positiveNode)
                     && comparer.Equals(rightNode.Name, negativeNode);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private static bool IsCurrentInputAst(
+            string expression,
+            string controllingSource,
+            SpiceNetlistCaseSensitivitySettings caseSettings)
+        {
+            try
+            {
+                var node = ExpressionParser.Parse(Lexer.FromString(expression), true);
+                var comparer = StringComparerProvider.Get(caseSettings.IsEntityNamesCaseSensitive);
+
+                return node is VariableNode currentNode
+                    && currentNode.NodeType == NodeTypes.Current
+                    && comparer.Equals(currentNode.Name, controllingSource);
             }
             catch
             {

@@ -212,11 +212,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 if (!isVoltageControlled)
                 {
-                    context.Result.ValidationResult.AddError(
-                        ValidationEntrySource.Reader,
-                        "laplace is currently supported only for voltage-controlled E and G sources",
-                        parameters[2].LineInfo);
-                    return null;
+                    var currentControlledDefinition = laplaceParser.ParseCurrentControlledSource(name, parameters, context);
+                    if (currentControlledDefinition == null)
+                    {
+                        return null;
+                    }
+
+                    return CreateLaplaceCurrentControlledVoltageSource(name, currentControlledDefinition, context);
                 }
 
                 var definition = laplaceParser.ParseVoltageControlledSource(name, parameters, context);
@@ -311,7 +313,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             IReadingContext context)
         {
             var entity = new LaplaceVoltageControlledVoltageSource(name);
-            var nodes = new ParameterCollection(new List<Parameter>())
+            var nodes = new ParameterCollection([])
             {
                 new IdentifierParameter(definition.OutputPositiveNode, definition.LineInfo),
                 new IdentifierParameter(definition.OutputNegativeNode, definition.LineInfo),
@@ -320,6 +322,27 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             };
 
             context.CreateNodes(entity, nodes);
+            entity.Parameters.Numerator = definition.TransferFunction.NumeratorCoefficients;
+            entity.Parameters.Denominator = definition.TransferFunction.DenominatorCoefficients;
+            entity.Parameters.Delay = definition.Delay;
+
+            return entity;
+        }
+
+        private static IEntity CreateLaplaceCurrentControlledVoltageSource(
+            string name,
+            LaplaceSourceDefinition definition,
+            IReadingContext context)
+        {
+            var entity = new LaplaceCurrentControlledVoltageSource(name);
+            var nodes = new ParameterCollection([])
+            {
+                new IdentifierParameter(definition.OutputPositiveNode, definition.LineInfo),
+                new IdentifierParameter(definition.OutputNegativeNode, definition.LineInfo),
+            };
+
+            context.CreateNodes(entity, nodes);
+            entity.ControllingSource = context.NameGenerator.GenerateObjectName(definition.Input.ControllingSource);
             entity.Parameters.Numerator = definition.TransferFunction.NumeratorCoefficients;
             entity.Parameters.Denominator = definition.TransferFunction.DenominatorCoefficients;
             entity.Parameters.Delay = definition.Delay;

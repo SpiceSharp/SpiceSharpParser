@@ -394,7 +394,37 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         }
 
         [Fact]
-        public void When_HSourceUsesLaplace_Expect_UnsupportedReaderValidationError()
+        public void When_HSourceUsesLaplace_Expect_CurrentControlledLaplaceEntity()
+        {
+            var context = CreateReadingContext();
+            ParameterCollection createdNodes = null;
+            context.When(x => x.CreateNodes(Arg.Any<IComponent>(), Arg.Any<ParameterCollection>()))
+                .Do(call => createdNodes = call.ArgAt<ParameterCollection>(1));
+            var generator = new VoltageSourceGenerator();
+
+            var entity = generator.Generate(
+                "H1",
+                "H1",
+                "h",
+                CreateLaplaceParameters(
+                    "I(VSENSE)",
+                    "1000/(s+1000)",
+                    Assignment("M", "2"),
+                    Assignment("TD", "1n")),
+                context);
+
+            var laplace = Assert.IsType<LaplaceCurrentControlledVoltageSource>(entity);
+            Assert.False(context.Result.ValidationResult.HasError);
+            Assert.NotNull(createdNodes);
+            Assert.Equal(new[] { "out", "0" }, createdNodes.Select(parameter => parameter.Value).ToArray());
+            Assert.Equal("VSENSE", laplace.ControllingSource);
+            AssertCoefficients(new[] { 2000.0 }, laplace.Parameters.Numerator);
+            AssertCoefficients(new[] { 1000.0, 1.0 }, laplace.Parameters.Denominator);
+            Assert.Equal(1e-9, laplace.Parameters.Delay);
+        }
+
+        [Fact]
+        public void When_HSourceUsesEqualsAfterKeywordLaplace_Expect_CurrentControlledLaplaceEntity()
         {
             var context = CreateReadingContext();
             var generator = new VoltageSourceGenerator();
@@ -403,32 +433,68 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 "H1",
                 "H1",
                 "h",
-                CreateLaplaceParameters("V(in)", "1/(1+s)"),
+                CreateEqualsAfterKeywordLaplaceParameters("I(VSENSE)", "1000/(s+1000)"),
                 context);
 
-            Assert.Null(entity);
-            AssertSingleReaderError(context, "E and G");
+            var laplace = Assert.IsType<LaplaceCurrentControlledVoltageSource>(entity);
+            Assert.False(context.Result.ValidationResult.HasError);
+            Assert.Equal("VSENSE", laplace.ControllingSource);
+            AssertCoefficients(new[] { 1000.0 }, laplace.Parameters.Numerator);
+            AssertCoefficients(new[] { 1000.0, 1.0 }, laplace.Parameters.Denominator);
         }
 
         [Fact]
-        public void When_HSourceUsesEqualsAfterKeywordLaplace_Expect_UnsupportedReaderValidationError()
+        public void When_FSourceUsesLaplace_Expect_CurrentControlledLaplaceEntity()
         {
             var context = CreateReadingContext();
-            var generator = new VoltageSourceGenerator();
+            ParameterCollection createdNodes = null;
+            context.When(x => x.CreateNodes(Arg.Any<IComponent>(), Arg.Any<ParameterCollection>()))
+                .Do(call => createdNodes = call.ArgAt<ParameterCollection>(1));
+            var generator = new CurrentSourceGenerator();
 
             var entity = generator.Generate(
-                "H1",
-                "H1",
-                "h",
-                CreateEqualsAfterKeywordLaplaceParameters("V(in)", "1/(1+s)"),
+                "F1",
+                "F1",
+                "f",
+                CreateLaplaceParameters(
+                    "I(VSENSE)",
+                    "1m*1000/(s+1000)",
+                    Assignment("M", "2"),
+                    Assignment("DELAY", "2n")),
                 context);
 
-            Assert.Null(entity);
-            AssertSingleReaderError(context, "E and G");
+            var laplace = Assert.IsType<LaplaceCurrentControlledCurrentSource>(entity);
+            Assert.False(context.Result.ValidationResult.HasError);
+            Assert.NotNull(createdNodes);
+            Assert.Equal(new[] { "out", "0" }, createdNodes.Select(parameter => parameter.Value).ToArray());
+            Assert.Equal("VSENSE", laplace.ControllingSource);
+            AssertCoefficients(new[] { 2.0 }, laplace.Parameters.Numerator);
+            AssertCoefficients(new[] { 1000.0, 1.0 }, laplace.Parameters.Denominator);
+            Assert.Equal(2e-9, laplace.Parameters.Delay);
         }
 
         [Fact]
-        public void When_FSourceUsesLaplace_Expect_UnsupportedReaderValidationError()
+        public void When_FSourceUsesNoEqualsLaplace_Expect_CurrentControlledLaplaceEntity()
+        {
+            var context = CreateReadingContext();
+            var generator = new CurrentSourceGenerator();
+
+            var entity = generator.Generate(
+                "F1",
+                "F1",
+                "f",
+                CreateNoEqualsLaplaceParameters("I(VSENSE)", "1000/(s+1000)"),
+                context);
+
+            var laplace = Assert.IsType<LaplaceCurrentControlledCurrentSource>(entity);
+            Assert.False(context.Result.ValidationResult.HasError);
+            Assert.Equal("VSENSE", laplace.ControllingSource);
+            AssertCoefficients(new[] { 1000.0 }, laplace.Parameters.Numerator);
+            AssertCoefficients(new[] { 1000.0, 1.0 }, laplace.Parameters.Denominator);
+        }
+
+        [Fact]
+        public void When_FSourceUsesVoltageLaplaceInput_Expect_CurrentInputValidationError()
         {
             var context = CreateReadingContext();
             var generator = new CurrentSourceGenerator();
@@ -441,24 +507,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 context);
 
             Assert.Null(entity);
-            AssertSingleReaderError(context, "E and G");
-        }
-
-        [Fact]
-        public void When_FSourceUsesNoEqualsLaplace_Expect_UnsupportedReaderValidationError()
-        {
-            var context = CreateReadingContext();
-            var generator = new CurrentSourceGenerator();
-
-            var entity = generator.Generate(
-                "F1",
-                "F1",
-                "f",
-                CreateNoEqualsLaplaceParameters("V(in)", "1/(1+s)"),
-                context);
-
-            Assert.Null(entity);
-            AssertSingleReaderError(context, "E and G");
+            AssertSingleReaderError(context, "I(source)");
         }
 
         [Fact]
@@ -625,6 +674,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                     Encoding.Default));
             context.EvaluationContext.Returns(evaluationContext);
             context.Evaluator.Returns(evaluationContext.Evaluator);
+            context.NameGenerator.Returns(evaluationContext.NameGenerator);
             return context;
         }
 

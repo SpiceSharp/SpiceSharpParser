@@ -14,6 +14,12 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
             var result = new List<CSharpStatement>();
             var sourceId = context.GetNewIdentifier(@object.Name);
 
+            if (SourceWriterHelper.IsLaplaceSource(@object.PinsAndParameters))
+            {
+                SourceWriterHelper.CreateCustomVoltageSource(result, @object.Name, @object.PinsAndParameters, context, true);
+                return result;
+            }
+
             if (@object.PinsAndParameters.Count == 5
                 && @object.PinsAndParameters.IsValueString(4))
             {

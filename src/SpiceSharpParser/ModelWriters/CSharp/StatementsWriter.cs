@@ -79,6 +79,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
             foreach (var asg in assignmentParameters)
             {
                 context.EvaluationContext.Variables[asg.Name] = asg.Value;
+                context.EvaluationContext.ParameterExpressions[asg.Name] = asg.Value;
             }
 
             var cSharpStatements = new List<CSharpStatement>();
@@ -90,6 +91,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
                     foreach (var asg in subCircuitDefinition.DefaultParameters)
                     {
                         context.EvaluationContext.Variables[asg.Name] = asg.Value;
+                        context.EvaluationContext.ParameterExpressions[asg.Name] = asg.Value;
                     }
 
                     cSharpStatements.AddRange(_subCircuitDefinitionWriter.Write(subCircuitDefinition, context));
@@ -97,6 +99,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
                     foreach (var asg in subCircuitDefinition.DefaultParameters)
                     {
                         context.EvaluationContext.Variables.Remove(asg.Name);
+                        context.EvaluationContext.ParameterExpressions.Remove(asg.Name);
                     }
                 }
 
@@ -207,6 +210,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
             foreach (var asg in assignmentParameters)
             {
                 context.EvaluationContext.Variables.Remove(asg.Name);
+                context.EvaluationContext.ParameterExpressions.Remove(asg.Name);
             }
 
             return result;

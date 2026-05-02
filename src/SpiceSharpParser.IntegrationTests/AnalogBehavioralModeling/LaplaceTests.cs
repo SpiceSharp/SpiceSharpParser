@@ -322,6 +322,94 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         }
 
         [Fact]
+        public void When_FLaplaceLowPassRunsOp_Expect_CurrentControlledGain()
+        {
+            var model = GetSpiceSharpModel(
+                "F LAPLACE low-pass OP",
+                "V1 1 0 100",
+                "R1 1 0 10",
+                "FLOW 2 0 LAPLACE {I(V1)} = {1.5/(1+s*1u)}",
+                "R2 2 0 2",
+                ".SAVE I(R2)",
+                ".OP",
+                ".END");
+
+            AssertNoValidationErrors(model);
+            Assert.IsType<LaplaceCurrentControlledCurrentSource>(model.Circuit["FLOW"]);
+
+            double export = RunOpSimulation(model, "I(R2)");
+            Assert.True(EqualsWithTol(15.0, export), $"Expected OP current near 15, got {export}.");
+        }
+
+        [Fact]
+        public void When_HLaplaceLowPassRunsOp_Expect_CurrentControlledGain()
+        {
+            var model = GetSpiceSharpModel(
+                "H LAPLACE low-pass OP",
+                "V1 1 0 100",
+                "R1 1 0 10",
+                "HLOW 2 0 LAPLACE {I(V1)} = {1.5/(1+s*1u)}",
+                "R2 2 0 2",
+                ".SAVE I(R2)",
+                ".OP",
+                ".END");
+
+            AssertNoValidationErrors(model);
+            Assert.IsType<LaplaceCurrentControlledVoltageSource>(model.Circuit["HLOW"]);
+
+            double export = RunOpSimulation(model, "I(R2)");
+            Assert.True(EqualsWithTol(-7.5, export), $"Expected OP current near -7.5, got {export}.");
+        }
+
+        [Fact]
+        public void When_FLaplaceLowPassRunsAcAtCutoff_Expect_ExpectedMagnitude()
+        {
+            var model = GetSpiceSharpModel(
+                "F LAPLACE low-pass AC",
+                ".PARAM fc=1k",
+                ".PARAM wc={2*PI*fc}",
+                "V1 in 0 AC 1",
+                "R1 in 0 1",
+                "FLOW out 0 LAPLACE {I(V1)} = {wc/(s+wc)}",
+                "RLOAD out 0 1",
+                ".AC DEC 20 10 100k",
+                ".MEAS AC vm_fc FIND VM(out) AT=1k",
+                ".END");
+
+            AssertNoValidationErrors(model);
+
+            RunSimulations(model);
+
+            AssertMeasurementSuccess(model, "vm_fc");
+            double magnitude = model.Measurements["vm_fc"][0].Value;
+            Assert.True(Math.Abs(magnitude - (1.0 / Math.Sqrt(2.0))) < 0.03, $"Expected F low-pass cutoff magnitude near 0.707, got {magnitude}.");
+        }
+
+        [Fact]
+        public void When_HLaplaceLowPassRunsAcAtCutoff_Expect_ExpectedMagnitude()
+        {
+            var model = GetSpiceSharpModel(
+                "H LAPLACE low-pass AC",
+                ".PARAM fc=1k",
+                ".PARAM wc={2*PI*fc}",
+                "V1 in 0 AC 1",
+                "R1 in 0 1",
+                "HLOW out 0 LAPLACE {I(V1)} = {wc/(s+wc)}",
+                "RLOAD out 0 1",
+                ".AC DEC 20 10 100k",
+                ".MEAS AC vm_fc FIND VM(out) AT=1k",
+                ".END");
+
+            AssertNoValidationErrors(model);
+
+            RunSimulations(model);
+
+            AssertMeasurementSuccess(model, "vm_fc");
+            double magnitude = model.Measurements["vm_fc"][0].Value;
+            Assert.True(Math.Abs(magnitude - (1.0 / Math.Sqrt(2.0))) < 0.03, $"Expected H low-pass cutoff magnitude near 0.707, got {magnitude}.");
+        }
+
+        [Fact]
         public void When_ELaplaceIsMixedWithExistingAbmSources_Expect_AllOutputs()
         {
             var model = GetSpiceSharpModel(
@@ -510,7 +598,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         public void When_HLaplaceIsUsed_Expect_ReaderValidationError()
         {
             var model = GetSpiceSharpModel(
-                "H LAPLACE unsupported",
+                "H LAPLACE invalid voltage input",
                 "VIN in 0 1",
                 "HBAD out 0 LAPLACE {V(in)} = {1/(1+s)}",
                 "RLOAD out 0 1k",
@@ -518,7 +606,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".SAVE V(out)",
                 ".END");
 
-            AssertReaderErrorContains(model, "E and G");
+            AssertReaderErrorContains(model, "I(source)");
         }
 
         private static SpiceSharpModel ReadSingleLaplaceSource(string inputExpression, string transferExpression)

@@ -12,7 +12,7 @@ The transfer function describes how a linear block changes a signal. It can say 
 
 If you want the exact syntax supported by SpiceSharpParser, see [LAPLACE Transfer Sources](laplace.md). This page focuses on the intuition.
 
-Keep one practical boundary in mind as you read: SpiceSharpParser supports a focused `LAPLACE` subset. The transfer must be used on an `E` or `G` source, the input must be `V(node)` or `V(node1,node2)`, and the transfer must be a proper rational polynomial in `s` with finite DC gain. Constant `M=`, `TD=`, and `DELAY=` options are supported for those source-level forms. The examples below stay inside that subset.
+Keep one practical boundary in mind as you read: SpiceSharpParser supports a focused `LAPLACE` subset. The transfer must be used on an `E`, `G`, `F`, or `H` source; `E` and `G` use `V(node)` or `V(node1,node2)` input, while `F` and `H` use `I(source)` input. The transfer must be a proper rational polynomial in `s` with finite DC gain. Constant `M=`, `TD=`, and `DELAY=` options are supported for those source-level forms. The examples below stay inside that subset.
 
 ## Running Example: Sensor To ADC
 
@@ -505,10 +505,11 @@ For the sensor-to-ADC example, this checklist says: the DC gain is `gain`, low-f
 
 SpiceSharpParser intentionally supports the practical subset introduced near the start:
 
-- `E` and `G` LAPLACE sources.
-- Voltage input expressions: `V(node)` and `V(node1,node2)`.
+- `E`, `G`, `F`, and `H` LAPLACE sources.
+- Voltage input expressions for `E` / `G`: `V(node)` and `V(node1,node2)`.
+- Current input expressions for `F` / `H`: `I(source)`.
 - Proper rational polynomials in `s`.
 - Finite DC gain.
-- Constant `M=`, `TD=`, and `DELAY=` options on supported `E` / `G` forms.
+- Constant `M=`, `TD=`, and `DELAY=` options on supported source-level forms.
 
-That means many web examples need adaptation before they are valid here. Avoid unsupported forms such as `exp()`, `sqrt()`, pure `1/s`, current-controlled LAPLACE, ideal delay forms outside the supported `TD=` / `DELAY=` options, and function-like `VALUE={LAPLACE(...)}` syntax.
+That means many web examples need adaptation before they are valid here. Avoid unsupported forms such as `exp()`, `sqrt()`, pure `1/s`, arbitrary input expressions, ideal delay forms outside the supported `TD=` / `DELAY=` options, and function-like `VALUE={LAPLACE(...)}` syntax.

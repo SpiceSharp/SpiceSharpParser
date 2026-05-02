@@ -55,10 +55,12 @@ SpiceSharpParser supports these analog behavioral modeling constructs:
 | `POLY(n)` | Polynomial transfer function |
 | `E ... LAPLACE {V(...)} = {H(s)}` | Voltage-controlled voltage transfer function |
 | `G ... LAPLACE {V(...)} = {H(s)}` | Voltage-controlled current transfer function |
-| `E/G ... LAPLACE {V(...)} {H(s)}` | Alternate supported LAPLACE spelling |
-| `E/G ... LAPLACE = {V(...)} {H(s)}` | Alternate supported LAPLACE spelling |
+| `F ... LAPLACE {I(...)} = {H(s)}` | Current-controlled current transfer function |
+| `H ... LAPLACE {I(...)} = {H(s)}` | Current-controlled voltage transfer function |
+| `E/G/F/H ... LAPLACE {input} {H(s)}` | Alternate supported LAPLACE spelling |
+| `E/G/F/H ... LAPLACE = {input} {H(s)}` | Alternate supported LAPLACE spelling |
 
-`LAPLACE` support is currently limited to source-level `E` and `G` voltage-controlled sources with `V(node)` or `V(node1,node2)` input. `B`, `F`, `H`, current-controlled LAPLACE, and function-like `VALUE={LAPLACE(...)}` syntax are not supported yet.
+`LAPLACE` support covers source-level `E` and `G` voltage-controlled sources with `V(node)` or `V(node1,node2)` input, plus `F` and `H` current-controlled sources with `I(source)` input. `B` and function-like `VALUE={LAPLACE(...)}` syntax are not supported yet.
 
 For LAPLACE sources, `M=` is a finite constant multiplier folded into the transfer numerator and may be positive, negative, or zero. `TD=` and `DELAY=` are supported aliases for a finite constant non-negative runtime delay parameter; use only one delay option and assignment syntax.
 

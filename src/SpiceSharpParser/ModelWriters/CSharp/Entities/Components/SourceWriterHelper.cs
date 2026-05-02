@@ -1,15 +1,33 @@
 ﻿using SpiceSharp.Components;
+using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
+using SpiceSharpParser.Common.Mathematics.Probability;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components.Sources;
+using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using ReaderExpressionParserFactory = SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.ExpressionParserFactory;
+using ReaderExpressionResolverFactory = SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.ExpressionResolverFactory;
+using ReaderExpressionValueProvider = SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.ExpressionValueProvider;
+using ReaderEvaluator = SpiceSharpParser.Common.Evaluation.Evaluator;
+using SpiceEvaluationContext = SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.SpiceEvaluationContext;
 
 namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
 {
     public static class SourceWriterHelper
     {
+        public static bool IsLaplaceSource(ParameterCollection parameters)
+        {
+            return new LaplaceSourceParser().IsLaplaceSource(parameters);
+        }
+
         public static void CreateBehavioralCurrentSource(List<CSharpStatement> result, string name, ParameterCollection pins, string expression, IWriterContext context)
         {
             var currentSourceId = context.GetNewIdentifier(name);
@@ -29,9 +47,208 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
             result.Add(new CSharpAssignmentStatement($@"{currentSourceId}.Parameters.Expression", @$"$""{transformed}"""));
         }
 
+        private static bool TryCreateLaplaceSource(
+            List<CSharpStatement> result,
+            string name,
+            ParameterCollection parameters,
+            IWriterContext context,
+            bool isCurrentSource,
+            bool isVoltageControlled)
+        {
+            var parser = new LaplaceSourceParser();
+            if (!parser.IsLaplaceSource(parameters))
+            {
+                return false;
+            }
+
+            var errors = new List<string>();
+            var evaluationContext = CreateLaplaceEvaluationContext(context);
+            var caseSettings = context.CaseSettings ?? new SpiceNetlistCaseSensitivitySettings();
+            var definition = isVoltageControlled
+                ? parser.ParseVoltageControlledSource(
+                    name,
+                    parameters,
+                    evaluationContext,
+                    caseSettings,
+                    evaluationContext.Evaluator.EvaluateDouble,
+                    (message, _, __) => errors.Add(message))
+                : parser.ParseCurrentControlledSource(
+                    name,
+                    parameters,
+                    evaluationContext,
+                    caseSettings,
+                    evaluationContext.Evaluator.EvaluateDouble,
+                    (message, _, __) => errors.Add(message));
+
+            if (definition == null)
+            {
+                var message = errors.Count == 0
+                    ? "Error: LAPLACE source could not be generated, " + name + " " + parameters
+                    : "Error: " + string.Join("; ", errors) + ", " + name + " " + parameters;
+
+                result.Add(new CSharpComment(message));
+                return true;
+            }
+
+            if (isCurrentSource)
+            {
+                if (isVoltageControlled)
+                {
+                    CreateLaplaceVoltageControlledCurrentSource(result, name, definition, context);
+                }
+                else
+                {
+                    CreateLaplaceCurrentControlledCurrentSource(result, name, definition, context);
+                }
+            }
+            else
+            {
+                if (isVoltageControlled)
+                {
+                    CreateLaplaceVoltageControlledVoltageSource(result, name, definition, context);
+                }
+                else
+                {
+                    CreateLaplaceCurrentControlledVoltageSource(result, name, definition, context);
+                }
+            }
+
+            return true;
+        }
+
+        private static SpiceEvaluationContext CreateLaplaceEvaluationContext(IWriterContext context)
+        {
+            var caseSettings = context.CaseSettings ?? new SpiceNetlistCaseSensitivitySettings();
+            var nodeNameGenerator = new MainCircuitNodeNameGenerator(
+                new[] { "0" },
+                caseSettings.IsEntityNamesCaseSensitive,
+                ".");
+            var objectNameGenerator = new ObjectNameGenerator(string.Empty, ".");
+            INameGenerator nameGenerator = new NameGenerator(nodeNameGenerator, objectNameGenerator);
+            var expressionParserFactory = new ReaderExpressionParserFactory(caseSettings);
+            var expressionResolverFactory = new ReaderExpressionResolverFactory(caseSettings);
+
+            var evaluationContext = new SpiceEvaluationContext(
+                string.Empty,
+                caseSettings,
+                new Randomizer(caseSettings.IsDistributionNameCaseSensitive, seed: 0),
+                expressionParserFactory,
+                new ExpressionFeaturesReader(expressionParserFactory, expressionResolverFactory),
+                nameGenerator);
+
+            evaluationContext.Evaluator = new ReaderEvaluator(
+                evaluationContext,
+                new ReaderExpressionValueProvider(expressionParserFactory));
+
+            foreach (var parameter in context.EvaluationContext.ParameterExpressions)
+            {
+                evaluationContext.SetParameter(parameter.Key, parameter.Value);
+            }
+
+            return evaluationContext;
+        }
+
+        private static void CreateLaplaceVoltageControlledVoltageSource(
+            List<CSharpStatement> result,
+            string name,
+            LaplaceSourceDefinition definition,
+            IWriterContext context)
+        {
+            var sourceId = context.GetNewIdentifier(name);
+            result.Add(new CSharpNewStatement(sourceId, $@"new LaplaceVoltageControlledVoltageSource(""{name}"")"));
+            result.Add(new CSharpCallStatement(
+                sourceId,
+                $@"Connect({Quote(definition.OutputPositiveNode)}, {Quote(definition.OutputNegativeNode)}, {Quote(definition.Input.ControlPositiveNode)}, {Quote(definition.Input.ControlNegativeNode)})"));
+            AddLaplaceParameters(result, sourceId, definition);
+        }
+
+        private static void CreateLaplaceVoltageControlledCurrentSource(
+            List<CSharpStatement> result,
+            string name,
+            LaplaceSourceDefinition definition,
+            IWriterContext context)
+        {
+            var sourceId = context.GetNewIdentifier(name);
+            result.Add(new CSharpNewStatement(sourceId, $@"new LaplaceVoltageControlledCurrentSource(""{name}"")"));
+            result.Add(new CSharpCallStatement(
+                sourceId,
+                $@"Connect({Quote(definition.OutputPositiveNode)}, {Quote(definition.OutputNegativeNode)}, {Quote(definition.Input.ControlPositiveNode)}, {Quote(definition.Input.ControlNegativeNode)})"));
+            AddLaplaceParameters(result, sourceId, definition);
+        }
+
+        private static void CreateLaplaceCurrentControlledVoltageSource(
+            List<CSharpStatement> result,
+            string name,
+            LaplaceSourceDefinition definition,
+            IWriterContext context)
+        {
+            var sourceId = context.GetNewIdentifier(name);
+            result.Add(new CSharpNewStatement(sourceId, $@"new LaplaceCurrentControlledVoltageSource(""{name}"")"));
+            result.Add(new CSharpCallStatement(
+                sourceId,
+                $@"Connect({Quote(definition.OutputPositiveNode)}, {Quote(definition.OutputNegativeNode)})"));
+            result.Add(new CSharpAssignmentStatement(
+                sourceId + ".ControllingSource",
+                Quote(definition.Input.ControllingSource)));
+            AddLaplaceParameters(result, sourceId, definition);
+        }
+
+        private static void CreateLaplaceCurrentControlledCurrentSource(
+            List<CSharpStatement> result,
+            string name,
+            LaplaceSourceDefinition definition,
+            IWriterContext context)
+        {
+            var sourceId = context.GetNewIdentifier(name);
+            result.Add(new CSharpNewStatement(sourceId, $@"new LaplaceCurrentControlledCurrentSource(""{name}"")"));
+            result.Add(new CSharpCallStatement(
+                sourceId,
+                $@"Connect({Quote(definition.OutputPositiveNode)}, {Quote(definition.OutputNegativeNode)})"));
+            result.Add(new CSharpAssignmentStatement(
+                sourceId + ".ControllingSource",
+                Quote(definition.Input.ControllingSource)));
+            AddLaplaceParameters(result, sourceId, definition);
+        }
+
+        private static void AddLaplaceParameters(
+            List<CSharpStatement> result,
+            string sourceId,
+            LaplaceSourceDefinition definition)
+        {
+            result.Add(new CSharpAssignmentStatement(
+                sourceId + ".Parameters.Numerator",
+                FormatDoubleArray(definition.TransferFunction.NumeratorCoefficients)));
+            result.Add(new CSharpAssignmentStatement(
+                sourceId + ".Parameters.Denominator",
+                FormatDoubleArray(definition.TransferFunction.DenominatorCoefficients)));
+            result.Add(new CSharpAssignmentStatement(
+                sourceId + ".Parameters.Delay",
+                FormatDouble(definition.Delay)));
+        }
+
+        private static string FormatDoubleArray(IReadOnlyList<double> values)
+        {
+            return "new[] { " + string.Join(", ", values.Select(FormatDouble)) + " }";
+        }
+
+        private static string FormatDouble(double value)
+        {
+            return value.ToString("R", CultureInfo.InvariantCulture) + "d";
+        }
+
+        private static string Quote(string value)
+        {
+            return "\"" + value.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"";
+        }
+
         public static void CreateCustomCurrentSource(List<CSharpStatement> result, string name, ParameterCollection parameters, IWriterContext context, bool isVoltageControlled)
         {
             var resultIntialCount = result.Count;
+
+            if (TryCreateLaplaceSource(result, name, parameters, context, true, isVoltageControlled))
+            {
+                return;
+            }
 
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
             {
@@ -104,6 +321,11 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
         public static void CreateCustomVoltageSource(List<CSharpStatement> result, string name, ParameterCollection parameters, IWriterContext context, bool isVoltageControlled)
         {
             var resultIntialCount = result.Count;
+
+            if (TryCreateLaplaceSource(result, name, parameters, context, false, isVoltageControlled))
+            {
+                return;
+            }
 
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
             {

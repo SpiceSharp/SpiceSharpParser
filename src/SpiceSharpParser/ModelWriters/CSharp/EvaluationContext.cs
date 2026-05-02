@@ -22,6 +22,8 @@ namespace SpiceSharpParser.ModelWriters.CSharp
 
         public Dictionary<string, string> Variables { get; set; } = new Dictionary<string, string>();
 
+        public Dictionary<string, string> ParameterExpressions { get; set; } = new Dictionary<string, string>();
+
         public List<string> Functions { get; set; } = new List<string>();
 
         public IEvaluator Evaluator { get; set; }

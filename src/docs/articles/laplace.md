@@ -2,7 +2,7 @@
 
 `LAPLACE` sources model a linear transfer function in the Laplace domain. They are useful when you know the desired gain, poles, zeros, or filter response and want to describe it directly instead of building the same behavior from resistors, capacitors, inductors, or op-amp subcircuits.
 
-SpiceSharpParser supports voltage-controlled `E` and `G` source LAPLACE forms with `V(node)` or `V(node1,node2)` input, three equivalent spellings, and finite constant `M=`, `TD=`, and `DELAY=` options.
+SpiceSharpParser supports voltage-controlled `E` and `G` source LAPLACE forms with `V(node)` or `V(node1,node2)` input, current-controlled `F` and `H` forms with `I(source)` input, three equivalent spellings, and finite constant `M=`, `TD=`, and `DELAY=` options.
 
 If you are new to Laplace transforms, start with [Laplace Transform Basics for Circuit Simulation](laplace-basics.md). This article is the syntax and reference page.
 
@@ -49,14 +49,15 @@ This value is complex. Its magnitude tells you the gain at that frequency, and i
 
 ## Supported Syntax
 
-The supported input expression is a voltage probe:
+The supported input expression is a voltage or current probe:
 
 ```spice
 V(node)
 V(node1,node2)
+I(source)
 ```
 
-`V(node)` means `V(node,0)`. `V(node1,node2)` means the differential voltage `V(node1) - V(node2)`. Every supported spelling below accepts either input shape.
+`V(node)` means `V(node,0)`. `V(node1,node2)` means the differential voltage `V(node1) - V(node2)`. Use voltage probes with `E` and `G` sources. `I(source)` means the current through a controlling voltage source, and is supported with `F` and `H` sources.
 
 ### E Source
 
@@ -94,6 +95,38 @@ Supported spellings:
 G<name> <out+> <out-> LAPLACE {<input>} = {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
 G<name> <out+> <out-> LAPLACE {<input>} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
 G<name> <out+> <out-> LAPLACE = {<input>} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+```
+
+### F Source
+
+An `F` LAPLACE source is a current-controlled current source:
+
+```text
+I(out+ -> out-) = H(s) * I(Vsense)
+```
+
+Supported spellings:
+
+```spice
+F<name> <out+> <out-> LAPLACE {I(<source>)} = {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+F<name> <out+> <out-> LAPLACE {I(<source>)} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+F<name> <out+> <out-> LAPLACE = {I(<source>)} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+```
+
+### H Source
+
+An `H` LAPLACE source is a current-controlled voltage source:
+
+```text
+V(out+,out-) = H(s) * I(Vsense)
+```
+
+Supported spellings:
+
+```spice
+H<name> <out+> <out-> LAPLACE {I(<source>)} = {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+H<name> <out+> <out-> LAPLACE {I(<source>)} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+H<name> <out+> <out-> LAPLACE = {I(<source>)} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
 ```
 
 ### Options
@@ -465,6 +498,7 @@ E1 OUT 0 LAPLACE = {V(IN)} {1/(1+s*1u)}
 ```
 
 The same spelling variants are supported for `G` sources and for differential inputs such as `{V(INP,INN)}`.
+For `F` and `H`, use the same spelling variants with current input, such as `{I(VSENSE)}`.
 
 ## Common Mistakes
 
@@ -474,16 +508,17 @@ The same spelling variants are supported for `G` sources and for differential in
 | `s` | Improper transfer: numerator order is greater than denominator order | Use `s/(s+wc)` |
 | `sin(s)` | Not a rational polynomial in `s` | Use polynomial/rational expressions only |
 | `V(a)-V(b)` | Input expression shape is unsupported | Use `V(a,b)` |
-| `I(Vsense)` | Current-controlled LAPLACE is not supported yet | Use supported `E`/`G` voltage input forms |
+| `I(Vsense)` on `E` or `G` | `E` and `G` require voltage input | Use `V(node)` or switch to `F`/`H` |
+| `V(node)` on `F` or `H` | `F` and `H` require current input | Use `I(Vsense)` or switch to `E`/`G` |
 | `M=inf` | The multiplier must be finite | Use a finite constant expression |
 | `TD=1n DELAY=2n` | Only one delay option may be used | Use either `TD` or `DELAY` |
 | `TD=-1n` | Delay must be non-negative | Use `TD=0` or a positive delay |
 | `TD 1n` | Options require assignment syntax | Use `TD=1n` |
-| `VALUE={LAPLACE(...)}` | Function-like LAPLACE syntax is not supported yet | Use source-level `E`/`G ... LAPLACE ...` |
+| `VALUE={LAPLACE(...)}` | Function-like LAPLACE syntax is not supported yet | Use source-level `E`/`G`/`F`/`H ... LAPLACE ...` |
 
 ## Further Reading
 
-These references are useful for the engineering context behind transfer-function models. Some examples use broader PSpice or LTspice syntax than SpiceSharpParser currently supports, so adapt them to the supported `E`/`G` rational-polynomial subset described above.
+These references are useful for the engineering context behind transfer-function models. Some examples use broader PSpice or LTspice syntax than SpiceSharpParser currently supports, so adapt them to the supported source-level rational-polynomial subset described above.
 
 - [Model Transfer Functions by Applying the Laplace Transform in LTspice](https://www.analog.com/en/resources/technical-articles/model-transfer-functions-by-applying-the-laplace-transform-in-ltspice.html)
 - [Cadence PSpice User Guide: Analog Behavioral Modeling](https://resources.pcb.cadence.com/pspiceuserguide/06-analog-behavioral-modeling)
@@ -493,10 +528,10 @@ These references are useful for the engineering context behind transfer-function
 
 ## Current Limitations
 
-- Only `E` and `G` voltage-controlled LAPLACE sources are supported.
-- Only `V(node)` and `V(node1,node2)` input expressions are supported.
-- `B`, `F`, and `H` LAPLACE forms are not supported yet.
+- `E` and `G` require `V(node)` or `V(node1,node2)` input expressions.
+- `F` and `H` require `I(source)` input expressions.
+- `B` source LAPLACE forms are not supported yet.
 - Function-like `VALUE={LAPLACE(...)}` syntax is not supported yet.
 - Explicit internal-state options are not supported yet.
-- Transient response is verified for undelayed first-order `E` / `G` low-pass sources. Delayed transient sources are validated as runnable, but delayed response shape is not currently claimed.
+- Transient response is verified for undelayed first-order `E` / `G` low-pass sources. Delayed transient sources and current-controlled `F` / `H` transient sources are not currently claimed beyond runtime support covered by focused tests.
 - Transfers must be finite, proper rational polynomials in `s` with non-singular DC gain.

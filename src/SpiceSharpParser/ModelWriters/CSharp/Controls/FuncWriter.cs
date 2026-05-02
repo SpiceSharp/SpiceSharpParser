@@ -10,6 +10,11 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Controls
     {
         public static void CreateFunction(IWriterContext context, List<CSharpStatement> result, string functionName, string functionExpression, List<string> functionArguments)
         {
+            if (functionArguments.Count == 0)
+            {
+                context.EvaluationContext.ParameterExpressions[functionName] = functionExpression;
+            }
+
             if (functionArguments.Count == 0
                 && !context.EvaluationContext.HaveSpiceProperties(functionExpression)
                 && !context.EvaluationContext.HaveFunctions(functionExpression)

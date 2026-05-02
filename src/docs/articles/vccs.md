@@ -49,7 +49,7 @@ GDIFF OUT 0 LAPLACE {V(INP,INN)} = {gm/(1+s*1u)}
 Current limitations:
 
 - Only input expressions `V(node)` and `V(node1,node2)` are accepted.
-- `F` and `H` current-controlled LAPLACE forms are not supported yet.
+- `F` and `H` LAPLACE forms use current input and are documented separately.
 - Function-like `VALUE={LAPLACE(...)}` and `B`-source LAPLACE syntax are not supported yet.
 - Explicit internal-state options are not supported yet.
 - Transfers must be proper, finite rational polynomials in `s` with non-singular DC gain.
