@@ -5,10 +5,12 @@ using System.Text;
 using NSubstitute;
 using SpiceSharp;
 using SpiceSharp.Components;
+using SpiceSharpBehavioral.Parsers.Nodes;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Mathematics.Probability;
 using SpiceSharpParser.Common.Validation;
+using SpiceSharpParser.Lexers.Expressions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
@@ -17,6 +19,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Compo
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using Xunit;
+using Parser = SpiceSharpParser.Parsers.Expression.Parser;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Components.Sources
 {
@@ -605,6 +608,233 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             Assert.False(context.Result.ValidationResult.HasError);
             Assert.Contains("__ssp_laplace_B1_0", behavioral.Parameters.Expression);
             Assert.Contains(context.ContextEntities, item => item is LaplaceVoltageControlledVoltageSource && item.Name == "__ssp_laplace_B1_0_src");
+        }
+
+        [Fact]
+        public void When_SingleEqualsAppearsInsideFunctionArgument_Expect_EqualityNode()
+        {
+            var root = Parser.Parse(Lexer.FromString("LAPLACE(V(in), 1/(1+s), TD=1n)"), true);
+            var call = Assert.IsType<FunctionNode>(root);
+            var option = Assert.IsType<BinaryOperatorNode>(call.Arguments[2]);
+
+            Assert.Equal(NodeTypes.Equals, option.NodeType);
+            var left = Assert.IsType<VariableNode>(option.Left);
+            Assert.Equal("TD", left.Name);
+        }
+
+        [Fact]
+        public void When_DirectLaplaceFunctionUsesInlineOptions_Expect_NumeratorScaledAndDelaySet()
+        {
+            var context = CreateReadingContext();
+            var generator = new ArbitraryBehavioralGenerator();
+
+            var entity = generator.Generate(
+                "B1",
+                "B1",
+                "b",
+                new ParameterCollection
+                {
+                    new IdentifierParameter("out"),
+                    new IdentifierParameter("0"),
+                    Assignment("V", "LAPLACE(V(in), 1/(1+s), M=2, TD=1n)"),
+                },
+                context);
+
+            var laplace = Assert.IsType<LaplaceVoltageControlledVoltageSource>(entity);
+            Assert.False(context.Result.ValidationResult.HasError);
+            AssertCoefficients(new[] { 2.0 }, laplace.Parameters.Numerator);
+            Assert.Equal(1e-9, laplace.Parameters.Delay);
+        }
+
+        [Fact]
+        public void When_MixedLaplaceFunctionUsesPerCallInlineOptions_Expect_EachHelperOwnsOptions()
+        {
+            var context = CreateReadingContext();
+            var generator = new ArbitraryBehavioralGenerator();
+
+            var entity = generator.Generate(
+                "B1",
+                "B1",
+                "b",
+                new ParameterCollection
+                {
+                    new IdentifierParameter("out"),
+                    new IdentifierParameter("0"),
+                    Assignment("V", "LAPLACE(V(a), 1/(1+s), M=2, TD=1n) + LAPLACE(V(b), 1/(1+s), M=3, DELAY=2n)"),
+                },
+                context);
+
+            Assert.IsType<BehavioralVoltageSource>(entity);
+            Assert.False(context.Result.ValidationResult.HasError);
+            var firstHelper = Assert.IsType<LaplaceVoltageControlledVoltageSource>(context.ContextEntities["__ssp_laplace_B1_0_src"]);
+            var secondHelper = Assert.IsType<LaplaceVoltageControlledVoltageSource>(context.ContextEntities["__ssp_laplace_B1_1_src"]);
+            AssertCoefficients(new[] { 2.0 }, firstHelper.Parameters.Numerator);
+            AssertCoefficients(new[] { 3.0 }, secondHelper.Parameters.Numerator);
+            Assert.Equal(1e-9, firstHelper.Parameters.Delay);
+            Assert.Equal(2e-9, secondHelper.Parameters.Delay);
+        }
+
+        [Fact]
+        public void When_LaplaceFunctionUsesArbitraryInput_Expect_InputHelperAndVoltageControlledLaplace()
+        {
+            var context = CreateReadingContext();
+            var generator = new ArbitraryBehavioralGenerator();
+
+            var entity = generator.Generate(
+                "B1",
+                "B1",
+                "b",
+                new ParameterCollection
+                {
+                    new IdentifierParameter("out"),
+                    new IdentifierParameter("0"),
+                    Assignment("V", "LAPLACE(2*V(in), 1/(1+s))"),
+                },
+                context);
+
+            Assert.IsType<LaplaceVoltageControlledVoltageSource>(entity);
+            Assert.False(context.Result.ValidationResult.HasError);
+            var inputHelper = Assert.IsType<BehavioralVoltageSource>(context.ContextEntities["__ssp_laplace_input_B1_0_src"]);
+            Assert.Contains("V(in)", inputHelper.Parameters.Expression);
+        }
+
+        [Fact]
+        public void When_LaplaceFunctionUsesDifferentialExpression_Expect_NoInputHelper()
+        {
+            var context = CreateReadingContext();
+            var generator = new ArbitraryBehavioralGenerator();
+
+            var entity = generator.Generate(
+                "B1",
+                "B1",
+                "b",
+                new ParameterCollection
+                {
+                    new IdentifierParameter("out"),
+                    new IdentifierParameter("0"),
+                    Assignment("V", "LAPLACE(V(a)-V(b), 1/(1+s))"),
+                },
+                context);
+
+            Assert.IsType<LaplaceVoltageControlledVoltageSource>(entity);
+            Assert.False(context.Result.ValidationResult.HasError);
+            Assert.DoesNotContain(context.ContextEntities, item => item.Name.StartsWith("__ssp_laplace_input_", StringComparison.Ordinal));
+        }
+
+        [Fact]
+        public void When_InlineAndSourceLevelDelayAreBothPresent_Expect_ReaderValidationError()
+        {
+            var context = CreateReadingContext();
+            var generator = new ArbitraryBehavioralGenerator();
+
+            var entity = generator.Generate(
+                "B1",
+                "B1",
+                "b",
+                new ParameterCollection
+                {
+                    new IdentifierParameter("out"),
+                    new IdentifierParameter("0"),
+                    Assignment("V", "LAPLACE(V(in), 1/(1+s), TD=1n)"),
+                    Assignment("TD", "2n"),
+                },
+                context);
+
+            Assert.Null(entity);
+            AssertSingleReaderError(context, "only once");
+        }
+
+        [Fact]
+        public void When_InlineAndSourceLevelMultiplierAreBothDirect_Expect_ReaderValidationError()
+        {
+            var context = CreateReadingContext();
+            var generator = new ArbitraryBehavioralGenerator();
+
+            var entity = generator.Generate(
+                "B1",
+                "B1",
+                "b",
+                new ParameterCollection
+                {
+                    new IdentifierParameter("out"),
+                    new IdentifierParameter("0"),
+                    Assignment("I", "LAPLACE(V(in), 1/(1+s), M=2)"),
+                    Assignment("M", "3"),
+                },
+                context);
+
+            Assert.Null(entity);
+            AssertSingleReaderError(context, "only once");
+        }
+
+        [Fact]
+        public void When_MixedCurrentOutputUsesInlineAndSourceLevelMultiplier_Expect_BothScalesPreserved()
+        {
+            var context = CreateReadingContext();
+            var generator = new ArbitraryBehavioralGenerator();
+
+            var entity = generator.Generate(
+                "B1",
+                "B1",
+                "b",
+                new ParameterCollection
+                {
+                    new IdentifierParameter("out"),
+                    new IdentifierParameter("0"),
+                    Assignment("I", "1 + LAPLACE(V(in), 1/(1+s), M=2)"),
+                    Assignment("M", "3"),
+                },
+                context);
+
+            var behavioral = Assert.IsType<BehavioralCurrentSource>(entity);
+            Assert.False(context.Result.ValidationResult.HasError);
+            Assert.Contains("* (3)", behavioral.Parameters.Expression);
+            var helper = Assert.IsType<LaplaceVoltageControlledVoltageSource>(context.ContextEntities["__ssp_laplace_B1_0_src"]);
+            AssertCoefficients(new[] { 2.0 }, helper.Parameters.Numerator);
+        }
+
+        [Fact]
+        public void When_InlineOptionIsUnknown_Expect_ReaderValidationError()
+        {
+            var context = CreateReadingContext();
+            var generator = new ArbitraryBehavioralGenerator();
+
+            var entity = generator.Generate(
+                "B1",
+                "B1",
+                "b",
+                new ParameterCollection
+                {
+                    new IdentifierParameter("out"),
+                    new IdentifierParameter("0"),
+                    Assignment("V", "LAPLACE(V(in), 1/(1+s), FOO=1)"),
+                },
+                context);
+
+            Assert.Null(entity);
+            AssertSingleReaderError(context, "unknown");
+        }
+
+        [Fact]
+        public void When_InlineOptionHasNoAssignment_Expect_ReaderValidationError()
+        {
+            var context = CreateReadingContext();
+            var generator = new ArbitraryBehavioralGenerator();
+
+            var entity = generator.Generate(
+                "B1",
+                "B1",
+                "b",
+                new ParameterCollection
+                {
+                    new IdentifierParameter("out"),
+                    new IdentifierParameter("0"),
+                    Assignment("V", "LAPLACE(V(in), 1/(1+s), TD)"),
+                },
+                context);
+
+            Assert.Null(entity);
+            AssertSingleReaderError(context, "assignment syntax");
         }
 
         private static LaplaceSourceDefinition ParseDefinition(ParameterCollection parameters)

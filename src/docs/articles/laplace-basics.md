@@ -511,5 +511,7 @@ SpiceSharpParser intentionally supports the practical subset introduced near the
 - Proper rational polynomials in `s`.
 - Finite DC gain.
 - Constant `M=`, `TD=`, and `DELAY=` options on supported source-level forms.
+- Function-style `LAPLACE(input, transfer, ...)` in behavioral expressions, including inline `M=`, `TD=`, and `DELAY=` options.
+- Arbitrary function-style input expressions, lowered through internal helpers when they are not direct probes.
 
-That means many web examples need adaptation before they are valid here. Avoid unsupported forms such as `exp()`, `sqrt()`, pure `1/s`, arbitrary input expressions, ideal delay forms outside the supported `TD=` / `DELAY=` options, and inline option arguments inside `LAPLACE(...)`.
+That means many web examples need adaptation before they are valid here. Avoid unsupported forms such as `exp()`, `sqrt()`, pure `1/s`, nested `LAPLACE(...)` calls inside function inputs, ideal delay forms outside the supported `TD=` / `DELAY=` options, and explicit internal-state options.

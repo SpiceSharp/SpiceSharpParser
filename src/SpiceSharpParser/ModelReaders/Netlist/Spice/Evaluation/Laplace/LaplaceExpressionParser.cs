@@ -237,12 +237,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Laplace
 
             if (rational.Numerator.Degree > rational.Denominator.Degree)
             {
-                throw CreateException("laplace transfer function is improper; numerator degree exceeds denominator degree");
+                throw CreateException(
+                    "laplace transfer function is improper; numerator degree "
+                    + rational.Numerator.Degree
+                    + " exceeds denominator degree "
+                    + rational.Denominator.Degree);
             }
 
             if (IsZero(rational.Denominator.Coefficients[0]))
             {
-                throw CreateException("laplace transfer function has singular DC gain");
+                throw CreateException(
+                    "laplace transfer function has singular DC gain; add a low-frequency pole or finite leakage term");
             }
 
             if (rational.Denominator.Degree > _options.MaxOrder || rational.Numerator.Degree > _options.MaxOrder)

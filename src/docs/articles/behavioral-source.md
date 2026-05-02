@@ -38,6 +38,9 @@ B6 OUT 0 V={LAPLACE(V(IN), 1/(1+s*tau))}
 
 * Mixed expression with an internal Laplace helper
 B7 OUT 0 V={1 + 2*LAPLACE(V(IN), 1/(1+s))}
+
+* Laplace call-local multiplier and delay
+B8 OUT 0 V={LAPLACE(2*V(IN), 1/(1+s*tau), M=2, TD=1n)}
 ```
 
 ## Expressions
@@ -69,10 +72,10 @@ SpiceSharpParser supports these analog behavioral modeling constructs:
 | `B ... V={LAPLACE(input,H(s))}` | Function-style voltage-output Laplace transfer |
 | `B ... I={LAPLACE(input,H(s))}` | Function-style current-output Laplace transfer |
 
-`LAPLACE` support covers source-level `E` and `G` voltage-controlled sources with `V(node)` or `V(node1,node2)` input, plus `F` and `H` current-controlled sources with `I(source)` input. Function-style `LAPLACE(input, transfer)` is also supported in `VALUE`, `B ... V=`, and `B ... I=` expressions with `V(node)`, `V(node1,node2)`, or `I(source)` input.
+`LAPLACE` support covers source-level `E` and `G` voltage-controlled sources with `V(node)` or `V(node1,node2)` input, plus `F` and `H` current-controlled sources with `I(source)` input. Function-style `LAPLACE(input, transfer)` is also supported in `VALUE`, `B ... V=`, and `B ... I=` expressions with direct probes or arbitrary scalar input expressions.
 
-When `LAPLACE(...)` is part of a larger expression, SpiceSharpParser creates internal helper voltage sources and rewrites the behavioral expression to reference those helper node voltages. The helpers are implementation details, but may be visible through low-level circuit inspection APIs.
+When `LAPLACE(...)` is part of a larger expression, or when its input is not a direct probe, SpiceSharpParser creates internal helper voltage sources and rewrites the behavioral expression to reference those helper node voltages. The helpers are implementation details, but may be visible through low-level circuit inspection APIs.
 
-For LAPLACE sources, `M=` is a finite constant multiplier and may be positive, negative, or zero. `TD=` and `DELAY=` are supported aliases for a finite constant non-negative runtime delay parameter; use only one delay option and assignment syntax. For function-style expressions, delay options require exactly one `LAPLACE(...)` call.
+For LAPLACE sources, `M=` is a finite constant multiplier and may be positive, negative, or zero. `TD=` and `DELAY=` are supported aliases for a finite constant non-negative runtime delay parameter; use only one delay option and assignment syntax. Function-style calls may also pass `M=`, `TD=`, and `DELAY=` inline, and those options apply only to that call.
 
 For the transfer-function math, DC gain, frequency response, and worked examples, see [LAPLACE Transfer Sources](laplace.md).

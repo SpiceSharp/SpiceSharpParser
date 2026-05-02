@@ -175,16 +175,20 @@ ELOW OUT 0 VALUE={LAPLACE(V(IN), 1/(1+s*tau))}
 BLOW OUT 0 V={LAPLACE(V(IN), wc/(s+wc))}
 BGM OUT 0 I={LAPLACE(V(IN), gm/(1+s*tau))}
 BMIX OUT 0 V={1 + 2*LAPLACE(V(IN), 1/(1+s))}
+BDELAY OUT 0 V={LAPLACE(V(IN), 1/(1+s*tau), M=2, TD=1n)}
+BINHELP OUT 0 V={LAPLACE(2*V(IN), 1/(1+s))}
 ```
 
 Rules and gotchas:
 - `E` and `G` use voltage input `V(node)` or `V(node1,node2)`; `F` and `H` use current input `I(source)`.
+- Function-style `LAPLACE(...)` accepts direct probes and arbitrary scalar input expressions; non-probe inputs are lowered through internal helper sources.
 - The transfer must be a finite, proper rational polynomial in `s` with non-singular DC gain.
 - Use `s/(s+wc)` for high-pass behavior; bare `s` is improper and rejected.
-- Avoid unsupported forms such as `1/s`, `sin(s)`, `V(a)-V(b)`, and `V(node)` on `F`/`H`.
+- Avoid unsupported forms such as `1/s`, `sin(s)`, source-level `V(a)-V(b)`, and `V(node)` on `F`/`H`.
 - `M=<m>` is a finite multiplier folded into the numerator. It may be positive, negative, or zero.
 - `TD=<delay>` and `DELAY=<delay>` are aliases; use only one, with assignment syntax, and a non-negative value.
-- Function-style delay options require exactly one `LAPLACE(...)` call.
+- Function-style calls may pass inline `M=`, `TD=`, and `DELAY=` options; inline options apply only to that call, so multiple delayed calls are supported when each delay is inline.
+- Source-level delay options still require exactly one `LAPLACE(...)` call.
 - `G` and `F` current is defined from `out+` to `out-`; with a grounded load this may produce inverted output voltage.
 - For details and examples, read `src/docs/articles/laplace.md`, `src/docs/articles/laplace-basics.md`, and `src/SpiceSharpParser.IntegrationTests/AnalogBehavioralModeling/LaplaceTests.cs`.
 

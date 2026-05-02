@@ -106,6 +106,11 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                 return true;
             }
 
+            foreach (var inputHelperDefinition in loweringResult.InputHelperDefinitions)
+            {
+                CreateLaplaceInputHelper(result, inputHelperDefinition, context);
+            }
+
             if (loweringResult.IsDirect)
             {
                 CreateLaplaceSource(result, loweringResult.DirectDefinition, outputKind, context);
@@ -127,6 +132,26 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
             }
 
             return true;
+        }
+
+        private static void CreateLaplaceInputHelper(
+            List<CSharpStatement> result,
+            LaplaceFunctionInputHelperDefinition definition,
+            IWriterContext context)
+        {
+            var parameters = new ParameterCollection(
+                new List<Parameter>
+                {
+                    new IdentifierParameter(definition.HelperNodeName, definition.LineInfo),
+                    new IdentifierParameter("0", definition.LineInfo),
+                });
+
+            CreateBehavioralVoltageSource(
+                result,
+                definition.SourceName,
+                parameters,
+                definition.Expression,
+                context);
         }
 
         private static bool TryCreateLaplaceSource(

@@ -211,6 +211,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 return true;
             }
 
+            foreach (var inputHelperDefinition in result.InputHelperDefinitions)
+            {
+                var inputHelperEntity = CreateLaplaceInputHelper(inputHelperDefinition, context);
+                context.ContextEntities?.Add(inputHelperEntity);
+            }
+
             if (result.IsDirect)
             {
                 entity = CreateLaplaceSource(result.DirectDefinition, outputKind, context);
@@ -230,6 +236,24 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 ? CreateBehavioralVoltageSource(name, parameters, context, context.EvaluationContext, result.RewrittenExpression)
                 : CreateBehavioralCurrentSource(name, parameters, context, context.EvaluationContext, result.RewrittenExpression);
             return true;
+        }
+
+        private protected BehavioralVoltageSource CreateLaplaceInputHelper(
+            LaplaceFunctionInputHelperDefinition definition,
+            IReadingContext context)
+        {
+            var helperNodes = new ParameterCollection(new List<Parameter>())
+            {
+                new IdentifierParameter(definition.HelperNodeName, definition.LineInfo),
+                new IdentifierParameter("0", definition.LineInfo),
+            };
+
+            return CreateBehavioralVoltageSource(
+                definition.SourceName,
+                helperNodes,
+                context,
+                context.EvaluationContext,
+                definition.Expression);
         }
 
         protected BehavioralVoltageSource CreateBehavioralVoltageSource(

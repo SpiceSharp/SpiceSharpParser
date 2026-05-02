@@ -171,9 +171,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             if (!TryParseInput(syntax.InputExpression, expectedInputKind, caseSettings, out var input))
             {
                 addError(
-                    expectedInputKind == LaplaceSourceInputKind.Voltage
-                        ? InputErrorMessage
-                        : CurrentInputErrorMessage,
+                    GetInputErrorMessage(syntax.InputExpression, expectedInputKind),
                     syntax.LineInfo,
                     null);
                 return null;
@@ -594,6 +592,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return true;
         }
 
+        private static string GetInputErrorMessage(
+            string expression,
+            LaplaceSourceInputKind expectedInputKind)
+        {
+            if (expectedInputKind == LaplaceSourceInputKind.Current)
+            {
+                return CurrentInputErrorMessage;
+            }
+
+            return IsDifferentialVoltageExpression(expression)
+                ? InputErrorMessage + "; use V(node1,node2) for differential voltage input"
+                : InputErrorMessage;
+        }
+
         private static bool TryParseRawVoltageInput(
             string expression,
             out string positiveNode,
@@ -762,6 +774,31 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     && rightNode.NodeType == NodeTypes.Voltage
                     && comparer.Equals(leftNode.Name, positiveNode)
                     && comparer.Equals(rightNode.Name, negativeNode);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private static bool IsDifferentialVoltageExpression(string expression)
+        {
+            if (string.IsNullOrWhiteSpace(expression))
+            {
+                return false;
+            }
+
+            try
+            {
+                var node = ExpressionParser.Parse(Lexer.FromString(expression), true);
+                return node is BinaryOperatorNode binaryNode
+                    && binaryNode.NodeType == NodeTypes.Subtract
+                    && binaryNode.Left is VariableNode leftNode
+                    && binaryNode.Right is VariableNode rightNode
+                    && leftNode.NodeType == NodeTypes.Voltage
+                    && rightNode.NodeType == NodeTypes.Voltage
+                    && IsValidNodeName(leftNode.Name)
+                    && IsValidNodeName(rightNode.Name);
             }
             catch
             {

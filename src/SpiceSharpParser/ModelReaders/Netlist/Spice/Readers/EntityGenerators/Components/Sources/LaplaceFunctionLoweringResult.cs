@@ -7,12 +7,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         private LaplaceFunctionLoweringResult(
             bool isHandled,
             bool hasErrors,
+            IReadOnlyList<LaplaceFunctionInputHelperDefinition> inputHelperDefinitions,
             LaplaceSourceDefinition directDefinition,
             IReadOnlyList<LaplaceFunctionCallDefinition> helperDefinitions,
             string rewrittenExpression)
         {
             IsHandled = isHandled;
             HasErrors = hasErrors;
+            InputHelperDefinitions = inputHelperDefinitions ?? new List<LaplaceFunctionInputHelperDefinition>();
             DirectDefinition = directDefinition;
             HelperDefinitions = helperDefinitions ?? new List<LaplaceFunctionCallDefinition>();
             RewrittenExpression = rewrittenExpression;
@@ -24,6 +26,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
         public bool IsDirect => DirectDefinition != null;
 
+        public IReadOnlyList<LaplaceFunctionInputHelperDefinition> InputHelperDefinitions { get; }
+
         public LaplaceSourceDefinition DirectDefinition { get; }
 
         public IReadOnlyList<LaplaceFunctionCallDefinition> HelperDefinitions { get; }
@@ -32,24 +36,27 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
         public static LaplaceFunctionLoweringResult NoMatch()
         {
-            return new LaplaceFunctionLoweringResult(false, false, null, null, null);
+            return new LaplaceFunctionLoweringResult(false, false, null, null, null, null);
         }
 
         public static LaplaceFunctionLoweringResult Error()
         {
-            return new LaplaceFunctionLoweringResult(true, true, null, null, null);
+            return new LaplaceFunctionLoweringResult(true, true, null, null, null, null);
         }
 
-        public static LaplaceFunctionLoweringResult Direct(LaplaceSourceDefinition definition)
+        public static LaplaceFunctionLoweringResult Direct(
+            IReadOnlyList<LaplaceFunctionInputHelperDefinition> inputHelperDefinitions,
+            LaplaceSourceDefinition definition)
         {
-            return new LaplaceFunctionLoweringResult(true, false, definition, null, null);
+            return new LaplaceFunctionLoweringResult(true, false, inputHelperDefinitions, definition, null, null);
         }
 
         public static LaplaceFunctionLoweringResult Mixed(
+            IReadOnlyList<LaplaceFunctionInputHelperDefinition> inputHelperDefinitions,
             IReadOnlyList<LaplaceFunctionCallDefinition> helperDefinitions,
             string rewrittenExpression)
         {
-            return new LaplaceFunctionLoweringResult(true, false, null, helperDefinitions, rewrittenExpression);
+            return new LaplaceFunctionLoweringResult(true, false, inputHelperDefinitions, null, helperDefinitions, rewrittenExpression);
         }
     }
 }

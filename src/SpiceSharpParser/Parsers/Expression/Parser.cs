@@ -73,12 +73,13 @@ namespace SpiceSharpParser.Parsers.Expression
         private static Node ParseEquality(Lexer lexer)
         {
             var result = ParseRelational(lexer);
-            while (lexer.Type == TokenType.Equals || lexer.Type == TokenType.NotEquals)
+            while (lexer.Type == TokenType.Equals || lexer.Type == TokenType.Assign || lexer.Type == TokenType.NotEquals)
             {
                 Node right;
                 switch (lexer.Type)
                 {
                     case TokenType.Equals:
+                    case TokenType.Assign:
                         lexer.Next();
                         right = ParseRelational(lexer);
                         result = Node.Equals(result, right);

@@ -17,7 +17,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
     internal sealed class LaplaceFunctionExpressionLowerer
     {
         private const string FunctionName = "laplace";
-        private const string InputErrorMessage = "laplace input expression must be V(node), V(node1,node2), or I(source)";
+        private const string InlineOptionSyntaxErrorMessage = "laplace inline options must use assignment syntax";
 
         private readonly EvaluationContext _evaluationContext;
         private readonly Func<string, double> _evaluateDouble;
@@ -98,33 +98,66 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 return LaplaceFunctionLoweringResult.Error();
             }
 
+            if (!TryValidateSourceLevelOptionConflicts(parsedCalls, options, calls.Count, outputKind, isDirect))
+            {
+                return LaplaceFunctionLoweringResult.Error();
+            }
+
+            var usedHelperNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var inputHelperDefinitions = new List<LaplaceFunctionInputHelperDefinition>();
+
             if (isDirect)
             {
                 var parsedCall = parsedCalls[0];
-                var transferFunction = parsedCall.TransferFunction.ScaleNumerator(options.Multiplier);
+                var transferFunction = parsedCall.TransferFunction;
+                if (options.HasMultiplier)
+                {
+                    transferFunction = transferFunction.ScaleNumerator(options.Multiplier);
+                }
+
+                var input = ResolveInput(
+                    parsedCall,
+                    localSourceName ?? sourceName,
+                    0,
+                    usedHelperNames,
+                    inputHelperDefinitions);
                 var definition = CreateDefinition(
                     sourceName,
                     outputPositiveNode,
                     outputNegativeNode,
                     parsedCall,
+                    input,
                     transferFunction,
-                    options.Delay);
+                    parsedCall.HasDelay ? parsedCall.Delay : options.Delay);
 
-                return LaplaceFunctionLoweringResult.Direct(definition);
+                return LaplaceFunctionLoweringResult.Direct(inputHelperDefinitions, definition);
             }
 
             var helperDefinitions = new List<LaplaceFunctionCallDefinition>();
-            var usedHelperNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             for (var i = 0; i < parsedCalls.Count; i++)
             {
-                var helperNames = CreateHelperNames(localSourceName ?? sourceName, i, usedHelperNames);
+                var parsedCall = parsedCalls[i];
+                var input = ResolveInput(
+                    parsedCall,
+                    localSourceName ?? sourceName,
+                    i,
+                    usedHelperNames,
+                    inputHelperDefinitions);
+                var helperNames = CreateHelperNames(
+                    localSourceName ?? sourceName,
+                    i,
+                    "__ssp_laplace_",
+                    usedHelperNames);
                 var definition = CreateDefinition(
                     helperNames.EntityName,
                     helperNames.NodeName,
                     "0",
-                    parsedCalls[i],
-                    parsedCalls[i].TransferFunction,
-                    calls.Count == 1 ? options.Delay : 0.0);
+                    parsedCall,
+                    input,
+                    parsedCall.TransferFunction,
+                    parsedCall.HasDelay
+                        ? parsedCall.Delay
+                        : calls.Count == 1 ? options.Delay : 0.0);
 
                 helperDefinitions.Add(new LaplaceFunctionCallDefinition(helperNames.NodeName, definition));
             }
@@ -132,30 +165,39 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             var rewrittenNode = ReplaceLaplaceCalls(root, calls, helperDefinitions);
             var rewrittenExpression = _formatter.Format(rewrittenNode);
 
-            return LaplaceFunctionLoweringResult.Mixed(helperDefinitions, rewrittenExpression);
+            return LaplaceFunctionLoweringResult.Mixed(inputHelperDefinitions, helperDefinitions, rewrittenExpression);
         }
 
         private bool TryParseCall(FunctionNode call, out ParsedLaplaceCall parsedCall)
         {
             parsedCall = null;
 
-            if (call.Arguments.Count != 2)
+            if (call.Arguments.Count < 2)
             {
-                AddError("laplace function expects exactly two arguments", _lineInfo, null);
+                AddError("laplace function expects at least two arguments", _lineInfo, null);
                 return false;
             }
 
-            if (!LaplaceSourceParser.TryParseInput(call.Arguments[0], out var input))
+            if (ContainsLaplaceCall(call.Arguments[0]))
             {
-                AddError(InputErrorMessage, _lineInfo, null);
+                AddError("laplace input expression cannot contain nested LAPLACE calls", _lineInfo, null);
                 return false;
             }
+
+            if (!TryParseInlineOptions(call.Arguments.Skip(2), out var options))
+            {
+                return false;
+            }
+
+            LaplaceSourceInput input = null;
+            var requiresInputHelper = !LaplaceSourceParser.TryParseInput(call.Arguments[0], out input);
 
             LaplaceTransferFunction transferFunction;
             try
             {
                 transferFunction = new LaplaceExpressionParser(_evaluationContext, lineInfo: _lineInfo)
                     .Parse(call.Arguments[1]);
+                transferFunction = transferFunction.ScaleNumerator(options.Multiplier);
             }
             catch (LaplaceExpressionException ex)
             {
@@ -172,8 +214,105 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 _formatter.Format(call.Arguments[0]),
                 _formatter.Format(call.Arguments[1]),
                 input,
-                transferFunction);
+                requiresInputHelper,
+                transferFunction,
+                options.HasMultiplier,
+                options.HasDelay,
+                options.Delay);
             return true;
+        }
+
+        private bool TryParseInlineOptions(
+            IEnumerable<Node> optionNodes,
+            out LaplaceFunctionOptions options)
+        {
+            options = new LaplaceFunctionOptions();
+
+            foreach (var optionNode in optionNodes)
+            {
+                if (!TryParseOptionAssignment(optionNode, out var name, out var valueNode))
+                {
+                    AddError(InlineOptionSyntaxErrorMessage, _lineInfo, null);
+                    return false;
+                }
+
+                var valueExpression = _formatter.Format(valueNode);
+                if (IsName(name, "m"))
+                {
+                    if (options.HasMultiplier)
+                    {
+                        AddError("laplace multiplier M can be specified only once", _lineInfo, null);
+                        return false;
+                    }
+
+                    if (!TryEvaluateFiniteOption(
+                        valueExpression,
+                        _lineInfo,
+                        "laplace multiplier M must be a finite constant expression",
+                        out var multiplier))
+                    {
+                        return false;
+                    }
+
+                    options.Multiplier = multiplier;
+                    options.HasMultiplier = true;
+                    continue;
+                }
+
+                if (IsDelayName(name))
+                {
+                    if (options.HasDelay)
+                    {
+                        AddError("laplace delay can be specified only once", _lineInfo, null);
+                        return false;
+                    }
+
+                    if (!TryEvaluateFiniteOption(
+                        valueExpression,
+                        _lineInfo,
+                        "laplace delay must be a finite constant expression",
+                        out var delay))
+                    {
+                        return false;
+                    }
+
+                    if (delay < 0.0)
+                    {
+                        AddError("laplace delay must be non-negative", _lineInfo, null);
+                        return false;
+                    }
+
+                    options.Delay = delay;
+                    options.HasDelay = true;
+                    continue;
+                }
+
+                AddError("unknown laplace inline option '" + name + "'", _lineInfo, null);
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool TryParseOptionAssignment(
+            Node optionNode,
+            out string name,
+            out Node valueNode)
+        {
+            name = null;
+            valueNode = null;
+
+            if (optionNode is BinaryOperatorNode binaryNode
+                && binaryNode.NodeType == NodeTypes.Equals
+                && binaryNode.Left is VariableNode variableNode
+                && variableNode.NodeType == NodeTypes.Variable)
+            {
+                name = variableNode.Name;
+                valueNode = binaryNode.Right;
+                return !string.IsNullOrWhiteSpace(name) && valueNode != null;
+            }
+
+            return false;
         }
 
         private bool TryParseOptions(
@@ -184,8 +323,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             out LaplaceFunctionOptions options)
         {
             options = new LaplaceFunctionOptions();
-            var hasMultiplier = false;
-            var hasDelay = false;
 
             foreach (var parameter in extraParameters)
             {
@@ -193,7 +330,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     if (IsName(assignmentParameter.Name, "m"))
                     {
-                        if (hasMultiplier)
+                        if (options.HasMultiplier)
                         {
                             AddError("laplace multiplier M can be specified only once", assignmentParameter.LineInfo, null);
                             return false;
@@ -208,13 +345,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         }
 
                         options.Multiplier = multiplier;
-                        hasMultiplier = true;
+                        options.HasMultiplier = true;
                         continue;
                     }
 
                     if (IsDelayName(assignmentParameter.Name))
                     {
-                        if (hasDelay)
+                        if (options.HasDelay)
                         {
                             AddError("laplace delay can be specified only once", assignmentParameter.LineInfo, null);
                             return false;
@@ -235,7 +372,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         }
 
                         options.Delay = delay;
-                        hasDelay = true;
+                        options.HasDelay = true;
                         continue;
                     }
                 }
@@ -248,21 +385,53 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
             }
 
-            if (hasDelay && callCount > 1)
+            if (options.HasDelay && callCount > 1)
             {
-                AddError("laplace source-level delay options can be used only when one LAPLACE call is present", _lineInfo, null);
+                AddError("laplace source-level delay options can be used only when one LAPLACE call is present; move delay into each LAPLACE(...) call", _lineInfo, null);
                 return false;
             }
 
-            if (hasMultiplier && !isDirect && outputKind == LaplaceOutputKind.Voltage)
+            if (options.HasMultiplier && !isDirect && outputKind == LaplaceOutputKind.Voltage)
             {
                 AddError("laplace M option is not supported for mixed voltage-output expressions", _lineInfo, null);
                 return false;
             }
 
-            if (!isDirect)
+            return true;
+        }
+
+        private bool TryValidateSourceLevelOptionConflicts(
+            IReadOnlyList<ParsedLaplaceCall> parsedCalls,
+            LaplaceFunctionOptions sourceLevelOptions,
+            int callCount,
+            LaplaceOutputKind outputKind,
+            bool isDirect)
+        {
+            if (sourceLevelOptions.HasDelay && parsedCalls.Any(call => call.HasDelay))
             {
-                options.Multiplier = 1.0;
+                AddError("laplace delay can be specified only once", _lineInfo, null);
+                return false;
+            }
+
+            if (sourceLevelOptions.HasDelay && callCount > 1)
+            {
+                AddError("laplace source-level delay options can be used only when one LAPLACE call is present; move delay into each LAPLACE(...) call", _lineInfo, null);
+                return false;
+            }
+
+            if (sourceLevelOptions.HasMultiplier
+                && isDirect
+                && parsedCalls.Count == 1
+                && parsedCalls[0].HasMultiplier)
+            {
+                AddError("laplace multiplier M can be specified only once", _lineInfo, null);
+                return false;
+            }
+
+            if (sourceLevelOptions.HasMultiplier && !isDirect && outputKind == LaplaceOutputKind.Voltage)
+            {
+                AddError("laplace M option is not supported for mixed voltage-output expressions", _lineInfo, null);
+                return false;
             }
 
             return true;
@@ -294,11 +463,65 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return true;
         }
 
+        private bool TryEvaluateFiniteOption(
+            string expression,
+            SpiceLineInfo lineInfo,
+            string errorMessage,
+            out double value)
+        {
+            value = 0.0;
+
+            try
+            {
+                value = _evaluateDouble(expression);
+            }
+            catch (Exception ex)
+            {
+                AddError(errorMessage, lineInfo, ex);
+                return false;
+            }
+
+            if (double.IsNaN(value) || double.IsInfinity(value))
+            {
+                AddError(errorMessage, lineInfo, null);
+                return false;
+            }
+
+            return true;
+        }
+
+        private LaplaceSourceInput ResolveInput(
+            ParsedLaplaceCall parsedCall,
+            string sourceName,
+            int index,
+            ISet<string> usedHelperNames,
+            ICollection<LaplaceFunctionInputHelperDefinition> inputHelperDefinitions)
+        {
+            if (!parsedCall.RequiresInputHelper)
+            {
+                return parsedCall.Input;
+            }
+
+            var helperNames = CreateHelperNames(
+                sourceName,
+                index,
+                "__ssp_laplace_input_",
+                usedHelperNames);
+            inputHelperDefinitions.Add(new LaplaceFunctionInputHelperDefinition(
+                helperNames.NodeName,
+                helperNames.EntityName,
+                parsedCall.InputExpression,
+                _lineInfo));
+
+            return LaplaceSourceInput.Voltage(helperNames.NodeName, "0");
+        }
+
         private LaplaceSourceDefinition CreateDefinition(
             string sourceName,
             string outputPositiveNode,
             string outputNegativeNode,
             ParsedLaplaceCall parsedCall,
+            LaplaceSourceInput input,
             LaplaceTransferFunction transferFunction,
             double delay)
         {
@@ -308,7 +531,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 outputNegativeNode,
                 parsedCall.InputExpression,
                 parsedCall.TransferExpression,
-                parsedCall.Input,
+                input,
                 transferFunction,
                 delay,
                 _lineInfo);
@@ -317,10 +540,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         private HelperNames CreateHelperNames(
             string sourceName,
             int index,
+            string prefix,
             ISet<string> usedHelperNames)
         {
             var sanitizedSourceName = Sanitize(sourceName);
-            var nodeBaseName = "__ssp_laplace_" + sanitizedSourceName + "_" + index;
+            var nodeBaseName = prefix + sanitizedSourceName + "_" + index;
             var entityBaseName = nodeBaseName + "_src";
             var suffix = 0;
 
@@ -338,6 +562,43 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 suffix++;
             }
+        }
+
+        private static bool ContainsLaplaceCall(Node node)
+        {
+            if (node == null)
+            {
+                return false;
+            }
+
+            if (IsLaplaceCall(node))
+            {
+                return true;
+            }
+
+            if (node is FunctionNode functionNode)
+            {
+                return functionNode.Arguments.Any(ContainsLaplaceCall);
+            }
+
+            if (node is UnaryOperatorNode unaryNode)
+            {
+                return ContainsLaplaceCall(unaryNode.Argument);
+            }
+
+            if (node is BinaryOperatorNode binaryNode)
+            {
+                return ContainsLaplaceCall(binaryNode.Left) || ContainsLaplaceCall(binaryNode.Right);
+            }
+
+            if (node is TernaryOperatorNode ternaryNode)
+            {
+                return ContainsLaplaceCall(ternaryNode.Condition)
+                    || ContainsLaplaceCall(ternaryNode.IfTrue)
+                    || ContainsLaplaceCall(ternaryNode.IfFalse);
+            }
+
+            return false;
         }
 
         private static string Sanitize(string value)
@@ -595,12 +856,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 string inputExpression,
                 string transferExpression,
                 LaplaceSourceInput input,
-                LaplaceTransferFunction transferFunction)
+                bool requiresInputHelper,
+                LaplaceTransferFunction transferFunction,
+                bool hasMultiplier,
+                bool hasDelay,
+                double delay)
             {
                 InputExpression = inputExpression;
                 TransferExpression = transferExpression;
                 Input = input;
+                RequiresInputHelper = requiresInputHelper;
                 TransferFunction = transferFunction;
+                HasMultiplier = hasMultiplier;
+                HasDelay = hasDelay;
+                Delay = delay;
             }
 
             public string InputExpression { get; }
@@ -609,7 +878,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             public LaplaceSourceInput Input { get; }
 
+            public bool RequiresInputHelper { get; }
+
             public LaplaceTransferFunction TransferFunction { get; }
+
+            public bool HasMultiplier { get; }
+
+            public bool HasDelay { get; }
+
+            public double Delay { get; }
         }
 
         private sealed class LaplaceFunctionOptions
@@ -617,6 +894,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             public double Multiplier { get; set; } = 1.0;
 
             public double Delay { get; set; }
+
+            public bool HasMultiplier { get; set; }
+
+            public bool HasDelay { get; set; }
         }
 
         private sealed class HelperNames

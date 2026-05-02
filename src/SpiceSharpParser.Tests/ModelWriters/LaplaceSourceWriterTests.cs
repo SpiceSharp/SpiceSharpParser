@@ -140,6 +140,83 @@ namespace SpiceSharpParser.Tests.ModelWriters
                 && line.ValueExpression.Contains("V(__ssp_laplace_BMIX_0)"));
         }
 
+        [Fact]
+        public void When_DirectLaplaceFunctionInlineOptionsAreWritten_Expect_ScaledNumeratorAndDelay()
+        {
+            var component = new Component(
+                "BLOW",
+                new ParameterCollection(
+                    new List<Parameter>
+                    {
+                        new IdentifierParameter("out"),
+                        new IdentifierParameter("0"),
+                        Assignment("V", "LAPLACE(V(in), 1/(1+s), M=2, TD=1n)"),
+                    }),
+                lineInfo: null);
+
+            var writer = new ArbitraryBehavioralWriter();
+            var lines = writer.Write(component, CreateContext());
+
+            Assert.Contains(lines.OfType<CSharpNewStatement>(), line => line.NewExpression == @"new LaplaceVoltageControlledVoltageSource(""BLOW"")");
+            Assert.Contains(lines.OfType<CSharpAssignmentStatement>(), line => line.Left.EndsWith(".Parameters.Numerator") && line.ValueExpression == "new[] { 2d }");
+            Assert.Contains(lines.OfType<CSharpAssignmentStatement>(), line => line.Left.EndsWith(".Parameters.Delay") && line.ValueExpression == "1E-09d");
+        }
+
+        [Fact]
+        public void When_MixedLaplaceFunctionWithArbitraryInputIsWritten_Expect_InputHelperBeforeLaplaceHelper()
+        {
+            var component = new Component(
+                "BMIX",
+                new ParameterCollection(
+                    new List<Parameter>
+                    {
+                        new IdentifierParameter("out"),
+                        new IdentifierParameter("0"),
+                        Assignment("V", "1 + LAPLACE(2*V(in), 1/(1+s), TD=1n)"),
+                    }),
+                lineInfo: null);
+
+            var writer = new ArbitraryBehavioralWriter();
+            var lines = writer.Write(component, CreateContext());
+
+            var inputHelperIndex = lines.FindIndex(line => line is CSharpNewStatement statement
+                && statement.NewExpression == @"new BehavioralVoltageSource(""__ssp_laplace_input_BMIX_0_src"")");
+            var laplaceHelperIndex = lines.FindIndex(line => line is CSharpNewStatement statement
+                && statement.NewExpression == @"new LaplaceVoltageControlledVoltageSource(""__ssp_laplace_BMIX_0_src"")");
+            var behavioralIndex = lines.FindIndex(line => line is CSharpNewStatement statement
+                && statement.NewExpression == @"new BehavioralVoltageSource(""BMIX"")");
+
+            Assert.True(inputHelperIndex >= 0);
+            Assert.True(laplaceHelperIndex > inputHelperIndex);
+            Assert.True(behavioralIndex > laplaceHelperIndex);
+            Assert.Contains(lines.OfType<CSharpAssignmentStatement>(), line =>
+                line.Left.EndsWith(".Parameters.Expression")
+                && line.ValueExpression.Contains("V(in)"));
+            Assert.Contains(lines.OfType<CSharpAssignmentStatement>(), line =>
+                line.Left.EndsWith(".Parameters.Delay")
+                && line.ValueExpression == "1E-09d");
+        }
+
+        [Fact]
+        public void When_InvalidInlineLaplaceOptionIsWritten_Expect_ErrorComment()
+        {
+            var component = new Component(
+                "BERR",
+                new ParameterCollection(
+                    new List<Parameter>
+                    {
+                        new IdentifierParameter("out"),
+                        new IdentifierParameter("0"),
+                        Assignment("V", "LAPLACE(V(in), 1/(1+s), FOO=1)"),
+                    }),
+                lineInfo: null);
+
+            var writer = new ArbitraryBehavioralWriter();
+            var lines = writer.Write(component, CreateContext());
+
+            Assert.Contains(lines.OfType<CSharpComment>(), line => line.Text.Contains("unknown", System.StringComparison.OrdinalIgnoreCase));
+        }
+
         private static WriterContext CreateContext(params (string Name, string Expression)[] parameters)
         {
             var parser = new ExpressionParser(
