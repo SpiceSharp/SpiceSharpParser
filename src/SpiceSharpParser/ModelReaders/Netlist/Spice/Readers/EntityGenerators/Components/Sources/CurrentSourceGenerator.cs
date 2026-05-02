@@ -215,11 +215,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             if (laplaceParser.IsLaplaceSource(parameters))
             {
-                context.Result.ValidationResult.AddError(
-                    ValidationEntrySource.Reader,
-                    "laplace is currently supported only for E voltage-controlled voltage sources; G mapping remains unsupported",
-                    parameters[2].LineInfo);
-                return null;
+                if (!isVoltageControlled)
+                {
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        "laplace is currently supported only for voltage-controlled E and G sources",
+                        parameters[2].LineInfo);
+                    return null;
+                }
+
+                var definition = laplaceParser.ParseVoltageControlledSource(name, parameters, context);
+                if (definition == null)
+                {
+                    return null;
+                }
+
+                return CreateLaplaceVoltageControlledCurrentSource(name, definition, context);
             }
 
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
@@ -294,6 +305,28 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
 
             return null;
+        }
+
+        private static IEntity CreateLaplaceVoltageControlledCurrentSource(
+            string name,
+            LaplaceSourceDefinition definition,
+            IReadingContext context)
+        {
+            var entity = new LaplaceVoltageControlledCurrentSource(name);
+            var nodes = new ParameterCollection(new List<Parameter>())
+            {
+                new IdentifierParameter(definition.OutputPositiveNode, definition.LineInfo),
+                new IdentifierParameter(definition.OutputNegativeNode, definition.LineInfo),
+                new IdentifierParameter(definition.Input.ControlPositiveNode, definition.LineInfo),
+                new IdentifierParameter(definition.Input.ControlNegativeNode, definition.LineInfo),
+            };
+
+            context.CreateNodes(entity, nodes);
+            entity.Parameters.Numerator = definition.TransferFunction.NumeratorCoefficients;
+            entity.Parameters.Denominator = definition.TransferFunction.DenominatorCoefficients;
+            entity.Parameters.Delay = definition.Delay;
+
+            return entity;
         }
     }
 }

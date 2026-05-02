@@ -60,7 +60,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             context.EvaluationContext.SetParameter("tau", 1e-6);
             var parser = new LaplaceSourceParser();
 
-            var definition = parser.ParseVoltageControlledVoltageSource(
+            var definition = parser.ParseVoltageControlledSource(
                 "E1",
                 CreateLaplaceParameters("V(in)", "1/(1+s*tau)"),
                 context);
@@ -82,7 +82,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             var context = CreateReadingContext();
             var parser = new LaplaceSourceParser();
 
-            var definition = parser.ParseVoltageControlledVoltageSource(
+            var definition = parser.ParseVoltageControlledSource(
                 "E1",
                 CreateLaplaceParameters("V(inp,inn)", "10/(1+s)"),
                 context);
@@ -120,6 +120,31 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             Assert.Equal(0.0, laplace.Parameters.Delay);
         }
 
+        [Fact]
+        public void When_CurrentSourceGeneratorMapsLaplace_Expect_LaplaceEntityAndNodeOrder()
+        {
+            var context = CreateReadingContext();
+            ParameterCollection createdNodes = null;
+            context.When(x => x.CreateNodes(Arg.Any<IComponent>(), Arg.Any<ParameterCollection>()))
+                .Do(call => createdNodes = call.ArgAt<ParameterCollection>(1));
+            var generator = new CurrentSourceGenerator();
+
+            var entity = generator.Generate(
+                "G1",
+                "G1",
+                "g",
+                CreateLaplaceParameters("V(inp,inn)", "1m*1000/(s+1000)"),
+                context);
+
+            var laplace = Assert.IsType<LaplaceVoltageControlledCurrentSource>(entity);
+            Assert.False(context.Result.ValidationResult.HasError);
+            Assert.NotNull(createdNodes);
+            Assert.Equal(new[] { "out", "0", "inp", "inn" }, createdNodes.Select(parameter => parameter.Value).ToArray());
+            AssertCoefficients(new[] { 1.0 }, laplace.Parameters.Numerator);
+            AssertCoefficients(new[] { 1000.0, 1.0 }, laplace.Parameters.Denominator);
+            Assert.Equal(0.0, laplace.Parameters.Delay);
+        }
+
         [Theory]
         [MemberData(nameof(InvalidInputExpressions))]
         public void When_InputShapeIsUnsupported_Expect_ReaderValidationError(string inputExpression)
@@ -127,7 +152,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             var context = CreateReadingContext();
             var parser = new LaplaceSourceParser();
 
-            var definition = parser.ParseVoltageControlledVoltageSource(
+            var definition = parser.ParseVoltageControlledSource(
                 "E1",
                 CreateLaplaceParameters(inputExpression, "1/(1+s)"),
                 context);
@@ -143,7 +168,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             var context = CreateReadingContext();
             var parser = new LaplaceSourceParser();
 
-            var definition = parser.ParseVoltageControlledVoltageSource(
+            var definition = parser.ParseVoltageControlledSource(
                 "E1",
                 CreateLaplaceParameters("V(in)", transferExpression),
                 context);
@@ -159,7 +184,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             var context = CreateReadingContext();
             var parser = new LaplaceSourceParser();
 
-            var definition = parser.ParseVoltageControlledVoltageSource(
+            var definition = parser.ParseVoltageControlledSource(
                 "E1",
                 CreateLaplaceParameters("V(in)", "1/(1+s)", option),
                 context);
@@ -181,7 +206,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 new ExpressionParameter("V(in)", null),
             };
 
-            var definition = parser.ParseVoltageControlledVoltageSource("E1", parameters, context);
+            var definition = parser.ParseVoltageControlledSource("E1", parameters, context);
 
             Assert.Null(definition);
             AssertSingleReaderError(context, "separated by '='");
@@ -199,7 +224,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 new WordParameter("LAPLACE"),
             };
 
-            var definition = parser.ParseVoltageControlledVoltageSource("E1", parameters, context);
+            var definition = parser.ParseVoltageControlledSource("E1", parameters, context);
 
             Assert.Null(definition);
             AssertSingleReaderError(context, "expects input expression");
@@ -219,24 +244,24 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 context);
 
             Assert.Null(entity);
-            AssertSingleReaderError(context, "only for E");
+            AssertSingleReaderError(context, "E and G");
         }
 
         [Fact]
-        public void When_GSourceUsesLaplace_Expect_UnsupportedReaderValidationError()
+        public void When_FSourceUsesLaplace_Expect_UnsupportedReaderValidationError()
         {
             var context = CreateReadingContext();
             var generator = new CurrentSourceGenerator();
 
             var entity = generator.Generate(
-                "G1",
-                "G1",
-                "g",
+                "F1",
+                "F1",
+                "f",
                 CreateLaplaceParameters("V(in)", "1/(1+s)"),
                 context);
 
             Assert.Null(entity);
-            AssertSingleReaderError(context, "G mapping remains unsupported");
+            AssertSingleReaderError(context, "E and G");
         }
 
         private static ParameterCollection CreateLaplaceParameters(

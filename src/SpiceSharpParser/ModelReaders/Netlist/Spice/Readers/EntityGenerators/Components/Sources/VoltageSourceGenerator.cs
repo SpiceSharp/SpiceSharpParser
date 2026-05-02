@@ -198,12 +198,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     context.Result.ValidationResult.AddError(
                         ValidationEntrySource.Reader,
-                        "laplace is currently supported only for E voltage-controlled voltage sources",
+                        "laplace is currently supported only for voltage-controlled E and G sources",
                         parameters[2].LineInfo);
                     return null;
                 }
 
-                var definition = laplaceParser.ParseVoltageControlledVoltageSource(name, parameters, context);
+                var definition = laplaceParser.ParseVoltageControlledSource(name, parameters, context);
                 if (definition == null)
                 {
                     return null;

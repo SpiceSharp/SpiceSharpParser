@@ -25,7 +25,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 && string.Equals(wordParameter.Value, "laplace", StringComparison.OrdinalIgnoreCase);
         }
 
-        public LaplaceSourceDefinition ParseVoltageControlledVoltageSource(
+        public LaplaceSourceDefinition ParseVoltageControlledSource(
             string sourceName,
             ParameterCollection parameters,
             IReadingContext context)

@@ -68,13 +68,15 @@ This approach keeps the implementation small, aligns with existing source-genera
 
 ## Current Status
 
-Canonical `E`-source `LAPLACE` support is implemented by SpiceSharpParser. `G` source mapping remains Phase 4.
+Canonical `E`-source and `G`-source `LAPLACE` support is implemented by SpiceSharpParser. `F`, `H`, `B`, alternate syntaxes, delay, and `M=` support remain deferred.
 
 Phase 1 grammar groundwork is implemented: expression-to-expression assignments such as `{V(in)} = {1/(1+s*tau)}` and `{V(in1,in2)} = {1/(1+s*tau)}` are preserved as `ExpressionAssignmentParameter`.
 
 Phase 2 transfer-function math is implemented: internal polynomial, rational-polynomial, transfer-function, and expression-parser types convert rational expressions in `s` into ascending numerator / denominator coefficients with focused validation and broad unit coverage.
 
-Phase 3 `E`-source mapping is implemented: canonical `Ename out+ out- LAPLACE {V(ctrl)}` `= {H(s)}` and `V(ctrl+,ctrl-)` forms map to `LaplaceVoltageControlledVoltageSource`, produce reader validation errors for semantic failures, and have OP / AC integration coverage. `G` mapping remains Phase 4.
+Phase 3 `E`-source mapping is implemented: canonical `Ename out+ out- LAPLACE {V(ctrl)}` `= {H(s)}` and `V(ctrl+,ctrl-)` forms map to `LaplaceVoltageControlledVoltageSource`, produce reader validation errors for semantic failures, and have OP / AC integration coverage.
+
+Phase 4 `G`-source mapping is implemented: canonical `Gname out+ out- LAPLACE {V(ctrl)}` `= {H(s)}` and `V(ctrl+,ctrl-)` forms map to `LaplaceVoltageControlledCurrentSource`, preserve the existing `G` current-source sign convention, reject unsupported `M=` / delay options, and have OP / AC integration coverage.
 
 Adjacent features already exist:
 
@@ -472,7 +474,7 @@ Prefer parsing with the existing expression parser and accepting only the expect
 
 Do not silently ignore `M=`.
 
-Recommended MVP behavior: reject `M=` on Laplace sources with a clear diagnostic until tests define the intended semantics. If support is added, multiply the numerator coefficients by `M` after evaluating `M` to a constant.
+Recommended MVP behavior: reject `M=` on Laplace sources with a clear diagnostic until tests define the intended semantics. `M=` is a multiplier for the effective source or device contribution, typically equivalent to multiple parallel instances or a scaled current/voltage contribution. If support is added for Laplace sources, multiply the transfer output by `M`, most likely by evaluating `M` to a finite constant and scaling the numerator coefficients.
 
 ### Delay Policy
 
@@ -653,7 +655,7 @@ Status: implemented.
 
 ### Phase 3: `E` Source Mapping
 
-Status: implemented for canonical `E` source syntax. `G` mapping remains Phase 4.
+Status: implemented for canonical `E` source syntax.
 
 1. Add `LaplaceSourceParser` and source definition models.
 2. Add `CanonicalExpressionAssignmentRecognizer` as the first syntax recognizer.
@@ -664,6 +666,8 @@ Status: implemented for canonical `E` source syntax. `G` mapping remains Phase 4
 7. Add malformed syntax and unsupported-feature diagnostics.
 
 ### Phase 4: `G` Source Mapping
+
+Status: implemented for canonical `G` source syntax. `M=`, delay options, `F`, and `H` remain deferred.
 
 1. Detect `LAPLACE` in `CurrentSourceGenerator.CreateCustomCurrentSource(...)`.
 2. Reuse the same source parser and transfer-function builder.

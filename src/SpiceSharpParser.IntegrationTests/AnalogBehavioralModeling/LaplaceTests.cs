@@ -143,6 +143,104 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         }
 
         [Fact]
+        public void When_GLaplaceLowPassRunsOp_Expect_LoadVoltageWithCurrentSourceSign()
+        {
+            var model = GetSpiceSharpModel(
+                "G LAPLACE low-pass OP",
+                ".PARAM gm=1m",
+                ".PARAM tau=1u",
+                "VIN in 0 1",
+                "GLOW out 0 LAPLACE {V(in)} = {gm/(1+s*tau)}",
+                "RLOAD out 0 1k",
+                ".OP",
+                ".SAVE V(out)",
+                ".END");
+
+            AssertNoValidationErrors(model);
+            Assert.IsType<LaplaceVoltageControlledCurrentSource>(model.Circuit["GLOW"]);
+
+            double export = RunOpSimulation(model, "V(out)");
+            Assert.True(EqualsWithTol(-1.0, export), $"Expected OP load voltage near -1, got {export}.");
+        }
+
+        [Fact]
+        public void When_GLaplaceLowPassUsesDifferentialInput_Expect_ControlNodeDifference()
+        {
+            var model = GetSpiceSharpModel(
+                "G LAPLACE differential OP",
+                ".PARAM gm=1m",
+                ".PARAM tau=1u",
+                "VINP inp 0 2",
+                "VINN inn 0 0.5",
+                "GLOW out 0 LAPLACE {V(inp,inn)} = {gm/(1+s*tau)}",
+                "RLOAD out 0 1k",
+                ".OP",
+                ".SAVE V(out)",
+                ".END");
+
+            AssertNoValidationErrors(model);
+
+            double export = RunOpSimulation(model, "V(out)");
+            Assert.True(EqualsWithTol(-1.5, export), $"Expected OP load voltage from differential input near -1.5, got {export}.");
+        }
+
+        [Fact]
+        public void When_GLaplaceLowPassRunsAcAtCutoff_Expect_ExpectedMagnitudeAndPhase()
+        {
+            var model = GetSpiceSharpModel(
+                "G LAPLACE low-pass AC",
+                ".PARAM gm=1m",
+                ".PARAM fc=1k",
+                ".PARAM wc={2*PI*fc}",
+                "VIN in 0 AC 1",
+                "GLOW out 0 LAPLACE {V(in)} = {gm*wc/(s+wc)}",
+                "RLOAD out 0 1k",
+                ".AC DEC 20 10 100k",
+                ".MEAS AC vm_fc FIND VM(out) AT=1k",
+                ".MEAS AC vp_fc FIND VP(out) AT=1k",
+                ".END");
+
+            AssertNoValidationErrors(model);
+
+            RunSimulations(model);
+
+            AssertMeasurementSuccess(model, "vm_fc");
+            AssertMeasurementSuccess(model, "vp_fc");
+            double magnitude = model.Measurements["vm_fc"][0].Value;
+            double phase = model.Measurements["vp_fc"][0].Value;
+            Assert.True(Math.Abs(magnitude - (1.0 / Math.Sqrt(2.0))) < 0.03, $"Expected G low-pass cutoff magnitude near 0.707, got {magnitude}.");
+            Assert.True(Math.Abs(phase - (3.0 * Math.PI / 4.0)) < 0.08, $"Expected G low-pass cutoff phase near 3*pi/4, got {phase}.");
+        }
+
+        [Fact]
+        public void When_GLaplaceHighPassRunsAcAtCutoff_Expect_ExpectedMagnitudeAndPhase()
+        {
+            var model = GetSpiceSharpModel(
+                "G LAPLACE high-pass AC",
+                ".PARAM gm=1m",
+                ".PARAM fc=1k",
+                ".PARAM wc={2*PI*fc}",
+                "VIN in 0 AC 1",
+                "GHIGH out 0 LAPLACE {V(in)} = {gm*s/(s+wc)}",
+                "RLOAD out 0 1k",
+                ".AC DEC 20 10 100k",
+                ".MEAS AC vm_fc FIND VM(out) AT=1k",
+                ".MEAS AC vp_fc FIND VP(out) AT=1k",
+                ".END");
+
+            AssertNoValidationErrors(model);
+
+            RunSimulations(model);
+
+            AssertMeasurementSuccess(model, "vm_fc");
+            AssertMeasurementSuccess(model, "vp_fc");
+            double magnitude = model.Measurements["vm_fc"][0].Value;
+            double phase = model.Measurements["vp_fc"][0].Value;
+            Assert.True(Math.Abs(magnitude - (1.0 / Math.Sqrt(2.0))) < 0.03, $"Expected G high-pass cutoff magnitude near 0.707, got {magnitude}.");
+            Assert.True(Math.Abs(phase - (-3.0 * Math.PI / 4.0)) < 0.08, $"Expected G high-pass cutoff phase near -3*pi/4, got {phase}.");
+        }
+
+        [Fact]
         public void When_ELaplaceIsMixedWithExistingAbmSources_Expect_AllOutputs()
         {
             var model = GetSpiceSharpModel(
@@ -207,18 +305,18 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         }
 
         [Fact]
-        public void When_GLaplaceIsUsed_Expect_ReaderValidationError()
+        public void When_GLaplaceUnsupportedMultiplierIsUsed_Expect_ReaderValidationError()
         {
             var model = GetSpiceSharpModel(
-                "G LAPLACE unsupported",
+                "G LAPLACE unsupported multiplier",
                 "VIN in 0 1",
-                "GBAD out 0 LAPLACE {V(in)} = {1/(1+s)}",
+                "GBAD out 0 LAPLACE {V(in)} = {1/(1+s)} M=2",
                 "RLOAD out 0 1k",
                 ".OP",
                 ".SAVE V(out)",
                 ".END");
 
-            AssertReaderErrorContains(model, "G mapping remains unsupported");
+            AssertReaderErrorContains(model, "multiplier");
         }
 
         [Fact]
@@ -233,7 +331,7 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".SAVE V(out)",
                 ".END");
 
-            AssertReaderErrorContains(model, "only for E");
+            AssertReaderErrorContains(model, "E and G");
         }
 
         private static SpiceSharpModel ReadSingleLaplaceSource(string inputExpression, string transferExpression)

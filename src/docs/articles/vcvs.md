@@ -47,12 +47,13 @@ EDIFF OUT 0 LAPLACE {V(INP,INN)} = {wc/(s+wc)}
 
 Current limitations:
 
-- LAPLACE is supported only for `E` voltage-controlled voltage sources.
-- `G`, `B`, `F`, and `H` LAPLACE forms are not supported yet.
+- `B`, `F`, and `H` LAPLACE forms are not supported yet.
 - Only input expressions `V(node)` and `V(node1,node2)` are accepted.
 - Alternate LAPLACE syntaxes without the expression assignment form are not supported yet.
 - `M=`, `TD=`, `DELAY=`, and explicit internal-state options are not supported yet.
 - Transfers must be proper, finite rational polynomials in `s` with non-singular DC gain.
+
+`M=` normally acts as a multiplier for source/device contribution where supported. For LAPLACE sources it is recognized but not supported yet; put any multiplier directly in the transfer expression, for example `{m/(1+s*tau)}`.
 
 | Parameter | Description |
 |-----------|-------------|
