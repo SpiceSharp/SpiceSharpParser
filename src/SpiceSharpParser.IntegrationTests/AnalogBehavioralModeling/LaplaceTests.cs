@@ -755,6 +755,426 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
             AssertReaderErrorContains(model, "I(source)");
         }
 
+        [Fact]
+        public void When_ELaplace2ndOrderButterworthLowPassRunsOp_Expect_UnitDcGain()
+        {
+            var model = GetSpiceSharpModel(
+                "E LAPLACE 2nd-order Butterworth LP OP",
+                ".PARAM fc=1k",
+                ".PARAM wc={2*PI*fc}",
+                "VIN in 0 1",
+                "ELP2 out 0 LAPLACE {V(in)} = {wc^2/(s^2+sqrt(2)*wc*s+wc^2)}",
+                "RLOAD out 0 1k",
+                ".OP",
+                ".SAVE V(out)",
+                ".END");
+
+            AssertNoValidationErrors(model);
+            Assert.IsType<LaplaceVoltageControlledVoltageSource>(model.Circuit["ELP2"]);
+
+            double export = RunOpSimulation(model, "V(out)");
+            Assert.True(EqualsWithTol(1.0, export), $"Expected 2nd-order Butterworth LP DC gain near 1, got {export}.");
+        }
+
+        [Fact]
+        public void When_ELaplace2ndOrderButterworthLowPassRunsAc_Expect_MagnitudePhaseAndRolloff()
+        {
+            var model = GetSpiceSharpModel(
+                "E LAPLACE 2nd-order Butterworth LP AC",
+                ".PARAM fc=1k",
+                ".PARAM wc={2*PI*fc}",
+                "VIN in 0 AC 1",
+                "ELP2 out 0 LAPLACE {V(in)} = {wc^2/(s^2+sqrt(2)*wc*s+wc^2)}",
+                "RLOAD out 0 1k",
+                ".AC DEC 30 10 100k",
+                ".MEAS AC vm_pass FIND VM(out) AT=10",
+                ".MEAS AC vm_fc FIND VM(out) AT=1k",
+                ".MEAS AC vm_10fc FIND VM(out) AT=10k",
+                ".MEAS AC vp_fc FIND VP(out) AT=1k",
+                ".END");
+
+            AssertNoValidationErrors(model);
+            RunSimulations(model);
+
+            AssertMeasurementSuccess(model, "vm_pass");
+            AssertMeasurementSuccess(model, "vm_fc");
+            AssertMeasurementSuccess(model, "vm_10fc");
+            AssertMeasurementSuccess(model, "vp_fc");
+
+            double vmPass = model.Measurements["vm_pass"][0].Value;
+            double vmFc = model.Measurements["vm_fc"][0].Value;
+            double vm10Fc = model.Measurements["vm_10fc"][0].Value;
+            double vpFc = model.Measurements["vp_fc"][0].Value;
+
+            // Butterworth: |H(f)| = 1/sqrt(1+(f/fc)^(2n)); n=2, f=10fc -> 1/sqrt(10001) ~= 0.01
+            Assert.True(Math.Abs(vmPass - 1.0) < 0.01, $"Expected passband magnitude near 1 at 10Hz, got {vmPass}.");
+            Assert.True(Math.Abs(vmFc - (1.0 / Math.Sqrt(2.0))) < 0.03, $"Expected -3dB magnitude near 0.707 at cutoff, got {vmFc}.");
+            Assert.True(vm10Fc < 0.02, $"Expected magnitude < 0.02 one decade above cutoff (-40dB/dec), got {vm10Fc}.");
+            // At fc: H(jwc) = wc^2/(j*sqrt(2)*wc^2) = 1/(j*sqrt(2)), phase = -pi/2
+            Assert.True(Math.Abs(vpFc - (-Math.PI / 2.0)) < 0.1, $"Expected phase near -pi/2 at cutoff, got {vpFc}.");
+        }
+
+        [Fact]
+        public void When_ELaplace2ndOrderButterworthHighPassRunsOp_Expect_ZeroDcGain()
+        {
+            var model = GetSpiceSharpModel(
+                "E LAPLACE 2nd-order Butterworth HP OP",
+                ".PARAM fc=1k",
+                ".PARAM wc={2*PI*fc}",
+                "VIN in 0 1",
+                "EHP2 out 0 LAPLACE {V(in)} = {s^2/(s^2+sqrt(2)*wc*s+wc^2)}",
+                "RLOAD out 0 1k",
+                ".OP",
+                ".SAVE V(out)",
+                ".END");
+
+            AssertNoValidationErrors(model);
+
+            double export = RunOpSimulation(model, "V(out)");
+            // H(0) = 0^2/(0^2+...) = 0
+            Assert.True(Math.Abs(export) < 1e-6, $"Expected 2nd-order Butterworth HP DC gain near 0, got {export}.");
+        }
+
+        [Fact]
+        public void When_ELaplace2ndOrderButterworthHighPassRunsAc_Expect_MagnitudeAndPhaseAtCutoff()
+        {
+            var model = GetSpiceSharpModel(
+                "E LAPLACE 2nd-order Butterworth HP AC",
+                ".PARAM fc=1k",
+                ".PARAM wc={2*PI*fc}",
+                "VIN in 0 AC 1",
+                "EHP2 out 0 LAPLACE {V(in)} = {s^2/(s^2+sqrt(2)*wc*s+wc^2)}",
+                "RLOAD out 0 1k",
+                ".AC DEC 30 10 100k",
+                ".MEAS AC vm_100 FIND VM(out) AT=100",
+                ".MEAS AC vm_fc FIND VM(out) AT=1k",
+                ".MEAS AC vp_fc FIND VP(out) AT=1k",
+                ".END");
+
+            AssertNoValidationErrors(model);
+            RunSimulations(model);
+
+            AssertMeasurementSuccess(model, "vm_100");
+            AssertMeasurementSuccess(model, "vm_fc");
+            AssertMeasurementSuccess(model, "vp_fc");
+
+            double vm100 = model.Measurements["vm_100"][0].Value;
+            double vmFc = model.Measurements["vm_fc"][0].Value;
+            double vpFc = model.Measurements["vp_fc"][0].Value;
+
+            Assert.True(vm100 < 0.02, $"Expected stop-band magnitude < 0.02 one decade below cutoff, got {vm100}.");
+            Assert.True(Math.Abs(vmFc - (1.0 / Math.Sqrt(2.0))) < 0.03, $"Expected -3dB magnitude near 0.707 at cutoff, got {vmFc}.");
+            // At fc: H(jwc) = -wc^2/(j*sqrt(2)*wc^2) = -1/(j*sqrt(2)) = j/sqrt(2), phase = +pi/2
+            Assert.True(Math.Abs(vpFc - (Math.PI / 2.0)) < 0.1, $"Expected phase near +pi/2 at cutoff for 2nd-order HP, got {vpFc}.");
+        }
+
+        [Fact]
+        public void When_ELaplace2ndOrderBandPassRunsOp_Expect_ZeroDcGain()
+        {
+            var model = GetSpiceSharpModel(
+                "E LAPLACE 2nd-order band-pass OP",
+                ".PARAM fc=1k",
+                ".PARAM wc={2*PI*fc}",
+                ".PARAM Q=1",
+                "VIN in 0 1",
+                "EBP out 0 LAPLACE {V(in)} = {(wc/Q)*s/(s^2+(wc/Q)*s+wc^2)}",
+                "RLOAD out 0 1k",
+                ".OP",
+                ".SAVE V(out)",
+                ".END");
+
+            AssertNoValidationErrors(model);
+
+            double export = RunOpSimulation(model, "V(out)");
+            // H(0) = (wc/Q)*0/(wc^2) = 0
+            Assert.True(Math.Abs(export) < 1e-6, $"Expected band-pass DC gain near 0, got {export}.");
+        }
+
+        [Fact]
+        public void When_ELaplace2ndOrderBandPassRunsAc_Expect_UnitPeakGainAndRolloff()
+        {
+            var model = GetSpiceSharpModel(
+                "E LAPLACE 2nd-order band-pass AC",
+                ".PARAM fc=1k",
+                ".PARAM wc={2*PI*fc}",
+                ".PARAM Q=1",
+                "VIN in 0 AC 1",
+                "EBP out 0 LAPLACE {V(in)} = {(wc/Q)*s/(s^2+(wc/Q)*s+wc^2)}",
+                "RLOAD out 0 1k",
+                ".AC DEC 30 10 100k",
+                ".MEAS AC vm_100 FIND VM(out) AT=100",
+                ".MEAS AC vm_fc FIND VM(out) AT=1k",
+                ".MEAS AC vm_10k FIND VM(out) AT=10k",
+                ".END");
+
+            AssertNoValidationErrors(model);
+            RunSimulations(model);
+
+            AssertMeasurementSuccess(model, "vm_100");
+            AssertMeasurementSuccess(model, "vm_fc");
+            AssertMeasurementSuccess(model, "vm_10k");
+
+            double vm100 = model.Measurements["vm_100"][0].Value;
+            double vmFc = model.Measurements["vm_fc"][0].Value;
+            double vm10k = model.Measurements["vm_10k"][0].Value;
+
+            // At resonance: H(jwc) = (wc/Q)*jwc/(j*wc^2/Q) = 1.0 (exact)
+            Assert.True(Math.Abs(vmFc - 1.0) < 0.05, $"Expected band-pass peak gain near 1 at resonance, got {vmFc}.");
+            // One decade away from resonance each stage rolls off ~20dB for Q=1
+            Assert.True(vm100 < 0.15, $"Expected magnitude < 0.15 one decade below resonance, got {vm100}.");
+            Assert.True(vm10k < 0.15, $"Expected magnitude < 0.15 one decade above resonance, got {vm10k}.");
+        }
+
+        [Fact]
+        public void When_ELaplace2ndOrderNotchRunsOp_Expect_UnitDcGain()
+        {
+            var model = GetSpiceSharpModel(
+                "E LAPLACE 2nd-order notch OP",
+                ".PARAM fc=1k",
+                ".PARAM wc={2*PI*fc}",
+                ".PARAM Q=10",
+                "VIN in 0 1",
+                "ENOTCH out 0 LAPLACE {V(in)} = {(s^2+wc^2)/(s^2+(wc/Q)*s+wc^2)}",
+                "RLOAD out 0 1k",
+                ".OP",
+                ".SAVE V(out)",
+                ".END");
+
+            AssertNoValidationErrors(model);
+
+            double export = RunOpSimulation(model, "V(out)");
+            // H(0) = wc^2/wc^2 = 1
+            Assert.True(EqualsWithTol(1.0, export), $"Expected notch filter DC gain near 1, got {export}.");
+        }
+
+        [Fact]
+        public void When_ELaplace2ndOrderNotchRunsAc_Expect_DeepAttenuationAtNotchAndFullPassband()
+        {
+            var model = GetSpiceSharpModel(
+                "E LAPLACE 2nd-order notch AC",
+                ".PARAM fc=1k",
+                ".PARAM wc={2*PI*fc}",
+                ".PARAM Q=10",
+                "VIN in 0 AC 1",
+                "ENOTCH out 0 LAPLACE {V(in)} = {(s^2+wc^2)/(s^2+(wc/Q)*s+wc^2)}",
+                "RLOAD out 0 1k",
+                ".AC DEC 30 10 100k",
+                ".MEAS AC vm_100 FIND VM(out) AT=100",
+                ".MEAS AC vm_notch FIND VM(out) AT=1k",
+                ".MEAS AC vm_10k FIND VM(out) AT=10k",
+                ".END");
+
+            AssertNoValidationErrors(model);
+            RunSimulations(model);
+
+            AssertMeasurementSuccess(model, "vm_100");
+            AssertMeasurementSuccess(model, "vm_notch");
+            AssertMeasurementSuccess(model, "vm_10k");
+
+            double vm100 = model.Measurements["vm_100"][0].Value;
+            double vmNotch = model.Measurements["vm_notch"][0].Value;
+            double vm10k = model.Measurements["vm_10k"][0].Value;
+
+            // At notch: numerator (jwc)^2+wc^2 = -wc^2+wc^2 = 0, so H(jwc) = 0
+            Assert.True(vmNotch < 0.01, $"Expected near-zero magnitude at notch frequency, got {vmNotch}.");
+            Assert.True(Math.Abs(vm100 - 1.0) < 0.02, $"Expected passband magnitude near 1 below the notch, got {vm100}.");
+            Assert.True(Math.Abs(vm10k - 1.0) < 0.02, $"Expected passband magnitude near 1 above the notch, got {vm10k}.");
+        }
+
+        [Fact]
+        public void When_ELaplace3rdOrderButterworthLowPassRunsOp_Expect_UnitDcGain()
+        {
+            var model = GetSpiceSharpModel(
+                "E LAPLACE 3rd-order Butterworth LP OP",
+                ".PARAM fc=1k",
+                ".PARAM wc={2*PI*fc}",
+                "VIN in 0 1",
+                "ELP3 out 0 LAPLACE {V(in)} = {wc^3/(s^3+2*wc*s^2+2*wc^2*s+wc^3)}",
+                "RLOAD out 0 1k",
+                ".OP",
+                ".SAVE V(out)",
+                ".END");
+
+            AssertNoValidationErrors(model);
+            Assert.IsType<LaplaceVoltageControlledVoltageSource>(model.Circuit["ELP3"]);
+
+            double export = RunOpSimulation(model, "V(out)");
+            Assert.True(EqualsWithTol(1.0, export), $"Expected 3rd-order Butterworth LP DC gain near 1, got {export}.");
+        }
+
+        [Fact]
+        public void When_ELaplace3rdOrderButterworthLowPassRunsAc_Expect_MagnitudePhaseAnd60DbDecRolloff()
+        {
+            var model = GetSpiceSharpModel(
+                "E LAPLACE 3rd-order Butterworth LP AC",
+                ".PARAM fc=1k",
+                ".PARAM wc={2*PI*fc}",
+                "VIN in 0 AC 1",
+                "ELP3 out 0 LAPLACE {V(in)} = {wc^3/(s^3+2*wc*s^2+2*wc^2*s+wc^3)}",
+                "RLOAD out 0 1k",
+                ".AC DEC 30 10 100k",
+                ".MEAS AC vm_fc FIND VM(out) AT=1k",
+                ".MEAS AC vm_10fc FIND VM(out) AT=10k",
+                ".MEAS AC vp_fc FIND VP(out) AT=1k",
+                ".END");
+
+            AssertNoValidationErrors(model);
+            RunSimulations(model);
+
+            AssertMeasurementSuccess(model, "vm_fc");
+            AssertMeasurementSuccess(model, "vm_10fc");
+            AssertMeasurementSuccess(model, "vp_fc");
+
+            double vmFc = model.Measurements["vm_fc"][0].Value;
+            double vm10Fc = model.Measurements["vm_10fc"][0].Value;
+            double vpFc = model.Measurements["vp_fc"][0].Value;
+
+            // Butterworth n=3: |H(fc)| = 1/sqrt(2), |H(10fc)| = 1/sqrt(1+10^6) ~= 0.001
+            Assert.True(Math.Abs(vmFc - (1.0 / Math.Sqrt(2.0))) < 0.03, $"Expected -3dB magnitude near 0.707 at cutoff, got {vmFc}.");
+            Assert.True(vm10Fc < 0.002, $"Expected magnitude < 0.002 one decade above cutoff (-60dB/dec), got {vm10Fc}.");
+            // At fc: H(jwc) = wc^3/(-wc^3-2wc^3+j2wc^3+wc^3) = 1/(-1+j), phase = -3*pi/4
+            Assert.True(Math.Abs(vpFc - (-3.0 * Math.PI / 4.0)) < 0.1, $"Expected phase near -3pi/4 (-135deg) at cutoff for 3rd-order Butterworth, got {vpFc}.");
+        }
+
+        [Fact]
+        public void When_ELaplace2ndOrderLowPassWithHighQRunsAc_Expect_ResonantPeakEqualsQ()
+        {
+            var model = GetSpiceSharpModel(
+                "E LAPLACE 2nd-order resonant LP AC",
+                ".PARAM fn=1k",
+                ".PARAM wn={2*PI*fn}",
+                ".PARAM Q=5",
+                "VIN in 0 AC 1",
+                "ERES out 0 LAPLACE {V(in)} = {wn^2/(s^2+wn/Q*s+wn^2)}",
+                "RLOAD out 0 1k",
+                ".AC DEC 30 10 100k",
+                ".MEAS AC vm_peak FIND VM(out) AT=1k",
+                ".END");
+
+            AssertNoValidationErrors(model);
+            RunSimulations(model);
+
+            AssertMeasurementSuccess(model, "vm_peak");
+            double vmPeak = model.Measurements["vm_peak"][0].Value;
+
+            // H(jwn) = wn^2/(-wn^2+j*wn^2/Q+wn^2) = Q/(j) -> |H(jwn)| = Q = 5
+            Assert.True(Math.Abs(vmPeak - 5.0) < 0.3, $"Expected resonant peak magnitude near Q=5, got {vmPeak}.");
+        }
+
+        [Fact]
+        public void When_ELaplaceLeadCompensatorRunsOp_Expect_UnitDcGain()
+        {
+            var model = GetSpiceSharpModel(
+                "E LAPLACE lead compensator OP",
+                ".PARAM tz=100u",
+                ".PARAM tp=10u",
+                "VIN in 0 1",
+                "ELEAD out 0 LAPLACE {V(in)} = {(1+s*tz)/(1+s*tp)}",
+                "RLOAD out 0 1k",
+                ".OP",
+                ".SAVE V(out)",
+                ".END");
+
+            AssertNoValidationErrors(model);
+
+            double export = RunOpSimulation(model, "V(out)");
+            // H(0) = (1+0)/(1+0) = 1
+            Assert.True(EqualsWithTol(1.0, export), $"Expected lead compensator DC gain near 1, got {export}.");
+        }
+
+        [Fact]
+        public void When_ELaplaceLeadCompensatorRunsAc_Expect_HfGainEqualsTzOverTp()
+        {
+            var model = GetSpiceSharpModel(
+                "E LAPLACE lead compensator AC",
+                ".PARAM tz=100u",
+                ".PARAM tp=10u",
+                "VIN in 0 AC 1",
+                "ELEAD out 0 LAPLACE {V(in)} = {(1+s*tz)/(1+s*tp)}",
+                "RLOAD out 0 1k",
+                ".AC DEC 20 1 10Meg",
+                ".MEAS AC vm_lf FIND VM(out) AT=1",
+                ".MEAS AC vm_hf FIND VM(out) AT=1Meg",
+                ".MEAS AC vp_gm FIND VP(out) AT=5031",
+                ".END");
+
+            AssertNoValidationErrors(model);
+            RunSimulations(model);
+
+            AssertMeasurementSuccess(model, "vm_lf");
+            AssertMeasurementSuccess(model, "vm_hf");
+            AssertMeasurementSuccess(model, "vp_gm");
+
+            double vmLf = model.Measurements["vm_lf"][0].Value;
+            double vmHf = model.Measurements["vm_hf"][0].Value;
+            double vpGm = model.Measurements["vp_gm"][0].Value;
+
+            // H(s->0) = 1, H(s->inf) = tz/tp = 100u/10u = 10
+            Assert.True(Math.Abs(vmLf - 1.0) < 0.02, $"Expected LF gain near 1, got {vmLf}.");
+            Assert.True(Math.Abs(vmHf - 10.0) < 0.5, $"Expected HF gain near tz/tp=10, got {vmHf}.");
+            // At geometric mean of zero (1591Hz) and pole (15915Hz): fg = sqrt(1591*15915) ~= 5031Hz
+            // Phase lead = arctan(wg*tz) - arctan(wg*tp) ~= 54.9deg ~= 0.958rad > 0
+            Assert.True(vpGm > 0.5, $"Expected positive phase lead (~0.96rad) at geometric mean frequency 5031Hz, got {vpGm}.");
+        }
+
+        [Fact]
+        public void When_TwoELaplaceLowPassFiltersAreCascaded_Expect_HalvedMagnitudeAtCutoff()
+        {
+            var model = GetSpiceSharpModel(
+                "E LAPLACE cascaded LP AC",
+                ".PARAM fc=1k",
+                ".PARAM tau={1/(2*PI*fc)}",
+                "VIN in 0 AC 1",
+                "ELOW1 mid 0 LAPLACE {V(in)} = {1/(1+s*tau)}",
+                "RMID mid 0 1k",
+                "ELOW2 out 0 LAPLACE {V(mid)} = {1/(1+s*tau)}",
+                "RLOAD out 0 1k",
+                ".AC DEC 30 10 100k",
+                ".MEAS AC vm_lf FIND VM(out) AT=10",
+                ".MEAS AC vm_fc FIND VM(out) AT=1k",
+                ".END");
+
+            AssertNoValidationErrors(model);
+            Assert.IsType<LaplaceVoltageControlledVoltageSource>(model.Circuit["ELOW1"]);
+            Assert.IsType<LaplaceVoltageControlledVoltageSource>(model.Circuit["ELOW2"]);
+            RunSimulations(model);
+
+            AssertMeasurementSuccess(model, "vm_lf");
+            AssertMeasurementSuccess(model, "vm_fc");
+
+            double vmLf = model.Measurements["vm_lf"][0].Value;
+            double vmFc = model.Measurements["vm_fc"][0].Value;
+
+            Assert.True(Math.Abs(vmLf - 1.0) < 0.02, $"Expected cascaded LP passband gain near 1, got {vmLf}.");
+            // Each stage: |H(fc)| = 1/sqrt(2); combined: (1/sqrt(2))^2 = 0.5
+            Assert.True(Math.Abs(vmFc - 0.5) < 0.04, $"Expected cascaded LP magnitude near 0.5 at shared cutoff, got {vmFc}.");
+        }
+
+        [Fact]
+        public void When_ELaplace2ndOrderUnderdampedRunsTransient_Expect_OvershootWithinAnalyticalBounds()
+        {
+            // zeta=0.3, fn=10kHz: peak time = pi/(wn*sqrt(1-zeta^2)) ~= 52.4us
+            // overshoot = exp(-pi*zeta/sqrt(1-zeta^2)) ~= 37.3% -> peak ~= 1.373
+            var model = GetSpiceSharpModel(
+                "E LAPLACE underdamped 2nd-order TRAN",
+                ".PARAM fn=10k",
+                ".PARAM wn={2*PI*fn}",
+                ".PARAM zeta=0.3",
+                "VIN in 0 PULSE(0 1 0 1n 1n 1m 2m)",
+                "EUNDERDAMP out 0 LAPLACE {V(in)} = {wn^2/(s^2+2*zeta*wn*s+wn^2)}",
+                "RLOAD out 0 1k",
+                ".TRAN 1u 300u",
+                ".SAVE V(out)",
+                ".END");
+
+            AssertNoValidationErrors(model);
+
+            var exports = RunTransientSimulation(model, "V(out)");
+
+            AssertTransientPoint(exports, 52.4e-6, 1.373, 0.12);
+            AssertTransientPoint(exports, 200e-6, 1.0, 0.15);
+        }
+
         private static SpiceSharpModel ReadSingleLaplaceSource(string inputExpression, string transferExpression)
         {
             return GetSpiceSharpModel(
