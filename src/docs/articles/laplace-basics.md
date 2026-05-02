@@ -12,6 +12,8 @@ The transfer function describes how a linear block changes a signal. It can say 
 
 If you want the exact syntax supported by SpiceSharpParser, see [LAPLACE Transfer Sources](laplace.md). This page focuses on the intuition.
 
+Keep one practical boundary in mind as you read: SpiceSharpParser supports a focused `LAPLACE` subset. The transfer must be used on an `E` or `G` source, the input must be `V(node)` or `V(node1,node2)`, and the transfer must be a proper rational polynomial in `s` with finite DC gain. The examples below stay inside that subset.
+
 ## Running Example: Sensor To ADC
 
 Imagine a sensor connected to an ADC input:
@@ -44,6 +46,23 @@ That one expression says:
 - Around `10 kHz`, the gain starts rolling off.
 - High-frequency noise is reduced.
 - In the time domain, sudden changes become smoother and slower.
+
+Written as a small supported netlist, that first model can look like this:
+
+```spice
+* Gain of 2 with one low-pass pole at 10 kHz
+.PARAM gain=2
+.PARAM fc=10k
+.PARAM wc={2*PI*fc}
+VIN IN 0 AC 1
+EAAF OUT 0 LAPLACE {V(IN)} = {gain*wc/(s+wc)}
+RLOAD OUT 0 10k
+.AC DEC 40 10 1MEG
+.SAVE V(OUT)
+.END
+```
+
+Because `VIN` uses `AC 1`, the `.AC` magnitude of `V(OUT)` reads directly as the gain from the sensor voltage to the ADC input.
 
 This is the main trick: the same transfer function explains the frequency response and the time response of the same linear block.
 
@@ -429,7 +448,7 @@ Smaller `zeta` gives more peaking and ringing. Larger `zeta` gives a flatter, mo
 | Misconception | Better way to think about it |
 |---------------|------------------------------|
 | `s` is a normal variable I can set with `.PARAM`. | `s` is reserved for Laplace behavior inside the transfer expression. |
-| `.AC 1` means the input is always 1 V in every simulation. | `AC 1` sets the small-signal AC magnitude; it is mainly a convenient way to read gain directly. |
+| `AC 1` on a source means the input is always 1 V in every simulation. | `AC 1` sets that source's small-signal AC magnitude; it is mainly a convenient way to read gain directly during `.AC` analysis. |
 | A Laplace source is a perfect replacement for a real op-amp. | It is a linear approximation of selected behavior, such as gain and bandwidth. |
 | A good `.AC` plot guarantees every transient behavior is good. | Nonlinear effects, clipping, slew rate, and startup behavior may still matter. |
 | Higher cutoff is always better. | Higher cutoff is faster, but it also lets more high-frequency noise through. |
@@ -465,7 +484,7 @@ These are quick checks for reading transfer functions.
 | What is the DC gain of `10*wc/(s+wc)`? | Set `s = 0`, so the gain is `10`. |
 | Does `s/(s+wc)` pass DC? | No. At `s = 0`, the numerator is `0`. |
 | If `fc` increases in `wc/(s+wc)`, does the block get faster or slower? | Faster. Higher cutoff means shorter time constant. |
-| What does `AC 1` help with in `.AC` analysis? | The output magnitude is directly the transfer gain from that source. |
+| What does `AC 1` on an input source help with in `.AC` analysis? | It sets the input magnitude to 1, so the output magnitude is directly the transfer gain from that source. |
 | What does lower `zeta` usually mean in a second-order block? | More peaking and more ringing. |
 | Why avoid a pure integrator such as `1/s` here? | Its DC gain is singular, so it is outside the supported finite-DC-gain subset. |
 
@@ -484,7 +503,7 @@ For the sensor-to-ADC example, this checklist says: the DC gain is `gain`, low-f
 
 ## SpiceSharpParser Subset
 
-SpiceSharpParser intentionally supports a practical subset:
+SpiceSharpParser intentionally supports the practical subset introduced near the start:
 
 - `E` and `G` LAPLACE sources.
 - Voltage input expressions: `V(node)` and `V(node1,node2)`.
