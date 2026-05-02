@@ -97,6 +97,8 @@
     href: ccvs.md
   - name: B — Behavioral Source
     href: behavioral-source.md
+  - name: LAPLACE Transfer Sources
+    href: laplace.md
 
 - name: Semiconductors
   items:

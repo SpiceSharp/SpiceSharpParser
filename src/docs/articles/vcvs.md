@@ -57,6 +57,8 @@ Current limitations:
 
 `M=` normally acts as a multiplier for source/device contribution where supported. For LAPLACE sources it is recognized but not supported yet; put any multiplier directly in the transfer expression, for example `{m/(1+s*tau)}`.
 
+For the transfer-function math, DC gain, frequency response, and phase examples, see [LAPLACE Transfer Sources](laplace.md).
+
 | Parameter | Description |
 |-----------|-------------|
 | `out+`, `out-` | Output nodes |

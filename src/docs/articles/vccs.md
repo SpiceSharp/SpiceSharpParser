@@ -63,6 +63,8 @@ Current limitations:
 
 For LAPLACE sources, `M=` is recognized but not supported yet. Until it is implemented, put the multiplier directly in the transfer expression, for example `{m*gm*wc/(s+wc)}`.
 
+For the transfer-function math, current-source sign convention, frequency response, and phase examples, see [LAPLACE Transfer Sources](laplace.md).
+
 ## Examples
 
 ```spice
