@@ -26,10 +26,10 @@ E<name> <out+> <out-> TABLE={<expression>} = (<x1>,<y1>) (<x2>,<y2>) ...
 ### Laplace
 
 ```
-E<name> <out+> <out-> LAPLACE {V(<ctrl+>)} = {<transfer>}
-E<name> <out+> <out-> LAPLACE {V(<ctrl+>,<ctrl->)} = {<transfer>}
-E<name> <out+> <out-> LAPLACE {V(<ctrl+>)} {<transfer>}
-E<name> <out+> <out-> LAPLACE = {V(<ctrl+>)} {<transfer>}
+E<name> <out+> <out-> LAPLACE {V(<ctrl+>)} = {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+E<name> <out+> <out-> LAPLACE {V(<ctrl+>,<ctrl->)} = {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+E<name> <out+> <out-> LAPLACE {V(<ctrl+>)} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+E<name> <out+> <out-> LAPLACE = {V(<ctrl+>)} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
 ```
 
 `<transfer>` is a rational polynomial in `s`. Coefficients are evaluated from constants and `.PARAM` values, and are stored in ascending powers of `s`.
@@ -52,10 +52,10 @@ Current limitations:
 - `B`, `F`, and `H` LAPLACE forms are not supported yet.
 - Only input expressions `V(node)` and `V(node1,node2)` are accepted.
 - Function-like `VALUE={LAPLACE(...)}` syntax is not supported yet.
-- `M=`, `TD=`, `DELAY=`, and explicit internal-state options are not supported yet.
+- Explicit internal-state options are not supported yet.
 - Transfers must be proper, finite rational polynomials in `s` with non-singular DC gain.
 
-`M=` normally acts as a multiplier for source/device contribution where supported. For LAPLACE sources it is recognized but not supported yet; put any multiplier directly in the transfer expression, for example `{m/(1+s*tau)}`.
+For LAPLACE sources, `M=` is folded into the numerator coefficients. `TD=` and `DELAY=` are supported aliases for a constant non-negative runtime delay parameter; use only one delay option.
 
 For the transfer-function math, DC gain, frequency response, and phase examples, see [LAPLACE Transfer Sources](laplace.md).
 
@@ -82,6 +82,9 @@ E4 OUT 0 TABLE={V(IN)} = (0,0) (1,3.3) (2,5)
 
 * Laplace low-pass
 E5 OUT 0 LAPLACE {V(IN)} = {1/(1+s*1u)}
+
+* Laplace with multiplier and delay
+E5D OUTD 0 LAPLACE {V(IN)} = {1/(1+s*1u)} M=2 TD=1n
 
 * Equivalent supported spellings
 E6 OUT 0 LAPLACE {V(IN)} {1/(1+s*1u)}

@@ -35,6 +35,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Laplace
 
         public int Order => _denominator.Degree;
 
+        public LaplaceTransferFunction ScaleNumerator(double factor)
+        {
+            return new LaplaceTransferFunction(_numerator.Scale(factor), _denominator);
+        }
+
         public Complex EvaluateComplex(Complex value)
         {
             return _numerator.EvaluateComplex(value) / _denominator.EvaluateComplex(value);

@@ -75,12 +75,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 return null;
             }
 
-            if (parameters.Count > syntax.ExtraParameterStartIndex)
+            if (!TryParseOptions(
+                parameters.Skip(syntax.ExtraParameterStartIndex),
+                context,
+                out var options))
             {
-                AddError(
-                    context,
-                    GetUnsupportedExtraParameterMessage(parameters.Skip(syntax.ExtraParameterStartIndex)),
-                    parameters[syntax.ExtraParameterStartIndex].LineInfo);
                 return null;
             }
 
@@ -124,6 +123,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 return null;
             }
 
+            transferFunction = transferFunction.ScaleNumerator(options.Multiplier);
+
             return new LaplaceSourceDefinition(
                 sourceName,
                 parameters[0].Value,
@@ -132,7 +133,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 syntax.TransferExpression,
                 input,
                 transferFunction,
-                0.0,
+                options.Delay,
                 syntax.LineInfo);
         }
 
@@ -161,8 +162,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return LaplaceSyntaxResult.NoMatch;
         }
 
-        private static string GetUnsupportedExtraParameterMessage(IEnumerable<Parameter> extraParameters)
+        private static bool TryParseOptions(
+            IEnumerable<Parameter> extraParameters,
+            IReadingContext context,
+            out LaplaceSourceOptions options)
         {
+            options = new LaplaceSourceOptions();
+            var hasMultiplier = false;
+            var hasDelay = false;
+
             foreach (var parameter in extraParameters)
             {
                 var assignmentParameter = parameter as AssignmentParameter;
@@ -170,23 +178,103 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     if (string.Equals(assignmentParameter.Name, "m", StringComparison.OrdinalIgnoreCase))
                     {
-                        return "laplace multiplier M is not supported yet";
+                        if (hasMultiplier)
+                        {
+                            AddError(context, "laplace multiplier M can be specified only once", assignmentParameter.LineInfo);
+                            return false;
+                        }
+
+                        if (!TryEvaluateFiniteOption(
+                            assignmentParameter,
+                            context,
+                            "laplace multiplier M must be a finite constant expression",
+                            out var multiplier))
+                        {
+                            return false;
+                        }
+
+                        options.Multiplier = multiplier;
+                        hasMultiplier = true;
+                        continue;
                     }
 
                     if (IsDelayName(assignmentParameter.Name))
                     {
-                        return "laplace delay syntax is not supported yet";
+                        if (hasDelay)
+                        {
+                            AddError(context, "laplace delay can be specified only once", assignmentParameter.LineInfo);
+                            return false;
+                        }
+
+                        if (!TryEvaluateFiniteOption(
+                            assignmentParameter,
+                            context,
+                            "laplace delay must be a finite constant expression",
+                            out var delay))
+                        {
+                            return false;
+                        }
+
+                        if (delay < 0.0)
+                        {
+                            AddError(context, "laplace delay must be non-negative", assignmentParameter.LineInfo);
+                            return false;
+                        }
+
+                        options.Delay = delay;
+                        hasDelay = true;
+                        continue;
                     }
+
+                    AddError(
+                        context,
+                        "laplace syntax variant is recognized but not supported yet",
+                        assignmentParameter.LineInfo);
+                    return false;
                 }
 
                 var wordParameter = parameter as WordParameter;
-                if (wordParameter != null && IsDelayName(wordParameter.Value))
+                if (wordParameter != null && (IsDelayName(wordParameter.Value) || IsName(wordParameter.Value, "m")))
                 {
-                    return "laplace delay syntax is not supported yet";
+                    AddError(context, "laplace options must use assignment syntax", wordParameter.LineInfo);
+                    return false;
                 }
+
+                AddError(
+                    context,
+                    "laplace syntax variant is recognized but not supported yet",
+                    parameter.LineInfo);
+                return false;
             }
 
-            return "laplace syntax variant is recognized but not supported yet";
+            return true;
+        }
+
+        private static bool TryEvaluateFiniteOption(
+            AssignmentParameter parameter,
+            IReadingContext context,
+            string errorMessage,
+            out double value)
+        {
+            value = 0.0;
+
+            try
+            {
+                value = context.Evaluator.EvaluateDouble(parameter.Value);
+            }
+            catch (Exception ex)
+            {
+                AddError(context, errorMessage, parameter.LineInfo, ex);
+                return false;
+            }
+
+            if (double.IsNaN(value) || double.IsInfinity(value))
+            {
+                AddError(context, errorMessage, parameter.LineInfo);
+                return false;
+            }
+
+            return true;
         }
 
         private static bool TryGetLaplaceKeyword(ParameterCollection parameters, out SpiceLineInfo lineInfo)
@@ -624,6 +712,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 return new LaplaceSyntaxResult(true, null, null, 0, lineInfo, message);
             }
+        }
+
+        private sealed class LaplaceSourceOptions
+        {
+            public double Multiplier { get; set; } = 1.0;
+
+            public double Delay { get; set; }
         }
     }
 }

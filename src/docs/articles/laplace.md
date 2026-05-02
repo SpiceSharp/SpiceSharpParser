@@ -69,10 +69,10 @@ V(out+,out-) = H(s) * V(ctrl+,ctrl-)
 Supported spellings:
 
 ```spice
-E<name> <out+> <out-> LAPLACE {V(<ctrl+>)} = {<transfer>}
-E<name> <out+> <out-> LAPLACE {V(<ctrl+>)} {<transfer>}
-E<name> <out+> <out-> LAPLACE = {V(<ctrl+>)} {<transfer>}
-E<name> <out+> <out-> LAPLACE {V(<ctrl+>,<ctrl->)} = {<transfer>}
+E<name> <out+> <out-> LAPLACE {V(<ctrl+>)} = {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+E<name> <out+> <out-> LAPLACE {V(<ctrl+>)} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+E<name> <out+> <out-> LAPLACE = {V(<ctrl+>)} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+E<name> <out+> <out-> LAPLACE {V(<ctrl+>,<ctrl->)} = {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
 ```
 
 ### G Source
@@ -92,11 +92,23 @@ V(out) = -Iout * Rload
 Supported spellings:
 
 ```spice
-G<name> <out+> <out-> LAPLACE {V(<ctrl+>)} = {<transfer>}
-G<name> <out+> <out-> LAPLACE {V(<ctrl+>)} {<transfer>}
-G<name> <out+> <out-> LAPLACE = {V(<ctrl+>)} {<transfer>}
-G<name> <out+> <out-> LAPLACE {V(<ctrl+>,<ctrl->)} = {<transfer>}
+G<name> <out+> <out-> LAPLACE {V(<ctrl+>)} = {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+G<name> <out+> <out-> LAPLACE {V(<ctrl+>)} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+G<name> <out+> <out-> LAPLACE = {V(<ctrl+>)} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
+G<name> <out+> <out-> LAPLACE {V(<ctrl+>,<ctrl->)} = {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
 ```
+
+### Options
+
+Supported options must use assignment syntax:
+
+| Option | Meaning |
+|--------|---------|
+| `M=<m>` | Constant multiplier. SpiceSharpParser folds it into the numerator coefficients. |
+| `TD=<delay>` | Constant non-negative runtime delay parameter in seconds. |
+| `DELAY=<delay>` | Alias for `TD`. |
+
+Use either `TD` or `DELAY`, not both. Bare forms such as `TD 1n` are not supported.
 
 ## Transfer Polynomials
 
@@ -465,8 +477,8 @@ The same spelling variants are supported for `G` sources.
 | `sin(s)` | Not a rational polynomial in `s` | Use polynomial/rational expressions only |
 | `V(a)-V(b)` | Input expression shape is unsupported | Use `V(a,b)` |
 | `I(Vsense)` | Current-controlled LAPLACE is not supported yet | Use supported `E`/`G` voltage input forms |
-| `M=2` | LAPLACE multiplier option is not supported yet | Put the multiplier in `H(s)`, for example `{2/(1+s*tau)}` |
-| `TD=1n` or `DELAY=1n` | Delay syntax is not supported yet | Omit delay |
+| `TD=1n DELAY=2n` | Only one delay option may be used | Use either `TD` or `DELAY` |
+| `TD 1n` | Options require assignment syntax | Use `TD=1n` |
 | `VALUE={LAPLACE(...)}` | Function-like LAPLACE syntax is not supported yet | Use source-level `E`/`G ... LAPLACE ...` |
 
 ## Further Reading
@@ -485,5 +497,6 @@ These references are useful for the engineering context behind transfer-function
 - Only `V(node)` and `V(node1,node2)` input expressions are supported.
 - `B`, `F`, and `H` LAPLACE forms are not supported yet.
 - Function-like `VALUE={LAPLACE(...)}` syntax is not supported yet.
-- `M=`, `TD=`, `DELAY=`, and explicit internal-state options are not supported yet.
+- Explicit internal-state options are not supported yet.
+- Transient response is verified for undelayed first-order `E` / `G` low-pass sources; delayed transient response shape is not currently claimed.
 - Transfers must be finite, proper rational polynomials in `s` with non-singular DC gain.

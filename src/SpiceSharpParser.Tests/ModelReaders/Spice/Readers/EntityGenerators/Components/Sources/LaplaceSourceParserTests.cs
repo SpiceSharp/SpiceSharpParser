@@ -43,13 +43,54 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             }
         }
 
-        public static IEnumerable<object[]> UnsupportedOptions
+        public static IEnumerable<object[]> SupportedMultipliers
         {
             get
             {
-                yield return new object[] { Assignment("M", "2"), "multiplier" };
-                yield return new object[] { Assignment("TD", "1n"), "delay" };
-                yield return new object[] { Assignment("DELAY", "1n"), "delay" };
+                yield return new object[] { "2", 2.0 };
+                yield return new object[] { "-2", -2.0 };
+                yield return new object[] { "0", 0.0 };
+            }
+        }
+
+        public static IEnumerable<object[]> SupportedDelays
+        {
+            get
+            {
+                yield return new object[] { "TD", "1n", 1e-9 };
+                yield return new object[] { "DELAY", "1n", 1e-9 };
+            }
+        }
+
+        public static IEnumerable<object[]> InvalidOptions
+        {
+            get
+            {
+                yield return new object[]
+                {
+                    new Parameter[] { Assignment("M", "2"), Assignment("M", "3") },
+                    "only once",
+                };
+                yield return new object[]
+                {
+                    new Parameter[] { Assignment("TD", "1n"), Assignment("TD", "2n") },
+                    "only once",
+                };
+                yield return new object[]
+                {
+                    new Parameter[] { Assignment("TD", "1n"), Assignment("DELAY", "2n") },
+                    "only once",
+                };
+                yield return new object[]
+                {
+                    new Parameter[] { Assignment("TD", "-1n") },
+                    "non-negative",
+                };
+                yield return new object[]
+                {
+                    new Parameter[] { new WordParameter("TD") },
+                    "assignment syntax",
+                };
             }
         }
 
@@ -87,6 +128,43 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             Assert.Equal(0.0, definition.Delay);
         }
 
+        [Theory]
+        [MemberData(nameof(SupportedMultipliers))]
+        public void When_MultiplierIsParsed_Expect_NumeratorScaled(string multiplierExpression, double expectedNumerator)
+        {
+            var context = CreateReadingContext();
+            var parser = new LaplaceSourceParser();
+
+            var definition = parser.ParseVoltageControlledSource(
+                "E1",
+                CreateLaplaceParameters("V(in)", "1/(1+s)", Assignment("M", multiplierExpression)),
+                context);
+
+            Assert.NotNull(definition);
+            Assert.False(context.Result.ValidationResult.HasError);
+            AssertCoefficients(new[] { expectedNumerator }, definition.TransferFunction.NumeratorCoefficients);
+            AssertCoefficients(new[] { 1.0, 1.0 }, definition.TransferFunction.DenominatorCoefficients);
+            Assert.Equal(0.0, definition.Delay);
+        }
+
+        [Theory]
+        [MemberData(nameof(SupportedDelays))]
+        public void When_DelayIsParsed_Expect_DefinitionDelay(string delayName, string delayExpression, double expectedDelay)
+        {
+            var context = CreateReadingContext();
+            var parser = new LaplaceSourceParser();
+
+            var definition = parser.ParseVoltageControlledSource(
+                "E1",
+                CreateLaplaceParameters("V(in)", "1/(1+s)", Assignment(delayName, delayExpression)),
+                context);
+
+            Assert.NotNull(definition);
+            Assert.False(context.Result.ValidationResult.HasError);
+            AssertCoefficients(new[] { 1.0 }, definition.TransferFunction.NumeratorCoefficients);
+            Assert.Equal(expectedDelay, definition.Delay);
+        }
+
         [Fact]
         public void When_DifferentialLaplaceSourceIsParsed_Expect_ControlNodeOrdering()
         {
@@ -119,16 +197,20 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 "E1",
                 "E1",
                 "e",
-                CreateLaplaceParameters("V(inp,inn)", "1000/(s+1000)"),
+                CreateLaplaceParameters(
+                    "V(inp,inn)",
+                    "1000/(s+1000)",
+                    Assignment("M", "2"),
+                    Assignment("TD", "1n")),
                 context);
 
             var laplace = Assert.IsType<LaplaceVoltageControlledVoltageSource>(entity);
             Assert.False(context.Result.ValidationResult.HasError);
             Assert.NotNull(createdNodes);
             Assert.Equal(new[] { "out", "0", "inp", "inn" }, createdNodes.Select(parameter => parameter.Value).ToArray());
-            AssertCoefficients(new[] { 1000.0 }, laplace.Parameters.Numerator);
+            AssertCoefficients(new[] { 2000.0 }, laplace.Parameters.Numerator);
             AssertCoefficients(new[] { 1000.0, 1.0 }, laplace.Parameters.Denominator);
-            Assert.Equal(0.0, laplace.Parameters.Delay);
+            Assert.Equal(1e-9, laplace.Parameters.Delay);
         }
 
         [Fact]
@@ -169,16 +251,20 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 "G1",
                 "G1",
                 "g",
-                CreateLaplaceParameters("V(inp,inn)", "1m*1000/(s+1000)"),
+                CreateLaplaceParameters(
+                    "V(inp,inn)",
+                    "1m*1000/(s+1000)",
+                    Assignment("M", "2"),
+                    Assignment("DELAY", "2n")),
                 context);
 
             var laplace = Assert.IsType<LaplaceVoltageControlledCurrentSource>(entity);
             Assert.False(context.Result.ValidationResult.HasError);
             Assert.NotNull(createdNodes);
             Assert.Equal(new[] { "out", "0", "inp", "inn" }, createdNodes.Select(parameter => parameter.Value).ToArray());
-            AssertCoefficients(new[] { 1.0 }, laplace.Parameters.Numerator);
+            AssertCoefficients(new[] { 2.0 }, laplace.Parameters.Numerator);
             AssertCoefficients(new[] { 1000.0, 1.0 }, laplace.Parameters.Denominator);
-            Assert.Equal(0.0, laplace.Parameters.Delay);
+            Assert.Equal(2e-9, laplace.Parameters.Delay);
         }
 
         [Fact]
@@ -239,19 +325,35 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         }
 
         [Theory]
-        [MemberData(nameof(UnsupportedOptions))]
-        public void When_UnsupportedOptionIsPresent_Expect_ReaderValidationError(Parameter option, string messageFragment)
+        [MemberData(nameof(InvalidOptions))]
+        public void When_InvalidOptionIsPresent_Expect_ReaderValidationError(Parameter[] options, string messageFragment)
         {
             var context = CreateReadingContext();
             var parser = new LaplaceSourceParser();
 
             var definition = parser.ParseVoltageControlledSource(
                 "E1",
-                CreateLaplaceParameters("V(in)", "1/(1+s)", option),
+                CreateLaplaceParameters("V(in)", "1/(1+s)", options),
                 context);
 
             Assert.Null(definition);
             AssertSingleReaderError(context, messageFragment);
+        }
+
+        [Fact]
+        public void When_NonFiniteMultiplierIsPresent_Expect_ReaderValidationError()
+        {
+            var context = CreateReadingContext();
+            context.EvaluationContext.SetParameter("inf", double.PositiveInfinity);
+            var parser = new LaplaceSourceParser();
+
+            var definition = parser.ParseVoltageControlledSource(
+                "E1",
+                CreateLaplaceParameters("V(in)", "1/(1+s)", Assignment("M", "inf")),
+                context);
+
+            Assert.Null(definition);
+            AssertSingleReaderError(context, "finite");
         }
 
         [Fact]
@@ -514,13 +616,15 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         private static IReadingContext CreateReadingContext()
         {
             var context = Substitute.For<IReadingContext>();
+            var evaluationContext = CreateEvaluationContext();
             context.Result.Returns(new SpiceSharpModel(new Circuit(), "test"));
             context.ReaderSettings.Returns(
                 new SpiceNetlistReaderSettings(
                     new SpiceNetlistCaseSensitivitySettings(),
                     () => string.Empty,
                     Encoding.Default));
-            context.EvaluationContext.Returns(CreateEvaluationContext());
+            context.EvaluationContext.Returns(evaluationContext);
+            context.Evaluator.Returns(evaluationContext.Evaluator);
             return context;
         }
 

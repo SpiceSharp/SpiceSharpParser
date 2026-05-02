@@ -30,13 +30,14 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
             }
         }
 
-        public static IEnumerable<object[]> UnsupportedLaplaceOptions
+        public static IEnumerable<object[]> InvalidLaplaceOptions
         {
             get
             {
-                yield return new object[] { "M=2", "multiplier" };
-                yield return new object[] { "TD=1n", "delay" };
-                yield return new object[] { "DELAY=1n", "delay" };
+                yield return new object[] { "M=2 M=3", "only once" };
+                yield return new object[] { "TD=1n TD=2n", "only once" };
+                yield return new object[] { "TD=1n DELAY=2n", "only once" };
+                yield return new object[] { "TD=-1n", "non-negative" };
             }
         }
 
@@ -102,6 +103,25 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
 
             double export = RunOpSimulation(model, "V(out)");
             Assert.True(EqualsWithTol(1.0, export), $"Expected OP gain near 1, got {export}.");
+        }
+
+        [Fact]
+        public void When_ELaplaceMultiplierRunsOp_Expect_DcGainScaled()
+        {
+            var model = GetSpiceSharpModel(
+                "E LAPLACE multiplier OP",
+                ".PARAM tau=1u",
+                "VIN in 0 1",
+                "ELOW out 0 LAPLACE {V(in)} = {1/(1+s*tau)} M=2",
+                "RLOAD out 0 1k",
+                ".OP",
+                ".SAVE V(out)",
+                ".END");
+
+            AssertNoValidationErrors(model);
+
+            double export = RunOpSimulation(model, "V(out)");
+            Assert.True(EqualsWithTol(2.0, export), $"Expected OP gain near 2, got {export}.");
         }
 
         [Fact]
@@ -226,6 +246,26 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         }
 
         [Fact]
+        public void When_GLaplaceMultiplierRunsOp_Expect_LoadVoltageScaled()
+        {
+            var model = GetSpiceSharpModel(
+                "G LAPLACE multiplier OP",
+                ".PARAM gm=1m",
+                ".PARAM tau=1u",
+                "VIN in 0 1",
+                "GLOW out 0 LAPLACE {V(in)} = {gm/(1+s*tau)} M=2",
+                "RLOAD out 0 1k",
+                ".OP",
+                ".SAVE V(out)",
+                ".END");
+
+            AssertNoValidationErrors(model);
+
+            double export = RunOpSimulation(model, "V(out)");
+            Assert.True(EqualsWithTol(-2.0, export), $"Expected OP load voltage near -2, got {export}.");
+        }
+
+        [Fact]
         public void When_GLaplaceLowPassRunsAcAtCutoff_Expect_ExpectedMagnitudeAndPhase()
         {
             var model = GetSpiceSharpModel(
@@ -305,6 +345,97 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
             Assert.True(EqualsWithTol(exports, new[] { 3.0, 4.0, 5.0, 2.0 }));
         }
 
+        [Fact]
+        public void When_ELaplaceDelayOptionsRunOp_Expect_ValidCircuit()
+        {
+            var tdModel = GetSpiceSharpModel(
+                "E LAPLACE TD OP",
+                "VIN in 0 1",
+                "ETD out 0 LAPLACE {V(in)} = {1/(1+s*1u)} TD=1n",
+                "RLOAD out 0 1k",
+                ".OP",
+                ".SAVE V(out)",
+                ".END");
+
+            var delayModel = GetSpiceSharpModel(
+                "E LAPLACE DELAY OP",
+                "VIN in 0 1",
+                "EDELAY out 0 LAPLACE {V(in)} = {1/(1+s*1u)} DELAY=1n",
+                "RLOAD out 0 1k",
+                ".OP",
+                ".SAVE V(out)",
+                ".END");
+
+            AssertNoValidationErrors(tdModel);
+            AssertNoValidationErrors(delayModel);
+            Assert.True(EqualsWithTol(1.0, RunOpSimulation(tdModel, "V(out)")));
+            Assert.True(EqualsWithTol(1.0, RunOpSimulation(delayModel, "V(out)")));
+        }
+
+        [Fact]
+        public void When_ELaplaceLowPassRunsTransient_Expect_FirstOrderStepResponse()
+        {
+            const double tau = 1e-6;
+            var model = GetSpiceSharpModel(
+                "E LAPLACE low-pass TRAN",
+                ".PARAM tau=1u",
+                "VIN in 0 PULSE(0 1 0 1n 1n 100u 200u)",
+                "ELOW out 0 LAPLACE {V(in)} = {1/(1+s*tau)}",
+                "RLOAD out 0 1k",
+                ".TRAN 50n 8u",
+                ".SAVE V(out)",
+                ".END");
+
+            AssertNoValidationErrors(model);
+
+            var exports = RunTransientSimulation(model, "V(out)");
+            AssertTransientPoint(exports, 1.0 * tau, FirstOrderStep(1.0), 0.06);
+            AssertTransientPoint(exports, 2.0 * tau, FirstOrderStep(2.0), 0.06);
+            AssertTransientPoint(exports, 5.0 * tau, FirstOrderStep(5.0), 0.04);
+        }
+
+        [Fact]
+        public void When_GLaplaceLowPassRunsTransient_Expect_FirstOrderStepResponseWithCurrentSourceSign()
+        {
+            const double tau = 1e-6;
+            var model = GetSpiceSharpModel(
+                "G LAPLACE low-pass TRAN",
+                ".PARAM tau=1u",
+                ".PARAM gm=1m",
+                "VIN in 0 PULSE(0 1 0 1n 1n 100u 200u)",
+                "GLOW out 0 LAPLACE {V(in)} = {gm/(1+s*tau)}",
+                "RLOAD out 0 1k",
+                ".TRAN 50n 8u",
+                ".SAVE V(out)",
+                ".END");
+
+            AssertNoValidationErrors(model);
+
+            var exports = RunTransientSimulation(model, "V(out)");
+            AssertTransientPoint(exports, 1.0 * tau, -FirstOrderStep(1.0), 0.06);
+            AssertTransientPoint(exports, 2.0 * tau, -FirstOrderStep(2.0), 0.06);
+            AssertTransientPoint(exports, 5.0 * tau, -FirstOrderStep(5.0), 0.04);
+        }
+
+        [Fact]
+        public void When_ELaplaceDelayedLowPassRunsTransient_Expect_NoRuntimeException()
+        {
+            var model = GetSpiceSharpModel(
+                "E LAPLACE delayed low-pass TRAN",
+                ".PARAM tau=1u",
+                "VIN in 0 PULSE(0 1 0 1n 1n 100u 200u)",
+                "ELOW out 0 LAPLACE {V(in)} = {1/(1+s*tau)} TD=2u",
+                "RLOAD out 0 1k",
+                ".TRAN 50n 8u",
+                ".SAVE V(out)",
+                ".END");
+
+            AssertNoValidationErrors(model);
+
+            var exception = Record.Exception(() => RunTransientSimulation(model, "V(out)"));
+            Assert.Null(exception);
+        }
+
         [Theory]
         [MemberData(nameof(InvalidLaplaceInputs))]
         public void When_ELaplaceInputIsInvalid_Expect_ReaderValidationError(
@@ -328,13 +459,13 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         }
 
         [Theory]
-        [MemberData(nameof(UnsupportedLaplaceOptions))]
-        public void When_ELaplaceUnsupportedOptionIsUsed_Expect_ReaderValidationError(
+        [MemberData(nameof(InvalidLaplaceOptions))]
+        public void When_ELaplaceInvalidOptionIsUsed_Expect_ReaderValidationError(
             string option,
             string expectedMessage)
         {
             var model = GetSpiceSharpModel(
-                "E LAPLACE unsupported option",
+                "E LAPLACE invalid option",
                 "VIN in 0 1",
                 $"EBAD out 0 LAPLACE {{V(in)}} = {{1/(1+s)}} {option}",
                 "RLOAD out 0 1k",
@@ -343,21 +474,6 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             AssertReaderErrorContains(model, expectedMessage);
-        }
-
-        [Fact]
-        public void When_GLaplaceUnsupportedMultiplierIsUsed_Expect_ReaderValidationError()
-        {
-            var model = GetSpiceSharpModel(
-                "G LAPLACE unsupported multiplier",
-                "VIN in 0 1",
-                "GBAD out 0 LAPLACE {V(in)} = {1/(1+s)} M=2",
-                "RLOAD out 0 1k",
-                ".OP",
-                ".SAVE V(out)",
-                ".END");
-
-            AssertReaderErrorContains(model, "multiplier");
         }
 
         [Fact]
@@ -431,6 +547,23 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
             Assert.True(model.ValidationResult.HasError);
             var messages = string.Join(Environment.NewLine, model.ValidationResult.Errors.Select(error => error.Message));
             Assert.Contains(expectedMessage, messages, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static void AssertTransientPoint(
+            IReadOnlyList<Tuple<double, double>> exports,
+            double time,
+            double expected,
+            double tolerance)
+        {
+            var nearest = exports.OrderBy(export => Math.Abs(export.Item1 - time)).First();
+            Assert.True(
+                Math.Abs(nearest.Item2 - expected) <= tolerance,
+                $"Expected V(out) near {expected} at {time}, got {nearest.Item2} at {nearest.Item1}.");
+        }
+
+        private static double FirstOrderStep(double normalizedTime)
+        {
+            return 1.0 - Math.Exp(-normalizedTime);
         }
     }
 }

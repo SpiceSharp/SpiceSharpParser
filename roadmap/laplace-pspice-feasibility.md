@@ -68,7 +68,7 @@ This approach keeps the implementation small, aligns with existing source-genera
 
 ## Current Status
 
-`E`-source and `G`-source `LAPLACE` support is implemented by SpiceSharpParser for canonical assignment, no-equals expression-pair, and equals-after-keyword expression-pair syntax. `F`, `H`, `B`, function-like `VALUE={LAPLACE(...)}`, delay, and `M=` support remain deferred.
+`E`-source and `G`-source `LAPLACE` support is implemented by SpiceSharpParser for canonical assignment, no-equals expression-pair, and equals-after-keyword expression-pair syntax. Constant `M=`, `TD=`, and `DELAY=` options are implemented for those supported voltage-controlled forms. `F`, `H`, `B`, function-like `VALUE={LAPLACE(...)}`, and explicit internal-state options remain deferred.
 
 Phase 1 grammar groundwork is implemented: expression-to-expression assignments such as `{V(in)} = {1/(1+s*tau)}` and `{V(in1,in2)} = {1/(1+s*tau)}` are preserved as `ExpressionAssignmentParameter`.
 
@@ -76,9 +76,11 @@ Phase 2 transfer-function math is implemented: internal polynomial, rational-pol
 
 Phase 3 `E`-source mapping is implemented: canonical `Ename out+ out- LAPLACE {V(ctrl)}` `= {H(s)}` and `V(ctrl+,ctrl-)` forms map to `LaplaceVoltageControlledVoltageSource`, produce reader validation errors for semantic failures, and have OP / AC integration coverage.
 
-Phase 4 `G`-source mapping is implemented: canonical `Gname out+ out- LAPLACE {V(ctrl)}` `= {H(s)}` and `V(ctrl+,ctrl-)` forms map to `LaplaceVoltageControlledCurrentSource`, preserve the existing `G` current-source sign convention, reject unsupported `M=` / delay options, and have OP / AC integration coverage.
+Phase 4 `G`-source mapping is implemented: canonical `Gname out+ out- LAPLACE {V(ctrl)}` `= {H(s)}` and `V(ctrl+,ctrl-)` forms map to `LaplaceVoltageControlledCurrentSource`, preserve the existing `G` current-source sign convention, support constant `M=` / delay options, and have OP / AC integration coverage.
 
 Phase 5 syntax compatibility is implemented: `E` / `G` sources accept `LAPLACE {V(...)} = {H(s)}`, `LAPLACE {V(...)} {H(s)}`, and `LAPLACE = {V(...)} {H(s)}` as equivalent voltage-controlled forms, while known deferred `VALUE={LAPLACE(...)}` and `B`-source forms produce targeted reader diagnostics.
+
+Phase 6 option and transient verification is implemented: supported `E` / `G` Laplace forms accept one constant `M=` multiplier and either `TD=` or `DELAY=` as a constant non-negative runtime delay parameter. Transient first-order step-response tests cover undelayed `E` / `G` low-pass behavior; delayed transient response shape is not currently claimed.
 
 Adjacent features already exist:
 
@@ -168,7 +170,7 @@ Input-expression subset:
 - Alternative `E` / `G` Laplace syntax variants that omit `=` or put `=` directly after `LAPLACE`.
 - `VALUE={LAPLACE(...)}` / function-like ABM forms.
 - Non-rational transfer expressions.
-- Explicit delay syntax such as `TD=` or `DELAY=`.
+- Explicit internal-state syntax.
 - Initial-condition syntax for Laplace internal state.
 - Generated C# writer support, unless the MVP delivery explicitly includes writer parity.
 
@@ -476,16 +478,18 @@ Prefer parsing with the existing expression parser and accepting only the expect
 
 Do not silently ignore `M=`.
 
-Recommended MVP behavior: reject `M=` on Laplace sources with a clear diagnostic until tests define the intended semantics. `M=` is a multiplier for the effective source or device contribution, typically equivalent to multiple parallel instances or a scaled current/voltage contribution. If support is added for Laplace sources, multiply the transfer output by `M`, most likely by evaluating `M` to a finite constant and scaling the numerator coefficients.
+Implemented behavior: accept one `M=` assignment on supported `E` / `G` Laplace sources. Evaluate `M` as a finite constant and scale the numerator coefficients, equivalent to putting the multiplier directly in `H(s)`.
 
 ### Delay Policy
 
-The runtime supports `Delay`, but PSpice delay syntax for Laplace sources needs confirmation.
+The runtime exposes `Delay`; SpiceSharpParser accepts one constant non-negative delay assignment on supported `E` / `G` Laplace sources and maps it to the runtime delay parameter.
 
-MVP behavior:
+Implemented behavior:
 
-- Set `Delay = 0.0`.
-- Reject `TD=`, `DELAY=`, or trailing delay-like parameters with a clear diagnostic.
+- `TD=<expr>` and `DELAY=<expr>` are aliases.
+- The expression must evaluate to a finite non-negative constant in seconds.
+- Only one delay option may be used.
+- Bare forms such as `TD 1n` remain unsupported.
 
 ## Diagnostics
 
@@ -503,8 +507,12 @@ laplace transfer function is improper; numerator degree exceeds denominator degr
 laplace transfer function has singular DC gain
 laplace transfer coefficients must be constant expressions
 laplace transfer expression reserves symbol 's'; use a different parameter name
-laplace delay syntax is not supported yet
-laplace multiplier M is not supported yet
+laplace delay must be a finite constant expression
+laplace delay must be non-negative
+laplace delay can be specified only once
+laplace multiplier M must be a finite constant expression
+laplace multiplier M can be specified only once
+laplace options must use assignment syntax
 laplace syntax variant is recognized but not supported yet
 laplace function-like VALUE form is not supported yet; use E/G LAPLACE {V(...)} = {H(s)}
 laplace source supports only E and G voltage-controlled forms in this version
@@ -527,8 +535,8 @@ Good diagnostics are part of compatibility. A precise rejection is better than f
 | `E ... LAPLACE {V(n1,n2)} = {H(s)}` | Support | Keep |
 | `G ... LAPLACE {V(n)} = {H(s)}` | Support | Keep |
 | `G ... LAPLACE {V(n1,n2)} = {H(s)}` | Support | Keep |
-| `E` / `G ... LAPLACE {V(n)} {H(s)}` | Targeted unsupported diagnostic until canonical form is stable | Add recognizer that lowers to the same model |
-| `E` / `G ... LAPLACE = {V(n)} {H(s)}` | Targeted unsupported diagnostic until canonical form is stable | Add recognizer that lowers to the same model |
+| `E` / `G ... LAPLACE {V(n)} {H(s)}` | Support | Keep |
+| `E` / `G ... LAPLACE = {V(n)} {H(s)}` | Support | Keep |
 | `F` / `H` current-controlled forms | Targeted unsupported diagnostic | Map to built-in current-controlled Laplace entities |
 | `B` source Laplace forms | Targeted unsupported diagnostic | Investigate PSpice ABM syntax |
 | `VALUE={LAPLACE(...)}` function-like form | Targeted unsupported diagnostic | Investigate as source-level special form |
@@ -537,8 +545,8 @@ Good diagnostics are part of compatibility. A precise rejection is better than f
 | Non-rational functions of `s` | Reject | Likely keep rejected |
 | Singular DC gain (`1/s`) | Reject unless verified safe | Possible AC-only or IC-aware mode |
 | Improper transfer (`deg N > deg D`) | Reject | Allow only if proven safe for claimed analyses |
-| Explicit delay | Reject | Map after syntax and behavior tests |
-| Transient | Verify before documenting | Document verified subset |
+| Explicit delay | Support `TD=` / `DELAY=` assignments on `E` / `G` | Other delay-like forms remain unsupported |
+| Transient | Verified for undelayed first-order `E` / `G` low-pass step responses | Delayed transient shape not currently claimed |
 | Generated C# writer | Defer or include as final polish | Emit built-in Laplace entities |
 
 ### PSpice Variants to Investigate Later
@@ -606,7 +614,7 @@ The last recognizer is deliberate. If a user writes a known PSpice Laplace varia
 | Current-controlled | `F1 out 0 LAPLACE {I(Vsense)} = {H(s)}` | Later milestone | Runtime entities exist, but controlling-source parsing and PSpice compatibility need tests. |
 | Function-like `VALUE` | `E1 out 0 VALUE = {LAPLACE(V(in), H(s))}` | Investigate later | Must be handled as source-level Laplace, not a scalar expression function. |
 | `B` source ABM | `B1 out 0 V = {LAPLACE(V(in), H(s))}` | Investigate later | May require arbitrary input-expression lowering or custom behavior. |
-| Delay/options | `TD=...`, `DELAY=...` | Reject initially | Runtime has `Delay`; PSpice syntax and semantics need confirmation. |
+| Delay/options | `TD=...`, `DELAY=...`, `M=...` | Supported for `E` / `G` voltage-controlled forms | Values must be constant; only one delay option may be used. |
 
 ### Normalization Rules
 
@@ -669,7 +677,7 @@ Status: implemented for canonical `E` source syntax.
 
 ### Phase 4: `G` Source Mapping
 
-Status: implemented for canonical `G` source syntax. `M=`, delay options, `F`, and `H` remain deferred.
+Status: implemented for canonical `G` source syntax and constant `M=` / delay options. `F` and `H` remain deferred.
 
 1. Detect `LAPLACE` in `CurrentSourceGenerator.CreateCustomCurrentSource(...)`.
 2. Reuse the same source parser and transfer-function builder.
@@ -678,7 +686,7 @@ Status: implemented for canonical `G` source syntax. `M=`, delay options, `F`, a
 
 ### Phase 5: Syntax Compatibility Layer
 
-Status: implemented for `E` / `G` no-equals and equals-after-keyword voltage-controlled syntax. `VALUE={LAPLACE(...)}`, `B`, `F`, `H`, `M=`, and delay options remain diagnostic-only / deferred.
+Status: implemented for `E` / `G` no-equals and equals-after-keyword voltage-controlled syntax. `VALUE={LAPLACE(...)}`, `B`, `F`, and `H` remain diagnostic-only / deferred.
 
 1. Add `UnsupportedKnownVariantRecognizer` so common deferred forms receive targeted diagnostics.
 2. Add `NoEqualsExpressionPairRecognizer` for `LAPLACE {input} {transfer}` only after canonical tests pass.
@@ -750,7 +758,7 @@ Place near [src/SpiceSharpParser.Tests/Parsers](../src/SpiceSharpParser.Tests/Pa
 - Missing transfer expression.
 - Unsupported `F`, `H`, and `B` forms.
 - Unsupported arbitrary input expression.
-- Unsupported delay and `M=` parameters.
+- Supported `M=`, `TD=`, and `DELAY=` parameters plus invalid duplicate / non-finite / negative option diagnostics.
 
 ### Compatibility Matrix Tests
 
