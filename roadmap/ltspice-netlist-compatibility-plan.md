@@ -9,36 +9,58 @@ last_reviewed: 2026-05-03
 
 ## Summary
 
-The first compatibility target is LTspice-generated netlists: copied netlists, `.net` files, and model decks reached through `.include` / `.lib`. Schematic import for `.asc` / `.asy` files is out of scope for this roadmap.
+The first LTspice compatibility target is generated netlists: copied netlists, `.net` files, and model decks reached through `.include` / `.lib`. Schematic and symbol import for `.asc` / `.asy` files is out of scope.
 
-The recommended approach is phased:
+The roadmap is intentionally parser-first:
 
-1. Measure current compatibility with permission-safe fixtures.
-2. Add parser-level dialect shims, aliases, no-op handling, and targeted diagnostics.
-3. Escalate only proven runtime gaps into SpiceSharp engine changes.
-4. Keep public support claims tied to tests and a compatibility matrix.
+1. Measure current behavior with redistributable fixtures and a compatibility matrix.
+2. Add opt-in LTspice compatibility options, harmless no-op handling, and targeted diagnostics.
+3. Add scalar-expression, ABM, and model-parameter tolerance only when the behavior can be represented safely.
+4. Escalate to SpiceSharp runtime work only after fixtures prove parser lowering is not enough.
+5. Keep README/docs support claims tied to tests and matrix rows.
 
-Current `B` source and function-style `LAPLACE(...)` support are baseline behavior, not missing work. SpiceSharpParser already supports arbitrary behavioral voltage/current sources, source-level `E` / `G` / `F` / `H` `LAPLACE`, function-style `LAPLACE(input, transfer)`, inline `M=` / `TD=` / `DELAY=` options, helper lowering for mixed expressions, and generated C# writer parity.
+## Current Repo Facts
 
-## Goals
+- Arbitrary `B` voltage/current sources and `VALUE={expr}` controlled-source forms are already supported.
+- Source-level `E` / `G` / `F` / `H` `LAPLACE` forms are already supported, including alternate spellings, finite constant `M=`, `TD=`, and `DELAY=` options.
+- Function-style `LAPLACE(input, transfer)` is already supported inside `VALUE`, `B ... V=`, and `B ... I=` expressions, including helper lowering for mixed expressions and arbitrary scalar inputs.
+- Generated C# writer parity already exists for the implemented Laplace lowering paths.
+- `LAPLACE` should remain a source/lowering feature, not a normal scalar expression function.
+- No explicit LTspice compatibility mode exists yet in parser or reader settings.
+- Validation currently has error and warning levels only. The roadmap should use warnings for recognized LTspice no-ops until an informational level exists.
+- `ValidationEntryCollection.Warnings` appears to filter `ValidationEntryLevel.Error` instead of `ValidationEntryLevel.Warning`; fix this before adding warning-based no-op behavior.
+- `MathFunctions.CreateTable()` still returns `null`, making scalar `table(...)` an early expression-compatibility candidate.
 
-- Make common LTspice-generated netlists parse, read, and run when they use features that can be represented safely by SpiceSharp and SpiceSharpBehavioral.
-- Prefer compatibility shims and explicit diagnostics in SpiceSharpParser before adding new engine behavior.
-- Build a small, redistributable compatibility corpus that does not copy proprietary LTspice or vendor library content without permission.
-- Keep parser, generated C# writer, docs, and tests aligned.
-- Record known divergences from LTspice instead of making blanket numeric-parity claims.
+## Scope
 
-## Non-Goals
+Goals:
 
-- Importing or rendering LTspice schematic files (`.asc`) or symbols (`.asy`).
-- Depending on LTspice itself in CI.
-- Claiming complete LTspice numeric parity across all device models and solver settings.
-- Committing copied vendor model libraries unless their license explicitly permits redistribution.
-- Duplicating SpiceSharpBehavioral features directly in SpiceSharpParser.
+- Make common LTspice-generated netlists parse, read, and run when their features can be represented safely by SpiceSharp and SpiceSharpBehavioral.
+- Prefer parser compatibility shims and explicit diagnostics before adding runtime behavior.
+- Build a small permission-safe fixture corpus; do not commit copied vendor libraries unless their license clearly permits redistribution.
+- Preserve existing PSpice/ngspice-compatible behavior by default.
+- Record known divergences instead of making blanket numeric-parity claims.
+
+Non-goals:
+
+- Importing, rendering, or simulating LTspice schematic files (`.asc`) or symbols (`.asy`).
+- Depending on LTspice in CI.
+- Claiming complete LTspice numeric parity across solver settings, device models, and vendor libraries.
+- Duplicating SpiceSharpBehavioral runtime features in SpiceSharpParser.
+
+## Compatibility Decisions
+
+- Add opt-in compatibility settings shaped as a `CompatibilityOptions` object with an LTspice preset. Prefer this over a single hard-coded dialect enum so future dialect quirks can coexist.
+- Add compatibility options to both parser and reader settings where behavior is split across lexing/parsing/preprocessing and SpiceSharp model generation.
+- Keep default behavior stable unless a change is dialect-neutral and covered by existing tests.
+- Treat recognized LTspice display/probing/annotation no-ops as warnings for now. Do not silently discard behavior-changing statements.
+- Use targeted reader/parser errors for recognized unsupported LTspice constructs.
+- Track parser, SpiceSharp, and SpiceSharpBehavioral minimum package requirements in the compatibility matrix before adding a versioned diagnostic framework.
+- Every public compatibility claim must point to a fixture or matrix row.
 
 ## Baseline To Preserve
 
-Keep these existing compatibility surfaces working while adding LTspice-specific behavior:
+These examples are baseline behavior, not future work:
 
 ```spice
 B1 out 0 V={V(in)*0.5}
@@ -55,287 +77,198 @@ B4 out 0 I={LAPLACE(V(a), 1/(1+s*t1)) - LAPLACE(V(b), 1/(1+s*t2))}
 B5 out 0 V={LAPLACE(2*V(in), 1/(1+s*tau), M=2, TD=1n)}
 ```
 
-The `LAPLACE` transfer subset remains a finite, proper rational polynomial in `s` with finite coefficients and non-singular DC gain. `LAPLACE` should stay a source/lowering feature, not a normal scalar expression function.
+The supported `LAPLACE` transfer subset remains a finite, proper rational polynomial in `s` with finite coefficients and non-singular DC gain.
 
-## Compatibility Classes
+## Compatibility Matrix
 
-Each fixture or feature should be classified separately for parsing, reading, execution, and numeric confidence.
+Create a matrix document or test data file before broadening support claims. Classify each feature independently for parse, read, run, and numeric confidence.
+
+| Feature | Parse | Read | Run | Numeric confidence | Diagnostics | Minimum packages | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| LTspice construct or netlist pattern | Accepted / rejected | SpiceSharp objects produced | OP/DC/AC/TRAN/NOISE support | Analytic / golden / smoke / divergent | Expected warning or error | Parser / engine package floor | Known limitations and migration guidance |
+
+Compatibility classes:
 
 | Class | Meaning | Expected behavior |
 | --- | --- | --- |
-| Supported | Parser and engine can represent the feature | Parse/read/run tests pass |
-| Parser shim | LTspice spelling can lower to existing SpiceSharp behavior | Add parser support and writer parity |
-| Recognized no-op | LTspice statement is display, probing, or annotation metadata | Ignore with info/warning diagnostics |
-| Engine required | The netlist parses but behavior needs a SpiceSharp runtime feature | Add engine tests before parser claims run support |
-| Intentional unsupported | Feature is proprietary, out of scope, or unsafe to approximate | Emit targeted diagnostics |
-| Numeric divergence | Feature runs but differs from LTspice semantics or defaults | Document tolerances and known differences |
+| Supported | Parser and runtime can represent the feature | Parse/read/run tests pass |
+| Parser shim | LTspice spelling lowers to existing behavior | Parser, reader, and writer parity where applicable |
+| Recognized no-op | Display, probing, or annotation metadata | Opt-in LTspice mode emits a warning and continues |
+| Engine required | Netlist parses but runtime behavior is missing | Parser matrix marks read-only or diagnostic until engine tests exist |
+| Intentional unsupported | Proprietary, unsafe, or out of scope | Targeted diagnostic |
+| Numeric divergence | Feature runs but differs from LTspice semantics/defaults | Document tolerances and known differences |
 
 ## Roadmap
 
-| Priority | Phase | Main outcome | Primary repo |
+| Priority | Phase | Outcome | Primary repo |
 | --- | --- | --- | --- |
-| P0 | Baseline corpus | Compatibility matrix and fixtures | SpiceSharpParser |
-| P1 | Dialect/no-op infrastructure | More LTspice-generated netlists accepted | SpiceSharpParser |
-| P2 | Scalar expression and ABM compatibility | Common behavioral expressions accepted | SpiceSharpParser first |
-| P3 | Model and instance parameter tolerance | Vendor-style model decks fail less often and fail clearer | SpiceSharpParser first |
-| P4 | Runtime gap closure | Engine support for measured blockers | SpiceSharp |
-| P5 | Release integration | Parser depends on tested engine capability | Both |
-| P6 | Documentation governance | Honest compatibility docs | SpiceSharpParser |
+| P0 | Fixtures and matrix | Permission-safe baseline that defines support claims | SpiceSharpParser |
+| P1 | Opt-in dialect/no-op infrastructure | Harmless LTspice-generated statements stop causing generic failures | SpiceSharpParser |
+| P2 | Scalar expression and ABM compatibility | More common behavioral expressions parse/read with clear unsupported diagnostics | SpiceSharpParser first |
+| P3 | Model and instance parameter tolerance | Vendor-style decks fail less often and fail clearer | SpiceSharpParser first |
+| P4 | Runtime gap closure | Engine support for fixture-proven blockers | SpiceSharp |
+| P5 | Docs and release governance | README/docs/package claims stay aligned with tested behavior | Both |
 
-## Phase 0: Compatibility Baseline
+## P0: Fixtures And Matrix
 
-Goal: replace guesswork with an executable, redistributable LTspice compatibility corpus.
+Goal: replace guesswork with executable, redistributable LTspice compatibility evidence.
 
-Add fixtures under the integration-test area and group them by expected outcome:
+Implementation backlog:
 
-- Parse-only: syntax that should tokenize and parse, even if no engine entity is produced.
-- Read-only: netlists that should convert into a SpiceSharp model without running.
-- Runnable: OP, DC, AC, TRAN, and NOISE examples with analytic or permission-safe expected values.
-- Expected diagnostic: recognized LTspice constructs that should produce targeted warnings or errors.
-
-Cover common LTspice-generated shapes:
-
-- `.include` and `.lib`, including quoted paths, nested includes, selected sections, Windows path separators, and relative paths.
-- `.param`, `.func`, `.step`, `.meas`, `.options`, `.ic`, `.nodeset`, `.temp`, and harmless generated controls such as `.backanno`.
-- Behavioral `B` sources, `VALUE=`, `TABLE`, `POLY`, source-level `LAPLACE`, and function-style `LAPLACE(...)`.
-- Voltage/current source waveforms: `PULSE`, `SIN`, `SINE`, `PWL`, `SFFM`, and `AM`.
-- Model decks and subcircuits from synthetic, license-safe examples.
-
-Deliverables:
-
-- A compatibility matrix document or test data file.
-- A naming convention for fixture classes, for example `LtspiceCompatibilityTests` plus feature-specific classes.
-- A rule that every future compatibility claim points to a fixture.
-
-## Phase 1: Dialect Infrastructure And No-Ops
-
-Goal: support harmless LTspice-generated syntax without weakening diagnostics for other dialects.
-
-Implementation direction:
-
-- Add an explicit compatibility option, such as a `SpiceDialect` enum or flags-style `CompatibilityOptions` object.
-- Prefer generic syntax improvements by default only when they do not change PSpice/ngspice behavior.
-- Recognize display/probing/annotation statements that can be safely ignored, such as `.backanno`, with informational or warning diagnostics.
-- Keep the existing processor pipeline intact: includes, library expansion, macros, append-model, AKO models, sweeps, and `.if` processing.
-- Tighten `.include` / `.lib` tests around LTspice path conventions before changing behavior.
-
-Candidate files:
-
-- `src/SpiceSharpParser/SpiceNetlistParser.cs`
-- `src/SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceNetlistReaderSettings.cs`
-- `src/SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceObjectMappings.cs`
-- `src/SpiceSharpParser.IntegrationTests/`
+- Add synthetic fixtures under the integration-test area and classify them as parse-only, read-only, runnable, or expected diagnostic.
+- Cover `.include` and `.lib` with quoted paths, nested includes, selected sections, Windows separators, and relative paths.
+- Cover common generated controls: `.param`, `.func`, `.step`, `.meas`, `.options`, `.ic`, `.nodeset`, `.temp`, and fixture-proven no-op candidates such as `.backanno`.
+- Cover behavioral forms: `B`, `VALUE=`, `TABLE`, `POLY`, source-level `LAPLACE`, and function-style `LAPLACE(...)`.
+- Cover source waveforms: `PULSE`, `SIN`, `SINE`, `PWL`, `SFFM`, and `AM`.
+- Cover model decks and subcircuits with synthetic, license-safe examples.
 
 Acceptance criteria:
 
-- LTspice-generated metadata statements no longer cause generic parse/read failures.
-- Unsupported LTspice controls produce targeted diagnostics.
-- Existing non-LTspice tests remain unchanged.
+- The matrix exists and includes parse, read, run, numeric-confidence, diagnostics, notes, and minimum-package columns.
+- Each new support claim has at least one fixture.
+- Expected failures assert targeted diagnostics instead of generic reader/parser failures.
 
-## Phase 2: Scalar Expression And ABM Compatibility
+## P1: Opt-In Dialect And No-Ops
 
-Goal: accept more LTspice behavioral expressions when they can be represented safely by existing runtime behavior.
+Goal: accept harmless LTspice-generated syntax without weakening default diagnostics.
 
-Implementation direction:
+Implementation backlog:
 
-- Audit LTspice scalar functions against current math functions, random functions, resolver functions, `.FUNC`, and behavioral-source support.
-- Implement safe scalar aliases first.
-- Treat `table()` as an early candidate because the math-function registry already exposes it as a TODO.
-- Add targeted diagnostics for recognized dynamic ABM functions that need simulation state or history.
-- Keep `LAPLACE(...)` on the existing lowering path rather than registering it as a scalar function.
-
-Function categories:
-
-| Category | Examples | Plan |
-| --- | --- | --- |
-| Pure scalar aliases | clamp/limit-style helpers, sign/step variants | Add parser/evaluator aliases when semantics are clear |
-| Existing random/Monte Carlo | `mc`, `gauss`, `flat`, `random`, `unif` variants | Compare LTspice semantics and document differences |
-| Table lookup | `table(...)` scalar form | Implement or lower to existing table behavior |
-| Dynamic/stateful | delay, derivative, integral, time-history functions | Classify as engine-required unless already supported |
-| Noise/random time sources | transient noise-like expressions | Engine-required or intentionally unsupported |
-
-Candidate files:
-
-- `src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/Functions/MathFunctions.cs`
-- `src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/Functions/RandomFunctions.cs`
-- `src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/ExpressionResolver.cs`
-- `src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/Sources/ArbitraryBehavioralGenerator.cs`
-- `src/docs/articles/behavioral-source.md`
-- `src/docs/articles/laplace.md`
+- Fix `ValidationEntryCollection.Warnings` before relying on warnings in compatibility tests.
+- Add `CompatibilityOptions` to parser and reader settings, with an LTspice preset or factory.
+- Wire opt-in LTspice behavior through preprocessing, control mapping, and reader diagnostics without changing default behavior.
+- Add a recognized-no-op control path for fixture-proven display/probing/annotation statements, starting with `.backanno`.
+- Add targeted unsupported diagnostics for LTspice controls that are recognized but not safe to ignore.
+- Tighten `.include` / `.lib` tests before changing path or section behavior.
 
 Acceptance criteria:
 
-- Safe aliases have parser, evaluator, and behavioral-source tests.
-- Dynamic unsupported functions produce clear diagnostics.
-- Generated C# writer output remains valid for every new lowering.
+- With LTspice compatibility enabled, recognized no-ops emit warnings and do not block reading.
+- With default settings, existing non-LTspice tests keep their current behavior.
+- Unsupported LTspice controls report the directive name and reason.
 
-## Phase 3: Model And Instance Parameter Tolerance
+## P2: Scalar Expression And ABM Compatibility
 
-Goal: let common LTspice model decks map cleanly where SpiceSharp has equivalent behavior, and fail clearly where it does not.
+Goal: accept more LTspice behavioral expressions when they can map to existing runtime behavior.
 
-Implementation direction:
+Implementation backlog:
+
+- Audit LTspice scalar functions against existing math functions, random functions, resolver functions, `.FUNC`, and behavioral-source support.
+- Implement safe scalar aliases where semantics are clear and static.
+- Implement or lower scalar `table(...)`; the current `CreateTable()` TODO makes this an early candidate.
+- Compare existing `mc`, `gauss`, `flat`, `random`, and `unif` behavior with LTspice semantics and document divergences.
+- Add targeted diagnostics for dynamic/stateful functions that need simulation history, derivatives, integrals, delay buffers, or transient noise semantics.
+- Keep `LAPLACE(...)` on the existing lowering path and do not register it as a scalar math function.
+
+Acceptance criteria:
+
+- Safe aliases have evaluator, resolver, behavioral-source, and generated-writer coverage where applicable.
+- `table(...)` compatibility is covered by parse/read/run tests or intentionally diagnostic fixtures.
+- Dynamic unsupported functions fail with actionable diagnostics.
+
+## P3: Model And Instance Parameter Tolerance
+
+Goal: make common LTspice/vendor model decks map where equivalent behavior exists and fail clearly where it does not.
+
+Implementation backlog:
 
 - Build alias/ignore/error tables per model family.
 - Map direct equivalents through existing model generators and parameter update paths.
-- Ignore LTspice metadata or layout-only parameters with compatibility diagnostics.
-- Fail for behavior-changing unsupported parameters with the component/model name and suggested fallback.
-- Test model parameter expressions, subcircuit parameter defaults, geometry parameters, temperature parameters, and `.MODEL` variants.
+- Warn on LTspice metadata or layout-only parameters only in LTspice compatibility mode.
+- Error on unsupported behavior-changing parameters with component/model name and suggested fallback when possible.
+- Test model parameter expressions, subcircuit defaults, geometry parameters, temperature parameters, and `.MODEL` variants.
 
-Model families:
+Model-family priorities:
 
 | Family | Parser action | Engine action |
 | --- | --- | --- |
-| R/C/L | Alias tolerances, temperature coefficients, geometry forms | Usually existing behavior |
-| Diode | Alias supported model parameters, warn on unsupported noise/recovery terms | Add engine behavior only for measured blockers |
-| BJT | Map known SPICE parameters, document divergence | Engine changes only with fixtures |
-| JFET | Map known parameters and metadata | Engine changes only with fixtures |
-| MOSFET | Separate legacy levels from LTspice/vendor power models | Likely engine-required for advanced models |
-| Switch | Map threshold/hysteresis/resistance aliases | Existing behavior likely sufficient |
+| R/C/L | Alias tolerances, temperature coefficients, and geometry forms | Usually existing behavior |
+| Diode | Map supported parameters, diagnose unsupported recovery/noise terms | Engine changes only for measured blockers |
+| BJT/JFET | Map known SPICE parameters and metadata | Engine changes only with fixtures |
+| MOSFET | Separate legacy levels from LTspice/vendor power models | Advanced models likely engine-required |
+| Switch | Map threshold, hysteresis, and resistance aliases | Existing behavior likely sufficient |
 | Transmission line | Preserve current lossless `T` support | Lossy/distributed variants may need engine work |
-
-Candidate files:
-
-- `src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/Semiconductors/`
-- `src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Models/`
-- `src/SpiceSharpParser/ModelReaders/Netlist/Spice/Context/Updates/`
-- `src/docs/articles/mosfet.md`
-- `src/docs/articles/diode.md`
-- `src/docs/articles/transmission-line.md`
 
 Acceptance criteria:
 
-- Each alias/ignore/error decision is covered by a fixture.
-- Behavior-changing unsupported parameters do not silently disappear.
+- Each alias/ignore/error decision has a fixture.
+- Behavior-changing unsupported parameters are never silently discarded.
 - Docs distinguish parse tolerance from numeric equivalence.
 
-## Phase 4: SpiceSharp Runtime Gap Closure
+## P4: SpiceSharp Runtime Gap Closure
 
-Goal: add engine capabilities only after parser fixtures prove that parsing and lowering are not enough.
+Goal: add engine capabilities only after parser fixtures prove that parsing and lowering are insufficient.
 
 Possible engine work:
 
 - LTspice/vendor-specific MOSFET or power-device models.
-- Lossy/distributed transmission-line variants.
-- Dynamic behavioral functions that require time history, derivatives, integrals, or delays.
-- Transient compatibility improvements around timestep guidance and fast switching.
-- Noise behavior differences, especially where LTspice semantics do not match SpiceSharp frequency-domain noise support.
-
-Implementation direction:
-
-- Add NUnit tests in the SpiceSharp repository before claiming parser runnable support.
-- Reuse existing SpiceSharp patterns: component parameters, binding contexts, behavior interfaces, generated behavior factories, and biasing/frequency/time/noise behaviors.
-- Avoid hidden solver-default changes unless they are measured and documented.
-- Prefer parser-side warnings for timestep-sensitive generated netlists over silent numerical tuning.
-
-Candidate files in the SpiceSharp repository:
-
-- `SpiceSharp/Components/`
-- `SpiceSharp/Simulations/`
-- `SpiceSharpGenerator/BehaviorGenerator.cs`
-- `SpiceSharpTest/`
+- Lossy or distributed transmission-line variants.
+- Dynamic behavioral functions requiring time history, derivatives, integrals, or delay buffers.
+- Transient robustness around timestep-sensitive switching.
+- Noise behavior differences where LTspice semantics do not match SpiceSharp frequency-domain noise support.
 
 Acceptance criteria:
 
-- Engine changes have direct NUnit coverage.
+- Engine changes land with direct SpiceSharp tests before parser runnable support is claimed.
 - Parser fixtures reference the minimum engine package version needed.
 - Runtime behavior is documented with tolerances or known divergence.
+- Solver-default changes are avoided unless measured and documented.
 
-## Phase 5: Parser And Engine Release Integration
+## P5: Docs And Release Governance
 
-Goal: keep the parser package, engine package, and generated C# writer in lockstep.
+Goal: keep package references, generated C# writer behavior, docs, and README claims aligned.
 
-Implementation direction:
+Implementation backlog:
 
-- Land SpiceSharp engine changes first when needed.
-- Update SpiceSharpParser package references only after engine tests are stable.
-- Add versioned diagnostics when a parser feature requires newer SpiceSharp or SpiceSharpBehavioral packages.
-- Preserve generated C# writer parity for every lowering or new entity mapping.
-- Keep old behavior stable for netlists that do not opt into LTspice compatibility settings, unless the change is a safe generic parser improvement.
+- Update README LTspice language only when matrix rows and fixtures support the claim.
+- Add troubleshooting entries for common unsupported LTspice constructs.
+- Add migration examples showing equivalent supported syntax.
+- Preserve generated C# writer parity for every new lowering or entity mapping.
+- Update SpiceSharpParser package references only after needed SpiceSharp changes have stable tests.
+- Keep vendor-library fixture policy explicit: synthetic examples by default, copied libraries only with clear redistribution permission.
 
 Acceptance criteria:
 
-- Full parser solution tests pass after package updates.
-- Full engine solution tests pass before parser integration.
-- Generated C# writer tests cover any new LTspice-compatible entity mapping.
+- Full parser solution tests pass after parser changes.
+- Full engine solution tests pass before package integration when engine work is involved.
+- Docs and matrix are updated in the same change as compatibility behavior.
 
-## Phase 6: Documentation And Governance
+## Implementation Map
 
-Goal: make compatibility claims precise enough for users to trust.
+Use these areas as the starting map, not as an exhaustive file checklist:
 
-Documentation updates:
-
-- README high-level LTspice support statement.
-- A compatibility matrix with separate parse, read, run, and numeric-confidence columns.
-- Troubleshooting entries for common unsupported LTspice constructs.
-- Migration examples showing equivalent supported syntax.
-- A fixture policy for vendor libraries and license-sensitive model decks.
-
-Compatibility matrix columns:
-
-| Column | Purpose |
-| --- | --- |
-| Feature | LTspice construct or netlist pattern |
-| Parse | Syntax accepted |
-| Read | Converted to SpiceSharp objects |
-| Run | OP/DC/AC/TRAN/NOISE execution support |
-| Numeric confidence | Analytic, golden, smoke-only, or divergent |
-| Diagnostics | Expected warnings/errors |
-| Notes | Known limitations and migration guidance |
+- Settings and dialect flow: parser settings, reader settings, object mappings, control reader, preprocessing pipeline.
+- Diagnostics: validation collection, targeted reader/parser errors, warning-based no-op controls.
+- Expressions and ABM: math/random functions, expression resolver, behavioral source generator, C# writer parity.
+- Models and parameters: model generators, component generators, parameter update paths, semiconductor docs.
+- Fixtures and docs: integration tests, README, LTspice compatibility matrix, behavioral-source and Laplace docs.
 
 ## Verification Strategy
 
-Run parser and engine tests separately:
+For each compatibility feature:
+
+1. Add or update a matrix row.
+2. Add a fixture before or with implementation.
+3. Classify the fixture as parse-only, read-only, runnable, or expected diagnostic.
+4. Use analytic expectations or permission-safe golden values for numeric checks.
+5. Avoid CI dependency on proprietary LTspice tooling.
+6. Verify generated C# writer parity when a source lowering or new entity mapping is involved.
+7. Update docs before broadening public support claims.
+
+Run parser and engine tests separately when code changes require them:
 
 ```powershell
 dotnet test d:\dev\SpiceSharpParser\src\SpiceSharp-Parser.sln
 dotnet test d:\dev\SpiceSharp\SpiceSharp.sln
 ```
 
-For each compatibility feature:
-
-1. Add a fixture before or with implementation.
-2. Classify the fixture as parse-only, read-only, runnable, or expected diagnostic.
-3. Use analytic expectations or permission-safe golden values for numeric checks.
-4. Avoid CI dependency on proprietary LTspice tooling.
-5. Verify generated C# writer parity when a source lowering or new entity mapping is involved.
-6. Update docs and the compatibility matrix before changing support claims.
-
-## Open Decisions
-
-- Compatibility API shape: `SpiceDialect.LTspice`, `LtspiceCompatibility`, or a flags-style `CompatibilityOptions` object. A flags-style options object is recommended if multiple dialect quirks will coexist.
-- Whether recognized LTspice no-ops should default to warnings or informational diagnostics.
-- Whether LTspice compatibility mode should be opt-in only, or whether harmless no-op recognition should be enabled by default.
-- How to version diagnostics for parser features that require newer SpiceSharp or SpiceSharpBehavioral packages.
-
-## Key Files
-
-Parser-side files:
-
-- `README.md`
-- `src/docs/articles/behavioral-source.md`
-- `src/docs/articles/laplace.md`
-- `src/SpiceSharpParser/SpiceNetlistParser.cs`
-- `src/SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceObjectMappings.cs`
-- `src/SpiceSharpParser/ModelReaders/Netlist/Spice/SpiceNetlistReaderSettings.cs`
-- `src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/Functions/MathFunctions.cs`
-- `src/SpiceSharpParser/ModelReaders/Netlist/Spice/Evaluation/Functions/RandomFunctions.cs`
-- `src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/Sources/ArbitraryBehavioralGenerator.cs`
-- `src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/Sources/LaplaceFunctionExpressionLowerer.cs`
-- `src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/EntityGenerators/Components/Semiconductors/`
-- `src/SpiceSharpParser.IntegrationTests/`
-- `src/SpiceSharpParser/SpiceSharpParser.csproj`
-
-Engine-side files, in the sibling SpiceSharp repository:
-
-- `SpiceSharp/Components/`
-- `SpiceSharp/Simulations/`
-- `SpiceSharpGenerator/BehaviorGenerator.cs`
-- `SpiceSharpTest/`
-
-## Current Decisions
+## Resolved Decisions
 
 - LTspice-generated netlists are the first target.
-- `.asc` and `.asy` schematic import are excluded from the first roadmap.
+- `.asc` and `.asy` schematic import are excluded from this roadmap.
+- Compatibility mode is opt-in.
+- `CompatibilityOptions` with an LTspice preset is the recommended API shape.
+- Recognized LTspice no-ops produce warnings until an informational diagnostic level exists.
 - Parser compatibility and diagnostics come first; engine changes follow measured blockers.
-- Existing `B` source and function-style `LAPLACE(...)` support are current baseline behavior.
-- Copyright-sensitive vendor libraries should not be committed as fixtures unless license terms clearly allow it.
+- Existing `B`, `VALUE`, and `LAPLACE(...)` support is baseline behavior to preserve.
+- Compatibility claims must be backed by fixtures and matrix rows.
