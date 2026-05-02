@@ -19,9 +19,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             switch (type.ToLower())
             {
-                case "v": return GenerateVoltageSource(componentIdentifier, parameters, context);
-                case "h": return GenerateCurrentControlledVoltageSource(componentIdentifier, parameters, context);
-                case "e": return GenerateVoltageControlledVoltageSource(componentIdentifier, parameters, context);
+                case "v": return GenerateVoltageSource(componentIdentifier, originalName, parameters, context);
+                case "h": return GenerateCurrentControlledVoltageSource(componentIdentifier, originalName, parameters, context);
+                case "e": return GenerateVoltageControlledVoltageSource(componentIdentifier, originalName, parameters, context);
             }
 
             return null;
@@ -38,13 +38,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </returns>
         protected IEntity GenerateVoltageControlledVoltageSource(
             string name,
+            string originalName,
             ParameterCollection parameters,
             IReadingContext context)
         {
             var laplaceParser = new LaplaceSourceParser();
             if (laplaceParser.IsLaplaceSource(parameters))
             {
-                return CreateCustomVoltageSource(name, parameters, context, true);
+                return CreateCustomVoltageSource(name, originalName, parameters, context, true);
             }
 
             if (parameters.Count == 5
@@ -83,7 +84,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else
                 {
-                    return CreateCustomVoltageSource(name, parameters, context, true);
+                    return CreateCustomVoltageSource(name, originalName, parameters, context, true);
                 }
             }
         }
@@ -99,6 +100,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </returns>
         protected IEntity GenerateCurrentControlledVoltageSource(
             string name,
+            string originalName,
             ParameterCollection parameters,
             IReadingContext context)
         {
@@ -116,7 +118,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
             else
             {
-                return CreateCustomVoltageSource(name, parameters, context, false);
+                return CreateCustomVoltageSource(name, originalName, parameters, context, false);
             }
         }
 
@@ -129,19 +131,27 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of voltage source.
         /// </returns>
-        protected IEntity GenerateVoltageSource(string name, ParameterCollection parameters, IReadingContext context)
+        protected IEntity GenerateVoltageSource(string name, string originalName, ParameterCollection parameters, IReadingContext context)
         {
             var evalContext = context.EvaluationContext;
-            var laplaceParser = new LaplaceSourceParser();
-            if (laplaceParser.TryRejectUnsupportedLaplaceFunction(parameters, context, "value"))
-            {
-                return null;
-            }
 
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
             {
                 var valueParameter = (AssignmentParameter)parameters.Single(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");
                 string expression = valueParameter.Value;
+                if (TryCreateLaplaceFunctionSource(
+                    name,
+                    originalName,
+                    parameters,
+                    context,
+                    LaplaceOutputKind.Voltage,
+                    expression,
+                    valueParameter,
+                    out var laplaceEntity))
+                {
+                    return laplaceEntity;
+                }
+
                 if (evalContext.HaveSpiceProperties(expression) || evalContext.HaveFunctions(expression))
                 {
                     BehavioralVoltageSource entity = CreateBehavioralVoltageSource(name, parameters, context, evalContext, expression);
@@ -153,6 +163,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 var expressionParameter = (ExpressionParameter)parameters.Single(p => p is ExpressionParameter);
                 string expression = expressionParameter.Value;
+
+                if (TryCreateLaplaceFunctionSource(
+                    name,
+                    originalName,
+                    parameters,
+                    context,
+                    LaplaceOutputKind.Voltage,
+                    expression,
+                    expressionParameter,
+                    out var laplaceEntity))
+                {
+                    return laplaceEntity;
+                }
 
                 if (evalContext.HaveSpiceProperties(expressionParameter.Value) || evalContext.HaveFunctions(expressionParameter.Value))
                 {
@@ -167,46 +190,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return vs;
         }
 
-        protected BehavioralVoltageSource CreateBehavioralVoltageSource(string name, ParameterCollection parameters, IReadingContext context, EvaluationContext evalContext, string expression)
-        {
-            var entity = new BehavioralVoltageSource(name);
-            context.CreateNodes(entity, parameters.Take(BehavioralVoltageSource.BehavioralVoltageSourcePinCount));
-            entity.Parameters.Expression = expression;
-            entity.Parameters.ParseAction = (expression) =>
-            {
-                var parser = context.CreateExpressionResolver(null);
-                return parser.Resolve(expression);
-            };
-
-            if (evalContext.HaveFunctions(expression))
-            {
-                context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
-                {
-                    entity.Parameters.Expression = expression;
-                    entity.Parameters.ParseAction = (expression) =>
-                    {
-                        var parser = context.CreateExpressionResolver(simulation);
-                        return parser.Resolve(expression);
-                    };
-                });
-            }
-
-            return entity;
-        }
-
         protected IEntity CreateCustomVoltageSource(
             string name,
+            string originalName,
             ParameterCollection parameters,
             IReadingContext context,
             bool isVoltageControlled)
         {
             var evalContext = context.EvaluationContext;
             var laplaceParser = new LaplaceSourceParser();
-
-            if (laplaceParser.TryRejectUnsupportedLaplaceFunction(parameters, context, "value"))
-            {
-                return null;
-            }
 
             if (laplaceParser.IsLaplaceSource(parameters))
             {
@@ -218,7 +210,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         return null;
                     }
 
-                    return CreateLaplaceCurrentControlledVoltageSource(name, currentControlledDefinition, context);
+                    return CreateLaplaceSource(currentControlledDefinition, LaplaceOutputKind.Voltage, context);
                 }
 
                 var definition = laplaceParser.ParseVoltageControlledSource(name, parameters, context);
@@ -227,12 +219,25 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     return null;
                 }
 
-                return CreateLaplaceVoltageControlledVoltageSource(name, definition, context);
+                return CreateLaplaceSource(definition, LaplaceOutputKind.Voltage, context);
             }
 
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
             {
                 var valueParameter = (AssignmentParameter)parameters.Single(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");
+
+                if (TryCreateLaplaceFunctionSource(
+                    name,
+                    originalName,
+                    parameters,
+                    context,
+                    LaplaceOutputKind.Voltage,
+                    valueParameter.Value,
+                    valueParameter,
+                    out var laplaceEntity))
+                {
+                    return laplaceEntity;
+                }
 
                 BehavioralVoltageSource entity = CreateBehavioralVoltageSource(name, parameters, context, evalContext, valueParameter.Value);
                 return entity;
@@ -240,9 +245,24 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
             if (parameters.Any(p => p is WordParameter ap && ap.Value.ToLower() == "value"))
             {
+                var valueWordParameter = parameters.FirstOrDefault(p => p is WordParameter ap && ap.Value.ToLower() == "value");
                 var expressionParameter = parameters.FirstOrDefault(p => p is ExpressionParameter);
                 if (expressionParameter != null)
                 {
+                    if (TryCreateLaplaceFunctionSource(
+                        name,
+                        originalName,
+                        parameters,
+                        context,
+                        LaplaceOutputKind.Voltage,
+                        expressionParameter.Value,
+                        expressionParameter,
+                        out var laplaceEntity,
+                        valueWordParameter))
+                    {
+                        return laplaceEntity;
+                    }
+
                     BehavioralVoltageSource entity = CreateBehavioralVoltageSource(name, parameters, context, evalContext, expressionParameter.Value);
                     return entity;
                 }

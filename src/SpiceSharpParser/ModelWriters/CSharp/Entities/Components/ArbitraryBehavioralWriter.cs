@@ -26,7 +26,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                 var valueParameter = (AssignmentParameter)parameters.Single(p => p is AssignmentParameter ap && ap.Name.ToLower() == "v");
                 string expression = valueParameter.Value;
 
-                SourceWriterHelper.CreateBehavioralVoltageSource(result, name, pins, expression, context);
+                SourceWriterHelper.CreateBehavioralVoltageSource(result, name, @object.PinsAndParameters, expression, context);
             }
 
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "i"))
@@ -34,7 +34,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                 var valueParameter = (AssignmentParameter)parameters.Single(p => p is AssignmentParameter ap && ap.Name.ToLower() == "i");
                 string expression = valueParameter.Value;
 
-                SourceWriterHelper.CreateBehavioralCurrentSource(result, name, pins, expression, context);
+                SourceWriterHelper.CreateBehavioralCurrentSource(result, name, @object.PinsAndParameters, expression, context);
             }
 
             return result;

@@ -501,6 +501,64 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return true;
         }
 
+        internal static bool TryParseInput(
+            Node node,
+            out LaplaceSourceInput input)
+        {
+            input = null;
+
+            if (node is VariableNode variableNode)
+            {
+                if (variableNode.NodeType == NodeTypes.Voltage
+                    && IsValidNodeName(variableNode.Name))
+                {
+                    input = LaplaceSourceInput.Voltage(variableNode.Name, "0");
+                    return true;
+                }
+
+                if (variableNode.NodeType == NodeTypes.Current
+                    && IsValidNodeName(variableNode.Name))
+                {
+                    input = LaplaceSourceInput.Current(variableNode.Name);
+                    return true;
+                }
+            }
+
+            if (node is BinaryOperatorNode binaryNode
+                && binaryNode.NodeType == NodeTypes.Subtract
+                && binaryNode.Left is VariableNode leftNode
+                && binaryNode.Right is VariableNode rightNode
+                && leftNode.NodeType == NodeTypes.Voltage
+                && rightNode.NodeType == NodeTypes.Voltage
+                && IsValidNodeName(leftNode.Name)
+                && IsValidNodeName(rightNode.Name))
+            {
+                input = LaplaceSourceInput.Voltage(leftNode.Name, rightNode.Name);
+                return true;
+            }
+
+            return false;
+        }
+
+        internal static bool TryParseInput(
+            Node node,
+            LaplaceSourceInputKind expectedInputKind,
+            out LaplaceSourceInput input)
+        {
+            if (!TryParseInput(node, out input))
+            {
+                return false;
+            }
+
+            if (input.Kind != expectedInputKind)
+            {
+                input = null;
+                return false;
+            }
+
+            return true;
+        }
+
         private static bool TryParseInput(
             string expression,
             LaplaceSourceInputKind expectedInputKind,

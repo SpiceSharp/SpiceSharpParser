@@ -512,4 +512,4 @@ SpiceSharpParser intentionally supports the practical subset introduced near the
 - Finite DC gain.
 - Constant `M=`, `TD=`, and `DELAY=` options on supported source-level forms.
 
-That means many web examples need adaptation before they are valid here. Avoid unsupported forms such as `exp()`, `sqrt()`, pure `1/s`, arbitrary input expressions, ideal delay forms outside the supported `TD=` / `DELAY=` options, and function-like `VALUE={LAPLACE(...)}` syntax.
+That means many web examples need adaptation before they are valid here. Avoid unsupported forms such as `exp()`, `sqrt()`, pure `1/s`, arbitrary input expressions, ideal delay forms outside the supported `TD=` / `DELAY=` options, and inline option arguments inside `LAPLACE(...)`.

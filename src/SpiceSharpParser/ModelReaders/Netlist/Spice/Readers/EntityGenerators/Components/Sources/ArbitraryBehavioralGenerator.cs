@@ -16,53 +16,55 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             ParameterCollection parameters,
             IReadingContext context)
         {
-            var laplaceParser = new LaplaceSourceParser();
-            if (laplaceParser.TryRejectUnsupportedLaplaceFunction(parameters, context, "v", "i"))
-            {
-                return null;
-            }
-
             if (parameters.Any(p => p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "v"))
             {
-                var entity = new BehavioralVoltageSource(componentIdentifier);
-                context.CreateNodes(entity, parameters);
-
                 var expressionParameter = (AssignmentParameter)parameters.First(p => p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "v");
-                entity.Parameters.Expression = expressionParameter.Value;
-                entity.Parameters.ParseAction = (expression) =>
+
+                if (TryCreateLaplaceFunctionSource(
+                    componentIdentifier,
+                    originalName,
+                    parameters,
+                    context,
+                    LaplaceOutputKind.Voltage,
+                    expressionParameter.Value,
+                    expressionParameter,
+                    out var laplaceEntity))
                 {
-                    var parser = context.CreateExpressionResolver(null);
-                    return parser.Resolve(expression);
-                };
-                return entity;
+                    return laplaceEntity;
+                }
+
+                return CreateBehavioralVoltageSource(
+                    componentIdentifier,
+                    parameters,
+                    context,
+                    context.EvaluationContext,
+                    expressionParameter.Value);
             }
 
             if (parameters.Any(p => p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "i"))
             {
-                var entity = new BehavioralCurrentSource(componentIdentifier);
-                context.CreateNodes(entity, parameters);
-
                 var expressionParameter = (AssignmentParameter)parameters.First(p =>
                     p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "i");
 
-                var mParameter = (AssignmentParameter)parameters.FirstOrDefault(p =>
-                    p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "m");
-
-                if (mParameter != null)
+                if (TryCreateLaplaceFunctionSource(
+                    componentIdentifier,
+                    originalName,
+                    parameters,
+                    context,
+                    LaplaceOutputKind.Current,
+                    expressionParameter.Value,
+                    expressionParameter,
+                    out var laplaceEntity))
                 {
-                    entity.Parameters.Expression = $"({expressionParameter.Value}) * ({mParameter.Value})";
+                    return laplaceEntity;
                 }
-                else
-                {
-                    entity.Parameters.Expression = expressionParameter.Value;
-                }
 
-                entity.Parameters.ParseAction = (expression) =>
-                {
-                    var parser = context.CreateExpressionResolver(null);
-                    return parser.Resolve(expression);
-                };
-                return entity;
+                return CreateBehavioralCurrentSource(
+                    componentIdentifier,
+                    parameters,
+                    context,
+                    context.EvaluationContext,
+                    expressionParameter.Value);
             }
 
             return null;

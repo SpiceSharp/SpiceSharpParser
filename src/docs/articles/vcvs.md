@@ -50,8 +50,7 @@ Current limitations:
 
 - Only input expressions `V(node)` and `V(node1,node2)` are accepted.
 - `F` and `H` LAPLACE forms use current input and are documented separately.
-- `B` source LAPLACE forms are not supported yet.
-- Function-like `VALUE={LAPLACE(...)}` syntax is not supported yet.
+- Function-style `VALUE={LAPLACE(...)}` and `B ... V={LAPLACE(...)}` forms are supported; mixed expressions may create internal helper sources.
 - Explicit internal-state options are not supported yet.
 - Transfers must be proper, finite rational polynomials in `s` with non-singular DC gain.
 

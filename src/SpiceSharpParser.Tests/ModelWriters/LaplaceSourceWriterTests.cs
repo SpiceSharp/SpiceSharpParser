@@ -88,6 +88,58 @@ namespace SpiceSharpParser.Tests.ModelWriters
             Assert.Contains(lines.OfType<CSharpAssignmentStatement>(), line => line.Left.EndsWith(".Parameters.Numerator") && line.ValueExpression == "new[] { 2d }");
         }
 
+        [Fact]
+        public void When_ValueLaplaceFunctionIsWritten_Expect_LaplaceVoltageControlledVoltageSource()
+        {
+            var component = new Component(
+                "VLOW",
+                new ParameterCollection(
+                    new List<Parameter>
+                    {
+                        new IdentifierParameter("out"),
+                        new IdentifierParameter("0"),
+                        Assignment("VALUE", "LAPLACE(V(in), 1/(1+s*tau))"),
+                        Assignment("M", "2"),
+                    }),
+                lineInfo: null);
+
+            var writer = new VoltageSourceWriter(new WaveformWriter());
+            var lines = writer.Write(component, CreateContext(("tau", "1u")));
+
+            Assert.Contains(lines.OfType<CSharpNewStatement>(), line => line.NewExpression == @"new LaplaceVoltageControlledVoltageSource(""VLOW"")");
+            Assert.Contains(lines.OfType<CSharpCallStatement>(), line => line.CallExpression == @"Connect(""out"", ""0"", ""in"", ""0"")");
+            Assert.Contains(lines.OfType<CSharpAssignmentStatement>(), line => line.Left.EndsWith(".Parameters.Numerator") && line.ValueExpression == "new[] { 2d }");
+        }
+
+        [Fact]
+        public void When_MixedBSourceLaplaceFunctionIsWritten_Expect_HelperBeforeBehavioralSource()
+        {
+            var component = new Component(
+                "BMIX",
+                new ParameterCollection(
+                    new List<Parameter>
+                    {
+                        new IdentifierParameter("out"),
+                        new IdentifierParameter("0"),
+                        Assignment("V", "1 + 2*LAPLACE(V(in), 1/(1+s))"),
+                    }),
+                lineInfo: null);
+
+            var writer = new ArbitraryBehavioralWriter();
+            var lines = writer.Write(component, CreateContext());
+
+            var helperIndex = lines.FindIndex(line => line is CSharpNewStatement statement
+                && statement.NewExpression == @"new LaplaceVoltageControlledVoltageSource(""__ssp_laplace_BMIX_0_src"")");
+            var behavioralIndex = lines.FindIndex(line => line is CSharpNewStatement statement
+                && statement.NewExpression == @"new BehavioralVoltageSource(""BMIX"")");
+
+            Assert.True(helperIndex >= 0);
+            Assert.True(behavioralIndex > helperIndex);
+            Assert.Contains(lines.OfType<CSharpAssignmentStatement>(), line =>
+                line.Left.EndsWith(".Parameters.Expression")
+                && line.ValueExpression.Contains("V(__ssp_laplace_BMIX_0)"));
+        }
+
         private static WriterContext CreateContext(params (string Name, string Expression)[] parameters)
         {
             var parser = new ExpressionParser(

@@ -35,7 +35,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                 string expression = valueParameter.Value;
                 if (context.EvaluationContext.HaveSpiceProperties(expression) || context.EvaluationContext.HaveFunctions(expression))
                 {
-                    SourceWriterHelper.CreateBehavioralVoltageSource(result, name, pins, expression, context);
+                    SourceWriterHelper.CreateBehavioralVoltageSource(result, name, @object.PinsAndParameters, expression, context);
                     return result;
                 }
             }
@@ -47,7 +47,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
 
                 if (context.EvaluationContext.HaveSpiceProperties(expressionParameter.Value) || context.EvaluationContext.HaveFunctions(expressionParameter.Value))
                 {
-                    SourceWriterHelper.CreateBehavioralVoltageSource(result, name, pins, expression, context);
+                    SourceWriterHelper.CreateBehavioralVoltageSource(result, name, @object.PinsAndParameters, expression, context);
                     return result;
                 }
             }

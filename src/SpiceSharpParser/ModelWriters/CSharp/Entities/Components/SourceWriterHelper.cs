@@ -30,6 +30,19 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
 
         public static void CreateBehavioralCurrentSource(List<CSharpStatement> result, string name, ParameterCollection pins, string expression, IWriterContext context)
         {
+            if (TryCreateLaplaceFunctionSource(result, name, pins, expression, context, LaplaceOutputKind.Current))
+            {
+                return;
+            }
+
+            var mParameter = (AssignmentParameter)pins.FirstOrDefault(p =>
+                p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "m");
+
+            if (mParameter != null)
+            {
+                expression = $"({expression}) * ({mParameter.Value})";
+            }
+
             var currentSourceId = context.GetNewIdentifier(name);
             result.Add(new CSharpNewStatement(currentSourceId, $@"new BehavioralCurrentSource(""{name}"")"));
             result.Add(new CSharpCallStatement(currentSourceId, $@"Connect(""{pins[0].Value}"", ""{pins[1].Value}"")"));
@@ -39,12 +52,81 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
 
         public static void CreateBehavioralVoltageSource(List<CSharpStatement> result, string name, ParameterCollection pins, string expression, IWriterContext context)
         {
+            if (TryCreateLaplaceFunctionSource(result, name, pins, expression, context, LaplaceOutputKind.Voltage))
+            {
+                return;
+            }
+
             var currentSourceId = context.GetNewIdentifier(name);
             result.Add(new CSharpNewStatement(currentSourceId, $@"new BehavioralVoltageSource(""{name}"")"));
             result.Add(new CSharpCallStatement(currentSourceId, $@"Connect(""{pins[0].Value}"", ""{pins[1].Value}"")"));
             var transformed = context.EvaluationContext.Transform(expression);
 
             result.Add(new CSharpAssignmentStatement($@"{currentSourceId}.Parameters.Expression", @$"$""{transformed}"""));
+        }
+
+        private static bool TryCreateLaplaceFunctionSource(
+            List<CSharpStatement> result,
+            string name,
+            ParameterCollection parameters,
+            string expression,
+            IWriterContext context,
+            LaplaceOutputKind outputKind)
+        {
+            var errors = new List<string>();
+            var evaluationContext = CreateLaplaceEvaluationContext(context);
+            var lowerer = new LaplaceFunctionExpressionLowerer(
+                evaluationContext,
+                evaluationContext.Evaluator.EvaluateDouble,
+                (message, _, __) => errors.Add(message),
+                localEntityName => localEntityName,
+                _ => false,
+                parameters.LineInfo);
+
+            var loweringResult = lowerer.Lower(
+                name,
+                name,
+                parameters[0].Value,
+                parameters[1].Value,
+                expression,
+                parameters,
+                outputKind);
+
+            if (!loweringResult.IsHandled)
+            {
+                return false;
+            }
+
+            if (loweringResult.HasErrors)
+            {
+                var message = errors.Count == 0
+                    ? "Error: LAPLACE function source could not be generated, " + name + " " + parameters
+                    : "Error: " + string.Join("; ", errors) + ", " + name + " " + parameters;
+                result.Add(new CSharpComment(message));
+                return true;
+            }
+
+            if (loweringResult.IsDirect)
+            {
+                CreateLaplaceSource(result, loweringResult.DirectDefinition, outputKind, context);
+                return true;
+            }
+
+            foreach (var helperDefinition in loweringResult.HelperDefinitions)
+            {
+                CreateLaplaceSource(result, helperDefinition.Definition, LaplaceOutputKind.Voltage, context);
+            }
+
+            if (outputKind == LaplaceOutputKind.Voltage)
+            {
+                CreateBehavioralVoltageSource(result, name, parameters, loweringResult.RewrittenExpression, context);
+            }
+            else
+            {
+                CreateBehavioralCurrentSource(result, name, parameters, loweringResult.RewrittenExpression, context);
+            }
+
+            return true;
         }
 
         private static bool TryCreateLaplaceSource(
@@ -90,30 +172,43 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Components
                 return true;
             }
 
-            if (isCurrentSource)
+            CreateLaplaceSource(
+                result,
+                definition,
+                isCurrentSource ? LaplaceOutputKind.Current : LaplaceOutputKind.Voltage,
+                context);
+
+            return true;
+        }
+
+        private static void CreateLaplaceSource(
+            List<CSharpStatement> result,
+            LaplaceSourceDefinition definition,
+            LaplaceOutputKind outputKind,
+            IWriterContext context)
+        {
+            if (outputKind == LaplaceOutputKind.Current)
             {
-                if (isVoltageControlled)
+                if (definition.Input.Kind == LaplaceSourceInputKind.Voltage)
                 {
-                    CreateLaplaceVoltageControlledCurrentSource(result, name, definition, context);
+                    CreateLaplaceVoltageControlledCurrentSource(result, definition.SourceName, definition, context);
                 }
                 else
                 {
-                    CreateLaplaceCurrentControlledCurrentSource(result, name, definition, context);
+                    CreateLaplaceCurrentControlledCurrentSource(result, definition.SourceName, definition, context);
                 }
             }
             else
             {
-                if (isVoltageControlled)
+                if (definition.Input.Kind == LaplaceSourceInputKind.Voltage)
                 {
-                    CreateLaplaceVoltageControlledVoltageSource(result, name, definition, context);
+                    CreateLaplaceVoltageControlledVoltageSource(result, definition.SourceName, definition, context);
                 }
                 else
                 {
-                    CreateLaplaceCurrentControlledVoltageSource(result, name, definition, context);
+                    CreateLaplaceCurrentControlledVoltageSource(result, definition.SourceName, definition, context);
                 }
             }
-
-            return true;
         }
 
         private static SpiceEvaluationContext CreateLaplaceEvaluationContext(IWriterContext context)

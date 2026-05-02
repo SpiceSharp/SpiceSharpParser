@@ -565,33 +565,89 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         }
 
         [Fact]
-        public void When_ValueLaplaceFunctionIsUsed_Expect_ReaderValidationError()
+        public void When_ValueLaplaceFunctionIsUsed_Expect_DcGainNearOne()
         {
             var model = GetSpiceSharpModel(
-                "E VALUE LAPLACE unsupported",
+                "E VALUE LAPLACE OP",
                 "VIN in 0 1",
-                "EBAD out 0 VALUE = {LAPLACE(V(in), 1/(1+s))}",
+                "EVALUE out 0 VALUE = {LAPLACE(V(in), 1/(1+s))}",
                 "RLOAD out 0 1k",
                 ".OP",
                 ".SAVE V(out)",
                 ".END");
 
-            AssertReaderErrorContains(model, "function syntax");
+            AssertNoValidationErrors(model);
+            Assert.IsType<LaplaceVoltageControlledVoltageSource>(model.Circuit["EVALUE"]);
+            Assert.True(EqualsWithTol(1.0, RunOpSimulation(model, "V(out)")));
         }
 
         [Fact]
-        public void When_BVoltageLaplaceFunctionIsUsed_Expect_ReaderValidationError()
+        public void When_BVoltageLaplaceFunctionIsUsed_Expect_DcGainNearOne()
         {
             var model = GetSpiceSharpModel(
-                "B LAPLACE unsupported",
+                "B V LAPLACE OP",
                 "VIN in 0 1",
-                "BBAD out 0 V={LAPLACE(V(in), 1/(1+s))}",
+                "BLOW out 0 V={LAPLACE(V(in), 1/(1+s))}",
                 "RLOAD out 0 1k",
                 ".OP",
                 ".SAVE V(out)",
                 ".END");
 
-            AssertReaderErrorContains(model, "function syntax");
+            AssertNoValidationErrors(model);
+            Assert.IsType<LaplaceVoltageControlledVoltageSource>(model.Circuit["BLOW"]);
+            Assert.True(EqualsWithTol(1.0, RunOpSimulation(model, "V(out)")));
+        }
+
+        [Fact]
+        public void When_BCurrentLaplaceFunctionIsUsed_Expect_LoadVoltageWithCurrentSourceSign()
+        {
+            var model = GetSpiceSharpModel(
+                "B I LAPLACE OP",
+                ".PARAM gm=1m",
+                "VIN in 0 1",
+                "BLOW out 0 I={LAPLACE(V(in), gm/(1+s))}",
+                "RLOAD out 0 1k",
+                ".OP",
+                ".SAVE V(out)",
+                ".END");
+
+            AssertNoValidationErrors(model);
+            Assert.IsType<LaplaceVoltageControlledCurrentSource>(model.Circuit["BLOW"]);
+            Assert.True(EqualsWithTol(-1.0, RunOpSimulation(model, "V(out)")));
+        }
+
+        [Fact]
+        public void When_MixedBVoltageLaplaceFunctionIsUsed_Expect_HelperAndOffset()
+        {
+            var model = GetSpiceSharpModel(
+                "B mixed LAPLACE OP",
+                "VIN in 0 1",
+                "BMIX out 0 V={1 + 2*LAPLACE(V(in), 1/(1+s))}",
+                "RLOAD out 0 1k",
+                ".OP",
+                ".SAVE V(out)",
+                ".END");
+
+            AssertNoValidationErrors(model);
+            Assert.IsType<BehavioralVoltageSource>(model.Circuit["BMIX"]);
+            Assert.Contains(model.Circuit, entity => entity.Name == "__ssp_laplace_BMIX_0_src");
+            Assert.True(EqualsWithTol(3.0, RunOpSimulation(model, "V(out)")));
+        }
+
+        [Fact]
+        public void When_MultipleLaplaceFunctionsUseDelay_Expect_ReaderValidationError()
+        {
+            var model = GetSpiceSharpModel(
+                "B mixed LAPLACE invalid delay",
+                "VA a 0 1",
+                "VB b 0 1",
+                "BMIX out 0 V={LAPLACE(V(a), 1/(1+s)) + LAPLACE(V(b), 1/(1+s))} TD=1n",
+                "RLOAD out 0 1k",
+                ".OP",
+                ".SAVE V(out)",
+                ".END");
+
+            AssertReaderErrorContains(model, "only when one LAPLACE call");
         }
 
         [Fact]

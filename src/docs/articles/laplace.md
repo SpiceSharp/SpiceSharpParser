@@ -2,7 +2,7 @@
 
 `LAPLACE` sources model a linear transfer function in the Laplace domain. They are useful when you know the desired gain, poles, zeros, or filter response and want to describe it directly instead of building the same behavior from resistors, capacitors, inductors, or op-amp subcircuits.
 
-SpiceSharpParser supports voltage-controlled `E` and `G` source LAPLACE forms with `V(node)` or `V(node1,node2)` input, current-controlled `F` and `H` forms with `I(source)` input, three equivalent spellings, and finite constant `M=`, `TD=`, and `DELAY=` options.
+SpiceSharpParser supports source-level `E`, `G`, `F`, and `H` LAPLACE forms, plus function-style `LAPLACE(input, transfer)` inside `VALUE`, `B ... V=`, and `B ... I=` behavioral expressions.
 
 If you are new to Laplace transforms, start with [Laplace Transform Basics for Circuit Simulation](laplace-basics.md). This article is the syntax and reference page.
 
@@ -129,6 +129,20 @@ H<name> <out+> <out-> LAPLACE {I(<source>)} {<transfer>} [M=<m>] [TD=<delay>|DEL
 H<name> <out+> <out-> LAPLACE = {I(<source>)} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
 ```
 
+### Function-Style LAPLACE
+
+The same transfer can be written inside behavioral expressions:
+
+```spice
+ELOW OUT 0 VALUE={LAPLACE(V(IN), 1/(1+s*tau))}
+GLOW OUT 0 VALUE={LAPLACE(V(IN), gm/(1+s*tau))}
+BLOW OUT 0 V={LAPLACE(V(IN), wc/(s+wc))}
+BGM OUT 0 I={LAPLACE(V(IN), gm/(1+s*tau))}
+BMIX OUT 0 V={1 + 2*LAPLACE(V(IN), 1/(1+s))}
+```
+
+If the whole expression is one `LAPLACE(...)` call, SpiceSharpParser creates the matching Laplace source directly. If the expression mixes `LAPLACE(...)` with other terms, each call is lowered to an internal helper voltage source and the behavioral expression references the helper voltage. These helper entities are an implementation detail, but they can appear during low-level circuit inspection.
+
 ### Options
 
 Supported options must use assignment syntax:
@@ -140,6 +154,8 @@ Supported options must use assignment syntax:
 | `DELAY=<delay>` | Alias for `TD`. |
 
 Use either `TD` or `DELAY`, not both, and specify delay only once. Bare forms such as `TD 1n` are not supported.
+
+For function-style `LAPLACE(...)`, `TD=` and `DELAY=` may be used only when the expression contains exactly one `LAPLACE(...)` call. `M=` scales a direct whole-expression Laplace transfer. For mixed current-output expressions, `M=` applies to the final behavioral current expression; mixed voltage-output expressions do not support `M=`.
 
 ## Transfer Polynomials
 
@@ -514,7 +530,7 @@ For `F` and `H`, use the same spelling variants with current input, such as `{I(
 | `TD=1n DELAY=2n` | Only one delay option may be used | Use either `TD` or `DELAY` |
 | `TD=-1n` | Delay must be non-negative | Use `TD=0` or a positive delay |
 | `TD 1n` | Options require assignment syntax | Use `TD=1n` |
-| `VALUE={LAPLACE(...)}` | Function-like LAPLACE syntax is not supported yet | Use source-level `E`/`G`/`F`/`H ... LAPLACE ...` |
+| `LAPLACE(V(a)-V(b), H(s))` | Arbitrary input expressions are unsupported | Use `LAPLACE(V(a,b), H(s))` |
 
 ## Further Reading
 
@@ -530,8 +546,8 @@ These references are useful for the engineering context behind transfer-function
 
 - `E` and `G` require `V(node)` or `V(node1,node2)` input expressions.
 - `F` and `H` require `I(source)` input expressions.
-- `B` source LAPLACE forms are not supported yet.
-- Function-like `VALUE={LAPLACE(...)}` syntax is not supported yet.
+- Function-style `LAPLACE(...)` input must be `V(node)`, `V(node1,node2)`, or `I(source)`.
+- Function-style options inside the call, such as `LAPLACE(V(IN), H(s), TD=1n)`, are not supported.
 - Explicit internal-state options are not supported yet.
 - Transient response is verified for undelayed first-order `E` / `G` low-pass sources. Delayed transient sources and current-controlled `F` / `H` transient sources are not currently claimed beyond runtime support covered by focused tests.
 - Transfers must be finite, proper rational polynomials in `s` with non-singular DC gain.

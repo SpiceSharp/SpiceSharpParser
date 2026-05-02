@@ -8,7 +8,9 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Laplace;
+using SpiceSharpParser.Lexers.Expressions;
 using Xunit;
+using Parser = SpiceSharpParser.Parsers.Expression.Parser;
 
 namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation.Laplace
 {
@@ -79,6 +81,18 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation.Laplace
             context.SetParameter("tau", 1e-6);
 
             var transfer = Parse("1/(1+s*tau)", context);
+
+            AssertTransfer(new[] { 1.0 }, new[] { 1.0, 1e-6 }, transfer);
+        }
+
+        [Fact]
+        public void When_LowPassNodeIsParsed_Expect_AscendingCoefficients()
+        {
+            var context = CreateContext();
+            context.SetParameter("tau", 1e-6);
+            var node = Parser.Parse(Lexer.FromString("1/(1+s*tau)"), true);
+
+            var transfer = new LaplaceExpressionParser(context).Parse(node);
 
             AssertTransfer(new[] { 1.0 }, new[] { 1.0, 1e-6 }, transfer);
         }

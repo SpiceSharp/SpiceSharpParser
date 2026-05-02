@@ -19,9 +19,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             switch (type.ToLower())
             {
-                case "i": return GenerateCurrentSource(componentIdentifier, parameters, context);
-                case "g": return GenerateVoltageControlledCurrentSource(componentIdentifier, parameters, context);
-                case "f": return GenerateCurrentControlledCurrentSource(componentIdentifier, parameters, context);
+                case "i": return GenerateCurrentSource(componentIdentifier, originalName, parameters, context);
+                case "g": return GenerateVoltageControlledCurrentSource(componentIdentifier, originalName, parameters, context);
+                case "f": return GenerateCurrentControlledCurrentSource(componentIdentifier, originalName, parameters, context);
             }
 
             return null;
@@ -36,7 +36,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of current controlled current source.
         /// </returns>
-        protected IEntity GenerateCurrentControlledCurrentSource(string name, ParameterCollection parameters, IReadingContext context)
+        protected IEntity GenerateCurrentControlledCurrentSource(string name, string originalName, ParameterCollection parameters, IReadingContext context)
         {
             if (parameters.Count == 4
                 && parameters.IsValueString(0)
@@ -62,7 +62,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
             else
             {
-                return CreateCustomCurrentSource(name, parameters, context, false);
+                return CreateCustomCurrentSource(name, originalName, parameters, context, false);
             }
         }
 
@@ -75,12 +75,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of voltage controlled current source.
         /// </returns>
-        protected IEntity GenerateVoltageControlledCurrentSource(string name, ParameterCollection parameters, IReadingContext context)
+        protected IEntity GenerateVoltageControlledCurrentSource(string name, string originalName, ParameterCollection parameters, IReadingContext context)
         {
             var laplaceParser = new LaplaceSourceParser();
             if (laplaceParser.IsLaplaceSource(parameters))
             {
-                return CreateCustomCurrentSource(name, parameters, context, true);
+                return CreateCustomCurrentSource(name, originalName, parameters, context, true);
             }
 
             if (parameters.Count == 5
@@ -132,7 +132,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 else
                 {
-                    return CreateCustomCurrentSource(name, parameters, context, true);
+                    return CreateCustomCurrentSource(name, originalName, parameters, context, true);
                 }
             }
         }
@@ -146,19 +146,27 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of current source.
         /// </returns>
-        protected IEntity GenerateCurrentSource(string name, ParameterCollection parameters, IReadingContext context)
+        protected IEntity GenerateCurrentSource(string name, string originalName, ParameterCollection parameters, IReadingContext context)
         {
             var evalContext = context.EvaluationContext;
-            var laplaceParser = new LaplaceSourceParser();
-            if (laplaceParser.TryRejectUnsupportedLaplaceFunction(parameters, context, "value"))
-            {
-                return null;
-            }
 
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
             {
                 var valueParameter = (AssignmentParameter)parameters.Single(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");
                 string expression = valueParameter.Value;
+                if (TryCreateLaplaceFunctionSource(
+                    name,
+                    originalName,
+                    parameters,
+                    context,
+                    LaplaceOutputKind.Current,
+                    expression,
+                    valueParameter,
+                    out var laplaceEntity))
+                {
+                    return laplaceEntity;
+                }
+
                 if (evalContext.HaveSpiceProperties(expression) || evalContext.HaveFunctions(expression))
                 {
                     BehavioralCurrentSource entity = CreateBehavioralCurrentSource(name, parameters, context, evalContext, expression);
@@ -171,7 +179,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var expressionParameter = (ExpressionParameter)parameters.Single(p => p is ExpressionParameter);
                 string expression = expressionParameter.Value;
 
-                if (evalContext.HaveSpiceProperties(expressionParameter.Value))
+                if (TryCreateLaplaceFunctionSource(
+                    name,
+                    originalName,
+                    parameters,
+                    context,
+                    LaplaceOutputKind.Current,
+                    expression,
+                    expressionParameter,
+                    out var laplaceEntity))
+                {
+                    return laplaceEntity;
+                }
+
+                if (evalContext.HaveSpiceProperties(expressionParameter.Value) || evalContext.HaveFunctions(expressionParameter.Value))
                 {
                     BehavioralCurrentSource entity = CreateBehavioralCurrentSource(name, parameters, context, evalContext, expression);
                     return entity;
@@ -184,50 +205,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return cs;
         }
 
-        protected BehavioralCurrentSource CreateBehavioralCurrentSource(string name, ParameterCollection parameters, IReadingContext context, EvaluationContext evalContext, string expression)
-        {
-            var mParameter = (AssignmentParameter)parameters.FirstOrDefault(p =>
-                   p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "m");
-
-            if (mParameter != null)
-            {
-                expression = $"({expression}) * ({mParameter.Value})";
-            }
-
-            var entity = new BehavioralCurrentSource(name);
-            context.CreateNodes(entity, parameters.Take(BehavioralCurrentSource.BehavioralCurrentSourcePinCount));
-            entity.Parameters.Expression = expression;
-            entity.Parameters.ParseAction = (expression) =>
-            {
-                var parser = context.CreateExpressionResolver(null);
-                return parser.Resolve(expression);
-            };
-
-            if (evalContext.HaveFunctions(expression))
-            {
-                context.SimulationPreparations.ExecuteActionBeforeSetup((simulation) =>
-                {
-                    entity.Parameters.Expression = expression;
-                    entity.Parameters.ParseAction = (expression) =>
-                    {
-                        var parser = context.CreateExpressionResolver(simulation);
-                        return parser.Resolve(expression);
-                    };
-                });
-            }
-
-            return entity;
-        }
-
-        private IEntity CreateCustomCurrentSource(string name, ParameterCollection parameters, IReadingContext context, bool isVoltageControlled)
+        private IEntity CreateCustomCurrentSource(string name, string originalName, ParameterCollection parameters, IReadingContext context, bool isVoltageControlled)
         {
             var evalContext = context.EvaluationContext;
             var laplaceParser = new LaplaceSourceParser();
-
-            if (laplaceParser.TryRejectUnsupportedLaplaceFunction(parameters, context, "value"))
-            {
-                return null;
-            }
 
             if (laplaceParser.IsLaplaceSource(parameters))
             {
@@ -239,7 +220,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         return null;
                     }
 
-                    return CreateLaplaceCurrentControlledCurrentSource(name, currentControlledDefinition, context);
+                    return CreateLaplaceSource(currentControlledDefinition, LaplaceOutputKind.Current, context);
                 }
 
                 var definition = laplaceParser.ParseVoltageControlledSource(name, parameters, context);
@@ -248,7 +229,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     return null;
                 }
 
-                return CreateLaplaceVoltageControlledCurrentSource(name, definition, context);
+                return CreateLaplaceSource(definition, LaplaceOutputKind.Current, context);
             }
 
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
@@ -256,16 +237,44 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 var valueParameter = (AssignmentParameter)parameters.Single(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");
                 string expression = valueParameter.Value;
 
+                if (TryCreateLaplaceFunctionSource(
+                    name,
+                    originalName,
+                    parameters,
+                    context,
+                    LaplaceOutputKind.Current,
+                    expression,
+                    valueParameter,
+                    out var laplaceEntity))
+                {
+                    return laplaceEntity;
+                }
+
                 BehavioralCurrentSource entity = CreateBehavioralCurrentSource(name, parameters, context, evalContext, expression);
                 return entity;
             }
 
             if (parameters.Any(p => p is WordParameter ap && ap.Value.ToLower() == "value"))
             {
+                var valueWordParameter = parameters.FirstOrDefault(p => p is WordParameter ap && ap.Value.ToLower() == "value");
                 var expressionParameter = parameters.FirstOrDefault(p => p is ExpressionParameter);
                 if (expressionParameter != null)
                 {
                     var expression = expressionParameter.Value;
+
+                    if (TryCreateLaplaceFunctionSource(
+                        name,
+                        originalName,
+                        parameters,
+                        context,
+                        LaplaceOutputKind.Current,
+                        expression,
+                        expressionParameter,
+                        out var laplaceEntity,
+                        valueWordParameter))
+                    {
+                        return laplaceEntity;
+                    }
 
                     BehavioralCurrentSource entity = CreateBehavioralCurrentSource(name, parameters, context, evalContext, expression);
                     return entity;

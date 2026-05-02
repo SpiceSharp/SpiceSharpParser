@@ -39,6 +39,25 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Laplace
             try
             {
                 var node = Parser.Parse(Lexer.FromString(expression), true);
+                return Parse(node);
+            }
+            catch (LaplaceExpressionException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new LaplaceExpressionException(
+                    "laplace transfer expression must be a rational polynomial in s",
+                    ex,
+                    _lineInfo);
+            }
+        }
+
+        public LaplaceTransferFunction Parse(Node node)
+        {
+            try
+            {
                 var rational = Build(node).Normalize(_options.ZeroTolerance, _options.RelativeTolerance);
                 ValidateTransfer(rational);
 

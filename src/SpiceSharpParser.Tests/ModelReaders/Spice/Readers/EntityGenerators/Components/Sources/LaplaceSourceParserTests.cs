@@ -511,7 +511,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         }
 
         [Fact]
-        public void When_ValueLaplaceFunctionIsUsed_Expect_UnsupportedReaderValidationError()
+        public void When_ValueLaplaceFunctionIsUsed_Expect_LaplaceEntity()
         {
             var context = CreateReadingContext();
             var generator = new VoltageSourceGenerator();
@@ -528,12 +528,14 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 },
                 context);
 
-            Assert.Null(entity);
-            AssertSingleReaderError(context, "function syntax");
+            var laplace = Assert.IsType<LaplaceVoltageControlledVoltageSource>(entity);
+            Assert.False(context.Result.ValidationResult.HasError);
+            AssertCoefficients(new[] { 1.0 }, laplace.Parameters.Numerator);
+            AssertCoefficients(new[] { 1.0, 1.0 }, laplace.Parameters.Denominator);
         }
 
         [Fact]
-        public void When_ValueWordLaplaceFunctionIsUsed_Expect_UnsupportedReaderValidationError()
+        public void When_ValueWordLaplaceFunctionIsUsed_Expect_CurrentLaplaceEntity()
         {
             var context = CreateReadingContext();
             var generator = new CurrentSourceGenerator();
@@ -551,12 +553,14 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 },
                 context);
 
-            Assert.Null(entity);
-            AssertSingleReaderError(context, "function syntax");
+            var laplace = Assert.IsType<LaplaceVoltageControlledCurrentSource>(entity);
+            Assert.False(context.Result.ValidationResult.HasError);
+            AssertCoefficients(new[] { 1.0 }, laplace.Parameters.Numerator);
+            AssertCoefficients(new[] { 1.0, 1.0 }, laplace.Parameters.Denominator);
         }
 
         [Fact]
-        public void When_BSourceLaplaceFunctionIsUsed_Expect_UnsupportedReaderValidationError()
+        public void When_BSourceLaplaceFunctionIsUsed_Expect_LaplaceEntity()
         {
             var context = CreateReadingContext();
             var generator = new ArbitraryBehavioralGenerator();
@@ -573,8 +577,34 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 },
                 context);
 
-            Assert.Null(entity);
-            AssertSingleReaderError(context, "function syntax");
+            var laplace = Assert.IsType<LaplaceVoltageControlledVoltageSource>(entity);
+            Assert.False(context.Result.ValidationResult.HasError);
+            AssertCoefficients(new[] { 1.0 }, laplace.Parameters.Numerator);
+            AssertCoefficients(new[] { 1.0, 1.0 }, laplace.Parameters.Denominator);
+        }
+
+        [Fact]
+        public void When_MixedBSourceLaplaceFunctionIsUsed_Expect_HelperAndBehavioralEntity()
+        {
+            var context = CreateReadingContext();
+            var generator = new ArbitraryBehavioralGenerator();
+
+            var entity = generator.Generate(
+                "B1",
+                "B1",
+                "b",
+                new ParameterCollection
+                {
+                    new IdentifierParameter("out"),
+                    new IdentifierParameter("0"),
+                    Assignment("V", "1 + 2*LAPLACE(V(in), 1/(1+s))"),
+                },
+                context);
+
+            var behavioral = Assert.IsType<BehavioralVoltageSource>(entity);
+            Assert.False(context.Result.ValidationResult.HasError);
+            Assert.Contains("__ssp_laplace_B1_0", behavioral.Parameters.Expression);
+            Assert.Contains(context.ContextEntities, item => item is LaplaceVoltageControlledVoltageSource && item.Name == "__ssp_laplace_B1_0_src");
         }
 
         private static LaplaceSourceDefinition ParseDefinition(ParameterCollection parameters)
@@ -666,7 +696,9 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         {
             var context = Substitute.For<IReadingContext>();
             var evaluationContext = CreateEvaluationContext();
-            context.Result.Returns(new SpiceSharpModel(new Circuit(), "test"));
+            var circuit = new Circuit();
+            context.Result.Returns(new SpiceSharpModel(circuit, "test"));
+            context.ContextEntities.Returns(circuit);
             context.ReaderSettings.Returns(
                 new SpiceNetlistReaderSettings(
                     new SpiceNetlistCaseSensitivitySettings(),
@@ -675,6 +707,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             context.EvaluationContext.Returns(evaluationContext);
             context.Evaluator.Returns(evaluationContext.Evaluator);
             context.NameGenerator.Returns(evaluationContext.NameGenerator);
+            context.SimulationPreparations.Returns(Substitute.For<ISimulationPreparations>());
             return context;
         }
 

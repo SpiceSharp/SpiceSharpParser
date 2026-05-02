@@ -1,8 +1,12 @@
 ﻿using System.Linq;
 using SpiceSharp.Components;
+using SpiceSharp.Entities;
+using System;
+using System.Collections.Generic;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using Component = SpiceSharp.Components.Component;
@@ -147,6 +151,266 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
 
             return ExpressionFactory.CreatePolyCurrentExpression(dimension, parameters, context);
+        }
+
+        private protected bool TryCreateLaplaceFunctionSource(
+            string name,
+            string originalName,
+            ParameterCollection parameters,
+            IReadingContext context,
+            LaplaceOutputKind outputKind,
+            string expression,
+            Parameter expressionParameter,
+            out IEntity entity,
+            params Parameter[] extraExcludedParameters)
+        {
+            entity = null;
+
+            var excludedParameters = new List<Parameter>();
+            if (expressionParameter != null)
+            {
+                excludedParameters.Add(expressionParameter);
+            }
+
+            if (extraExcludedParameters != null)
+            {
+                excludedParameters.AddRange(extraExcludedParameters.Where(parameter => parameter != null));
+            }
+
+            var lowerer = new LaplaceFunctionExpressionLowerer(
+                context.EvaluationContext,
+                context.Evaluator.EvaluateDouble,
+                (message, lineInfo, exception) => context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    message,
+                    lineInfo,
+                    exception),
+                localEntityName => context.ReaderSettings.ExpandSubcircuits
+                    ? context.NameGenerator.GenerateObjectName(localEntityName)
+                    : localEntityName,
+                entityName => context.ContextEntities != null
+                    && context.ContextEntities.Any(existing => existing.Name == entityName),
+                expressionParameter?.LineInfo ?? parameters.LineInfo);
+
+            var result = lowerer.Lower(
+                name,
+                originalName ?? name,
+                parameters[0].Value,
+                parameters[1].Value,
+                expression,
+                GetExtraParameters(parameters, excludedParameters),
+                outputKind);
+
+            if (!result.IsHandled)
+            {
+                return false;
+            }
+
+            if (result.HasErrors)
+            {
+                return true;
+            }
+
+            if (result.IsDirect)
+            {
+                entity = CreateLaplaceSource(result.DirectDefinition, outputKind, context);
+                return true;
+            }
+
+            foreach (var helperDefinition in result.HelperDefinitions)
+            {
+                var helperEntity = CreateLaplaceSource(
+                    helperDefinition.Definition,
+                    LaplaceOutputKind.Voltage,
+                    context);
+                context.ContextEntities?.Add(helperEntity);
+            }
+
+            entity = outputKind == LaplaceOutputKind.Voltage
+                ? CreateBehavioralVoltageSource(name, parameters, context, context.EvaluationContext, result.RewrittenExpression)
+                : CreateBehavioralCurrentSource(name, parameters, context, context.EvaluationContext, result.RewrittenExpression);
+            return true;
+        }
+
+        protected BehavioralVoltageSource CreateBehavioralVoltageSource(
+            string name,
+            ParameterCollection parameters,
+            IReadingContext context,
+            EvaluationContext evalContext,
+            string expression)
+        {
+            var entity = new BehavioralVoltageSource(name);
+            context.CreateNodes(entity, parameters.Take(BehavioralVoltageSource.BehavioralVoltageSourcePinCount));
+            entity.Parameters.Expression = expression;
+            entity.Parameters.ParseAction = expressionToParse =>
+            {
+                var parser = context.CreateExpressionResolver(null);
+                return parser.Resolve(expressionToParse);
+            };
+
+            if (evalContext.HaveFunctions(expression))
+            {
+                context.SimulationPreparations.ExecuteActionBeforeSetup(simulation =>
+                {
+                    entity.Parameters.Expression = expression;
+                    entity.Parameters.ParseAction = expressionToParse =>
+                    {
+                        var parser = context.CreateExpressionResolver(simulation);
+                        return parser.Resolve(expressionToParse);
+                    };
+                });
+            }
+
+            return entity;
+        }
+
+        protected BehavioralCurrentSource CreateBehavioralCurrentSource(
+            string name,
+            ParameterCollection parameters,
+            IReadingContext context,
+            EvaluationContext evalContext,
+            string expression)
+        {
+            var mParameter = (AssignmentParameter)parameters.FirstOrDefault(p =>
+                p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "m");
+
+            if (mParameter != null)
+            {
+                expression = $"({expression}) * ({mParameter.Value})";
+            }
+
+            var entity = new BehavioralCurrentSource(name);
+            context.CreateNodes(entity, parameters.Take(BehavioralCurrentSource.BehavioralCurrentSourcePinCount));
+            entity.Parameters.Expression = expression;
+            entity.Parameters.ParseAction = expressionToParse =>
+            {
+                var parser = context.CreateExpressionResolver(null);
+                return parser.Resolve(expressionToParse);
+            };
+
+            if (evalContext.HaveFunctions(expression))
+            {
+                context.SimulationPreparations.ExecuteActionBeforeSetup(simulation =>
+                {
+                    entity.Parameters.Expression = expression;
+                    entity.Parameters.ParseAction = expressionToParse =>
+                    {
+                        var parser = context.CreateExpressionResolver(simulation);
+                        return parser.Resolve(expressionToParse);
+                    };
+                });
+            }
+
+            return entity;
+        }
+
+        private protected static IEntity CreateLaplaceSource(
+            LaplaceSourceDefinition definition,
+            LaplaceOutputKind outputKind,
+            IReadingContext context)
+        {
+            if (outputKind == LaplaceOutputKind.Voltage)
+            {
+                if (definition.Input.Kind == LaplaceSourceInputKind.Voltage)
+                {
+                    var entity = new LaplaceVoltageControlledVoltageSource(definition.SourceName);
+                    var nodes = new ParameterCollection(new List<Parameter>())
+                    {
+                        new IdentifierParameter(definition.OutputPositiveNode, definition.LineInfo),
+                        new IdentifierParameter(definition.OutputNegativeNode, definition.LineInfo),
+                        new IdentifierParameter(definition.Input.ControlPositiveNode, definition.LineInfo),
+                        new IdentifierParameter(definition.Input.ControlNegativeNode, definition.LineInfo),
+                    };
+
+                    context.CreateNodes(entity, nodes);
+                    SetLaplaceParameters(entity, definition);
+                    return entity;
+                }
+
+                var currentControlledEntity = new LaplaceCurrentControlledVoltageSource(definition.SourceName);
+                var currentControlledNodes = new ParameterCollection(new List<Parameter>())
+                {
+                    new IdentifierParameter(definition.OutputPositiveNode, definition.LineInfo),
+                    new IdentifierParameter(definition.OutputNegativeNode, definition.LineInfo),
+                };
+
+                context.CreateNodes(currentControlledEntity, currentControlledNodes);
+                currentControlledEntity.ControllingSource = context.NameGenerator.GenerateObjectName(definition.Input.ControllingSource);
+                SetLaplaceParameters(currentControlledEntity, definition);
+                return currentControlledEntity;
+            }
+
+            if (definition.Input.Kind == LaplaceSourceInputKind.Voltage)
+            {
+                var entity = new LaplaceVoltageControlledCurrentSource(definition.SourceName);
+                var nodes = new ParameterCollection(new List<Parameter>())
+                {
+                    new IdentifierParameter(definition.OutputPositiveNode, definition.LineInfo),
+                    new IdentifierParameter(definition.OutputNegativeNode, definition.LineInfo),
+                    new IdentifierParameter(definition.Input.ControlPositiveNode, definition.LineInfo),
+                    new IdentifierParameter(definition.Input.ControlNegativeNode, definition.LineInfo),
+                };
+
+                context.CreateNodes(entity, nodes);
+                SetLaplaceParameters(entity, definition);
+                return entity;
+            }
+
+            var currentControlledCurrentEntity = new LaplaceCurrentControlledCurrentSource(definition.SourceName);
+            var currentControlledCurrentNodes = new ParameterCollection(new List<Parameter>())
+            {
+                new IdentifierParameter(definition.OutputPositiveNode, definition.LineInfo),
+                new IdentifierParameter(definition.OutputNegativeNode, definition.LineInfo),
+            };
+
+            context.CreateNodes(currentControlledCurrentEntity, currentControlledCurrentNodes);
+            currentControlledCurrentEntity.ControllingSource = context.NameGenerator.GenerateObjectName(definition.Input.ControllingSource);
+            SetLaplaceParameters(currentControlledCurrentEntity, definition);
+            return currentControlledCurrentEntity;
+        }
+
+        private static IEnumerable<Parameter> GetExtraParameters(
+            ParameterCollection parameters,
+            IReadOnlyList<Parameter> excludedParameters)
+        {
+            return parameters.Where(parameter =>
+                !excludedParameters.Any(excluded => ReferenceEquals(excluded, parameter)));
+        }
+
+        private static void SetLaplaceParameters(
+            LaplaceVoltageControlledVoltageSource entity,
+            LaplaceSourceDefinition definition)
+        {
+            entity.Parameters.Numerator = definition.TransferFunction.NumeratorCoefficients;
+            entity.Parameters.Denominator = definition.TransferFunction.DenominatorCoefficients;
+            entity.Parameters.Delay = definition.Delay;
+        }
+
+        private static void SetLaplaceParameters(
+            LaplaceCurrentControlledVoltageSource entity,
+            LaplaceSourceDefinition definition)
+        {
+            entity.Parameters.Numerator = definition.TransferFunction.NumeratorCoefficients;
+            entity.Parameters.Denominator = definition.TransferFunction.DenominatorCoefficients;
+            entity.Parameters.Delay = definition.Delay;
+        }
+
+        private static void SetLaplaceParameters(
+            LaplaceVoltageControlledCurrentSource entity,
+            LaplaceSourceDefinition definition)
+        {
+            entity.Parameters.Numerator = definition.TransferFunction.NumeratorCoefficients;
+            entity.Parameters.Denominator = definition.TransferFunction.DenominatorCoefficients;
+            entity.Parameters.Delay = definition.Delay;
+        }
+
+        private static void SetLaplaceParameters(
+            LaplaceCurrentControlledCurrentSource entity,
+            LaplaceSourceDefinition definition)
+        {
+            entity.Parameters.Numerator = definition.TransferFunction.NumeratorCoefficients;
+            entity.Parameters.Denominator = definition.TransferFunction.DenominatorCoefficients;
+            entity.Parameters.Delay = definition.Delay;
         }
     }
 }
