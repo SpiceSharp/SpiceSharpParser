@@ -28,6 +28,8 @@ E<name> <out+> <out-> TABLE={<expression>} = (<x1>,<y1>) (<x2>,<y2>) ...
 ```
 E<name> <out+> <out-> LAPLACE {V(<ctrl+>)} = {<transfer>}
 E<name> <out+> <out-> LAPLACE {V(<ctrl+>,<ctrl->)} = {<transfer>}
+E<name> <out+> <out-> LAPLACE {V(<ctrl+>)} {<transfer>}
+E<name> <out+> <out-> LAPLACE = {V(<ctrl+>)} {<transfer>}
 ```
 
 `<transfer>` is a rational polynomial in `s`. Coefficients are evaluated from constants and `.PARAM` values, and are stored in ascending powers of `s`.
@@ -49,7 +51,7 @@ Current limitations:
 
 - `B`, `F`, and `H` LAPLACE forms are not supported yet.
 - Only input expressions `V(node)` and `V(node1,node2)` are accepted.
-- Alternate LAPLACE syntaxes without the expression assignment form are not supported yet.
+- Function-like `VALUE={LAPLACE(...)}` syntax is not supported yet.
 - `M=`, `TD=`, `DELAY=`, and explicit internal-state options are not supported yet.
 - Transfers must be proper, finite rational polynomials in `s` with non-singular DC gain.
 
@@ -78,4 +80,8 @@ E4 OUT 0 TABLE={V(IN)} = (0,0) (1,3.3) (2,5)
 
 * Laplace low-pass
 E5 OUT 0 LAPLACE {V(IN)} = {1/(1+s*1u)}
+
+* Equivalent supported spellings
+E6 OUT 0 LAPLACE {V(IN)} {1/(1+s*1u)}
+E7 OUT 0 LAPLACE = {V(IN)} {1/(1+s*1u)}
 ```

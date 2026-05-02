@@ -16,6 +16,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             ParameterCollection parameters,
             IReadingContext context)
         {
+            var laplaceParser = new LaplaceSourceParser();
+            if (laplaceParser.TryRejectUnsupportedLaplaceFunction(parameters, context, "v", "i"))
+            {
+                return null;
+            }
+
             if (parameters.Any(p => p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "v"))
             {
                 var entity = new BehavioralVoltageSource(componentIdentifier);

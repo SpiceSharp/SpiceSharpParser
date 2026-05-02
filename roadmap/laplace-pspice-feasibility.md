@@ -68,7 +68,7 @@ This approach keeps the implementation small, aligns with existing source-genera
 
 ## Current Status
 
-Canonical `E`-source and `G`-source `LAPLACE` support is implemented by SpiceSharpParser. `F`, `H`, `B`, alternate syntaxes, delay, and `M=` support remain deferred.
+`E`-source and `G`-source `LAPLACE` support is implemented by SpiceSharpParser for canonical assignment, no-equals expression-pair, and equals-after-keyword expression-pair syntax. `F`, `H`, `B`, function-like `VALUE={LAPLACE(...)}`, delay, and `M=` support remain deferred.
 
 Phase 1 grammar groundwork is implemented: expression-to-expression assignments such as `{V(in)} = {1/(1+s*tau)}` and `{V(in1,in2)} = {1/(1+s*tau)}` are preserved as `ExpressionAssignmentParameter`.
 
@@ -77,6 +77,8 @@ Phase 2 transfer-function math is implemented: internal polynomial, rational-pol
 Phase 3 `E`-source mapping is implemented: canonical `Ename out+ out- LAPLACE {V(ctrl)}` `= {H(s)}` and `V(ctrl+,ctrl-)` forms map to `LaplaceVoltageControlledVoltageSource`, produce reader validation errors for semantic failures, and have OP / AC integration coverage.
 
 Phase 4 `G`-source mapping is implemented: canonical `Gname out+ out- LAPLACE {V(ctrl)}` `= {H(s)}` and `V(ctrl+,ctrl-)` forms map to `LaplaceVoltageControlledCurrentSource`, preserve the existing `G` current-source sign convention, reject unsupported `M=` / delay options, and have OP / AC integration coverage.
+
+Phase 5 syntax compatibility is implemented: `E` / `G` sources accept `LAPLACE {V(...)} = {H(s)}`, `LAPLACE {V(...)} {H(s)}`, and `LAPLACE = {V(...)} {H(s)}` as equivalent voltage-controlled forms, while known deferred `VALUE={LAPLACE(...)}` and `B`-source forms produce targeted reader diagnostics.
 
 Adjacent features already exist:
 
@@ -598,9 +600,9 @@ The last recognizer is deliberate. If a user writes a known PSpice Laplace varia
 
 | Family | Example | Near-term behavior | Notes |
 |--------|---------|--------------------|-------|
-| Canonical assignment | `E1 out 0 LAPLACE {V(in)} = {1/(1+s*tau)}` | Support first | Exercises grammar gap and runtime mapping. |
-| No-equals expression pair | `E1 out 0 LAPLACE {V(in)} {1/(1+s*tau)}` | Add after canonical | Should normalize to the same definition and coefficients. |
-| Equals-after-keyword pair | `E1 out 0 LAPLACE = {V(in)} {1/(1+s*tau)}` | Add after canonical | Likely parses differently; keep syntax handling isolated in a recognizer. |
+| Canonical assignment | `E1 out 0 LAPLACE {V(in)} = {1/(1+s*tau)}` | Supported | Exercises grammar gap and runtime mapping. |
+| No-equals expression pair | `E1 out 0 LAPLACE {V(in)} {1/(1+s*tau)}` | Supported | Normalizes to the same definition and coefficients. |
+| Equals-after-keyword pair | `E1 out 0 LAPLACE = {V(in)} {1/(1+s*tau)}` | Supported | Parses differently; syntax handling stays isolated in a recognizer. |
 | Current-controlled | `F1 out 0 LAPLACE {I(Vsense)} = {H(s)}` | Later milestone | Runtime entities exist, but controlling-source parsing and PSpice compatibility need tests. |
 | Function-like `VALUE` | `E1 out 0 VALUE = {LAPLACE(V(in), H(s))}` | Investigate later | Must be handled as source-level Laplace, not a scalar expression function. |
 | `B` source ABM | `B1 out 0 V = {LAPLACE(V(in), H(s))}` | Investigate later | May require arbitrary input-expression lowering or custom behavior. |
@@ -675,6 +677,8 @@ Status: implemented for canonical `G` source syntax. `M=`, delay options, `F`, a
 4. Add sign-convention and load-resistor tests.
 
 ### Phase 5: Syntax Compatibility Layer
+
+Status: implemented for `E` / `G` no-equals and equals-after-keyword voltage-controlled syntax. `VALUE={LAPLACE(...)}`, `B`, `F`, `H`, `M=`, and delay options remain diagnostic-only / deferred.
 
 1. Add `UnsupportedKnownVariantRecognizer` so common deferred forms receive targeted diagnostics.
 2. Add `NoEqualsExpressionPairRecognizer` for `LAPLACE {input} {transfer}` only after canonical tests pass.

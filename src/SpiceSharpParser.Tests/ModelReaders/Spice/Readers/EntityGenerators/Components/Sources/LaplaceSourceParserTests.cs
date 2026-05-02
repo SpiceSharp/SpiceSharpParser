@@ -54,6 +54,17 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         }
 
         [Fact]
+        public void When_SupportedSyntaxVariantsAreParsed_Expect_IdenticalDefinitions()
+        {
+            var canonical = ParseDefinition(CreateLaplaceParameters("V(inp,inn)", "10/(s+1000)"));
+            var noEquals = ParseDefinition(CreateNoEqualsLaplaceParameters("V(inp,inn)", "10/(s+1000)"));
+            var equalsAfterKeyword = ParseDefinition(CreateEqualsAfterKeywordLaplaceParameters("V(inp,inn)", "10/(s+1000)"));
+
+            AssertEquivalentDefinition(canonical, noEquals);
+            AssertEquivalentDefinition(canonical, equalsAfterKeyword);
+        }
+
+        [Fact]
         public void When_SingleEndedLaplaceSourceIsParsed_Expect_ControlNegativeGround()
         {
             var context = CreateReadingContext();
@@ -121,6 +132,31 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         }
 
         [Fact]
+        public void When_VoltageSourceGeneratorMapsNoEqualsLaplace_Expect_LaplaceEntityAndNodeOrder()
+        {
+            var context = CreateReadingContext();
+            ParameterCollection createdNodes = null;
+            context.When(x => x.CreateNodes(Arg.Any<IComponent>(), Arg.Any<ParameterCollection>()))
+                .Do(call => createdNodes = call.ArgAt<ParameterCollection>(1));
+            var generator = new VoltageSourceGenerator();
+
+            var entity = generator.Generate(
+                "E1",
+                "E1",
+                "e",
+                CreateNoEqualsLaplaceParameters("V(inp,inn)", "1000/(s+1000)"),
+                context);
+
+            var laplace = Assert.IsType<LaplaceVoltageControlledVoltageSource>(entity);
+            Assert.False(context.Result.ValidationResult.HasError);
+            Assert.NotNull(createdNodes);
+            Assert.Equal(new[] { "out", "0", "inp", "inn" }, createdNodes.Select(parameter => parameter.Value).ToArray());
+            AssertCoefficients(new[] { 1000.0 }, laplace.Parameters.Numerator);
+            AssertCoefficients(new[] { 1000.0, 1.0 }, laplace.Parameters.Denominator);
+            Assert.Equal(0.0, laplace.Parameters.Delay);
+        }
+
+        [Fact]
         public void When_CurrentSourceGeneratorMapsLaplace_Expect_LaplaceEntityAndNodeOrder()
         {
             var context = CreateReadingContext();
@@ -134,6 +170,31 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 "G1",
                 "g",
                 CreateLaplaceParameters("V(inp,inn)", "1m*1000/(s+1000)"),
+                context);
+
+            var laplace = Assert.IsType<LaplaceVoltageControlledCurrentSource>(entity);
+            Assert.False(context.Result.ValidationResult.HasError);
+            Assert.NotNull(createdNodes);
+            Assert.Equal(new[] { "out", "0", "inp", "inn" }, createdNodes.Select(parameter => parameter.Value).ToArray());
+            AssertCoefficients(new[] { 1.0 }, laplace.Parameters.Numerator);
+            AssertCoefficients(new[] { 1000.0, 1.0 }, laplace.Parameters.Denominator);
+            Assert.Equal(0.0, laplace.Parameters.Delay);
+        }
+
+        [Fact]
+        public void When_CurrentSourceGeneratorMapsEqualsAfterKeywordLaplace_Expect_LaplaceEntityAndNodeOrder()
+        {
+            var context = CreateReadingContext();
+            ParameterCollection createdNodes = null;
+            context.When(x => x.CreateNodes(Arg.Any<IComponent>(), Arg.Any<ParameterCollection>()))
+                .Do(call => createdNodes = call.ArgAt<ParameterCollection>(1));
+            var generator = new CurrentSourceGenerator();
+
+            var entity = generator.Generate(
+                "G1",
+                "G1",
+                "g",
+                CreateEqualsAfterKeywordLaplaceParameters("V(inp,inn)", "1m*1000/(s+1000)"),
                 context);
 
             var laplace = Assert.IsType<LaplaceVoltageControlledCurrentSource>(entity);
@@ -209,7 +270,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             var definition = parser.ParseVoltageControlledSource("E1", parameters, context);
 
             Assert.Null(definition);
-            AssertSingleReaderError(context, "separated by '='");
+            AssertSingleReaderError(context, "transfer expression");
         }
 
         [Fact]
@@ -248,6 +309,23 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
         }
 
         [Fact]
+        public void When_HSourceUsesEqualsAfterKeywordLaplace_Expect_UnsupportedReaderValidationError()
+        {
+            var context = CreateReadingContext();
+            var generator = new VoltageSourceGenerator();
+
+            var entity = generator.Generate(
+                "H1",
+                "H1",
+                "h",
+                CreateEqualsAfterKeywordLaplaceParameters("V(in)", "1/(1+s)"),
+                context);
+
+            Assert.Null(entity);
+            AssertSingleReaderError(context, "E and G");
+        }
+
+        [Fact]
         public void When_FSourceUsesLaplace_Expect_UnsupportedReaderValidationError()
         {
             var context = CreateReadingContext();
@@ -264,6 +342,102 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             AssertSingleReaderError(context, "E and G");
         }
 
+        [Fact]
+        public void When_FSourceUsesNoEqualsLaplace_Expect_UnsupportedReaderValidationError()
+        {
+            var context = CreateReadingContext();
+            var generator = new CurrentSourceGenerator();
+
+            var entity = generator.Generate(
+                "F1",
+                "F1",
+                "f",
+                CreateNoEqualsLaplaceParameters("V(in)", "1/(1+s)"),
+                context);
+
+            Assert.Null(entity);
+            AssertSingleReaderError(context, "E and G");
+        }
+
+        [Fact]
+        public void When_ValueLaplaceFunctionIsUsed_Expect_UnsupportedReaderValidationError()
+        {
+            var context = CreateReadingContext();
+            var generator = new VoltageSourceGenerator();
+
+            var entity = generator.Generate(
+                "E1",
+                "E1",
+                "e",
+                new ParameterCollection
+                {
+                    new IdentifierParameter("out"),
+                    new IdentifierParameter("0"),
+                    Assignment("VALUE", "LAPLACE(V(in), 1/(1+s))"),
+                },
+                context);
+
+            Assert.Null(entity);
+            AssertSingleReaderError(context, "function syntax");
+        }
+
+        [Fact]
+        public void When_ValueWordLaplaceFunctionIsUsed_Expect_UnsupportedReaderValidationError()
+        {
+            var context = CreateReadingContext();
+            var generator = new CurrentSourceGenerator();
+
+            var entity = generator.Generate(
+                "G1",
+                "G1",
+                "g",
+                new ParameterCollection
+                {
+                    new IdentifierParameter("out"),
+                    new IdentifierParameter("0"),
+                    new WordParameter("VALUE"),
+                    new ExpressionParameter("LAPLACE(V(in), 1/(1+s))", null),
+                },
+                context);
+
+            Assert.Null(entity);
+            AssertSingleReaderError(context, "function syntax");
+        }
+
+        [Fact]
+        public void When_BSourceLaplaceFunctionIsUsed_Expect_UnsupportedReaderValidationError()
+        {
+            var context = CreateReadingContext();
+            var generator = new ArbitraryBehavioralGenerator();
+
+            var entity = generator.Generate(
+                "B1",
+                "B1",
+                "b",
+                new ParameterCollection
+                {
+                    new IdentifierParameter("out"),
+                    new IdentifierParameter("0"),
+                    Assignment("V", "LAPLACE(V(in), 1/(1+s))"),
+                },
+                context);
+
+            Assert.Null(entity);
+            AssertSingleReaderError(context, "function syntax");
+        }
+
+        private static LaplaceSourceDefinition ParseDefinition(ParameterCollection parameters)
+        {
+            var context = CreateReadingContext();
+            var parser = new LaplaceSourceParser();
+
+            var definition = parser.ParseVoltageControlledSource("E1", parameters, context);
+
+            Assert.NotNull(definition);
+            Assert.False(context.Result.ValidationResult.HasError);
+            return definition;
+        }
+
         private static ParameterCollection CreateLaplaceParameters(
             string inputExpression,
             string transferExpression,
@@ -275,6 +449,49 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
                 new IdentifierParameter("0"),
                 new WordParameter("LAPLACE"),
                 new ExpressionAssignmentParameter(inputExpression, transferExpression, null),
+            };
+
+            foreach (var parameter in extraParameters)
+            {
+                parameters.Add(parameter);
+            }
+
+            return parameters;
+        }
+
+        private static ParameterCollection CreateNoEqualsLaplaceParameters(
+            string inputExpression,
+            string transferExpression,
+            params Parameter[] extraParameters)
+        {
+            var parameters = new ParameterCollection
+            {
+                new IdentifierParameter("out"),
+                new IdentifierParameter("0"),
+                new WordParameter("LAPLACE"),
+                new ExpressionParameter(inputExpression, null),
+                new ExpressionParameter(transferExpression, null),
+            };
+
+            foreach (var parameter in extraParameters)
+            {
+                parameters.Add(parameter);
+            }
+
+            return parameters;
+        }
+
+        private static ParameterCollection CreateEqualsAfterKeywordLaplaceParameters(
+            string inputExpression,
+            string transferExpression,
+            params Parameter[] extraParameters)
+        {
+            var parameters = new ParameterCollection
+            {
+                new IdentifierParameter("out"),
+                new IdentifierParameter("0"),
+                Assignment("LAPLACE", inputExpression),
+                new ExpressionParameter(transferExpression, null),
             };
 
             foreach (var parameter in extraParameters)
@@ -337,6 +554,25 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Readers.EntityGenerators.Com
             var error = Assert.Single(context.Result.ValidationResult.Errors);
             Assert.Equal(ValidationEntrySource.Reader, error.Source);
             Assert.Contains(messageFragment, error.Message, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static void AssertEquivalentDefinition(
+            LaplaceSourceDefinition expected,
+            LaplaceSourceDefinition actual)
+        {
+            Assert.Equal(expected.OutputPositiveNode, actual.OutputPositiveNode);
+            Assert.Equal(expected.OutputNegativeNode, actual.OutputNegativeNode);
+            Assert.Equal(expected.Input.ControlPositiveNode, actual.Input.ControlPositiveNode);
+            Assert.Equal(expected.Input.ControlNegativeNode, actual.Input.ControlNegativeNode);
+            Assert.Equal(expected.InputExpression, actual.InputExpression);
+            Assert.Equal(expected.TransferExpression, actual.TransferExpression);
+            Assert.Equal(expected.Delay, actual.Delay);
+            AssertCoefficients(
+                expected.TransferFunction.NumeratorCoefficients.ToArray(),
+                actual.TransferFunction.NumeratorCoefficients);
+            AssertCoefficients(
+                expected.TransferFunction.DenominatorCoefficients.ToArray(),
+                actual.TransferFunction.DenominatorCoefficients);
         }
 
         private static void AssertCoefficients(double[] expected, IReadOnlyList<double> actual)

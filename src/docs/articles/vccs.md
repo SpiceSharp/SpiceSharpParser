@@ -28,6 +28,8 @@ G<name> <out+> <out-> TABLE={<expression>} = (<x1>,<y1>) (<x2>,<y2>) ...
 ```
 G<name> <out+> <out-> LAPLACE {V(<ctrl+>)} = {<transfer>}
 G<name> <out+> <out-> LAPLACE {V(<ctrl+>,<ctrl->)} = {<transfer>}
+G<name> <out+> <out-> LAPLACE {V(<ctrl+>)} {<transfer>}
+G<name> <out+> <out-> LAPLACE = {V(<ctrl+>)} {<transfer>}
 ```
 
 `<transfer>` is a rational polynomial in `s`. It maps the controlling voltage to output current, so its units are transconductance.
@@ -48,7 +50,7 @@ GDIFF OUT 0 LAPLACE {V(INP,INN)} = {gm/(1+s*1u)}
 Current limitations:
 
 - Only input expressions `V(node)` and `V(node1,node2)` are accepted.
-- Alternate LAPLACE syntaxes without the expression assignment form are not supported yet.
+- Function-like `VALUE={LAPLACE(...)}` and `B`-source LAPLACE syntax are not supported yet.
 - `M=`, `TD=`, `DELAY=`, and explicit internal-state options are not supported yet.
 - Transfers must be proper, finite rational polynomials in `s` with non-singular DC gain.
 
@@ -72,4 +74,8 @@ G2 OUT 0 VALUE={V(IN)*0.01}
 
 * Laplace
 G3 OUT 0 LAPLACE {V(IN)} = {1m/(1+s*1u)}
+
+* Equivalent supported spellings
+G4 OUT 0 LAPLACE {V(IN)} {1m/(1+s*1u)}
+G5 OUT 0 LAPLACE = {V(IN)} {1m/(1+s*1u)}
 ```

@@ -85,6 +85,26 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
         }
 
         [Fact]
+        public void When_ELaplaceNoEqualsSyntaxRunsOp_Expect_DcGainNearOne()
+        {
+            var model = GetSpiceSharpModel(
+                "E LAPLACE no-equals OP",
+                ".PARAM tau=1u",
+                "VIN in 0 1",
+                "ELOW out 0 LAPLACE {V(in)} {1/(1+s*tau)}",
+                "RLOAD out 0 1k",
+                ".OP",
+                ".SAVE V(out)",
+                ".END");
+
+            AssertNoValidationErrors(model);
+            Assert.IsType<LaplaceVoltageControlledVoltageSource>(model.Circuit["ELOW"]);
+
+            double export = RunOpSimulation(model, "V(out)");
+            Assert.True(EqualsWithTol(1.0, export), $"Expected OP gain near 1, got {export}.");
+        }
+
+        [Fact]
         public void When_ELaplaceLowPassRunsAcAtCutoff_Expect_ExpectedMagnitudeAndPhase()
         {
             var model = GetSpiceSharpModel(
@@ -182,6 +202,27 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
 
             double export = RunOpSimulation(model, "V(out)");
             Assert.True(EqualsWithTol(-1.5, export), $"Expected OP load voltage from differential input near -1.5, got {export}.");
+        }
+
+        [Fact]
+        public void When_GLaplaceEqualsAfterKeywordSyntaxRunsOp_Expect_LoadVoltageWithCurrentSourceSign()
+        {
+            var model = GetSpiceSharpModel(
+                "G LAPLACE equals-after-keyword OP",
+                ".PARAM gm=1m",
+                ".PARAM tau=1u",
+                "VIN in 0 1",
+                "GLOW out 0 LAPLACE = {V(in)} {gm/(1+s*tau)}",
+                "RLOAD out 0 1k",
+                ".OP",
+                ".SAVE V(out)",
+                ".END");
+
+            AssertNoValidationErrors(model);
+            Assert.IsType<LaplaceVoltageControlledCurrentSource>(model.Circuit["GLOW"]);
+
+            double export = RunOpSimulation(model, "V(out)");
+            Assert.True(EqualsWithTol(-1.0, export), $"Expected OP load voltage near -1, got {export}.");
         }
 
         [Fact]
@@ -317,6 +358,36 @@ namespace SpiceSharpParser.IntegrationTests.AnalogBehavioralModeling
                 ".END");
 
             AssertReaderErrorContains(model, "multiplier");
+        }
+
+        [Fact]
+        public void When_ValueLaplaceFunctionIsUsed_Expect_ReaderValidationError()
+        {
+            var model = GetSpiceSharpModel(
+                "E VALUE LAPLACE unsupported",
+                "VIN in 0 1",
+                "EBAD out 0 VALUE = {LAPLACE(V(in), 1/(1+s))}",
+                "RLOAD out 0 1k",
+                ".OP",
+                ".SAVE V(out)",
+                ".END");
+
+            AssertReaderErrorContains(model, "function syntax");
+        }
+
+        [Fact]
+        public void When_BVoltageLaplaceFunctionIsUsed_Expect_ReaderValidationError()
+        {
+            var model = GetSpiceSharpModel(
+                "B LAPLACE unsupported",
+                "VIN in 0 1",
+                "BBAD out 0 V={LAPLACE(V(in), 1/(1+s))}",
+                "RLOAD out 0 1k",
+                ".OP",
+                ".SAVE V(out)",
+                ".END");
+
+            AssertReaderErrorContains(model, "function syntax");
         }
 
         [Fact]

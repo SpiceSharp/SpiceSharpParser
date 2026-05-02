@@ -77,6 +77,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </returns>
         protected IEntity GenerateVoltageControlledCurrentSource(string name, ParameterCollection parameters, IReadingContext context)
         {
+            var laplaceParser = new LaplaceSourceParser();
+            if (laplaceParser.IsLaplaceSource(parameters))
+            {
+                return CreateCustomCurrentSource(name, parameters, context, true);
+            }
+
             if (parameters.Count == 5
                 && parameters.IsValueString(0)
                 && parameters.IsValueString(1)
@@ -143,6 +149,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         protected IEntity GenerateCurrentSource(string name, ParameterCollection parameters, IReadingContext context)
         {
             var evalContext = context.EvaluationContext;
+            var laplaceParser = new LaplaceSourceParser();
+            if (laplaceParser.TryRejectUnsupportedLaplaceFunction(parameters, context, "value"))
+            {
+                return null;
+            }
 
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
             {
@@ -212,6 +223,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             var evalContext = context.EvaluationContext;
             var laplaceParser = new LaplaceSourceParser();
+
+            if (laplaceParser.TryRejectUnsupportedLaplaceFunction(parameters, context, "value"))
+            {
+                return null;
+            }
 
             if (laplaceParser.IsLaplaceSource(parameters))
             {

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using SpiceSharpBehavioral.Parsers.Nodes;
 using SpiceSharpParser.Common;
@@ -16,13 +17,34 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
     internal sealed class LaplaceSourceParser
     {
         private const string InputErrorMessage = "laplace input expression must be V(node) or V(node1,node2)";
+        private const string UnsupportedLaplaceFunctionMessage = "laplace function syntax is recognized but not supported yet";
+        private static readonly IReadOnlyList<ILaplaceSyntaxRecognizer> SyntaxRecognizers =
+            new ILaplaceSyntaxRecognizer[]
+            {
+                new CanonicalExpressionAssignmentRecognizer(),
+                new NoEqualsExpressionPairRecognizer(),
+                new EqualsExpressionPairRecognizer(),
+                new UnsupportedKnownVariantRecognizer(),
+            };
 
         public bool IsLaplaceSource(ParameterCollection parameters)
         {
-            return parameters != null
-                && parameters.Count >= 3
-                && parameters[2] is WordParameter wordParameter
-                && string.Equals(wordParameter.Value, "laplace", StringComparison.OrdinalIgnoreCase);
+            return TryGetLaplaceKeyword(parameters, out _);
+        }
+
+        public bool TryRejectUnsupportedLaplaceFunction(
+            ParameterCollection parameters,
+            IReadingContext context,
+            params string[] assignmentNames)
+        {
+            var parameter = FindLaplaceFunctionParameter(parameters, assignmentNames);
+            if (parameter == null)
+            {
+                return false;
+            }
+
+            AddError(context, UnsupportedLaplaceFunctionMessage, parameter.LineInfo);
+            return true;
         }
 
         public LaplaceSourceDefinition ParseVoltageControlledSource(
@@ -40,40 +62,43 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 return null;
             }
 
-            if (parameters.Count == 3)
+            var syntax = RecognizeSyntax(parameters);
+            if (!syntax.IsMatch)
             {
-                AddError(context, "laplace expects input expression", parameters[2].LineInfo);
+                AddError(context, "laplace syntax variant is recognized but not supported yet", parameters[2].LineInfo);
                 return null;
             }
 
-            if (parameters.Count > 4)
+            if (syntax.ErrorMessage != null)
             {
-                AddError(context, GetUnsupportedExtraParameterMessage(parameters.Skip(4)), parameters[3].LineInfo);
+                AddError(context, syntax.ErrorMessage, syntax.LineInfo);
                 return null;
             }
 
-            var assignment = parameters[3] as ExpressionAssignmentParameter;
-            if (assignment == null)
+            if (parameters.Count > syntax.ExtraParameterStartIndex)
             {
-                AddError(context, "laplace expects input and transfer expressions separated by '='", parameters[3].LineInfo);
+                AddError(
+                    context,
+                    GetUnsupportedExtraParameterMessage(parameters.Skip(syntax.ExtraParameterStartIndex)),
+                    parameters[syntax.ExtraParameterStartIndex].LineInfo);
                 return null;
             }
 
-            if (string.IsNullOrWhiteSpace(assignment.LeftExpression))
+            if (string.IsNullOrWhiteSpace(syntax.InputExpression))
             {
-                AddError(context, "laplace expects input expression", assignment.LineInfo);
+                AddError(context, "laplace expects input expression", syntax.LineInfo);
                 return null;
             }
 
-            if (string.IsNullOrWhiteSpace(assignment.RightExpression))
+            if (string.IsNullOrWhiteSpace(syntax.TransferExpression))
             {
-                AddError(context, "laplace expects transfer expression", assignment.LineInfo);
+                AddError(context, "laplace expects transfer expression", syntax.LineInfo);
                 return null;
             }
 
-            if (!TryParseVoltageInput(assignment.LeftExpression, context, out var input))
+            if (!TryParseVoltageInput(syntax.InputExpression, context, out var input))
             {
-                AddError(context, InputErrorMessage, assignment.LineInfo);
+                AddError(context, InputErrorMessage, syntax.LineInfo);
                 return null;
             }
 
@@ -82,11 +107,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 transferFunction = new LaplaceExpressionParser(
                     context.EvaluationContext,
-                    lineInfo: assignment.LineInfo).Parse(assignment.RightExpression);
+                    lineInfo: syntax.LineInfo).Parse(syntax.TransferExpression);
             }
             catch (LaplaceExpressionException ex)
             {
-                AddError(context, ex.Message, assignment.LineInfo, ex);
+                AddError(context, ex.Message, syntax.LineInfo, ex);
                 return null;
             }
             catch (Exception ex)
@@ -94,7 +119,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 AddError(
                     context,
                     "laplace transfer expression must be a rational polynomial in s",
-                    assignment.LineInfo,
+                    syntax.LineInfo,
                     ex);
                 return null;
             }
@@ -103,12 +128,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 sourceName,
                 parameters[0].Value,
                 parameters[1].Value,
-                assignment.LeftExpression,
-                assignment.RightExpression,
+                syntax.InputExpression,
+                syntax.TransferExpression,
                 input,
                 transferFunction,
                 0.0,
-                assignment.LineInfo);
+                syntax.LineInfo);
         }
 
         private static bool HasOutputNodes(ParameterCollection parameters, IReadingContext context)
@@ -122,7 +147,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return true;
         }
 
-        private static string GetUnsupportedExtraParameterMessage(ParameterCollection extraParameters)
+        private static LaplaceSyntaxResult RecognizeSyntax(ParameterCollection parameters)
+        {
+            foreach (var recognizer in SyntaxRecognizers)
+            {
+                var result = recognizer.Recognize(parameters);
+                if (result.IsMatch)
+                {
+                    return result;
+                }
+            }
+
+            return LaplaceSyntaxResult.NoMatch;
+        }
+
+        private static string GetUnsupportedExtraParameterMessage(IEnumerable<Parameter> extraParameters)
         {
             foreach (var parameter in extraParameters)
             {
@@ -150,10 +189,124 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return "laplace syntax variant is recognized but not supported yet";
         }
 
+        private static bool TryGetLaplaceKeyword(ParameterCollection parameters, out SpiceLineInfo lineInfo)
+        {
+            lineInfo = null;
+
+            if (parameters == null || parameters.Count < 3)
+            {
+                return false;
+            }
+
+            var thirdParameter = parameters[2];
+            if (IsLaplaceWord(thirdParameter))
+            {
+                if (parameters.Count == 3
+                    || parameters[3] is ExpressionAssignmentParameter
+                    || parameters[3] is ExpressionParameter
+                    || parameters[3] is AssignmentParameter)
+                {
+                    lineInfo = thirdParameter.LineInfo;
+                    return true;
+                }
+            }
+
+            var assignmentParameter = thirdParameter as AssignmentParameter;
+            if (assignmentParameter != null && IsName(assignmentParameter.Name, "laplace"))
+            {
+                lineInfo = assignmentParameter.LineInfo;
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool IsLaplaceWord(Parameter parameter)
+        {
+            var wordParameter = parameter as WordParameter;
+            return wordParameter != null && IsName(wordParameter.Value, "laplace");
+        }
+
+        private static Parameter FindLaplaceFunctionParameter(
+            ParameterCollection parameters,
+            string[] assignmentNames)
+        {
+            if (parameters == null || assignmentNames == null || assignmentNames.Length == 0)
+            {
+                return null;
+            }
+
+            for (var i = 0; i < parameters.Count; i++)
+            {
+                var assignmentParameter = parameters[i] as AssignmentParameter;
+                if (assignmentParameter != null
+                    && IsAnyName(assignmentParameter.Name, assignmentNames)
+                    && assignmentParameter.Values.Any(ContainsLaplaceFunction))
+                {
+                    return assignmentParameter;
+                }
+
+                var wordParameter = parameters[i] as WordParameter;
+                if (wordParameter != null
+                    && IsAnyName(wordParameter.Value, assignmentNames)
+                    && i + 1 < parameters.Count
+                    && parameters[i + 1] is ExpressionParameter expressionParameter
+                    && ContainsLaplaceFunction(expressionParameter.Value))
+                {
+                    return expressionParameter;
+                }
+            }
+
+            return null;
+        }
+
+        private static bool ContainsLaplaceFunction(string expression)
+        {
+            if (string.IsNullOrWhiteSpace(expression))
+            {
+                return false;
+            }
+
+            var index = 0;
+            while (index < expression.Length)
+            {
+                index = expression.IndexOf("laplace", index, StringComparison.OrdinalIgnoreCase);
+                if (index < 0)
+                {
+                    return false;
+                }
+
+                var nextIndex = index + "laplace".Length;
+                while (nextIndex < expression.Length && char.IsWhiteSpace(expression[nextIndex]))
+                {
+                    nextIndex++;
+                }
+
+                if (nextIndex < expression.Length && expression[nextIndex] == '(')
+                {
+                    return true;
+                }
+
+                index += "laplace".Length;
+            }
+
+            return false;
+        }
+
         private static bool IsDelayName(string name)
         {
             return string.Equals(name, "td", StringComparison.OrdinalIgnoreCase)
                 || string.Equals(name, "delay", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool IsAnyName(string value, IEnumerable<string> names)
+        {
+            return names.Any(name => IsName(value, name));
+        }
+
+        private static bool IsName(string value, string expected)
+        {
+            return string.Equals(value, expected, StringComparison.OrdinalIgnoreCase);
         }
 
         private static bool TryParseVoltageInput(
@@ -309,6 +462,168 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             Exception exception = null)
         {
             context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, message, lineInfo, exception);
+        }
+
+        private interface ILaplaceSyntaxRecognizer
+        {
+            LaplaceSyntaxResult Recognize(ParameterCollection parameters);
+        }
+
+        private sealed class CanonicalExpressionAssignmentRecognizer : ILaplaceSyntaxRecognizer
+        {
+            public LaplaceSyntaxResult Recognize(ParameterCollection parameters)
+            {
+                if (!IsLaplaceWord(parameters[2])
+                    || parameters.Count < 4
+                    || !(parameters[3] is ExpressionAssignmentParameter assignment))
+                {
+                    return LaplaceSyntaxResult.NoMatch;
+                }
+
+                return LaplaceSyntaxResult.Match(
+                    assignment.LeftExpression,
+                    assignment.RightExpression,
+                    4,
+                    assignment.LineInfo);
+            }
+        }
+
+        private sealed class NoEqualsExpressionPairRecognizer : ILaplaceSyntaxRecognizer
+        {
+            public LaplaceSyntaxResult Recognize(ParameterCollection parameters)
+            {
+                if (!IsLaplaceWord(parameters[2])
+                    || parameters.Count < 4
+                    || !(parameters[3] is ExpressionParameter inputExpression))
+                {
+                    return LaplaceSyntaxResult.NoMatch;
+                }
+
+                if (parameters.Count == 4)
+                {
+                    return LaplaceSyntaxResult.Error(
+                        "laplace expects transfer expression",
+                        inputExpression.LineInfo);
+                }
+
+                var transferExpression = parameters[4] as ExpressionParameter;
+                if (transferExpression == null)
+                {
+                    return LaplaceSyntaxResult.Error(
+                        "laplace expects transfer expression",
+                        parameters[4].LineInfo);
+                }
+
+                return LaplaceSyntaxResult.Match(
+                    inputExpression.Value,
+                    transferExpression.Value,
+                    5,
+                    inputExpression.LineInfo);
+            }
+        }
+
+        private sealed class EqualsExpressionPairRecognizer : ILaplaceSyntaxRecognizer
+        {
+            public LaplaceSyntaxResult Recognize(ParameterCollection parameters)
+            {
+                var assignment = parameters[2] as AssignmentParameter;
+                if (assignment == null || !IsName(assignment.Name, "laplace"))
+                {
+                    return LaplaceSyntaxResult.NoMatch;
+                }
+
+                if (parameters.Count == 3)
+                {
+                    return LaplaceSyntaxResult.Error(
+                        "laplace expects transfer expression",
+                        assignment.LineInfo);
+                }
+
+                var transferExpression = parameters[3] as ExpressionParameter;
+                if (transferExpression == null)
+                {
+                    return LaplaceSyntaxResult.Error(
+                        "laplace expects transfer expression",
+                        parameters[3].LineInfo);
+                }
+
+                return LaplaceSyntaxResult.Match(
+                    assignment.Value,
+                    transferExpression.Value,
+                    4,
+                    assignment.LineInfo);
+            }
+        }
+
+        private sealed class UnsupportedKnownVariantRecognizer : ILaplaceSyntaxRecognizer
+        {
+            public LaplaceSyntaxResult Recognize(ParameterCollection parameters)
+            {
+                if (!TryGetLaplaceKeyword(parameters, out var lineInfo))
+                {
+                    return LaplaceSyntaxResult.NoMatch;
+                }
+
+                if (parameters.Count == 3)
+                {
+                    return LaplaceSyntaxResult.Error(
+                        IsLaplaceWord(parameters[2])
+                            ? "laplace expects input expression"
+                            : "laplace expects transfer expression",
+                        lineInfo);
+                }
+
+                return LaplaceSyntaxResult.Error(
+                    "laplace syntax variant is recognized but not supported yet",
+                    parameters[3].LineInfo);
+            }
+        }
+
+        private sealed class LaplaceSyntaxResult
+        {
+            public static readonly LaplaceSyntaxResult NoMatch = new LaplaceSyntaxResult(false, null, null, 0, null, null);
+
+            private LaplaceSyntaxResult(
+                bool isMatch,
+                string inputExpression,
+                string transferExpression,
+                int extraParameterStartIndex,
+                SpiceLineInfo lineInfo,
+                string errorMessage)
+            {
+                IsMatch = isMatch;
+                InputExpression = inputExpression;
+                TransferExpression = transferExpression;
+                ExtraParameterStartIndex = extraParameterStartIndex;
+                LineInfo = lineInfo;
+                ErrorMessage = errorMessage;
+            }
+
+            public bool IsMatch { get; }
+
+            public string InputExpression { get; }
+
+            public string TransferExpression { get; }
+
+            public int ExtraParameterStartIndex { get; }
+
+            public SpiceLineInfo LineInfo { get; }
+
+            public string ErrorMessage { get; }
+
+            public static LaplaceSyntaxResult Match(
+                string inputExpression,
+                string transferExpression,
+                int extraParameterStartIndex,
+                SpiceLineInfo lineInfo)
+            {
+                return new LaplaceSyntaxResult(true, inputExpression, transferExpression, extraParameterStartIndex, lineInfo, null);
+            }
+
+            public static LaplaceSyntaxResult Error(string message, SpiceLineInfo lineInfo)
+            {
+                return new LaplaceSyntaxResult(true, null, null, 0, lineInfo, message);
+            }
         }
     }
 }
