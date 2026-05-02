@@ -249,6 +249,87 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
+        public void When_ExpressionAssignmentParameterIsParsed_Expect_ExpressionAssignment()
+        {
+            var tokens = new SpiceToken[]
+            {
+                new SpiceToken(SpiceTokenType.EXPRESSION_BRACKET, "{V(in1,in2)}"),
+                new SpiceToken(SpiceTokenType.EQUAL, "="),
+                new SpiceToken(SpiceTokenType.EXPRESSION_BRACKET, "{1/(1+s*tau)}"),
+            };
+
+            var parser = new ParseTreeGenerator(true);
+            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, Symbols.Parameter);
+
+            var child = root.Children[0] as ParseTreeNonTerminalNode;
+            Assert.NotNull(child);
+            Assert.Equal(Symbols.ExpressionAssignment, child.Name);
+            Assert.Equal(3, child.Children.Count);
+        }
+
+        [Fact]
+        public void When_ExpressionAssignmentParameterWithQuotedRightSideIsParsed_Expect_ExpressionAssignment()
+        {
+            var tokens = new SpiceToken[]
+            {
+                new SpiceToken(SpiceTokenType.EXPRESSION_BRACKET, "{V(in)}"),
+                new SpiceToken(SpiceTokenType.EQUAL, "="),
+                new SpiceToken(SpiceTokenType.EXPRESSION_SINGLE_QUOTES, "'1/(1+s*tau)'"),
+            };
+
+            var parser = new ParseTreeGenerator(true);
+            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, Symbols.Parameter);
+
+            var child = root.Children[0] as ParseTreeNonTerminalNode;
+            Assert.NotNull(child);
+            Assert.Equal(Symbols.ExpressionAssignment, child.Name);
+            Assert.Equal(3, child.Children.Count);
+        }
+
+        [Fact]
+        public void When_ExpressionEqualWithEqualsIsParsed_Expect_ExpressionEqual()
+        {
+            var tokens = new SpiceToken[]
+            {
+                new SpiceToken(SpiceTokenType.EXPRESSION_BRACKET, "{V(in)}"),
+                new SpiceToken(SpiceTokenType.EQUAL, "="),
+                new SpiceToken(SpiceTokenType.DELIMITER, "("),
+                new SpiceToken(SpiceTokenType.VALUE, "0"),
+                new SpiceToken(SpiceTokenType.COMMA, ","),
+                new SpiceToken(SpiceTokenType.VALUE, "0"),
+                new SpiceToken(SpiceTokenType.DELIMITER, ")"),
+            };
+
+            var parser = new ParseTreeGenerator(true);
+            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, Symbols.Parameter);
+
+            var child = root.Children[0] as ParseTreeNonTerminalNode;
+            Assert.NotNull(child);
+            Assert.Equal(Symbols.ExpressionEqual, child.Name);
+        }
+
+        [Fact]
+        public void When_ExpressionEqualWithoutEqualsIsParsed_Expect_ExpressionEqual()
+        {
+            var tokens = new SpiceToken[]
+            {
+                new SpiceToken(SpiceTokenType.EXPRESSION_BRACKET, "{V(in)}"),
+                new SpiceToken(SpiceTokenType.DELIMITER, "("),
+                new SpiceToken(SpiceTokenType.VALUE, "0"),
+                new SpiceToken(SpiceTokenType.COMMA, ","),
+                new SpiceToken(SpiceTokenType.VALUE, "0"),
+                new SpiceToken(SpiceTokenType.DELIMITER, ")"),
+            };
+
+            var parser = new ParseTreeGenerator(true);
+            ParseTreeNonTerminalNode root = parser.GetParseTree(tokens, Symbols.Parameter);
+
+            var child = root.Children[0] as ParseTreeNonTerminalNode;
+            Assert.NotNull(child);
+            Assert.Equal(Symbols.ExpressionEqual, child.Name);
+        }
+
+        [Fact]
         public void When_ParameterBracketIsParsed_Expect_Reference()
         {
             var vectorTokens = new SpiceToken[]

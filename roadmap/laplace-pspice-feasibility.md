@@ -3,7 +3,7 @@ title: PSpice LAPLACE Support Feasibility
 status: Draft / Roadmap
 scope: SpiceSharpParser
 dependencies: SpiceSharpBehavioral 3.2.0
-last_reviewed: 2026-05-01
+last_reviewed: 2026-05-02
 ---
 
 # PSpice `LAPLACE` Support Feasibility
@@ -68,7 +68,9 @@ This approach keeps the implementation small, aligns with existing source-genera
 
 ## Current Status
 
-`LAPLACE` is not currently parsed by SpiceSharpParser.
+`LAPLACE` source support is not currently implemented by SpiceSharpParser.
+
+Phase 1 grammar groundwork is implemented: expression-to-expression assignments such as `{V(in)} = {1/(1+s*tau)}` and `{V(in1,in2)} = {1/(1+s*tau)}` are preserved as `ExpressionAssignmentParameter`. Transfer-function math, source-reader mapping, diagnostics, and simulation support remain later-phase work.
 
 Adjacent features already exist:
 
@@ -620,6 +622,8 @@ Before grammar work, prove the runtime path manually in the repo's test harness:
 If manual entity construction fails, stop and investigate the dependency before writing parser code.
 
 ### Phase 1: Grammar
+
+Status: implemented.
 
 1. Add tokenizer regression tests for `LAPLACE`, braced expressions, quoted expressions, and continuation lines.
 2. Add a failing parser test for `{V(in)} = {1/(1+s*tau)}`.

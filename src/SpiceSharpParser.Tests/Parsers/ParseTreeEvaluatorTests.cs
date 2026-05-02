@@ -5,6 +5,7 @@ using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using SpiceSharpParser.Parsers.Netlist;
 using SpiceSharpParser.Parsers.Netlist.Spice;
 using SpiceSharpParser.Parsers.Netlist.Spice.Internals;
+using System.Linq;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.Parsers
@@ -169,6 +170,105 @@ namespace SpiceSharpParser.Tests.Parsers
             Assert.True(((AssignmentParameter)spiceObject).Name == "v");
             Assert.True(((AssignmentParameter)spiceObject).Arguments.Count == 2);
             Assert.True(((AssignmentParameter)spiceObject).Value == "13");
+        }
+
+        [Fact]
+        public void When_ExpressionAssignmentParameter_Expect_LeftAndRightExpressions()
+        {
+            // Arrange
+            var vectorTokens = new SpiceToken[]
+            {
+                new SpiceToken(SpiceTokenType.EXPRESSION_BRACKET, "{V(in1,in2)}"),
+                new SpiceToken(SpiceTokenType.EQUAL, "="),
+                new SpiceToken(SpiceTokenType.EXPRESSION_BRACKET, "{1/(1+s*tau)}"),
+            };
+
+            var parser = new ParseTreeGenerator(true);
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.Parameter);
+
+            // Act
+            ParseTreeEvaluator eval = new ParseTreeEvaluator();
+            var spiceObject = eval.Evaluate(tree);
+
+            // Assert
+            var expressionAssignment = Assert.IsType<ExpressionAssignmentParameter>(spiceObject);
+            Assert.Equal("V(in1,in2)", expressionAssignment.LeftExpression);
+            Assert.Equal("1/(1+s*tau)", expressionAssignment.RightExpression);
+        }
+
+        [Fact]
+        public void When_ExpressionAssignmentParameterHasQuotedRightSide_Expect_RightExpressionWithoutQuotes()
+        {
+            // Arrange
+            var vectorTokens = new SpiceToken[]
+            {
+                new SpiceToken(SpiceTokenType.EXPRESSION_BRACKET, "{V(in)}"),
+                new SpiceToken(SpiceTokenType.EQUAL, "="),
+                new SpiceToken(SpiceTokenType.EXPRESSION_SINGLE_QUOTES, "'1/(1+s*tau)'"),
+            };
+
+            var parser = new ParseTreeGenerator(true);
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.Parameter);
+
+            // Act
+            ParseTreeEvaluator eval = new ParseTreeEvaluator();
+            var spiceObject = eval.Evaluate(tree);
+
+            // Assert
+            var expressionAssignment = Assert.IsType<ExpressionAssignmentParameter>(spiceObject);
+            Assert.Equal("V(in)", expressionAssignment.LeftExpression);
+            Assert.Equal("1/(1+s*tau)", expressionAssignment.RightExpression);
+        }
+
+        [Fact]
+        public void When_LaplaceContinuationLineIsEvaluated_Expect_ExpressionAssignmentParameter()
+        {
+            // Arrange
+            var tokensStr = "ELOW out 0 LAPLACE {V(in1,in2)} =\n+ {1/(1+s*tau)}\n";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            var parser = new ParseTreeGenerator(true);
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(tokens, Symbols.NetlistWithoutTitle);
+
+            // Act
+            ParseTreeEvaluator eval = new ParseTreeEvaluator();
+            var spiceObject = eval.Evaluate(tree);
+
+            // Assert
+            var netlist = Assert.IsType<SpiceNetlist>(spiceObject);
+            var component = Assert.IsType<Component>(netlist.Statements[0]);
+            var expressionAssignment = Assert.IsType<ExpressionAssignmentParameter>(component.PinsAndParameters[3]);
+            Assert.Equal("V(in1,in2)", expressionAssignment.LeftExpression);
+            Assert.Equal("1/(1+s*tau)", expressionAssignment.RightExpression);
+        }
+
+        [Fact]
+        public void When_ExpressionEqualParameter_Expect_TablePointsArePreserved()
+        {
+            // Arrange
+            var vectorTokens = new SpiceToken[]
+            {
+                new SpiceToken(SpiceTokenType.EXPRESSION_BRACKET, "{V(in)}"),
+                new SpiceToken(SpiceTokenType.EQUAL, "="),
+                new SpiceToken(SpiceTokenType.DELIMITER, "("),
+                new SpiceToken(SpiceTokenType.VALUE, "0"),
+                new SpiceToken(SpiceTokenType.COMMA, ","),
+                new SpiceToken(SpiceTokenType.VALUE, "0"),
+                new SpiceToken(SpiceTokenType.DELIMITER, ")"),
+            };
+
+            var parser = new ParseTreeGenerator(true);
+            ParseTreeNonTerminalNode tree = parser.GetParseTree(vectorTokens, Symbols.Parameter);
+
+            // Act
+            ParseTreeEvaluator eval = new ParseTreeEvaluator();
+            var spiceObject = eval.Evaluate(tree);
+
+            // Assert
+            var expressionEqual = Assert.IsType<ExpressionEqualParameter>(spiceObject);
+            Assert.Equal("V(in)", expressionEqual.Expression);
+            Assert.Single(expressionEqual.Points.Values);
         }
 
         [Fact]

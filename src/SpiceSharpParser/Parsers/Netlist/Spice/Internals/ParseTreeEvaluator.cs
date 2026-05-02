@@ -46,6 +46,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
             _evaluators.Add(Symbols.ParameterBracketContent, CreateBracketParameterContent);
             _evaluators.Add(Symbols.ParameterEqual, CreateAssignmentParameter);
             _evaluators.Add(Symbols.ExpressionEqual, CreateExpressionEqualParameter);
+            _evaluators.Add(Symbols.ExpressionAssignment, CreateExpressionAssignmentParameter);
             _evaluators.Add(Symbols.Point, CreatePointParameter);
             _evaluators.Add(Symbols.PointValue, CreatePointValue);
             _evaluators.Add(Symbols.PointValues, CreatePointValues);
@@ -244,6 +245,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
         /// Returns new instance of <see cref="SingleParameter"/>
         /// or <see cref="BracketParameter"/>
         /// or <see cref="AssignmentParameter"/>
+        /// or <see cref="ExpressionAssignmentParameter"/>
         /// or <see cref="VectorParameter"/>
         /// from the values of children nodes of <see cref="Symbols.Parameter"/> parse tree node.
         /// </summary>
@@ -277,6 +279,11 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
                 if (values.TryToGetSpiceObject(0, out ExpressionEqualParameter eep))
                 {
                     return eep;
+                }
+
+                if (values.TryToGetSpiceObject(0, out ExpressionAssignmentParameter eap))
+                {
+                    return eap;
                 }
 
                 if (values.TryToGetSpiceObject(0, out PointParameter pp))
@@ -775,6 +782,42 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
             {
                 throw new ParseTreeEvaluationException("Error during translating assignment parameter to Spice Object Model");
             }
+        }
+
+        /// <summary>
+        /// Returns new instance of <see cref="ExpressionAssignmentParameter"/>
+        /// from the values of children nodes of <see cref="Symbols.ExpressionAssignment"/> parse tree node.
+        /// </summary>
+        /// <returns>
+        /// A instance of <see cref="ExpressionAssignmentParameter"/>.
+        /// </returns>
+        private SpiceObject CreateExpressionAssignmentParameter(ParseTreeNodeEvaluationValues values)
+        {
+            if (values.Count == 3)
+            {
+                return new ExpressionAssignmentParameter(
+                    NormalizeExpressionLexem(values.GetLexem(0)),
+                    NormalizeExpressionLexem(values.GetLexem(2)),
+                    new SpiceLineInfo(values));
+            }
+
+            throw new ParseTreeEvaluationException("Error during translating expression assignment parameter to Spice Object Model");
+        }
+
+        private static string NormalizeExpressionLexem(string lexem)
+        {
+            if (string.IsNullOrEmpty(lexem) || lexem.Length < 2)
+            {
+                return lexem;
+            }
+
+            if ((lexem[0] == '{' && lexem[lexem.Length - 1] == '}')
+                || (lexem[0] == '\'' && lexem[lexem.Length - 1] == '\''))
+            {
+                return lexem.Substring(1, lexem.Length - 2);
+            }
+
+            return lexem;
         }
 
         /// <summary>

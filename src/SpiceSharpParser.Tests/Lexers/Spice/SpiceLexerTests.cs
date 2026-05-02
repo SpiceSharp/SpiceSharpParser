@@ -268,6 +268,50 @@ namespace SpiceSharpParser.Tests.Lexers.Spice
         }
 
         [Fact]
+        public void LaplaceCanonicalSyntaxTest()
+        {
+            var tokensStr = "ELOW out 0 LAPLACE {V(in1,in2)} = {1/(1+s*tau)}\n";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.Equal(9, tokens.Length);
+            Assert.Equal(SpiceTokenType.WORD, tokens[3].SpiceTokenType);
+            Assert.Equal("LAPLACE", tokens[3].Lexem);
+            Assert.Equal(SpiceTokenType.EXPRESSION_BRACKET, tokens[4].SpiceTokenType);
+            Assert.Equal("{V(in1,in2)}", tokens[4].Lexem);
+            Assert.Equal(SpiceTokenType.EQUAL, tokens[5].SpiceTokenType);
+            Assert.Equal(SpiceTokenType.EXPRESSION_BRACKET, tokens[6].SpiceTokenType);
+            Assert.Equal("{1/(1+s*tau)}", tokens[6].Lexem);
+        }
+
+        [Fact]
+        public void LaplaceQuotedTransferSyntaxTest()
+        {
+            var tokensStr = "ELOW out 0 LAPLACE {V(in)} = '1/(1+s*tau)'\n";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.Equal(9, tokens.Length);
+            Assert.Equal(SpiceTokenType.EXPRESSION_BRACKET, tokens[4].SpiceTokenType);
+            Assert.Equal(SpiceTokenType.EQUAL, tokens[5].SpiceTokenType);
+            Assert.Equal(SpiceTokenType.EXPRESSION_SINGLE_QUOTES, tokens[6].SpiceTokenType);
+            Assert.Equal("'1/(1+s*tau)'", tokens[6].Lexem);
+        }
+
+        [Fact]
+        public void LaplaceContinuationSyntaxTest()
+        {
+            var tokensStr = "ELOW out 0 LAPLACE {V(in)} =\n+ {1/(1+s*tau)}\n";
+            SpiceLexer lexer = new SpiceLexer(new SpiceLexerSettings { HasTitle = false });
+            var tokens = lexer.GetTokens(tokensStr).ToArray();
+
+            Assert.Equal(9, tokens.Length);
+            Assert.Equal(SpiceTokenType.EQUAL, tokens[5].SpiceTokenType);
+            Assert.Equal(SpiceTokenType.EXPRESSION_BRACKET, tokens[6].SpiceTokenType);
+            Assert.Equal("{1/(1+s*tau)}", tokens[6].Lexem);
+        }
+
+        [Fact]
         public void Value1Text()
         {
             var tokensStr = "1picofarad";

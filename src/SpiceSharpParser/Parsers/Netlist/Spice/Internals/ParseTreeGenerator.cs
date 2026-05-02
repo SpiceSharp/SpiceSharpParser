@@ -45,6 +45,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
             _parsers.Add(Symbols.NewLine, ReadNewLine);
             _parsers.Add(Symbols.NewLines, ReadNewLines);
             _parsers.Add(Symbols.ExpressionEqual, ReadExpressionEqual);
+            _parsers.Add(Symbols.ExpressionAssignment, ReadExpressionAssignment);
             _parsers.Add(Symbols.Points, ReadPoints);
             _parsers.Add(Symbols.PointsContinue, ReadPointsContinue);
             _parsers.Add(Symbols.Point, ReadPoint);
@@ -153,6 +154,18 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
             }
 
             return tokens[currentTokenIndex + 1].Lexem == "=";
+        }
+
+        private static bool IsExpressionToken(SpiceToken token)
+        {
+            return token.Is(SpiceTokenType.EXPRESSION_BRACKET)
+                || token.Is(SpiceTokenType.EXPRESSION)
+                || token.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES);
+        }
+
+        private static bool IsPointStart(SpiceToken token)
+        {
+            return token.Is(SpiceTokenType.DELIMITER) && token.Lexem == "(";
         }
 
         /// <summary>
@@ -583,6 +596,11 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
         /// <param name="currentTokenIndex">A index of the current token.</param>
         private void ReadPointsContinue(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode current, SpiceToken[] tokens, int currentTokenIndex)
         {
+            if (currentTokenIndex >= tokens.Length - 1)
+            {
+                return;
+            }
+
             var currentToken = tokens[currentTokenIndex];
             var nextToken = tokens[currentTokenIndex + 1];
 
@@ -984,9 +1002,7 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
             var currentToken = tokens[currentTokenIndex];
             var nextToken = tokens[currentTokenIndex + 1];
 
-            if (currentToken.Is(SpiceTokenType.EXPRESSION_BRACKET)
-                || currentToken.Is(SpiceTokenType.EXPRESSION)
-                || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES))
+            if (IsExpressionToken(currentToken))
             {
                 if (nextToken.Is(SpiceTokenType.EQUAL))
                 {
@@ -1007,6 +1023,28 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
             else
             {
                 throw new ParseException("Expression equal should start with expression", currentToken.LineNumber);
+            }
+        }
+
+        private void ReadExpressionAssignment(Stack<ParseTreeNode> stack, ParseTreeNonTerminalNode currentNode, SpiceToken[] tokens, int currentTokenIndex)
+        {
+            var currentToken = tokens[currentTokenIndex];
+            var nextToken = tokens[currentTokenIndex + 1];
+            var nextNextToken = tokens[currentTokenIndex + 2];
+
+            if (IsExpressionToken(currentToken)
+                && nextToken.Is(SpiceTokenType.EQUAL)
+                && IsExpressionToken(nextNextToken))
+            {
+                PushProductionExpression(
+                    stack,
+                    CreateTerminalNode(currentToken.SpiceTokenType, currentNode),
+                    CreateTerminalNode(SpiceTokenType.EQUAL, currentNode, "="),
+                    CreateTerminalNode(nextNextToken.SpiceTokenType, currentNode));
+            }
+            else
+            {
+                throw new ParseException("Expression assignment should be expression equals expression", currentToken.LineNumber);
             }
         }
 
@@ -1221,17 +1259,26 @@ namespace SpiceSharpParser.Parsers.Netlist.Spice.Internals
                         || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES)
                         || currentToken.Is(SpiceTokenType.PERCENT))
                     {
-                        if (currentToken.Is(SpiceTokenType.EXPRESSION_BRACKET)
-                            || currentToken.Is(SpiceTokenType.EXPRESSION_SINGLE_QUOTES))
+                        if (IsExpressionToken(currentToken))
                         {
                             if (nextToken.Is(SpiceTokenType.EQUAL))
                             {
-                                PushProductionExpression(
-                                    stack,
-                                    CreateNonTerminalNode(Symbols.ExpressionEqual, currentNode));
+                                if (currentTokenIndex + 2 < tokens.Length
+                                    && IsExpressionToken(tokens[currentTokenIndex + 2]))
+                                {
+                                    PushProductionExpression(
+                                        stack,
+                                        CreateNonTerminalNode(Symbols.ExpressionAssignment, currentNode));
+                                }
+                                else
+                                {
+                                    PushProductionExpression(
+                                        stack,
+                                        CreateNonTerminalNode(Symbols.ExpressionEqual, currentNode));
+                                }
                             }
                             else
-                            if (nextToken.Is(SpiceTokenType.DELIMITER) && nextToken.Lexem == "(")
+                            if (IsPointStart(nextToken))
                             {
                                 PushProductionExpression(
                                     stack,
