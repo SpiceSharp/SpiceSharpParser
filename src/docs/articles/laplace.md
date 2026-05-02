@@ -4,6 +4,8 @@
 
 SpiceSharpParser supports voltage-controlled `E` and `G` source LAPLACE forms.
 
+If you are new to Laplace transforms, start with [Laplace Transform Basics for Circuit Simulation](laplace-basics.md). This article is the syntax and reference page.
+
 ## Mental Model
 
 A LAPLACE source applies a transfer function to an input signal:
@@ -198,6 +200,121 @@ H(j*wc) = j / (1 + j)
 phase   = +pi/4
 ```
 
+## Practical Modeling Examples
+
+Use `LAPLACE` when the real circuit block is mostly linear and you know the intended gain, bandwidth, pole, zero, or damping. It is useful for fast system-level models before replacing a block with detailed components.
+
+| Real-life block | Useful transfer |
+|-----------------|-----------------|
+| ADC input anti-alias or signal-conditioning pole | `gain*wc/(s+wc)` |
+| Closed-loop amplifier with finite bandwidth | `acl*wp/(s+wp)` |
+| Current-output sensor or transconductance stage | `gm*wc/(s+wc)` on a `G` source |
+| Damped mechanical, LC, or control plant response | `wn*wn/(s*s + 2*zeta*wn*s + wn*wn)` |
+| Lead/lag compensation block | `(1+s/wz)/(1+s/wp)` |
+
+These examples stay within the SpiceSharpParser subset: `E` and `G` sources, voltage input probes, finite DC gain, and proper rational polynomials in `s`.
+
+### ADC Anti-Alias Or Signal-Conditioning Pole
+
+A front-end filter before an ADC is often modeled as a low-pass block. This example gives a gain of 2 and a 10 kHz pole:
+
+```spice
+* Signal-conditioning gain with one anti-alias pole
+.PARAM gain=2
+.PARAM fc=10k
+.PARAM wc={2*PI*fc}
+VIN IN 0 AC 1
+EAAF OUT 0 LAPLACE {V(IN)} = {gain*wc/(s+wc)}
+RLOAD OUT 0 10k
+.AC DEC 40 10 1MEG
+.SAVE V(OUT)
+.END
+```
+
+At low frequency, `V(OUT)` is about `2*V(IN)`. Near `10 kHz`, the magnitude is about `2/sqrt(2)`.
+
+### Finite-Bandwidth Amplifier Approximation
+
+An op-amp circuit with closed-loop gain `acl` cannot keep that gain forever. A simple one-pole approximation places the closed-loop pole at:
+
+```text
+fp = gain_bandwidth / acl
+```
+
+```spice
+* Closed-loop gain of 20 with a 10 MHz gain-bandwidth approximation
+.PARAM acl=20
+.PARAM gbw=10MEG
+.PARAM fp={gbw/acl}
+.PARAM wp={2*PI*fp}
+VIN IN 0 AC 1
+EAMP OUT 0 LAPLACE {V(IN)} = {acl*wp/(s+wp)}
+RLOAD OUT 0 10k
+.AC DEC 40 100 100MEG
+.SAVE V(OUT)
+.END
+```
+
+This is not a full op-amp macro-model. It is a compact way to include the dominant bandwidth limit in a larger signal-chain model.
+
+### Current-Output Sensor Front End
+
+A `G` LAPLACE source maps an input voltage to an output current. That makes it useful for transconductance stages or simplified current-output sensor blocks. In this example, `1 V` at `SENSE` represents one unit of measured signal:
+
+```spice
+* Low-pass transconductance block into a load resistor
+.PARAM gm=100u
+.PARAM fc=20k
+.PARAM wc={2*PI*fc}
+VSENSE SENSE 0 AC 1
+GSENSOR OUT 0 LAPLACE {V(SENSE)} = {gm*wc/(s+wc)}
+RLOAD OUT 0 10k
+.AC DEC 40 100 1MEG
+.SAVE V(OUT)
+.END
+```
+
+At low frequency, the current is approximately `gm*V(SENSE)`. With a grounded load from `OUT` to `0`, the output voltage is negative because the `G` source current direction is from `OUT` to `0`.
+
+### Damped Second-Order Block
+
+Use a second-order block for a simplified LC network, mechanical resonance, or control plant:
+
+```spice
+* Damped second-order response at 5 kHz
+.PARAM fn=5k
+.PARAM wn={2*PI*fn}
+.PARAM zeta=0.7
+VIN IN 0 AC 1
+ERES OUT 0 LAPLACE {V(IN)} = {wn*wn/(s*s + 2*zeta*wn*s + wn*wn)}
+RLOAD OUT 0 10k
+.AC DEC 50 10 1MEG
+.SAVE V(OUT)
+.END
+```
+
+Lower `zeta` gives more peaking near `fn`; higher `zeta` gives a flatter, more damped response.
+
+### Lead/Lag Control Block
+
+Many control examples use pure integrators such as `1/s`, but SpiceSharpParser rejects those because their DC gain is singular. A finite lead/lag block is supported:
+
+```spice
+* Lead block: zero at 1 kHz, pole at 10 kHz
+.PARAM fz=1k
+.PARAM fp=10k
+.PARAM wz={2*PI*fz}
+.PARAM wp={2*PI*fp}
+VIN ERR 0 AC 1
+ELEAD CTRL 0 LAPLACE {V(ERR)} = {(1+s/wz)/(1+s/wp)}
+RLOAD CTRL 0 10k
+.AC DEC 40 10 1MEG
+.SAVE V(CTRL)
+.END
+```
+
+With `fz < fp`, this block adds phase lead and increases gain between the zero and pole. Swap the pole and zero placement for lag-style behavior.
+
 ## Worked Examples
 
 ### Unity Low-Pass E Source
@@ -351,6 +468,16 @@ The same spelling variants are supported for `G` sources.
 | `M=2` | LAPLACE multiplier option is not supported yet | Put the multiplier in `H(s)`, for example `{2/(1+s*tau)}` |
 | `TD=1n` or `DELAY=1n` | Delay syntax is not supported yet | Omit delay |
 | `VALUE={LAPLACE(...)}` | Function-like LAPLACE syntax is not supported yet | Use source-level `E`/`G ... LAPLACE ...` |
+
+## Further Reading
+
+These references are useful for the engineering context behind transfer-function models. Some examples use broader PSpice or LTspice syntax than SpiceSharpParser currently supports, so adapt them to the supported `E`/`G` rational-polynomial subset described above.
+
+- [Model Transfer Functions by Applying the Laplace Transform in LTspice](https://www.analog.com/en/resources/technical-articles/model-transfer-functions-by-applying-the-laplace-transform-in-ltspice.html)
+- [Cadence PSpice User Guide: Analog Behavioral Modeling](https://resources.pcb.cadence.com/pspiceuserguide/06-analog-behavioral-modeling)
+- [Filter Basics: Anti-Aliasing](https://www.analog.com/en/resources/technical-articles/guide-to-antialiasing-filter-basics.html)
+- [TI Low-Pass Filtered Non-Inverting Amplifier Circuit](https://www.ti.com/tool/CIRCUIT060057)
+- [Low Noise Single Supply Photodiode Amplifier](https://www.analog.com/en/resources/technical-articles/low-noise-single-supply-photodiode-amplifier.html)
 
 ## Current Limitations
 
