@@ -70,7 +70,9 @@ This approach keeps the implementation small, aligns with existing source-genera
 
 `LAPLACE` source support is not currently implemented by SpiceSharpParser.
 
-Phase 1 grammar groundwork is implemented: expression-to-expression assignments such as `{V(in)} = {1/(1+s*tau)}` and `{V(in1,in2)} = {1/(1+s*tau)}` are preserved as `ExpressionAssignmentParameter`. Transfer-function math, source-reader mapping, diagnostics, and simulation support remain later-phase work.
+Phase 1 grammar groundwork is implemented: expression-to-expression assignments such as `{V(in)} = {1/(1+s*tau)}` and `{V(in1,in2)} = {1/(1+s*tau)}` are preserved as `ExpressionAssignmentParameter`.
+
+Phase 2 transfer-function math is implemented: internal polynomial, rational-polynomial, transfer-function, and expression-parser types convert rational expressions in `s` into ascending numerator / denominator coefficients with focused validation and broad unit coverage. Source-reader mapping, validation-entry diagnostics, and simulation support remain later-phase work.
 
 Adjacent features already exist:
 
@@ -636,6 +638,8 @@ Status: implemented.
 9. Update `SpiceGrammarBNF.txt`.
 
 ### Phase 2: Math Builder
+
+Status: implemented.
 
 1. Add `Polynomial` and `RationalPolynomial`.
 2. Add `LaplaceExpressionParser` or equivalent builder.
