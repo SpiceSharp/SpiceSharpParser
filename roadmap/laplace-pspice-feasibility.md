@@ -3,10 +3,12 @@ title: PSpice LAPLACE Support Feasibility
 status: Draft / Roadmap
 scope: SpiceSharpParser
 dependencies: SpiceSharpBehavioral 3.2.0
-last_reviewed: 2026-05-02
+last_reviewed: 2026-05-03
 ---
 
 # PSpice `LAPLACE` Support Feasibility
+
+> Historical note: this file records the original feasibility research for source-level PSpice `LAPLACE` support. The source-level work is implemented, and later work also implemented function-style `VALUE={LAPLACE(...)}` / `B ... V=/I=` support, inline options, mixed-expression helpers, arbitrary function-style inputs, and generated C# writer parity. Use `laplace-next-compatibility-plan.md` for the current compatibility contract and remaining research roadmap.
 
 ## TL;DR
 
@@ -72,7 +74,9 @@ This approach keeps the implementation small, aligns with existing source-genera
 
 ## Current Status
 
-`E` / `G` voltage-controlled and `F` / `H` current-controlled `LAPLACE` support is implemented by SpiceSharpParser for canonical assignment, no-equals expression-pair, and equals-after-keyword expression-pair syntax. Finite constant `M=`, `TD=`, and `DELAY=` options are implemented for those supported source-level forms. `B`, function-like `VALUE={LAPLACE(...)}`, and explicit internal-state options remain deferred.
+`E` / `G` voltage-controlled and `F` / `H` current-controlled `LAPLACE` support is implemented by SpiceSharpParser for canonical assignment, no-equals expression-pair, and equals-after-keyword expression-pair syntax. Finite constant `M=`, `TD=`, and `DELAY=` options are implemented for those supported source-level forms.
+
+Function-style `VALUE={LAPLACE(...)}`, `B ... V={LAPLACE(...)}`, and `B ... I={LAPLACE(...)}` support is also implemented. The function-style path includes mixed-expression helper lowering, inline `M=`, `TD=`, and `DELAY=` options, arbitrary scalar input-expression helpers, and generated C# writer parity. Explicit internal-state options remain deferred.
 
 Phase 1 grammar groundwork is implemented: expression-to-expression assignments such as `{V(in)} = {1/(1+s*tau)}` and `{V(in1,in2)} = {1/(1+s*tau)}` are preserved as `ExpressionAssignmentParameter`.
 
@@ -82,7 +86,7 @@ Phase 3 `E`-source mapping is implemented: canonical `Ename out+ out- LAPLACE {V
 
 Phase 4 `G`-source mapping is implemented: canonical `Gname out+ out- LAPLACE {V(ctrl)}` `= {H(s)}` and `V(ctrl+,ctrl-)` forms map to `LaplaceVoltageControlledCurrentSource`, preserve the existing `G` current-source sign convention, support constant `M=` / delay options, and have OP / AC integration coverage.
 
-Phase 5 syntax compatibility is implemented: supported `E` / `G` / `F` / `H` sources accept `LAPLACE {input} = {H(s)}`, `LAPLACE {input} {H(s)}`, and `LAPLACE = {input} {H(s)}` as equivalent source-level forms, while known deferred `VALUE={LAPLACE(...)}` and `B`-source forms produce targeted reader diagnostics.
+Phase 5 syntax compatibility is implemented: supported `E` / `G` / `F` / `H` sources accept `LAPLACE {input} = {H(s)}`, `LAPLACE {input} {H(s)}`, and `LAPLACE = {input} {H(s)}` as equivalent source-level forms.
 
 Phase 6 option, writer, and transient verification is implemented: supported Laplace forms accept one finite constant `M=` multiplier and either `TD=` or `DELAY=` as a finite constant non-negative runtime delay parameter, and generated C# writer parity emits the built-in Laplace entities. Transient first-order step-response tests cover undelayed `E` / `G` low-pass behavior; delayed transient sources are validated as runnable, but delayed response shape is not currently claimed.
 
@@ -181,11 +185,9 @@ Input-expression subset:
 - `V(node1,node2)` mapped to control nodes `node1`, `node2`.
 - `I(source)` mapped to the controlling voltage source for `F` / `H`.
 
-### Deferred
+### Still Deferred Or Research-Only
 
-- `B` source Laplace forms.
-- Arbitrary input expressions such as `V(a)-V(b)+I(Vsense)`.
-- `VALUE={LAPLACE(...)}` / function-like ABM forms.
+- Source-level arbitrary input expressions such as `V(a)-V(b)+I(Vsense)`.
 - Non-rational transfer expressions.
 - Explicit internal-state syntax.
 - Initial-condition syntax for Laplace internal state.
@@ -532,7 +534,6 @@ laplace multiplier M must be a finite constant expression
 laplace multiplier M can be specified only once
 laplace options must use assignment syntax
 laplace syntax variant is recognized but not supported yet
-laplace function-like VALUE form is not supported yet; use source-level E/G/F/H LAPLACE syntax
 laplace source supports E/G voltage-controlled and F/H current-controlled forms in this version
 ```
 
@@ -558,9 +559,10 @@ Good diagnostics are part of compatibility. A precise rejection is better than f
 | `E` / `G ... LAPLACE = {V(n)} {H(s)}` | Support | Keep |
 | `F` / `H ... LAPLACE {I(Vsense)} {H(s)}` | Support | Keep |
 | `F` / `H ... LAPLACE = {I(Vsense)} {H(s)}` | Support | Keep |
-| `B` source Laplace forms | Targeted unsupported diagnostic | Investigate PSpice ABM syntax |
-| `VALUE={LAPLACE(...)}` function-like form | Targeted unsupported diagnostic | Investigate as source-level special form |
-| Arbitrary input expression | Reject | Lower through helper behavioral source or custom behavior |
+| `B` source Laplace forms | Supported for function-style `V=` / `I=` expressions | Keep writer parity and helper behavior aligned |
+| `VALUE={LAPLACE(...)}` function-like form | Supported | Keep handled as a source/lowering feature, not a scalar function |
+| Source-level arbitrary input expression | Reject | Consider only after function-style helper path remains stable |
+| Function-style arbitrary input expression | Supported through helpers | Keep source-level scope separate |
 | Rational polynomial in `s` | Support | Keep |
 | Non-rational functions of `s` | Reject | Likely keep rejected |
 | Singular DC gain (`1/s`) | Reject unless verified safe | Possible AC-only or IC-aware mode |
@@ -569,14 +571,13 @@ Good diagnostics are part of compatibility. A precise rejection is better than f
 | Transient | Verified for undelayed first-order `E` / `G` low-pass step responses | Delayed transient shape not currently claimed |
 | Generated C# writer | Support for implemented source-level forms | Keep writer parity with reader support |
 
-### PSpice Variants to Investigate Later
+### Additional PSpice Variants to Investigate Later
 
 Do not guess semantics for these until there are compatibility examples and tests:
 
 ```spice
-E1 out 0 LAPLACE {V(in)} {1/(1+s*tau)}
-E1 out 0 LAPLACE = {V(in)} {1/(1+s*tau)}
-E1 out 0 VALUE = {LAPLACE(V(in), 1/(1+s*tau))}
+E1 out 0 LAPLACE {V(in)} NUM={1} DEN={1 1u}
+E1 out 0 VALUE = {LAPLACE(V(in), 1/(1+s*tau), IC=...)}
 ```
 
 ## Multiple Syntax Strategy
@@ -632,8 +633,8 @@ The last recognizer is deliberate. If a user writes a known PSpice Laplace varia
 | No-equals expression pair | `E1 out 0 LAPLACE {V(in)} {1/(1+s*tau)}` | Supported | Normalizes to the same definition and coefficients. |
 | Equals-after-keyword pair | `E1 out 0 LAPLACE = {V(in)} {1/(1+s*tau)}` | Supported | Parses differently; syntax handling stays isolated in a recognizer. |
 | Current-controlled | `F1 out 0 LAPLACE {I(Vsense)} = {H(s)}` | Supported | Maps to built-in current-controlled Laplace entities. |
-| Function-like `VALUE` | `E1 out 0 VALUE = {LAPLACE(V(in), H(s))}` | Investigate later | Must be handled as source-level Laplace, not a scalar expression function. |
-| `B` source ABM | `B1 out 0 V = {LAPLACE(V(in), H(s))}` | Investigate later | May require arbitrary input-expression lowering or custom behavior. |
+| Function-like `VALUE` | `E1 out 0 VALUE = {LAPLACE(V(in), H(s))}` | Supported | Handled as source/lowering behavior, not a scalar expression function. |
+| `B` source ABM | `B1 out 0 V = {LAPLACE(V(in), H(s))}` | Supported | Mixed calls and non-probe function-style inputs lower through helpers. |
 | Delay/options | `TD=...`, `DELAY=...`, `M=...` | Supported for implemented source-level forms | Values must be finite constants; delay must be non-negative, and only one delay option may be used. |
 
 ### Normalization Rules
@@ -706,14 +707,13 @@ Status: implemented for canonical `G` source syntax, no-equals and equals-after-
 
 ### Phase 5: Syntax Compatibility Layer
 
-Status: implemented for `E` / `G` voltage-controlled and `F` / `H` current-controlled no-equals and equals-after-keyword syntax. `VALUE={LAPLACE(...)}` and `B` remain diagnostic-only / deferred.
+Status: implemented for `E` / `G` voltage-controlled and `F` / `H` current-controlled no-equals and equals-after-keyword syntax. Later work also implemented `VALUE={LAPLACE(...)}` and `B` function-style forms.
 
 1. Add `UnsupportedKnownVariantRecognizer` so common deferred forms receive targeted diagnostics.
 2. Add `NoEqualsExpressionPairRecognizer` for `LAPLACE {input} {transfer}` only after canonical tests pass.
 3. Add `EqualsExpressionPairRecognizer` for `LAPLACE = {input} {transfer}` only after no-equals tests pass.
 4. Verify supported variants normalize to identical `LaplaceSourceDefinition` values.
-5. Keep function-like `VALUE={LAPLACE(...)}` forms diagnostic-only until their PSpice semantics are confirmed.
-6. Keep future unsupported recognizers diagnostic-only until each syntax family has compatibility tests.
+5. Keep future unsupported recognizers diagnostic-only until each syntax family has compatibility tests.
 
 ### Phase 6: Polish
 

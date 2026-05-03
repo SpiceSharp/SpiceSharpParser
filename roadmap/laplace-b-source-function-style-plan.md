@@ -1,8 +1,10 @@
 # Function-Style LAPLACE And B-Source LAPLACE
 
+> Historical note: this file records the original implementation plan for function-style and B-source `LAPLACE(...)` support. The core reader, writer, inline-option, mixed-expression, and arbitrary-input paths described here are now implemented. Use `laplace-next-compatibility-plan.md` for the current compatibility contract and remaining research roadmap.
+
 ## Summary
 
-Add `LAPLACE(input, transfer)` support inside behavioral source expressions, including `VALUE={...}`, `VALUE {...}`, and `B ... V=/I=` forms. The implementation should be AST-based: parse the behavioral expression, detect `LAPLACE(...)` calls, validate their arguments, and lower them into existing SpiceSharp Laplace source entities.
+This plan added `LAPLACE(input, transfer)` support inside behavioral source expressions, including `VALUE={...}`, `VALUE {...}`, and `B ... V=/I=` forms. The implementation is AST-based: parse the behavioral expression, detect `LAPLACE(...)` calls, validate their arguments, and lower them into existing SpiceSharp Laplace source entities.
 
 There are two target shapes:
 
@@ -25,10 +27,10 @@ This keeps runtime behavior on the existing SpiceSharp Laplace components instea
 - Reuse the existing Laplace transfer parser, coefficient normalization, validation messages, and entity types wherever practical.
 - Preserve current non-Laplace behavioral source behavior.
 
-## Out Of Scope
+## Historical First-Pass Scope Boundaries
 
-- Inline option arguments inside the function call, for example `LAPLACE(V(in), H(s), TD=1n)`.
-- Arbitrary Laplace input expressions, for example `LAPLACE(V(a)-V(b), H(s))`.
+- Inline option arguments inside the function call, for example `LAPLACE(V(in), H(s), TD=1n)`, were deferred from the first pass and implemented later.
+- Arbitrary function-style input expressions, for example `LAPLACE(V(a)-V(b), H(s))`, were deferred from the first pass and implemented later.
 - Function-style delay expressions such as `exp(-s*td)` or broader PSpice/LTspice dialect forms.
 - Supporting `LAPLACE(...)` inside `.FUNC` definitions as a dynamic function.
 - Hiding generated helper entities from every low-level circuit inspection API.
@@ -249,7 +251,7 @@ Add or preserve clear messages for:
 - `laplace delay can be specified only once`
 - `laplace delay must be non-negative`
 - `laplace source-level delay options can be used only when one LAPLACE call is present`
-- `laplace option arguments inside LAPLACE(...) are not supported`
+- `unknown laplace inline option '<name>'`
 
 For mixed expressions, include the parent source line info when possible. For transfer-specific errors, keep the source expression line info if individual argument line info is not available.
 
@@ -323,7 +325,7 @@ Docs should cover:
 - `TD=` / `DELAY=` limitation for multiple calls.
 - The fact that helper entities are an implementation detail and may appear during low-level circuit inspection.
 
-Remove "not supported yet" statements for `VALUE={LAPLACE(...)}` and `B` source LAPLACE forms once implementation and tests are complete.
+Public docs should continue to describe `VALUE={LAPLACE(...)}` and `B` source LAPLACE forms as supported now that implementation and tests are complete.
 
 ## Acceptance Criteria
 
@@ -347,4 +349,4 @@ Remove "not supported yet" statements for `VALUE={LAPLACE(...)}` and `B` source 
 - The existing SpiceSharp Laplace source components are the correct runtime implementation for all supported function-style forms.
 - Helper voltage outputs are a valid numeric representation of each `LAPLACE(...)` term inside mixed expressions.
 - Internal helper entities may be visible during low-level circuit inspection, but their names are reserved and deterministic.
-- Inline function options and arbitrary input expressions remain future work.
+- Inline function options and arbitrary input expressions were future work in this original plan and are now implemented for function-style calls.
