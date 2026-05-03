@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using SpiceSharpBehavioral.Parsers.Nodes;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
@@ -105,12 +107,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Laplace
 
             if (node is FunctionNode functionNode)
             {
-                if (StochasticFunctionNames.Contains(functionNode.Name))
-                {
-                    throw CreateException("laplace transfer coefficients must be constant expressions");
-                }
-
-                throw CreateException("laplace transfer expression must be a rational polynomial in s");
+                return BuildFunction(functionNode);
             }
 
             if (node is PropertyNode || node is TernaryOperatorNode)
@@ -202,6 +199,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Laplace
                 default:
                     throw CreateException("laplace transfer expression must be a rational polynomial in s");
             }
+        }
+
+        private RationalPolynomial BuildFunction(FunctionNode node)
+        {
+            if (ContainsStochasticFunction(node))
+            {
+                throw CreateException("laplace transfer coefficients must be constant expressions");
+            }
+
+            if (ContainsLaplaceSymbol(node) || ContainsProbe(node))
+            {
+                throw CreateException("laplace transfer expression must be a rational polynomial in s");
+            }
+
+            return RationalPolynomial.FromConstant(RequireFinite(_context.Evaluator.EvaluateDouble(FormatConstantExpression(node))));
         }
 
         private int GetPowerExponent(Node exponentNode)
@@ -412,6 +424,72 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Laplace
             }
 
             return value;
+        }
+
+        private string FormatConstantExpression(Node node)
+        {
+            switch (node)
+            {
+                case ConstantNode constantNode:
+                    return constantNode.Literal.ToString("R", CultureInfo.InvariantCulture);
+
+                case VariableNode variableNode:
+                    return variableNode.Name;
+
+                case UnaryOperatorNode unaryNode:
+                    return FormatUnary(unaryNode);
+
+                case BinaryOperatorNode binaryNode:
+                    return FormatBinary(binaryNode);
+
+                case FunctionNode functionNode:
+                    return functionNode.Name + "("
+                        + string.Join(",", functionNode.Arguments.Select(FormatConstantExpression))
+                        + ")";
+            }
+
+            throw CreateException("laplace transfer expression must be a rational polynomial in s");
+        }
+
+        private string FormatUnary(UnaryOperatorNode node)
+        {
+            switch (node.NodeType)
+            {
+                case NodeTypes.Plus:
+                    return "+(" + FormatConstantExpression(node.Argument) + ")";
+
+                case NodeTypes.Minus:
+                    return "-(" + FormatConstantExpression(node.Argument) + ")";
+
+                default:
+                    throw CreateException("laplace transfer expression must be a rational polynomial in s");
+            }
+        }
+
+        private string FormatBinary(BinaryOperatorNode node)
+        {
+            var left = FormatConstantExpression(node.Left);
+            var right = FormatConstantExpression(node.Right);
+            switch (node.NodeType)
+            {
+                case NodeTypes.Add:
+                    return "(" + left + ") + (" + right + ")";
+
+                case NodeTypes.Subtract:
+                    return "(" + left + ") - (" + right + ")";
+
+                case NodeTypes.Multiply:
+                    return "(" + left + ") * (" + right + ")";
+
+                case NodeTypes.Divide:
+                    return "(" + left + ") / (" + right + ")";
+
+                case NodeTypes.Pow:
+                    return "(" + left + ") ^ (" + right + ")";
+
+                default:
+                    throw CreateException("laplace transfer expression must be a rational polynomial in s");
+            }
         }
 
         private LaplaceExpressionException CreateException(string message)

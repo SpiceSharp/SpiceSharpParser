@@ -35,7 +35,6 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation.Laplace
                 yield return new object[] { "1/(1+s^0.5)" };
                 yield return new object[] { "1/(1+s^-1)" };
                 yield return new object[] { "sin(s)/(1+s)" };
-                yield return new object[] { "sqrt(4)/(1+s)" };
                 yield return new object[] { "random()/(1+s)" };
                 yield return new object[] { "gauss(1)/(1+s)" };
                 yield return new object[] { "V(x)*s/(1+s)" };
@@ -182,6 +181,27 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation.Laplace
 
             Assert.Equal(2, transfer.Order);
             AssertTransfer(new[] { w0 * w0 }, new[] { w0 * w0, w0 / 0.70710678, 1.0 }, transfer);
+        }
+
+        [Fact]
+        public void When_FunctionCoefficientIsParsed_Expect_ExpandedCoefficient()
+        {
+            var transfer = Parse("sqrt(4)/(1+s)");
+
+            AssertTransfer(new[] { 2.0 }, new[] { 1.0, 1.0 }, transfer);
+        }
+
+        [Fact]
+        public void When_ButterworthBiquadUsesSqrtCoefficient_Expect_SecondOrderDenominator()
+        {
+            var context = CreateContext();
+            context.SetParameter("fc", 1000.0);
+            context.SetParameter("wc", "2*PI*fc");
+            var wc = 2.0 * Math.PI * 1000.0;
+
+            var transfer = Parse("wc^2/(s^2+sqrt(2)*wc*s+wc^2)", context);
+
+            AssertTransfer(new[] { wc * wc }, new[] { wc * wc, Math.Sqrt(2.0) * wc, 1.0 }, transfer);
         }
 
         [Fact]
