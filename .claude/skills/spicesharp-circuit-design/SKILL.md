@@ -95,7 +95,7 @@ Phases are guidelines, not a rigid waterfall. Skip or merge phases when the situ
 
 Create xUnit test project in `tests/CircuitTests/` targeting **net8.0**:
 - NuGet: `SpiceSharp`, `xunit`, `xunit.runner.visualstudio`, `Microsoft.NET.Test.Sdk`
-- Project reference: `<ProjectReference Include="d:\dev\SpiceSharpParser\src\SpiceSharpParser\SpiceSharpParser.csproj" />`
+- Project reference: `<ProjectReference Include="../../src/SpiceSharpParser/SpiceSharpParser.csproj" />`
 - Create `CircuitTestHelper.cs` with: `ParseAndRead`, `RunOP`, `RunDC`, `RunAC`, `RunTran`, `GetMeasurements`, `AssertMeasurement`, `AssertMeasurementSuccess`
 - Reference `src/SpiceSharpParser.IntegrationTests/BaseTests.cs` for the parsing/simulation patterns
 - Verify with a trivial RC filter test
@@ -695,8 +695,8 @@ RC/RL/RLC filters, LAPLACE transfer-function blocks, amplifier stages (CE/CB/CC/
 
 When writing tests, consult these for patterns and inspiration:
 
-- **SpiceSharp**: `d:\dev\SpiceSharp\SpiceSharpTest\` — `BasicExampleTests.cs`, `Helper.cs`, `Models/`
-- **SpiceSharpParser**: `d:\dev\SpiceSharpParser\src\SpiceSharpParser.IntegrationTests\` — `BaseTests.cs`, `Components/`, `DotStatements/`, `AnalogBehavioralModeling/`, `Examples/Circuits/*.cir`
+- **SpiceSharp**: sibling workspace folder `../SpiceSharp/SpiceSharpTest/` — `BasicExampleTests.cs`, `Helper.cs`, `Models/`
+- **SpiceSharpParser**: `src/SpiceSharpParser.IntegrationTests/` — `BaseTests.cs`, `Components/`, `DotStatements/`, `AnalogBehavioralModeling/`, `Examples/Circuits/*.cir`
 - **LAPLACE**: `src/docs/articles/laplace.md`, `src/docs/articles/laplace-basics.md`, `src/SpiceSharpParser.IntegrationTests/AnalogBehavioralModeling/LaplaceTests.cs`
 
 Key patterns: tolerance-based assertions (RelTol=1e-3, AbsTol=1e-12), reference function comparison, `.MEAS` validation, string-array netlist construction.
