@@ -30,6 +30,12 @@ The roadmap is intentionally parser-first:
 - Validation currently has error and warning levels only. The roadmap should use warnings for recognized LTspice no-ops until an informational level exists.
 - `ValidationEntryCollection.Warnings` appears to filter `ValidationEntryLevel.Error` instead of `ValidationEntryLevel.Warning`; fix this before adding warning-based no-op behavior.
 - `MathFunctions.CreateTable()` still returns `null`, making scalar `table(...)` an early expression-compatibility candidate.
+- The default object mappings already register common controls such as `.param`, `.func`, `.global`, `.options`, `.temp`, `.step`, `.mc`, `.tran`, `.ac`, `.dc`, `.op`, `.noise`, `.save`, `.plot`, `.print`, `.meas`, `.measure`, `.ic`, `.nodeset`, and `.wave`, but this does not mean LTspice syntax parity is proven for every variant.
+- No registered controls currently cover LTspice `.backanno`, `.tf`, `.four`, `.net`, `.ferret`, `.loadbias`, `.savebias`, or `.machine` / `.endmachine` blocks.
+- `.TRAN` currently accepts traditional numeric forms and trailing `UIC`; LTspice one-argument form and modifiers such as `startup`, `steady`, `nodiscard`, and `step` still need explicit compatibility decisions.
+- Source waveform mappings cover `SIN` / `SINE`, `PULSE`, `PWL`, `AM`, `SFFM`, and wave-file input, but gaps remain for `EXP(...)`, LTspice cycle-count arguments, optional wave channel defaults, and several independent-source instance options.
+- MOS model generation currently covers legacy levels 1, 2, and 3. LTspice `VDMOS` and advanced monolithic levels such as BSIM/EKV/HiSIM variants are runtime or intentional-unsupported candidates.
+- Distributed-line support currently starts from lossless `T`. LTspice lossy `O` / `LTRA` and uniform RC-line `URC` models need engine triage before runnable support is claimed.
 
 ## Scope
 
@@ -79,6 +85,69 @@ B5 out 0 V={LAPLACE(2*V(in), 1/(1+s*tau), M=2, TD=1n)}
 
 The supported `LAPLACE` transfer subset remains a finite, proper rational polynomial in `s` with finite coefficients and non-singular DC gain.
 
+## LTspice Feature Inventory
+
+This inventory is a planning aid. It intentionally separates parser acceptance, SpiceSharp object generation, runtime execution, and numeric confidence. Items in the first table are not new claims unless a fixture or test already proves the LTspice spelling.
+
+### Existing Baseline That Needs Matrix Coverage
+
+| Area | LTspice patterns to cover | Current posture | Roadmap action |
+| --- | --- | --- | --- |
+| Behavioral sources | `B... V=`, `B... I=`, `VALUE={...}` on `E` / `G` / `F` / `H` | Baseline support exists | Preserve behavior and add LTspice-specific fixtures |
+| Laplace sources | Source-level `LAPLACE`, function-style `LAPLACE(input, transfer)`, `M=`, `TD=`, `DELAY=` | Baseline support exists | Keep on source/lowering path, not a scalar function |
+| Legacy ABM forms | `TABLE`, `POLY`, controlled-source value expressions | Parser lowering exists for source forms | Add fixtures that prove read/run behavior and writer parity |
+| Parameters and functions | `.param`, `.func`, subcircuit defaults | Generic support exists | Add LTspice scoping and expression fixtures |
+| Analyses | `.op`, `.dc`, `.ac`, `.tran`, `.noise` | Registered controls exist | Classify LTspice syntax variants independently |
+| Outputs and measurements | `.save`, `.plot`, `.print`, `.wave`, `.meas`, `.measure` | Registered controls exist | Audit LTspice-specific syntax before claiming parity |
+| Initial conditions | `.ic`, `.nodeset`, `.temp`, `.options temp`, `.options tnom` | Generic support exists | Verify LTspice generated-netlist forms |
+| Includes and libraries | `.include`, `.lib`, nested files and library sections | Preprocessors exist | Tighten path, section, quoting, and Windows separator fixtures |
+
+### Incomplete High-Yield Parser And Reader Work
+
+| Area | LTspice feature | Expected compatibility class | Notes |
+| --- | --- | --- | --- |
+| Generated metadata | `.backanno` | Recognized no-op | Automatically emitted by LTspice generated netlists; warning-only in LTspice mode. |
+| Options | `baudrate`, `delay`, `fastaccess`, `meascplxfmt`, `measdgt`, `numdgt`, `plotwinsize`, `plotreltol`, `plotvntol`, `plotabstol`, convergence and pseudo-transient knobs | Parser shim / recognized no-op / diagnostic | Split options into mapped solver settings, output/viewer no-ops, and behavior-changing unsupported knobs. |
+| Transient analysis | `.tran <Tstop>`, `UIC`, `startup`, `steady`, `nodiscard`, `step`, max-step handling | Parser shim / diagnostic | Current reader handles traditional numeric forms plus trailing `UIC` only. |
+| Measurements | `FIND`, `WHEN`, `AT`, `DERIV`, `PARAM`, `TRIG` / `TARG`, `AVG`, `MAX`, `MIN`, `PP`, `RMS`, `INTEG`, stepped output, AC complex comparisons | Supported / diagnostic by case | Existing measurement code needs a syntax-by-syntax fixture audit. |
+| Save/output selection | `.save V(*)`, `Id(*)`, terminal-current forms such as `Ic(Q1)`, `dialogbox` | Parser shim / no-op / diagnostic | Wildcards and GUI selection should not be treated like guaranteed exports until tested. |
+| Wave output | `.wave <file> <bits> <sampleRate> V(...) ...` | Parser shim / incomplete | Existing implementation appears limited to one or two channels; LTspice allows many channels. |
+| Source waveforms | `EXP(...)`, `PULSE(... Ncycles)`, `SINE(... Phi Ncycles)`, PWL file variants | Parser shim / engine if needed | Add or diagnose before claiming LTspice source-waveform parity. |
+| Source instance options | Voltage-source `Rser`, `Cpar`; current-source `load`, `R=<value>`, `tbl=(...)`; `wavefile=<path> [chan=<n>]` | Parser shim / diagnostic | Some can lower to existing components; behavior-changing cases need explicit handling. |
+| Scalar expressions | `table(...)`, `pwr`, `pwrs`, `hypot`, `sgn`, `round`, `fabs`, `arccos`, `arcsin`, `arctan` | Parser/runtime shim | Static functions are high-value because vendor decks use them in `.param` and ABM expressions. |
+| Random functions | `flat`, `mc`, `rand`, `random`, `gauss`, `white` | Supported with divergence notes / diagnostic | Existing random behavior must be compared with LTspice semantics before numeric claims. |
+| Operators | `**`, Boolean AND, OR, XOR, unary `!`, unary `~` | Parser shim / diagnostic | LTspice uses `^` as Boolean XOR in ordinary expressions and exponentiation only in Laplace expressions. |
+| Smooth limits | `uplim`, `dnlim`, `limit` semantics | Parser/runtime shim | `limit` exists, but LTspice smooth limit functions need separate tests. |
+| Behavioral-source options | `ic=`, `tripdv`, `tripdt`, `Rpar`, `laplace=<expr>`, `window`, `nfft`, `mtol`, `NoJacob` | Parser shim / diagnostic | Timestep-control and FFT-convolution options must not be silently ignored. |
+
+### Unsupported Or Engine-Required Features To Classify Explicitly
+
+| Feature | Reason to classify | Initial action |
+| --- | --- | --- |
+| `.tf` | SpiceSharp runtime may support related small-signal operations, but no LTspice control reader is registered | Add targeted diagnostic before implementation |
+| `.four` | Post-transient Fourier reporting, not a circuit element | Add targeted diagnostic or post-processing proposal |
+| `.net` | Network-parameter post-processing around `.ac` | Add targeted diagnostic; consider later AC export/post-processing support |
+| `.ferret` | Downloads external files by URL | Intentional unsupported diagnostic |
+| `.loadbias` / `.savebias` | Reads/writes solver state files | Diagnostic until a portable state format is designed |
+| `.machine` / `.endmachine` | LTspice state-machine language with state, rule, and output statements | Engine required or intentional unsupported |
+| Dynamic ABM functions | `delay`, `absdelay`, `ddt`, `idt`, `sdt`, `idtmod` need transient history or integration state | Diagnostic until SpiceSharpBehavioral/runtime support is proven |
+| `VDMOS` | LTspice-specific power MOSFET behavior and capacitance model | SpiceSharp engine proposal, not parser-only support |
+| Advanced MOS levels | Levels 4, 5, 6, 8, 9, 12, 14, 73 and related variants | Engine-required classification per model family |
+| Lossy/distributed lines | `O` / `LTRA`, `URC` | Engine-required classification and direct SpiceSharp tests |
+| MESFET and IGBT families | `NMF`, `PMF`, `NIGBT`, `PIGBT` | Diagnostic or engine proposal |
+
+### Model And Instance Parameter Triage
+
+Build model-family tables that classify each parameter as direct map, alias, metadata no-op, behavior-changing unsupported, or engine-required.
+
+| Family | High-priority LTspice gaps | Initial classification rule |
+| --- | --- | --- |
+| Diode | Ideal diode parameters `Ron`, `Roff`, `Vfwd`, `Vrev`, `Rrev`, `Ilimit`, `Revilimit`, `Epsilon`, `Revepsilon`; metadata such as `Vpk`, `Ipk`, `Iave`, `Irms`, `diss`; extended recovery/noise terms | Metadata can warn/no-op in LTspice mode; electrical terms need mapping or diagnostic |
+| Switch | `Lser`, `Vser`, `Ilimit`, `level`, `oneway`, `epsilon`, negative hysteresis semantics | Map only proven equivalents; diagnose current limiting and one-way behavior until represented |
+| MOSFET | Three-terminal `VDMOS` instances, `off`, `IC=`, `temp`, geometry defaults, metadata `mfg`, `Vds`, `Ron`, `Qg`, `pchan` / `nchan` | Legacy MOS parameters can map where supported; `VDMOS` is engine-required |
+| R/C/L | Temperature coefficients, geometry forms, model-level defaults, layout metadata | Mostly parser tolerance, but behavior-changing temperature forms need tests |
+| Transmission line | Lossless `T` options versus `O` / `LTRA` and `URC` model cards | Preserve `T`; classify lossy/distributed lines as engine-required |
+
 ## Compatibility Matrix
 
 Create a matrix document or test data file before broadening support claims. Classify each feature independently for parse, read, run, and numeric confidence.
@@ -116,11 +185,13 @@ Goal: replace guesswork with executable, redistributable LTspice compatibility e
 Implementation backlog:
 
 - Add synthetic fixtures under the integration-test area and classify them as parse-only, read-only, runnable, or expected diagnostic.
+- Seed the first matrix from the LTspice feature inventory in this document, rather than from support claims in README text.
 - Cover `.include` and `.lib` with quoted paths, nested includes, selected sections, Windows separators, and relative paths.
 - Cover common generated controls: `.param`, `.func`, `.step`, `.meas`, `.options`, `.ic`, `.nodeset`, `.temp`, and fixture-proven no-op candidates such as `.backanno`.
-- Cover behavioral forms: `B`, `VALUE=`, `TABLE`, `POLY`, source-level `LAPLACE`, and function-style `LAPLACE(...)`.
-- Cover source waveforms: `PULSE`, `SIN`, `SINE`, `PWL`, `SFFM`, and `AM`.
-- Cover model decks and subcircuits with synthetic, license-safe examples.
+- Cover unsupported-control diagnostics for `.tf`, `.four`, `.net`, `.ferret`, `.loadbias`, `.savebias`, and `.machine` before attempting full implementations.
+- Cover behavioral forms: `B`, `VALUE=`, `TABLE`, `POLY`, source-level `LAPLACE`, function-style `LAPLACE(...)`, and LTspice behavioral-source instance options.
+- Cover source waveforms: `PULSE`, `SIN`, `SINE`, `PWL`, `SFFM`, `AM`, `EXP`, wave-file input, and LTspice cycle-count arguments.
+- Cover model decks and subcircuits with synthetic, license-safe examples that mimic vendor decks without copying proprietary libraries.
 
 Acceptance criteria:
 
@@ -138,7 +209,9 @@ Implementation backlog:
 - Add `CompatibilityOptions` to parser and reader settings, with an LTspice preset or factory.
 - Wire opt-in LTspice behavior through preprocessing, control mapping, and reader diagnostics without changing default behavior.
 - Add a recognized-no-op control path for fixture-proven display/probing/annotation statements, starting with `.backanno`.
-- Add targeted unsupported diagnostics for LTspice controls that are recognized but not safe to ignore.
+- Add option classification tables for mapped solver options, warning no-ops, and behavior-changing unsupported LTspice options.
+- Add targeted unsupported diagnostics for LTspice controls that are recognized but not safe to ignore, starting with `.tf`, `.four`, `.net`, `.ferret`, `.loadbias`, `.savebias`, and `.machine`.
+- Decide how `.tran` one-argument syntax and LTspice modifiers are handled before broad transient compatibility claims.
 - Tighten `.include` / `.lib` tests before changing path or section behavior.
 
 Acceptance criteria:
@@ -154,9 +227,12 @@ Goal: accept more LTspice behavioral expressions when they can map to existing r
 Implementation backlog:
 
 - Audit LTspice scalar functions against existing math functions, random functions, resolver functions, `.FUNC`, and behavioral-source support.
-- Implement safe scalar aliases where semantics are clear and static.
+- Implement safe scalar aliases where semantics are clear and static, including `arccos`, `arcsin`, `arctan`, `fabs`, `sgn`, and `round`.
+- Add or diagnose LTspice operators such as `**`, Boolean `&`, `|`, `^`, and unary `!` / `~`.
+- Add static functions such as `pwr`, `pwrs`, and `hypot` when their real-valued semantics can be represented.
 - Implement or lower scalar `table(...)`; the current `CreateTable()` TODO makes this an early candidate.
-- Compare existing `mc`, `gauss`, `flat`, `random`, and `unif` behavior with LTspice semantics and document divergences.
+- Compare existing `mc`, `gauss`, `flat`, `random`, `rand`, `white`, and `unif` behavior with LTspice semantics and document divergences.
+- Add compatibility decisions for smooth limiting functions such as `uplim` and `dnlim`.
 - Add targeted diagnostics for dynamic/stateful functions that need simulation history, derivatives, integrals, delay buffers, or transient noise semantics.
 - Keep `LAPLACE(...)` on the existing lowering path and do not register it as a scalar math function.
 
@@ -177,17 +253,18 @@ Implementation backlog:
 - Warn on LTspice metadata or layout-only parameters only in LTspice compatibility mode.
 - Error on unsupported behavior-changing parameters with component/model name and suggested fallback when possible.
 - Test model parameter expressions, subcircuit defaults, geometry parameters, temperature parameters, and `.MODEL` variants.
+- Add explicit triage for LTspice ideal diode parameters, switch current-limiting and one-way parameters, MOS metadata, and three-terminal `VDMOS` syntax.
 
 Model-family priorities:
 
 | Family | Parser action | Engine action |
 | --- | --- | --- |
 | R/C/L | Alias tolerances, temperature coefficients, and geometry forms | Usually existing behavior |
-| Diode | Map supported parameters, diagnose unsupported recovery/noise terms | Engine changes only for measured blockers |
+| Diode | Map supported parameters, classify ideal-diode terms, diagnose unsupported recovery/noise terms | Engine changes only for measured blockers |
 | BJT/JFET | Map known SPICE parameters and metadata | Engine changes only with fixtures |
-| MOSFET | Separate legacy levels from LTspice/vendor power models | Advanced models likely engine-required |
-| Switch | Map threshold, hysteresis, and resistance aliases | Existing behavior likely sufficient |
-| Transmission line | Preserve current lossless `T` support | Lossy/distributed variants may need engine work |
+| MOSFET | Separate legacy levels from LTspice/vendor power models, especially `VDMOS` | Advanced models likely engine-required |
+| Switch | Map threshold, hysteresis, and resistance aliases; diagnose `Lser`, `Vser`, `Ilimit`, `oneway`, and `epsilon` until represented | Engine work may be needed for current limiting and one-way behavior |
+| Transmission line | Preserve current lossless `T` support | `O` / `LTRA` and `URC` need engine work |
 
 Acceptance criteria:
 
@@ -201,9 +278,12 @@ Goal: add engine capabilities only after parser fixtures prove that parsing and 
 
 Possible engine work:
 
-- LTspice/vendor-specific MOSFET or power-device models.
-- Lossy or distributed transmission-line variants.
-- Dynamic behavioral functions requiring time history, derivatives, integrals, or delay buffers.
+- LTspice/vendor-specific MOSFET or power-device models, especially `VDMOS`.
+- Advanced monolithic MOS levels beyond existing levels 1, 2, and 3.
+- Lossy or distributed transmission-line variants such as `O` / `LTRA` and `URC`.
+- Dynamic behavioral functions requiring time history, derivatives, integrals, delay buffers, or transient noise.
+- State-machine support for `.machine` blocks if it is ever considered in scope.
+- MESFET and IGBT device families if fixtures prove they are common blockers.
 - Transient robustness around timestep-sensitive switching.
 - Noise behavior differences where LTspice semantics do not match SpiceSharp frequency-domain noise support.
 
