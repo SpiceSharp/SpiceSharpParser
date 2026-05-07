@@ -1,13 +1,13 @@
 ---
 title: LTspice Compatibility Matrix
-status: P0 Evidence Baseline
+status: P1 Opt-In Compatibility Baseline
 scope: SpiceSharpParser + SpiceSharp
 last_reviewed: 2026-05-07
 ---
 
 # LTspice Compatibility Matrix
 
-This matrix tracks LTspice-generated netlist compatibility evidence. It is intentionally conservative: a row is a support claim only when backed by a fixture or existing focused test. P0 does not introduce LTspice compatibility mode, no-op behavior, or numeric parity claims.
+This matrix tracks LTspice-generated netlist compatibility evidence. It is intentionally conservative: a row is a support claim only when backed by a fixture or existing focused test. P1 introduces opt-in LTspice compatibility for recognized no-op metadata/options and one-argument `.tran`; it does not claim full LTspice numeric parity.
 
 Compatibility classes:
 
@@ -15,6 +15,7 @@ Compatibility classes:
 | --- | --- |
 | Supported | Parser and runtime can represent the feature with tests. |
 | Parser shim | LTspice spelling lowers to existing behavior. |
+| Recognized no-op | LTspice display, probing, annotation, or GUI metadata is ignored with a warning in LTspice mode. |
 | Targeted diagnostic | Known unsupported construct fails with a construct-specific validation error. |
 | Parse-only evidence | Parser accepts the syntax, but reader/runtime behavior is not claimed. |
 | Syntax audit gap | Fixture documents a known gap for later classification. |
@@ -34,7 +35,7 @@ Compatibility classes:
 | Relative `.include` under working directory | Accepted | Include processor resolves relative path | OP supported | Smoke fixture | None expected | Current parser/runtime | Synthetic local fixture only. |
 | One-argument `.lib <file>` | Accepted | Lib processor inserts file content | OP supported | Smoke fixture | None expected | Current parser/runtime | Synthetic local fixture only. |
 | Selected-section `.lib <file> <section>` | Accepted | Lib processor selects section | OP supported | Smoke fixture | None expected | Current parser/runtime | Synthetic local fixture only. |
-| `.backanno` | Accepted as control | Rejected | Not runnable | None | Targeted unsupported LTspice diagnostic | Current parser/runtime | P1 may convert to LTspice-mode warning no-op. |
+| `.backanno` | Accepted as control | Default: rejected. LTspice: warning no-op. | LTspice OP smoke supported | Smoke fixture | Default: targeted error. LTspice: warning names `.backanno`. | Current parser/runtime | Generated annotation metadata is not used by SpiceSharpParser. |
 | `.tf` | Accepted as control | Rejected | Not runnable | None | Targeted unsupported LTspice diagnostic | Current parser/runtime | Possible future small-signal feature. |
 | `.four` | Accepted as control | Rejected | Not runnable | None | Targeted unsupported LTspice diagnostic | Current parser/runtime | Possible future post-processing feature. |
 | `.net` | Accepted as control | Rejected | Not runnable | None | Targeted unsupported LTspice diagnostic | Current parser/runtime | Possible future AC post-processing feature. |
@@ -42,9 +43,11 @@ Compatibility classes:
 | `.loadbias` | Accepted as control | Rejected | Not runnable | None | Targeted unsupported LTspice diagnostic | Current parser/runtime | Needs portable state-format design. |
 | `.savebias` | Accepted as control | Rejected | Not runnable | None | Targeted unsupported LTspice diagnostic | Current parser/runtime | Needs portable state-format design. |
 | `.machine` / `.endmachine` | Accepted as controls | Rejected | Not runnable | None | Targeted unsupported LTspice diagnostic | Current parser/runtime | Engine/runtime feature if ever in scope. |
-| `.tran <Tstop>` | Accepted as control | Rejected | Not runnable | None | Existing `.TRAN` validation error | Current parser/runtime | Syntax audit gap; P1 must decide lowering or targeted diagnostic. |
-| `.tran <Tstop> startup` | Accepted as control | Not claimed | Not runnable | None | Parse-only evidence | Current parser/runtime | P1 must classify `startup`, `steady`, `nodiscard`, and `step`. |
-| `.options plotwinsize=<n>` | Accepted | Rejected | Not runnable | None | Existing unsupported option validation error | Current parser/runtime | P1 should classify viewer/output no-op options. |
+| `.tran <Tstop>` | Accepted as control | Default: rejected. LTspice: produces transient simulation with derived step. | LTspice TRAN smoke supported | Smoke fixture; no LTspice parity claim | Default: existing `.TRAN` validation error. LTspice: none expected. | Current parser/runtime | P1 compatibility policy derives `step = Tstop / 50.0` and `maxStep = step`. |
+| `.tran <Tstop> UIC` | Accepted as control | LTspice mode produces transient simulation with `UseIc` set. | LTspice TRAN smoke supported | Smoke fixture; no LTspice parity claim | None expected in LTspice mode | Current parser/runtime | Uses the same derived-step policy as `.tran <Tstop>`. |
+| `.tran <Tstop> startup` / `steady` / `nodiscard` / `step` | Accepted as control | Rejected in LTspice mode | Not runnable | None | Targeted LTspice `.TRAN` modifier diagnostic names the modifier | Current parser/runtime | Behavior-changing modifiers remain unsupported in P1. |
+| `.options plotwinsize=<n>` and LTspice output/viewer options | Accepted | Default: assignment options rejected. LTspice: warning no-op. | LTspice OP smoke supported | Smoke fixture | Default: unsupported option error. LTspice: warning names option. | Current parser/runtime | P1 no-op list: `plotwinsize`, `plotreltol`, `plotvntol`, `plotabstol`, `numdgt`, `measdgt`, `meascplxfmt`, `baudrate`, `fastaccess`. |
+| `.options cshunt=<value>` and LTspice solver-behavior options | Accepted | Rejected in LTspice mode | Not runnable | None | Targeted LTspice option error names option | Current parser/runtime | P1 behavior-changing list: `cshunt`, `gshunt`, `srcsteps`, `gminsteps`, `trtol`, `chgtol`, `pivrel`, `pivtol`, `ptrantau`. |
 | `EXP(...)` source waveform | Accepted as waveform-like syntax | Rejected | Not runnable | None | Existing unsupported waveform validation error | Current parser/runtime | P2 waveform gap. |
 | `PULSE(... Ncycles)` | Accepted | Rejected | Not runnable | None | Existing wrong-argument-count validation error | Current parser/runtime | P2 waveform gap. |
 | Scalar `table(...)` in expressions | Accepted in existing fixtures | Runnable in existing expression tests | OP supported | Analytic fixture | None expected | Current parser/runtime | `MathFunctions.CreateTable()` remains a code audit item. |

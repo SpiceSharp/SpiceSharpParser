@@ -26,13 +26,16 @@ This roadmap is intentionally parser-first and evidence-first:
 - Function-style `LAPLACE(input, transfer)` is already supported inside `VALUE`, `B ... V=`, and `B ... I=` expressions, including helper lowering for mixed expressions and arbitrary scalar inputs.
 - Generated C# writer parity already exists for the implemented Laplace lowering paths.
 - `LAPLACE` must remain a source/lowering feature, not a normal scalar expression function.
-- No explicit LTspice compatibility mode exists yet in parser or reader settings.
+- P1 adds explicit `CompatibilityOptions` presets in parser and reader settings; both default to `CompatibilityOptions.None`.
 - Validation currently has error and warning levels only. Use warnings for recognized LTspice no-ops until an informational level exists.
-- `ValidationEntryCollection.Warnings` currently filters `ValidationEntryLevel.Error`; fix this before depending on warning-based no-op tests.
+- `ValidationEntryCollection.Warnings` filters warning entries and is covered by warning/error separation tests.
 - `MathFunctions.CreateTable()` still returns `null`, making scalar `table(...)` an early expression-compatibility candidate even though source-level `TABLE` lowering has existing paths.
 - The default mappings register many common controls and devices, but registration does not prove LTspice syntax parity for every variant.
-- No registered controls currently cover LTspice `.backanno`, `.tf`, `.four`, `.net`, `.ferret`, `.loadbias`, `.savebias`, or `.machine` / `.endmachine` blocks.
-- `.TRAN` currently accepts traditional numeric forms and trailing `UIC`; LTspice one-argument form and modifiers such as `startup`, `steady`, `nodiscard`, and `step` still need explicit compatibility decisions.
+- Default reader behavior still rejects LTspice `.backanno`, `.tf`, `.four`, `.net`, `.ferret`, `.loadbias`, `.savebias`, and `.machine` / `.endmachine` with targeted diagnostics.
+- In LTspice mode, `.backanno` is a warning no-op. The other known unsupported LTspice controls remain targeted errors.
+- `.TRAN` accepts traditional numeric forms and trailing `UIC`; P1 LTspice mode also accepts `.tran <Tstop>` and `.tran <Tstop> UIC` by deriving `step = Tstop / 50.0`. LTspice `startup`, `steady`, `nodiscard`, and `step` modifiers remain targeted errors.
+- LTspice output/viewer `.options` such as `plotwinsize`, `plotreltol`, `plotvntol`, `plotabstol`, `numdgt`, `measdgt`, `meascplxfmt`, `baudrate`, and `fastaccess` are warning no-ops only in LTspice mode.
+- LTspice behavior-changing `.options` such as `cshunt`, `gshunt`, `srcsteps`, `gminsteps`, `trtol`, `chgtol`, `pivrel`, `pivtol`, and `ptrantau` remain targeted errors.
 - Source waveform mappings cover `SIN` / `SINE`, `PULSE`, `PWL`, `AM`, `SFFM`, and wave-file input, but gaps remain for `EXP(...)`, LTspice cycle-count arguments, optional wave channel defaults, and several independent-source instance options.
 - MOS model generation currently covers legacy levels 1, 2, and 3. LTspice `VDMOS` and advanced monolithic levels such as BSIM/EKV/HiSIM variants are runtime or intentional-unsupported candidates.
 - Distributed-line support currently starts from lossless `T`. LTspice lossy `O` / `LTRA` and uniform RC-line `URC` models need engine triage before runnable support is claimed.
@@ -72,6 +75,7 @@ public sealed class CompatibilityOptions
 {
     public static CompatibilityOptions None { get; }
     public static CompatibilityOptions LTspice { get; }
+    public bool IsLTspice { get; }
 }
 ```
 
@@ -81,8 +85,8 @@ Implementation expectations:
 - Add `CompatibilityOptions Compatibility` to `SpiceNetlistReaderSettings`.
 - Default both settings to `CompatibilityOptions.None`.
 - Preserve compatibility settings in `SpiceNetlistReaderSettings.Clone()`.
-- Flow parser compatibility through lexing, parsing, preprocessing, include/lib handling, and validation where needed.
-- Flow reader compatibility through control mapping, waveform generation, expression evaluation, model generation, and diagnostics where needed.
+- Flow parser compatibility through lexing, parsing, preprocessing, include/lib handling, and validation where needed. P1 exposes the setting even though implemented behavior is reader-focused.
+- Flow reader compatibility through control mapping, waveform generation, expression evaluation, model generation, and diagnostics where needed. P1 currently uses it for `.backanno`, LTspice option classification, and `.tran <Tstop>` lowering.
 - Do not use compatibility settings to hide existing errors outside the explicitly classified LTspice paths.
 
 ## Baseline To Preserve
@@ -169,17 +173,20 @@ Acceptance criteria:
 
 Goal: accept harmless LTspice-generated syntax without weakening default diagnostics.
 
-Implementation backlog:
+Implemented P1 behavior:
 
-- Add `CompatibilityOptions` and wire it into parser and reader settings.
-- Preserve default behavior with `CompatibilityOptions.None`.
-- Add an LTspice preset/factory with only fixture-backed behavior enabled.
-- Add a recognized-no-op control path for display/probing/annotation statements, starting with `.backanno`.
-- Add targeted unsupported diagnostics for `.tf`, `.four`, `.net`, `.ferret`, `.loadbias`, `.savebias`, and `.machine` / `.endmachine`.
-- Add option classification tables for mapped solver options, warning no-ops, and behavior-changing unsupported LTspice options.
-- Decide `.tran <Tstop>` lowering before claiming transient compatibility. If supported, lower it to an explicit time-step policy documented in the matrix; if not, emit a targeted diagnostic.
-- Decide LTspice `.tran` modifiers one by one: `UIC`, `startup`, `steady`, `nodiscard`, and `step`.
-- Tighten `.include` / `.lib` fixtures for quoted paths, nested includes, selected sections, Windows separators, and relative paths before changing path behavior.
+- Added `CompatibilityOptions` and wired it into parser and reader settings.
+- Preserved default behavior with `CompatibilityOptions.None`.
+- Added `CompatibilityOptions.LTspice` with only fixture-backed behavior enabled.
+- Added a recognized-no-op control path for `.backanno` in LTspice mode.
+- Kept targeted unsupported diagnostics for `.tf`, `.four`, `.net`, `.ferret`, `.loadbias`, `.savebias`, and `.machine` / `.endmachine`.
+- Added option classification tables for warning no-ops and behavior-changing unsupported LTspice options.
+- Lowered LTspice-mode `.tran <Tstop>` and `.tran <Tstop> UIC` to an explicit compatibility policy: `step = Tstop / 50.0`, with `maxStep = step`.
+- Classified LTspice `.tran` modifiers: `UIC` is supported, while `startup`, `steady`, `nodiscard`, and `step` produce targeted diagnostics.
+
+Remaining follow-up:
+
+- Tighten `.include` / `.lib` fixtures for nested includes, Windows separators, and additional relative-path variants before changing path behavior.
 
 Acceptance criteria:
 

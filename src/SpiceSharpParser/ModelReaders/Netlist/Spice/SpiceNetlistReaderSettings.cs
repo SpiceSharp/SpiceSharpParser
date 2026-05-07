@@ -59,6 +59,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         public Encoding ExternalFilesEncoding { get; set; }
 
         /// <summary>
+        /// Gets or sets dialect compatibility options.
+        /// </summary>
+        public CompatibilityOptions Compatibility { get; set; } = CompatibilityOptions.None;
+
+        /// <summary>
         /// Gets or sets the evaluator random seed.
         /// </summary>
         public int? Seed { get; set; }
@@ -96,6 +101,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         public SpiceNetlistReaderSettings Clone()
         {
             var result = new SpiceNetlistReaderSettings(CaseSensitivity, _workingDirectoryProvider, ExternalFilesEncoding, Separator, ExpandSubcircuits);
+            result.Compatibility = Compatibility;
             return result;
         }
     }

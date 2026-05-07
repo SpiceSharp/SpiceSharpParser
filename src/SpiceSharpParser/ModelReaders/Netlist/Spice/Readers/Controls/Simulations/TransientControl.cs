@@ -1,4 +1,4 @@
-﻿using SpiceSharp.Simulations;
+using SpiceSharp.Simulations;
 using SpiceSharp.Simulations.IntegrationMethods;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Validation;
@@ -32,24 +32,36 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
         private ISimulationWithEvents CreateTransientSimulation(string name, Control statement, IReadingContext context)
         {
-            switch (statement.Parameters.Count)
+            if (statement.Parameters.Count == 0)
             {
-                case 0:
-                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, ".TRAN control - Step expected", statement.LineInfo);
-                    break;
-
-                case 1:
-                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, ".TRAN control - Maximum time expected", statement.LineInfo);
-                    break;
+                context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, ".TRAN control - Step expected", statement.LineInfo);
+                return null;
             }
 
             bool useIc = false;
             var clonedParameters = (ParameterCollection)statement.Parameters.Clone();
-            var lastParameter = clonedParameters[clonedParameters.Count - 1];
-            if (lastParameter is WordParameter w && w.Value.ToLower() == "uic")
+
+            if (context.ReaderSettings.Compatibility.IsLTspice)
             {
-                useIc = true;
-                clonedParameters.RemoveAt(clonedParameters.Count - 1);
+                if (!ApplyLtspiceModifiers(clonedParameters, statement, context, ref useIc))
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                var lastParameter = clonedParameters[clonedParameters.Count - 1];
+                if (lastParameter is WordParameter w && w.Value.ToLower() == "uic")
+                {
+                    useIc = true;
+                    clonedParameters.RemoveAt(clonedParameters.Count - 1);
+                }
+
+                if (statement.Parameters.Count == 1)
+                {
+                    context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, ".TRAN control - Maximum time expected", statement.LineInfo);
+                    return null;
+                }
             }
 
             TransientWithEvents tran;
@@ -61,6 +73,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
 
             switch (clonedParameters.Count)
             {
+                case 1:
+                    if (!context.ReaderSettings.Compatibility.IsLTspice)
+                    {
+                        context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, ".TRAN control - Maximum time expected", statement.LineInfo);
+                        return null;
+                    }
+
+                    final = context.Evaluator.EvaluateDouble(clonedParameters[0].Value);
+                    step = final / 50.0;
+                    maxStep = step;
+                    break;
                 case 2:
                     step = context.Evaluator.EvaluateDouble(clonedParameters[0].Value);
                     final = context.Evaluator.EvaluateDouble(clonedParameters[1].Value);
@@ -95,7 +118,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             }
             else
             {
-                if (clonedParameters.Count == 2)
+                if (clonedParameters.Count == 1)
+                {
+                    tran = new TransientWithEvents(name, step.Value, final.Value, maxStep ?? step.Value);
+                }
+                else if (clonedParameters.Count == 2)
                 {
                     tran = new TransientWithEvents(name, step.Value, final.Value);
                 }
@@ -130,6 +157,44 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
             context.Result.Simulations.Add(tran);
 
             return tran;
+        }
+
+        private static bool ApplyLtspiceModifiers(ParameterCollection parameters, Control statement, IReadingContext context, ref bool useIc)
+        {
+            for (var i = parameters.Count - 1; i >= 0; i--)
+            {
+                if (parameters[i] is WordParameter word)
+                {
+                    var value = word.Value.ToLower();
+
+                    if (value == "uic")
+                    {
+                        useIc = true;
+                        parameters.RemoveAt(i);
+                        continue;
+                    }
+
+                    if (value == "startup" || value == "steady" || value == "nodiscard" || value == "step")
+                    {
+                        context.Result.ValidationResult.AddError(
+                            ValidationEntrySource.Reader,
+                            $"Unsupported LTspice .TRAN modifier '{word.Value}'.",
+                            statement.LineInfo);
+                        return false;
+                    }
+                }
+
+                if (parameters[i] is AssignmentParameter assignment && assignment.Name.ToLower() == "step")
+                {
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        $"Unsupported LTspice .TRAN modifier '{assignment.Name}'.",
+                        statement.LineInfo);
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

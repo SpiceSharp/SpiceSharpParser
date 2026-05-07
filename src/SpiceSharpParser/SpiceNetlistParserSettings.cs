@@ -28,6 +28,11 @@ namespace SpiceSharpParser
         public Encoding ExternalFilesEncoding { get; set; } = Encoding.Default;
 
         /// <summary>
+        /// Gets or sets dialect compatibility options.
+        /// </summary>
+        public CompatibilityOptions Compatibility { get; set; } = CompatibilityOptions.None;
+
+        /// <summary>
         /// Gets the SPICE netlist lexer settings.
         /// </summary>
         public SpiceLexerSettings Lexing { get; }

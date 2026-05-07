@@ -71,6 +71,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
         private static void AddUnsupportedControlError(Control statement, IReadingContext context)
         {
+            if (statement.Name.Equals("BACKANNO", StringComparison.OrdinalIgnoreCase)
+                && context.ReaderSettings.Compatibility.IsLTspice)
+            {
+                context.Result.ValidationResult.AddWarning(
+                    ValidationEntrySource.Reader,
+                    "Ignored LTspice control '.backanno': generated annotation metadata is not used by SpiceSharpParser.",
+                    statement.LineInfo);
+                return;
+            }
+
             if (UnsupportedLtspiceControls.TryGetValue(statement.Name, out var reason))
             {
                 context.Result.ValidationResult.AddError(

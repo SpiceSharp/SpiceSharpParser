@@ -1,8 +1,11 @@
-﻿using SpiceSharp;
+using System;
+using System.Collections.Generic;
+using SpiceSharp;
 using SpiceSharp.Simulations.IntegrationMethods;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
 {
@@ -11,6 +14,32 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
     /// </summary>
     public class OptionsControl : BaseControl
     {
+        private static readonly HashSet<string> LtspiceWarningNoOpOptions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "plotwinsize",
+            "plotreltol",
+            "plotvntol",
+            "plotabstol",
+            "numdgt",
+            "measdgt",
+            "meascplxfmt",
+            "baudrate",
+            "fastaccess",
+        };
+
+        private static readonly HashSet<string> LtspiceBehaviorChangingOptions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "cshunt",
+            "gshunt",
+            "srcsteps",
+            "gminsteps",
+            "trtol",
+            "chgtol",
+            "pivrel",
+            "pivtol",
+            "ptrantau",
+        };
+
         /// <summary>
         /// Reads <see cref="Control"/> statement and modifies the context.
         /// </summary>
@@ -20,7 +49,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
         {
             foreach (var param in statement.Parameters)
             {
-                if (param is Models.Netlist.Spice.Objects.Parameters.AssignmentParameter a)
+                if (param is AssignmentParameter a)
                 {
                     string name = a.Name.ToLower();
                     string value = a.Value;
@@ -126,19 +155,49 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                             break;
 
                         default:
-                            context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, $"Unsupported option: {name}", statement.LineInfo);
+                            AddUnsupportedOption(name, statement, context);
                             break;
                     }
                 }
 
-                if (param is Models.Netlist.Spice.Objects.Parameters.WordParameter w)
+                if (param is WordParameter w)
                 {
                     if (w.Value.ToLower() == "keepopinfo")
                     {
                         context.SimulationConfiguration.KeepOpInfo = true;
                     }
+                    else if (context.ReaderSettings.Compatibility.IsLTspice)
+                    {
+                        AddUnsupportedOption(w.Value, statement, context);
+                    }
                 }
             }
+        }
+
+        private static void AddUnsupportedOption(string name, Control statement, IReadingContext context)
+        {
+            if (context.ReaderSettings.Compatibility.IsLTspice)
+            {
+                if (LtspiceWarningNoOpOptions.Contains(name))
+                {
+                    context.Result.ValidationResult.AddWarning(
+                        ValidationEntrySource.Reader,
+                        $"Ignored LTspice option '{name}': output/viewer option is not used by SpiceSharpParser.",
+                        statement.LineInfo);
+                    return;
+                }
+
+                if (LtspiceBehaviorChangingOptions.Contains(name))
+                {
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        $"Unsupported LTspice option '{name}': behavior-changing solver option is not mapped yet.",
+                        statement.LineInfo);
+                    return;
+                }
+            }
+
+            context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, $"Unsupported option: {name}", statement.LineInfo);
         }
     }
 }
