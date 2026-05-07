@@ -381,7 +381,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
             builder.AddRegexRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.END,
                 ".END keyword",
-                "\\.END",
+                "\\.END(?=\\s|$)",
                 ignoreCase: !_options.IsDotStatementNameCaseSensitive));
 
             builder.AddRegexRule(new LexerTokenRule<SpiceLexerState>(

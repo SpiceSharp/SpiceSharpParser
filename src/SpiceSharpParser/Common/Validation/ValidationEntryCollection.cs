@@ -23,7 +23,7 @@ namespace SpiceSharpParser.Common.Validation
         {
             get
             {
-                return this.Where(c => c.Level == ValidationEntryLevel.Error);
+                return this.Where(c => c.Level == ValidationEntryLevel.Warning);
             }
         }
 

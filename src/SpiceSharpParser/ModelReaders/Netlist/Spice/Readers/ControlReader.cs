@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings;
@@ -12,6 +13,19 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
     /// </summary>
     public class ControlReader : StatementReader<Control>, IControlReader
     {
+        private static readonly Dictionary<string, string> UnsupportedLtspiceControls = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            { "BACKANNO", "generated annotation metadata is not supported yet" },
+            { "TF", "transfer-function analysis is not supported yet" },
+            { "FOUR", "post-transient Fourier reporting is not supported yet" },
+            { "NET", "network-parameter post-processing is not supported yet" },
+            { "FERRET", "external file download directives are intentionally unsupported" },
+            { "LOADBIAS", "solver-state loading is not supported yet" },
+            { "SAVEBIAS", "solver-state saving is not supported yet" },
+            { "MACHINE", "LTspice state-machine blocks are not supported yet" },
+            { "ENDMACHINE", "LTspice state-machine blocks are not supported yet" },
+        };
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ControlReader"/> class.
         /// </summary>
@@ -47,15 +61,29 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
             if (!Mapper.TryGetValue(type, context.ReaderSettings.CaseSensitivity.IsDotStatementNameCaseSensitive, out var controlReader))
             {
-                context.Result.ValidationResult.AddError(
-                    ValidationEntrySource.Reader,
-                    $"Unsupported control: {statement.Name}",
-                    statement.LineInfo);
+                AddUnsupportedControlError(statement, context);
             }
             else
             {
                 controlReader.Read(statement, context);
             }
+        }
+
+        private static void AddUnsupportedControlError(Control statement, IReadingContext context)
+        {
+            if (UnsupportedLtspiceControls.TryGetValue(statement.Name, out var reason))
+            {
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    $"Unsupported LTspice control '.{statement.Name.ToLowerInvariant()}': {reason}.",
+                    statement.LineInfo);
+                return;
+            }
+
+            context.Result.ValidationResult.AddError(
+                ValidationEntrySource.Reader,
+                $"Unsupported control: {statement.Name}",
+                statement.LineInfo);
         }
     }
 }
