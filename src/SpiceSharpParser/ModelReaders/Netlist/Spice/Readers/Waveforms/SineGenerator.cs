@@ -33,8 +33,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 throw new ArgumentNullException(nameof(context));
             }
 
-            if (parameters.Count > 6 || (parameters.Count == 1 && parameters[0] is VectorParameter vp && vp.Elements.Count > 6))
+            var argumentCount = parameters.Count == 1 && parameters[0] is VectorParameter vp
+                ? vp.Elements.Count
+                : parameters.Count;
+
+            if (argumentCount > 6)
             {
+                if (context.ReaderSettings.Compatibility.IsLTspice)
+                {
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        "Unsupported LTspice SINE cycle-count arguments: finite-cycle SINE sources are not mapped yet.",
+                        parameters.LineInfo);
+                    return null;
+                }
+
                 context.Result.ValidationResult.AddError(
                     ValidationEntrySource.Reader,
                     "Wrong number of arguments for SINE waveform",

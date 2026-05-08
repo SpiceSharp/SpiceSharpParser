@@ -194,6 +194,10 @@ namespace SpiceSharpParser.Parsers.Expression
                     lexer.Next();
                     argument = ParseUnary(lexer);
                     return Node.Minus(argument);
+                case TokenType.Bang:
+                    lexer.Next();
+                    argument = ParseUnary(lexer);
+                    return Node.Not(argument);
                 default:
                     return ParsePower(lexer);
             }

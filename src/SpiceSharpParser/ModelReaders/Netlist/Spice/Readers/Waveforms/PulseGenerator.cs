@@ -33,8 +33,21 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 throw new ArgumentNullException(nameof(context));
             }
 
-            if (parameters.Count > 7 || (parameters.Count == 1 && parameters[0] is VectorParameter vp && vp.Elements.Count > 7))
+            var argumentCount = parameters.Count == 1 && parameters[0] is VectorParameter vp
+                ? vp.Elements.Count
+                : parameters.Count;
+
+            if (argumentCount > 7)
             {
+                if (context.ReaderSettings.Compatibility.IsLTspice)
+                {
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        "Unsupported LTspice PULSE cycle-count arguments: finite-cycle PULSE sources are not mapped yet.",
+                        parameters.LineInfo);
+                    return null;
+                }
+
                 context.Result.ValidationResult.AddError(
                     ValidationEntrySource.Reader,
                     "Wrong number of arguments for PULSE waveform",

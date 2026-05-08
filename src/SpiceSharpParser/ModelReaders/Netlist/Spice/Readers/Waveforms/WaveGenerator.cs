@@ -1,5 +1,6 @@
 ﻿using SpiceSharp.Components;
 using SpiceSharpParser.Common.FileSystem;
+using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
@@ -41,9 +42,27 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 
         private static IWaveformDescription CreateWaveFromFile(ParameterCollection parameters, IReadingContext context)
         {
-            var fileParameter = (AssignmentParameter)parameters.First(p => p is AssignmentParameter ap && ap.Name.ToLower() == "wavefile");
-            var channelParameter = (AssignmentParameter)parameters.First(p => p is AssignmentParameter ap && ap.Name.ToLower() == "chan");
-            var ampliduteParameter = (AssignmentParameter)parameters.FirstOrDefault(p => p is AssignmentParameter ap && ap.Name.ToLower() == "amplitude");
+            var fileParameter = (AssignmentParameter)parameters.FirstOrDefault(p => p is AssignmentParameter ap && ap.Name.ToLowerInvariant() == "wavefile");
+            var channelParameter = (AssignmentParameter)parameters.FirstOrDefault(p => p is AssignmentParameter ap && ap.Name.ToLowerInvariant() == "chan");
+            var ampliduteParameter = (AssignmentParameter)parameters.FirstOrDefault(p => p is AssignmentParameter ap && ap.Name.ToLowerInvariant() == "amplitude");
+
+            if (fileParameter == null)
+            {
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    "wavefile source requires wavefile=<path>.",
+                    parameters.LineInfo);
+                return null;
+            }
+
+            if (channelParameter == null)
+            {
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    "wavefile source requires explicit chan=<n>; LTspice channel defaults are not inferred.",
+                    fileParameter.LineInfo);
+                return null;
+            }
 
             var filePath = PathConverter.Convert(fileParameter.Value);
             var workingDirectory = context.ReaderSettings.WorkingDirectory ?? Directory.GetCurrentDirectory();
@@ -51,7 +70,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 
             if (!File.Exists(fullFilePath))
             {
-                throw new ArgumentException("WAVE file does not exist:" + fullFilePath);
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    "wavefile source file does not exist: " + fullFilePath,
+                    fileParameter.LineInfo);
+                return null;
             }
 
             byte[] fileContent = File.ReadAllBytes(fullFilePath);
@@ -62,7 +85,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 amplitude = context.Evaluator.EvaluateDouble(ampliduteParameter.Value);
             }
 
-            int channel = (int)context.Evaluator.EvaluateDouble(channelParameter.Value);
+            int channel;
+            try
+            {
+                channel = (int)context.Evaluator.EvaluateDouble(channelParameter.Value);
+            }
+            catch (Exception ex)
+            {
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    "wavefile source chan=<n> must evaluate to a channel number.",
+                    channelParameter.LineInfo,
+                    ex);
+                return null;
+            }
 
             return new Wave.Wave(fileContent, channel, amplitude);
         }

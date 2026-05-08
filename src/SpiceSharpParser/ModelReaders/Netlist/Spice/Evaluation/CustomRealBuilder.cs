@@ -78,6 +78,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 
         private static void OnDefaultFunctionFound(object sender, FunctionFoundEventArgs<double> args)
         {
+            if (!args.Created
+                && string.Equals(args.Function.Name, "round", StringComparison.OrdinalIgnoreCase)
+                && args.Function.Arguments.Count == 1)
+            {
+                args.Result = System.Math.Round(args.Builder.Build(args.Function.Arguments[0]));
+                return;
+            }
+
             if (!args.Created && RealBuilderHelper.Defaults.TryGetValue(args.Function.Name, out var definition))
             {
                 var arguments = new double[args.Function.Arguments.Count];

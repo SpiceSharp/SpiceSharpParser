@@ -193,21 +193,6 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
 
                 yield return new object[]
                 {
-                    "EXP waveform",
-                    "EXP",
-                    new[]
-                    {
-                        "LTspice P0 - EXP waveform",
-                        "V1 out 0 EXP(0 1 1n 1n 2n 1n)",
-                        "R1 out 0 1k",
-                        ".tran 1n 10n",
-                        ".save V(out)",
-                        ".end",
-                    },
-                };
-
-                yield return new object[]
-                {
                     "PULSE cycle count",
                     "PULSE",
                     new[]

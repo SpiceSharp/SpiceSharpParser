@@ -78,6 +78,7 @@ namespace SpiceSharpParser.Lexers
                             if (state != null)
                             {
                                 state.PreviousReturnedTokenType = tokenType;
+                                state.PreviousReturnedLexem = bestMatch;
                             }
 
                             result.Tokens.Add(new Token(

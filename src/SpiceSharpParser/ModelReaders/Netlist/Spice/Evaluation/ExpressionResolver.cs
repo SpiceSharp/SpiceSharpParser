@@ -137,6 +137,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             }
 
             result["poly"] = new PolyResolverFunction();
+            result["fabs"] = new FabsResolverFunction();
+            result["round"] = new RoundResolverFunction();
             result["if"] = new IfResolverFunction();
             result["random"] = new RandomResolverFunction(Context);
             result["gauss"] = new GaussResolverFunction(Context);

@@ -3,10 +3,12 @@ using SpiceSharp.Components;
 using SpiceSharp.Entities;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
+using SpiceSharpParser.Models.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using Component = SpiceSharp.Components.Component;
@@ -22,6 +24,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             bool isCurrentSource)
         {
             parameters = parameters.Skip(VoltageSource.PinCount);
+
+            if (AddUnsupportedLtspiceSourceOptionDiagnostics(parameters, context))
+            {
+                return;
+            }
 
             var acParameter = parameters.FirstOrDefault(p => p.Value.ToLower() == "ac");
             if (acParameter != null)
@@ -89,7 +96,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     if (context.WaveformReader.Supports(bp.Name, context))
                     {
-                        component.SetParameter("waveform", context.WaveformReader.Generate(bp.Name, bp.Parameters, context));
+                        var waveform = context.WaveformReader.Generate(bp.Name, bp.Parameters, context);
+                        if (waveform != null)
+                        {
+                            component.SetParameter("waveform", waveform);
+                        }
                     }
                     else
                     {
@@ -102,7 +113,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     {
                         if (context.WaveformReader.Supports(wp.Value, context))
                         {
-                            component.SetParameter("waveform", context.WaveformReader.Generate(wp.Value, parameters.Skip(1), context));
+                            var waveform = context.WaveformReader.Generate(wp.Value, parameters.Skip(1), context);
+                            if (waveform != null)
+                            {
+                                component.SetParameter("waveform", waveform);
+                            }
                         }
                         else
                         {
@@ -114,7 +129,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     {
                         if (context.WaveformReader.Supports(assignmentParameter.Name, context))
                         {
-                            component.SetParameter("waveform", context.WaveformReader.Generate(assignmentParameter.Name, parameters, context));
+                            var waveform = context.WaveformReader.Generate(assignmentParameter.Name, parameters, context);
+                            if (waveform != null)
+                            {
+                                component.SetParameter("waveform", waveform);
+                            }
                         }
                         else
                         {
@@ -165,6 +184,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             params Parameter[] extraExcludedParameters)
         {
             entity = null;
+
+            if (AddUnsupportedLtspiceExpressionDiagnostics(expression, expressionParameter?.LineInfo ?? parameters.LineInfo, context))
+            {
+                return true;
+            }
 
             var excludedParameters = new List<Parameter>();
             if (expressionParameter != null)
@@ -263,6 +287,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             EvaluationContext evalContext,
             string expression)
         {
+            if (AddUnsupportedLtspiceExpressionDiagnostics(expression, parameters.LineInfo, context))
+            {
+                return null;
+            }
+
             var entity = new BehavioralVoltageSource(name);
             context.CreateNodes(entity, parameters.Take(BehavioralVoltageSource.BehavioralVoltageSourcePinCount));
             entity.Parameters.Expression = expression;
@@ -295,6 +324,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             EvaluationContext evalContext,
             string expression)
         {
+            if (AddUnsupportedLtspiceExpressionDiagnostics(expression, parameters.LineInfo, context))
+            {
+                return null;
+            }
+
             var mParameter = (AssignmentParameter)parameters.FirstOrDefault(p =>
                 p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "m");
 
@@ -399,6 +433,189 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             return parameters.Where(parameter =>
                 !excludedParameters.Any(excluded => ReferenceEquals(excluded, parameter)));
+        }
+
+        protected bool TryCreateLtspiceTableSource(
+            string name,
+            ParameterCollection parameters,
+            IReadingContext context,
+            bool isCurrentSource,
+            out IEntity entity)
+        {
+            entity = null;
+
+            if (!context.ReaderSettings.Compatibility.IsLTspice)
+            {
+                return false;
+            }
+
+            var tableParameter = parameters
+                .OfType<AssignmentParameter>()
+                .FirstOrDefault(parameter => string.Equals(parameter.Name, "tbl", StringComparison.OrdinalIgnoreCase));
+
+            if (tableParameter == null)
+            {
+                return false;
+            }
+
+            var parts = SplitTopLevelList(tableParameter.Value).ToList();
+            if (parts.Count < 3 || (parts.Count - 1) % 2 != 0)
+            {
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    "Unsupported LTspice source option 'tbl': expected tbl=(expr, x1, y1, ...).",
+                    tableParameter.LineInfo);
+                return true;
+            }
+
+            var expression = NormalizeExpression(parts[0]);
+            if (AddUnsupportedLtspiceExpressionDiagnostics(expression, tableParameter.LineInfo, context))
+            {
+                return true;
+            }
+
+            var points = new List<PointParameter>();
+            for (var i = 1; i < parts.Count; i += 2)
+            {
+                var values = new PointValues(
+                    new List<SingleParameter>
+                    {
+                        new ValueParameter(parts[i].Trim(), tableParameter.LineInfo),
+                        new ValueParameter(parts[i + 1].Trim(), tableParameter.LineInfo),
+                    },
+                    tableParameter.LineInfo);
+                points.Add(new PointParameter(values, tableParameter.LineInfo));
+            }
+
+            var tableExpression = ExpressionFactory.CreateTableExpression(expression, points);
+            entity = isCurrentSource
+                ? CreateBehavioralCurrentSource(name, parameters, context, context.EvaluationContext, tableExpression)
+                : CreateBehavioralVoltageSource(name, parameters, context, context.EvaluationContext, tableExpression);
+            return true;
+        }
+
+        private static bool AddUnsupportedLtspiceSourceOptionDiagnostics(ParameterCollection parameters, IReadingContext context)
+        {
+            if (!context.ReaderSettings.Compatibility.IsLTspice)
+            {
+                return false;
+            }
+
+            var hasErrors = false;
+            foreach (var assignment in parameters.OfType<AssignmentParameter>())
+            {
+                var name = assignment.Name;
+                if (string.Equals(name, "rser", StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(name, "cpar", StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(name, "load", StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(name, "r", StringComparison.OrdinalIgnoreCase))
+                {
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        $"Unsupported LTspice source option '{name}': topology-changing source options are not synthesized yet.",
+                        assignment.LineInfo);
+                    hasErrors = true;
+                }
+            }
+
+            foreach (var word in parameters.OfType<WordParameter>())
+            {
+                var name = word.Value;
+                if (string.Equals(name, "load", StringComparison.OrdinalIgnoreCase))
+                {
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        $"Unsupported LTspice source option '{name}': topology-changing source options are not synthesized yet.",
+                        word.LineInfo);
+                    hasErrors = true;
+                }
+            }
+
+            return hasErrors;
+        }
+
+        private static bool AddUnsupportedLtspiceExpressionDiagnostics(string expression, SpiceLineInfo lineInfo, IReadingContext context)
+        {
+            if (!context.ReaderSettings.Compatibility.IsLTspice || string.IsNullOrWhiteSpace(expression))
+            {
+                return false;
+            }
+
+            var hasErrors = false;
+            foreach (var name in new[] { "uplim", "dnlim" })
+            {
+                if (Regex.IsMatch(expression, @"(?<![A-Za-z0-9_])" + name + @"\s*\(", RegexOptions.IgnoreCase))
+                {
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        $"Unsupported LTspice expression function '{name}': smooth limiting semantics are not mapped yet.",
+                        lineInfo);
+                    hasErrors = true;
+                }
+            }
+
+            if (expression.Contains("~"))
+            {
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    "Unsupported LTspice expression operator '~': unary bitwise/boolean inversion is not mapped yet.",
+                    lineInfo);
+                hasErrors = true;
+            }
+
+            return hasErrors;
+        }
+
+        private static IEnumerable<string> SplitTopLevelList(string value)
+        {
+            var start = 0;
+            var depth = 0;
+            var inSingleQuote = false;
+            var inDoubleQuote = false;
+
+            for (var i = 0; i < value.Length; i++)
+            {
+                var c = value[i];
+                if (c == '\'' && !inDoubleQuote)
+                {
+                    inSingleQuote = !inSingleQuote;
+                }
+                else if (c == '"' && !inSingleQuote)
+                {
+                    inDoubleQuote = !inDoubleQuote;
+                }
+                else if (!inSingleQuote && !inDoubleQuote)
+                {
+                    if (c == '(' || c == '{' || c == '[')
+                    {
+                        depth++;
+                    }
+                    else if (c == ')' || c == '}' || c == ']')
+                    {
+                        depth--;
+                    }
+                    else if (c == ',' && depth == 0)
+                    {
+                        yield return value.Substring(start, i - start).Trim();
+                        start = i + 1;
+                    }
+                }
+            }
+
+            yield return value.Substring(start).Trim();
+        }
+
+        private static string NormalizeExpression(string expression)
+        {
+            expression = expression.Trim();
+            if (expression.Length >= 2
+                && ((expression[0] == '{' && expression[expression.Length - 1] == '}')
+                    || (expression[0] == '\'' && expression[expression.Length - 1] == '\'')))
+            {
+                return expression.Substring(1, expression.Length - 2);
+            }
+
+            return expression;
         }
 
         private static void SetLaplaceParameters(

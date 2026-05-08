@@ -181,6 +181,47 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
 
             builder.AddDynamicRule(new LexerDynamicRule(
                 (int)SpiceTokenType.EXPRESSION_BRACKET,
+                "A parenthesized assignment expression after equal",
+                @"\(.+",
+                (string textToLex, LexerState state) =>
+                {
+                    if (!(state is SpiceLexerState spiceState)
+                        || !string.Equals(spiceState.AssignmentNameBeforeEqual, "tbl", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return new Tuple<string, int>(string.Empty, 0);
+                    }
+
+                    int openBracketCount = 1;
+                    var i = 0;
+                    for (i = 1; i < textToLex.Length && openBracketCount > 0; i++)
+                    {
+                        if (textToLex[i] == ')')
+                        {
+                            openBracketCount--;
+                        }
+
+                        if (textToLex[i] == '(')
+                        {
+                            openBracketCount++;
+                        }
+                    }
+
+                    if (openBracketCount == 0)
+                    {
+                        var text = textToLex.Substring(1, i - 2);
+                        var replaced = Regex.Replace(text, @"((\r\n|\r|\n)[\t 	]*)+\+", string.Empty);
+                        return new Tuple<string, int>("{" + replaced + "}", i);
+                    }
+
+                    throw new LexerException("Not matched brackets for expression", new SpiceLineInfo()
+                    {
+                        LineNumber = state?.LineNumber ?? 0,
+                        StartColumnIndex = state?.StartColumnIndex ?? 0,
+                    });
+                }, new int[] { (int)SpiceTokenType.EQUAL }));
+
+            builder.AddDynamicRule(new LexerDynamicRule(
+                (int)SpiceTokenType.EXPRESSION_BRACKET,
                 "An expression after equal",
                 "[^{']+",
                 (string textToLex, LexerState state) =>
@@ -356,7 +397,12 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
             builder.AddRegexRule(new LexerTokenRule<SpiceLexerState>(
               (int)SpiceTokenType.EQUAL,
               "An equal character",
-              @"="));
+              @"=",
+              (SpiceLexerState state, string lexem) =>
+              {
+                  state.AssignmentNameBeforeEqual = state.PreviousReturnedLexem;
+                  return LexerRuleReturnDecision.ReturnToken;
+              }));
 
             builder.AddRegexRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.NEWLINE,

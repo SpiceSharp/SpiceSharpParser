@@ -135,6 +135,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             var evalContext = context.EvaluationContext;
 
+            if (TryCreateLtspiceTableSource(name, parameters, context, isCurrentSource: false, out var tableEntity))
+            {
+                return tableEntity;
+            }
+
             if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
             {
                 var valueParameter = (AssignmentParameter)parameters.Single(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");

@@ -138,17 +138,16 @@ namespace SpiceSharpParser.Lexers.Expressions
                     }
                     break;
                 case '&':
-                    Type = TokenType.Unknown;
+                    Type = TokenType.And;
                     Continue();
                     if (Index < _expression.Length && _expression[Index] == '&')
                     {
                         Type = TokenType.And;
                         Continue();
                     }
-                    Continue();
                     break;
                 case '|':
-                    Type = TokenType.Unknown;
+                    Type = TokenType.Or;
                     Continue();
                     if (Index < _expression.Length && _expression[Index] == '|')
                     {

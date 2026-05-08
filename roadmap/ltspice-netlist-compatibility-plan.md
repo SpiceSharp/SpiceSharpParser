@@ -29,14 +29,14 @@ This roadmap is intentionally parser-first and evidence-first:
 - P1 adds explicit `CompatibilityOptions` presets in parser and reader settings; both default to `CompatibilityOptions.None`.
 - Validation currently has error and warning levels only. Use warnings for recognized LTspice no-ops until an informational level exists.
 - `ValidationEntryCollection.Warnings` filters warning entries and is covered by warning/error separation tests.
-- `MathFunctions.CreateTable()` still returns `null`, making scalar `table(...)` an early expression-compatibility candidate even though source-level `TABLE` lowering has existing paths.
+- Scalar `table(...)` and `tbl(...)` are supported through SpiceSharpBehavioral defaults and covered by LTspice P2 fixtures; `MathFunctions.CreateTable()` still returns `null` and remains a stale parser-owned factory audit item.
 - The default mappings register many common controls and devices, but registration does not prove LTspice syntax parity for every variant.
 - Default reader behavior still rejects LTspice `.backanno`, `.tf`, `.four`, `.net`, `.ferret`, `.loadbias`, `.savebias`, and `.machine` / `.endmachine` with targeted diagnostics.
 - In LTspice mode, `.backanno` is a warning no-op. The other known unsupported LTspice controls remain targeted errors.
 - `.TRAN` accepts traditional numeric forms and trailing `UIC`; P1 LTspice mode also accepts `.tran <Tstop>` and `.tran <Tstop> UIC` by deriving `step = Tstop / 50.0`. LTspice `startup`, `steady`, `nodiscard`, and `step` modifiers remain targeted errors.
 - LTspice output/viewer `.options` such as `plotwinsize`, `plotreltol`, `plotvntol`, `plotabstol`, `numdgt`, `measdgt`, `meascplxfmt`, `baudrate`, and `fastaccess` are warning no-ops only in LTspice mode.
 - LTspice behavior-changing `.options` such as `cshunt`, `gshunt`, `srcsteps`, `gminsteps`, `trtol`, `chgtol`, `pivrel`, `pivtol`, and `ptrantau` remain targeted errors.
-- Source waveform mappings cover `SIN` / `SINE`, `PULSE`, `PWL`, `AM`, `SFFM`, and wave-file input, but gaps remain for `EXP(...)`, LTspice cycle-count arguments, optional wave channel defaults, and several independent-source instance options.
+- Source waveform mappings cover `SIN` / `SINE`, `PULSE`, `EXP`, `PWL`, `AM`, `SFFM`, and wave-file input. LTspice cycle-count arguments remain targeted errors, wave-file channel defaults are not inferred, and topology-changing independent-source instance options remain targeted errors.
 - MOS model generation currently covers legacy levels 1, 2, and 3. LTspice `VDMOS` and advanced monolithic levels such as BSIM/EKV/HiSIM variants are runtime or intentional-unsupported candidates.
 - Distributed-line support currently starts from lossless `T`. LTspice lossy `O` / `LTRA` and uniform RC-line `URC` models need engine triage before runnable support is claimed.
 
@@ -199,22 +199,27 @@ Acceptance criteria:
 
 Goal: accept more LTspice behavioral syntax when it maps cleanly to existing runtime behavior.
 
-Implementation backlog:
+Implemented P2 behavior:
 
-- Audit LTspice scalar functions against existing math functions, random functions, resolver functions, `.FUNC`, and behavioral-source support.
-- Implement static aliases where semantics are clear, such as `arccos`, `arcsin`, `arctan`, `fabs`, `sgn`, and `round`.
-- Implement or intentionally diagnose scalar `table(...)`; current `MathFunctions.CreateTable()` is the early blocker.
-- Add static functions such as `pwr`, `pwrs`, and `hypot` only after real-valued semantics are specified.
-- Add or diagnose LTspice operators such as `**`, Boolean `&`, `|`, `^`, and unary `!` / `~`.
-- Compare existing `mc`, `gauss`, `flat`, `random`, `rand`, `white`, and `unif` behavior with LTspice semantics before making numeric claims.
-- Add compatibility decisions for smooth limiting functions such as `uplim` and `dnlim`.
-- Add source waveform support or diagnostics for `EXP(...)`, LTspice `PULSE`/`SINE` cycle-count arguments, and PWL file variants.
-- Classify independent-source options such as voltage-source `Rser`, `Cpar`, current-source `load`, `R=<value>`, `tbl=(...)`, and `wavefile=<path> [chan=<n>]`.
-- Keep `LAPLACE(...)` on the existing lowering path and do not register it as a scalar math function.
+- Added dialect-neutral expression support for `fabs(x)`, one-argument `round(x)`, unary `!`, and single-character boolean `&` / `|`.
+- Added fixture-backed evidence for `arccos`, `arcsin`, `arctan`, `sgn`, `pwr`, `pwrs`, `hypot`, scalar `table(...)` / `tbl(...)`, and `**`.
+- Kept `^` as the existing exponent operator; LTspice boolean XOR is deferred to avoid changing current semantics.
+- Added LTspice-mode targeted diagnostics for `uplim(...)`, `dnlim(...)`, and unary `~`.
+- Added six-argument `EXP(v1 v2 td1 tau1 td2 tau2)` source waveform support with argument-count and positive-tau diagnostics.
+- Added LTspice-mode targeted diagnostics for finite-cycle `PULSE` and `SINE` arguments.
+- Added LTspice-mode `tbl=(expr,x1,y1,...)` independent-source lowering to the existing behavioral `table(...)` path.
+- Improved `wavefile=<path> chan=<n> [amplitude=<value>]` validation so missing `chan` and missing files produce targeted diagnostics.
+- Added LTspice-mode targeted diagnostics for topology-changing source options `Rser`, `Cpar`, `load`, and `R=<value>`.
+
+Remaining follow-up:
+
+- Compare existing random functions with LTspice semantics before making numeric claims.
+- Decide whether LTspice boolean XOR can be added without breaking existing `^` exponent behavior.
+- Defer finite-cycle waveform behavior, broader PWL file variants, and source-option topology synthesis until fixture-backed runtime behavior is specified.
 
 Acceptance criteria:
 
-- Safe aliases have evaluator, resolver, behavioral-source, and generated-writer coverage where applicable.
+- Safe aliases have evaluator/resolver and behavioral-source coverage where applicable.
 - Dynamic or stateful unsupported functions fail with actionable diagnostics.
 - Waveform claims distinguish parser acceptance from runtime equivalence.
 

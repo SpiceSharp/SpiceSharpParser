@@ -60,6 +60,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
+        /// Get a fabs() function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of fabs function.
+        /// </returns>
+        public static IFunction<double, double> CreateFabs()
+        {
+            return new FabsFunction();
+        }
+
+        /// <summary>
         /// Get a buf() function.
         /// </summary>
         /// <returns>

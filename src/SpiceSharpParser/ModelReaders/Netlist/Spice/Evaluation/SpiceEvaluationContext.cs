@@ -44,6 +44,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
                 RandomFunctions.CreateFlat(),
                 RandomFunctions.CreateGauss(),
                 RandomFunctions.CreateExtendedGauss(),
+                MathFunctions.CreateFabs(),
                 ControlFunctions.CreateIf(),
                 MathFunctions.CreateInt(),
                 MathFunctions.CreateInv(),
