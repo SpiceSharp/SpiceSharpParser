@@ -5,6 +5,7 @@ using SpiceSharp.Components;
 using SpiceSharp.Entities;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
@@ -68,6 +69,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         parameters.LineInfo);
                     return null;
                 case 4:
+                    if (LTspiceParameterClassifier.TryAddUnsupportedThreeTerminalMosfetError(context, originalName, parameters))
+                    {
+                        return null;
+                    }
+
                     context.Result.ValidationResult.AddError(
                         ValidationEntrySource.Reader,
                         $"Model name expected",
@@ -125,6 +131,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 if (parameter is AssignmentParameter ap)
                 {
+                    if (LTspiceParameterClassifier.TryHandleComponentParameter(context, mosfet, originalName, type, ap))
+                    {
+                        continue;
+                    }
+
                     try
                     {
                         if (ap.Name.ToLower() == "ic")

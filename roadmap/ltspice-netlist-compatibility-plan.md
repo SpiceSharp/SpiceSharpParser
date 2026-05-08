@@ -2,7 +2,7 @@
 title: LTspice Netlist Compatibility Plan
 status: Draft / Roadmap
 scope: SpiceSharpParser + SpiceSharp
-last_reviewed: 2026-05-07
+last_reviewed: 2026-05-08
 ---
 
 # LTspice Netlist Compatibility Plan
@@ -39,6 +39,8 @@ This roadmap is intentionally parser-first and evidence-first:
 - Source waveform mappings cover `SIN` / `SINE`, `PULSE`, `EXP`, `PWL`, `AM`, `SFFM`, and wave-file input. LTspice cycle-count arguments remain targeted errors, wave-file channel defaults are not inferred, and topology-changing independent-source instance options remain targeted errors.
 - MOS model generation currently covers legacy levels 1, 2, and 3. LTspice `VDMOS` and advanced monolithic levels such as BSIM/EKV/HiSIM variants are runtime or intentional-unsupported candidates.
 - Distributed-line support currently starts from lossless `T`. LTspice lossy `O` / `LTRA` and uniform RC-line `URC` models need engine triage before runnable support is claimed.
+- P3 LTspice mode maps R/C model `tc=a[,b]`, switch `von`/`voff`, and current-switch `ion`/`ioff` aliases where they lower to existing parameters.
+- P3 LTspice mode warns on recognized metadata/rating parameters and emits targeted errors for topology-changing passive parasitics, charge/flux-defined passives, ideal-diode parameters, switch current-limiting/series options, `VDMOS`, high MOS levels, three-terminal power-MOS syntax, and `O` / `LTRA` / `U` / `URC` line families.
 
 ## Scope And Policy
 
@@ -227,14 +229,19 @@ Acceptance criteria:
 
 Goal: make common LTspice/vendor model decks map where equivalent behavior exists and fail clearly where they do not.
 
-Implementation backlog:
+Implemented P3 behavior:
 
-- Build alias/ignore/error tables per model family.
-- Map direct equivalents through existing model generators and parameter update paths.
-- Warn on LTspice metadata or layout-only parameters only in LTspice compatibility mode.
-- Error on unsupported behavior-changing parameters with component/model name and suggested fallback when possible.
-- Test model parameter expressions, subcircuit defaults, geometry parameters, temperature parameters, and `.MODEL` variants.
-- Add explicit triage for LTspice ideal diode parameters, switch current-limiting and one-way parameters, MOS metadata, and three-terminal `VDMOS` syntax.
+- Added centralized LTspice model/component parameter classification tables with comments explaining alias, warning no-op, and targeted-error decisions.
+- Mapped R/C model `tc=a[,b]` aliases to `tc1` / `tc2`.
+- Mapped switch `von` / `voff` and current-switch `ion` / `ioff` aliases to midpoint/hysteresis parameters.
+- Warned on recognized LTspice metadata and rating parameters only in LTspice mode.
+- Added targeted diagnostics for topology-changing passive parasitics, capacitor `Q=`, inductor `Flux=`, LTspice ideal-diode parameters, switch `Lser` / `Vser` / `Ilimit`, high MOS levels, `VDMOS`, three-terminal power-MOS syntax, and `O` / `LTRA` / `U` / `URC` line families.
+
+Remaining follow-up:
+
+- Broaden model-family alias tables only when direct SpiceSharp equivalents are confirmed by fixtures.
+- Add engine work before claiming runnable support for `VDMOS`, advanced MOS families, lossy transmission lines, uniform RC lines, or synthesized passive parasitics.
+- Keep vendor-library import tests synthetic unless redistribution is clearly permitted.
 
 Initial model-family priorities:
 

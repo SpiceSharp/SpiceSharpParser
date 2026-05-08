@@ -1,6 +1,7 @@
 ﻿using SpiceSharp.Components;
 using SpiceSharp.Entities;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
@@ -48,6 +49,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (parameters[i] is AssignmentParameter asg)
                 {
+                    if (LTspiceParameterClassifier.TryHandleComponentParameter(context, jfet, originalName, type, asg))
+                    {
+                        continue;
+                    }
+
                     if (asg.Name.ToLower() == "ic")
                     {
                         if (asg.Values.Count == 2)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SpiceSharp.Entities;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
@@ -21,9 +22,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
 
         public abstract Context.Models.Model Generate(string id, string type, ParameterCollection parameters, IReadingContext context);
 
-        protected void SetParameters(IReadingContext context, IEntity entity, Context.Models.Model model, ParameterCollection parameters, bool onload = true)
+        protected void SetParameters(IReadingContext context, IEntity entity, Context.Models.Model model, ParameterCollection parameters, string modelType = null, bool onload = true)
         {
-            foreach (Parameter parameter in parameters)
+            var normalizedParameters = LTspiceParameterClassifier.NormalizeModelParameters(context, model.Name, modelType, parameters);
+
+            foreach (Parameter parameter in normalizedParameters)
             {
                 if (parameter is AssignmentParameter ap)
                 {
@@ -40,6 +43,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
 
                     // Skip entity-setting for params in the skip set
                     if (EntitySkipParameters.Contains(ap.Name))
+                    {
+                        continue;
+                    }
+
+                    if (LTspiceParameterClassifier.TryHandleModelParameter(context, entity, model.Name, modelType, ap, onload))
                     {
                         continue;
                     }

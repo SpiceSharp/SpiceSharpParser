@@ -1,6 +1,7 @@
 ﻿using SpiceSharp.Components;
 using SpiceSharp.Entities;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Components;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
@@ -57,6 +58,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                 if (parameters[i] is AssignmentParameter asg)
                 {
+                    if (LTspiceParameterClassifier.TryHandleComponentParameter(context, diode, originalName, type, asg))
+                    {
+                        continue;
+                    }
+
                     // Skip L and W parameters - they are used for model selection only
                     if (asg.Name.ToLower() == "l" || asg.Name.ToLower() == "w")
                     {

@@ -5,6 +5,7 @@ using SpiceSharp.Entities;
 using SpiceSharp.ParameterSets;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System;
@@ -142,12 +143,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
             }
             else
             {
-                context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, $"Unknown mosfet model level {level}", parameters.LineInfo);
+                LTspiceParameterClassifier.AddUnsupportedMosfetLevelError(context, level, type, parameters.LineInfo);
                 return null;
             }
 
             // Read all the parameters and store on both entity and model
-            SetParameters(context, model.Entity, model, clonedParameters);
+            SetParameters(context, model.Entity, model, clonedParameters, type);
 
             return model;
         }

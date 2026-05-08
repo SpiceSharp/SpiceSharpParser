@@ -11,7 +11,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
         {
             var diodeModel = new DiodeModel(id);
             var contextModel = new Model(id, diodeModel, diodeModel.Parameters);
-            SetParameters(context, diodeModel, contextModel, parameters);
+            SetParameters(context, diodeModel, contextModel, parameters, type);
 
             return contextModel;
         }

@@ -61,6 +61,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
                     if (!Mapper.TryGetValue(type, context.ReaderSettings.CaseSensitivity.IsEntityNamesCaseSensitive, out var generator))
                     {
+                        if (LTspiceParameterClassifier.TryAddUnsupportedModelTypeError(context, name, type, bracketParameter.LineInfo))
+                        {
+                            return;
+                        }
+
                         context.Result.ValidationResult.AddError(
                             ValidationEntrySource.Reader,
                             $"Unsupported model type: {type}",
@@ -88,6 +93,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
                     if (!Mapper.TryGetValue(type, context.ReaderSettings.CaseSensitivity.IsModelTypeCaseSensitive, out var generator))
                     {
+                        if (LTspiceParameterClassifier.TryAddUnsupportedModelTypeError(context, name, type, parameter.LineInfo))
+                        {
+                            return;
+                        }
+
                         context.Result.ValidationResult.AddError(
                             ValidationEntrySource.Reader,
                             $"Unsupported model type: {type}",

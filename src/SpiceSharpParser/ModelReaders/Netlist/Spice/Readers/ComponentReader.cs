@@ -105,6 +105,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
 
             if (generator == null)
             {
+                if (LTspiceParameterClassifier.TryAddUnsupportedComponentTypeError(context, componentName, lineInfo))
+                {
+                    return null;
+                }
+
                 context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, $"Unsupported component {componentName}", lineInfo);
             }
 

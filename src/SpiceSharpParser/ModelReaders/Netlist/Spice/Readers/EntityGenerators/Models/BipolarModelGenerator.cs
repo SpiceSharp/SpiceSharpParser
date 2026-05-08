@@ -20,7 +20,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
             }
 
             var contextModel = new Model(id, bjtModel, bjtModel.Parameters);
-            SetParameters(context, bjtModel, contextModel, parameters);
+            SetParameters(context, bjtModel, contextModel, parameters, type);
 
             return contextModel;
         }

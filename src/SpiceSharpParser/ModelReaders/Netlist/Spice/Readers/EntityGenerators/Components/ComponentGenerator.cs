@@ -4,6 +4,7 @@ using SpiceSharp.Entities;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
@@ -62,12 +63,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return null;
         }
 
-        protected void SetParameters(IReadingContext context, IEntity entity, ParameterCollection parameters)
+        protected void SetParameters(IReadingContext context, IEntity entity, ParameterCollection parameters, string componentType = null, string originalName = null)
         {
             foreach (Parameter parameter in parameters)
             {
                 if (parameter is AssignmentParameter ap)
                 {
+                    if (LTspiceParameterClassifier.TryHandleComponentParameter(
+                        context,
+                        entity,
+                        originalName ?? entity.Name,
+                        componentType,
+                        ap))
+                    {
+                        continue;
+                    }
+
                     try
                     {
                         context.SetParameter(entity, ap.Name, ap.Value);

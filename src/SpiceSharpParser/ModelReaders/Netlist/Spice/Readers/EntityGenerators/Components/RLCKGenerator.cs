@@ -6,6 +6,7 @@ using SpiceSharp.Components.Capacitors;
 using SpiceSharp.Entities;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 
@@ -100,6 +101,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </returns>
         protected IComponent GenerateCap(string name, ParameterCollection parameters, IReadingContext context)
         {
+            if (parameters.Count >= 3 && LTspiceParameterClassifier.TryRejectUnsupportedPassiveValue(context, name, "C", parameters[2]))
+            {
+                return null;
+            }
+
             if (parameters.Count >= 3)
             {
                 // CXXXXXXX N1 N2 VALUE
@@ -221,7 +227,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     modelBased = true;
                 }
 
-                SetParameters(context, capacitor, parameters.Skip(3));
+                SetParameters(context, capacitor, parameters.Skip(3), "C", name);
 
                 if (modelBased)
                 {
@@ -313,10 +319,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 return null;
             }
 
+            if (LTspiceParameterClassifier.TryRejectUnsupportedPassiveValue(context, name, "L", parameters[2]))
+            {
+                return null;
+            }
+
             var inductor = new Inductor(name);
             context.CreateNodes(inductor, parameters.Take(Inductor.InductorPinCount));
             context.SetParameter(inductor, "inductance", parameters.Get(2), true);
-            SetParameters(context, inductor, parameters.Skip(Inductor.InductorPinCount + 1));
+            SetParameters(context, inductor, parameters.Skip(Inductor.InductorPinCount + 1), "L", name);
 
             return inductor;
         }
@@ -332,6 +343,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// </returns>
         protected IEntity GenerateRes(string name, ParameterCollection parameters, IReadingContext context)
         {
+            if (parameters.Count >= 3 && LTspiceParameterClassifier.TryRejectUnsupportedPassiveValue(context, name, "R", parameters[2]))
+            {
+                return null;
+            }
+
             if (parameters.Count >= 3)
             {
                 var evalContext = context.EvaluationContext;
@@ -563,6 +579,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     if (parameter is AssignmentParameter ap)
                     {
+                        if (LTspiceParameterClassifier.TryHandleComponentParameter(context, res, name, "R", ap))
+                        {
+                            continue;
+                        }
+
                         try
                         {
                             context.SetParameter(res, ap.Name, ap.Value);

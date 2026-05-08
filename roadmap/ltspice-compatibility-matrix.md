@@ -1,13 +1,13 @@
 ---
 title: LTspice Compatibility Matrix
-status: P2 Scalar Expression And Waveform Baseline
+status: P3 Model And Instance Parameter Baseline
 scope: SpiceSharpParser + SpiceSharp
-last_reviewed: 2026-05-07
+last_reviewed: 2026-05-08
 ---
 
 # LTspice Compatibility Matrix
 
-This matrix tracks LTspice-generated netlist compatibility evidence. It is intentionally conservative: a row is a support claim only when backed by a fixture or existing focused test. P2 adds conservative scalar expression, `EXP(...)` waveform, and source-option evidence; it does not claim full LTspice numeric parity.
+This matrix tracks LTspice-generated netlist compatibility evidence. It is intentionally conservative: a row is a support claim only when backed by a fixture or existing focused test. P3 adds parser-first model and instance parameter tolerance; it does not claim numeric parity for unsupported LTspice compact models or topology-changing instance parasitics.
 
 Compatibility classes:
 
@@ -58,5 +58,14 @@ Compatibility classes:
 | Independent source `tbl=(expr,x1,y1,...)` | Accepted in LTspice mode | Lowered to behavioral `table(...)` source | OP supported | Analytic fixture | Invalid form names `tbl` | Current parser/runtime | Parser shim uses the existing source/table expression path. |
 | Source `wavefile=<path> chan=<n> [amplitude=<value>]` | Accepted | Produces wave-file waveform | Existing wave-file behavior | Smoke/diagnostic fixture | Missing `chan` and missing file produce targeted validation | Current parser/runtime | Channel defaults are not inferred. |
 | Source `Rser`, `Cpar`, `load`, `R=<value>` | Accepted | Rejected in LTspice mode | Not runnable | None | Targeted LTspice source-option error names option | Current parser/runtime | Topology-changing source options are not synthesized. |
-| `VDMOS` models | Parser/model support not claimed | Not claimed | Not runnable | None | Not yet fixture-backed | Future engine package | P3/P4 model triage item. |
-| `O` / `LTRA` and `URC` lines | Parser/model support not claimed | Not claimed | Not runnable | None | Not yet fixture-backed | Future engine package | P3/P4 distributed-line triage item. |
+| R/C model `tc=a[,b]` | Accepted | Lowered to `tc1` / `tc2` | Existing R/C model behavior | Read fixture | None expected in LTspice mode | Current parser/runtime | Parser shim only; coefficients beyond two are rejected. |
+| LTspice metadata/rating parameters `mfg`, `manufacturer`, `pn`, `part`, `desc`, `description`, `V`, `Irms`, `Ipk` | Accepted | Warning no-op in LTspice mode | No runtime effect | Diagnostic fixture | Default: existing parameter error. LTspice: warning names parameter. | Current parser/runtime | BOM/layout metadata is not used by SpiceSharpParser. |
+| R/C/L instance parasitics `Rser`, `Rpar`, `Cpar`, `Lser`, `RLshunt` | Accepted | Rejected in LTspice mode | Not runnable | None | Targeted LTspice instance-parameter error names parameter | Current parser/runtime | Topology-changing passive parasitics are not synthesized. |
+| Capacitor `Q=<expr>` and inductor `Flux=<expr>` | Accepted | Rejected in LTspice mode | Not runnable | None | Targeted LTspice charge/flux diagnostic | Current parser/runtime | Nonlinear charge/flux device semantics are deferred. |
+| LTspice ideal diode parameters `Ron`, `Roff`, `Vfwd`, `Vrev`, `Rrev`, `Ilimit`, `RevIlimit`, `Epsilon`, `RevEpsilon` | Accepted | Rejected in LTspice mode | Not runnable | None | Targeted LTspice ideal-diode diagnostic names parameter | Current parser/runtime | These select LTspice's idealized diode behavior, not Berkeley diode parameters. |
+| Switch aliases `von`/`voff` and `ion`/`ioff` | Accepted | Lowered to `vt`/`vh` and `it`/`ih` | Existing switch model behavior | Read fixture | Missing pair or mixed native/alias forms are targeted errors | Current parser/runtime | Midpoint and half-span lowering only; no LTspice numeric parity claim. |
+| Switch `Lser`, `Vser`, `Ilimit` | Accepted | Rejected in LTspice mode | Not runnable | None | Targeted LTspice switch diagnostic names parameter | Current parser/runtime | Series elements and current limiting are not synthesized. |
+| MOS model levels outside 1, 2, and 3 | Accepted | Rejected in LTspice mode | Not runnable | None | Targeted LTspice MOS-level diagnostic | Current parser/runtime | Legacy MOS levels 1-3 remain the supported parser/runtime subset. |
+| Three-terminal LTspice MOS / power-MOS syntax | Accepted | Rejected in LTspice mode | Not runnable | None | Targeted LTspice three-terminal MOS diagnostic | Current parser/runtime | Treated as VDMOS/power-MOS engine-required syntax. |
+| `VDMOS` models | Accepted as model syntax | Rejected in LTspice mode | Not runnable | None | Targeted engine-required diagnostic names `VDMOS` | Future engine package | Parser recognizes the gap; no runtime support is claimed. |
+| `O` / `LTRA` and `U` / `URC` lines | Accepted as component/model syntax | Rejected in LTspice mode | Not runnable | None | Targeted engine-required diagnostics name line family | Future engine package | Parser recognizes the gap; lossy/distributed-line runtime support is not claimed. |
