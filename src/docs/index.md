@@ -11,7 +11,7 @@ See the [Introduction](articles/intro.md) for installation instructions, a quick
 Browse the documentation by category:
 
 - **Analysis**: [.AC](articles/ac.md), [.DC](articles/dc.md), [.TRAN](articles/tran.md), [.OP](articles/op.md), [.NOISE](articles/noise.md)
-- **Output**: [.SAVE](articles/save.md), [.PRINT](articles/print.md), [.PLOT](articles/plot.md), [.MEAS](articles/meas.md)
+- **Output**: [.SAVE](articles/save.md), [.PRINT](articles/print.md), [.PLOT](articles/plot.md), [.MEAS](articles/meas.md), [.FOUR](articles/four.md)
 - **Parameters**: [.PARAM](articles/param.md), [.FUNC](articles/func.md), [.LET](articles/let.md), [.SPARAM](articles/sparam.md)
 - **Structure**: [.SUBCKT](articles/subckt.md), [X (Subcircuit Instance)](articles/subcircuit-instance.md), [.INCLUDE](articles/include.md), [.LIB](articles/lib.md), [.GLOBAL](articles/global.md), [.APPENDMODEL](articles/appendmodel.md)
 - **Control**: [.STEP](articles/step.md), [.MC](articles/mc.md), [.TEMP](articles/temp.md), [.OPTIONS](articles/options.md), [.IC](articles/ic.md), [.NODESET](articles/nodeset.md), [.ST](articles/st.md), [.IF](articles/if.md), [.DISTRIBUTION](articles/distribution.md)
