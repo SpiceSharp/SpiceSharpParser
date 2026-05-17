@@ -1,48 +1,453 @@
 # .FOUR Statement
 
-The `.FOUR` statement performs Fourier analysis on transient waveform data. It is intended for measuring harmonic content, phase, normalized harmonic levels, and total harmonic distortion (THD) after a `.TRAN` simulation.
+> ## ⚠️ Status: `.FOUR` is NOT implemented
+>
+> Writing `.FOUR` in a netlist does **nothing useful today**. The parser only
+> recognizes the keyword so it can emit the diagnostic *"post-transient Fourier
+> reporting is not supported yet"* — see
+> [ControlReader.cs:20](../../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/ControlReader.cs#L20).
+> There is no `.FOUR` reader, and there is **no** `model.FourierAnalyses` API.
+>
+> If you want Fourier / THD numbers **today**, use the
+> [`WaveformAnalyzer` C# helper](#what-you-can-do-today-waveformanalyzer-c) — that
+> code is real and works. The `.FOUR`-in-a-netlist behavior described later is a
+> **plan**, written in the future tense, and clearly fenced off.
+>
+> This article is split into three layers so it is never ambiguous what is real:
+> **the concept** (universal), **what works today** (`WaveformAnalyzer`), and
+> **the planned `.FOUR`** (not built).
 
-> Status: `.FOUR` is documented as the planned SpiceSharpParser behavior. The current reader must register a `.FOUR` control and expose `FourierAnalyses` before these examples run as written.
+---
 
-## Overview
+## The Idea, In Plain Language
 
-`.FOUR` is a transient post-processing command. It does not run a new simulation by itself. Instead, it reads samples produced by `.TRAN`, takes the final settled period of each requested waveform, and decomposes that period into a fundamental component plus harmonics.
+Read this first. No math.
 
-Use `.FOUR` when you want answers such as:
+Any signal that *repeats* can be rebuilt by adding together a handful of plain
+sine waves:
 
-- How large is the 1 kHz component of `V(OUT)`?
-- How much second or third harmonic distortion exists in an amplifier output?
-- Did a low-pass filter reduce high-frequency harmonic content?
-- Is the output mostly sinusoidal, or is there measurable THD?
-- Are `V(IN)` and `V(OUT)` shifted in phase at the fundamental?
+- One **fundamental** tone at the repeat rate (for a 1 kHz buzzer, that is 1 kHz).
+- Optional **harmonics**: extra tones at exactly 2×, 3×, 4× … the fundamental.
+- A possible **DC** part: a constant offset that does not wiggle at all.
 
-`.FOUR` is different from `.AC`. `.AC` linearizes the circuit around an operating point and computes small-signal frequency response. `.FOUR` looks at the actual transient waveform, so it can measure distortion produced by nonlinear devices, clipping, switching, or startup behavior.
+Think of a musical chord. A pure flute note is almost a single tone. The same
+note on a distorted electric guitar is the *same* fundamental pitch plus a stack
+of harmonics — that extra stack is what makes it sound "dirty."
 
-## Quick Start
+Fourier analysis is just **measuring how loud each of those tones is** in a
+captured waveform:
 
-For a 1 kHz sine wave, the fundamental frequency is `1k`:
+- A clean sine → almost everything is in the fundamental, harmonics ≈ 0.
+- A clipped, buzzy, or switching waveform → big harmonics on top of the
+  fundamental.
+
+**THD** (Total Harmonic Distortion) rolls that up into one number: *"what
+fraction of the signal is harmonics instead of the clean fundamental?"* 0% means
+a perfect sine; 10% means the harmonic junk is about a tenth of the fundamental.
+
+That is the whole idea. Everything below is either (a) the math behind it,
+(b) the C# function that computes it today, or (c) the netlist command we plan
+to add later.
+
+---
+
+## Today vs. Planned — Read This Before The Examples
+
+The confusing part of this topic is that two different things share the name
+"Fourier." This table is the key:
+
+| Aspect | ✅ Available today — `WaveformAnalyzer` (C#) | 🚧 Planned — `.FOUR` (netlist) |
+|--------|---------------------------------------------|--------------------------------|
+| How you invoke it | Call `WaveformAnalyzer.THD(...)` / `FFT(...)` from C# on samples you collected | Write `.FOUR 1k V(OUT)` in the netlist |
+| Parser support | Not a control — it is a plain C# utility | **Not implemented**; parser rejects `.FOUR` |
+| Transform used | Zero-pad to a power of two, then Cooley–Tukey radix-2 FFT over the **whole** captured waveform | *Planned:* resample the **last complete period**, correlate at exact harmonics |
+| Sample spacing | Assumes you supply (roughly) uniform samples; **no window** applied | *Planned:* automatic resampling of the final period |
+| Phase | **Not computed** — magnitude only | *Planned:* cosine-referenced phase in degrees |
+| THD harmonics | Harmonics `2 … numHarmonics+1` (default **2–11**), nearest FFT bin | *Planned:* harmonics 2–9 at exact multiples of $f_0$ |
+| Normalized dB | Not provided | *Planned* |
+| Result you get | A `double` THD %, or a raw `List<(double Frequency, double Magnitude)>` | *Planned:* structured `model.FourierAnalyses` |
+
+If you only remember one thing: **the long "How The Analyzer Works", phase, and
+`model.FourierAnalyses` material is the *plan*. The thing you can actually run is
+`WaveformAnalyzer`.**
+
+---
+
+## How Fourier Analysis Works (The Concept)
+
+This section is universal — it is true for any SPICE-like Fourier analysis and
+for the `WaveformAnalyzer` helper. It does not describe a SpiceSharpParser
+feature by itself.
+
+### Fundamental Frequency
+
+The *fundamental frequency* $f_0$ is the base repeat rate of the waveform. If the
+waveform repeats every period $T$:
+
+$$
+f_0 = \frac{1}{T}
+$$
+
+$$
+T = \frac{1}{f_0}
+$$
+
+Harmonic frequencies are integer multiples of $f_0$:
+
+$$
+\begin{aligned}
+\text{harmonic 1} &= 1 \cdot f_0 \quad \text{(the fundamental itself)} \\
+\text{harmonic 2} &= 2 \cdot f_0 \\
+\text{harmonic 3} &= 3 \cdot f_0 \\
+&\ldots
+\end{aligned}
+$$
+
+For a 1 kHz analysis:
+
+| Harmonic | Frequency |
+|----------|-----------|
+| 1 | `1 kHz` |
+| 2 | `2 kHz` |
+| 3 | `3 kHz` |
+| 9 | `9 kHz` |
+
+Common choices:
+
+| Waveform | Period | Correct $f_0$ | Notes |
+|----------|--------|--------------|-------|
+| 1 kHz sine wave | `1 ms` | `1k` | Harmonic 1 is the sine itself. |
+| 10 kHz square wave | `100 us` | `10k` | Odd harmonics at `30k`, `50k`, … |
+| 20 kHz pulse train | `50 us` | `20k` | Use the repetition rate, not the edge rate. |
+| 60 Hz mains | `16.6667 ms` | `60` | Harmonics at `120 Hz`, `180 Hz`, … |
+
+Choosing the wrong $f_0$ is the easiest way to get misleading results. If the
+real signal is 1 kHz but you analyze at 900 Hz, the analyzer probes 900 Hz,
+1.8 kHz, 2.7 kHz … the energy no longer lands cleanly on harmonic 1 and spreads
+across bins. This is **spectral leakage**.
+
+### Harmonics And THD
+
+| Term | Meaning |
+|------|---------|
+| DC | Average value of the waveform over the analyzed window. |
+| fundamental | Harmonic 1, at $f_0$. |
+| second harmonic | Harmonic 2, at $2 \cdot f_0$. |
+| THD | RMS sum of the distortion harmonics divided by harmonic 1. |
+
+An ideal sine has only harmonic 1; a distorted sine such as
+$\sin(2\pi f_0 t) + 0.1 \cdot \sin(2\pi \cdot 2 f_0 \cdot t)$ has a
+fundamental of `1` and a second harmonic of `0.1`, giving a THD of about `10%`.
+THD ignores DC and ignores harmonic 1 (the reference).
+
+### Math Background
+
+A repeating waveform is a DC value plus sine and cosine waves at integer
+multiples of $f_0$. Over one period $T = 1 / f_0$:
+
+$$
+x(t) = \text{dc} + \sum_{k=1}^{H}
+\left[a_k \cos(2\pi k f_0 t) + b_k \sin(2\pi k f_0 t)\right]
+$$
+
+| Symbol | Meaning |
+|--------|---------|
+| $x(t)$ | Signal being analyzed, e.g. `V(OUT)`. |
+| $\text{dc}$ | Average value of $x(t)$ over one period. |
+| $k$ | Harmonic number. |
+| $H$ | Highest harmonic considered. |
+| $a_k$, $b_k$ | Cosine / sine coefficients for harmonic $k$. |
+| $f_0$ | Fundamental frequency. |
+
+#### Correlation In Plain Language
+
+Sine/cosine correlation asks, *"how much does this waveform look like a sine or
+cosine at this exact frequency?"* For each harmonic `k` the waveform is compared
+to $\cos(2\pi k f_0 t)$ and $\sin(2\pi k f_0 t)$. If the waveform rises and
+falls in the same pattern as the reference, the sum is large; if it has unrelated
+shape, the positive and negative parts cancel and the sum is small. That is why
+a pure 1 kHz sine correlates strongly at 1 kHz and weakly at 2 kHz.
+
+#### Discrete Formulas
+
+For `M` uniformly spaced samples `x[0]…x[M-1]` covering the analyzed window:
+
+$$
+\text{dc} = \frac{1}{M} \sum_{n=0}^{M-1} x[n]
+$$
+
+$$
+a_k = \frac{2}{M} \sum_{n=0}^{M-1} x[n]\cos\left(\frac{2\pi k n}{M}\right)
+$$
+
+$$
+b_k = \frac{2}{M} \sum_{n=0}^{M-1} x[n]\sin\left(\frac{2\pi k n}{M}\right)
+$$
+
+#### Magnitude And Phase
+
+$$
+\text{magnitude}_k = \sqrt{a_k^2 + b_k^2}
+$$
+
+$$
+\text{phase}_k = \operatorname{atan2}(-b_k, a_k) \cdot \frac{180}{\pi}
+$$
+
+Phase is **conceptual here** — note that the `WaveformAnalyzer` helper does not
+compute phase (magnitude only). With a cosine reference:
+
+| Waveform | Phase |
+|----------|-------|
+| $\cos(2\pi f_0 t)$ | about `0 deg` |
+| $\sin(2\pi f_0 t)$ | about `-90 deg` |
+| $-\cos(2\pi f_0 t)$ | about `±180 deg` |
+| $-\sin(2\pi f_0 t)$ | about `90 deg` |
+
+#### Normalized Magnitude And dB
+
+$$
+\text{normalized}_k = \frac{\text{magnitude}_k}{\text{magnitude}_1}
+$$
+
+$$
+\text{normalized\_db}_k = 20 \cdot \log_{10}(\text{normalized}_k)
+$$
+
+| $\text{normalized}_k$ | $\text{normalized\_db}_k$ | Meaning |
+|----------------|-------------------|---------|
+| `1` | `0 dB` | Equal to the fundamental. |
+| `0.5` | about `-6.02 dB` | Half the fundamental. |
+| `0.1` | `-20 dB` | One tenth of the fundamental. |
+| `0.01` | `-40 dB` | One hundredth of the fundamental. |
+
+#### THD
+
+$$
+\text{THD percent} =
+100 \cdot
+\frac{\sqrt{\text{magnitude}_2^2 + \text{magnitude}_3^2 + \ldots}}
+     {\text{magnitude}_1}
+$$
+
+- DC does not count toward THD.
+- Harmonic 1 does not count (it is the reference).
+- If $\text{magnitude}_1 \approx 0$, THD is undefined (`NaN`) — no useful
+  denominator.
+
+#### Worked Math Examples
+
+Pure cosine $x(t) = \cos(2\pi f_0 t)$:
+
+| Quantity | Value |
+|----------|-------|
+| $\text{dc}$ | `0` |
+| $\text{magnitude}_1$ | `1` |
+| $\text{phase}_1$ (concept) | `0 deg` |
+| `THD` | `0%` |
+
+Pure sine $x(t) = \sin(2\pi f_0 t)$:
+
+| Quantity | Value |
+|----------|-------|
+| $\text{dc}$ | `0` |
+| $\text{magnitude}_1$ | `1` |
+| $\text{phase}_1$ (concept) | `-90 deg` |
+| `THD` | `0%` |
+
+DC offset plus sine $x(t) = 2 + \sin(2\pi f_0 t)$:
+
+| Quantity | Value |
+|----------|-------|
+| $\text{dc}$ | `2` |
+| $\text{magnitude}_1$ | `1` |
+| `THD` | `0%` (offset is not distortion) |
+
+Fundamental plus second harmonic
+$x(t) = \sin(2\pi f_0 t) + 0.1 \cdot \sin(2\pi \cdot 2 f_0 \cdot t)$:
+
+| Quantity | Value |
+|----------|-------|
+| $\text{magnitude}_1$ | `1` |
+| $\text{magnitude}_2$ | `0.1` |
+| $\text{normalized}_2$ | `0.1` (`-20 dB`) |
+| `THD` | `10%` |
+
+Ideal 50% square wave — odd harmonics only, relative to the fundamental:
+
+| Harmonic | Normalized magnitude | Normalized dB |
+|----------|----------------------|---------------|
+| 1 | `1` | `0 dB` |
+| 3 | $1/3 \approx 0.333$ | about `-9.54 dB` |
+| 5 | $1/5 = 0.2$ | about `-13.98 dB` |
+| 7 | $1/7 \approx 0.143$ | about `-16.90 dB` |
+| 9 | $1/9 \approx 0.111$ | about `-19.08 dB` |
+
+Real simulated square waves have finite edges, so high harmonics are smaller
+than these ideal ratios.
+
+---
+
+## What You Can Do Today: `WaveformAnalyzer` (C#)
+
+This is the **only Fourier path that actually runs today.** It is a plain static
+helper, not a netlist control. Source:
+[WaveformAnalyzer.cs](../../SpiceSharpParser/Analysis/WaveformAnalyzer.cs)
+(namespace `SpiceSharpParser.Analysis`).
+
+You run a normal `.TRAN` simulation, collect `(time, value)` samples yourself,
+then call the helper.
+
+### The real API
+
+```csharp
+// Magnitude spectrum, bins 0 .. Nyquist
+List<(double Frequency, double Magnitude)> FFT(
+    List<(double Time, double Value)> data);
+
+// Total Harmonic Distortion, as a percentage
+double THD(
+    List<(double Time, double Value)> data,
+    double fundamentalFreq,
+    int numHarmonics = 10);
+
+// Useful siblings
+double DCOffset(List<(double Time, double Value)> data);
+double RMS(List<(double Time, double Value)> data,
+           double fromTime = double.MinValue, double toTime = double.MaxValue);
+double Average(List<(double Time, double Value)> data,
+               double fromTime = double.MinValue, double toTime = double.MaxValue);
+double SNR(List<(double Time, double Value)> data, double signalFreq); // dB
+```
+
+### How it actually computes (be aware of these)
+
+`FFT`
+([WaveformAnalyzer.cs:232](../../SpiceSharpParser/Analysis/WaveformAnalyzer.cs#L232)):
+
+- Needs **≥ 4** samples, otherwise it returns an empty list.
+- **Zero-pads** the values up to the next power of two, then runs an in-place
+  Cooley–Tukey radix-2 FFT over the whole captured waveform.
+- Derives the sample rate as `(count − 1) / (lastTime − firstTime)`, i.e. it
+  **assumes roughly uniform sample spacing**. SpiceSharp's transient steps are
+  adaptive (non-uniform), so the frequency axis is approximate unless you keep
+  the step small and even.
+- Returns `(frequency, magnitude)` for bins `0 … n/2`, where
+  $\text{magnitude} = \sqrt{re^2 + im^2} \cdot 2 / \text{count}$ and the DC bin
+  is halved.
+- Applies **no window** (rectangular). Capturing a non-integer number of periods
+  leaks energy between bins.
+- **No phase** is computed or returned — magnitude only.
+
+`THD`
+([WaveformAnalyzer.cs:287](../../SpiceSharpParser/Analysis/WaveformAnalyzer.cs#L287)):
+
+- Takes the FFT, then reads the **nearest FFT bin** to `fundamentalFreq` (no
+  interpolation between bins).
+- Sums squared nearest-bin magnitudes for harmonics `h = 2 … numHarmonics + 1`.
+  So the default `numHarmonics = 10` covers harmonics **2 through 11** — *not*
+  2–9. Pass `numHarmonics: 8` to get the classic 2–9 range.
+- Returns $100 \cdot \sqrt{\sum \text{harmonic}^2} / \text{fundamentalMag}$.
+- Returns `double.NaN` if the spectrum is empty (too few samples) or the
+  nearest-bin fundamental magnitude is `≤ 0`.
+
+> **Practical tip.** Because the FFT assumes uniform spacing and nearest-bin
+> lookup, the cleanest results come from: a small, even `.TRAN` max step; a
+> capture that is an integer number of fundamental periods; and an $f_0$ that
+> lands close to an FFT bin. Treat magnitudes as good estimates, not exact
+> reference values.
+
+### Runnable end-to-end example
+
+Netlist — a 1 kHz fundamental plus a 2 kHz second harmonic ($\approx 10\%$ THD):
 
 ```spice
-Pure sine Fourier analysis
-V1 IN 0 SIN(0 1 1k)
-R1 IN 0 1k
-.TRAN 1u 10m 0 2u
-.FOUR 1k V(IN)
+Second harmonic distortion
+V1 A 0 SIN(0 1 1k)
+V2 A OUT SIN(0 0.1 2k)
+R1 OUT 0 1k
+.TRAN 2u 10m 0 2u
+.SAVE V(OUT)
 .END
 ```
 
-The transient simulation runs for `10 ms`, which is ten periods of a 1 kHz waveform. The maximum transient step is limited to `2 us`, giving enough samples for the first several harmonics.
+C# — run the transient, collect samples, compute THD/FFT (same run/extract
+idiom as the [.TRAN article](tran.md)):
 
-Expected highlights:
+```csharp
+using SpiceSharp.Simulations;        // Transient
+using SpiceSharpParser.Analysis;     // WaveformAnalyzer
 
-| Result | Approximate value | Why |
-|--------|-------------------|-----|
-| harmonic 1 frequency | `1 kHz` | The `.FOUR` frequency is `1k`. |
-| harmonic 1 magnitude | `1` | The sine source amplitude is 1 V. |
-| harmonics 2 through 9 | near `0` | An ideal sine has no distortion harmonics. |
-| THD | near `0%` | No higher harmonics are present. |
+// model = the parsed netlist above (it contains a .TRAN analysis)
+var sim  = model.Simulations.First(s => s is Transient);
+var vout = model.Exports.Find(e => e.Name == "V(OUT)");
 
-## Syntax
+var samples = new List<(double Time, double Value)>();
+sim.EventExportData += (sender, args) =>
+{
+    double time = ((Transient)sim).Time;
+    samples.Add((time, vout.Extract()));
+};
+
+foreach (var _ in sim.InvokeEvents(sim.Run(model.Circuit))) { /* drive the run */ }
+
+double thdPercent = WaveformAnalyzer.THD(samples, 1000.0);   // f0 = 1 kHz
+double dc         = WaveformAnalyzer.DCOffset(samples);
+var spectrum      = WaveformAnalyzer.FFT(samples);           // (freq, magnitude)
+
+Console.WriteLine($"THD ≈ {thdPercent:F1} %, DC ≈ {dc:F4}");
+foreach (var (freq, mag) in spectrum.Where(s => s.Magnitude > 0.01))
+    Console.WriteLine($"  {freq,8:F0} Hz : {mag:F4}");
+```
+
+Expected: THD on the order of `~10%`, a strong bin near `1 kHz`, and a smaller
+bin near `2 kHz`. Exact figures depend on step size and how many whole periods
+were captured (see the practical tip above).
+
+---
+
+## Planned `.FOUR` Netlist Support (Not Yet Implemented)
+
+> 🚧 **This section is a design, not current behavior.** A `.FOUR` reader does
+> not exist yet; the netlists here are not runnable today and the "expected"
+> tables are theoretical predictions. It is written in the future tense on
+> purpose — read it to understand *how `.FOUR` will work once built*.
+
+### How `.FOUR` Will Work (The Future Experience)
+
+Picture the finished feature. Today, to get THD you write C#: grab the
+transient simulation, subscribe to its export event, hand-collect samples into a
+list, then call `WaveformAnalyzer`. With `.FOUR` you will instead add **one line
+to the netlist** and get the answer for free:
+
+```spice
+.TRAN 1u 10m 0 2u
+.FOUR 1k V(OUT)
+```
+
+Here is the story end to end:
+
+1. **You declare intent in the netlist.** `.FOUR 1k V(OUT)` means *"after the
+   transient, decompose `V(OUT)` assuming it repeats at 1 kHz."* No C# required.
+2. **The `.TRAN` runs as normal.** `.FOUR` adds nothing to the simulation — it
+   is pure post-processing, like `.MEAS`.
+3. **The `.FOUR` reader picks the right slice of data for you.** It computes the
+   period $T = 1 / f_0$, then takes the **last complete period** before the end of
+   the run — automatically skipping startup transients you would otherwise have
+   to trim by hand.
+4. **It measures exactly at your harmonic frequencies.** Instead of an FFT whose
+   bins may not line up with $f_0$, it correlates the waveform against
+   $\cos$/$\sin$ at exactly $f_0, 2 \cdot f_0, 3 \cdot f_0, \ldots$ — so
+   harmonic 3 is *exactly* 3 kHz, not "the nearest bin."
+5. **It hands back a finished result object** with magnitude, phase, normalized
+   dB, and THD already computed, one per analyzed signal.
+
+So the value of `.FOUR` over the C# helper is: it chooses the settled period for
+you, it has no bin-rounding error, it gives phase and normalized dB, and the
+result is structured per signal — none of which the current `WaveformAnalyzer`
+does.
+
+### Planned syntax
 
 ```spice
 .FOUR <fundamental_frequency> <expr1> [<expr2> ...]
@@ -50,477 +455,118 @@ Expected highlights:
 
 | Parameter | Description |
 |-----------|-------------|
-| `fundamental_frequency` | Base repeating frequency in hertz. This must be positive and finite. |
-| `expr` | Signal expression to analyze, such as `V(OUT)`, `V(IN)`, or `I(V1)`. |
+| `fundamental_frequency` | Base repeating frequency in hertz; positive and finite. |
+| `expr` | Signal expression, e.g. `V(OUT)`, `I(V1)`. |
 
-Examples:
+Planned examples: `.FOUR 1k V(OUT)`, `.FOUR 60 V(LINE) I(VLOAD)`,
+`.FOUR {freq} V(IN) V(OUT)`. `.FOUR` would require a `.TRAN` analysis and would
+post-process its samples.
 
-```spice
-.FOUR 1k V(OUT)
-.FOUR 60 V(LINE) I(VLOAD)
-.FOUR {freq} V(IN) V(OUT)
+### How The Analysis Will Run, Step By Step
+
+Each step below says *what* happens and *why* — this is the internal flow the
+planned reader will follow:
+
+| Step | What it does | Why |
+|------|--------------|-----|
+| 1 | Run the `.TRAN` simulation. | `.FOUR` needs a transient waveform to analyze. |
+| 2 | Collect the requested signal samples during the run (via the same export event used by `.MEAS`). | Captures `V(OUT)` over time. |
+| 3 | Compute one period $T = 1 / f_0$. | $f_0$ from your `.FOUR` line defines what "one cycle" means. |
+| 4 | Select the **last complete period** before the final time. | The first cycles often contain startup transients; the last settled cycle is the steady-state answer. |
+| 5 | Resample that period onto evenly spaced points. | Transient steps are non-uniform; the correlation math needs even spacing. |
+| 6 | Correlate against $\cos$/$\sin$ at exactly $f_0, 2 \cdot f_0, \ldots$. | Measures each harmonic at its *true* frequency — no FFT bin rounding. |
+| 7 | Convert to magnitude, phase, normalized magnitude, and dB. | The human-readable per-harmonic numbers. |
+| 8 | Compute THD from harmonics 2–9 vs. harmonic 1. | One distortion figure of merit. |
+| 9 | Store a structured result per signal. | Read it later from `model.FourierAnalyses`. |
+
+#### Worked trace: what `.FOUR 1k V(OUT)` will produce
+
+Take the *sine plus second harmonic* netlist below, with `.TRAN 1u 10m 0 2u`.
+Follow the steps:
+
+$$
+V(OUT) \approx
+\sin(2\pi \cdot 1\,\text{kHz} \cdot t) +
+0.1 \cdot \sin(2\pi \cdot 2\,\text{kHz} \cdot t)
+$$
+
+- **Step 3** — $f_0 = 1 \text{ kHz}$, so $T = 1 \text{ ms}$.
+- **Step 4** — the run is `10 ms` = 10 periods. The reader keeps the window
+  roughly `9 ms … 10 ms` (the last whole period). Startup is irrelevant here, but
+  this is what protects you in circuits that need to settle.
+- **Step 5** — that 1 ms slice is resampled to evenly spaced points.
+- **Step 6** — correlating at `1 kHz` finds a strong match (the `sin` term);
+  at `2 kHz` a weaker match (the `0.1` term); at `3–9 kHz` ≈ 0.
+- **Step 7–8** — the result becomes:
+
+| Harmonic | Frequency | Magnitude | Normalized | Normalized dB |
+|----------|-----------|-----------|------------|---------------|
+| 0 (DC) | `0` | ≈ `0` | — | — |
+| 1 | `1 kHz` | ≈ `1.0` | `1.0` | `0 dB` |
+| 2 | `2 kHz` | ≈ `0.1` | `0.1` | `-20 dB` |
+| 3–9 | `3–9 kHz` | ≈ `0` | ≈ `0` | very negative |
+
+  $\text{THD} = 100 \cdot \sqrt{0.1^2 + 0^2 + \ldots} / 1.0 \approx 10\%$,
+  and $\text{phase}_1 \approx -90^\circ$
+  (a pure `sin` against a cosine reference).
+
+That whole table is what you will read back from one `FourierAnalysisResult` —
+no FFT code, no manual period trimming.
+
+> Contrast with **today**: `WaveformAnalyzer` would zero-pad and FFT the entire
+> 10 ms capture, look up the *nearest bin* to 1 kHz and 2 kHz, give you no
+> phase, and (with the default `numHarmonics`) roll harmonics 2–11 into THD.
+> Steps 4–7 above are the planned improvements.
+
+### Planned C# API
+
+Once built, you will not write any FFT or sampling code — you just run the
+simulations and read `model.FourierAnalyses` (this property **does not exist
+today**). One entry per `.FOUR` signal:
+
+```csharp
+// PLANNED — not available yet
+RunSimulations(model);
+
+foreach (var result in model.FourierAnalyses)
+{
+    // e.g. "V(OUT)  f0 = 1000 Hz  THD = 10.0 %"
+    Console.WriteLine($"{result.SignalName}  f0 = {result.FundamentalFrequency} Hz" +
+                      $"  THD = {result.TotalHarmonicDistortionPercent:F1} %");
+
+    foreach (var h in result.Harmonics)
+        Console.WriteLine($"  h{h.HarmonicNumber} @ {h.Frequency} Hz : " +
+                          $"mag={h.Magnitude:F4}  {h.NormalizedMagnitudeDecibels:F1} dB" +
+                          $"  phase={h.PhaseDegrees:F0} deg");
+}
 ```
 
-`.FOUR` requires a `.TRAN` analysis. It consumes transient samples collected during that run.
-
-## Fundamental Frequency
-
-The `fundamental_frequency` is the base frequency of the repeating waveform. If the waveform repeats every period `T`, then:
-
-```text
-f0 = 1 / T
-T  = 1 / f0
-```
-
-For `.FOUR`, `f0` decides where harmonic 1 is. Harmonic frequencies are integer multiples of `f0`:
-
-```text
-harmonic 1 = 1 * f0
-harmonic 2 = 2 * f0
-harmonic 3 = 3 * f0
-...
-harmonic 9 = 9 * f0
-```
-
-For example:
-
-```spice
-.FOUR 1k V(OUT)
-```
-
-means:
-
-| Harmonic | Frequency |
-|----------|-----------|
-| 1 | `1 kHz` |
-| 2 | `2 kHz` |
-| 3 | `3 kHz` |
-| 4 | `4 kHz` |
-| 9 | `9 kHz` |
-
-Common choices:
-
-| Waveform | Period | Correct `fundamental_frequency` | Notes |
-|----------|--------|----------------------------------|-------|
-| 1 kHz sine wave | `1 ms` | `1k` | Harmonic 1 is the sine itself. |
-| 10 kHz square wave | `100 us` | `10k` | Odd harmonics appear at `30k`, `50k`, etc. |
-| 20 kHz PWM-ish pulse train | `50 us` | `20k` | Use the pulse repetition frequency, not the edge rate. |
-| 60 Hz mains waveform | `16.6667 ms` | `60` | Harmonics are `120 Hz`, `180 Hz`, etc. |
-
-Choosing the wrong `f0` is one of the easiest ways to get misleading results. If the circuit produces a 1 kHz sine but the netlist asks for:
-
-```spice
-.FOUR 900 V(OUT)
-```
-
-then `.FOUR` looks at `900 Hz`, `1.8 kHz`, `2.7 kHz`, and so on. The real 1 kHz signal no longer lands cleanly on harmonic 1, the final analyzed period does not match the waveform period, and energy can appear spread across multiple harmonics. This is called spectral leakage.
-
-## Harmonics And THD
-
-A harmonic is a sinusoidal component at an integer multiple of the fundamental frequency.
-
-| Term | Meaning |
-|------|---------|
-| DC | Average value of the waveform over the analyzed period. |
-| fundamental | Harmonic 1, at `f0`. |
-| second harmonic | Harmonic 2, at `2*f0`. |
-| third harmonic | Harmonic 3, at `3*f0`. |
-| THD | RMS sum of harmonics 2 through 9 divided by harmonic 1. |
-
-An ideal sine wave contains only one harmonic:
-
-```text
-x(t) = sin(2*pi*f0*t)
-```
-
-Expected `.FOUR` shape:
-
-| Harmonic | Magnitude |
-|----------|-----------|
-| 1 | large |
-| 2 through 9 | near zero |
-
-A distorted sine might contain extra harmonic content:
-
-```text
-x(t) = sin(2*pi*f0*t) + 0.1*sin(2*pi*2*f0*t)
-```
-
-Expected `.FOUR` shape:
-
-| Harmonic | Magnitude | Normalized magnitude |
-|----------|-----------|----------------------|
-| 1 | `1` | `1` |
-| 2 | `0.1` | `0.1` |
-| 3 through 9 | near `0` | near `0` |
-
-THD ignores DC and ignores harmonic 1. It measures how much higher-harmonic content exists relative to the fundamental. In the example above, THD is about `10%`.
-
-## How The Analyzer Works
-
-The intended implementation is post-processing over SpiceSharp transient exports:
-
-1. Run the `.TRAN` simulation.
-2. Collect requested `.FOUR` signal samples from `EventExportData`.
-3. Use the requested `fundamental_frequency` to compute one period, `T = 1 / f0`.
-4. Select the last complete period available before the final transient time.
-5. Resample that period onto uniformly spaced time points.
-6. Compute DC and harmonics with sine/cosine correlation.
-7. Normalize each harmonic relative to harmonic 1.
-8. Compute THD from harmonics 2 through 9 relative to harmonic 1.
-9. Store structured results for the C# API.
-
-The final-period rule is important. In most circuits, the first few periods can include startup transients, capacitor charging, inductor current settling, oscillator buildup, or switch initial conditions. Analyzing the final complete period makes `.FOUR` more useful for steady-state distortion measurements.
-
-## Math Background
-
-Fourier analysis says that a repeating waveform can be represented as a DC value plus sine and cosine waves at integer multiples of a base frequency.
-
-For a requested fundamental `f0`, the period is:
-
-```text
-T = 1 / f0
-```
-
-Over one settled period, the waveform is approximated as:
-
-```text
-x(t) = dc + sum(k = 1..H) [a_k*cos(2*pi*k*f0*t) + b_k*sin(2*pi*k*f0*t)]
-```
-
-where:
-
-| Symbol | Meaning |
-|--------|---------|
-| `x(t)` | Signal being analyzed, such as `V(OUT)`. |
-| `dc` | Average value of `x(t)` over one period. |
-| `k` | Harmonic number. |
-| `H` | Highest harmonic computed. Initial `.FOUR` support targets harmonics 0 through 9, where harmonic 0 is DC. |
-| `a_k` | Cosine coefficient for harmonic `k`. |
-| `b_k` | Sine coefficient for harmonic `k`. |
-| `f0` | Fundamental frequency from the `.FOUR` statement. |
-
-### Correlation In Plain Language
-
-Sine/cosine correlation means asking, "How much does this waveform look like a sine or cosine at this exact frequency?"
-
-For each harmonic `k`, the analyzer compares the waveform to:
-
-```text
-cos(2*pi*k*f0*t)
-sin(2*pi*k*f0*t)
-```
-
-If the waveform rises and falls in the same pattern as that reference wave, the sum is large. If the waveform has unrelated shape at that frequency, positive and negative parts cancel and the sum is small.
-
-This is why a pure 1 kHz sine gives a large harmonic 1 result when `.FOUR 1k` is used, but a very small harmonic 2 result. The waveform correlates strongly with 1 kHz and weakly with 2 kHz.
-
-### Discrete Formulas
-
-Transient simulations usually produce non-uniform timesteps. The intended `.FOUR` implementation first resamples the final complete period onto `M` uniformly spaced samples:
-
-```text
-x[0], x[1], x[2], ..., x[M-1]
-```
-
-For uniform samples, the coefficients are:
-
-```text
-dc  = (1 / M) * sum(n = 0..M-1, x[n])
-a_k = (2 / M) * sum(n = 0..M-1, x[n] * cos(2*pi*k*n/M))
-b_k = (2 / M) * sum(n = 0..M-1, x[n] * sin(2*pi*k*n/M))
-```
-
-This is equivalent to evaluating Fourier content only at the requested harmonic frequencies. It does not require an FFT length, and it does not require the sample count to be a power of two.
-
-### Magnitude And Phase
-
-The cosine and sine coefficients combine into one magnitude and one phase:
-
-```text
-magnitude_k = sqrt(a_k^2 + b_k^2)
-phase_k     = atan2(-b_k, a_k) * 180 / pi
-```
-
-The planned phase convention is cosine-referenced:
-
-| Waveform | Expected phase |
-|----------|----------------|
-| `cos(2*pi*f0*t)` | about `0 deg` |
-| `sin(2*pi*f0*t)` | about `-90 deg` |
-| `-cos(2*pi*f0*t)` | about `180 deg` or `-180 deg` |
-| `-sin(2*pi*f0*t)` | about `90 deg` |
-
-Other simulators may print phase with a different reference, wrapping, or sign convention. Exact LTspice textual phase parity is not a v1 goal.
-
-### Normalized Magnitude And dB
-
-Normalized magnitude compares a harmonic to the fundamental:
-
-```text
-normalized_k = magnitude_k / magnitude_1
-```
-
-Normalized dB is:
-
-```text
-normalized_db_k = 20 * log10(normalized_k)
-```
-
-Examples:
-
-| `normalized_k` | `normalized_db_k` | Meaning |
-|----------------|-------------------|---------|
-| `1` | `0 dB` | Same magnitude as the fundamental. |
-| `0.5` | about `-6.02 dB` | Half the fundamental magnitude. |
-| `0.1` | `-20 dB` | One tenth of the fundamental magnitude. |
-| `0.01` | `-40 dB` | One hundredth of the fundamental magnitude. |
-
-### THD
-
-THD is the RMS sum of distortion harmonics divided by the fundamental:
-
-```text
-THD percent = 100 * sqrt(magnitude_2^2 + magnitude_3^2 + ... + magnitude_9^2) / magnitude_1
-```
-
-Important details:
-
-- DC does not count toward THD.
-- Harmonic 1 does not count toward THD because it is the reference signal.
-- Harmonics 2 through 9 are included in the v1 target.
-- If `magnitude_1` is zero or too close to zero, THD should be reported as `NaN` because there is no useful fundamental reference.
-
-### Worked Math Examples
-
-#### Pure cosine
-
-```text
-x(t) = cos(2*pi*f0*t)
-```
-
-| Quantity | Value |
-|----------|-------|
-| `dc` | `0` |
-| `a_1` | `1` |
-| `b_1` | `0` |
-| `magnitude_1` | `1` |
-| `phase_1` | `0 deg` |
-| `THD` | `0%` |
-
-All fundamental content appears in the cosine coefficient.
-
-#### Pure sine
-
-```text
-x(t) = sin(2*pi*f0*t)
-```
-
-| Quantity | Value |
-|----------|-------|
-| `dc` | `0` |
-| `a_1` | `0` |
-| `b_1` | `1` |
-| `magnitude_1` | `1` |
-| `phase_1` | `-90 deg` |
-| `THD` | `0%` |
-
-The magnitude is still `1`, but the phase is different because the output phase is measured relative to a cosine reference.
-
-#### DC offset plus sine
-
-```text
-x(t) = 2 + sin(2*pi*f0*t)
-```
-
-| Quantity | Value |
-|----------|-------|
-| `dc` | `2` |
-| `magnitude_1` | `1` |
-| harmonics 2 through 9 | near `0` |
-| `THD` | `0%` |
-
-The DC offset is reported separately. It does not mean the signal has harmonic distortion.
-
-#### Fundamental plus second harmonic
-
-```text
-x(t) = sin(2*pi*f0*t) + 0.1*sin(2*pi*2*f0*t)
-```
-
-| Quantity | Value |
-|----------|-------|
-| `magnitude_1` | `1` |
-| `magnitude_2` | `0.1` |
-| `normalized_2` | `0.1` |
-| `normalized_db_2` | `-20 dB` |
-| `THD` | `10%` |
-
-Because the only distortion harmonic is 10 percent of the fundamental, THD is `10%`.
-
-#### Square-wave odd harmonics
-
-An ideal 50 percent duty-cycle square wave contains only odd harmonics. Relative to the fundamental, the ideal magnitudes are approximately:
-
-| Harmonic | Normalized magnitude | Normalized dB |
-|----------|----------------------|---------------|
-| 1 | `1` | `0 dB` |
-| 2 | `0` | very small |
-| 3 | `1/3 = 0.333` | about `-9.54 dB` |
-| 4 | `0` | very small |
-| 5 | `1/5 = 0.2` | about `-13.98 dB` |
-| 7 | `1/7 = 0.143` | about `-16.90 dB` |
-| 9 | `1/9 = 0.111` | about `-19.08 dB` |
-
-Real simulated square waves have finite rise and fall times, so high harmonics are usually smaller than the ideal values.
-
-#### Filtered harmonic content
-
-For a first-order RC low-pass filter:
-
-```text
-|H(f)| = 1 / sqrt(1 + (f / fc)^2)
-fc = 1 / (2*pi*R*C)
-```
-
-With `R = 1k` and `C = 159.154943n`, the cutoff frequency is about `1 kHz`.
-
-At cutoff:
-
-```text
-|H(fc)| = 1 / sqrt(2) = 0.707
-```
-
-At three times cutoff:
-
-```text
-|H(3*fc)| = 1 / sqrt(1 + 3^2) = 0.316
-```
-
-If the input is:
-
-```text
-V(MID) = 1.0*sin(2*pi*1k*t) + 0.2*sin(2*pi*3k*t)
-```
-
-then the low-pass output is roughly:
-
-```text
-fundamental output magnitude = 1.0 * 0.707 = 0.707
-third harmonic output magnitude = 0.2 * 0.316 = 0.063
-```
-
-Input THD is about `20%`. Output THD is roughly:
-
-```text
-100 * 0.063 / 0.707 = 8.9%
-```
-
-This is why low-pass filtering can reduce measured THD when the distortion is mostly high-frequency harmonic content.
-
-## Reading The Results
-
-Each `.FOUR` signal is intended to produce one result object containing a list of harmonic rows.
+For the worked trace above, that loop would print harmonic 1 at ≈ `1.0`
+(`0 dB`), harmonic 2 at ≈ `0.1` (`-20 dB`), the rest near zero, and a top-line
+THD of ≈ `10 %` — i.e. you read the result table directly instead of computing
+it. Contrast this with the [working-today C# path](#runnable-end-to-end-example),
+which returns only a bare `double` and a `(freq, magnitude)` list.
+
+Planned `FourierAnalysisResult`:
 
 | Field | Meaning |
 |-------|---------|
-| `SignalName` | Signal expression being analyzed, such as `V(OUT)`. |
+| `SignalName` | Analyzed expression, e.g. `V(OUT)`. |
 | `FundamentalFrequency` | Frequency passed to `.FOUR`. |
-| `TotalHarmonicDistortionPercent` | THD percentage computed from harmonics 2 through 9. |
-| `Harmonics` | Harmonic rows, including DC and harmonics 1 through 9. |
+| `TotalHarmonicDistortionPercent` | THD from harmonics 2–9. |
+| `Harmonics` | Rows for DC and harmonics 1–9. |
 
-Each harmonic row contains:
+Planned harmonic row: `HarmonicNumber`, `Frequency`, `Magnitude`,
+`PhaseDegrees` (cosine reference), `NormalizedMagnitude`,
+`NormalizedMagnitudeDecibels`.
 
-| Field | Meaning |
-|-------|---------|
-| `HarmonicNumber` | Harmonic index. Harmonic 0 is DC; harmonic 1 is the fundamental. |
-| `Frequency` | Harmonic frequency, equal to `HarmonicNumber * FundamentalFrequency`. |
-| `Magnitude` | Harmonic magnitude in signal units, such as volts or amps. |
-| `PhaseDegrees` | Harmonic phase in degrees using the planned cosine-reference convention. |
-| `NormalizedMagnitude` | Magnitude divided by harmonic 1 magnitude. |
-| `NormalizedMagnitudeDecibels` | `20 * log10(NormalizedMagnitude)`. |
+### Planned circuit examples (predictions, not runnable today)
 
-Interpretation notes:
+Each "expected" table below is what *theory* predicts and what the planned
+`.FOUR` is designed to report. You can reproduce these numbers **today** by
+porting the netlist to the [`WaveformAnalyzer` C# example](#runnable-end-to-end-example).
 
-- `Magnitude` is the amplitude of that harmonic component, not RMS unless the source waveform and future API explicitly define RMS output.
-- DC is useful for detecting offset, but it is not part of THD.
-- `NormalizedMagnitude` compares harmonics within the same signal. To compare a filter input and output, compare the absolute `Magnitude` values for `V(IN)` and `V(OUT)`.
-- `0 dB` normalized means "equal to the fundamental of this same signal."
-- Negative normalized dB means "smaller than the fundamental."
-- `NaN` THD usually means the fundamental magnitude is too small to be a meaningful denominator.
-
-## Choosing `.TRAN` Settings
-
-Fourier accuracy depends heavily on the transient data. Good `.FOUR` results start with a good `.TRAN`.
-
-### Simulate Enough Periods
-
-Run long enough for startup behavior to settle before the final time. For a 1 kHz waveform, one period is `1 ms`, so this transient runs for ten periods:
-
-```spice
-.TRAN 1u 10m 0 2u
-```
-
-If the circuit has slow capacitors, inductors, feedback loops, or oscillators, ten periods may not be enough. Increase the stop time until the final period is representative of steady state.
-
-### Use A Small Enough Maximum Step
-
-The fourth argument of `.TRAN` is commonly used as the maximum timestep:
-
-```spice
-.TRAN <tstep> <tstop> [tstart] [tmaxstep]
-```
-
-If v1 computes through harmonic 9, a `.FOUR 1k` analysis inspects content up to `9 kHz`. The 9 kHz period is about `111 us`. A `2 us` maximum step gives more than 50 samples per 9th-harmonic period:
-
-```text
-111 us / 2 us = 55.5 samples
-```
-
-Practical starting points:
-
-| Goal | Suggested `tmaxstep` |
-|------|----------------------|
-| Rough THD estimate | At least 20 samples per highest harmonic period. |
-| Better harmonic magnitudes | 50 to 100 samples per highest harmonic period. |
-| Sharp switching edges | Use a smaller step and verify convergence/runtime. |
-
-### Avoid Startup Transients
-
-`.FOUR` analyzes the final complete period, but that period can still contain startup behavior if the simulation ends too early. Signs of this problem include:
-
-- Fundamental magnitude changes when `tstop` is increased.
-- THD changes greatly when `tstop` is increased.
-- The waveform is visibly drifting during the final cycle.
-- A filter output has not reached steady amplitude.
-
-### Compare Input And Output For Filters
-
-For filters, run `.FOUR` on both sides:
-
-```spice
-.FOUR 1k V(IN) V(OUT)
-```
-
-This lets you compare:
-
-- Fundamental attenuation from input to output.
-- Harmonic attenuation from input to output.
-- THD before and after filtering.
-- Phase shift at the fundamental and harmonics.
-
-### Understand Spectral Leakage
-
-Spectral leakage happens when the analyzed time window does not contain an integer number of waveform periods. Planned `.FOUR` support reduces this by selecting one complete period based on `f0`, but leakage can still appear if:
-
-- The chosen `f0` does not match the real waveform frequency.
-- The source frequency has been parameterized incorrectly.
-- The waveform is not periodic during the final period.
-- The simulation step size is too coarse near sharp edges.
-
-## Circuit Examples
-
-### Pure Sine
+**Pure sine**
 
 ```spice
 Pure sine Fourier analysis
@@ -531,15 +577,13 @@ R1 IN 0 1k
 .END
 ```
 
-Expected highlights:
+| Result | Predicted |
+|--------|-----------|
+| harmonic 1 magnitude | `1` |
+| harmonics 2–9 | near `0` |
+| THD | near `0%` |
 
-| Result | Approximate value |
-|--------|-------------------|
-| `V(IN)` harmonic 1 magnitude | `1` |
-| `V(IN)` harmonics 2 through 9 | near `0` |
-| `V(IN)` THD | near `0%` |
-
-### Sine Plus Second Harmonic
+**Sine plus second harmonic**
 
 ```spice
 Second harmonic distortion
@@ -551,19 +595,13 @@ R1 OUT 0 1k
 .END
 ```
 
-This waveform contains a 1 kHz fundamental and a smaller 2 kHz second harmonic.
-
-Expected highlights:
-
-| Result | Approximate value |
-|--------|-------------------|
+| Result | Predicted |
+|--------|-----------|
 | harmonic 1 magnitude | `1` |
-| harmonic 2 magnitude | `0.1` |
-| harmonic 2 normalized magnitude | `0.1` |
-| harmonic 2 normalized dB | `-20 dB` |
+| harmonic 2 magnitude | `0.1` (`-20 dB` normalized) |
 | THD | `10%` |
 
-### Square Wave Odd Harmonics
+**Square wave odd harmonics**
 
 ```spice
 Square wave Fourier analysis
@@ -574,22 +612,14 @@ R1 OUT 0 1k
 .END
 ```
 
-The pulse repeats every `1 ms`, so the fundamental is `1 kHz`. A near-ideal 50 percent duty-cycle square wave mostly contains odd harmonics.
-
-Expected highlights:
-
-| Result | Approximate value |
-|--------|-------------------|
-| harmonic 1 | dominant |
+| Result | Predicted |
+|--------|-----------|
 | harmonic 2 | near `0` |
-| harmonic 3 normalized magnitude | about `0.333` |
-| harmonic 5 normalized magnitude | about `0.2` |
-| harmonic 7 normalized magnitude | about `0.143` |
-| harmonic 9 normalized magnitude | about `0.111` |
+| harmonic 3 normalized | about `0.333` |
+| harmonic 5 normalized | about `0.2` |
+| harmonic 7 normalized | about `0.143` |
 
-Finite rise and fall times reduce high harmonic magnitudes, so simulated values may be lower than the ideal ratios.
-
-### RC Low-Pass At Cutoff
+**RC low-pass at cutoff** (`R = 1k`, `C = 159.154943n` → `fc ≈ 1 kHz`)
 
 ```spice
 RC low-pass Fourier analysis
@@ -601,59 +631,13 @@ C1 OUT 0 159.154943n
 .END
 ```
 
-The capacitor value places the cutoff frequency near `1 kHz`:
+| Result | Predicted |
+|--------|-----------|
+| `V(IN)` harmonic 1 | `1` |
+| `V(OUT)` harmonic 1 | `≈ 0.707` |
+| `V(OUT)` phase shift (planned) | about `-45 deg` |
 
-```text
-fc = 1 / (2*pi*1k*159.154943n) = 1 kHz
-```
-
-At cutoff, a first-order low-pass output is about `0.707` of the input and about `-45 deg` shifted.
-
-Expected highlights:
-
-| Result | Approximate value |
-|--------|-------------------|
-| `V(IN)` harmonic 1 magnitude | `1` |
-| `V(OUT)` harmonic 1 magnitude | `0.707` |
-| output/input fundamental ratio | `0.707` |
-| `V(OUT)` phase shift | about `-45 deg` |
-
-### RC High-Pass At Cutoff
-
-```spice
-RC high-pass Fourier analysis
-V1 IN 0 SIN(0 1 1k)
-C1 IN OUT 159.154943n
-R1 OUT 0 1k
-.TRAN 1u 10m 0 2u
-.FOUR 1k V(IN) V(OUT)
-.END
-```
-
-This is the high-pass counterpart to the low-pass example. With the same `R` and `C`, the cutoff is again about `1 kHz`.
-
-For a first-order RC high-pass filter:
-
-```text
-|H(f)| = (f / fc) / sqrt(1 + (f / fc)^2)
-```
-
-At cutoff:
-
-```text
-|H(fc)| = 1 / sqrt(2) = 0.707
-```
-
-Expected highlights:
-
-| Result | Approximate value |
-|--------|-------------------|
-| `V(IN)` harmonic 1 magnitude | `1` |
-| `V(OUT)` harmonic 1 magnitude | `0.707` |
-| output/input fundamental ratio | `0.707` |
-| `V(OUT)` phase shift | about `+45 deg` |
-
-### Low-Pass Harmonic Cleanup
+**Low-pass harmonic cleanup**
 
 ```spice
 Low-pass harmonic cleanup
@@ -666,20 +650,12 @@ C1 OUT 0 159.154943n
 .END
 ```
 
-`V(MID)` contains a 1 kHz fundamental and a 3 kHz harmonic. The low-pass filter attenuates the 3 kHz harmonic more strongly than the 1 kHz fundamental, so `V(OUT)` should have lower THD than `V(MID)`.
-
-Expected highlights:
-
-| Result | Approximate value |
-|--------|-------------------|
-| `V(MID)` harmonic 1 magnitude | `1` |
-| `V(MID)` harmonic 3 magnitude | `0.2` |
+| Result | Predicted |
+|--------|-----------|
 | `V(MID)` THD | about `20%` |
-| `V(OUT)` harmonic 1 magnitude | about `0.707` |
-| `V(OUT)` harmonic 3 magnitude | about `0.063` |
-| `V(OUT)` THD | about `9%` |
+| `V(OUT)` THD | about `9%` (filter attenuates the 3 kHz harmonic) |
 
-### Wrong Fundamental Frequency
+**Wrong fundamental frequency** — source is 1 kHz but `.FOUR` asks for 900 Hz:
 
 ```spice
 Wrong fundamental frequency example
@@ -690,61 +666,51 @@ R1 IN 0 1k
 .END
 ```
 
-The source is 1 kHz, but `.FOUR` asks for 900 Hz. The analyzer therefore checks `900 Hz`, `1.8 kHz`, `2.7 kHz`, and so on. The real 1 kHz sine does not line up with harmonic 1.
+Harmonic 1 would *not* be near `1`, higher harmonics would not be near zero, and
+THD would look nonzero — all because of spectral leakage from the mismatched
+$f_0$. Fix: `.FOUR 1k V(IN)`.
 
-Expected behavior:
+### Planned `.TRAN` guidance
 
-| Result | Why it is misleading |
-|--------|----------------------|
-| harmonic 1 magnitude is not close to `1` | Harmonic 1 is checking `900 Hz`, not `1 kHz`. |
-| higher harmonics may not be near zero | The analyzed period does not match the sine period. |
-| THD may look nonzero | Leakage can be mistaken for distortion. |
+These rules will matter for the planned `.FOUR` and **already matter** for
+`WaveformAnalyzer` today:
 
-The fix is:
+- **Simulate enough periods** so startup behavior settles before the final time
+  (e.g. `.TRAN 1u 10m 0 2u` = ten periods of a 1 kHz wave).
+- **Use a small, even max step.** To resolve up to the 9th harmonic of a 1 kHz
+  analysis (9 kHz, ~111 µs period), a 2 µs step gives ~55 samples per
+  9th-harmonic period. Aim for ≥ 20 samples/period for rough THD, 50–100 for
+  good magnitudes.
+- **Watch for unsettled output**: if fundamental magnitude or THD changes when
+  you increase `tstop`, the final cycle is not steady state yet.
+- **For filters**, analyze input and output together to compare attenuation and
+  THD before/after.
 
-```spice
-.FOUR 1k V(IN)
-```
+### Planned troubleshooting
 
-## C# API
+| Symptom | Likely cause | Check |
+|---------|--------------|-------|
+| `.FOUR` produces nothing | Not implemented yet (today), or no `.TRAN` (planned) | Use `WaveformAnalyzer` today; ensure a `.TRAN` exists. |
+| Harmonics appear in a pure sine | Wrong $f_0$, coarse step, or unsettled waveform | Match $f_0$ to the source; reduce max step. |
+| THD changes when `tstop` changes | Final waveform not settled | Simulate more periods. |
+| THD is `NaN` | Fundamental magnitude ≈ 0 | Confirm harmonic 1 is the intended reference frequency. |
+| Phase missing | `WaveformAnalyzer` computes no phase; `.FOUR` phase is planned | Use the planned `.FOUR` once available. |
 
-After running the simulations, Fourier results are intended to be available from `model.FourierAnalyses`:
+### Planned limitations
 
-```csharp
-RunSimulations(model);
+- Requires a `.TRAN` analysis and at least one complete settled period.
+- Planned support targets harmonics 0–9 (0 = DC); THD from harmonics 2–9.
+  (Contrast with today's `WaveformAnalyzer.THD`, default harmonics **2–11**.)
+- Planned API exposes structured results, not LTspice's exact textual report.
+- Planned phase uses a cosine reference and may not match other simulators.
+- Accuracy always depends on step size, settling, and capture length.
 
-foreach (var result in model.FourierAnalyses)
-{
-    Console.WriteLine($"{result.SignalName}: THD = {result.TotalHarmonicDistortionPercent}%");
+---
 
-    foreach (var harmonic in result.Harmonics)
-    {
-        Console.WriteLine($"{harmonic.HarmonicNumber}: {harmonic.Magnitude}");
-    }
-}
-```
+## See Also
 
-Each `.FOUR` signal should produce a separate `FourierAnalysisResult`, including enough context to identify the simulation, the signal name, the requested fundamental frequency, harmonic rows, and THD.
-
-## Troubleshooting
-
-| Symptom | Likely cause | What to check |
-|---------|--------------|---------------|
-| `.FOUR` has no result | No `.TRAN` analysis was run. | Add a transient analysis; `.FOUR` is transient post-processing. |
-| Error about insufficient data | The transient did not include one complete final period. | Increase `.TRAN` stop time or choose the correct `f0`. |
-| Harmonics appear in a pure sine | Wrong `fundamental_frequency`, coarse timestep, or unsettled waveform. | Match `f0` to the source and reduce `tmaxstep`. |
-| THD changes when `tstop` changes | The final waveform is not settled. | Simulate more periods before the final time. |
-| High harmonics are too small or unstable | Timestep is too large for the highest harmonic. | Use a smaller `tmaxstep`. |
-| THD is `NaN` | Fundamental magnitude is near zero. | Confirm that harmonic 1 is the intended reference frequency. |
-| Phase does not match another simulator | Different phase reference or wrapping convention. | Compare relative phase and verify the convention used. |
-| Filter output ratio is unexpected | Cutoff frequency, component value, or timestep is wrong. | Recompute `fc = 1 / (2*pi*R*C)` and compare `.FOUR` on input and output. |
-
-## Limitations
-
-- Requires a `.TRAN` analysis.
-- Requires at least one complete period of transient data.
-- Initial support targets harmonics 0 through 9, where harmonic 0 is DC.
-- THD is computed from harmonics 2 through 9 relative to harmonic 1.
-- The planned v1 API exposes structured results rather than reproducing LTspice's exact textual report format.
-- Accuracy depends on transient step size, waveform settling, interpolation quality, and final simulation time.
-- Phase uses the planned cosine-reference convention and may not match another simulator's printed phase exactly.
+- [.TRAN](tran.md) — produces the transient samples Fourier analysis consumes.
+- [.MEAS](meas.md) — other transient post-processing measurements that *are*
+  implemented today.
+- [`WaveformAnalyzer`](../../SpiceSharpParser/Analysis/WaveformAnalyzer.cs) — the
+  working FFT/THD/RMS source.
