@@ -146,7 +146,6 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
             {
                 yield return new object[] { ".backanno", ".backanno" };
                 yield return new object[] { ".tf", ".tf V(out) VIN" };
-                yield return new object[] { ".four", ".four 1k V(out)" };
                 yield return new object[] { ".net", ".net V(out) VIN" };
                 yield return new object[] { ".ferret", ".ferret https://example.invalid/vendor.lib" };
                 yield return new object[] { ".loadbias", ".loadbias bias.raw" };

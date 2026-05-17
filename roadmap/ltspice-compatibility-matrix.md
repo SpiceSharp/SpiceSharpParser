@@ -37,7 +37,7 @@ Compatibility classes:
 | Selected-section `.lib <file> <section>` | Accepted | Lib processor selects section | OP supported | Smoke fixture | None expected | Current parser/runtime | Synthetic local fixture only. |
 | `.backanno` | Accepted as control | Default: rejected. LTspice: warning no-op. | LTspice OP smoke supported | Smoke fixture | Default: targeted error. LTspice: warning names `.backanno`. | Current parser/runtime | Generated annotation metadata is not used by SpiceSharpParser. |
 | `.tf` | Accepted as control | Rejected | Not runnable | None | Targeted unsupported LTspice diagnostic | Current parser/runtime | Possible future small-signal feature. |
-| `.four` | Accepted as control | Rejected | Not runnable | None | Targeted unsupported LTspice diagnostic | Current parser/runtime | Possible future post-processing feature. |
+| `.four` | Accepted as control | Rejected until `.FOUR` reader lands | Not runnable | None | Targeted unsupported LTspice diagnostic | Current parser/runtime | Documented target for transient Fourier post-processing; future support should analyze settled `.TRAN` samples and expose structured harmonic/THD results. |
 | `.net` | Accepted as control | Rejected | Not runnable | None | Targeted unsupported LTspice diagnostic | Current parser/runtime | Possible future AC post-processing feature. |
 | `.ferret` | Accepted as control | Rejected | Not runnable | None | Targeted unsupported LTspice diagnostic | Current parser/runtime | Intentional unsupported candidate because it downloads external files. |
 | `.loadbias` | Accepted as control | Rejected | Not runnable | None | Targeted unsupported LTspice diagnostic | Current parser/runtime | Needs portable state-format design. |
