@@ -5,6 +5,7 @@ using SpiceSharp.Simulations;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Exporters;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Fourier;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Measurements;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Plots;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Prints;
@@ -63,6 +64,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// Gets the measurement results from .MEAS/.MEASURE statements.
         /// </summary>
         ConcurrentDictionary<string, List<MeasurementResult>> Measurements { get; }
+
+        /// <summary>
+        /// Gets the Fourier analysis results from .FOUR statements.
+        /// </summary>
+        List<FourierAnalysisResult> FourierAnalyses { get; }
 
         ValidationEntryCollection ValidationResult { get; }
     }

@@ -17,7 +17,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers
         {
             { "BACKANNO", "generated annotation metadata is not supported yet" },
             { "TF", "transfer-function analysis is not supported yet" },
-            { "FOUR", "post-transient Fourier reporting is not supported yet" },
             { "NET", "network-parameter post-processing is not supported yet" },
             { "FERRET", "external file download directives are intentionally unsupported" },
             { "LOADBIAS", "solver-state loading is not supported yet" },

@@ -1,21 +1,17 @@
 # .FOUR Statement
 
-> ## ⚠️ Status: `.FOUR` is NOT implemented
+> ## Status: `.FOUR` is implemented
 >
-> Writing `.FOUR` in a netlist does **nothing useful today**. The parser only
-> recognizes the keyword so it can emit the diagnostic *"post-transient Fourier
-> reporting is not supported yet"* — see
-> [ControlReader.cs:20](../../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/ControlReader.cs#L20).
-> There is no `.FOUR` reader, and there is **no** `model.FourierAnalyses` API.
+> Writing `.FOUR` in a netlist attaches transient post-processing collectors to
+> existing `.TRAN` simulations. After each transient completes, results are
+> stored in `model.FourierAnalyses`.
 >
-> If you want Fourier / THD numbers **today**, use the
-> [`WaveformAnalyzer` C# helper](#what-you-can-do-today-waveformanalyzer-c) — that
-> code is real and works. The `.FOUR`-in-a-netlist behavior described later is a
-> **plan**, written in the future tense, and clearly fenced off.
+> If you want FFT-style Fourier / THD numbers outside netlist control flow, use
+> the [`WaveformAnalyzer` C# helper](#what-you-can-do-today-waveformanalyzer-c).
+> It remains a plain C# utility and uses a different FFT-based method.
 >
-> This article is split into three layers so it is never ambiguous what is real:
-> **the concept** (universal), **what works today** (`WaveformAnalyzer`), and
-> **the planned `.FOUR`** (not built).
+> This article is split into three layers: **the concept** (universal),
+> **the C# helper** (`WaveformAnalyzer`), and **the `.FOUR` netlist control**.
 
 ---
 
@@ -46,30 +42,28 @@ fraction of the signal is harmonics instead of the clean fundamental?"* 0% means
 a perfect sine; 10% means the harmonic junk is about a tenth of the fundamental.
 
 That is the whole idea. Everything below is either (a) the math behind it,
-(b) the C# function that computes it today, or (c) the netlist command we plan
-to add later.
+(b) the C# helper path, or (c) the `.FOUR` netlist command.
 
 ---
 
-## Today vs. Planned — Read This Before The Examples
+## Two Fourier Paths — Read This Before The Examples
 
 The confusing part of this topic is that two different things share the name
 "Fourier." This table is the key:
 
-| Aspect | ✅ Available today — `WaveformAnalyzer` (C#) | 🚧 Planned — `.FOUR` (netlist) |
+| Aspect | Available today — `WaveformAnalyzer` (C#) | Available today — `.FOUR` (netlist) |
 |--------|---------------------------------------------|--------------------------------|
 | How you invoke it | Call `WaveformAnalyzer.THD(...)` / `FFT(...)` from C# on samples you collected | Write `.FOUR 1k V(OUT)` in the netlist |
-| Parser support | Not a control — it is a plain C# utility | **Not implemented**; parser rejects `.FOUR` |
-| Transform used | Zero-pad to a power of two, then Cooley–Tukey radix-2 FFT over the **whole** captured waveform | *Planned:* resample the **last complete period**, correlate at exact harmonics |
-| Sample spacing | Assumes you supply (roughly) uniform samples; **no window** applied | *Planned:* automatic resampling of the final period |
-| Phase | **Not computed** — magnitude only | *Planned:* cosine-referenced phase in degrees |
-| THD harmonics | Harmonics `2 … numHarmonics+1` (default **2–11**), nearest FFT bin | *Planned:* harmonics 2–9 at exact multiples of $f_0$ |
-| Normalized dB | Not provided | *Planned* |
-| Result you get | A `double` THD %, or a raw `List<(double Frequency, double Magnitude)>` | *Planned:* structured `model.FourierAnalyses` |
+| Parser support | Not a control — it is a plain C# utility | Implemented as a netlist control |
+| Transform used | Zero-pad to a power of two, then Cooley–Tukey radix-2 FFT over the **whole** captured waveform | Resample the **last complete period**, correlate at exact harmonics |
+| Sample spacing | Assumes you supply (roughly) uniform samples; **no window** applied | Automatic resampling of the final period |
+| Phase | **Not computed** — magnitude only | Cosine-referenced phase in degrees |
+| THD harmonics | Harmonics `2 … numHarmonics+1` (default **2–11**), nearest FFT bin | Harmonics 2–9 at exact multiples of $f_0$ |
+| Normalized dB | Not provided | Provided per harmonic |
+| Result you get | A `double` THD %, or a raw `List<(double Frequency, double Magnitude)>` | Structured `model.FourierAnalyses` |
 
-If you only remember one thing: **the long "How The Analyzer Works", phase, and
-`model.FourierAnalyses` material is the *plan*. The thing you can actually run is
-`WaveformAnalyzer`.**
+If you only remember one thing: `WaveformAnalyzer` is a direct C# helper, while
+`.FOUR` is the netlist-driven transient post-processor.
 
 ---
 
@@ -406,19 +400,12 @@ were captured (see the practical tip above).
 
 ---
 
-## Planned `.FOUR` Netlist Support (Not Yet Implemented)
+## `.FOUR` Netlist Support
 
-> 🚧 **This section is a design, not current behavior.** A `.FOUR` reader does
-> not exist yet; the netlists here are not runnable today and the "expected"
-> tables are theoretical predictions. It is written in the future tense on
-> purpose — read it to understand *how `.FOUR` will work once built*.
+### How `.FOUR` Works
 
-### How `.FOUR` Will Work (The Future Experience)
-
-Picture the finished feature. Today, to get THD you write C#: grab the
-transient simulation, subscribe to its export event, hand-collect samples into a
-list, then call `WaveformAnalyzer`. With `.FOUR` you will instead add **one line
-to the netlist** and get the answer for free:
+To get THD from a netlist, add **one line to the netlist** and read the
+structured results after the transient run:
 
 ```spice
 .TRAN 1u 10m 0 2u
@@ -447,7 +434,7 @@ you, it has no bin-rounding error, it gives phase and normalized dB, and the
 result is structured per signal — none of which the current `WaveformAnalyzer`
 does.
 
-### Planned syntax
+### Syntax
 
 ```spice
 .FOUR <fundamental_frequency> <expr1> [<expr2> ...]
@@ -458,14 +445,14 @@ does.
 | `fundamental_frequency` | Base repeating frequency in hertz; positive and finite. |
 | `expr` | Signal expression, e.g. `V(OUT)`, `I(V1)`. |
 
-Planned examples: `.FOUR 1k V(OUT)`, `.FOUR 60 V(LINE) I(VLOAD)`,
-`.FOUR {freq} V(IN) V(OUT)`. `.FOUR` would require a `.TRAN` analysis and would
-post-process its samples.
+Examples: `.FOUR 1k V(OUT)`, `.FOUR 60 V(LINE) I(VLOAD)`,
+`.FOUR {freq} V(IN) V(OUT)`. `.FOUR` requires a `.TRAN` analysis and
+post-processes its samples.
 
-### How The Analysis Will Run, Step By Step
+### How The Analysis Runs, Step By Step
 
 Each step below says *what* happens and *why* — this is the internal flow the
-planned reader will follow:
+reader follows:
 
 | Step | What it does | Why |
 |------|--------------|-----|
@@ -479,7 +466,7 @@ planned reader will follow:
 | 8 | Compute THD from harmonics 2–9 vs. harmonic 1. | One distortion figure of merit. |
 | 9 | Store a structured result per signal. | Read it later from `model.FourierAnalyses`. |
 
-#### Worked trace: what `.FOUR 1k V(OUT)` will produce
+#### Worked trace: what `.FOUR 1k V(OUT)` produces
 
 Take the *sine plus second harmonic* netlist below, with `.TRAN 1u 10m 0 2u`.
 Follow the steps:
@@ -510,22 +497,20 @@ $$
   and $\text{phase}_1 \approx -90^\circ$
   (a pure `sin` against a cosine reference).
 
-That whole table is what you will read back from one `FourierAnalysisResult` —
+That whole table is what you read back from one `FourierAnalysisResult` —
 no FFT code, no manual period trimming.
 
-> Contrast with **today**: `WaveformAnalyzer` would zero-pad and FFT the entire
-> 10 ms capture, look up the *nearest bin* to 1 kHz and 2 kHz, give you no
-> phase, and (with the default `numHarmonics`) roll harmonics 2–11 into THD.
-> Steps 4–7 above are the planned improvements.
+> Contrast with `WaveformAnalyzer`: it zero-pads and FFTs the entire capture,
+> looks up the *nearest bin* to 1 kHz and 2 kHz, gives you no phase, and (with
+> the default `numHarmonics`) rolls harmonics 2–11 into THD.
 
-### Planned C# API
+### C# API
 
-Once built, you will not write any FFT or sampling code — you just run the
-simulations and read `model.FourierAnalyses` (this property **does not exist
-today**). One entry per `.FOUR` signal:
+You do not write any FFT or sampling code — you just run the simulations and
+read `model.FourierAnalyses`. One entry is stored per `.FOUR` signal and per
+transient simulation:
 
 ```csharp
-// PLANNED — not available yet
 RunSimulations(model);
 
 foreach (var result in model.FourierAnalyses)
@@ -541,30 +526,32 @@ foreach (var result in model.FourierAnalyses)
 }
 ```
 
-For the worked trace above, that loop would print harmonic 1 at ≈ `1.0`
+For the worked trace above, that loop prints harmonic 1 at ≈ `1.0`
 (`0 dB`), harmonic 2 at ≈ `0.1` (`-20 dB`), the rest near zero, and a top-line
 THD of ≈ `10 %` — i.e. you read the result table directly instead of computing
-it. Contrast this with the [working-today C# path](#runnable-end-to-end-example),
+it. Contrast this with the [direct C# helper path](#runnable-end-to-end-example),
 which returns only a bare `double` and a `(freq, magnitude)` list.
 
-Planned `FourierAnalysisResult`:
+`FourierAnalysisResult`:
 
 | Field | Meaning |
 |-------|---------|
 | `SignalName` | Analyzed expression, e.g. `V(OUT)`. |
+| `SimulationName` | Transient simulation that produced this result. |
 | `FundamentalFrequency` | Frequency passed to `.FOUR`. |
 | `TotalHarmonicDistortionPercent` | THD from harmonics 2–9. |
 | `Harmonics` | Rows for DC and harmonics 1–9. |
+| `Success` | `true` when a complete final-period result was computed. |
+| `ErrorMessage` | Reason the result failed, when `Success` is `false`. |
 
-Planned harmonic row: `HarmonicNumber`, `Frequency`, `Magnitude`,
+Harmonic row: `HarmonicNumber`, `Frequency`, `Magnitude`,
 `PhaseDegrees` (cosine reference), `NormalizedMagnitude`,
 `NormalizedMagnitudeDecibels`.
 
-### Planned circuit examples (predictions, not runnable today)
+### Circuit examples
 
-Each "expected" table below is what *theory* predicts and what the planned
-`.FOUR` is designed to report. You can reproduce these numbers **today** by
-porting the netlist to the [`WaveformAnalyzer` C# example](#runnable-end-to-end-example).
+Each "expected" table below is what *theory* predicts and what `.FOUR` reports
+for sufficiently settled simulations with small enough time steps.
 
 **Pure sine**
 
@@ -635,7 +622,7 @@ C1 OUT 0 159.154943n
 |--------|-----------|
 | `V(IN)` harmonic 1 | `1` |
 | `V(OUT)` harmonic 1 | `≈ 0.707` |
-| `V(OUT)` phase shift (planned) | about `-45 deg` |
+| `V(OUT)` phase shift | about `-45 deg` |
 
 **Low-pass harmonic cleanup**
 
@@ -670,10 +657,10 @@ Harmonic 1 would *not* be near `1`, higher harmonics would not be near zero, and
 THD would look nonzero — all because of spectral leakage from the mismatched
 $f_0$. Fix: `.FOUR 1k V(IN)`.
 
-### Planned `.TRAN` guidance
+### `.TRAN` guidance
 
-These rules will matter for the planned `.FOUR` and **already matter** for
-`WaveformAnalyzer` today:
+These rules matter for `.FOUR` and also matter when using `WaveformAnalyzer`
+directly:
 
 - **Simulate enough periods** so startup behavior settles before the final time
   (e.g. `.TRAN 1u 10m 0 2u` = ten periods of a 1 kHz wave).
@@ -686,23 +673,23 @@ These rules will matter for the planned `.FOUR` and **already matter** for
 - **For filters**, analyze input and output together to compare attenuation and
   THD before/after.
 
-### Planned troubleshooting
+### Troubleshooting
 
 | Symptom | Likely cause | Check |
 |---------|--------------|-------|
-| `.FOUR` produces nothing | Not implemented yet (today), or no `.TRAN` (planned) | Use `WaveformAnalyzer` today; ensure a `.TRAN` exists. |
+| `.FOUR` produces nothing | No `.TRAN`, invalid signal, or not enough final-period data | Ensure a `.TRAN` exists, the signal is valid, and the run contains one complete final period. |
 | Harmonics appear in a pure sine | Wrong $f_0$, coarse step, or unsettled waveform | Match $f_0$ to the source; reduce max step. |
 | THD changes when `tstop` changes | Final waveform not settled | Simulate more periods. |
 | THD is `NaN` | Fundamental magnitude ≈ 0 | Confirm harmonic 1 is the intended reference frequency. |
-| Phase missing | `WaveformAnalyzer` computes no phase; `.FOUR` phase is planned | Use the planned `.FOUR` once available. |
+| Phase missing | `WaveformAnalyzer` computes no phase | Use `.FOUR` when you need phase. |
 
-### Planned limitations
+### Limitations
 
 - Requires a `.TRAN` analysis and at least one complete settled period.
-- Planned support targets harmonics 0–9 (0 = DC); THD from harmonics 2–9.
+- Support targets harmonics 0–9 (0 = DC); THD from harmonics 2–9.
   (Contrast with today's `WaveformAnalyzer.THD`, default harmonics **2–11**.)
-- Planned API exposes structured results, not LTspice's exact textual report.
-- Planned phase uses a cosine reference and may not match other simulators.
+- The API exposes structured results, not LTspice's exact textual report.
+- Phase uses a cosine reference and may not match other simulators.
 - Accuracy always depends on step size, settling, and capture length.
 
 ---
@@ -710,7 +697,6 @@ These rules will matter for the planned `.FOUR` and **already matter** for
 ## See Also
 
 - [.TRAN](tran.md) — produces the transient samples Fourier analysis consumes.
-- [.MEAS](meas.md) — other transient post-processing measurements that *are*
-  implemented today.
+- [.MEAS](meas.md) — other transient post-processing measurements.
 - [`WaveformAnalyzer`](../../SpiceSharpParser/Analysis/WaveformAnalyzer.cs) — the
   working FFT/THD/RMS source.

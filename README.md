@@ -83,7 +83,7 @@ Using SpiceSharpParser involves three steps:
 
 ### Output
 
-`.SAVE`, `.PRINT`, `.PLOT`, `.MEAS` / `.MEASURE` (TRIG/TARG, WHEN, FIND, MAX, MIN, AVG, RMS, PP, INTEG, DERIV, PARAM). Planned `.FOUR` transient Fourier post-processing is documented in the articles but is not yet registered by the reader.
+`.SAVE`, `.PRINT`, `.PLOT`, `.MEAS` / `.MEASURE` (TRIG/TARG, WHEN, FIND, MAX, MIN, AVG, RMS, PP, INTEG, DERIV, PARAM), and `.FOUR` transient Fourier post-processing with structured `model.FourierAnalyses` results.
 
 ### Parameters & Functions
 
