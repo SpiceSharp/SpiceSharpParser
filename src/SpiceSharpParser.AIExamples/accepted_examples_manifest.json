@@ -1,0 +1,26 @@
+{
+  "sources": [
+    {
+      "accepted_pair_count": 3095,
+      "accepted_pairs_path": "dataset/data/accepted_pairs.jsonl",
+      "accepted_pairs_sha256": "b910faaefe2738bd9e5d9a2d76a21d6d0a34badf1492f960a02978234dc2a6b3",
+      "measured_example_count": 887,
+      "measured_examples_path": "dataset/data/measured_examples.jsonl",
+      "measured_examples_sha256": "4ab8c45ac81d670809dd1646913619521351e12b0790a779a7c7a1c59c550f3e",
+      "name": "deepseek",
+      "unique_netlist_count": 887
+    },
+    {
+      "accepted_pair_count": 187,
+      "accepted_pairs_path": "dataset/data/local_llama_big/accepted_pairs.jsonl",
+      "accepted_pairs_sha256": "04d52281166c46022c8d61b0c94e46d834b40a8d8cf6efe93af00d6efffb10bb",
+      "measured_example_count": 61,
+      "measured_examples_path": "dataset/data/local_llama_big/measured_examples.jsonl",
+      "measured_examples_sha256": "b2bb8fe5a2ccd4c39e0930a3b6ceb8ac679ee30f5d9b443bb7c81a7b195f09c6",
+      "name": "local",
+      "unique_netlist_count": 61
+    }
+  ],
+  "total_unique_cases": 948,
+  "unmatched_accepted_pair_hashes": 0
+}
