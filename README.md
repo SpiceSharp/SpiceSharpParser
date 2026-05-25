@@ -74,6 +74,7 @@ Using SpiceSharpParser involves three steps:
 | `Prints` | Tabular data from `.PRINT` statements |
 | `Measurements` | Results from `.MEAS` / `.MEASURE` statements |
 | `Title` | Netlist title (first line) |
+| `FourierAnalyses` | Fourier analysis results from .FOUR statements |
 
 ## Supported Features
 
