@@ -2,7 +2,7 @@
 title: LTspice Netlist Compatibility Plan
 status: Draft / Roadmap
 scope: SpiceSharpParser + SpiceSharp
-last_reviewed: 2026-05-08
+last_reviewed: 2026-05-30
 ---
 
 # LTspice Netlist Compatibility Plan
@@ -31,7 +31,8 @@ This roadmap is intentionally parser-first and evidence-first:
 - `ValidationEntryCollection.Warnings` filters warning entries and is covered by warning/error separation tests.
 - Scalar `table(...)` and `tbl(...)` are supported through SpiceSharpBehavioral defaults and covered by LTspice P2 fixtures; `MathFunctions.CreateTable()` still returns `null` and remains a stale parser-owned factory audit item.
 - The default mappings register many common controls and devices, but registration does not prove LTspice syntax parity for every variant.
-- Default reader behavior still rejects LTspice `.backanno`, `.tf`, `.four`, `.net`, `.ferret`, `.loadbias`, `.savebias`, and `.machine` / `.endmachine` with targeted diagnostics.
+- `.FOUR` transient Fourier post-processing is implemented as dialect-neutral output support. Results are exposed through `SpiceSharpModel.FourierAnalyses`, with coverage for multiple signals, current signals, parameterized frequencies, stepped transient runs, and targeted failure diagnostics.
+- Default reader behavior still rejects LTspice `.backanno`, `.tf`, `.net`, `.ferret`, `.loadbias`, `.savebias`, and `.machine` / `.endmachine` with targeted diagnostics.
 - In LTspice mode, `.backanno` is a warning no-op. The other known unsupported LTspice controls remain targeted errors.
 - `.TRAN` accepts traditional numeric forms and trailing `UIC`; P1 LTspice mode also accepts `.tran <Tstop>` and `.tran <Tstop> UIC` by deriving `step = Tstop / 50.0`. LTspice `startup`, `steady`, `nodiscard`, and `step` modifiers remain targeted errors.
 - LTspice output/viewer `.options` such as `plotwinsize`, `plotreltol`, `plotvntol`, `plotabstol`, `numdgt`, `measdgt`, `meascplxfmt`, `baudrate`, and `fastaccess` are warning no-ops only in LTspice mode.
@@ -158,8 +159,8 @@ Implementation backlog:
 - Add the compatibility matrix with the columns listed above.
 - Add an LTspice compatibility fixture area in integration tests.
 - Seed matrix rows from current repo facts and this roadmap, not from broad README support language.
-- Add fixtures for current baseline behavior: `B`, `VALUE=`, source-level `TABLE`, `POLY`, source-level `LAPLACE`, function-style `LAPLACE(...)`, `.param`, `.func`, `.include`, `.lib`, `.tran`, and common output directives.
-- Add expected-diagnostic fixtures for `.tf`, `.four`, `.net`, `.ferret`, `.loadbias`, `.savebias`, and `.machine` / `.endmachine`.
+- Add fixtures for current baseline behavior: `B`, `VALUE=`, source-level `TABLE`, `POLY`, source-level `LAPLACE`, function-style `LAPLACE(...)`, `.param`, `.func`, `.include`, `.lib`, `.tran`, common output directives, and `.FOUR` transient post-processing.
+- Add expected-diagnostic fixtures for `.tf`, `.net`, `.ferret`, `.loadbias`, `.savebias`, and `.machine` / `.endmachine`.
 - Add no-op candidate fixtures for generated metadata, starting with `.backanno`.
 - Add initial syntax audit fixtures for `.options`, `.tran`, `.wave`, source waveforms, scalar `table(...)`, and model parameters.
 - Fix `ValidationEntryCollection.Warnings` before adding warning-based assertions.
@@ -181,7 +182,7 @@ Implemented P1 behavior:
 - Preserved default behavior with `CompatibilityOptions.None`.
 - Added `CompatibilityOptions.LTspice` with only fixture-backed behavior enabled.
 - Added a recognized-no-op control path for `.backanno` in LTspice mode.
-- Kept targeted unsupported diagnostics for `.tf`, `.four`, `.net`, `.ferret`, `.loadbias`, `.savebias`, and `.machine` / `.endmachine`.
+- Kept targeted unsupported diagnostics for `.tf`, `.net`, `.ferret`, `.loadbias`, `.savebias`, and `.machine` / `.endmachine`.
 - Added option classification tables for warning no-ops and behavior-changing unsupported LTspice options.
 - Lowered LTspice-mode `.tran <Tstop>` and `.tran <Tstop> UIC` to an explicit compatibility policy: `step = Tstop / 50.0`, with `maxStep = step`.
 - Classified LTspice `.tran` modifiers: `UIC` is supported, while `startup`, `steady`, `nodiscard`, and `step` produce targeted diagnostics.
@@ -285,6 +286,10 @@ Acceptance criteria:
 ## P5: Docs And Release Governance
 
 Goal: keep package references, generated C# writer behavior, docs, and README claims aligned.
+
+Recent evidence refresh:
+
+- `SpiceSharpParser.AIExamples` adds 948 unique manifest-backed gold/ok accepted examples from DeepSeek/local sources using `accepted_examples_manifest.json` and `accepted_examples_fixture.jsonl`. Treat this as supplemental regression and evidence metadata, not an LTspice compatibility claim unless individual cases are later classified into the compatibility matrix.
 
 Implementation backlog:
 
