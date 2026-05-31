@@ -553,8 +553,6 @@ These references are useful for the engineering context behind transfer-function
 
 - [Model Transfer Functions by Applying the Laplace Transform in LTspice](https://www.analog.com/en/resources/technical-articles/model-transfer-functions-by-applying-the-laplace-transform-in-ltspice.html)
 - [Cadence PSpice User Guide: Analog Behavioral Modeling](https://resources.pcb.cadence.com/pspiceuserguide/06-analog-behavioral-modeling)
-- [Filter Basics: Anti-Aliasing](https://www.analog.com/en/resources/technical-articles/guide-to-antialiasing-filter-basics.html)
-- [TI Low-Pass Filtered Non-Inverting Amplifier Circuit](https://www.ti.com/tool/CIRCUIT060057)
 
 ## Current Limitations
 
