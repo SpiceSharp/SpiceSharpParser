@@ -555,7 +555,6 @@ These references are useful for the engineering context behind transfer-function
 - [Cadence PSpice User Guide: Analog Behavioral Modeling](https://resources.pcb.cadence.com/pspiceuserguide/06-analog-behavioral-modeling)
 - [Filter Basics: Anti-Aliasing](https://www.analog.com/en/resources/technical-articles/guide-to-antialiasing-filter-basics.html)
 - [TI Low-Pass Filtered Non-Inverting Amplifier Circuit](https://www.ti.com/tool/CIRCUIT060057)
-- [Low Noise Single Supply Photodiode Amplifier](https://www.analog.com/en/resources/technical-articles/low-noise-single-supply-photodiode-amplifier.html)
 
 ## Current Limitations
 
