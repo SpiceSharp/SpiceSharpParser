@@ -1,6 +1,6 @@
 ---
 name: spicesharp-circuit-design
-description: Structured R&D problem-solving with test-driven verification for designing analog circuits using SpiceSharp and SpiceSharpParser that produces human-readable reports, netlist and tests and maintains a global backlog of active designs.
+description: Structured R&D problem-solving with test-driven verification for designing analog circuits using SpiceSharp and SpiceSharpParser, including modern parser features such as .MEAS, .FOUR, .PRINT, .PLOT, .STEP, .TEMP, .MC, .NOISE, behavioral and LAPLACE sources, and local documentation/test-suite validation. Produces human-readable reports, netlists, tests, and maintains a global backlog of active designs.
 user-invocable: true
 ---
 
@@ -85,6 +85,30 @@ tests/
 
 ---
 
+## Current SpiceSharpParser Feature Surface
+
+Use the parser's current netlist features directly instead of reimplementing post-processing in ad-hoc C# when a dot statement exists. For exact syntax, read `src/docs/index.md` first, then the specific article and matching tests under `src/SpiceSharpParser.IntegrationTests/`.
+
+| Category | Supported features | Primary references |
+|----------|--------------------|--------------------|
+| Analyses | `.OP`, `.DC`, `.AC`, `.TRAN`, `.NOISE` | `src/docs/articles/op.md`, `dc.md`, `ac.md`, `tran.md`, `noise.md` |
+| Output/post-processing | `.SAVE`, `.PRINT`, `.PLOT`, `.MEAS`/`.MEASURE`, `.FOUR`, `.WAVE` | `save.md`, `print.md`, `plot.md`, `meas.md`, `four.md`; `.WAVE` source/control code |
+| Parameters/expressions | `.PARAM`, `.FUNC`, `.LET`, `.SPARAM`, nested exports such as `db(V(out))`, `mag(I(R1))` | `param.md`, `func.md`, `let.md`, `sparam.md`, `meas.md` |
+| Sweeps/control/statistics | `.STEP`, `.ST`, `.TEMP`, `.MC`, `.DISTRIBUTION`, `.OPTIONS`, `.IC`, `.NODESET`, `.IF` | `step.md`, `st.md`, `temp.md`, `mc.md`, `distribution.md`, `options.md`, `ic.md`, `nodeset.md`, `if.md` |
+| Structure/models | `.SUBCKT`, `X...`, `.INCLUDE`, `.LIB`, `.GLOBAL`, `.CONNECT`, `.APPENDMODEL`, `.MODEL` | `subckt.md`, `subcircuit-instance.md`, `include.md`, `lib.md`, `global.md`, `appendmodel.md`; `DotStatements/ConnectTests.cs` |
+| Sources/devices | R, C, L, K, D, Q, J, M, V, I, B, E/F/G/H, S/W switches, T transmission line, BVDelay, PULSE/SIN/PWL/EXP/SFFM/AM/WAVE/wavefile, VALUE/TABLE/POLY/LAPLACE | matching component articles and integration tests |
+
+Prefer netlist-native controls for reproducibility:
+- Use `.MEAS` for scalar acceptance criteria, including `TRIG/TARG`, `WHEN`, `FIND`, `MAX`, `MIN`, `AVG`, `RMS`, `PP`, `INTEG`, `DERIV`, and `PARAM`.
+- Use `.FOUR` for settled-period harmonic magnitude, phase, normalized dB, and THD from transient waveforms.
+- Use `.PRINT` for tabular exported data and `.PLOT` for structured XY plot data when reports need curves.
+- Use `.WAVE` only when a transient waveform must be exported to a WAV file as a design artifact.
+- Use `.STEP`, `.TEMP`, `.MC`, and `.DISTRIBUTION` for sweeps, corners, and statistical robustness instead of manual loops.
+
+When `CircuitBuilder` has no dedicated helper for a current feature, use `RawLine()` with the exact netlist statement (for example `.RawLine(".FOUR 1k V(OUT)")`, `.RawLine(".STEP PARAM r LIST 1k 2k 5k")`, `.RawLine(".PLOT TRAN V(OUT) merge")`).
+
+---
+
 ## Phases
 
 Phases are guidelines, not a rigid waterfall. Skip or merge phases when the situation warrants it (e.g., skip Phase 2 if the user specifies the topology; merge Phases 3-4 for simple circuits).
@@ -115,7 +139,7 @@ Create xUnit test project in `tests/CircuitTests/` targeting **net8.0**:
 1. Ask the user what circuit they want and its purpose
 2. **WebSearch** the circuit type for standard specs, typical values, and design trade-offs
 3. Elicit quantitative specs (frequency, gain, impedance, supply, bandwidth, Q, noise, timing)
-4. Identify required analyses (`.OP`, `.DC`, `.AC`, `.TRAN`, `.NOISE`)
+4. Identify required analyses (`.OP`, `.DC`, `.AC`, `.TRAN`, `.NOISE`) and post-processing controls (`.MEAS`, `.FOUR`, `.PRINT`, `.PLOT`, `.SAVE`, `.WAVE` when audio export matters)
 5. Create `circuits/<name>/requirements.md` with spec table, operating conditions, acceptance criteria
 6. Update `backlog.md`
 
@@ -142,13 +166,18 @@ Create xUnit test project in `tests/CircuitTests/` targeting **net8.0**:
 1. Write netlist to `circuits/<name>/<name>.cir` — use `CircuitBuilder` for programmatic construction when beneficial
 2. **Run `SmokeTester.QuickCheck()`** — fix any structural issues before proceeding
 3. Run `NetlistLinter.Lint()` for additional validation
-4. Include `.MEAS` directives for ALL specs that need automated verification
+4. Include `.MEAS` directives for ALL scalar specs that need automated verification
+5. Add `.FOUR` for THD/harmonic specs, `.PRINT` for tabular report data, `.PLOT` for reusable curve data, and `.WAVE` only for requested audio artifacts
 
 **SPICE quick reference**: For syntax details (devices, waveforms, analyses, expressions), read `src/SpiceSharpParser.IntegrationTests/` examples or use WebSearch. Key rules:
 - Ground is node `0`; every node needs DC path to ground (add 1GΩ if needed)
 - Every semiconductor needs `.MODEL`
 - AC analysis: use `VM()`/`VDB()`/`VP()`, never plain `V()`
-- Prefer `.MEAS` over `.SAVE` for spec verification
+- Prefer `.MEAS` over `.SAVE` for scalar spec verification; use `.SAVE`/`.PRINT`/`.PLOT` only when waveform/table/plot data is actually needed
+- Use `.LET` for reusable dynamic expressions such as power or gain, `.FUNC` for reusable equations, and `.SPARAM` only when immediate scalar evaluation is required before setup/sweeps
+- Use `.TEMP` for temperature corners and `.STEP PARAM temp_val` + `.OPTIONS TEMP={temp_val}` for continuous temperature sweeps
+- Use `.MC` with `.DISTRIBUTION`/`.APPENDMODEL` for statistical validation once nominal and deterministic corner tests pass
+- Use `.CONNECT` to intentionally short aliases or package pins; prefer clear shared node names when designing from scratch
 
 #### LAPLACE Transfer Sources
 
@@ -192,17 +221,50 @@ Rules and gotchas:
 - `G` and `F` current is defined from `out+` to `out-`; with a grounded load this may produce inverted output voltage.
 - For details and examples, read `src/docs/articles/laplace.md`, `src/docs/articles/laplace-basics.md`, and `src/SpiceSharpParser.IntegrationTests/AnalogBehavioralModeling/LaplaceTests.cs`.
 
+#### `.FOUR` Fourier / THD Post-Processing
+
+Use `.FOUR` when the requirement includes THD, harmonic content, distortion cleanup, phase of harmonics, square-wave harmonic ratios, or before/after filter harmonic comparison. It is netlist-driven transient post-processing; prefer it over hand-written FFT code when the desired result is a settled periodic waveform metric.
+
+Syntax:
+
+```spice
+.TRAN <step> <stop> [<start>] [<maxstep>]
+.FOUR <fundamental_frequency> <expr1> [<expr2> ...]
+```
+
+Examples:
+
+```spice
+V1 OUT 0 SIN(0 1 1k)
+R1 OUT 0 1k
+.TRAN 1u 10m 0 2u
+.FOUR 1k V(OUT) I(V1)
+```
+
+Rules and gotchas:
+- `.FOUR` requires `.TRAN`; it analyzes the last complete period, so run long enough for startup to settle and for at least one full final period.
+- Choose the true repetition frequency. A wrong `f0` creates misleading harmonics and THD.
+- Use a small max step; aim for at least 20 samples per highest harmonic period, and 50-100 samples for good magnitudes.
+- Results are stored in `model.FourierAnalyses`, one result per signal per transient simulation or `.STEP` point.
+- Each result has `SignalName`, `SimulationName`, `FundamentalFrequency`, `TotalHarmonicDistortionPercent`, `Success`, `ErrorMessage`, and `Harmonics`.
+- Harmonic rows cover DC and harmonics 1-9 with `Magnitude`, `PhaseDegrees`, `NormalizedMagnitude`, and `NormalizedMagnitudeDecibels`; THD is computed from harmonics 2-9.
+- If using `CircuitBuilder`, add `.FOUR` with `RawLine()`; there is no dedicated builder helper.
+- For exact behavior and examples, read `src/docs/articles/four.md` and `src/SpiceSharpParser.IntegrationTests/DotStatements/FourTests.cs`.
+
 ### Phase 5: Simulation & Verification
 
 **Every design MUST produce `tests/<CircuitName>Tests.cs`.**
 
 - One test method per spec, descriptive names: `BandpassFilter_Has3dBBandwidthOf10kHz`
 - Inline netlist as string constant; use `CircuitTestHelper` methods
-- Use `WaveformAnalyzer` for complex analysis (FFT, THD, stability margins, rise time)
+- Prefer `.MEAS` assertions for scalar specs; check `.Success` before reading `.Value`
+- Assert `.FOUR` results from `model.FourierAnalyses` for harmonic/THD/phase specs
+- Assert `.PRINT` data through `model.Prints` and `.PLOT` data through `model.XyPlots` when report tables or curves are part of the acceptance criteria
+- Use `WaveformAnalyzer` for analysis that has no netlist-native equivalent or for C#-side cross-checks (custom FFT, extra THD checks, stability margins, rise/fall/settling metrics)
 - Run `dotnet test --logger "trx"` — all must pass before Phase 6
 - **10+ assertions per circuit is normal** — verify primary specs, boundary behavior, DC bias, passband/stopband, transient behavior, phase response, sanity checks
 
-**Tolerance analysis**: After nominal passes, add tests with `.STEP`/`.MC` for ±5-10% component tolerances.
+**Robustness analysis**: After nominal passes, add deterministic `.STEP` tests for tolerance/corner sweeps, `.TEMP` tests for temperature corners, and `.MC` tests with explicit `SEED=` for statistical checks. Use `.DISTRIBUTION` and `.APPENDMODEL` when device/model variation matters.
 
 #### Hypothesis-Driven Fix Protocol
 
@@ -250,7 +312,8 @@ For full API details, read the source files directly — don't rely on this summ
 | **NetlistLinter** | `src/SpiceSharpParser/Validation/NetlistLinter.cs` | After `ParseAndRead()`, before tests. Catches missing DC paths, missing models, duplicates. |
 | **SmokeTester** | `src/SpiceSharpParser/Analysis/SmokeTester.cs` | Phase 4b — one-call parse+lint+OP+device regions. `SmokeTester.QuickCheck(netlist)` |
 | **CircuitInspector** | `src/SpiceSharpParser/Analysis/CircuitInspector.cs` | Query topology, get/set component values, check BJT/MOSFET regions |
-| **WaveformAnalyzer** | `src/SpiceSharpParser/Analysis/WaveformAnalyzer.cs` | Post-sim: RiseTime, THD, FFT, BandwidthFrom3dBPoints, StabilityMargins, Overshoot |
+| **WaveformAnalyzer** | `src/SpiceSharpParser/Analysis/WaveformAnalyzer.cs` | C#-side post-sim analysis: RiseTime, THD, FFT, BandwidthFrom3dBPoints, StabilityMargins, Overshoot |
+| **.FOUR / FourierAnalysisResult** | `src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Fourier/` | Netlist-native transient Fourier/THD with magnitude, phase, normalized dB, harmonics 0-9 |
 | **SensitivityAnalyzer** | `src/SpiceSharpParser/Analysis/SensitivityAnalyzer.cs` | Hypothesis-driven debugging: find which component affects which spec |
 | **DesignSpaceExplorer** | `src/SpiceSharpParser/Analysis/DesignSpaceExplorer.cs` | Multi-parameter optimization with objectives and constraints |
 | **CircuitBuilder** | `src/SpiceSharpParser/Builder/CircuitBuilder.cs` | Fluent API for programmatic netlist construction and modification |
@@ -260,9 +323,9 @@ For full API details, read the source files directly — don't rely on this summ
 
 1. **Phase 3** → `StandardValues.NearestE24()` to snap values
 2. **Phase 4** → `CircuitBuilder` to construct, `SmokeTester.QuickCheck()` to validate
-3. **Phase 5** → `NetlistLinter.Lint()` + `.MEAS` tests + `WaveformAnalyzer` for advanced analysis
+3. **Phase 5** → `NetlistLinter.Lint()` + `.MEAS` tests + `.FOUR` for THD/harmonics + `.PRINT`/`.PLOT` for report data
 4. **Phase 5 debug** → `CircuitInspector` for bias/regions, `SensitivityAnalyzer.RankedByImpact()` to pick component
-5. **Phase 5 optimize** → `DesignSpaceExplorer.Explore()` for multi-parameter tuning
+5. **Phase 5 optimize** → `DesignSpaceExplorer.Explore()` for multi-parameter tuning, then validate with `.STEP`, `.TEMP`, and `.MC`
 
 ---
 
@@ -296,6 +359,8 @@ var caps = StandardValues.GetValuesInRange(1e-9, 100e-9, StandardValues.E24Multi
 Programmatically build netlists with a chainable API. Preferable to string concatenation for complex or parameterized circuits.
 
 **Key methods:** `Resistor()`, `Capacitor()`, `Inductor()`, `VoltageSource()`, `VoltageSourceSine()`, `VoltageSourcePulse()`, `VoltageSourcePWL()`, `CurrentSource()`, `Diode()`, `BJT()`, `MOSFET()`, `JFET()`, `VCVS()`, `VCCS()`, `BehavioralVoltageSource()`, `BehavioralCurrentSource()`, `Model()`, `ModelRaw()`, `OP()`, `DC()`, `AC()`, `Tran()`, `Save()`, `Meas()`, `Print()`, `Param()`, `IC()`, `Options()`, `RawLine()`, `SetValue()`, `RemoveComponent()`, `ToNetlist()`, `Build()`
+
+Use `RawLine()` for newer dot statements without dedicated builder helpers, including `.FOUR`, `.PLOT`, `.WAVE`, `.STEP`, `.TEMP`, `.MC`, `.DISTRIBUTION`, `.GLOBAL`, `.CONNECT`, `.APPENDMODEL`, `.LET`, `.FUNC`, `.SPARAM`, `.NODESET`, and `.IF`.
 
 ```csharp
 // Build a bandpass filter netlist
@@ -467,6 +532,8 @@ var counts = inspector.GetComponentCounts();
 #### WaveformAnalyzer — Post-Simulation Metrics
 
 All-static methods for analyzing simulation output waveforms. Data is passed as `List<(double, double)>` tuples collected from simulation exports.
+
+For THD/harmonic acceptance criteria, prefer netlist `.FOUR` when possible because it selects the last complete transient period, reports phase and normalized dB, and stores structured results in `model.FourierAnalyses`. Use `WaveformAnalyzer.FFT()`/`THD()` when you need a custom C#-side spectrum or an independent cross-check.
 
 **Time-domain methods:**
 - `RiseTime(data, lowPct=0.1, highPct=0.9)` — 10%-90% rise time
@@ -698,6 +765,7 @@ When writing tests, consult these for patterns and inspiration:
 - **SpiceSharp**: sibling workspace folder `../SpiceSharp/SpiceSharpTest/` — `BasicExampleTests.cs`, `Helper.cs`, `Models/`
 - **SpiceSharpParser**: `src/SpiceSharpParser.IntegrationTests/` — `BaseTests.cs`, `Components/`, `DotStatements/`, `AnalogBehavioralModeling/`, `Examples/Circuits/*.cir`
 - **LAPLACE**: `src/docs/articles/laplace.md`, `src/docs/articles/laplace-basics.md`, `src/SpiceSharpParser.IntegrationTests/AnalogBehavioralModeling/LaplaceTests.cs`
+- **Recent dot statements**: `src/docs/articles/four.md`, `meas.md`, `print.md`, `plot.md`, `noise.md`, `step.md`, `mc.md`, `temp.md`; tests in `src/SpiceSharpParser.IntegrationTests/DotStatements/*Tests.cs`
 
 Key patterns: tolerance-based assertions (RelTol=1e-3, AbsTol=1e-12), reference function comparison, `.MEAS` validation, string-array netlist construction.
 
@@ -712,3 +780,6 @@ Key patterns: tolerance-based assertions (RelTol=1e-3, AbsTol=1e-12), reference 
 | Zero/empty results | 3-step run pattern? (`Run` → `InvokeEvents` → `ToArray`) Exports filtered by simulation? |
 | Wrong AC results | Using `VM()`/`VDB()` not `V()`? Matched-system 0dB ref = 0.5V not 1V? |
 | Wrong values | `.MODEL` realistic? Node connectivity correct? Units in SI? Sim long enough? |
+| `.FOUR` missing/failed | `.TRAN` present? At least one complete final period? Signal expression valid? Check `model.FourierAnalyses[*].Success/ErrorMessage` |
+| `.FOUR` THD/harmonics odd | Fundamental frequency correct? Max step small enough? Final cycles settled? |
+| `.STEP`/`.TEMP` result count unexpected | Measurements and Fourier results produce one result per generated simulation; inspect `SimulationName` |

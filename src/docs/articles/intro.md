@@ -55,6 +55,8 @@ Using SpiceSharpParser involves three steps:
 2. **Read** — translate the parse-tree model into SpiceSharp simulation objects (circuit, simulations, exports) with `SpiceSharpReader.Read()`.
 3. **Simulate** — run the SpiceSharp simulations and collect results via exports and events.
 
+For a detailed look at how SpiceSharp solves the circuit after this handoff, including modified nodal analysis, sparse matrix solving, and component stamps, see [How SpiceSharp Solves Circuits](spicesharp-architecture.md).
+
 ### The SpiceSharpModel
 
 `SpiceSharpReader.Read()` returns a `SpiceSharpModel` containing:
