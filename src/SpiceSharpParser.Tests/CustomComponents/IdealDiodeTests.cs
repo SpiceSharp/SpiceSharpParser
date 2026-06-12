@@ -365,6 +365,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 ".op",
                 ".end");
 
+            // Ideal-only model parameters should switch the diode reader to the custom ideal-diode entity.
             AssertNoValidationErrors(model);
             Assert.Single(model.Circuit.OfType<IdealDiode>());
 
@@ -383,6 +384,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 ".op",
                 ".end");
 
+            // Classic diode parameters remain accepted metadata for this path and must not block ideal mapping.
             AssertNoValidationErrors(model);
             Assert.Single(model.Circuit.OfType<IdealDiode>());
 
@@ -401,6 +403,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 ".op",
                 ".end");
 
+            // The model still maps to IdealDiode; the instance parameter is what changes the effective Ron.
             AssertNoValidationErrors(model);
             Assert.Single(model.Circuit.OfType<IdealDiode>());
 
@@ -419,6 +422,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 ".op",
                 ".end");
 
+            // Ron=0 violates the ideal-diode parameter constraints and should be reported with its source name.
             Assert.True(model.ValidationResult.HasError);
             Assert.Contains("Ron", GetValidationMessages(model));
             Assert.Single(model.Circuit.OfType<IdealDiode>());
@@ -474,6 +478,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 ".op",
                 ".end");
 
+            // Area participates in Rs scaling, so zero must fail validation instead of creating an infinite path.
             Assert.True(areaModel.ValidationResult.HasError);
             Assert.Contains("Area", GetValidationMessages(areaModel));
 
@@ -485,6 +490,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 ".op",
                 ".end");
 
+            // M=0 would remove the parallel scale denominator; it should be rejected like zero area.
             Assert.True(multiplierModel.ValidationResult.HasError, GetValidationMessages(multiplierModel));
         }
 
@@ -502,8 +508,11 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 ".op",
                 ".end");
 
+            // D1 falls into the fast bin and D2 into the slow bin, so both should become custom ideal diodes.
             AssertNoValidationErrors(model);
             Assert.Equal(2, model.Circuit.OfType<IdealDiode>().Count());
+
+            // At 5 V with Vfwd=1, Ron=2 gives 2 A and Ron=4 gives 1 A.
             AssertClose(2.0, RunOpCurrent(model, "D1"), 1e-9);
             AssertClose(1.0, RunOpCurrent(model, "D2"), 1e-9);
         }
@@ -521,12 +530,16 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 ".step D ideal.fast(Ron) LIST 2 4",
                 ".end");
 
+            // The concrete selected model name, ideal.fast, should be accepted as the stepped target.
             AssertNoValidationErrors(model);
             Assert.Equal(2, model.Simulations.Count);
 
+            // The two OP runs use Ron=2 and Ron=4 respectively.
             var currents = RunOpCurrents(model, "D1");
             AssertClose(2.0, currents[0], 1e-9);
             AssertClose(1.0, currents[1], 1e-9);
+
+            // Model sweep values are simulation-local overlays; the shared model should be restored afterward.
             AssertClose(2.0, model.Circuit.OfType<IdealDiodeModel>().Single(m => m.Name == "ideal.fast").Parameters.OnResistance, 1e-12);
         }
 
@@ -541,10 +554,12 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 ".op",
                 ".end");
 
+            // The netlist can be read before the L expression is evaluated during model selection.
             Assert.False(model.ValidationResult.HasError, GetValidationMessages(model));
 
             RunOpCurrent(model);
 
+            // Running the simulation triggers range selection and surfaces the missing L/W expression.
             Assert.True(model.ValidationResult.HasError);
             Assert.Contains("L/W", GetValidationMessages(model));
         }
@@ -561,12 +576,16 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 ".step D ideal(Ron) LIST 2 4",
                 ".end");
 
+            // The list sweep produces one OP simulation per Ron value.
             AssertNoValidationErrors(model);
             Assert.Equal(2, model.Simulations.Count);
 
+            // Ron=2 gives 2 A; Ron=4 doubles resistance and halves current to 1 A.
             var currents = RunOpCurrents(model, "D1");
             AssertClose(2.0, currents[0], 1e-9);
             AssertClose(1.0, currents[1], 1e-9);
+
+            // After all stepped runs, the shared model parameter is restored to its original value.
             AssertClose(2.0, Assert.Single(model.Circuit.OfType<IdealDiodeModel>()).Parameters.OnResistance, 1e-12);
         }
 
@@ -582,9 +601,11 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 ".step D ideal(Rs) LIST 0 3",
                 ".end");
 
+            // The sweep covers the zero-Rs fast path and a positive series-resistance path.
             AssertNoValidationErrors(model);
             Assert.Equal(2, model.Simulations.Count);
 
+            // With Rs=0 the current is (5 V - 1 V) / 2 ohm; with Rs=3 it is divided by Ron + Rs.
             var currents = RunOpCurrents(model, "D1");
             AssertClose(2.0, currents[0], 1e-9);
             AssertClose(0.8, currents[1], 1e-9);
@@ -604,7 +625,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
             AssertNoValidationErrors(model);
             var diode = Assert.Single(model.Circuit.OfType<IdealDiode>());
 
-            // OFF is an initial-condition hint, so the parser should preserve it on the parameters.
+            // OFF is an initial-condition hint, not a steady-state current-law change.
             Assert.True(diode.Parameters.Off);
         }
 
@@ -655,7 +676,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 ".op",
                 ".end");
 
-            // Unsupported ideal-diode instance parameters should be reported with their original name.
+            // Unsupported ideal-diode instance parameters should be rejected and reported with their original name.
             Assert.True(model.ValidationResult.HasError);
             Assert.Contains(
                 "Foo",
@@ -673,6 +694,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 ".op",
                 ".end");
 
+            // Roff is an ideal-only model parameter, so the custom mapper should consume the diode.
             AssertNoValidationErrors(model);
             Assert.Single(model.Circuit.OfType<IdealDiode>());
             Assert.Empty(model.Circuit.OfType<Diode>());
@@ -695,6 +717,8 @@ namespace SpiceSharpParser.Tests.CustomComponents
             // A normal diode model with no ideal-only parameters must remain SpiceSharp's built-in diode.
             AssertNoValidationErrors(model);
             Assert.Single(model.Circuit.OfType<Diode>());
+
+            // This guards against accidentally treating every D model as an ideal diode.
             Assert.Empty(model.Circuit.OfType<IdealDiode>());
         }
 
@@ -712,6 +736,8 @@ namespace SpiceSharpParser.Tests.CustomComponents
             // Rs alone is valid for classic diodes, so it must not trigger the ideal-diode mapper.
             AssertNoValidationErrors(model);
             Assert.Single(model.Circuit.OfType<Diode>());
+
+            // Keeping this classic preserves LTspice compatibility for ordinary diode models.
             Assert.Empty(model.Circuit.OfType<IdealDiode>());
         }
 
