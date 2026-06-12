@@ -259,6 +259,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
             return FindModelWithPredicate(modelName, null);
         }
 
+        public Model FindModel(string modelName, Func<Model, bool> predicate)
+        {
+            return FindModelWithPredicate(modelName, predicate);
+        }
+
         public IEntity FindModelEntity(string modelName, Func<Model, bool> predicate)
         {
             return FindModelWithPredicate(modelName, predicate)?.Entity;
@@ -288,7 +293,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
                 // Fall back to exact match (base model without suffix)
                 if (AllModels.TryGetValue(modelNameToSearch, out var model))
                 {
-                    return model;
+                    if (predicate == null || predicate(model))
+                    {
+                        return model;
+                    }
                 }
             }
 

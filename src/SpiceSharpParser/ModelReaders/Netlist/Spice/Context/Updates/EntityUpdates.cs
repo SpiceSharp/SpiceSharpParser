@@ -48,14 +48,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                         foreach (var entityUpdate in beforeTemperature)
                         {
                             EvaluationContext context = GetEntityContext(biasingSimulation, entity.Name);
-                            if (context != null)
-                            {
-                                var value = entityUpdate.GetValue(context);
-                                if (!double.IsNaN(value))
-                                {
-                                    entity.CreateParameterSetter<double>(entityUpdate.ParameterName)?.Invoke(value);
-                                }
-                            }
+                            ApplyParameterUpdate(entity, entityUpdate, context);
                         }
                     }
                 };
@@ -71,14 +64,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
                             foreach (var entityUpdate in beforeTemperature)
                             {
                                 EvaluationContext context = GetEntityContext(biasingSimulation, entityPair.Key.Name);
-                                if (context != null)
-                                {
-                                    var value = entityUpdate.GetValue(context);
-                                    if (!double.IsNaN(value))
-                                    {
-                                        entityPair.Key.CreateParameterSetter<double>(entityUpdate.ParameterName)?.Invoke(value);
-                                    }
-                                }
+                                ApplyParameterUpdate(entityPair.Key, entityUpdate, context);
                             }
                         }
                     }
@@ -200,6 +186,32 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates
         {
             var context = Context.GetSimulationContext(simulation).Find(entityName);
             return context;
+        }
+
+        private static void ApplyParameterUpdate(IEntity entity, EntityParameterUpdate entityUpdate, EvaluationContext context)
+        {
+            if (TryGetValue(entityUpdate, context, out double value) && !double.IsNaN(value))
+            {
+                entity.SetParameter(entityUpdate.ParameterName, value);
+            }
+        }
+
+        private static bool TryGetValue(EntityParameterUpdate entityUpdate, EvaluationContext context, out double value)
+        {
+            if (context != null)
+            {
+                value = entityUpdate.GetValue(context);
+                return true;
+            }
+
+            if (entityUpdate is EntityParameterDoubleValueUpdate doubleUpdate)
+            {
+                value = doubleUpdate.Value;
+                return true;
+            }
+
+            value = double.NaN;
+            return false;
         }
     }
 }
