@@ -73,7 +73,7 @@ Without `UseCustomComponents()`, the core parser does not know how to map LTspic
 The instance syntax is the normal diode syntax:
 
 ```spice
-D<name> <anode> <cathode> <model_name> [<area>] [ON|OFF] [M=<m>] [N=<n>]
+D<name> <anode> <cathode> <model_name> [<area>] [ON|OFF] [M=<m>] [N=<n>] [L=<length>] [W=<width>] [<parameter>=<value> ...]
 ```
 
 The custom component is selected when the referenced `.MODEL D(...)` contains at least one ideal diode model parameter:
@@ -93,6 +93,14 @@ D1 in 0 regular
 `Rs` alone does not select the ideal diode, because `Rs` is also a classic diode model parameter. At least one of `Ron`, `Roff`, `Vfwd`, `Vrev`, `Rrev`, `Ilimit`, `RevIlimit`, `Epsilon`, or `RevEpsilon` must be present on the model.
 
 If multiple suffixed models share a base name, instance `L=` and `W=` values are used with model `Lmin`, `Lmax`, `Wmin`, and `Wmax` selection parameters.
+
+```spice
+D1 in 0 did L=0.5 W=5
+.model did.fast D(Ron=2 Roff=1e9 Vfwd=1 Lmin=0.1 Lmax=1 Wmin=1 Wmax=10)
+.model did.slow D(Ron=4 Roff=1e9 Vfwd=1 Lmin=1 Lmax=10 Wmin=10 Wmax=100)
+```
+
+In this example, `D1` selects `did.fast`.
 
 ## Parameters
 
@@ -118,10 +126,14 @@ If multiple suffixed models share a base name, instance `L=` and `W=` values are
 | `area` | Positive area multiplier | 1 |
 | `M` | Positive parallel multiplier | 1 |
 | `N` | Positive series multiplier | 1 |
+| `L` | Length used only for binned model selection | not set |
+| `W` | Width used only for binned model selection | not set |
 | `ON` / `OFF` | Initial state hint | on |
 | `Ron`, `Roff`, `Vfwd`, `Vrev`, `Rrev`, `Ilimit`, `RevIlimit`, `Epsilon`, `RevEpsilon`, `Rs` | Instance override for the same model parameter | model value |
 
 For the ideal diode, `N` is a series multiplier. This differs from the classic diode model, where model parameter `N` is the emission coefficient.
+
+`L` and `W` are not electrical parameters of the ideal diode. They are evaluated during simulation setup to select a matching suffixed model.
 
 ## Parameter Scaling
 
@@ -165,6 +177,49 @@ R_{s,\text{effective}} \approx \frac{R_s \cdot N}{\text{area} \cdot M}
 $$
 
 This matches the intended interpretation: more parallel cells carry more current, and more series cells need more voltage.
+
+## Model Parameter Sweeps
+
+Ideal diode model parameters can be stepped with normal LTspice-style bracket syntax:
+
+```spice
+Ideal diode Ron sweep
+V1 in 0 5
+D1 in 0 did
+.model did D(Ron=2 Roff=1e9 Vfwd=1)
+.op
+.step D did(Ron) LIST 2 4
+.end
+```
+
+The first operating point uses `Ron=2`, so the current is approximately:
+
+$$
+\frac{5 - 1}{2} = 2\,\text{A}
+$$
+
+The second operating point uses `Ron=4`, so the current is approximately:
+
+$$
+\frac{5 - 1}{4} = 1\,\text{A}
+$$
+
+Stepped model values are applied as simulation-local ideal-diode parameter overlays. After a stepped simulation finishes, the shared model parameter set is restored to its original value.
+
+For binned models, the sweep target can use either the requested base model name or the concrete selected model name:
+
+```spice
+Binned ideal diode Ron sweep
+V1 in 0 5
+D1 in 0 did L=0.5 W=5
+.model did.fast D(Ron=2 Roff=1e9 Vfwd=1 Lmin=0.1 Lmax=1 Wmin=1 Wmax=10)
+.model did.slow D(Ron=8 Roff=1e9 Vfwd=1 Lmin=1 Lmax=10 Wmin=10 Wmax=100)
+.op
+.step D did.fast(Ron) LIST 2 4
+.end
+```
+
+Here `D1` selects `did.fast`, and the sweep steps that selected model's `Ron`.
 
 ## Current And Voltage Sign
 
@@ -419,7 +474,8 @@ D1 in 0 did
   -> IdealDiodeGenerator resolves model did
   -> sees IdealDiodeModel
   -> creates IdealDiode
-  -> binds live model parameters
+  -> binds live model parameters for each simulation
+  -> applies simulation-local model sweep overlays, if any
   -> applies instance overrides
 ```
 
@@ -431,6 +487,8 @@ Classic diode models are delegated back to the existing parser behavior:
   -> built-in DiodeModel
   -> built-in Diode
 ```
+
+The selected model is resolved again before simulation setup. This lets `L` and `W` expressions participate in binned model selection and lets stochastic or stepped simulations use their simulation-specific model data.
 
 ## How The SpiceSharp Component Works
 
@@ -704,6 +762,7 @@ Metadata-style LTspice parameters such as `mfg`, `pn`, `description`, and rating
 | `Ron` or `Vfwd` is reported as unsupported | Custom mappings are not enabled | Call `reader.Settings.UseCustomComponents()` before `Read()`. |
 | A classic diode unexpectedly behaves like an ideal diode | The model contains at least one ideal diode parameter | Remove `Ron`, `Roff`, `Vfwd`, `Vrev`, `Rrev`, `Ilimit`, `RevIlimit`, `Epsilon`, or `RevEpsilon` from the model. |
 | `N` does not behave like emission coefficient | In the ideal diode, `N` is the series multiplier | Use a classic diode model for emission-coefficient behavior. |
+| A binned model sweep does not affect the selected diode | The sweep target does not match the requested or selected model name | Use the base model name, such as `did(Ron)`, or the selected suffixed name, such as `did.fast(Ron)`. |
 | AC result has no diode capacitance effect | The ideal diode has no capacitance model | Add explicit capacitors or use a classic diode model. |
 | DC or transient convergence is rough near switching | The transition is too sharp | Add `Epsilon` or `RevEpsilon`, or reduce extreme `Ron`/`Roff` ratios. |
 
