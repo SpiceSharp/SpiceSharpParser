@@ -254,7 +254,122 @@ When the diode is reverse biased, `@D1[i]` is usually negative.
 ## Current Law
 
 The ideal diode current law is evaluated for one diode cell first. Instance
-scaling is applied after that. Define:
+scaling is applied after that.
+
+### Local Evaluation Algorithm
+
+The implementation for this section lives in `IdealDiodeEquation`. The method
+`Evaluate(...)` does not stamp the circuit matrix. It only evaluates the local
+current law for one ideal-diode cell and returns two values:
+
+| Output | Meaning |
+|--------|---------|
+| `current` | Local diode current at the present voltage |
+| `conductance` | Local small-signal derivative `di/dv` used by Newton iteration |
+
+The voltage `v` is positive from anode to cathode, and positive current flows in
+that same direction. The algorithm uses a line representation for each operating
+region:
+
+```text
+i(v) = slope * v + intercept
+```
+
+This representation matters because the solver needs both the current and its
+derivative. The line slope is already the small-signal conductance for that
+region.
+
+The local evaluation is:
+
+```text
+gon  = 1 / Ron
+goff = Roff was given ? 1 / Roff : max(simulation Gmin, 0)
+vf   = Vfwd was given ? Vfwd : 0
+
+current     = goff * v
+conductance = goff
+
+if Vrev was given:
+    vrev = abs(Vrev)
+    rrev = Rrev was given ? Rrev : Ron
+    grev = 1 / rrev
+
+    reverse line = grev * v + grev * vrev
+    off line     = goff * v
+    boundary     = intersection(reverse line, off line)
+
+    current, conductance =
+        transition(v, boundary, RevEpsilon, reverse line, off line)
+
+forward line = gon * v - gon * vf
+off line     = goff * v
+boundary     = intersection(off line, forward line)
+
+if v is past the forward boundary, or inside the forward smoothing window:
+    current, conductance =
+        transition(v, boundary, Epsilon, off line, forward line)
+
+if current > 0 and Ilimit was given:
+    apply tanh current limiter
+else if current < 0 and RevIlimit was given:
+    apply tanh current limiter
+
+current     = current * area
+conductance = conductance * area
+```
+
+The order is intentional. The off line is the default because most voltages are
+between reverse breakdown and forward conduction. Reverse breakdown is evaluated
+before forward conduction because it only applies on the negative-voltage side.
+The forward transition is evaluated last so positive forward conduction replaces
+the off result when the voltage reaches the forward knee.
+
+The transition helper is shared by both knees. It receives the line on the
+low-voltage side, the line on the high-voltage side, the boundary where the two
+unsmoothed lines intersect, and the optional smoothing width. For reverse
+breakdown, the low-voltage side is the reverse line and the high-voltage side is
+the off line. For forward conduction, the low-voltage side is the off line and
+the high-voltage side is the forward line.
+
+The boundary is computed by solving the two-line equation:
+
+```text
+leftSlope * v + leftIntercept = rightSlope * v + rightIntercept
+```
+
+or:
+
+```text
+v = (rightIntercept - leftIntercept) / (leftSlope - rightSlope)
+```
+
+If the two slopes are nearly equal, the code uses the nominal knee as a fallback:
+`-Vrev` for reverse breakdown or `Vfwd` for forward conduction. That avoids an
+unstable division when two regions are almost parallel.
+
+With no smoothing, the transition helper simply chooses one line. With smoothing,
+the epsilon value is treated as the full voltage width of the blend, centered on
+the boundary. The conductance ramps linearly from the left slope to the right
+slope, and the current is the integral of that ramp. This keeps both current and
+conductance continuous at the start and end of the smoothing window.
+
+Current limiting happens after the piecewise line and optional smoothing have
+selected a raw current. The limiter is based on `tanh`, so it approaches the
+limit smoothly and also scales the conductance by the derivative of the limiter.
+The sign of the raw current selects the limiter: positive current uses `Ilimit`,
+negative current uses `RevIlimit`, and zero current is left unchanged.
+
+Finally, `area` is applied to both current and conductance. Because this happens
+after current limiting, increasing `area` scales the limited current and the
+limited small-signal conductance as if multiple identical local cells were placed
+in parallel.
+
+The caller, `Biasing`, handles everything outside the local cell. It divides the
+internal diode voltage by `N` before calling `Evaluate(...)`, multiplies the
+equivalent branch current by `M`, scales the conductance by `M / N`, and stamps
+`Rs` as the series branch between the external and internal anode.
+
+The formulas below describe the same algorithm. Define:
 
 $$
 \begin{aligned}
