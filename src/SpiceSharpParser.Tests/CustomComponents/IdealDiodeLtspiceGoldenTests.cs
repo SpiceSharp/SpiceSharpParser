@@ -337,6 +337,52 @@ namespace SpiceSharpParser.Tests.CustomComponents
                     1e-4),
 
                 new LtspiceIdealDiodeAcCase(
+                    "ac_finite_roff_forward_epsilon_derivative",
+                    1.17875,
+                    ".model did D(Ron=1 Roff=20 Vfwd=1 Epsilon=0.2)",
+                    parameters =>
+                    {
+                        parameters.OnResistance = 1.0;
+                        parameters.OffResistance = 20.0;
+                        parameters.ForwardVoltage = 1.0;
+                        parameters.ForwardEpsilon = 0.2;
+                    },
+                    1e-7,
+                    1e-4),
+
+                new LtspiceIdealDiodeAcCase(
+                    "ac_reverse_epsilon_ramp_derivative",
+                    -2.225,
+                    ".model did D(Ron=1 Roff=1e12 Vfwd=1 Vrev=2 Rrev=2 RevEpsilon=0.4)",
+                    parameters =>
+                    {
+                        parameters.OnResistance = 1.0;
+                        parameters.OffResistance = 1e12;
+                        parameters.ForwardVoltage = 1.0;
+                        parameters.ReverseVoltage = 2.0;
+                        parameters.ReverseResistance = 2.0;
+                        parameters.ReverseEpsilon = 0.4;
+                    },
+                    1e-7,
+                    1e-4),
+
+                new LtspiceIdealDiodeAcCase(
+                    "ac_finite_roff_reverse_epsilon_derivative",
+                    -2.3325,
+                    ".model did D(Ron=1 Roff=20 Vfwd=1 Vrev=2 Rrev=2 RevEpsilon=0.4)",
+                    parameters =>
+                    {
+                        parameters.OnResistance = 1.0;
+                        parameters.OffResistance = 20.0;
+                        parameters.ForwardVoltage = 1.0;
+                        parameters.ReverseVoltage = 2.0;
+                        parameters.ReverseResistance = 2.0;
+                        parameters.ReverseEpsilon = 0.4;
+                    },
+                    1e-7,
+                    1e-4),
+
+                new LtspiceIdealDiodeAcCase(
                     "ac_reverse_breakdown_rrev_derivative",
                     -5.0,
                     ".model did D(Ron=1 Roff=1e12 Vfwd=1 Vrev=1.5 Rrev=3)",
