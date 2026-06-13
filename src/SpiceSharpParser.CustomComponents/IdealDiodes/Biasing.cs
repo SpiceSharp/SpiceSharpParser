@@ -128,7 +128,6 @@ namespace SpiceSharpParser.CustomComponents.IdealDiodes
                 Parameters,
                 BiasingParameters,
                 vd,
-                Parameters.Area,
                 out double cd,
                 out double gd);
 
@@ -196,14 +195,11 @@ namespace SpiceSharpParser.CustomComponents.IdealDiodes
         /// <returns>The effective series resistance.</returns>
         protected double GetEffectiveSeriesResistance()
         {
-            if (Parameters.Resistance <= 0.0)
-                return 0.0;
-
-            double scale = Parameters.Area * Parameters.ParallelMultiplier;
-            if (scale <= 0.0)
-                throw new InvalidOperationException("Ideal diode area and parallel multiplier must be greater than zero when Rs is positive.");
-
-            return Parameters.Resistance * Parameters.SeriesMultiplier / scale;
+            // LTspice's idealized Ron/Roff/Vfwd diode keeps Rs in the accepted
+            // parameter set, but the idealized region-wise-linear model does not
+            // use it electrically. Keep the internal zero-volt branch topology so
+            // Rs can still be stepped without rebinding the component.
+            return 0.0;
         }
 
         /// <summary>
@@ -220,7 +216,10 @@ namespace SpiceSharpParser.CustomComponents.IdealDiodes
                 return diodeConductance;
 
             double seriesResistance = GetEffectiveSeriesResistance();
-            if (diodeConductance <= 0.0 || seriesResistance <= 0.0)
+            if (seriesResistance <= 0.0)
+                return diodeConductance;
+
+            if (diodeConductance <= 0.0)
                 return 0.0;
 
             return diodeConductance / (1.0 + (diodeConductance * seriesResistance));

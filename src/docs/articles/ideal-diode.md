@@ -117,19 +117,19 @@ In this example, `D1` selects `did.fast`.
 | `RevIlimit` | Reverse current limit | not enabled |
 | `Epsilon` | Forward transition smoothing width | 0 V |
 | `RevEpsilon` | Reverse transition smoothing width | 0 V |
-| `Rs` | Parasitic series resistance | 0 ohm |
 
 ### Instance Parameters
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `area` | Positive area multiplier | 1 |
+| `area` | Accepted by diode syntax, ignored by the idealized model | 1 |
 | `M` | Positive parallel multiplier | 1 |
 | `N` | Positive series multiplier | 1 |
 | `L` | Length used only for binned model selection | not set |
 | `W` | Width used only for binned model selection | not set |
 | `ON` / `OFF` | Initial state hint | on |
-| `Ron`, `Roff`, `Vfwd`, `Vrev`, `Rrev`, `Ilimit`, `RevIlimit`, `Epsilon`, `RevEpsilon`, `Rs` | Instance override for the same model parameter | model value |
+| `Ron`, `Roff`, `Vfwd`, `Vrev`, `Rrev`, `Ilimit`, `RevIlimit`, `Epsilon`, `RevEpsilon` | Instance override for the same model parameter | model value |
+| `Rs` | Accepted by shared diode parameter handling, ignored by the idealized model | 0 ohm |
 
 For the ideal diode, `N` is a series multiplier. This differs from the classic diode model, where model parameter `N` is the emission coefficient.
 
@@ -137,23 +137,24 @@ For the ideal diode, `N` is a series multiplier. This differs from the classic d
 
 ## Parameter Scaling
 
-The model is evaluated as one ideal diode cell. Instance multipliers then scale the result:
+The model is evaluated as one ideal diode cell. LTspice's idealized diode uses
+`M` and `N` for electrical scaling:
 
 | Parameter | Effect |
 |-----------|--------|
-| `area` | Multiplies the local diode current and conductance. |
 | `M` | Represents parallel diode cells. Current and conductance scale by `M`. |
 | `N` | Represents series diode cells. Total voltage is divided by `N` before evaluating one cell. |
-| `Rs` | Adds a series resistance between the external anode and the internal ideal diode anode. |
+| `area` | Accepted by the shared diode syntax but not used electrically by the idealized model. |
+| `Rs` | Accepted by shared model/instance handling but not used electrically by the idealized model. |
 
-`area`, `M`, and `N` must be greater than zero. This avoids singular or poorly conditioned internal branch topologies, especially when `Rs` is nonzero.
+`area`, `M`, and `N` are still validated as positive diode instance values.
 
 For a forward-biased diode without smoothing or current limiting:
 
 $$
 \begin{aligned}
 v_{\text{local}} &= \frac{V(\text{anode}, \text{cathode})}{N} \\
-i_{\text{local}} &= \text{area} \cdot \frac{v_{\text{local}} - V_{\text{fwd}}}{R_{\text{on}}} \\
+i_{\text{local}} &= \frac{v_{\text{local}} - V_{\text{fwd}}}{R_{\text{on}}} \\
 I_{\text{total}} &= M \cdot i_{\text{local}}
 \end{aligned}
 $$
@@ -167,14 +168,12 @@ $$
 and the approximate effective forward resistance is:
 
 $$
-R_{\text{effective}} \approx \frac{R_{\text{on}} \cdot N}{\text{area} \cdot M}
+R_{\text{effective}} \approx \frac{R_{\text{on}} \cdot N}{M}
 $$
 
-If `Rs` is used, it adds another effective series resistance:
-
-$$
-R_{s,\text{effective}} \approx \frac{R_s \cdot N}{\text{area} \cdot M}
-$$
+For LTspice parity, `area` and `Rs` do not change that effective resistance for
+the idealized `Ron`/`Roff`/`Vfwd` model. Use `M` for parallel scaling, `N` for
+series scaling, or add an explicit resistor if a series resistance is required.
 
 This matches the intended interpretation: more parallel cells carry more current, and more series cells need more voltage.
 
@@ -243,8 +242,8 @@ Positive diode current flows from anode to cathode. Property exports follow that
 
 | Export | Meaning |
 |--------|---------|
-| `@D1[v]` or `@D1[vd]` | Terminal diode voltage, including any `Rs` drop |
-| `@D1[vj]` or `@D1[vdiode]` | Internal ideal-diode voltage, excluding any `Rs` drop |
+| `@D1[v]` or `@D1[vd]` | Terminal diode voltage |
+| `@D1[vj]` or `@D1[vdiode]` | Internal ideal-diode voltage; equal to terminal voltage for the LTspice-parity idealized model |
 | `@D1[i]`, `@D1[id]`, or `@D1[c]` | Diode current |
 | `@D1[gd]` | Terminal small-signal conductance at the operating point |
 | `@D1[p]` or `@D1[pd]` | Terminal diode branch power |
@@ -313,9 +312,6 @@ if current > 0 and Ilimit was given:
     apply tanh current limiter
 else if current < 0 and RevIlimit was given:
     apply tanh current limiter
-
-current     = current * area
-conductance = conductance * area
 ```
 
 The order is intentional. The off line is the default because most voltages are
@@ -348,10 +344,18 @@ If the two slopes are nearly equal, the code uses the nominal knee as a fallback
 unstable division when two regions are almost parallel.
 
 With no smoothing, the transition helper simply chooses one line. With smoothing,
-the epsilon value is treated as the full voltage width of the blend, centered on
-the boundary. The conductance ramps linearly from the left slope to the right
-slope, and the current is the integral of that ramp. This keeps both current and
-conductance continuous at the start and end of the smoothing window.
+the epsilon value is treated as a one-sided LTspice-style width. Forward
+smoothing starts at the forward boundary and extends into the forward-conduction
+region. Reverse smoothing starts in reverse breakdown and ends at the reverse
+boundary. The conductance ramps linearly from the left slope to the right slope,
+and the current is the integral of that ramp. This keeps both current and
+conductance continuous at the start and end of the smoothing window. It also
+shifts the fully conducting side by half the epsilon width; for example, deep in
+reverse breakdown with `RevEpsilon=e`, the approximate line becomes:
+
+$$
+i \approx \frac{v + V_{\text{rev}} + e / 2}{R_{\text{rev}}}
+$$
 
 Current limiting happens after the piecewise line and optional smoothing have
 selected a raw current. The limiter is based on `tanh`, so it approaches the
@@ -359,15 +363,10 @@ limit smoothly and also scales the conductance by the derivative of the limiter.
 The sign of the raw current selects the limiter: positive current uses `Ilimit`,
 negative current uses `RevIlimit`, and zero current is left unchanged.
 
-Finally, `area` is applied to both current and conductance. Because this happens
-after current limiting, increasing `area` scales the limited current and the
-limited small-signal conductance as if multiple identical local cells were placed
-in parallel.
-
 The caller, `Biasing`, handles everything outside the local cell. It divides the
 internal diode voltage by `N` before calling `Evaluate(...)`, multiplies the
-equivalent branch current by `M`, scales the conductance by `M / N`, and stamps
-`Rs` as the series branch between the external and internal anode.
+equivalent branch current by `M`, and scales the conductance by `M / N`. The
+accepted `area` and `Rs` values are ignored electrically for LTspice parity.
 
 The formulas below describe the same algorithm. Define:
 
@@ -517,7 +516,9 @@ current is negative, $\tanh(i_0 / I_{\text{rev-limit}})$ is also negative.
 
 ### Transition Smoothing
 
-`Epsilon` and `RevEpsilon` smooth the forward and reverse transitions. A value of zero gives a sharp piecewise transition. A positive value ramps the slope over a voltage window around the transition.
+`Epsilon` and `RevEpsilon` smooth the forward and reverse transitions. A value
+of zero gives a sharp piecewise transition. A positive value ramps the slope over
+a one-sided LTspice-style voltage window next to the transition.
 
 ```spice
 .model did D(Ron=0.1 Roff=1e9 Vfwd=0.7 Epsilon=10m)
@@ -539,12 +540,21 @@ For the forward transition, the left line is `i_off(v)` and the right line is
 `i_on(v)`. For the reverse transition, the left line is `i_rev(v)` and the
 right line is `i_off(v)`.
 
-With smoothing width `e`, the smoothing window is:
+With smoothing width `e`, the forward smoothing window is:
 
 $$
 \begin{aligned}
-v_{\text{start}} &= v_{\text{boundary}} - \frac{e}{2} \\
-v_{\text{end}} &= v_{\text{boundary}} + \frac{e}{2}
+v_{\text{start}} &= v_{\text{boundary}} \\
+v_{\text{end}} &= v_{\text{boundary}} + e
+\end{aligned}
+$$
+
+The reverse smoothing window is:
+
+$$
+\begin{aligned}
+v_{\text{start}} &= v_{\text{boundary}} - e \\
+v_{\text{end}} &= v_{\text{boundary}}
 \end{aligned}
 $$
 
@@ -561,6 +571,20 @@ g_d(v) &= a_{\text{left}} + \frac{(a_{\text{right}} - a_{\text{left}}) \cdot d}{
 $$
 
 Outside the window, the model uses the normal left or right line.
+
+For the fully conducting side of a smoothed transition, the straight line is
+shifted by half the epsilon width so it joins the ramp continuously. With tiny
+`Roff`, this means the deep forward region is approximately:
+
+$$
+i \approx \frac{v - V_{\text{fwd}} - Epsilon / 2}{R_{\text{on}}}
+$$
+
+and the deep reverse region is approximately:
+
+$$
+i \approx \frac{v + V_{\text{rev}} + RevEpsilon / 2}{R_{\text{rev}}}
+$$
 
 Use smoothing when a hard corner causes convergence problems in DC or transient operating-point iterations.
 
@@ -630,10 +654,10 @@ At each biasing load, the behavior:
 1. Reads the present internal diode voltage.
 2. Divides it by `N` to get the voltage across one series cell.
 3. Evaluates current `i` and local conductance `gd`.
-4. Scales by `area` and `M`.
+4. Scales current by `M` and conductance by `M / N`.
 5. Stamps the internal diode conductance into the matrix.
 6. Stamps the equivalent current into the right-hand side.
-7. Stamps the series branch equation between the external and internal anodes.
+7. Stamps the zero-volt branch equation between the external and internal anodes.
 
 The local linear form is:
 
@@ -657,16 +681,18 @@ The right-hand side receives the equivalent current source contribution.
 
 ### Series Resistance
 
-The component always creates a private internal anode and a series branch:
+The component always creates a private internal anode and a branch:
 
 ```text
-external anode -- Rs -- internal anode -- ideal diode -- cathode
+external anode -- 0 V constraint -- internal anode -- ideal diode -- cathode
 ```
 
-That fixed topology lets `Rs` be stepped across zero. When `Rs=0`, the series branch is an exact zero-volt constraint rather than an artificial small resistor. When `Rs` is greater than zero, the same branch equation represents the parasitic resistance without requiring the parser to synthesize an extra resistor component.
+That fixed topology lets `Rs` be parsed or stepped without rebinding the
+component, but for LTspice parity `Rs` is ignored electrically by the idealized
+`Ron`/`Roff`/`Vfwd` model. Add an explicit resistor in series with the diode when
+series resistance is required.
 
-The standard `v`, `gd`, and `p` exports are terminal quantities. Use `vj` when
-you need the internal ideal-diode voltage without the `Rs` drop.
+The standard `v`, `vj`, `gd`, and `p` exports are terminal-equivalent quantities.
 
 ### Convergence Check
 
@@ -680,9 +706,9 @@ If the predicted current differs from the actual loaded current by more than the
 
 ### AC Behavior
 
-AC analysis uses the operating-point conductance. The AC stamp uses the
-internal diode conductance and optional `Rs`, while property exports report
-terminal voltage, terminal current, and terminal complex power:
+AC analysis uses the operating-point conductance. The AC stamp uses the internal
+diode conductance, while property exports report terminal voltage, terminal
+current, and terminal complex power:
 
 $$
 y_{\text{ac}} = g_d
@@ -849,6 +875,34 @@ limiter would use:
 $$
 I = 10 \cdot \tanh\left(\frac{(v - 0.7) / 0.1}{10}\right)
 $$
+
+## LTspice Golden Comparison
+
+The test project includes an optional LTspice-backed golden comparison for the
+ideal diode. It is skipped by default so normal test runs do not require LTspice
+to be installed.
+
+To enable it, set `LTSPICE_EXE` to the LTspice executable path and run the
+focused ideal-diode tests:
+
+```powershell
+$env:LTSPICE_EXE = "C:\Program Files\ADI\LTspice\LTspice.exe"
+dotnet test .\src\SpiceSharpParser.Tests\SpiceSharpParser.Tests.csproj --filter FullyQualifiedName~IdealDiode
+```
+
+The golden test generates temporary LTspice `.cir` files, runs DC sweeps in
+batch ASCII mode, parses the LTspice `.raw` output, and compares `I(D1)` against
+the custom `IdealDiode` current at each sampled voltage.
+
+The case matrix covers:
+
+| Case | Parameters exercised |
+|------|----------------------|
+| Forward and off regions | `Ron`, `Roff`, `Vfwd` |
+| Reverse breakdown | `Vrev`, `Rrev` |
+| Current limiting | `Ilimit`, `RevIlimit` |
+| Transition smoothing | `Epsilon`, `RevEpsilon` |
+| Scaling and ignored shared syntax | `area`, `M`, `N`, `Rs`, `off` |
 
 ## Unsupported Or Ignored Parameters
 

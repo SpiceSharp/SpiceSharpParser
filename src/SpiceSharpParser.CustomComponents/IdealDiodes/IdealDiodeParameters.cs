@@ -91,7 +91,7 @@ namespace SpiceSharpParser.CustomComponents.IdealDiodes
         }
 
         /// <summary>
-        /// Gets or sets the area multiplier.
+        /// Gets or sets the accepted diode area value. LTspice's idealized region-wise-linear diode ignores it electrically.
         /// </summary>
         [ParameterName("area"), ParameterInfo("Area factor")]
         [GreaterThan(0), Finite]
@@ -104,7 +104,7 @@ namespace SpiceSharpParser.CustomComponents.IdealDiodes
         public bool Off { get; set; }
 
         /// <summary>
-        /// Gets or sets the parasitic series resistance.
+        /// Gets or sets the accepted series resistance value. LTspice's idealized region-wise-linear diode ignores it electrically.
         /// </summary>
         [ParameterName("rs"), ParameterInfo("Parasitic series resistance", Units = "Ohm")]
         [GreaterThanOrEquals(0), Finite]

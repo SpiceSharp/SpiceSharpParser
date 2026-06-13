@@ -10,7 +10,7 @@ namespace SpiceSharpParser.CustomComponents.IdealDiodes
     /// <remarks>
     /// This helper owns only the local current law for one ideal diode cell. The
     /// biasing behavior that calls it handles the external branch details such as
-    /// series resistance and the parallel/series diode multipliers.
+    /// the parallel/series diode multipliers.
     ///
     /// The current law is built from straight-line regions in slope/intercept
     /// form: <c>I = g * V + b</c>. The off region uses <c>Roff</c> or simulator
@@ -33,14 +33,12 @@ namespace SpiceSharpParser.CustomComponents.IdealDiodes
         /// <param name="parameters">The effective model and instance parameters.</param>
         /// <param name="biasingParameters">The simulation biasing parameters, used for the default off conductance.</param>
         /// <param name="voltage">The local voltage across one diode cell.</param>
-        /// <param name="area">The diode area multiplier applied after the local equation is evaluated.</param>
-        /// <param name="current">The resulting local diode current, scaled by <paramref name="area" />.</param>
-        /// <param name="conductance">The resulting small-signal conductance, scaled by <paramref name="area" />.</param>
+        /// <param name="current">The resulting local diode current.</param>
+        /// <param name="conductance">The resulting small-signal conductance.</param>
         public static void Evaluate(
             IdealDiodeParameters parameters,
             BiasingParameters biasingParameters,
             double voltage,
-            double area,
             out double current,
             out double conductance)
         {
@@ -87,8 +85,8 @@ namespace SpiceSharpParser.CustomComponents.IdealDiodes
                     -reverseVoltage);
 
                 // Evaluate the reverse-to-off knee. With revepsilon omitted or
-                // zero this is a hard switch at the intersection; otherwise it is
-                // smoothed symmetrically around the boundary.
+                // zero this is a hard switch at the intersection; otherwise the
+                // smoothing window extends from the boundary into reverse breakdown.
                 EvaluateTransition(
                     voltage,
                     boundary,
@@ -97,6 +95,7 @@ namespace SpiceSharpParser.CustomComponents.IdealDiodes
                     reverseIntercept,
                     offConductance,
                     0.0,
+                    false,
                     out current,
                     out conductance);
             }
@@ -115,12 +114,10 @@ namespace SpiceSharpParser.CustomComponents.IdealDiodes
                 onIntercept,
                 forwardVoltage);
 
-            // Avoid a second transition evaluation in the normal off region. For
-            // smoothed knees, begin applying the blend at the start of the epsilon
-            // band so the partial-conduction region is not missed.
-            double forwardWidth = parameters.ForwardEpsilon.Given ? parameters.ForwardEpsilon.Value : 0.0;
-            double forwardStart = forwardBoundary - (Math.Max(forwardWidth, 0.0) / 2.0);
-            if (voltage > forwardBoundary || (forwardWidth > 0.0 && voltage >= forwardStart))
+            // Avoid a second transition evaluation in the off or reverse regions.
+            // LTspice-style forward epsilon starts at the boundary and extends
+            // into forward conduction, so voltages below the boundary remain off.
+            if (voltage >= forwardBoundary)
             {
                 // Evaluate the off-to-forward knee using the same generic transition
                 // helper used for reverse breakdown.
@@ -132,6 +129,7 @@ namespace SpiceSharpParser.CustomComponents.IdealDiodes
                     0.0,
                     onConductance,
                     onIntercept,
+                    true,
                     out current,
                     out conductance);
             }
@@ -141,10 +139,6 @@ namespace SpiceSharpParser.CustomComponents.IdealDiodes
             // derivative by the tanh derivative.
             ApplyCurrentLimits(parameters, ref current, ref conductance);
 
-            // Area behaves like parallel identical cells: both DC current and
-            // small-signal conductance scale linearly.
-            current *= area;
-            conductance *= area;
         }
 
         /// <summary>
@@ -183,6 +177,11 @@ namespace SpiceSharpParser.CustomComponents.IdealDiodes
         /// <param name="leftIntercept">The intercept used below the transition.</param>
         /// <param name="rightSlope">The slope used above the transition.</param>
         /// <param name="rightIntercept">The intercept used above the transition.</param>
+        /// <param name="smoothTowardRight">
+        /// If <c>true</c>, the smoothing window starts at <paramref name="boundary" /> and extends toward
+        /// larger voltages. If <c>false</c>, the window ends at <paramref name="boundary" /> and extends
+        /// toward smaller voltages.
+        /// </param>
         /// <param name="current">The evaluated current.</param>
         /// <param name="conductance">The evaluated conductance.</param>
         private static void EvaluateTransition(
@@ -193,6 +192,7 @@ namespace SpiceSharpParser.CustomComponents.IdealDiodes
             double leftIntercept,
             double rightSlope,
             double rightIntercept,
+            bool smoothTowardRight,
             out double current,
             out double conductance)
         {
@@ -215,21 +215,33 @@ namespace SpiceSharpParser.CustomComponents.IdealDiodes
                 return;
             }
 
-            // The epsilon value is the full width of the blend, centered on the
-            // natural intersection of the two lines.
-            double start = boundary - (width / 2.0);
-            double end = boundary + (width / 2.0);
+            // LTspice uses epsilon as a one-sided width, not as a centered band.
+            // Forward smoothing starts at Vfwd and moves right into the on-region;
+            // reverse smoothing starts in the reverse region and ends at -Vrev.
+            double start = smoothTowardRight ? boundary : boundary - width;
+            double end = smoothTowardRight ? boundary + width : boundary;
+            double slopeDelta = rightSlope - leftSlope;
+
+            // A one-sided conductance ramp shifts the fully conducting side by
+            // half the slope change times the epsilon width. This keeps current
+            // continuous where the ramp meets the straight-line region.
+            double lowVoltageIntercept = smoothTowardRight
+                ? leftIntercept
+                : leftIntercept - (slopeDelta * width / 2.0);
+            double highVoltageIntercept = smoothTowardRight
+                ? rightIntercept - (slopeDelta * width / 2.0)
+                : rightIntercept;
 
             if (voltage <= start)
             {
-                current = (leftSlope * voltage) + leftIntercept;
+                current = (leftSlope * voltage) + lowVoltageIntercept;
                 conductance = leftSlope;
                 return;
             }
 
             if (voltage >= end)
             {
-                current = (rightSlope * voltage) + rightIntercept;
+                current = (rightSlope * voltage) + highVoltageIntercept;
                 conductance = rightSlope;
                 return;
             }
@@ -243,8 +255,7 @@ namespace SpiceSharpParser.CustomComponents.IdealDiodes
             //
             // where x is the distance from the start of the smoothing band.
             double distance = voltage - start;
-            double slopeDelta = rightSlope - leftSlope;
-            current = (leftSlope * start) + leftIntercept
+            current = (leftSlope * start) + lowVoltageIntercept
                 + (leftSlope * distance)
                 + (slopeDelta * distance * distance / (2.0 * width));
             conductance = leftSlope + (slopeDelta * distance / width);

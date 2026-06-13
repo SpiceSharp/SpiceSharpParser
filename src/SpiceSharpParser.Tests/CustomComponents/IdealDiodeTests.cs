@@ -75,7 +75,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
         }
 
         [Fact]
-        public void Op_WhenAreaIsSet_ScalesCurrent()
+        public void Op_WhenAreaIsSet_IgnoresAreaForLtspiceIdealDiode()
         {
             double current = RunOpCurrent(3.0, diode =>
             {
@@ -85,12 +85,12 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 diode.Parameters.Area = 3.0;
             });
 
-            // The unscaled forward current is 1 A, and area=3 scales it to 3 A.
-            AssertClose(3.0, current, 1e-9);
+            // LTspice's region-wise-linear ideal diode accepts area syntax, but area does not scale this model.
+            AssertClose(1.0, current, 1e-9);
         }
 
         [Fact]
-        public void Op_WhenSeriesResistanceIsSet_AddsResistance()
+        public void Op_WhenSeriesResistanceIsSet_IgnoresResistanceForLtspiceIdealDiode()
         {
             double current = RunOpCurrent(5.0, diode =>
             {
@@ -100,8 +100,8 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 diode.Parameters.Resistance = 3.0;
             });
 
-            // The total forward path is Ron + Rs, so current is (5 V - 1 V) / 5 ohm.
-            AssertClose(0.8, current, 1e-9);
+            // LTspice's idealized Ron/Roff/Vfwd diode accepts Rs, but Rs belongs to the standard diode model.
+            AssertClose(2.0, current, 1e-9);
         }
 
         [Fact]
@@ -154,7 +154,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
         [Fact]
         public void Op_WhenForwardEpsilonIsSet_SmoothsTurnOnKnee()
         {
-            double current = RunOpCurrent(0.95, diode =>
+            double current = RunOpCurrent(1.05, diode =>
             {
                 diode.Parameters.OnResistance = 1.0;
                 diode.Parameters.OffResistance = 1e12;
@@ -162,8 +162,26 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 diode.Parameters.ForwardEpsilon = 0.2;
             });
 
-            // At 0.05 V into a 0.2 V smoothing band, the ramp integral is 0.05^2 / (2 * 0.2).
+            // At 0.05 V into LTspice's one-sided 0.2 V smoothing band, the ramp integral is 0.05^2 / (2 * 0.2).
             AssertClose(0.00625, current, 1e-6);
+        }
+
+        [Fact]
+        public void Op_WhenReverseEpsilonIsSet_ShiftsReverseBreakdownLine()
+        {
+            double current = RunOpCurrent(-3.0, diode =>
+            {
+                diode.Parameters.OnResistance = 1.0;
+                diode.Parameters.OffResistance = 1e12;
+                diode.Parameters.ForwardVoltage = 1.0;
+                diode.Parameters.ReverseVoltage = 2.0;
+                diode.Parameters.ReverseResistance = 2.0;
+                diode.Parameters.ReverseEpsilon = 0.4;
+            });
+
+            // LTspice's one-sided RevEpsilon shifts the reverse line by RevEpsilon / 2:
+            // (-3 V + 2 V + 0.2 V) / 2 ohm.
+            AssertClose(-0.4, current, 1e-9);
         }
 
         [Fact]
@@ -184,7 +202,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
         }
 
         [Fact]
-        public void Op_WhenSeriesResistanceIsSet_ExportsTerminalProperties()
+        public void Op_WhenSeriesResistanceIsSet_ExportsTerminalPropertiesWithoutRsDrop()
         {
             var values = RunOpProperties(5.0, diode =>
             {
@@ -194,12 +212,12 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 diode.Parameters.Resistance = 3.0;
             });
 
-            // The terminal branch includes both the internal ideal diode and Rs.
-            AssertClose(0.8, values.Current, 1e-9);
+            // Rs is accepted but ignored by LTspice's idealized Ron/Roff/Vfwd diode.
+            AssertClose(2.0, values.Current, 1e-9);
             AssertClose(5.0, values.Voltage, 1e-12);
-            AssertClose(2.6, values.JunctionVoltage, 1e-9);
-            AssertClose(0.2, values.Conductance, 1e-12);
-            AssertClose(4.0, values.Power, 1e-9);
+            AssertClose(5.0, values.JunctionVoltage, 1e-9);
+            AssertClose(0.5, values.Conductance, 1e-12);
+            AssertClose(10.0, values.Power, 1e-9);
         }
 
         [Fact]
@@ -271,7 +289,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
         }
 
         [Fact]
-        public void Ac_WhenSeriesResistanceIsSet_ExportsTerminalProperties()
+        public void Ac_WhenSeriesResistanceIsSet_IgnoresResistance()
         {
             var values = RunAcProperties(5.0, diode =>
             {
@@ -281,11 +299,11 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 diode.Parameters.Resistance = 3.0;
             });
 
-            // A 1 V small-signal source sees Ron + Rs = 5 ohm, so the AC current is 0.2 A.
-            AssertComplexClose(new Complex(0.2, 0.0), values.Current, 1e-9);
+            // The AC small-signal branch sees Ron only because Rs is ignored by the idealized model.
+            AssertComplexClose(new Complex(0.5, 0.0), values.Current, 1e-9);
             AssertComplexClose(new Complex(1.0, 0.0), values.Voltage, 1e-12);
-            AssertComplexClose(new Complex(0.4, 0.0), values.JunctionVoltage, 1e-9);
-            AssertComplexClose(new Complex(0.2, 0.0), values.Power, 1e-9);
+            AssertComplexClose(new Complex(1.0, 0.0), values.JunctionVoltage, 1e-9);
+            AssertComplexClose(new Complex(0.5, 0.0), values.Power, 1e-9);
         }
 
         [Fact]
@@ -333,7 +351,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
         }
 
         [Fact]
-        public void Op_WhenLtspiceStyleScalingAndSeriesResistanceAreSet_MatchesGoldenTerminalValues()
+        public void Op_WhenLtspiceStyleMultipliersAreaAndSeriesResistanceAreSet_MatchesGoldenTerminalValues()
         {
             var values = RunOpProperties(10.0, diode =>
             {
@@ -346,12 +364,12 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 diode.Parameters.SeriesMultiplier = 2.0;
             });
 
-            // Effective threshold is N*Vfwd = 2 V and effective resistance is (Ron + Rs)*N/(area*M).
-            AssertClose(4.8, values.Current, 1e-9);
+            // LTspice applies M and N, but ignores area and Rs for the idealized model.
+            AssertClose(6.0, values.Current, 1e-9);
             AssertClose(10.0, values.Voltage, 1e-12);
-            AssertClose(5.2, values.JunctionVoltage, 1e-9);
-            AssertClose(0.6, values.Conductance, 1e-12);
-            AssertClose(48.0, values.Power, 1e-9);
+            AssertClose(10.0, values.JunctionVoltage, 1e-9);
+            AssertClose(0.75, values.Conductance, 1e-12);
+            AssertClose(60.0, values.Power, 1e-9);
         }
 
         [Fact]
@@ -432,7 +450,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
         }
 
         [Fact]
-        public void Parser_WhenAreaValueIsPositional_ScalesIdealDiode()
+        public void Parser_WhenAreaValueIsPositional_IgnoresAreaForIdealDiode()
         {
             var model = ReadWithCustomComponents(
                 "Ideal diode parser",
@@ -445,8 +463,8 @@ namespace SpiceSharpParser.Tests.CustomComponents
             AssertNoValidationErrors(model);
             Assert.Single(model.Circuit.OfType<IdealDiode>());
 
-            // The positional value is diode area, which scales the base 1 A branch current by 3.
-            AssertClose(3.0, RunOpCurrent(model), 1e-9);
+            // LTspice accepts the positional area token, but the idealized model does not use it electrically.
+            AssertClose(1.0, RunOpCurrent(model), 1e-9);
         }
 
         [Fact]
@@ -478,7 +496,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 ".op",
                 ".end");
 
-            // Area participates in Rs scaling, so zero must fail validation instead of creating an infinite path.
+            // Area remains validated as part of the shared diode instance syntax.
             Assert.True(areaModel.ValidationResult.HasError);
             Assert.Contains("Area", GetValidationMessages(areaModel));
 
@@ -490,7 +508,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 ".op",
                 ".end");
 
-            // M=0 would remove the parallel scale denominator; it should be rejected like zero area.
+            // M=0 would remove all parallel devices.
             Assert.True(multiplierModel.ValidationResult.HasError, GetValidationMessages(multiplierModel));
         }
 
@@ -601,14 +619,13 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 ".step D ideal(Rs) LIST 0 3",
                 ".end");
 
-            // The sweep covers the zero-Rs fast path and a positive series-resistance path.
+            // The sweep covers Rs updates, but LTspice's idealized diode ignores Rs electrically.
             AssertNoValidationErrors(model);
             Assert.Equal(2, model.Simulations.Count);
 
-            // With Rs=0 the current is (5 V - 1 V) / 2 ohm; with Rs=3 it is divided by Ron + Rs.
             var currents = RunOpCurrents(model, "D1");
             AssertClose(2.0, currents[0], 1e-9);
-            AssertClose(0.8, currents[1], 1e-9);
+            AssertClose(2.0, currents[1], 1e-9);
         }
 
         [Fact]
