@@ -4,6 +4,18 @@
 
 This component is separate from the built-in SpiceSharp diode. The built-in diode uses the normal semiconductor exponential model. The custom ideal diode uses a piecewise linear current law. It is useful for power electronics, protection clamps, rectifiers, and behavioral-level circuits where a simple on/off diode is more useful than a detailed PN junction model.
 
+## Compatibility Snapshot
+
+| Area | Status |
+|------|--------|
+| Model detection | Selected when a `.MODEL D(...)` contains `Ron`, `Roff`, `Vfwd`, `Vrev`, `Rrev`, `Ilimit`, `RevIlimit`, `Epsilon`, or `RevEpsilon`. |
+| `.OP` / `.DC` | Uses an LTspice-style region-wise-linear current law with forward, off, reverse-breakdown, smoothing, and current-limiting regions. |
+| `.AC` | Uses the operating-point derivative, including derivatives from `Ilimit`, `RevIlimit`, `Epsilon`, `RevEpsilon`, finite `Roff`, and reverse breakdown. |
+| `.TRAN` | Memoryless device behavior; transient operating points use the same current law at each time point. |
+| Scaling | Supports LTspice-style `M` parallel scaling and `N` series scaling. |
+| Shared diode syntax | Accepts `area`, `OFF`, `L`, `W`, and `Rs`; `area` and `Rs` are ignored electrically for LTspice ideal-diode parity. |
+| External parity tests | Optional LTspice-backed goldens cover `.DC`, `.AC`, and `.TRAN` behavior. |
+
 ## When To Use It
 
 Use this component when a netlist contains LTspice ideal diode parameters:
@@ -128,12 +140,17 @@ In this example, `D1` selects `did.fast`.
 | `L` | Length used only for binned model selection | not set |
 | `W` | Width used only for binned model selection | not set |
 | `ON` / `OFF` | Initial state hint | on |
-| `Ron`, `Roff`, `Vfwd`, `Vrev`, `Rrev`, `Ilimit`, `RevIlimit`, `Epsilon`, `RevEpsilon` | Instance override for the same model parameter | model value |
+| `Ron`, `Roff`, `Vfwd`, `Vrev`, `Rrev`, `Ilimit`, `RevIlimit`, `Epsilon`, `RevEpsilon` | SpiceSharpParser instance override for the same model parameter | model value |
 | `Rs` | Accepted by shared diode parameter handling, ignored by the idealized model | 0 ohm |
 
 For the ideal diode, `N` is a series multiplier. This differs from the classic diode model, where model parameter `N` is the emission coefficient.
 
 `L` and `W` are not electrical parameters of the ideal diode. They are evaluated during simulation setup to select a matching suffixed model.
+
+For strict LTspice netlist parity, put the ideal-diode electrical parameters on
+the `.model` line. Instance-level ideal-parameter overrides are accepted by this
+custom component as a SpiceSharpParser extension and are useful when a generated
+netlist needs per-instance tuning.
 
 ## Parameter Scaling
 
@@ -697,15 +714,26 @@ If the predicted current differs from the actual loaded current by more than the
 
 ### AC Behavior
 
-AC analysis uses the operating-point conductance. The AC stamp uses the internal
-diode conductance, while property exports report terminal voltage, terminal
-current, and terminal complex power:
+AC analysis uses the operating-point conductance. The conductance is the actual
+local derivative from the selected operating region: `Ron`, `Roff`, `Rrev`, the
+linear `Epsilon` or `RevEpsilon` ramp, or the derivative after `Ilimit` /
+`RevIlimit` compression. The AC stamp uses the internal diode conductance, while
+property exports report terminal voltage, terminal current, and terminal complex
+power:
 
 $$
 y_{\text{ac}} = g_d
 $$
 
 There is no frequency-dependent capacitance in this model. That means the AC response of the diode itself is resistive and frequency independent. Any frequency response must come from surrounding capacitors, inductors, sources, or other dynamic components.
+
+### Transient Behavior
+
+The ideal diode has no charge storage, capacitance, or dynamic state of its own.
+During transient analysis, SpiceSharp solves the circuit operating point at each
+time step using the same memoryless current law used by `.OP` and `.DC`. Source
+waveforms, capacitors, inductors, and other dynamic elements in the surrounding
+circuit determine the time-dependent behavior.
 
 ## Direct Code Usage
 
@@ -893,7 +921,7 @@ The external golden suite covers:
 | `.AC` | Compares complex small-signal voltages, including nonlinear derivative cases around `Ilimit`, `Epsilon`, `RevEpsilon`, reverse breakdown, and finite `Roff` smoothing. |
 | `.TRAN` | Runs a sinusoidal bridge rectifier and compares the rectified waveform against equivalent operating-point samples. |
 
-The case matrix covers:
+The `.DC` case matrix covers:
 
 | Case | Parameters exercised |
 |------|----------------------|
@@ -902,6 +930,18 @@ The case matrix covers:
 | Current limiting | `Ilimit`, `RevIlimit` |
 | Transition smoothing | `Epsilon`, `RevEpsilon`, including finite-`Roff` ramps |
 | Scaling and ignored shared syntax | `area`, `M`, `N`, `Rs`, `off` |
+
+The `.AC` derivative matrix covers:
+
+| Case | What it checks |
+|------|----------------|
+| Forward biased | Small-signal conductance from `Ron`. |
+| Forward current limit | Reduced derivative after `Ilimit` tanh compression. |
+| Forward epsilon ramp | Conductance inside the `Epsilon` transition window. |
+| Finite `Roff` forward epsilon | Ramp derivative when the off line has visible slope. |
+| Reverse epsilon ramp | Conductance inside the `RevEpsilon` transition window. |
+| Finite `Roff` reverse epsilon | Reverse ramp derivative when the off line has visible slope. |
+| Reverse breakdown | Small-signal conductance from `Rrev`. |
 
 ## Unsupported Or Ignored Parameters
 
