@@ -41,34 +41,37 @@ namespace SpiceSharpParser.Tests.CustomComponents
         }
 
         [LtspiceFact]
-        public void Ac_WhenComparedWithLtspice_MatchesForwardBiasedSmallSignal()
+        public void Ac_WhenComparedWithLtspice_MatchesSmallSignalDerivatives()
         {
             string ltspiceExecutable = GetLtspiceExecutable();
 
-            var raw = RunLtspiceRaw(
-                ltspiceExecutable,
-                "ac_forward_biased_small_signal",
-                CreateLtspiceAcNetlist());
-            var ltspicePoints = LtspiceAsciiRawFile.GetComplexSeries(raw, "V(out)");
-            var spiceSharpPoints = RunSpiceSharpAcForwardBiasedSmallSignal();
-
-            Assert.Equal(ltspicePoints.Count, spiceSharpPoints.Count);
-            for (int i = 0; i < ltspicePoints.Count; i++)
+            foreach (var testCase in CreateAcCases())
             {
-                AssertClose(
-                    "ac_forward_biased_small_signal",
-                    ltspicePoints[i].Frequency,
-                    ltspicePoints[i].Frequency,
-                    spiceSharpPoints[i].Frequency,
-                    1e-9,
-                    1e-9);
-                AssertComplexClose(
-                    "ac_forward_biased_small_signal",
-                    ltspicePoints[i].Frequency,
-                    ltspicePoints[i].Value,
-                    spiceSharpPoints[i].Value,
-                    1e-8,
-                    1e-5);
+                var raw = RunLtspiceRaw(
+                    ltspiceExecutable,
+                    testCase.Name,
+                    CreateLtspiceAcNetlist(testCase));
+                var ltspicePoints = LtspiceAsciiRawFile.GetComplexSeries(raw, "V(out)");
+                var spiceSharpPoints = RunSpiceSharpAcSmallSignal(testCase);
+
+                Assert.Equal(ltspicePoints.Count, spiceSharpPoints.Count);
+                for (int i = 0; i < ltspicePoints.Count; i++)
+                {
+                    AssertClose(
+                        testCase.Name,
+                        ltspicePoints[i].Frequency,
+                        ltspicePoints[i].Frequency,
+                        spiceSharpPoints[i].Frequency,
+                        1e-9,
+                        1e-9);
+                    AssertComplexClose(
+                        testCase.Name,
+                        ltspicePoints[i].Frequency,
+                        ltspicePoints[i].Value,
+                        spiceSharpPoints[i].Value,
+                        testCase.AbsoluteTolerance,
+                        testCase.RelativeTolerance);
+                }
             }
         }
 
@@ -290,6 +293,64 @@ namespace SpiceSharpParser.Tests.CustomComponents
             };
         }
 
+        private static IReadOnlyList<LtspiceIdealDiodeAcCase> CreateAcCases()
+        {
+            return new[]
+            {
+                new LtspiceIdealDiodeAcCase(
+                    "ac_forward_biased_small_signal",
+                    3.0,
+                    ".model did D(Ron=2 Roff=1e9 Vfwd=1)",
+                    parameters =>
+                    {
+                        parameters.OnResistance = 2.0;
+                        parameters.OffResistance = 1e9;
+                        parameters.ForwardVoltage = 1.0;
+                    }),
+
+                new LtspiceIdealDiodeAcCase(
+                    "ac_forward_current_limit_derivative",
+                    5.0,
+                    ".model did D(Ron=1 Roff=1e12 Vfwd=0 Ilimit=2)",
+                    parameters =>
+                    {
+                        parameters.OnResistance = 1.0;
+                        parameters.OffResistance = 1e12;
+                        parameters.ForwardVoltage = 0.0;
+                        parameters.ForwardCurrentLimit = 2.0;
+                    },
+                    1e-7,
+                    1e-4),
+
+                new LtspiceIdealDiodeAcCase(
+                    "ac_forward_epsilon_ramp_derivative",
+                    1.1,
+                    ".model did D(Ron=1 Roff=1e12 Vfwd=1 Epsilon=0.2)",
+                    parameters =>
+                    {
+                        parameters.OnResistance = 1.0;
+                        parameters.OffResistance = 1e12;
+                        parameters.ForwardVoltage = 1.0;
+                        parameters.ForwardEpsilon = 0.2;
+                    },
+                    1e-7,
+                    1e-4),
+
+                new LtspiceIdealDiodeAcCase(
+                    "ac_reverse_breakdown_rrev_derivative",
+                    -5.0,
+                    ".model did D(Ron=1 Roff=1e12 Vfwd=1 Vrev=1.5 Rrev=3)",
+                    parameters =>
+                    {
+                        parameters.OnResistance = 1.0;
+                        parameters.OffResistance = 1e12;
+                        parameters.ForwardVoltage = 1.0;
+                        parameters.ReverseVoltage = 1.5;
+                        parameters.ReverseResistance = 3.0;
+                    }),
+            };
+        }
+
         private static string GetLtspiceExecutable()
         {
             string executable = Environment.GetEnvironmentVariable(LtspiceExecutableVariable);
@@ -375,15 +436,15 @@ namespace SpiceSharpParser.Tests.CustomComponents
             };
         }
 
-        private static IReadOnlyList<string> CreateLtspiceAcNetlist()
+        private static IReadOnlyList<string> CreateLtspiceAcNetlist(LtspiceIdealDiodeAcCase testCase)
         {
             return new[]
             {
                 "Ideal diode LTspice AC golden comparison",
-                "V1 in 0 DC 3 AC 1",
-                "R1 in out 1",
+                FormattableString.Invariant($"V1 in 0 DC {testCase.SourceVoltage} AC 1"),
+                FormattableString.Invariant($"R1 in out {testCase.SourceResistance}"),
                 "D1 out 0 did",
-                ".model did D(Ron=2 Roff=1e9 Vfwd=1)",
+                testCase.ModelLine,
                 ".ac lin 1 1k 1k",
                 ".save V(out)",
                 ".end",
@@ -486,16 +547,15 @@ namespace SpiceSharpParser.Tests.CustomComponents
             return result;
         }
 
-        private static IReadOnlyList<(double Frequency, Complex Value)> RunSpiceSharpAcForwardBiasedSmallSignal()
+        private static IReadOnlyList<(double Frequency, Complex Value)> RunSpiceSharpAcSmallSignal(
+            LtspiceIdealDiodeAcCase testCase)
         {
             var diode = new IdealDiode("D1", "out", "0");
-            diode.Parameters.OnResistance = 2.0;
-            diode.Parameters.OffResistance = 1e9;
-            diode.Parameters.ForwardVoltage = 1.0;
+            testCase.Configure(diode.Parameters);
 
             var circuit = new Circuit(
-                new VoltageSource("V1", "in", "0", 3.0).SetParameter("acmag", 1.0),
-                new Resistor("R1", "in", "out", 1.0),
+                new VoltageSource("V1", "in", "0", testCase.SourceVoltage).SetParameter("acmag", 1.0),
+                new Resistor("R1", "in", "out", testCase.SourceResistance),
                 diode);
 
             var ac = new AC("ac", new LinearSweep(1000.0, 1000.0, 1));
@@ -651,6 +711,41 @@ namespace SpiceSharpParser.Tests.CustomComponents
             public double AbsoluteTolerance { get; }
 
             public double RelativeTolerance { get; }
+        }
+
+        private sealed class LtspiceIdealDiodeAcCase
+        {
+            public LtspiceIdealDiodeAcCase(
+                string name,
+                double sourceVoltage,
+                string modelLine,
+                Action<IdealDiodeParameters> configure,
+                double absoluteTolerance = 1e-8,
+                double relativeTolerance = 1e-5,
+                double sourceResistance = 1.0)
+            {
+                this.Name = name;
+                this.SourceVoltage = sourceVoltage;
+                this.ModelLine = modelLine;
+                this.Configure = configure;
+                this.AbsoluteTolerance = absoluteTolerance;
+                this.RelativeTolerance = relativeTolerance;
+                this.SourceResistance = sourceResistance;
+            }
+
+            public string Name { get; }
+
+            public double SourceVoltage { get; }
+
+            public string ModelLine { get; }
+
+            public Action<IdealDiodeParameters> Configure { get; }
+
+            public double AbsoluteTolerance { get; }
+
+            public double RelativeTolerance { get; }
+
+            public double SourceResistance { get; }
         }
 
         private sealed class LtspiceAsciiRawFile
