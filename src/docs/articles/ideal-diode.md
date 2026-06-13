@@ -881,9 +881,17 @@ $env:LTSPICE_EXE = "C:\Program Files\ADI\LTspice\LTspice.exe"
 dotnet test .\src\SpiceSharpParser.Tests\SpiceSharpParser.Tests.csproj --filter FullyQualifiedName~IdealDiode
 ```
 
-The golden test generates temporary LTspice `.cir` files, runs DC sweeps in
-batch ASCII mode, parses the LTspice `.raw` output, and compares `I(D1)` against
-the custom `IdealDiode` current at each sampled voltage.
+The golden test generates temporary LTspice `.cir` files, runs LTspice in batch
+ASCII mode, parses the LTspice `.raw` output, and compares the results against
+the custom `IdealDiode` implementation.
+
+The external golden suite covers:
+
+| Analysis | Comparison |
+|----------|------------|
+| `.DC` | Sweeps diode voltage and compares `I(D1)` for each sampled point. |
+| `.AC` | Compares complex small-signal voltages, including nonlinear derivative cases around `Ilimit`, `Epsilon`, `RevEpsilon`, reverse breakdown, and finite `Roff` smoothing. |
+| `.TRAN` | Runs a sinusoidal bridge rectifier and compares the rectified waveform against equivalent operating-point samples. |
 
 The case matrix covers:
 
@@ -892,7 +900,7 @@ The case matrix covers:
 | Forward and off regions | `Ron`, `Roff`, `Vfwd` |
 | Reverse breakdown | `Vrev`, `Rrev` |
 | Current limiting | `Ilimit`, `RevIlimit` |
-| Transition smoothing | `Epsilon`, `RevEpsilon` |
+| Transition smoothing | `Epsilon`, `RevEpsilon`, including finite-`Roff` ramps |
 | Scaling and ignored shared syntax | `area`, `M`, `N`, `Rs`, `off` |
 
 ## Unsupported Or Ignored Parameters
