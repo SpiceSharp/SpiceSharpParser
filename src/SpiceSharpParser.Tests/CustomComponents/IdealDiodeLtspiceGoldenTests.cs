@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using Xunit;
 
@@ -36,6 +37,64 @@ namespace SpiceSharpParser.Tests.CustomComponents
                     var spiceSharpPoint = spiceSharpPoints[i];
                     AssertClose(testCase, ltspicePoint.Voltage, ltspicePoint.Current, spiceSharpPoint.Current);
                 }
+            }
+        }
+
+        [LtspiceFact]
+        public void Ac_WhenComparedWithLtspice_MatchesForwardBiasedSmallSignal()
+        {
+            string ltspiceExecutable = GetLtspiceExecutable();
+
+            var raw = RunLtspiceRaw(
+                ltspiceExecutable,
+                "ac_forward_biased_small_signal",
+                CreateLtspiceAcNetlist());
+            var ltspicePoints = LtspiceAsciiRawFile.GetComplexSeries(raw, "V(out)");
+            var spiceSharpPoints = RunSpiceSharpAcForwardBiasedSmallSignal();
+
+            Assert.Equal(ltspicePoints.Count, spiceSharpPoints.Count);
+            for (int i = 0; i < ltspicePoints.Count; i++)
+            {
+                AssertClose(
+                    "ac_forward_biased_small_signal",
+                    ltspicePoints[i].Frequency,
+                    ltspicePoints[i].Frequency,
+                    spiceSharpPoints[i].Frequency,
+                    1e-9,
+                    1e-9);
+                AssertComplexClose(
+                    "ac_forward_biased_small_signal",
+                    ltspicePoints[i].Frequency,
+                    ltspicePoints[i].Value,
+                    spiceSharpPoints[i].Value,
+                    1e-8,
+                    1e-5);
+            }
+        }
+
+        [LtspiceFact]
+        public void TransientBridge_WhenComparedWithLtspice_MatchesSinRectifierWaveform()
+        {
+            string ltspiceExecutable = GetLtspiceExecutable();
+
+            var raw = RunLtspiceRaw(
+                ltspiceExecutable,
+                "tran_sin_bridge_rectifier",
+                CreateLtspiceTransientBridgeNetlist());
+            var ltspicePoints = LtspiceAsciiRawFile.GetBridgeTransientSeries(raw, "V(acp)", "V(outp)", "V(outn)");
+            var spiceSharpPoints = RunSpiceSharpBridgeOperatingPoints(ltspicePoints.Select(point => point.Input));
+
+            Assert.True(ltspicePoints.Count > 20);
+            Assert.Equal(ltspicePoints.Count, spiceSharpPoints.Count);
+            for (int i = 0; i < ltspicePoints.Count; i++)
+            {
+                AssertClose(
+                    "tran_sin_bridge_rectifier",
+                    ltspicePoints[i].Time,
+                    ltspicePoints[i].Output,
+                    spiceSharpPoints[i],
+                    1e-5,
+                    1e-3);
             }
         }
 
@@ -251,26 +310,34 @@ namespace SpiceSharpParser.Tests.CustomComponents
             string ltspiceExecutable,
             LtspiceIdealDiodeCase testCase)
         {
+            var raw = RunLtspiceRaw(ltspiceExecutable, testCase.Name, CreateLtspiceNetlist(testCase));
+            return LtspiceAsciiRawFile.GetRealSeries(raw, "V(in)", "I(D1)");
+        }
+
+        private static LtspiceAsciiRawFile RunLtspiceRaw(
+            string ltspiceExecutable,
+            string caseName,
+            IReadOnlyList<string> netlistLines)
+        {
             string directory = Path.Combine(Path.GetTempPath(), "SpiceSharpParser.LTspice", Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(directory);
 
             try
             {
-                string circuitPath = Path.Combine(directory, testCase.Name + ".cir");
+                string circuitPath = Path.Combine(directory, caseName + ".cir");
                 string rawPath = Path.ChangeExtension(circuitPath, ".raw");
-                File.WriteAllLines(circuitPath, CreateLtspiceNetlist(testCase), Encoding.ASCII);
+                File.WriteAllLines(circuitPath, netlistLines, Encoding.ASCII);
 
                 var result = RunLtspice(ltspiceExecutable, circuitPath, directory);
                 if (!WaitForFile(rawPath, LtspiceTimeoutMilliseconds))
                 {
                     throw new InvalidOperationException(
-                        $"LTspice did not produce '{rawPath}' for case '{testCase.Name}'."
+                        $"LTspice did not produce '{rawPath}' for case '{caseName}'."
                         + Environment.NewLine
                         + result);
                 }
 
-                var raw = LtspiceAsciiRawFile.Read(rawPath);
-                return LtspiceAsciiRawFile.GetRealSeries(raw, "V(in)", "I(D1)");
+                return LtspiceAsciiRawFile.Read(rawPath);
             }
             finally
             {
@@ -304,6 +371,39 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 testCase.ModelLine,
                 FormattableString.Invariant($".dc V1 {testCase.Start} {testCase.Stop} {testCase.Step}"),
                 ".save V(in) I(D1)",
+                ".end",
+            };
+        }
+
+        private static IReadOnlyList<string> CreateLtspiceAcNetlist()
+        {
+            return new[]
+            {
+                "Ideal diode LTspice AC golden comparison",
+                "V1 in 0 DC 3 AC 1",
+                "R1 in out 1",
+                "D1 out 0 did",
+                ".model did D(Ron=2 Roff=1e9 Vfwd=1)",
+                ".ac lin 1 1k 1k",
+                ".save V(out)",
+                ".end",
+            };
+        }
+
+        private static IReadOnlyList<string> CreateLtspiceTransientBridgeNetlist()
+        {
+            return new[]
+            {
+                "Ideal diode LTspice transient bridge golden comparison",
+                "VIN acp 0 SIN(0 10 1k)",
+                "DPLUS acp outp rect",
+                "DRETURN outn 0 rect",
+                "DNEG 0 outp rect",
+                "DNEGRETURN outn acp rect",
+                "RLOAD outp outn 10",
+                ".model rect D(Ron=0.5 Roff=1e12 Vfwd=0.7)",
+                ".tran 25u 1m 0 25u",
+                ".save V(acp) V(outp) V(outn)",
                 ".end",
             };
         }
@@ -386,20 +486,103 @@ namespace SpiceSharpParser.Tests.CustomComponents
             return result;
         }
 
+        private static IReadOnlyList<(double Frequency, Complex Value)> RunSpiceSharpAcForwardBiasedSmallSignal()
+        {
+            var diode = new IdealDiode("D1", "out", "0");
+            diode.Parameters.OnResistance = 2.0;
+            diode.Parameters.OffResistance = 1e9;
+            diode.Parameters.ForwardVoltage = 1.0;
+
+            var circuit = new Circuit(
+                new VoltageSource("V1", "in", "0", 3.0).SetParameter("acmag", 1.0),
+                new Resistor("R1", "in", "out", 1.0),
+                diode);
+
+            var ac = new AC("ac", new LinearSweep(1000.0, 1000.0, 1));
+            var export = new ComplexVoltageExport(ac, "out");
+            var result = new List<(double Frequency, Complex Value)>();
+
+            foreach (int ignored in ac.Run(circuit, AC.ExportSmallSignal))
+            {
+                result.Add((ac.Frequency, export.Value));
+            }
+
+            return result;
+        }
+
+        private static IReadOnlyList<double> RunSpiceSharpBridgeOperatingPoints(IEnumerable<double> inputVoltages)
+        {
+            var result = new List<double>();
+            foreach (double inputVoltage in inputVoltages)
+            {
+                var circuit = new Circuit(
+                    new VoltageSource("VIN", "acp", "0", inputVoltage),
+                    CreateRectifierDiode("DPLUS", "acp", "outp"),
+                    CreateRectifierDiode("DRETURN", "outn", "0"),
+                    CreateRectifierDiode("DNEG", "0", "outp"),
+                    CreateRectifierDiode("DNEGRETURN", "outn", "acp"),
+                    new Resistor("RLOAD", "outp", "outn", 10.0));
+
+                var op = new OP("op");
+                var export = new RealVoltageExport(op, "outp", "outn");
+                double output = double.NaN;
+                foreach (int ignored in op.Run(circuit))
+                {
+                    output = export.Value;
+                }
+
+                result.Add(output);
+            }
+
+            return result;
+        }
+
+        private static IdealDiode CreateRectifierDiode(string name, string anode, string cathode)
+        {
+            var diode = new IdealDiode(name, anode, cathode);
+            diode.Parameters.OnResistance = 0.5;
+            diode.Parameters.OffResistance = 1e12;
+            diode.Parameters.ForwardVoltage = 0.7;
+            return diode;
+        }
+
         private static void AssertClose(
             LtspiceIdealDiodeCase testCase,
             double voltage,
             double expected,
             double actual)
         {
-            double tolerance = testCase.AbsoluteTolerance
-                + (testCase.RelativeTolerance * Math.Max(Math.Abs(expected), Math.Abs(actual)));
+            AssertClose(testCase.Name, voltage, expected, actual, testCase.AbsoluteTolerance, testCase.RelativeTolerance);
+        }
+
+        private static void AssertClose(
+            string caseName,
+            double x,
+            double expected,
+            double actual,
+            double absoluteTolerance,
+            double relativeTolerance)
+        {
+            double tolerance = absoluteTolerance
+                + (relativeTolerance * Math.Max(Math.Abs(expected), Math.Abs(actual)));
             double difference = Math.Abs(expected - actual);
 
             Assert.True(
                 difference <= tolerance,
                 FormattableString.Invariant(
-                    $"Case '{testCase.Name}' differs at V(in)={voltage}: LTspice I(D1)={expected}, SpiceSharpParser I(D1)={actual}, difference={difference}, tolerance={tolerance}."));
+                    $"Case '{caseName}' differs at x={x}: LTspice={expected}, SpiceSharpParser={actual}, difference={difference}, tolerance={tolerance}."));
+        }
+
+        private static void AssertComplexClose(
+            string caseName,
+            double x,
+            Complex expected,
+            Complex actual,
+            double absoluteTolerance,
+            double relativeTolerance)
+        {
+            AssertClose(caseName + " real", x, expected.Real, actual.Real, absoluteTolerance, relativeTolerance);
+            AssertClose(caseName + " imaginary", x, expected.Imaginary, actual.Imaginary, absoluteTolerance, relativeTolerance);
         }
 
         private static void TryDeleteDirectory(string directory)
@@ -472,7 +655,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
 
         private sealed class LtspiceAsciiRawFile
         {
-            private LtspiceAsciiRawFile(IReadOnlyList<string> variables, IReadOnlyList<double[]> points)
+            private LtspiceAsciiRawFile(IReadOnlyList<string> variables, IReadOnlyList<Complex[]> points)
             {
                 this.Variables = variables;
                 this.Points = points;
@@ -480,7 +663,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
 
             private IReadOnlyList<string> Variables { get; }
 
-            private IReadOnlyList<double[]> Points { get; }
+            private IReadOnlyList<Complex[]> Points { get; }
 
             public static LtspiceAsciiRawFile Read(string path)
             {
@@ -503,11 +686,11 @@ namespace SpiceSharpParser.Tests.CustomComponents
                     variables.Add(parts[1]);
                 }
 
-                var points = new List<double[]>();
+                var points = new List<Complex[]>();
                 int cursor = valuesIndex + 1;
                 for (int pointIndex = 0; pointIndex < pointCount; pointIndex++)
                 {
-                    var point = new double[variableCount];
+                    var point = new Complex[variableCount];
                     for (int variableIndex = 0; variableIndex < variableCount; variableIndex++)
                     {
                         string line = ReadNextNonEmptyLine(lines, ref cursor, path);
@@ -519,11 +702,11 @@ namespace SpiceSharpParser.Tests.CustomComponents
                                 throw new FormatException($"Invalid LTspice value line in '{path}': {line}");
                             }
 
-                            point[variableIndex] = ParseDouble(parts[parts.Length - 1]);
+                            point[variableIndex] = ParseComplex(parts[parts.Length - 1]);
                         }
                         else
                         {
-                            point[variableIndex] = ParseDouble(parts[parts.Length - 1]);
+                            point[variableIndex] = ParseComplex(parts[parts.Length - 1]);
                         }
                     }
 
@@ -541,7 +724,34 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 int voltageIndex = raw.FindVariable(voltageName);
                 int currentIndex = raw.FindVariable(currentName);
                 return raw.Points
-                    .Select(point => (Voltage: point[voltageIndex], Current: point[currentIndex]))
+                    .Select(point => (Voltage: point[voltageIndex].Real, Current: point[currentIndex].Real))
+                    .ToArray();
+            }
+
+            public static IReadOnlyList<(double Frequency, Complex Value)> GetComplexSeries(
+                LtspiceAsciiRawFile raw,
+                string valueName)
+            {
+                int valueIndex = raw.FindVariable(valueName);
+                return raw.Points
+                    .Select(point => (Frequency: point[0].Real, Value: point[valueIndex]))
+                    .ToArray();
+            }
+
+            public static IReadOnlyList<(double Time, double Input, double Output)> GetBridgeTransientSeries(
+                LtspiceAsciiRawFile raw,
+                string inputName,
+                string positiveName,
+                string negativeName)
+            {
+                int inputIndex = raw.FindVariable(inputName);
+                int positiveIndex = raw.FindVariable(positiveName);
+                int negativeIndex = raw.FindVariable(negativeName);
+                return raw.Points
+                    .Select(point => (
+                        Time: point[0].Real,
+                        Input: point[inputIndex].Real,
+                        Output: point[positiveIndex].Real - point[negativeIndex].Real))
                     .ToArray();
             }
 
@@ -591,6 +801,25 @@ namespace SpiceSharpParser.Tests.CustomComponents
             private static double ParseDouble(string value)
             {
                 return double.Parse(value, NumberStyles.Float, CultureInfo.InvariantCulture);
+            }
+
+            private static Complex ParseComplex(string value)
+            {
+                value = value.Trim();
+                if (value.StartsWith("(", StringComparison.Ordinal) && value.EndsWith(")", StringComparison.Ordinal))
+                {
+                    value = value.Substring(1, value.Length - 2);
+                }
+
+                int commaIndex = value.IndexOf(',');
+                if (commaIndex < 0)
+                {
+                    return new Complex(ParseDouble(value), 0.0);
+                }
+
+                string real = value.Substring(0, commaIndex);
+                string imaginary = value.Substring(commaIndex + 1);
+                return new Complex(ParseDouble(real), ParseDouble(imaginary));
             }
 
             private int FindVariable(string name)
