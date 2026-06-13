@@ -41,6 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SpiceSharpParser.CustomComponents\SpiceSharpParser.CustomComponents.csproj" />
     <ProjectReference Include="..\SpiceSharpParser\SpiceSharpParser.csproj" />
   </ItemGroup>
 

@@ -2,6 +2,8 @@
 
 The diode is a two-terminal semiconductor device that allows current to flow primarily in one direction.
 
+For LTspice-style ideal diode models using parameters such as `Ron`, `Roff`, and `Vfwd`, see [LTspice-Style Ideal Diode](ideal-diode.md). That behavior lives in the optional `SpiceSharpParser.CustomComponents` project and must be enabled with `UseCustomComponents()`.
+
 ## Syntax
 
 ```

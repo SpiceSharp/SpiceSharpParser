@@ -12,6 +12,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Models
 
         Model FindModel(string modelName);
 
+        Model FindModel(string modelName, Func<Model, bool> predicate);
+
         IEntity FindModelEntity(string modelName, Func<Model, bool> predicate);
 
         void RegisterModelInstance(Model model);

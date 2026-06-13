@@ -108,5 +108,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Sweeps
                     .SetParameterBeforeTemperature(@entity, "dc", paramToSet.Value, simulation);
             }
         }
+
     }
 }

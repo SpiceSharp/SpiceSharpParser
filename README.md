@@ -109,6 +109,19 @@ Using SpiceSharpParser involves three steps:
 | Behavioral | B (arbitrary behavioral source with V= or I= expressions) |
 | Switches | S (voltage-controlled), W (current-controlled) |
 
+### Custom Components
+
+`SpiceSharpParser.CustomComponents` adds opt-in parser mappings for LTspice-style ideal diode models:
+
+```spice
+.model did D(Ron=0.1 Roff=1e9 Vfwd=0.7 Ilimit=10 Epsilon=10m)
+D1 out 0 did
+```
+
+Enable the mappings with `reader.Settings.UseCustomComponents()` before calling `Read()`. Ideal diode models support LTspice-style `Ron`, `Roff`, `Vfwd`, `Vrev`, `Rrev`, `Ilimit`, `RevIlimit`, `Epsilon`, `RevEpsilon`, `M`, and `N` behavior, while ordinary diode models still fall back to SpiceSharp's built-in semiconductor diode.
+
+See [LTspice-Style Ideal Diode](src/docs/articles/ideal-diode.md) for syntax, scaling rules, current-law details, and the optional LTspice-backed golden tests for DC, AC, and transient parity.
+
 ### Behavioral Modeling
 
 `VALUE={expr}`, `TABLE={expr}`, `POLY(n)`, `B` sources, source-level `E` / `G` / `F` / `H` `LAPLACE` transfer functions, function-style `LAPLACE(input, transfer)` in behavioral expressions, and a full set of built-in math functions. `LAPLACE` supports voltage-controlled and current-controlled forms with rational polynomials in `s`, including finite constant `M=`, `TD=`, and `DELAY=` options. Function-style calls also support call-local options, mixed-expression helper lowering, and arbitrary scalar input expressions.
