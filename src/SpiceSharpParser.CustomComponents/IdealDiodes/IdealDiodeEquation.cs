@@ -64,32 +64,25 @@ namespace SpiceSharpParser.CustomComponents.IdealDiodes
 
             if (parameters.ReverseVoltage.Given)
             {
-                // Reverse breakdown is a line through (-Vrev, 0):
-                // current = Grev * voltage + Grev * Vrev.
+                // Reverse breakdown is anchored to the off-line current at
+                // -Vrev. With finite Roff, LTspice keeps the nominal knee at
+                // -Vrev rather than moving it to the mathematical line
+                // intersection.
                 // If Rrev is omitted, LTspice-style behavior falls back to Ron.
                 double reverseVoltage = Math.Abs(parameters.ReverseVoltage.Value);
                 double reverseResistance = parameters.ReverseResistance.Given
                     ? parameters.ReverseResistance.Value
                     : parameters.OnResistance;
                 double reverseConductance = 1.0 / reverseResistance;
-                double reverseIntercept = reverseConductance * reverseVoltage;
-
-                // Roff/Gmin can tilt the off-line, so the true intersection is not
-                // always exactly -Vrev. Use the nominal knee only as a degenerate
-                // fallback when the two lines are effectively parallel.
-                double boundary = FindIntersection(
-                    reverseConductance,
-                    reverseIntercept,
-                    offConductance,
-                    0.0,
-                    -reverseVoltage);
+                double reverseBoundary = -reverseVoltage;
+                double reverseIntercept = (reverseConductance - offConductance) * reverseVoltage;
 
                 // Evaluate the reverse-to-off knee. With revepsilon omitted or
-                // zero this is a hard switch at the intersection; otherwise the
-                // smoothing window extends from the boundary into reverse breakdown.
+                // zero this is a hard switch at -Vrev; otherwise the smoothing
+                // window extends from the nominal boundary into reverse breakdown.
                 EvaluateTransition(
                     voltage,
-                    boundary,
+                    reverseBoundary,
                     parameters.ReverseEpsilon,
                     reverseConductance,
                     reverseIntercept,
@@ -100,19 +93,11 @@ namespace SpiceSharpParser.CustomComponents.IdealDiodes
                     out conductance);
             }
 
-            // The forward on-line crosses zero current at Vfwd:
-            // current = Gon * voltage - Gon * Vfwd.
-            double onIntercept = -onConductance * forwardVoltage;
-
-            // Find the voltage where the off-line and the forward on-line meet.
-            // This is close to Vfwd when Roff is large, but computing it keeps the
-            // model continuous for any legal Roff/Gmin.
-            double forwardBoundary = FindIntersection(
-                offConductance,
-                0.0,
-                onConductance,
-                onIntercept,
-                forwardVoltage);
+            // The forward on-line is anchored to the off-line current at Vfwd.
+            // With finite Roff, LTspice keeps the nominal knee at Vfwd rather
+            // than moving it to the mathematical line intersection.
+            double onIntercept = (offConductance - onConductance) * forwardVoltage;
+            double forwardBoundary = forwardVoltage;
 
             // Avoid a second transition evaluation in the off or reverse regions.
             // LTspice-style forward epsilon starts at the boundary and extends
@@ -139,32 +124,6 @@ namespace SpiceSharpParser.CustomComponents.IdealDiodes
             // derivative by the tanh derivative.
             ApplyCurrentLimits(parameters, ref current, ref conductance);
 
-        }
-
-        /// <summary>
-        /// Finds where two line segments in <c>current = slope * voltage + intercept</c> form intersect.
-        /// </summary>
-        /// <param name="leftSlope">The slope of the first line.</param>
-        /// <param name="leftIntercept">The intercept of the first line.</param>
-        /// <param name="rightSlope">The slope of the second line.</param>
-        /// <param name="rightIntercept">The intercept of the second line.</param>
-        /// <param name="fallback">The voltage to use if the lines are nearly parallel.</param>
-        /// <returns>The intersection voltage.</returns>
-        private static double FindIntersection(
-            double leftSlope,
-            double leftIntercept,
-            double rightSlope,
-            double rightIntercept,
-            double fallback)
-        {
-            double denominator = leftSlope - rightSlope;
-
-            // Parallel or nearly parallel regions do not give a useful numerical
-            // knee. The caller provides the physically meaningful nominal boundary.
-            if (Math.Abs(denominator) <= 1e-30)
-                return fallback;
-
-            return (rightIntercept - leftIntercept) / denominator;
         }
 
         /// <summary>

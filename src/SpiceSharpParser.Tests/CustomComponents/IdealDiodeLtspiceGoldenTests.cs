@@ -131,6 +131,103 @@ namespace SpiceSharpParser.Tests.CustomComponents
                     },
                     1e-6,
                     1e-3),
+
+                new LtspiceIdealDiodeCase(
+                    "rrev_omitted_with_reverse_limit_and_m_n",
+                    "D1 in 0 did m=2 n=3",
+                    ".model did D(Ron=1.5 Roff=1e10 Vfwd=0.6 Vrev=1.2 RevIlimit=2.5)",
+                    -12.0,
+                    6.0,
+                    0.2,
+                    parameters =>
+                    {
+                        parameters.ParallelMultiplier = 2.0;
+                        parameters.SeriesMultiplier = 3.0;
+                        parameters.OnResistance = 1.5;
+                        parameters.OffResistance = 1e10;
+                        parameters.ForwardVoltage = 0.6;
+                        parameters.ReverseVoltage = 1.2;
+                        parameters.ReverseCurrentLimit = 2.5;
+                    },
+                    1e-6,
+                    1e-3),
+
+                new LtspiceIdealDiodeCase(
+                    "forward_current_limit_and_parallel_cells",
+                    "D1 in 0 did m=4",
+                    ".model did D(Ron=0.25 Roff=1e12 Vfwd=0.8 Ilimit=1.5)",
+                    -0.5,
+                    4.0,
+                    0.05,
+                    parameters =>
+                    {
+                        parameters.ParallelMultiplier = 4.0;
+                        parameters.OnResistance = 0.25;
+                        parameters.OffResistance = 1e12;
+                        parameters.ForwardVoltage = 0.8;
+                        parameters.ForwardCurrentLimit = 1.5;
+                    },
+                    1e-6,
+                    1e-3),
+
+                new LtspiceIdealDiodeCase(
+                    "reverse_limit_and_asymmetric_rrev",
+                    "D1 in 0 did",
+                    ".model did D(Ron=3 Roff=1e11 Vfwd=0.5 Vrev=1.25 Rrev=0.75 RevIlimit=2.2)",
+                    -4.0,
+                    2.0,
+                    0.05,
+                    parameters =>
+                    {
+                        parameters.OnResistance = 3.0;
+                        parameters.OffResistance = 1e11;
+                        parameters.ForwardVoltage = 0.5;
+                        parameters.ReverseVoltage = 1.25;
+                        parameters.ReverseResistance = 0.75;
+                        parameters.ReverseCurrentLimit = 2.2;
+                    },
+                    1e-6,
+                    1e-3),
+
+                new LtspiceIdealDiodeCase(
+                    "moderate_roff_intersections",
+                    "D1 in 0 did",
+                    ".model did D(Ron=2 Roff=20 Vfwd=1 Vrev=2 Rrev=4)",
+                    -6.0,
+                    4.0,
+                    0.1,
+                    parameters =>
+                    {
+                        parameters.OnResistance = 2.0;
+                        parameters.OffResistance = 20.0;
+                        parameters.ForwardVoltage = 1.0;
+                        parameters.ReverseVoltage = 2.0;
+                        parameters.ReverseResistance = 4.0;
+                    },
+                    1e-6,
+                    1e-3),
+
+                new LtspiceIdealDiodeCase(
+                    "combined_limits_asymmetric_reverse_and_m_n",
+                    "D1 in 0 did m=2 n=2",
+                    ".model did D(Ron=1.25 Roff=1e10 Vfwd=0.4 Vrev=1.6 Rrev=2.2 Ilimit=3 RevIlimit=2)",
+                    -7.0,
+                    7.0,
+                    0.1,
+                    parameters =>
+                    {
+                        parameters.ParallelMultiplier = 2.0;
+                        parameters.SeriesMultiplier = 2.0;
+                        parameters.OnResistance = 1.25;
+                        parameters.OffResistance = 1e10;
+                        parameters.ForwardVoltage = 0.4;
+                        parameters.ReverseVoltage = 1.6;
+                        parameters.ReverseResistance = 2.2;
+                        parameters.ForwardCurrentLimit = 3.0;
+                        parameters.ReverseCurrentLimit = 2.0;
+                    },
+                    1e-6,
+                    1e-3),
             };
         }
 

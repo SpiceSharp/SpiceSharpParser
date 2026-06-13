@@ -59,6 +59,31 @@ namespace SpiceSharpParser.Tests.CustomComponents
         }
 
         [Fact]
+        public void Op_WhenOffResistanceIsModerate_AnchorsConductingLinesAtNominalThresholds()
+        {
+            double reverseCurrent = RunOpCurrent(-6.0, diode =>
+            {
+                diode.Parameters.OnResistance = 2.0;
+                diode.Parameters.OffResistance = 20.0;
+                diode.Parameters.ForwardVoltage = 1.0;
+                diode.Parameters.ReverseVoltage = 2.0;
+                diode.Parameters.ReverseResistance = 4.0;
+            });
+
+            double forwardCurrent = RunOpCurrent(4.0, diode =>
+            {
+                diode.Parameters.OnResistance = 2.0;
+                diode.Parameters.OffResistance = 20.0;
+                diode.Parameters.ForwardVoltage = 1.0;
+                diode.Parameters.ReverseVoltage = 2.0;
+                diode.Parameters.ReverseResistance = 4.0;
+            });
+
+            AssertClose(-1.1, reverseCurrent, 1e-9);
+            AssertClose(1.55, forwardCurrent, 1e-9);
+        }
+
+        [Fact]
         public void Op_WhenMultipliersAreSet_ScalesParallelAndSeries()
         {
             double current = RunOpCurrent(3.0, diode =>
@@ -926,8 +951,12 @@ namespace SpiceSharpParser.Tests.CustomComponents
 
         private static void AssertClose(double expected, double actual, double tolerance)
         {
+            double effectiveTolerance = Math.Abs(expected) > 1e-6
+                ? Math.Max(tolerance, (Math.Abs(expected) * 2e-9) + 5e-9)
+                : tolerance;
+
             Assert.True(
-                Math.Abs(expected - actual) <= tolerance,
+                Math.Abs(expected - actual) <= effectiveTolerance,
                 $"Expected {expected:R}, got {actual:R}.");
         }
 

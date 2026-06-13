@@ -293,16 +293,16 @@ if Vrev was given:
     rrev = Rrev was given ? Rrev : Ron
     grev = 1 / rrev
 
-    reverse line = grev * v + grev * vrev
+    reverse line = grev * v + (grev - goff) * vrev
     off line     = goff * v
-    boundary     = intersection(reverse line, off line)
+    boundary     = -vrev
 
     current, conductance =
         transition(v, boundary, RevEpsilon, reverse line, off line)
 
-forward line = gon * v - gon * vf
+forward line = gon * v + (goff - gon) * vf
 off line     = goff * v
-boundary     = intersection(off line, forward line)
+boundary     = vf
 
 if v is past the forward boundary, or inside the forward smoothing window:
     current, conductance =
@@ -321,27 +321,17 @@ The forward transition is evaluated last so positive forward conduction replaces
 the off result when the voltage reaches the forward knee.
 
 The transition helper is shared by both knees. It receives the line on the
-low-voltage side, the line on the high-voltage side, the boundary where the two
-unsmoothed lines intersect, and the optional smoothing width. For reverse
-breakdown, the low-voltage side is the reverse line and the high-voltage side is
-the off line. For forward conduction, the low-voltage side is the off line and
-the high-voltage side is the forward line.
+low-voltage side, the line on the high-voltage side, the nominal LTspice knee,
+and the optional smoothing width. For reverse breakdown, the low-voltage side is
+the reverse line and the high-voltage side is the off line. For forward
+conduction, the low-voltage side is the off line and the high-voltage side is
+the forward line.
 
-The boundary is computed by solving the two-line equation:
-
-```text
-leftSlope * v + leftIntercept = rightSlope * v + rightIntercept
-```
-
-or:
-
-```text
-v = (rightIntercept - leftIntercept) / (leftSlope - rightSlope)
-```
-
-If the two slopes are nearly equal, the code uses the nominal knee as a fallback:
-`-Vrev` for reverse breakdown or `Vfwd` for forward conduction. That avoids an
-unstable division when two regions are almost parallel.
+With finite `Roff`, the conducting lines are anchored to the off-line current at
+the nominal threshold. Forward conduction is continuous with the off line at
+`Vfwd`, and reverse breakdown is continuous with the off line at `-Vrev`.
+LTspice keeps those nominal knees rather than moving the transition to the
+mathematical intersection of the two unsmoothed lines.
 
 With no smoothing, the transition helper simply chooses one line. With smoothing,
 the epsilon value is treated as a one-sided LTspice-style width. Forward
@@ -391,9 +381,9 @@ The forward, off, and reverse-breakdown lines are:
 
 $$
 \begin{aligned}
-i_{\text{on}}(v) &= g_{\text{on}} \cdot (v - V_f) \\
+i_{\text{on}}(v) &= g_{\text{on}} \cdot (v - V_f) + g_{\text{off}} \cdot V_f \\
 i_{\text{off}}(v) &= g_{\text{off}} \cdot v \\
-i_{\text{rev}}(v) &= g_{\text{rev}} \cdot (v + V_{\text{rev}})
+i_{\text{rev}}(v) &= g_{\text{rev}} \cdot (v + V_{\text{rev}}) - g_{\text{off}} \cdot V_{\text{rev}}
 \end{aligned}
 $$
 
@@ -411,8 +401,8 @@ the present voltage:
 $$
 i_{\text{raw}}(v) =
 \begin{cases}
-i_{\text{rev}}(v), & \text{if } V_{\text{rev}} \text{ is enabled and } v < v_{\text{rev,boundary}} \\
-i_{\text{off}}(v), & \text{if } v < v_{\text{fwd,boundary}} \\
+i_{\text{rev}}(v), & \text{if } V_{\text{rev}} \text{ is enabled and } v < -V_{\text{rev}} \\
+i_{\text{off}}(v), & \text{if } v < V_f \\
 i_{\text{on}}(v), & \text{otherwise}
 \end{cases}
 $$
@@ -429,18 +419,18 @@ $$
 g_{d,\text{raw}} \in \{g_{\text{rev}}, g_{\text{off}}, g_{\text{on}}\}
 $$
 
-The forward transition point is the intersection of the off line and the on
-line:
+The forward transition point is the nominal LTspice threshold:
 
 $$
-v_{\text{fwd,boundary}} = \frac{g_{\text{on}} \cdot V_f}{g_{\text{on}} - g_{\text{off}}}
+v_{\text{fwd,boundary}} = V_{\text{fwd}}
 $$
 
-When `Roff` is much larger than `Ron`, `g_off` is tiny compared with `g_on`,
-so this is very close to:
+The forward line is shifted by the off-line current at `Vfwd`, so finite `Roff`
+adds a small term:
 
 $$
-v_{\text{fwd,boundary}} \approx V_{\text{fwd}}
+i_{\text{on}}(v) = \frac{v - V_{\text{fwd}}}{R_{\text{on}}}
+    + \frac{V_{\text{fwd}}}{R_{\text{off}}}
 $$
 
 ### Reverse Breakdown
@@ -457,17 +447,18 @@ $$
 i \approx \frac{v + V_{\text{rev}}}{R_{\text{rev}}}
 $$
 
-The exact reverse transition point is the intersection of the reverse line and
-the off line:
+The reverse transition point is the nominal LTspice threshold:
 
 $$
-v_{\text{rev,boundary}} = -\frac{g_{\text{rev}} \cdot V_{\text{rev}}}{g_{\text{rev}} - g_{\text{off}}}
+v_{\text{rev,boundary}} = -V_{\text{rev}}
 $$
 
-When `Roff` is much larger than `Rrev`, this is very close to:
+The reverse line is shifted by the off-line current at `-Vrev`, so finite
+`Roff` adds a small term:
 
 $$
-v_{\text{rev,boundary}} \approx -V_{\text{rev}}
+i_{\text{rev}}(v) = \frac{v + V_{\text{rev}}}{R_{\text{rev}}}
+    - \frac{V_{\text{rev}}}{R_{\text{off}}}
 $$
 
 Example:
