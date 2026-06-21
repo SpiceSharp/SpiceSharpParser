@@ -5613,6 +5613,18 @@ Stamp shape: the instance contributes the sum of its expanded internal component
 Beginner takeaway: a subcircuit is like a function call or component macro. It does not
 solve separately; its inside parts are mapped into the parent circuit.
 
+## Common Misunderstandings
+
+| Misunderstanding | Correction |
+|------------------|------------|
+| `.TRAN tstep` is the internal timestep. | It is mainly output cadence and an initial hint; internal candidate timesteps can be smaller, larger, accepted, or rejected. |
+| `.AC` simulates a sine wave over time. | `.AC` is small-signal frequency-domain analysis around a DC operating point. |
+| Rejected transient points are still exported. | Rejected candidates are not committed to device history and are not exported. |
+| `.SAVE`, `.PRINT`, or `.PLOT` changes what the solver computes. | These statements normally choose what values are observed or reported; they do not change the circuit equations. |
+| `UIC` makes transient startup easier. | `UIC` skips the operating-point solve, which is useful for intentional initial conditions but can make startup harder. |
+| Components solve themselves. | Components only stamp local equations into the shared matrix/RHS; the sparse solver solves the global system. |
+| The MNA matrix is always a conductance matrix. | In linear DC it often looks like one, but in Newton, AC, and transient analyses it can be a Jacobian, complex matrix, or companion-model matrix. |
+
 ## Reading Solver Failures
 
 | Symptom | Typical meaning |
