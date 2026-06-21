@@ -1368,16 +1368,77 @@ known history term from the previous accepted current.
 This is why capacitor examples focus on node voltage history, while inductor
 examples focus on branch current history.
 
+## Common Formula Shape
+
+The selectable `.TRAN` methods all do the same kind of algebraic split. First,
+name the stored quantity:
+
+| Symbol | For a capacitor | For an inductor |
+|--------|-----------------|-----------------|
+| `y` | Charge `q` | Flux linkage `Phi` |
+| `dy/dt` | Capacitor current `i` | Inductor voltage `v` |
+| Current unknown | Terminal voltage `v_n` | Branch current `i_n` |
+
+The integration method estimates the time derivative as:
+
+$$
+\frac{dy}{dt}\bigg|_n \approx a_0 y_n + \text{history}
+$$
+
+The $a_0 y_n$ part contains the current unknown, so it becomes a matrix
+coefficient. The `history` part is already known from accepted timesteps, so it
+becomes a right-hand-side source term.
+
+For a linear capacitor, $y = q = Cv$:
+
+$$
+i_n \approx a_0 C v_n + i_{\text{history}}
+$$
+
+so:
+
+$$
+g_{\text{eq}} = a_0 C
+$$
+
+For a linear inductor, $y = \Phi = Li$:
+
+$$
+v_n \approx a_0 L i_n + v_{\text{history}}
+$$
+
+so:
+
+$$
+r_{\text{eq}} = a_0 L
+$$
+
+The method-specific formulas below only change $a_0$ and what goes into the
+history term.
+
 ## Backward Euler Intuition
 
 Backward Euler estimates the current derivative from the current value and one
 previous accepted value:
 
 $$
-\frac{dx}{dt}\bigg|_n \approx \frac{x_n - x_{n-1}}{h}
+\frac{dy}{dt}\bigg|_n \approx \frac{y_n - y_{n-1}}{h}
 $$
 
-where `h` is the timestep.
+where `h` is the current timestep. In the common formula shape:
+
+$$
+a_0 = \frac{1}{h}
+$$
+
+and:
+
+$$
+\text{history} = -\frac{1}{h}y_{n-1}
+$$
+
+This method uses only the current unknown and one previous accepted point. That
+makes it simple and robust, but it also adds numerical damping.
 
 For a capacitor:
 
@@ -1395,6 +1456,22 @@ $$
 i_{\text{history}} = -g_{\text{eq}}v_{n-1}
 $$
 
+For an inductor:
+
+$$
+v_n = L\frac{i_n - i_{n-1}}{h}
+$$
+
+So the companion model is:
+
+$$
+r_{\text{eq}} = \frac{L}{h}
+$$
+
+$$
+v_{\text{history}} = -r_{\text{eq}}i_{n-1}
+$$
+
 Backward Euler is stable and damping. That damping can be helpful when a circuit
 is stiff, but it can also hide or soften real oscillation if the step is too
 large.
@@ -1407,26 +1484,153 @@ backward Euler method.
 Trapezoidal integration averages the slope at the previous point and the current
 point. For many smooth circuits, this gives better accuracy than backward Euler.
 
-For a capacitor, the current can be written conceptually as:
+In the common stored-quantity form:
+
+$$
+\frac{dy}{dt}\bigg|_n \approx
+\frac{2}{h}(y_n - y_{n-1}) -
+\left(\frac{dy}{dt}\right)_{n-1}
+$$
+
+So:
+
+$$
+a_0 = \frac{2}{h}
+$$
+
+and:
+
+$$
+\text{history} =
+-\frac{2}{h}y_{n-1} -
+\left(\frac{dy}{dt}\right)_{n-1}
+$$
+
+The extra stored derivative term is what makes trapezoidal different from
+backward Euler. It reuses the previous slope instead of only looking at the
+previous value.
+
+For a capacitor:
 
 $$
 i_n \approx \frac{2C}{h}v_n + i_{\text{history}}
 $$
 
-where the history term includes the previous voltage and previous capacitor
-current. Compared with backward Euler, trapezoidal uses more information from
-the last accepted point.
+with:
+
+$$
+g_{\text{eq}} = \frac{2C}{h}
+$$
+
+$$
+i_{\text{history}} =
+-\frac{2C}{h}v_{n-1} - i_{n-1}
+$$
+
+Here $i_{n-1}$ is the previous accepted capacitor current, which is the previous
+value of `dq/dt`.
+
+For an inductor:
+
+$$
+v_n \approx \frac{2L}{h}i_n + v_{\text{history}}
+$$
+
+with:
+
+$$
+r_{\text{eq}} = \frac{2L}{h}
+$$
+
+$$
+v_{\text{history}} =
+-\frac{2L}{h}i_{n-1} - v_{n-1}
+$$
+
+Here $v_{n-1}$ is the previous accepted inductor voltage, which is the previous
+value of `dPhi/dt`.
 
 This often tracks smooth waveforms well. The tradeoff is that trapezoidal can
-show numerical ringing in stiff circuits, especially when ideal switches,
-diodes, tiny resistances, and large storage elements create abrupt changes.
+preserve point-to-point numerical ringing in stiff circuits, especially when
+ideal switches, diodes, tiny resistances, and large storage elements create
+abrupt changes.
 
 ## Gear Intuition
 
 Gear methods are backward differentiation formula methods. They estimate the
 current derivative from the current point and several previous accepted points.
-First-order Gear behaves like backward Euler; higher-order Gear uses more
-history.
+In SpiceSharp 3.2.3, the Gear method used by this parser can use up to order 2.
+At startup, after a rejected step, or when there is not enough history yet, the
+active order may be lower.
+
+Gear order 1 is the same derivative formula as backward Euler:
+
+$$
+\frac{dy}{dt}\bigg|_n \approx \frac{y_n - y_{n-1}}{h}
+$$
+
+Gear order 2 fits the derivative through the current point and two previous
+accepted points. With variable timesteps:
+
+$$
+\frac{dy}{dt}\bigg|_n \approx
+a_0y_n + a_1y_{n-1} + a_2y_{n-2}
+$$
+
+where:
+
+$$
+a_0 =
+\frac{2h_n + h_{n-1}}{h_n(h_n + h_{n-1})}
+$$
+
+$$
+a_1 =
+-\frac{h_n + h_{n-1}}{h_n h_{n-1}}
+$$
+
+$$
+a_2 =
+\frac{h_n}{h_{n-1}(h_n + h_{n-1})}
+$$
+
+Here $h_n$ is the current timestep from $t_{n-1}$ to $t_n$, and $h_{n-1}$ is the
+previous timestep from $t_{n-2}$ to $t_{n-1}$.
+
+If the timesteps are equal, this reduces to the familiar constant-step Gear-2
+formula:
+
+$$
+\frac{dy}{dt}\bigg|_n \approx
+\frac{3y_n - 4y_{n-1} + y_{n-2}}{2h}
+$$
+
+For a capacitor in Gear order 2:
+
+$$
+g_{\text{eq}} = a_0 C
+$$
+
+$$
+i_{\text{history}} =
+C(a_1v_{n-1} + a_2v_{n-2})
+$$
+
+For an inductor in Gear order 2:
+
+$$
+r_{\text{eq}} = a_0 L
+$$
+
+$$
+v_{\text{history}} =
+L(a_1i_{n-1} + a_2i_{n-2})
+$$
+
+Compared with trapezoidal, Gear does not reuse the previous derivative as a
+separate stored slope. It fits the derivative from accepted stored values. That
+usually adds more numerical damping, which can calm stiff switching circuits and
+reduce trapezoidal point-to-point artifacts.
 
 The useful beginner picture is:
 
