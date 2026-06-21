@@ -94,6 +94,77 @@ In other words, SpiceSharp is not one giant `switch` statement over component na
 It is closer to a plugin system: each component provides behaviors, and the simulation
 asks for the behaviors it needs.
 
+## Source Code Reading Map
+
+When reading SpiceSharp source code, it helps to separate **what is being
+simulated** from **who is doing the simulation**.
+
+| Thing to find | What it usually means |
+|---------------|-----------------------|
+| Entity/component class | User-facing circuit object and parameters. |
+| Behavior class | Analysis-specific numerical work for that entity. |
+| Simulation class | The outer algorithm that decides which behaviors to call and when. |
+| Simulation state | Shared runtime data: solver, variables, current solution, time, and history. |
+| Integration method | Time-step controller and derivative/history calculator for `.TRAN`. |
+| Export | Reader that observes solved values without owning the solve. |
+
+The lifecycle of one solve point usually looks like this:
+
+```text
+bind:
+  create behaviors
+  allocate variables
+  cache matrix/RHS locations
+
+prepare:
+  set analysis mode, time, frequency, swept value, or temperature
+
+load:
+  clear numeric matrix/RHS
+  ask active behaviors to stamp equations
+
+solve:
+  factor and solve the matrix
+  write the solution into simulation variables
+
+check:
+  update nonlinear guesses
+  test convergence or timestep accuracy
+
+accept/export:
+  commit accepted state
+  let exports read the current solution
+```
+
+Different analyses wrap that lifecycle differently:
+
+| Analysis | Extra loop around the load/solve/check lifecycle |
+|----------|--------------------------------------------------|
+| `.OP` | Newton loop until the bias point converges. |
+| `.DC` | Sweep loop; each point runs a biasing solve. |
+| `.AC` | Frequency loop after an operating point and small-signal linearization. |
+| `.TRAN` | Time loop; each candidate time may run Newton, then accept or reject history. |
+
+If you are reading engine files, this rough map is useful:
+
+| Source area | What to look for |
+|-------------|------------------|
+| `BiasingSimulation` | Real-valued load/solve/Newton iteration used by `.OP`, `.DC`, and `.TRAN`. |
+| `Transient` | Time loop around biasing iteration: probe, solve, truncate/evaluate, accept, export. |
+| `IIntegrationMethod` | Current time, timestep, accepted history, derivative/integral states, and reject/accept control. |
+| `IAcceptBehavior` | Device state that is committed only after a successful solve point. |
+| `ITruncatingBehavior` | Device or helper logic that limits timestep size. |
+| Waveform classes / `IWaveform` | Source values as a function of simulation time. |
+
+The most important reading habit is to ask:
+
+```text
+Is this code defining the circuit,
+loading equations for the current solve,
+checking whether the solve is acceptable,
+or committing/exporting state after acceptance?
+```
+
 ## Modified Nodal Analysis
 
 SpiceSharp solves circuits with modified nodal analysis (MNA). The phrase sounds
@@ -1912,6 +1983,52 @@ Do not worry if the behavior list feels long. Most analyses only ask for the beh
 types they need. A DC operating-point simulation does not care about noise behavior.
 An AC simulation does care about frequency behavior.
 
+### Behavior Interface Cheat Sheet
+
+The easiest way to read a behavior class is to ask when the simulation calls it.
+
+| Interface or method | Called when | What to look for in the code |
+|---------------------|-------------|------------------------------|
+| `ITemperatureBehavior.Temperature()` | Before solving, and when temperature changes. | Effective parameter calculation, such as resistance, capacitance, or model constants. |
+| `IBiasingBehavior.Load()` | Every real-valued matrix load: `.OP`, `.DC`, Newton iterations, and `.TRAN` candidate solves. | Real matrix/RHS stamps, local Jacobian terms, equivalent sources. |
+| `IConvergenceBehavior.IsConvergent()` | After a Newton solve/update. | Device-specific checks that decide whether the latest guess is close enough. |
+| `IBiasingUpdateBehavior.Update()` | After a biasing solve iteration, before the next convergence/load decision. | Internal state updates based on the latest real solution. |
+| `IFrequencyBehavior.Load()` | At each AC/noise frequency point. | Complex admittance/current contributions using `s = jomega`. |
+| `IFrequencyUpdateBehavior.Update()` | After a frequency-domain solve. | Frequency-domain state or export preparation. |
+| `ITimeBehavior.InitializeStates()` | Before transient stepping starts. | Initial charge, flux, delay, or internal state setup from OP or `UIC`. |
+| `ITruncatingBehavior.Prepare()` | Before probing the next transient point. | A maximum allowed next timestep, often to hit a scheduled event. |
+| `ITruncatingBehavior.Evaluate()` | After a candidate transient point converges. | Whether the solved point allows the attempted timestep or requires a smaller retry. |
+| `IAcceptBehavior.Accept()` | After a solve point is accepted. | Committing history, latch state, waveform state, or other trusted values. |
+| `INoiseBehavior.Load()` | During noise analysis. | Noise source density contributions. |
+
+Some names can be misleading until you see the lifecycle. `Load()` does not mean
+"load from disk." It means "load this behavior's equations into the current
+matrix and RHS." `Accept()` does not mean Newton merely converged; in transient
+analysis it means the timestep was accepted and history can be trusted.
+
+For `.TRAN`, the most common order is:
+
+```text
+initialize time states
+
+for each candidate time:
+  Prepare() truncation limits for the next step
+  Load() during each Newton iteration
+  IsConvergent() / Update() while Newton iterates
+  Evaluate() truncation check after Newton converges
+  Accept() only if the candidate timestep is accepted
+```
+
+That order explains why dynamic behavior code often has two kinds of state:
+
+```text
+candidate state:
+  recomputed during Newton iterations
+
+accepted state:
+  committed only after Accept()
+```
+
 ### Behavior Containers
 
 During setup, SpiceSharp builds behavior containers for entities. A behavior container
@@ -1934,6 +2051,120 @@ analysis uses biasing plus time, accept, and truncation behavior.
 
 This design is why SpiceSharp can add new analyses and custom devices without forcing
 every component into one giant base class.
+
+### One Component Full Lifecycle: Capacitor
+
+Follow one capacitor through the system:
+
+```spice
+V1 in 0 PULSE(0 5 0 1n 1n 1m 2m)
+R1 in out 1k
+C1 out 0 1u IC=0
+.TRAN 1u 5m
+.SAVE V(out)
+.END
+```
+
+The parser first turns the `C1` line into a SpiceSharp capacitor entity:
+
+```text
+name: C1
+positive node: out
+negative node: 0
+capacitance: 1u
+initial condition: 0 V
+```
+
+During simulation setup, SpiceSharp binds that entity to behaviors and runtime
+state:
+
+| Setup piece | What happens |
+|-------------|--------------|
+| Node variables | `out` is mapped to a solver variable; ground `0` is the reference. |
+| Behavior container | `C1` receives capacitor behaviors for the active analyses. |
+| Matrix locations | The behavior caches the matrix/RHS entries touched by the capacitor stamp. |
+| Time state | The transient behavior creates an integration derivative state for charge. |
+| Export | `.SAVE V(out)` creates a reader for the solved `out` node voltage. |
+
+Before transient stepping starts, the capacitor history is initialized:
+
+```text
+without UIC:
+  solve operating point
+  use V(out) from OP to initialize q = C * V(out)
+
+with UIC:
+  use IC=0, .IC statements, or available initial values
+  initialize q directly from that starting voltage
+```
+
+At each candidate timestep, `C1` participates in the Newton load just like every
+other active behavior. For a linear capacitor, its time behavior conceptually
+does this:
+
+```text
+read current voltage guess:
+  v = V(out) - V(0)
+
+compute present stored charge:
+  q = C * v
+
+ask the integration method:
+  derive dq/dt from q, timestep, and accepted history
+
+load companion model:
+  matrix gets conductance-like term geq
+  RHS gets history-current term ihistory
+```
+
+Accepted history means the last time-domain state that the simulator decided was
+valid and committed. It is different from the candidate state currently being
+tried:
+
+```text
+accepted history:
+  last trusted charge/flux/delay/internal state
+
+candidate state:
+  values being tested at the current candidate time
+```
+
+For `C1`, accepted history includes the last trusted capacitor charge. If the
+candidate timestep is rejected, the candidate charge is thrown away and the next
+retry still starts from the previous accepted charge.
+
+The loaded relation has the usual companion shape:
+
+$$
+i_n \approx g_{\text{eq}}v_n + i_{\text{history}}
+$$
+
+During Newton iterations, the candidate voltage `v_n` may change, so the
+capacitor reloads its contribution using the current guess and the same accepted
+history. If the candidate timestep is rejected, none of that candidate charge
+history is kept.
+
+When the timestep is accepted:
+
+```text
+Accept():
+  current charge state becomes accepted history
+  simulation time advances
+  V(out) export reads the accepted solution
+```
+
+So one capacitor touches almost every major SpiceSharp idea:
+
+```text
+netlist line
+  -> entity and parameters
+  -> behavior container
+  -> node variables and cached matrix locations
+  -> integration state
+  -> matrix/RHS companion stamp during Load()
+  -> accepted charge history after Accept()
+  -> V(out) export after the point is accepted
+```
 
 ## Simulation Lifecycle
 
@@ -3127,6 +3358,66 @@ Dynamic components do not just stamp fixed values. They depend on time history:
 | Transmission line | delayed wave history. |
 | Laplace source | transfer-function state and optional delay history. |
 
+### Before The First Transient Step
+
+The transient loop needs a starting point before it can move forward. There are
+two related but different starting values:
+
+| Starting value | What it seeds |
+|----------------|---------------|
+| Initial solution vector | The first guesses for node voltages and branch currents. |
+| Initial dynamic history | Stored charge, flux, delay, or transfer-function state. |
+
+Without `UIC`, the usual startup path is:
+
+```text
+solve DC operating point
+use that solution as the time-zero circuit state
+initialize capacitor, inductor, and internal dynamic histories from it
+```
+
+This gives `.TRAN` a physically steady starting point when the circuit has one.
+For example, an ideal capacitor contributes no steady DC current during the
+operating-point solve, but its terminal voltage from that solve still becomes the
+initial charge history for transient analysis.
+
+With `UIC`, the operating-point solve is skipped:
+
+```text
+read .IC statements and device IC= parameters
+use those values as the starting state where applicable
+initialize dynamic histories from those initial conditions
+start the transient loop directly
+```
+
+That can intentionally start a circuit away from equilibrium, such as a charged
+capacitor discharging through a resistor. It can also make the first few
+timesteps harder, because the simulator did not first find a self-consistent DC
+solution.
+
+### What The .TRAN Parameters Control
+
+The common syntax is:
+
+```spice
+.TRAN <tstep> <tstop> [<tstart> [<tmaxstep>]] [UIC]
+```
+
+These numbers do not all mean "take this exact solver step":
+
+| Term | How it affects the loop |
+|------|-------------------------|
+| `tstep` | Output cadence and initial step hint. It is not a promise that every internal timestep equals this value. |
+| `tstop` | Stop time for the transient analysis. |
+| `tstart` | Time before which output is suppressed; the simulator still solves earlier points because they affect later history. |
+| `tmaxstep` | Maximum internal timestep. This is the main user control for preventing the solver from jumping over fast behavior. |
+| `UIC` | Skip the DC operating-point startup and seed transient state from initial conditions. |
+
+The important distinction is output time versus internal time. A netlist can ask
+for output every `1 us`, while the solver internally takes `200 ns`, `50 ns`, or
+some other candidate step near a sharp event. Internal steps are about accuracy
+and convergence. Output settings are about what results are reported.
+
 ### What Integration Methods Are For
 
 Integration methods are the rules SpiceSharp uses to move a circuit forward in time.
@@ -3252,6 +3543,247 @@ while time < stopTime:
   time = candidateTime
 ```
 
+The inner Newton loop does not advance time. It keeps trying to solve the same
+candidate time with better and better guesses:
+
+```text
+candidate time stays fixed
+solution guess changes each Newton iteration
+```
+
+Read the inner loop like this:
+
+| Step | Meaning |
+|------|---------|
+| `clear matrix and rhs` | Throw away the previous iteration's numeric matrix values. They were built around an older guess. |
+| `load all component stamps for candidateTime` | Ask every component to contribute its current linearized equations for this time and this guess. |
+| `solve Y * x = rhs` | Solve the temporary linear MNA system. The vector `x` contains node voltages and branch currents. |
+| `update nonlinear devices` | Let nonlinear behaviors read the new solution and prepare their next local slopes, equivalent sources, and convergence checks. |
+| `if nonlinear devices converged` | Stop iterating when the nonlinear device equations are no longer changing beyond tolerance. |
+
+The repeated clearing and loading are necessary because nonlinear components do
+not have one fixed stamp. A diode, for example, loads a conductance and
+equivalent current source based on the present diode-voltage guess. After the
+linear solve changes that voltage, the diode's local stamp may need to change
+too.
+
+For one candidate time, the loop is therefore:
+
+```text
+build a linear version of the nonlinear circuit
+solve it
+use that result as the next guess
+repeat until the guess is self-consistent
+```
+
+### How Behaviors Read The New Solution
+
+The pseudocode says `update nonlinear devices`, but most behaviors do not receive
+the solved vector `x` as a method argument. Instead, during binding/setup they
+cache variable objects that point into the solver state. After `solve Y * x =
+rhs`, those variable objects expose the new solution values.
+
+For a two-terminal device, reading the current voltage usually looks like:
+
+```csharp
+double voltage = Variables.Positive.Value - Variables.Negative.Value;
+```
+
+For a branch device, reading the current can look like:
+
+```csharp
+double current = Variables.Branch.Value;
+```
+
+Those `.Value` properties are the bridge from the solved MNA vector back into the
+component behavior. The next time `Load()` runs, the behavior reads the updated
+values and recomputes its local model.
+
+A nonlinear diode-style behavior does this conceptually:
+
+```csharp
+double vd = Variables.PosPrime.Value - Variables.Negative.Value;
+
+IdealDiodeEquation.Evaluate(
+    Parameters,
+    BiasingParameters,
+    vd,
+    out double cd,
+    out double gd);
+```
+
+Here `cd` is the current at the present voltage guess and `gd` is the local
+slope, `dI/dV`, at that same guess. The behavior then loads a linearized stamp
+that represents:
+
+```text
+I(v) around this guess = conductance gd + equivalent current source
+```
+
+If the linear solve changes the diode voltage, the next Newton iteration reads
+the new `Variables...Value`, recomputes `cd` and `gd`, clears the old stamp, and
+loads the new local approximation.
+
+A nonlinear dynamic device follows the same "read current guess, compute local
+slope" pattern, but it also has stored history. The next section covers that
+extra integration layer.
+
+So the phrase "prepare the next local slopes" means:
+
+```text
+read the latest solved voltage/current values
+evaluate the nonlinear equation at those values
+compute the local derivative at those values
+use that derivative when loading the next Newton matrix
+```
+
+### Nonlinear Devices With Integration History
+
+Some devices are nonlinear but not dynamic. A diode's current depends on voltage,
+so Newton needs a local slope `dI/dV`, but the diode does not by itself remember
+time history.
+
+Some devices are dynamic but linear. A normal capacitor has `q = C*v`, so it
+needs integration history, but its local slope `dq/dv = C` is constant.
+
+The interesting case is a device that is both nonlinear and dynamic. Examples
+include semiconductor junction charges, a nonlinear `Q=` capacitor, or a
+nonlinear `Flux=` inductor. These devices need two mechanisms at the same time:
+
+| Mechanism | What it uses | What it answers |
+|-----------|--------------|-----------------|
+| Newton linearization | Current voltage/current guess and local derivatives. | How should this nonlinear equation be approximated for this iteration? |
+| Integration method | Current candidate value, timestep, and accepted history. | How should this stored quantity change over time? |
+
+For a nonlinear charge-defined capacitor:
+
+$$
+Q = Q(V)
+$$
+
+and:
+
+$$
+i = \frac{dQ}{dt}
+$$
+
+At each Newton iteration for a candidate timestep, the behavior reads the latest
+voltage guess and computes:
+
+```text
+present stored quantity: Q(V_guess)
+local Newton slope:      dQ/dV at V_guess
+time derivative:         dQ/dt from integration history
+```
+
+In code, the custom nonlinear capacitor pattern is:
+
+```csharp
+double voltage = Voltage;
+double charge = EvaluateCharge(voltage);
+double capacitance = EvaluateChargeDerivative(voltage);
+
+_chargeState.Value = charge;
+_chargeState.Derive();
+JacobianInfo info = _chargeState.GetContributions(capacitance, voltage);
+```
+
+Each line has a different job:
+
+| Line | Meaning |
+|------|---------|
+| `EvaluateCharge(voltage)` | Evaluate the stored quantity at the current Newton guess. |
+| `EvaluateChargeDerivative(voltage)` | Compute the local slope `dQ/dV` for the Newton Jacobian. |
+| `_chargeState.Derive()` | Ask the active integration method to compute `dQ/dt` from candidate value plus history. |
+| `GetContributions(capacitance, voltage)` | Combine the local slope and integration history into matrix/RHS contributions. |
+
+The integration method owns the time-history part. The nonlinear behavior owns
+the local derivative part. `GetContributions(...)` is where those two meet.
+
+Conceptually, the integration method creates a shape like:
+
+$$
+\frac{dQ}{dt} \approx a_0 Q_n + \text{history}
+$$
+
+Newton then linearizes the nonlinear stored quantity around the current guess:
+
+$$
+Q(V) \approx Q(V_k) + \frac{dQ}{dV}\bigg|_k (V - V_k)
+$$
+
+So the matrix coefficient is based on:
+
+```text
+integration coefficient * local derivative
+```
+
+For a nonlinear capacitor, that means:
+
+```text
+Jacobian contribution ~ a0 * dQ/dV
+RHS contribution      ~ accepted history plus linearization correction
+```
+
+For a nonlinear flux-defined inductor, the mirror image is:
+
+```csharp
+double current = Current;
+double flux = EvaluateFlux(current);
+double inductance = EvaluateFluxDerivative(current);
+
+_fluxState.Value = flux;
+_fluxState.Derive();
+JacobianInfo info = _fluxState.GetContributions(inductance, current);
+```
+
+Here the stored quantity is flux:
+
+$$
+\Phi = \Phi(I)
+$$
+
+and the local slope is:
+
+$$
+\frac{d\Phi}{dI}
+$$
+
+The integration method turns `dPhi/dt` into an inductor voltage contribution, and
+the local slope tells Newton how that voltage contribution changes when the
+branch-current guess changes.
+
+During a candidate timestep, accepted history is still the last trusted history.
+Newton iterations may update the candidate charge or flux values many times, but
+those values do not become history until the timestep is accepted:
+
+```text
+accepted history:
+  fixed while solving candidate time
+
+current Newton guess:
+  changes each iteration
+
+local derivative:
+  recomputed from the current guess
+
+history commit:
+  happens only after the timestep is accepted
+```
+
+This is the main relationship:
+
+```text
+nonlinear device:
+  supplies present stored value and local slope
+
+integration method:
+  supplies timestep coefficient and accepted-history terms
+
+Newton matrix:
+  receives their combined Jacobian and RHS contribution
+```
+
 This explains the phrase "many nonlinear solves over accepted/rejected timesteps":
 
 ```text
@@ -3259,6 +3791,42 @@ many timesteps
   each timestep may need many Newton iterations
   each timestep may be accepted or rejected
 ```
+
+### What Gets Rebuilt At A Candidate Time
+
+At a candidate time, some information is fixed for the whole solve attempt, while
+other information can change on every Newton iteration.
+
+Fixed for the candidate attempt:
+
+| Value | Why it is fixed during the attempt |
+|-------|------------------------------------|
+| Candidate time `t_n` | The solver is trying to solve the circuit at that one time. |
+| Timestep `h = t_n - t_{n-1}` | Integration coefficients are built for that attempted time jump. |
+| Accepted history | Last trusted charge, flux, delay, or internal state from the previous accepted point. |
+| Waveform time argument | Sources such as `PULSE`, `SIN`, and `PWL` are evaluated at the candidate time. |
+
+Reloaded during Newton iterations:
+
+| Value | Why it can change |
+|-------|-------------------|
+| Nonlinear currents and conductances | They depend on the current voltage/current guess. |
+| Equivalent Newton sources | They are recomputed from the latest local linearization. |
+| Nonlinear charge or flux slopes | `dQ/dV` or `dPhi/dI` can change with the current guess. |
+| RHS residual corrections | The mismatch changes as Newton moves the solution. |
+
+The matrix structure is usually stable: device pins, branch variables, and cached
+sparse-matrix locations were allocated during setup. The numbers loaded into
+those locations can change many times:
+
+```text
+same topology
+same cached matrix locations
+new source values, companion coefficients, nonlinear slopes, and RHS values
+```
+
+This is why transient analysis can reuse a lot of setup work while still
+reloading the matrix at every Newton iteration.
 
 ### RC Charging Example
 
@@ -3478,6 +4046,98 @@ That is why transient simulation can slow down near switching events, sharp wave
 edges, or strongly nonlinear behavior. The simulator is doing extra inner solves to
 find a trustworthy next point.
 
+### What Truncation Means In .TRAN
+
+In transient analysis, "truncation" usually means **timestep truncation**. The
+simulator is not clipping a voltage or current value. It is limiting how far time
+is allowed to jump.
+
+The reason is local truncation error. An integration method represents the real
+continuous-time curve using only a finite amount of history. For example, a
+capacitor's real charge may bend between two time points, but the integration
+method only sees accepted history values and derivatives. The part of the curve
+that the method cannot represent is the truncation error.
+
+Plain-language picture:
+
+```text
+real waveform:
+  smooth curve through time
+
+integration method:
+  finite-step approximation from stored history
+
+truncation check:
+  is this time jump small enough for that approximation?
+```
+
+SpiceSharp uses truncation in two places around the transient loop.
+
+Before trying the next point, truncating behaviors can limit the next proposed
+timestep:
+
+```text
+for each truncating behavior:
+  allowedStep = behavior.Prepare()
+  integration method caps the next timestep to that value
+```
+
+This is useful for things like sampler points, waveform breakpoints, or device
+state that knows the solver should not step past a particular time.
+
+After Newton converges at a candidate point, the integration method and
+truncating behaviors evaluate whether the solved point was accurate enough:
+
+```text
+Newton converged at candidate time
+ask truncating behaviors for their allowed timestep
+ask integration method whether the local error is acceptable
+
+if acceptable:
+  accept point and commit history
+else:
+  reduce timestep and retry from the last accepted time
+```
+
+The integration method can estimate local error from its tracked states. For a
+capacitor, that state is charge; for an inductor, it is flux. The method compares
+the solved value and history against the error tolerances and computes a maximum
+timestep it would trust.
+
+The result is an allowed timestep, not a corrected voltage:
+
+```text
+local error small enough:
+  keep the point
+  maybe allow the next timestep to grow
+
+local error too large:
+  reject the point
+  shrink the timestep
+  solve again
+```
+
+This is why a `.TRAN` run can show many rejected points near a sharp source edge
+or switching event even when Newton itself converges. Newton answered "the
+circuit equations balance at this candidate time." Truncation answered "the jump
+from the previous accepted time to this one was too large to trust."
+
+### Export Timing And Saved Values
+
+Exports read the solved simulation state after a transient point is accepted.
+Rejected candidate points are not exported because their histories are not
+committed and the simulator has decided not to trust them.
+
+`.SAVE`, `.PRINT`, `.PLOT`, and `.MEAS` choose which values are observed or
+post-processed. They do not normally change the equations the solver must solve.
+The solver still computes the full circuit state needed by the devices; the
+export configuration only controls what is reported back to the caller or used by
+measurement logic.
+
+When `tstart` is present, early solved points still matter. A capacitor charged
+before `tstart` still carries that charge into later output times. `tstart`
+suppresses early reporting; it does not skip the physics before that time.
+
 ### Breakpoints And Discontinuities
 
 Waveform sources and piecewise expressions can introduce discontinuities. The transient
@@ -3494,6 +4154,11 @@ Examples:
 
 When a circuit has sharp discontinuities, the matrix can change abruptly. That often
 causes smaller timesteps and more Newton iterations near the event.
+
+Breakpoints do not make a discontinuity smooth. They only tell the timestepper
+where important time points are. If a source has a very fast but finite edge, a
+reasonable `tmaxstep` may still be needed so the accepted history has enough
+points along that edge.
 
 ## AC Small-Signal Linearization
 
