@@ -94,6 +94,304 @@ $$
 Those temporary relations are called **companion models**. They behave like a
 simple matrix stamp plus a history source for one solve attempt.
 
+## How .TRAN Uses The Modified Matrix Algorithm
+
+The modified nodal analysis matrix algorithm does not disappear during transient
+simulation. `.TRAN` uses the same matrix idea repeatedly:
+
+```text
+choose candidate time
+turn dynamic devices into companion models
+clear matrix and RHS
+stamp all devices
+solve matrix
+check Newton convergence and truncation error
+accept or reject the candidate time
+```
+
+The difference is that capacitors, inductors, and other dynamic devices load
+timestep-dependent stamps. Their matrix coefficients and RHS history terms can
+change every candidate timestep.
+
+### Example: RC Step Matrix For One Candidate Timestep
+
+Use this circuit:
+
+```spice
+V1 in 0 5
+R1 in out 1k
+C1 out 0 1u
+.OPTIONS METHOD=EULER
+.TRAN 1m 10m
+```
+
+Suppose the simulation is building one backward-Euler candidate timestep:
+
+```text
+h = 1 ms
+previous accepted V(out) = 2 V
+current source voltage V(in) = 5 V
+```
+
+The resistor conductance is:
+
+$$
+g_R = \frac{1}{1000} = 0.001
+$$
+
+The capacitor companion coefficient is:
+
+$$
+g_C = \frac{C}{h} = \frac{1u}{1m} = 0.001
+$$
+
+Using the convention that capacitor current leaves node `out` toward ground:
+
+$$
+i_C \approx g_C V(\text{out}) + i_{\text{hist}}
+$$
+
+where:
+
+$$
+i_{\text{hist}} = -g_C V_{\text{prev}} = -0.001 \cdot 2 = -0.002
+$$
+
+The unknown vector for this candidate solve is:
+
+$$
+x =
+\begin{bmatrix}
+V(\text{in}) \\
+V(\text{out}) \\
+I(\text{V1})
+\end{bmatrix}
+$$
+
+The rows mean:
+
+```text
+row V(in):   KCL at input node
+row V(out):  KCL at output node
+row I(V1):   voltage source constraint
+```
+
+The stamped system is:
+
+$$
+\begin{bmatrix}
+g_R & -g_R & 1 \\
+-g_R & g_R + g_C & 0 \\
+1 & 0 & 0
+\end{bmatrix}
+\begin{bmatrix}
+V(\text{in}) \\
+V(\text{out}) \\
+I(\text{V1})
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\
+-i_{\text{hist}} \\
+5
+\end{bmatrix}
+$$
+
+Insert the numbers:
+
+$$
+\begin{bmatrix}
+0.001 & -0.001 & 1 \\
+-0.001 & 0.002 & 0 \\
+1 & 0 & 0
+\end{bmatrix}
+\begin{bmatrix}
+V(\text{in}) \\
+V(\text{out}) \\
+I(\text{V1})
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\
+0.002 \\
+5
+\end{bmatrix}
+$$
+
+The third row forces:
+
+$$
+V(\text{in}) = 5
+$$
+
+The output row then says:
+
+$$
+-0.001 \cdot 5 + 0.002 V(\text{out}) = 0.002
+$$
+
+So:
+
+$$
+V(\text{out}) = 3.5\,\text{V}
+$$
+
+This one solve says: if the previous accepted capacitor voltage was 2 V, then a
+1 ms backward-Euler step toward a 5 V source through 1 kOhm lands at 3.5 V.
+
+The key matrix lesson:
+
+| Device | Matrix contribution | RHS contribution |
+|--------|---------------------|------------------|
+| `R1` | `g_R` conductance terms between `in` and `out`. | None. |
+| `C1` | `g_C` conductance-like term at `out`. | History current from previous accepted charge. |
+| `V1` | Branch-current column and voltage-constraint row. | Source voltage `5`. |
+
+At the next accepted timestep, `V(out) = 3.5 V` becomes the new capacitor
+history. If this candidate timestep is rejected, that history is not committed.
+
+## What Truncation Error Means
+
+Truncation error is the error caused by replacing a real continuous-time curve
+with a finite-step approximation.
+
+The word "truncation" means the integration method keeps only part of the full
+time behavior and drops the rest. Mathematically, numerical integration methods
+can be understood as keeping a few terms from a local time expansion and
+ignoring higher-order terms. Practically, it means this:
+
+```text
+real circuit state:       smooth curve between time points
+integration method view:  approximation built from stored history
+truncation error:         difference between the two
+```
+
+For a capacitor:
+
+$$
+i = \frac{dQ}{dt}
+$$
+
+Backward Euler approximates that derivative as:
+
+$$
+i_n \approx \frac{Q_n - Q_{n-1}}{h}
+$$
+
+If `Q(t)` is nearly straight over the timestep `h`, this approximation is good.
+If `Q(t)` bends sharply because a source edge, diode turn-on, or switch event
+just happened, the approximation may be too coarse. The omitted bending is the
+truncation error.
+
+For an inductor:
+
+$$
+v = \frac{d\Phi}{dt}
+$$
+
+The same idea applies. If flux linkage changes smoothly, a larger step may be
+acceptable. If flux changes quickly, the candidate timestep may be rejected
+because the flux history cannot accurately represent the curve over that whole
+step.
+
+Newton convergence and truncation-error control are two separate acceptance
+checks for the same candidate timestep.
+
+| Check | Main question | Main inputs |
+|-------|---------------|-------------|
+| Newton convergence | Do the equations balance at this candidate time? | KCL, KVL, device equations, residuals, and variable changes. |
+| Truncation-error check | Is this time jump accurate enough? | Dynamic history, derivative estimates, timestep size, and local error estimate. |
+
+Newton works vertically at one candidate time. It asks whether the circuit is
+self-consistent at that time:
+
+```text
+given candidate time t[n]
+given companion models for this h
+find V(nodes) and I(branches)
+make KCL/KVL/device equations balance
+```
+
+Truncation-error control works horizontally across time. It asks whether the
+move from the last accepted time to this candidate time was too large:
+
+```text
+given accepted time t[n-1]
+given candidate time t[n]
+compare dynamic history and derivative estimates
+decide whether this time jump is accurate enough
+```
+
+Those checks can disagree because they measure different things.
+
+So this situation is possible:
+
+```text
+Newton converged
+but truncation error is too high
+```
+
+That means the circuit equations were solved for the attempted point, but the
+attempted step was too large for the time-domain history approximation. The
+candidate voltage/current values may be internally consistent, but the path from
+the previous accepted point to those values is not trusted.
+
+Example:
+
+```text
+accepted time: 10 us
+try time:      12 us
+
+Newton result at 12 us:
+  V(out) = 4.8 V
+  I(L1)  = 0.14 A
+  KCL/KVL residuals are small
+  Newton says: solved
+
+truncation check:
+  capacitor charge changed too sharply from 10 us to 12 us
+  flux/current history estimate is too coarse
+  truncation says: do not trust this 2 us jump
+
+decision:
+  reject 12 us
+  keep history at 10 us
+  retry with a smaller step, for example 11 us
+```
+
+When this happens, the simulator does not commit capacitor charge or inductor
+flux history from the rejected point. It reduces the timestep and tries again
+from the last accepted time.
+
+A simple mental model:
+
+```text
+Newton failure:
+  "I could not solve the equations at this candidate time."
+
+truncation failure:
+  "I solved them, but I do not trust this time jump."
+```
+
+Common reasons for high truncation error:
+
+- sharp `PULSE` or `PWL` edges,
+- diode turn-on or turn-off,
+- switch state changes,
+- a capacitor charging in a short current spike,
+- an inductor current ramp changing too quickly,
+- LC or RLC ringing that is too fast for the current timestep,
+- `tmaxstep` much larger than the fastest important circuit event.
+
+Typical fixes:
+
+- reduce `tmaxstep`,
+- smooth ideal source or behavioral transitions,
+- add realistic resistance/parasitics,
+- compare `METHOD=TRAP` and `METHOD=GEAR`,
+- inspect whether the circuit contains impossible ideal source loops or
+  discontinuous expressions.
+
 ## Method Selection
 
 SpiceSharpParser selects the integration method with `.OPTIONS METHOD=...`.
@@ -267,6 +565,271 @@ $$
 
 The node equations connect terminal voltage to branch current, while the branch
 equation receives the resistance-like coefficient and history term.
+
+## Companion Model Families
+
+A companion model is a temporary linear equivalent that a device loads into the
+matrix for the current solve. It is "temporary" because it is valid only for:
+
+- the current candidate timestep,
+- the current Newton guess,
+- the current analysis type.
+
+The word companion is used most often for capacitors and inductors in transient
+analysis, but the same idea appears in several forms.
+
+| Family | Used by | What changes each solve |
+|--------|---------|-------------------------|
+| Static algebraic stamp | Resistors, linear controlled sources | Usually nothing except parameter changes. |
+| Source equivalent | Independent sources, waveform sources | The RHS value may change with time. |
+| Newton companion | Diodes, transistors, nonlinear expressions | Local slope and equivalent source change each Newton iteration. |
+| Integration companion | Capacitors, inductors, charge/flux states | Coefficients and history sources change with timestep and accepted history. |
+| Combined nonlinear dynamic companion | Semiconductor charges, `Q=`, `Flux=` | Local derivatives and integration history both matter. |
+
+The useful reading habit is to ask four questions:
+
+| Question | Capacitor answer | Inductor answer |
+|----------|------------------|-----------------|
+| What is the current unknown? | Terminal voltage `v`. | Branch current `I(L)`. |
+| What is remembered? | Charge `q`. | Flux `Phi`. |
+| What becomes a matrix coefficient? | `dq/dv` times integration coefficient. | `dPhi/di` times integration coefficient. |
+| What becomes RHS/history? | Old accepted charge/voltage information. | Old accepted flux/current information. |
+
+### Capacitor Companion Model
+
+For a linear capacitor:
+
+$$
+q = C v
+$$
+
+and:
+
+$$
+i = \frac{dq}{dt}
+$$
+
+The integration method turns that into:
+
+$$
+i_n \approx g_{\text{eq}} v_n + i_{\text{hist}}
+$$
+
+For backward Euler:
+
+$$
+g_{\text{eq}} = \frac{C}{h}
+$$
+
+and the history term contains the previous accepted capacitor voltage:
+
+$$
+i_{\text{hist}} = -\frac{C}{h}v_{n-1}
+$$
+
+So the capacitor companion looks like a conductance in parallel with a current
+source. It is not physically losing its storage behavior. The storage behavior
+is hidden in the history source and in the fact that `g_eq` depends on the
+timestep.
+
+Smaller timestep means larger `C/h`. That makes the companion conductance
+larger, which mathematically expresses the physical idea that capacitor voltage
+cannot jump easily over a very short time.
+
+For trapezoidal and Gear methods, the same shape remains:
+
+```text
+current unknown part -> matrix conductance
+accepted history     -> RHS current source
+```
+
+Only the coefficients and the amount of remembered history change.
+
+### Inductor Companion Model
+
+For a linear inductor:
+
+$$
+\Phi = L i
+$$
+
+and:
+
+$$
+v = \frac{d\Phi}{dt}
+$$
+
+MNA introduces a branch-current unknown, usually written here as `b = I(L)`.
+The integration method turns the flux derivative into:
+
+$$
+v_n \approx r_{\text{eq}} i_n + v_{\text{hist}}
+$$
+
+For backward Euler:
+
+$$
+r_{\text{eq}} = \frac{L}{h}
+$$
+
+and the history term contains the previous accepted inductor current:
+
+$$
+v_{\text{hist}} = -\frac{L}{h}i_{n-1}
+$$
+
+The branch equation is conceptually:
+
+$$
+V(p) - V(n) \approx r_{\text{eq}} I(L) + v_{\text{hist}}
+$$
+
+That means the inductor companion is not just a two-node conductance stamp. It
+uses:
+
+- node-voltage coefficients in the branch equation,
+- a branch-current unknown,
+- a branch coefficient similar to a series resistance,
+- a RHS/history term from previous accepted flux/current.
+
+Smaller timestep means larger `L/h`. That expresses the physical idea that
+inductor current cannot jump easily over a very short time.
+
+### Newton Companion For A Diode
+
+A diode does not need integration history just because it is nonlinear. It needs
+Newton linearization because its current is curved:
+
+$$
+i = I_s(e^{v/(nV_t)} - 1)
+$$
+
+At one Newton guess, the diode is replaced by:
+
+$$
+i \approx g_d v + i_{\text{eq}}
+$$
+
+where:
+
+$$
+g_d = \left.\frac{di}{dv}\right|_{\text{guess}}
+$$
+
+and:
+
+$$
+i_{\text{eq}} = i(v_{\text{guess}}) - g_d v_{\text{guess}}
+$$
+
+This looks similar to a capacitor companion because it is also a conductance
+plus a current source. The reason is different:
+
+| Device | Matrix coefficient means | RHS/source term means |
+|--------|--------------------------|-----------------------|
+| Capacitor | Time integration coefficient from charge. | Accepted timestep history. |
+| Diode | Local nonlinear slope at the Newton guess. | Linearization correction at the same guess. |
+
+A diode with junction capacitance can have both at once: a Newton conductance
+from `dI/dV`, plus dynamic charge/capacitance companion terms from `dQ/dt`.
+
+### Switch Companion
+
+An idealized controlled switch is usually algebraic:
+
+```text
+control says on  -> conductance near 1/Ron
+control says off -> conductance near 1/Roff
+```
+
+It stamps like a resistor using the conductance selected by the current control
+value. There is no stored energy and no integration history. A switch can still
+make transient analysis difficult because an abrupt conductance change can force
+smaller timesteps or make Newton iteration jump between very different matrices.
+
+### Source Companion Or Equivalent
+
+Independent current sources mostly load the RHS:
+
+```text
+rhs[p] -= I(t)
+rhs[n] += I(t)
+```
+
+Independent voltage sources add a branch-current unknown and a branch equation:
+
+```text
+V(p) - V(n) = Vsource(t)
+```
+
+These are not integration companions. A `PULSE`, `SIN`, or `PWL` source changes
+its value with time, and source breakpoints can pressure timestep selection, but
+the source itself does not remember charge or flux.
+
+### Nonlinear Charge And Flux Companions
+
+The custom nonlinear passive forms make the companion idea visible.
+
+For a nonlinear capacitor:
+
+$$
+Q = Q(V)
+$$
+
+The current is:
+
+$$
+i = \frac{dQ}{dt}
+$$
+
+At the current Newton guess, the device also needs the local derivative:
+
+$$
+C_{\text{inc}} = \frac{dQ}{dV}
+$$
+
+The integration state combines both ideas:
+
+```text
+stored quantity: Q(V)
+local derivative: dQ/dV
+time derivative: dQ/dt
+```
+
+So the stamp contains:
+
+- a Jacobian term based on `dQ/dV` and the integration method,
+- a RHS/history term based on accepted charge history,
+- possible nonlinear correction terms because `Q(V)` is not a straight line.
+
+For a nonlinear inductor:
+
+$$
+\Phi = \Phi(I)
+$$
+
+The voltage is:
+
+$$
+v = \frac{d\Phi}{dt}
+$$
+
+At the current Newton guess:
+
+$$
+L_{\text{inc}} = \frac{d\Phi}{dI}
+$$
+
+The stamp contains:
+
+- a branch-row coefficient based on `dPhi/dI` and the integration method,
+- a RHS/history term based on accepted flux history,
+- possible nonlinear correction terms because `Phi(I)` is not a straight line.
+
+That is why `IDerivative.GetContributions(...)` needs both a local derivative
+and the current unknown value. The integration method owns the time history, but
+the device still owns the local relationship between the unknown and the stored
+quantity.
 
 ## Component Roles In Transient Integration
 

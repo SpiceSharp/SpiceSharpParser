@@ -157,6 +157,175 @@ simulations, it is more general:
 So the safest name is "the MNA matrix" or "the Jacobian matrix", even though many rows
 look like ordinary conductance/admittance rows.
 
+### Modified Matrix Algorithm Step By Step
+
+If someone says "the modified matrix algorithm" in a SPICE context, they usually mean
+the MNA matrix assembly algorithm:
+
+```text
+circuit graph + device equations
+  -> unknown vector x
+  -> matrix Y
+  -> RHS vector
+  -> solve Y*x = rhs
+```
+
+The algorithm has two phases.
+
+Setup phase:
+
+```text
+1. Collect all non-ground node voltages.
+2. Add branch-current unknowns for voltage-defined devices.
+3. Assign each unknown a solver index.
+4. Let each behavior cache the matrix/RHS locations it will touch.
+```
+
+Load/solve phase:
+
+```text
+1. Clear numeric matrix and RHS values.
+2. Ask each active behavior to load its stamp.
+3. Sum all stamps into the shared matrix and RHS.
+4. Factor and solve the sparse linear system.
+5. Store the solution back into node and branch variables.
+6. Check convergence, timestep accuracy, or export conditions.
+```
+
+For `.OP`, this may be one linear solve or many Newton iterations. For `.AC`, the
+matrix is complex and frequency-dependent. For `.TRAN`, this load/solve phase repeats
+for every candidate timestep, and dynamic devices load companion-model stamps.
+
+The important implementation idea is:
+
+```text
+components do not solve the circuit themselves
+components only add their local equations to the shared system
+```
+
+#### Matrix Assembly Trace
+
+Consider:
+
+```spice
+V1 in 0 10
+R1 in out 1k
+R2 out 0 2k
+.OP
+```
+
+The unknown vector is:
+
+$$
+x =
+\begin{bmatrix}
+V(\text{in}) \\
+V(\text{out}) \\
+I(\text{V1})
+\end{bmatrix}
+$$
+
+Let:
+
+$$
+g_1 = 0.001,\quad g_2 = 0.0005
+$$
+
+Start with zeros:
+
+$$
+Y =
+\begin{bmatrix}
+0 & 0 & 0 \\
+0 & 0 & 0 \\
+0 & 0 & 0
+\end{bmatrix},
+\quad
+\mathrm{rhs} =
+\begin{bmatrix}
+0 \\
+0 \\
+0
+\end{bmatrix}
+$$
+
+`R1 in out 1k` stamps a two-node conductance:
+
+```text
+Y[in,in]   += g1
+Y[in,out]  -= g1
+Y[out,in]  -= g1
+Y[out,out] += g1
+```
+
+Now:
+
+$$
+Y =
+\begin{bmatrix}
+g_1 & -g_1 & 0 \\
+-g_1 & g_1 & 0 \\
+0 & 0 & 0
+\end{bmatrix}
+$$
+
+`R2 out 0 2k` adds conductance from `out` to ground:
+
+```text
+Y[out,out] += g2
+```
+
+Now:
+
+$$
+Y =
+\begin{bmatrix}
+g_1 & -g_1 & 0 \\
+-g_1 & g_1 + g_2 & 0 \\
+0 & 0 & 0
+\end{bmatrix}
+$$
+
+`V1 in 0 10` adds a branch-current unknown and a voltage constraint:
+
+```text
+Y[in,I(V1)] += 1
+Y[I(V1),in] += 1
+rhs[I(V1)]  += 10
+```
+
+Final system:
+
+$$
+\begin{bmatrix}
+g_1 & -g_1 & 1 \\
+-g_1 & g_1 + g_2 & 0 \\
+1 & 0 & 0
+\end{bmatrix}
+\begin{bmatrix}
+V(\text{in}) \\
+V(\text{out}) \\
+I(\text{V1})
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\
+0 \\
+10
+\end{bmatrix}
+$$
+
+The solver finds:
+
+```text
+V(in)  = 10 V
+V(out) = 6.666... V
+I(V1)  = current needed by the voltage source
+```
+
+That is the modified matrix algorithm in miniature: every device contributes a
+small pattern, the patterns are summed, then the solver finds the unknown vector.
+
 ### Why MNA Is Modified
 
 Plain nodal analysis uses one equation per non-ground node. Each equation is Kirchhoff's
@@ -2792,6 +2961,15 @@ hard time-dependent component
   -> temporary simpler component for this timestep
 ```
 
+Companion models are broader than only `C` and `L`. Nonlinear devices also load
+temporary Newton companions, such as a diode's local conductance plus equivalent
+current source. Dynamic nonlinear devices can combine both ideas: local
+linearization derivatives for the current Newton guess and integration-history
+terms from previous accepted timesteps.
+
+For the fuller companion-model catalog, see
+[Transient Integration Methods](transient-integration-methods.md#companion-model-families).
+
 ### Accepted And Rejected Timesteps
 
 Transient analysis distinguishes a candidate timestep from an accepted timestep.
@@ -2818,6 +2996,26 @@ else:
 `IAcceptBehavior` lets devices commit state after a successful point. `ITruncatingBehavior`
 lets devices participate in timestep control by reporting how aggressively the timestep
 should be limited.
+
+Truncation error is not the same thing as Newton non-convergence. They are two
+different checks:
+
+| Check | Meaning |
+|-------|---------|
+| Newton convergence | The loaded algebraic equations were solved at the candidate time. |
+| Truncation-error control | The time jump from the previous accepted point is accurate enough. |
+
+Newton works at one candidate time. It asks whether the current matrix, RHS,
+companion models, and nonlinear linearizations produce a consistent set of node
+voltages and branch currents.
+
+Truncation-error control works across time. It asks whether the candidate step
+was small enough for the integration method to follow capacitor charge, inductor
+flux, and other dynamic histories accurately.
+
+A candidate point can therefore solve successfully and still be rejected. That
+means the equations at that candidate time were consistent, but the time jump
+from the previous accepted point was too coarse to trust.
 
 Accepted means:
 
