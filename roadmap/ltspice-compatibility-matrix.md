@@ -1,8 +1,8 @@
 ---
 title: LTspice Compatibility Matrix
-status: P3 Baseline + .FOUR Support Refresh
+status: P3 Baseline + .FOUR Support Refresh + Custom Passives
 scope: SpiceSharpParser + SpiceSharp
-last_reviewed: 2026-05-30
+last_reviewed: 2026-06-13
 ---
 
 # LTspice Compatibility Matrix
@@ -61,7 +61,7 @@ Compatibility classes:
 | R/C model `tc=a[,b]` | Accepted | Lowered to `tc1` / `tc2` | Existing R/C model behavior | Read fixture | None expected in LTspice mode | Current parser/runtime | Parser shim only; coefficients beyond two are rejected. |
 | LTspice metadata/rating parameters `mfg`, `manufacturer`, `pn`, `part`, `desc`, `description`, `V`, `Irms`, `Ipk` | Accepted | Warning no-op in LTspice mode | No runtime effect | Diagnostic fixture | Default: existing parameter error. LTspice: warning names parameter. | Current parser/runtime | BOM/layout metadata is not used by SpiceSharpParser. |
 | R/C/L instance parasitics `Rser`, `Rpar`, `Cpar`, `Lser`, `RLshunt` | Accepted | Rejected in LTspice mode | Not runnable | None | Targeted LTspice instance-parameter error names parameter | Current parser/runtime | Topology-changing passive parasitics are not synthesized. |
-| Capacitor `Q=<expr>` and inductor `Flux=<expr>` | Accepted | Rejected in LTspice mode | Not runnable | None | Targeted LTspice charge/flux diagnostic | Current parser/runtime | Nonlinear charge/flux device semantics are deferred. |
+| Capacitor `Q=<expr>` and inductor `Flux=<expr>` | Accepted | Core LTspice mode: targeted diagnostic. With `UseCustomComponents()`: produces `NonlinearCapacitor` / `NonlinearInductor`. | Custom components: TRAN and AC supported with operating-point incremental capacitance/inductance. | Focused parser/TRAN/AC fixtures | Core LTspice mode still emits targeted charge/flux diagnostic when custom mappings are not enabled | `SpiceSharpParser.CustomComponents` | `Q` uses `x` as terminal voltage and supports `IC`, `M`, and `N`; `Flux` uses `x` as branch current. |
 | LTspice ideal diode parameters `Ron`, `Roff`, `Vfwd`, `Vrev`, `Rrev`, `Ilimit`, `RevIlimit`, `Epsilon`, `RevEpsilon` | Accepted | Rejected in LTspice mode | Not runnable | None | Targeted LTspice ideal-diode diagnostic names parameter | Current parser/runtime | These select LTspice's idealized diode behavior, not Berkeley diode parameters. |
 | Switch aliases `von`/`voff` and `ion`/`ioff` | Accepted | Lowered to `vt`/`vh` and `it`/`ih` | Existing switch model behavior | Read fixture | Missing pair or mixed native/alias forms are targeted errors | Current parser/runtime | Midpoint and half-span lowering only; no LTspice numeric parity claim. |
 | Switch `Lser`, `Vser`, `Ilimit` | Accepted | Rejected in LTspice mode | Not runnable | None | Targeted LTspice switch diagnostic names parameter | Current parser/runtime | Series elements and current limiting are not synthesized. |

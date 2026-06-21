@@ -8,6 +8,7 @@ A capacitor stores energy in an electric field between two conductors.
 C<name> <node+> <node-> <value> [IC=<initial_voltage>] [M=<m>]
 C<name> <node+> <node-> <model_name> [L=<length>] [W=<width>] [IC=<v>]
 C<name> <node+> <node-> VALUE={<expression>}
+C<name> <node+> <node-> Q=<expression> [IC=<initial_voltage>] [M=<m>] [N=<n>]
 ```
 
 | Parameter | Description |
@@ -19,6 +20,7 @@ C<name> <node+> <node-> VALUE={<expression>}
 | `M=m` | Multiplier |
 | `model_name` | Reference to a `.MODEL` definition |
 | `VALUE={expr}` | Behavioral expression |
+| `Q=expr` | LTspice-style charge expression; requires `UseCustomComponents()` |
 
 ## Examples
 
@@ -37,7 +39,13 @@ C4 IN OUT cmod L=10u W=1u IC=1
 
 * Behavioral
 C5 IN OUT VALUE={M*N*1p}
+
+* LTspice-style charge-defined capacitor
+C6 OUT 0 Q=1u*x
 ```
+
+See [LTspice-Style Nonlinear Passives](nonlinear-passives.md) for `Q=<expr>`
+capacitors.
 
 ## Model Definition
 

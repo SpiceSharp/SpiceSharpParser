@@ -50,7 +50,7 @@ adds values into a table.
 | Voltage | Electrical "level" at a node, measured relative to ground or another node. |
 | Current | Flow through a component branch. |
 | Resistance | How strongly a resistor opposes current. Higher resistance means less current. |
-| Conductance | The inverse of resistance: `g = 1 / R`. Higher conductance means more current. |
+| Conductance | The inverse of resistance: $g = 1 / R$. Higher conductance means more current. |
 | Source | A component that injects a known voltage or current. |
 | Operating point | The steady DC solution before time-varying or AC effects. |
 | Nonlinear | A device whose behavior is not a straight-line relation. Diodes and transistors are nonlinear. |
@@ -120,21 +120,29 @@ The basic idea is:
 3. Let every component stamp its local equations into one global matrix.
 4. Solve the global matrix repeatedly until the circuit state is known.
 
-```text
-Y * x = rhs
+$$
+Yx = \mathrm{rhs}
+$$
 
-x   = unknown solution vector
-Y   = admittance/Jacobian matrix
-rhs = right-hand-side vector
-```
+where:
+
+$$
+\begin{aligned}
+x &= \text{unknown solution vector} \\
+Y &= \text{admittance/Jacobian matrix} \\
+\mathrm{rhs} &= \text{right-hand-side vector}
+\end{aligned}
+$$
 
 Read this like a programming problem:
 
-```text
-Y   = table of coefficients
-x   = values we want to find
-rhs = known values
-```
+$$
+\begin{aligned}
+Y &= \text{table of coefficients} \\
+x &= \text{values we want to find} \\
+\mathrm{rhs} &= \text{known values}
+\end{aligned}
+$$
 
 The solver receives `Y` and `rhs`, then computes `x`.
 
@@ -164,9 +172,9 @@ directly in terms of node voltages.
 
 For example, a resistor between `a` and `b` has:
 
-```text
-i(a -> b) = g * (V(a) - V(b))
-```
+$$
+i(a \to b) = g\left(V(a) - V(b)\right)
+$$
 
 That current can be expanded into coefficients on `V(a)` and `V(b)`, so it fits directly
 into KCL rows.
@@ -180,23 +188,28 @@ R1 out 0 1k
 There is one unknown node voltage: `V(out)`. The resistor value is known, so the
 conductance is known:
 
-```text
-g = 1 / 1000
-```
+$$
+g = \frac{1}{1000}
+$$
 
 The node rule is:
 
-```text
-current through R1 = 0
-g * V(out) = 0
-```
+$$
+\begin{aligned}
+\text{current through R1} &= 0 \\
+gV(\text{out}) &= 0
+\end{aligned}
+$$
 
 That is already a plain nodal equation. No extra unknown is needed. The matrix can have
 one row and one column:
 
-```text
-[ g ] [ V(out) ] = [ 0 ]
-```
+$$
+\begin{bmatrix} g \end{bmatrix}
+\begin{bmatrix} V(\text{out}) \end{bmatrix}
+=
+\begin{bmatrix} 0 \end{bmatrix}
+$$
 
 Example 2: current source plus resistor:
 
@@ -208,9 +221,9 @@ R1 out 0 1k
 The current source value is known: `2mA`. The resistor current is still
 `g * V(out)`. The node equation can be written directly:
 
-```text
-g * V(out) = -2mA
-```
+$$
+gV(\text{out}) = -2\,\text{mA}
+$$
 
 Depending on sign convention the RHS may appear as `+2mA` or `-2mA`, but the important
 point is the same: the current source contributes a known number. It does not create a
@@ -218,9 +231,12 @@ new unknown.
 
 Matrix form:
 
-```text
-[ g ] [ V(out) ] = [ -2mA ]
-```
+$$
+\begin{bmatrix} g \end{bmatrix}
+\begin{bmatrix} V(\text{out}) \end{bmatrix}
+=
+\begin{bmatrix} -2\,\text{mA} \end{bmatrix}
+$$
 
 The exact sign depends on the direction assigned to `I1`. The structural lesson is what
 matters here: the current source changes the RHS, not the unknown vector.
@@ -231,9 +247,9 @@ go straight into the RHS vector. They do not add a new unknown.
 Ideal voltage sources are different. They are the reason MNA is "modified". A voltage
 source tells the solver:
 
-```text
-V(p) - V(n) = value
-```
+$$
+V(p) - V(n) = \text{value}
+$$
 
 but it does not tell the solver its current in advance. That is like having a method
 that returns one property but hides another property you still need. MNA fixes this by
@@ -253,15 +269,15 @@ R1 in 0 1k
 
 The voltage source tells us:
 
-```text
-V(in) = 10
-```
+$$
+V(\text{in}) = 10
+$$
 
 The resistor current is:
 
-```text
-I(R1) = g * V(in)
-```
+$$
+I(\text{R1}) = gV(\text{in})
+$$
 
 But what is the current through `V1`? It depends on the rest of the circuit. The source
 will provide whatever current is necessary to keep `V(in)` at `10 V`. Plain nodal
@@ -269,26 +285,40 @@ analysis has nowhere to put that unknown source current.
 
 MNA adds one extra unknown:
 
-```text
-x = [
-  V(in),
-  I(V1)
-]
-```
+$$
+x =
+\begin{bmatrix}
+V(\text{in}) \\
+I(\text{V1})
+\end{bmatrix}
+$$
 
 Now the equations can say two things:
 
-```text
-row V(in): g * V(in) + I(V1) = 0
-row I(V1): V(in)             = 10
-```
+$$
+\begin{aligned}
+\text{row } V(\text{in}):\quad gV(\text{in}) + I(\text{V1}) &= 0 \\
+\text{row } I(\text{V1}):\quad V(\text{in}) &= 10
+\end{aligned}
+$$
 
 Matrix form:
 
-```text
-[ g  1 ] [ V(in) ] = [  0 ]
-[ 1  0 ] [ I(V1) ]   [ 10 ]
-```
+$$
+\begin{bmatrix}
+g & 1 \\
+1 & 0
+\end{bmatrix}
+\begin{bmatrix}
+V(\text{in}) \\
+I(\text{V1})
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\
+10
+\end{bmatrix}
+$$
 
 This is the "modified" part in one picture: the voltage source added a branch-current
 unknown and a voltage-constraint row.
@@ -301,35 +331,51 @@ V1 p n 5
 
 The source says:
 
-```text
+$$
 V(p) - V(n) = 5
-```
+$$
 
 Again, its current is unknown. MNA adds `I(V1)`:
 
-```text
-x = [
-  V(p),
-  V(n),
-  I(V1)
-]
-```
+$$
+x =
+\begin{bmatrix}
+V(p) \\
+V(n) \\
+I(\text{V1})
+\end{bmatrix}
+$$
 
 The source contributes this shape:
 
-```text
-row V(p):  +I(V1)
-row V(n):  -I(V1)
-row I(V1): +V(p) - V(n) = 5
-```
+$$
+\begin{aligned}
+\text{row } V(p):\quad &+I(\text{V1}) \\
+\text{row } V(n):\quad &-I(\text{V1}) \\
+\text{row } I(\text{V1}):\quad &V(p) - V(n) = 5
+\end{aligned}
+$$
 
 Matrix contribution:
 
-```text
-[ 0  0  1 ] [ V(p)  ]   [ 0 ]
-[ 0  0 -1 ] [ V(n)  ] = [ 0 ]
-[ 1 -1  0 ] [ I(V1) ]   [ 5 ]
-```
+$$
+\begin{bmatrix}
+0 & 0 & 1 \\
+0 & 0 & -1 \\
+1 & -1 & 0
+\end{bmatrix}
+\begin{bmatrix}
+V(p) \\
+V(n) \\
+I(\text{V1})
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\
+0 \\
+5
+\end{bmatrix}
+$$
 
 Other components connected to `p` and `n` add their own terms into the first two rows.
 The voltage source itself provides the branch-current column and constraint row.
@@ -351,13 +397,14 @@ The most common values in that array are node voltages. Some components add extr
 current values. For a simple circuit with node voltages `V(in)`, `V(out)`, and one
 ideal voltage source branch current `I(V1)`, the unknown vector may look like:
 
-```text
-x = [
-  V(in),
-  V(out),
-  I(V1)
-]
-```
+$$
+x =
+\begin{bmatrix}
+V(\text{in}) \\
+V(\text{out}) \\
+I(\text{V1})
+\end{bmatrix}
+$$
 
 SpiceSharp assigns these variables to solver indices during setup. Components refer to
 variables through references created by the binding context and simulation state. Once
@@ -370,7 +417,7 @@ Common variable kinds are:
 |---------------|---------|---------------|
 | Node voltage | `V(out)` | Main MNA unknown for a non-ground node. |
 | Voltage-source current | `I(V1)` | Required because ideal voltage sources impose voltage, not current. |
-| Inductor current | `I(L1)` | Often used so the inductor can express `v = L * di/dt`. |
+| Inductor current | `I(L1)` | Often used so the inductor can express $v = L\,di/dt$. |
 | Controlled-source current | `I(E1)`, `I(H1)` | Required for voltage-output controlled sources. |
 | Internal model variable | device-specific | Used by some dynamic, nonlinear, or expanded models. |
 
@@ -421,22 +468,24 @@ sum of currents leaving node = sum of independent current injections
 
 For a resistor from `out` to ground:
 
-```text
-g * V(out) = 0
-```
+$$
+gV(\text{out}) = 0
+$$
 
 For a resistor from `in` to `out`:
 
-```text
-g * (V(in) - V(out)) contributes to row in
-g * (V(out) - V(in)) contributes to row out
-```
+$$
+\begin{aligned}
+g\left(V(\text{in}) - V(\text{out})\right) &\to \text{row in} \\
+g\left(V(\text{out}) - V(\text{in})\right) &\to \text{row out}
+\end{aligned}
+$$
 
 For a voltage source branch row:
 
-```text
-V(p) - V(n) = source voltage
-```
+$$
+V(p) - V(n) = \text{source voltage}
+$$
 
 After stamping, all of those local equations are added together into one matrix. If two
 components touch the same matrix location, their coefficients are summed. This is why
@@ -545,21 +594,25 @@ add coefficients to Y
 add known terms to rhs
 ```
 
-For a linear resistor, the local coefficient is simply `g = 1 / R`.
+For a linear resistor, the local coefficient is simply $g = 1 / R$.
 
 For a nonlinear diode, the local coefficients depend on the previous solution guess:
 
-```text
-gd  = local derivative di/dv
-ieq = residual current term
-```
+$$
+\begin{aligned}
+g_d &= \text{local derivative } di/dv \\
+i_{\text{eq}} &= \text{residual current term}
+\end{aligned}
+$$
 
 For a transient capacitor, the local coefficients depend on timestep and history:
 
-```text
-geq      = integration coefficient
-ihistory = contribution from previous accepted states
-```
+$$
+\begin{aligned}
+g_{\text{eq}} &= \text{integration coefficient} \\
+i_{\text{history}} &= \text{contribution from previous accepted states}
+\end{aligned}
+$$
 
 ### Linear Circuit Example
 
@@ -574,36 +627,54 @@ R2 out 0 2k
 
 Unknown vector:
 
-```text
-x = [
-  V(in),
-  V(out),
-  I(V1)
-]
-```
+$$
+x =
+\begin{bmatrix}
+V(\text{in}) \\
+V(\text{out}) \\
+I(\text{V1})
+\end{bmatrix}
+$$
 
 Let:
 
-```text
-g1 = 1 / 1000
-g2 = 1 / 2000
-```
+$$
+\begin{aligned}
+g_1 &= \frac{1}{1000} \\
+g_2 &= \frac{1}{2000}
+\end{aligned}
+$$
 
 The resulting MNA system is:
 
-```text
-row V(in):   g1*V(in) - g1*V(out) + I(V1) = 0
-row V(out): -g1*V(in) + (g1+g2)*V(out)    = 0
-row I(V1):   V(in)                        = 10
-```
+$$
+\begin{aligned}
+\text{row } V(\text{in}):\quad g_1V(\text{in}) - g_1V(\text{out}) + I(\text{V1}) &= 0 \\
+\text{row } V(\text{out}):\quad -g_1V(\text{in}) + (g_1 + g_2)V(\text{out}) &= 0 \\
+\text{row } I(\text{V1}):\quad V(\text{in}) &= 10
+\end{aligned}
+$$
 
 Matrix form:
 
-```text
-[  g1    -g1      1 ] [ V(in)  ]   [  0 ]
-[ -g1  g1+g2      0 ] [ V(out) ] = [  0 ]
-[   1      0      0 ] [ I(V1)  ]   [ 10 ]
-```
+$$
+\begin{bmatrix}
+g_1 & -g_1 & 1 \\
+-g_1 & g_1 + g_2 & 0 \\
+1 & 0 & 0
+\end{bmatrix}
+\begin{bmatrix}
+V(\text{in}) \\
+V(\text{out}) \\
+I(\text{V1})
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\
+0 \\
+10
+\end{bmatrix}
+$$
 
 The voltage source adds the branch-current unknown and the final constraint row. The
 resistors add the conductance terms. Solving gives `V(in) = 10 V` and
@@ -621,16 +692,16 @@ The matrix is just the compact table form of those three rules.
 
 For a diode connected from `out` to ground, the real equation is nonlinear:
 
-```text
-i = Is * (exp(V(out) / (n*Vt)) - 1)
-```
+$$
+i = I_s\left(e^{V(\text{out})/(nV_t)} - 1\right)
+$$
 
 SpiceSharp does not solve that exponential equation directly in one matrix solve.
 Instead, each Newton iteration replaces the diode with a local linear approximation:
 
-```text
-i ~= gd * V(out) + ieq
-```
+$$
+i \approx g_dV(\text{out}) + i_{\text{eq}}
+$$
 
 Then the diode loads:
 
@@ -656,9 +727,9 @@ D1 out 0 DMOD
 
 The resistor is linear. Its stamp is always based on:
 
-```text
-gR = 1 / 1000
-```
+$$
+g_R = \frac{1}{1000}
+$$
 
 The diode is nonlinear. Its current depends exponentially on `V(out)`, so SpiceSharp
 cannot stamp one fixed conductance for the whole solve. Instead it uses the current
@@ -666,17 +737,19 @@ guess for `V(out)`.
 
 At one Newton iteration, suppose the current guess is:
 
-```text
-Vguess(out) = 0.60 V
-```
+$$
+V_{\text{guess}}(\text{out}) = 0.60\,\text{V}
+$$
 
 The diode behavior evaluates its model at that guess:
 
-```text
-id  = diode current at 0.60 V
-gd  = diode slope at 0.60 V
-ieq = id - gd * 0.60
-```
+$$
+\begin{aligned}
+i_d &= \text{diode current at } 0.60\,\text{V} \\
+g_d &= \text{diode slope at } 0.60\,\text{V} \\
+i_{\text{eq}} &= i_d - g_d \cdot 0.60
+\end{aligned}
+$$
 
 Plain English:
 
@@ -688,9 +761,9 @@ ieq = correction term so the straight-line approximation touches the curve
 
 For this one iteration, the diode pretends to be:
 
-```text
-diode current ~= gd * V(out) + ieq
-```
+$$
+\text{diode current} \approx g_dV(\text{out}) + i_{\text{eq}}
+$$
 
 So it stamps:
 
@@ -701,30 +774,32 @@ rhs[out]   -= ieq
 
 Then the solver solves the whole circuit and may return:
 
-```text
-Vnew(out) = 0.67 V
-```
+$$
+V_{\text{new}}(\text{out}) = 0.67\,\text{V}
+$$
 
 Now the diode checks the change:
 
-```text
-change = abs(0.67 - 0.60)
-```
+$$
+\text{change} = \left|0.67 - 0.60\right|
+$$
 
 If that change is larger than the allowed tolerance, the diode says "not converged".
 SpiceSharp starts another Newton iteration using the new guess:
 
-```text
-Vguess(out) = 0.67 V
-```
+$$
+V_{\text{guess}}(\text{out}) = 0.67\,\text{V}
+$$
 
 The diode recomputes:
 
-```text
-id  = diode current at 0.67 V
-gd  = diode slope at 0.67 V
-ieq = id - gd * 0.67
-```
+$$
+\begin{aligned}
+i_d &= \text{diode current at } 0.67\,\text{V} \\
+g_d &= \text{diode slope at } 0.67\,\text{V} \\
+i_{\text{eq}} &= i_d - g_d \cdot 0.67
+\end{aligned}
+$$
 
 Then it reloads the matrix with the new `gd` and `ieq`. The resistor stamp stays the
 same, but the diode stamp changes because the diode operating point changed.
@@ -752,16 +827,16 @@ changes become small enough.
 
 For a capacitor, the original equation is differential:
 
-```text
-i = C * dv/dt
-```
+$$
+i = C\frac{dv}{dt}
+$$
 
 MNA needs algebraic equations, so transient analysis uses an integration method to turn
 the capacitor into a companion model at each timestep:
 
-```text
-i ~= geq * v + ihistory
-```
+$$
+i \approx g_{\text{eq}}v + i_{\text{history}}
+$$
 
 That looks like a resistor plus a current source for one solve attempt. When the
 timestep changes, or when a timestep is rejected and retried, `geq` and `ihistory` are
@@ -791,8 +866,8 @@ SpiceSharp uses the same MNA idea for real and complex systems.
 | `.NOISE` | complex plus noise data | Small-signal transfer and noise propagation. |
 
 In AC, capacitors and inductors do not use timestep history. They stamp frequency-domain
-admittances and impedances using `s = j * 2 * pi * frequency`. The topology is familiar,
-but the numbers are complex.
+admittances and impedances using $s = j\omega = j\,2\pi f$. The topology is familiar, but the
+numbers are complex.
 
 ### What MNA Does Not Do Alone
 
@@ -839,8 +914,8 @@ The tables below use these symbols:
 | `bc` | Branch current of a controlling voltage source. |
 | `Y[r,c] += a` | Add `a` to the matrix row `r`, column `c`. |
 | `rhs[r] += a` | Add `a` to the right-hand-side vector row `r`. |
-| `v(p,n)` | `V(p) - V(n)`. |
-| `s` | Laplace variable. In AC, `s = j * 2 * pi * frequency`. |
+| $v(p,n)$ | $V(p) - V(n)$. |
+| $s$ | Laplace variable. In AC, $s = j\omega = j\,2\pi f$. |
 
 The sign convention used here is the common SPICE convention: a current source from
 `p` to `n` removes current from `p` and injects current into `n`:
@@ -1066,22 +1141,32 @@ R1 out 0 1k
 
 Unknown:
 
-```text
-x = [ V(out) ]
-```
+$$
+x =
+\begin{bmatrix}
+V(\text{out})
+\end{bmatrix}
+$$
 
 After loading:
 
-```text
-Y   = [ g    ]
-rhs = [ -2mA ]
-```
+$$
+Y =
+\begin{bmatrix}
+g
+\end{bmatrix},
+\qquad
+\mathrm{rhs} =
+\begin{bmatrix}
+-2\,\text{mA}
+\end{bmatrix}
+$$
 
 The solver computes:
 
-```text
-V(out) = rhs / g
-```
+$$
+V(\text{out}) = \frac{\mathrm{rhs}}{g}
+$$
 
 The real solver is more general, but this tiny example shows the same pattern:
 
@@ -1097,16 +1182,18 @@ the solver runs, all electronics meaning has been translated into numbers.
 
 The solver receives:
 
-```text
-Y   = matrix of coefficients
-rhs = known values
-```
+$$
+\begin{aligned}
+Y &= \text{matrix of coefficients} \\
+\mathrm{rhs} &= \text{known values}
+\end{aligned}
+$$
 
 The solver returns:
 
-```text
-x = solved unknown values
-```
+$$
+x = \text{solved unknown values}
+$$
 
 That is it.
 
@@ -1140,47 +1227,62 @@ solver:
 
 Here is a plain math example, not a full circuit. Suppose loading produced:
 
-```text
-Y = [ 3  1 ]
-    [ 1  2 ]
-
-rhs = [ 7 ]
-      [ 5 ]
-```
+$$
+Y =
+\begin{bmatrix}
+3 & 1 \\
+1 & 2
+\end{bmatrix},
+\qquad
+\mathrm{rhs} =
+\begin{bmatrix}
+7 \\
+5
+\end{bmatrix}
+$$
 
 The solver is trying to find:
 
-```text
-x = [ x1 ]
-    [ x2 ]
-```
+$$
+x =
+\begin{bmatrix}
+x_1 \\
+x_2
+\end{bmatrix}
+$$
 
 So the equations are:
 
-```text
-3*x1 + 1*x2 = 7
-1*x1 + 2*x2 = 5
-```
+$$
+\begin{aligned}
+3x_1 + x_2 &= 7 \\
+x_1 + 2x_2 &= 5
+\end{aligned}
+$$
 
 One possible way to solve by hand:
 
-```text
-x1 + 2*x2 = 5
-x1 = 5 - 2*x2
-
-3*(5 - 2*x2) + x2 = 7
-15 - 6*x2 + x2 = 7
-15 - 5*x2 = 7
-x2 = 1.6
-x1 = 1.8
-```
+$$
+\begin{aligned}
+x_1 + 2x_2 &= 5 \\
+x_1 &= 5 - 2x_2 \\
+3(5 - 2x_2) + x_2 &= 7 \\
+15 - 6x_2 + x_2 &= 7 \\
+15 - 5x_2 &= 7 \\
+x_2 &= 1.6 \\
+x_1 &= 1.8
+\end{aligned}
+$$
 
 So:
 
-```text
-x = [ 1.8 ]
-    [ 1.6 ]
-```
+$$
+x =
+\begin{bmatrix}
+1.8 \\
+1.6
+\end{bmatrix}
+$$
 
 For a circuit, `x1` and `x2` might be voltages or branch currents. The solver does not
 care. It just solves the equations.
@@ -1238,9 +1340,9 @@ solver state = the shared numerical workspace for this simulation
 
 Once the matrix is loaded, SpiceSharp must solve:
 
-```text
-Y * x = rhs
-```
+$$
+Yx = \mathrm{rhs}
+$$
 
 The direct way to think about this is:
 
@@ -1252,48 +1354,61 @@ find the unknown values x
 Internally, sparse solvers commonly factor the matrix into easier pieces. You may see
 this written as:
 
-```text
-Y = L * U
-```
+$$
+Y = LU
+$$
 
 You do not need to implement LU factorization to read SpiceSharp code, but it helps to
 know what problem it solves.
 
 Suppose the solver receives:
 
-```text
-[ 2  1 ] [ x1 ] = [ 5 ]
-[ 4  3 ] [ x2 ]   [ 11 ]
-```
+$$
+\begin{bmatrix}
+2 & 1 \\
+4 & 3
+\end{bmatrix}
+\begin{bmatrix}
+x_1 \\
+x_2
+\end{bmatrix}
+=
+\begin{bmatrix}
+5 \\
+11
+\end{bmatrix}
+$$
 
 The equations are:
 
-```text
-2*x1 + 1*x2 = 5
-4*x1 + 3*x2 = 11
-```
+$$
+\begin{aligned}
+2x_1 + x_2 &= 5 \\
+4x_1 + 3x_2 &= 11
+\end{aligned}
+$$
 
 One hand-solving strategy is elimination:
 
-```text
-row2 = row2 - 2*row1
-
-before:
-row1: 2*x1 + 1*x2 = 5
-row2: 4*x1 + 3*x2 = 11
-
-after:
-row1: 2*x1 + 1*x2 = 5
-row2:        1*x2 = 1
-```
+$$
+\begin{aligned}
+\mathrm{row}_2 &\leftarrow \mathrm{row}_2 - 2\mathrm{row}_1 \\
+\text{before:}\quad 2x_1 + x_2 &= 5 \\
+4x_1 + 3x_2 &= 11 \\
+\text{after:}\quad 2x_1 + x_2 &= 5 \\
+x_2 &= 1
+\end{aligned}
+$$
 
 Now the answer is easy:
 
-```text
-x2 = 1
-2*x1 + 1 = 5
-x1 = 2
-```
+$$
+\begin{aligned}
+x_2 &= 1 \\
+2x_1 + 1 &= 5 \\
+x_1 &= 2
+\end{aligned}
+$$
 
 Factorization is the solver's organized version of this idea. It prepares the matrix so
 the solution can be found by simpler forward/backward steps.
@@ -1330,19 +1445,32 @@ solve:
 The `L` and `U` names come from splitting the prepared matrix into two triangular
 systems:
 
-```text
-L = lower triangular, values mostly on/below the diagonal
-U = upper triangular, values mostly on/above the diagonal
-```
+$$
+\begin{aligned}
+L &= \text{lower triangular, values mostly on/below the diagonal} \\
+U &= \text{upper triangular, values mostly on/above the diagonal}
+\end{aligned}
+$$
 
 Triangular systems are easier to solve because one variable can be found at a time.
 
 Example upper-triangular system:
 
-```text
-[ 2  1 ] [ x1 ] = [ 5 ]
-[ 0  1 ] [ x2 ]   [ 1 ]
-```
+$$
+\begin{bmatrix}
+2 & 1 \\
+0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+x_1 \\
+x_2
+\end{bmatrix}
+=
+\begin{bmatrix}
+5 \\
+1
+\end{bmatrix}
+$$
 
 The second row gives `x2 = 1`. Then the first row gives `x1 = 2`.
 
@@ -1917,35 +2045,39 @@ Linearization means "replace a curve with a straight line near the current guess
 
 Imagine a nonlinear function:
 
-```text
+$$
 y = f(x)
-```
+$$
 
 At the current guess `x0`, the device computes two things:
 
-```text
-f(x0)       = value at the current guess
-df/dx at x0 = local slope at the current guess
-```
+$$
+\begin{aligned}
+f(x_0) &= \text{value at the current guess} \\
+\left.\frac{df}{dx}\right|_{x_0} &= \text{local slope at the current guess}
+\end{aligned}
+$$
 
 Then it uses a straight-line approximation:
 
-```text
-f(x) ~= f(x0) + slope * (x - x0)
-```
+$$
+f(x) \approx f(x_0) + \text{slope}\,(x - x_0)
+$$
 
 Rearranged:
 
-```text
-f(x) ~= slope * x + (f(x0) - slope * x0)
-```
+$$
+f(x) \approx \text{slope}\,x + \left(f(x_0) - \text{slope}\,x_0\right)
+$$
 
 That shape is perfect for MNA:
 
-```text
-slope                         -> goes into the matrix
-f(x0) - slope * x0 correction  -> goes into the RHS
-```
+$$
+\begin{aligned}
+\text{slope} &\to \text{matrix} \\
+f(x_0) - \text{slope}\,x_0 &\to \text{RHS correction}
+\end{aligned}
+$$
 
 Plain English:
 
@@ -1956,50 +2088,54 @@ RHS gets the correction that makes the straight line touch the curve
 
 This is why you see names like `gd` and `ieq` for a diode:
 
-```text
-gd  = local slope, resistor-like conductance
-ieq = correction current source
-```
+$$
+\begin{aligned}
+g_d &= \text{local slope, resistor-like conductance} \\
+i_{\text{eq}} &= \text{correction current source}
+\end{aligned}
+$$
 
 ### Example: Linearizing A Simple Function
 
 Before looking at a diode, use a simpler fake nonlinear current:
 
-```text
-i = V(out)^2
-```
+$$
+i = V(\text{out})^2
+$$
 
 Suppose the current guess is:
 
-```text
-Vguess(out) = 2
-```
+$$
+V_{\text{guess}}(\text{out}) = 2
+$$
 
 The function value is:
 
-```text
+$$
 i(2) = 2^2 = 4
-```
+$$
 
 The slope of `V^2` is `2*V`, so at `V = 2`:
 
-```text
-slope = 2 * 2 = 4
-```
+$$
+\text{slope} = 2 \cdot 2 = 4
+$$
 
 The straight-line approximation is:
 
-```text
-i ~= f(x0) + slope * (V - x0)
-i ~= 4 + 4 * (V - 2)
-i ~= 4*V - 4
-```
+$$
+\begin{aligned}
+i &\approx f(x_0) + \text{slope}\,(V - x_0) \\
+i &\approx 4 + 4(V - 2) \\
+i &\approx 4V - 4
+\end{aligned}
+$$
 
 For this Newton iteration, the nonlinear device behaves like:
 
-```text
-current ~= 4 * V(out) - 4
-```
+$$
+\text{current} \approx 4V(\text{out}) - 4
+$$
 
 That means:
 
@@ -2010,19 +2146,21 @@ RHS gets correction -4, with sign depending on source direction
 
 After the solve, maybe the new value is:
 
-```text
-Vnew(out) = 1.6
-```
+$$
+V_{\text{new}}(\text{out}) = 1.6
+$$
 
 The approximation was built around `2`, but the solver found `1.6`. The next iteration
 linearizes around `1.6`:
 
-```text
-i(1.6) = 2.56
-slope = 2 * 1.6 = 3.2
-i ~= 2.56 + 3.2 * (V - 1.6)
-i ~= 3.2*V - 2.56
-```
+$$
+\begin{aligned}
+i(1.6) &= 2.56 \\
+\text{slope} &= 2 \cdot 1.6 = 3.2 \\
+i &\approx 2.56 + 3.2(V - 1.6) \\
+i &\approx 3.2V - 2.56
+\end{aligned}
+$$
 
 So the device loads different matrix/RHS numbers on the next iteration.
 
@@ -2030,44 +2168,48 @@ So the device loads different matrix/RHS numbers on the next iteration.
 
 A diode current is nonlinear. Conceptually:
 
-```text
-id = Is * (exp(vd / (n*Vt)) - 1)
-```
+$$
+i_d = I_s\left(e^{v_d/(nV_t)} - 1\right)
+$$
 
 The exact formula is less important than the shape: current grows very quickly when the
 diode voltage increases.
 
 At the current Newton guess:
 
-```text
-vdGuess = V(anode) - V(cathode)
-```
+$$
+v_{d,\text{guess}} = V(\text{anode}) - V(\text{cathode})
+$$
 
 the diode behavior computes:
 
-```text
-id = diode current at vdGuess
-gd = diode current slope at vdGuess
-```
+$$
+\begin{aligned}
+i_d &= \text{diode current at } v_{d,\text{guess}} \\
+g_d &= \text{diode current slope at } v_{d,\text{guess}}
+\end{aligned}
+$$
 
 Then it computes the correction:
 
-```text
-ieq = id - gd * vdGuess
-```
+$$
+i_{\text{eq}} = i_d - g_d v_{d,\text{guess}}
+$$
 
 For this iteration:
 
-```text
-diode current ~= gd * vd + ieq
-```
+$$
+\text{diode current} \approx g_dv_d + i_{\text{eq}}
+$$
 
 That looks like:
 
-```text
-resistor-like part: gd * vd
-current-source part: ieq
-```
+$$
+\begin{aligned}
+\text{resistor-like part} &: g_dv_d \\
+\text{current-source part} &: i_{\text{eq}}
+\end{aligned}
+$$
 
 So the diode can stamp a linear MNA system:
 
@@ -2110,15 +2252,15 @@ B1 out 0 I={V(out)*V(out)}
 
 That expression is the same fake example as above:
 
-```text
-i = V(out)^2
-```
+$$
+i = V(\text{out})^2
+$$
 
 If the current guess is `V(out) = 2`, the behavior can linearize it as:
 
-```text
-i ~= 4*V(out) - 4
-```
+$$
+i \approx 4V(\text{out}) - 4
+$$
 
 The `4*V(out)` part acts like a conductance in the matrix. The `-4` part acts like an
 RHS correction. On the next Newton iteration, if the guess changes to `1.6`, the loaded
@@ -2309,8 +2451,8 @@ for each frequency:
   export complex voltages/currents
 ```
 
-Independent AC source values populate the RHS. Capacitors stamp `s*C`; inductors stamp
-`s*L` in their branch equations or equivalent form.
+Independent AC source values populate the RHS. Capacitors stamp $sC$; inductors stamp
+$sL$ in their branch equations or equivalent form.
 
 AC analysis is not "simulate a waveform over time". It is more like asking:
 
@@ -2423,19 +2565,17 @@ what is the value at the next time point?
 
 That is harder because some components depend on change over time.
 
-Capacitor:
+Capacitor current depends on how voltage changes over time:
 
-```text
-current depends on how voltage changes over time
-i = C * dv/dt
-```
+$$
+i = C\frac{dv}{dt}
+$$
 
-Inductor:
+Inductor voltage depends on how current changes over time:
 
-```text
-voltage depends on how current changes over time
-v = L * di/dt
-```
+$$
+v = L\frac{di}{dt}
+$$
 
 The solver cannot directly put `dv/dt` or `di/dt` into the normal MNA matrix. It needs
 ordinary algebra for the current timestep. An integration method converts "change over
@@ -2553,9 +2693,9 @@ C1 out 0 1u
 
 At each candidate time, the capacitor is replaced by a temporary companion model:
 
-```text
-capacitor at this timestep ~= conductance geq + history current ihistory
-```
+$$
+i(t) \approx g_{\text{eq}}v(t) + i_{\text{history}}
+$$
 
 At time `0`, the capacitor may start near `0 V`. When the pulse source jumps toward
 `5 V`, the capacitor voltage cannot jump instantly. SpiceSharp advances time in steps:
@@ -2617,27 +2757,27 @@ to the corresponding SpiceSharp time-parameter factory.
 The integration method rewrites derivatives into algebraic companion models. For a
 capacitor:
 
-```text
-i = C * dv/dt
-```
+$$
+i = C\frac{dv}{dt}
+$$
 
 becomes, for one timestep:
 
-```text
-i ~= geq * v + ihistory
-```
+$$
+i \approx g_{\text{eq}}v + i_{\text{history}}
+$$
 
 For an inductor:
 
-```text
-v = L * di/dt
-```
+$$
+v = L\frac{di}{dt}
+$$
 
 becomes:
 
-```text
-v ~= req * i + vhistory
-```
+$$
+v \approx r_{\text{eq}}i + v_{\text{history}}
+$$
 
 The exact coefficients depend on the method and timestep. The important concept is that
 the dynamic device becomes a matrix stamp plus RHS history source for the current solve.
@@ -2771,18 +2911,18 @@ network of conductances, transconductances, capacitances, and controlled sources
 
 In AC, the matrix values are complex:
 
-```text
-s = j * 2 * pi * f
-```
+$$
+s = j\omega = j\,2\pi f
+$$
 
 Typical dynamic stamps become:
 
 | Device | Frequency-domain relation |
 |--------|---------------------------|
-| Capacitor | `Y = s*C` |
-| Inductor | `Z = s*L`, usually branch-equation form |
+| Capacitor | $Y = sC$ |
+| Inductor | $Z = sL$, usually branch-equation form |
 | Transmission line | frequency-dependent two-port relation |
-| Laplace source | `H(s)` evaluated at current `s` |
+| Laplace source | $H(s)$ evaluated at current $s$ |
 
 The solve at each frequency is independent after the operating point is known:
 
@@ -3129,24 +3269,24 @@ the voltage at node n contributes with coefficient -g
 
 A resistor between `p` and `n` with resistance `R` has conductance:
 
-```text
-g = 1 / R
-```
+$$
+g = \frac{1}{R}
+$$
 
 Stamp:
 
 | Location | Add |
 |----------|-----|
-| `Y[p,p]` | `+g` |
-| `Y[p,n]` | `-g` |
-| `Y[n,p]` | `-g` |
-| `Y[n,n]` | `+g` |
+| `Y[p,p]` | $+g$ |
+| `Y[p,n]` | $-g$ |
+| `Y[n,p]` | $-g$ |
+| `Y[n,n]` | $+g$ |
 
 This expresses:
 
-```text
-I(p -> n) = g * (V(p) - V(n))
-```
+$$
+I(p \to n) = g\left(V(p) - V(n)\right)
+$$
 
 If either node is ground, its index is 0 and the corresponding ground entries are
 ignored by the real equation system.
@@ -3160,8 +3300,8 @@ A DC current source from `p` to `n` contributes only to the RHS:
 
 | Location | Add |
 |----------|-----|
-| `rhs[p]` | `-I` |
-| `rhs[n]` | `+I` |
+| `rhs[p]` | $-I$ |
+| `rhs[n]` | $+I$ |
 
 In AC, the AC magnitude and phase are used for the complex RHS. In transient analysis,
 waveforms such as `PULSE`, `SIN`, `PWL`, `SFFM`, and `AM` compute a time-dependent
@@ -3178,25 +3318,25 @@ extra branch-current unknown `b = I(Vsrc)`.
 
 Unknowns:
 
-```text
-V(p), V(n), I(Vsrc)
-```
+$$
+V(p),\quad V(n),\quad I(\text{Vsrc})
+$$
 
 Stamp:
 
 | Location | Add |
 |----------|-----|
-| `Y[p,b]` | `+1` |
-| `Y[n,b]` | `-1` |
-| `Y[b,p]` | `+1` |
-| `Y[b,n]` | `-1` |
-| `rhs[b]` | `+Vsrc` |
+| `Y[p,b]` | $+1$ |
+| `Y[n,b]` | $-1$ |
+| `Y[b,p]` | $+1$ |
+| `Y[b,n]` | $-1$ |
+| `rhs[b]` | $+V_{\text{src}}$ |
 
 The node rows inject the branch current into KCL. The branch row enforces:
 
-```text
-V(p) - V(n) = Vsrc
-```
+$$
+V(p) - V(n) = V_{\text{src}}
+$$
 
 In transient analysis, waveform voltage sources update `Vsrc` at each time point. In AC,
 the source uses its complex AC value.
@@ -3209,9 +3349,9 @@ voltage.
 
 A capacitor has current:
 
-```text
-i = C * d(v(p,n))/dt
-```
+$$
+i = C\frac{d v(p,n)}{dt}
+$$
 
 Operating point:
 
@@ -3221,46 +3361,48 @@ open circuit, except initial-condition handling
 
 AC:
 
-```text
-y = s * C
-```
+$$
+y = sC
+$$
 
 The AC stamp is resistor-like with `g` replaced by complex admittance `y`:
 
 | Location | Add |
 |----------|-----|
-| `Y[p,p]` | `+s*C` |
-| `Y[p,n]` | `-s*C` |
-| `Y[n,p]` | `-s*C` |
-| `Y[n,n]` | `+s*C` |
+| `Y[p,p]` | $+sC$ |
+| `Y[p,n]` | $-sC$ |
+| `Y[n,p]` | $-sC$ |
+| `Y[n,n]` | $+sC$ |
 
 Transient:
 
 The integration method turns the capacitor into a companion conductance plus a history
 current source:
 
-```text
-i(t) ~= geq * v(t) + ihistory
-```
+$$
+i(t) \approx g_{\text{eq}}v(t) + i_{\text{history}}
+$$
 
 Stamp:
 
 | Location | Add |
 |----------|-----|
-| `Y[p,p]` | `+geq` |
-| `Y[p,n]` | `-geq` |
-| `Y[n,p]` | `-geq` |
-| `Y[n,n]` | `+geq` |
+| `Y[p,p]` | $+g_{\text{eq}}$ |
+| `Y[p,n]` | $-g_{\text{eq}}$ |
+| `Y[n,p]` | $-g_{\text{eq}}$ |
+| `Y[n,n]` | $+g_{\text{eq}}$ |
 | `rhs[p]` | history-current contribution |
 | `rhs[n]` | opposite history-current contribution |
 
 `geq` and `ihistory` depend on the integration method and previous accepted capacitor
 voltage. For backward Euler, conceptually:
 
-```text
-geq = C / dt
-ihistory = -geq * v(previous)
-```
+$$
+\begin{aligned}
+g_{\text{eq}} &= \frac{C}{\Delta t} \\
+i_{\text{history}} &= -g_{\text{eq}}v_{\text{previous}}
+\end{aligned}
+$$
 
 Trapezoidal and Gear use different coefficients and more history.
 
@@ -3272,9 +3414,9 @@ integration method turns it into a temporary resistor-like stamp plus a history 
 
 An inductor has:
 
-```text
-v = L * di/dt
-```
+$$
+v = L\frac{di}{dt}
+$$
 
 MNA usually gives the inductor a branch-current unknown `b = I(L)`.
 
@@ -3286,33 +3428,33 @@ ideal short in steady state, represented through branch equations
 
 AC:
 
-```text
-V(p) - V(n) = s * L * I(L)
-```
+$$
+V(p) - V(n) = sL I(L)
+$$
 
 Stamp:
 
 | Location | Add |
 |----------|-----|
-| `Y[p,b]` | `+1` |
-| `Y[n,b]` | `-1` |
-| `Y[b,p]` | `+1` |
-| `Y[b,n]` | `-1` |
-| `Y[b,b]` | `-s*L` |
+| `Y[p,b]` | $+1$ |
+| `Y[n,b]` | $-1$ |
+| `Y[b,p]` | $+1$ |
+| `Y[b,n]` | $-1$ |
+| `Y[b,b]` | $-sL$ |
 
 The branch row expresses:
 
-```text
-V(p) - V(n) - s*L*I(L) = 0
-```
+$$
+V(p) - V(n) - sLI(L) = 0
+$$
 
 Transient:
 
 The integration method builds an inductor companion relation:
 
-```text
-v(t) ~= req * i(t) + vhistory
-```
+$$
+v(t) \approx r_{\text{eq}}i(t) + v_{\text{history}}
+$$
 
 The branch equation stamps a branch-current column into node KCL, node-voltage terms
 into the branch row, an equivalent resistance-like coefficient on `Y[b,b]`, and a
@@ -3325,24 +3467,26 @@ current, MNA often gives it a branch-current variable.
 
 Mutual inductance couples two inductor branch currents:
 
-```text
-M = k * sqrt(L1 * L2)
-```
+$$
+M = k\sqrt{L_1L_2}
+$$
 
 For inductor branch currents `b1` and `b2`, the frequency-domain branch equations include
 off-diagonal coupling:
 
-```text
-V1 = s*L1*I1 + s*M*I2
-V2 = s*M*I1 + s*L2*I2
-```
+$$
+\begin{aligned}
+V_1 &= sL_1I_1 + sMI_2 \\
+V_2 &= sMI_1 + sL_2I_2
+\end{aligned}
+$$
 
 Conceptual AC additions:
 
 | Location | Add |
 |----------|-----|
-| `Y[b1,b2]` | `-s*M` |
-| `Y[b2,b1]` | `-s*M` |
+| `Y[b1,b2]` | $-sM$ |
+| `Y[b2,b1]` | $-sM$ |
 
 The self terms `Y[b1,b1]` and `Y[b2,b2]` come from the individual inductors. In
 transient analysis, the same coupling is handled through integration-history terms and
@@ -3356,18 +3500,18 @@ other's equation.
 
 A VCCS outputs current from `p` to `n` controlled by `v(cp,cn)`:
 
-```text
-i = gm * (V(cp) - V(cn))
-```
+$$
+i = g_m\left(V(cp) - V(cn)\right)
+$$
 
 Stamp:
 
 | Location | Add |
 |----------|-----|
-| `Y[p,cp]` | `+gm` |
-| `Y[p,cn]` | `-gm` |
-| `Y[n,cp]` | `-gm` |
-| `Y[n,cn]` | `+gm` |
+| `Y[p,cp]` | $+g_m$ |
+| `Y[p,cn]` | $-g_m$ |
+| `Y[n,cp]` | $-g_m$ |
+| `Y[n,cn]` | $+g_m$ |
 
 No extra branch unknown is required because the output is a current source.
 
@@ -3378,9 +3522,9 @@ somewhere else in the circuit.
 
 A VCVS enforces:
 
-```text
-V(p) - V(n) = gain * (V(cp) - V(cn))
-```
+$$
+V(p) - V(n) = \text{gain}\left(V(cp) - V(cn)\right)
+$$
 
 It requires a branch-current unknown `b`.
 
@@ -3388,18 +3532,18 @@ Stamp:
 
 | Location | Add |
 |----------|-----|
-| `Y[p,b]` | `+1` |
-| `Y[n,b]` | `-1` |
-| `Y[b,p]` | `+1` |
-| `Y[b,n]` | `-1` |
-| `Y[b,cp]` | `-gain` |
-| `Y[b,cn]` | `+gain` |
+| `Y[p,b]` | $+1$ |
+| `Y[n,b]` | $-1$ |
+| `Y[b,p]` | $+1$ |
+| `Y[b,n]` | $-1$ |
+| `Y[b,cp]` | $-\text{gain}$ |
+| `Y[b,cn]` | $+\text{gain}$ |
 
 The branch row expresses:
 
-```text
-V(p) - V(n) - gain * (V(cp) - V(cn)) = 0
-```
+$$
+V(p) - V(n) - \text{gain}\left(V(cp) - V(cn)\right) = 0
+$$
 
 Beginner meaning: a VCVS is a voltage source whose voltage is controlled by another
 voltage. Because its output is a voltage source, it needs a branch-current unknown.
@@ -3408,16 +3552,16 @@ voltage. Because its output is a voltage source, it needs a branch-current unkno
 
 A CCCS outputs current from `p` to `n` controlled by another branch current `I(bc)`:
 
-```text
-i = gain * I(bc)
-```
+$$
+i = \text{gain}\,I(bc)
+$$
 
 Stamp:
 
 | Location | Add |
 |----------|-----|
-| `Y[p,bc]` | `+gain` |
-| `Y[n,bc]` | `-gain` |
+| `Y[p,bc]` | $+\text{gain}$ |
+| `Y[n,bc]` | $-\text{gain}$ |
 
 The controlling current is normally the current through a voltage source or another
 MNA branch-current variable.
@@ -3429,9 +3573,9 @@ else.
 
 A CCVS enforces:
 
-```text
-V(p) - V(n) = rtrans * I(bc)
-```
+$$
+V(p) - V(n) = r_{\text{trans}}I(bc)
+$$
 
 It requires its own branch-current unknown `b`.
 
@@ -3439,17 +3583,17 @@ Stamp:
 
 | Location | Add |
 |----------|-----|
-| `Y[p,b]` | `+1` |
-| `Y[n,b]` | `-1` |
-| `Y[b,p]` | `+1` |
-| `Y[b,n]` | `-1` |
-| `Y[b,bc]` | `-rtrans` |
+| `Y[p,b]` | $+1$ |
+| `Y[n,b]` | $-1$ |
+| `Y[b,p]` | $+1$ |
+| `Y[b,n]` | $-1$ |
+| `Y[b,bc]` | $-r_{\text{trans}}$ |
 
 The branch row expresses:
 
-```text
-V(p) - V(n) - rtrans * I(bc) = 0
-```
+$$
+V(p) - V(n) - r_{\text{trans}}I(bc) = 0
+$$
 
 Beginner meaning: a CCVS is a voltage source controlled by a current somewhere else.
 Because its output is voltage-defined, it needs its own branch-current unknown.
@@ -3462,16 +3606,16 @@ by the parser and SpiceSharpBehavioral.
 
 For a behavioral current source:
 
-```text
+$$
 i = f(x)
-```
+$$
 
 At a Newton iteration, the engine can linearize the expression around the current
 solution:
 
-```text
-i(x) ~= f(x0) + J * (x - x0)
-```
+$$
+i(x) \approx f(x_0) + J(x - x_0)
+$$
 
 where `J` contains partial derivatives with respect to referenced variables. The
 Jacobian terms are stamped into `Y`; the residual/equivalent source term is stamped
@@ -3492,33 +3636,35 @@ that computes a voltage or current from circuit variables.
 
 A diode is nonlinear:
 
-```text
-i = Is * (exp(vd / (n*Vt)) - 1)
-```
+$$
+i = I_s\left(e^{v_d/(nV_t)} - 1\right)
+$$
 
 Newton iteration replaces it with a local conductance and equivalent current source:
 
-```text
-gd  = di/dv at current guess
-ieq = i(vguess) - gd * vguess
-i   ~= gd * vd + ieq
-```
+$$
+\begin{aligned}
+g_d &= \left.\frac{di}{dv}\right|_{\text{current guess}} \\
+i_{\text{eq}} &= i(v_{\text{guess}}) - g_dv_{\text{guess}} \\
+i &\approx g_dv_d + i_{\text{eq}}
+\end{aligned}
+$$
 
 Matrix stamp for `gd` is resistor-like:
 
 | Location | Add |
 |----------|-----|
-| `Y[p,p]` | `+gd` |
-| `Y[p,n]` | `-gd` |
-| `Y[n,p]` | `-gd` |
-| `Y[n,n]` | `+gd` |
+| `Y[p,p]` | $+g_d$ |
+| `Y[p,n]` | $-g_d$ |
+| `Y[n,p]` | $-g_d$ |
+| `Y[n,n]` | $+g_d$ |
 
 RHS stamp for the equivalent diode current from `p` to `n`:
 
 | Location | Add |
 |----------|-----|
-| `rhs[p]` | `-ieq` |
-| `rhs[n]` | `+ieq` |
+| `rhs[p]` | $-i_{\text{eq}}$ |
+| `rhs[n]` | $+i_{\text{eq}}$ |
 
 Junction capacitance and charge storage contribute additional dynamic stamps in AC and
 transient analyses.
@@ -3598,19 +3744,21 @@ conductance that changes based on a control value.
 
 Conceptually:
 
-```text
-g = 1 / Ron   when on
-g = 1 / Roff  when off
-```
+$$
+\begin{aligned}
+g &= \frac{1}{R_{\text{on}}} && \text{when on} \\
+g &= \frac{1}{R_{\text{off}}} && \text{when off}
+\end{aligned}
+$$
 
 Then the switch stamps like a resistor:
 
 | Location | Add |
 |----------|-----|
-| `Y[p,p]` | `+g` |
-| `Y[p,n]` | `-g` |
-| `Y[n,p]` | `-g` |
-| `Y[n,n]` | `+g` |
+| `Y[p,p]` | $+g$ |
+| `Y[p,n]` | $-g$ |
+| `Y[n,p]` | $-g$ |
+| `Y[n,n]` | $+g$ |
 
 Real switch models usually smooth or limit transitions to help convergence. Abrupt
 state changes can make Newton iteration harder because the matrix changes sharply as
@@ -3624,9 +3772,9 @@ but the transition can make convergence harder.
 A transmission line is not just a static resistor-like stamp. It relates present
 terminal behavior to delayed wave history:
 
-```text
-delay = length / propagationVelocity
-```
+$$
+\text{delay} = \frac{\text{length}}{\text{propagation velocity}}
+$$
 
 In transient analysis, the line uses history buffers and characteristic impedance to
 inject delayed wave contributions. It behaves like a dynamic two-port whose RHS and
@@ -3643,17 +3791,17 @@ resistor/capacitor/inductor stamp.
 
 Laplace transfer sources implement:
 
-```text
-output(s) = H(s) * input(s)
-```
+$$
+\text{output}(s) = H(s)\,\text{input}(s)
+$$
 
 where `H(s)` is a rational transfer function:
 
-```text
-H(s) = numerator(s) / denominator(s)
-```
+$$
+H(s) = \frac{\text{numerator}(s)}{\text{denominator}(s)}
+$$
 
-In AC, this is naturally frequency-domain: evaluate `H(j*w)` and stamp the equivalent
+In AC, this is naturally frequency-domain: evaluate $H(j\omega)$ and stamp the equivalent
 controlled-source relationship.
 
 In transient analysis, the transfer function needs state realization or equivalent

@@ -20,6 +20,8 @@ namespace SpiceSharpParser.CustomComponents
                 throw new ArgumentNullException(nameof(settings));
             }
 
+            settings.Mappings.Components.Map("C", new NonlinearPassiveGenerator());
+            settings.Mappings.Components.Map("L", new NonlinearPassiveGenerator());
             settings.Mappings.Models.Map("D", new IdealDiodeModelGenerator());
             settings.Mappings.Components.Map("D", new IdealDiodeGenerator());
             return settings;
