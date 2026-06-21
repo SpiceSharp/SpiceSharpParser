@@ -1,16 +1,21 @@
 # How SpiceSharp Solves Circuits: Junior Developer Guide
 
-This guide is written for a developer who can read C# but does not yet feel comfortable
-with circuit math or electronics vocabulary. You do not need an electrical engineering
-background to follow it. The goal is to explain what SpiceSharp is doing, why it needs a
-matrix, and how the pieces fit together in software terms.
+This article is for a developer who can read C# but does not yet feel comfortable with
+circuit math or electronics vocabulary. You do not need an electrical engineering
+background. The goal is to explain what SpiceSharp is doing, why it needs a matrix, and
+how the pieces fit together in software terms.
 
-SpiceSharpParser reads a SPICE netlist, but the numerical circuit solution is done by
-SpiceSharp. This article explains the handoff and then looks inside the engine:
-modified nodal analysis, sparse matrix solving, Newton iteration, transient integration,
-and the matrix contribution of each supported component category.
+The main boundary is important:
 
-The short version is:
+- **SpiceSharpParser** reads SPICE text and creates SpiceSharp objects.
+- **SpiceSharp** owns the numerical circuit solution: matrix assembly, sparse solving,
+  Newton iteration, timestep control, integration history, and model behavior.
+
+This guide follows that handoff and then looks inside the engine. It is an architecture
+guide, not a replacement for the individual statement/device pages, SpiceSharp's public
+API docs, or the SpiceSharp source code.
+
+The shortest version of the runtime path is:
 
 ```text
 SPICE text
@@ -28,13 +33,35 @@ linear algebra live in the SpiceSharp dependency.
 
 ## How To Read This Guide
 
-If you are new to electronics, read in this order:
+This is a long page, so pick a path:
 
-1. **Vocabulary**: learn the words that appear everywhere.
-2. **Main Objects**: map those words to SpiceSharp classes.
-3. **Modified Nodal Analysis**: understand why a circuit becomes equations.
-4. **Sparse Matrix And Solver Internals**: understand how those equations are stored and solved.
-5. **Component Stamp Atlas**: use it as a reference, not as something to memorize.
+| If you want to... | Read these sections first |
+|-------------------|---------------------------|
+| Learn the big picture from scratch | [Tiny Electronics Vocabulary](#tiny-electronics-vocabulary), [Main Objects](#main-objects), [Modified Nodal Analysis](#modified-nodal-analysis) |
+| Read SpiceSharp source code | [Source Code Reading Map](#source-code-reading-map), [Setup Versus Load In SpiceSharp](#setup-versus-load-in-spicesharp), [Simulation Lifecycle](#simulation-lifecycle), [Core Biasing Algorithm](#core-biasing-algorithm) |
+| Understand `.TRAN` behavior | [Analysis Algorithms](#analysis-algorithms), [Transient Integration Details](#transient-integration-details), [Accepted And Rejected Timesteps](#accepted-and-rejected-timesteps) |
+| Look up one component's matrix role | [Stamp Notation](#stamp-notation), then [Component Stamp Atlas](#component-stamp-atlas) |
+| Debug a failing solve | [Convergence System](#convergence-system), [Reading Solver Failures](#reading-solver-failures) |
+
+Quick map of the article:
+
+- [Tiny Electronics Vocabulary](#tiny-electronics-vocabulary)
+- [Main Objects](#main-objects)
+- [Source Code Reading Map](#source-code-reading-map)
+- [Modified Nodal Analysis](#modified-nodal-analysis)
+- [Sparse Matrix And Solver Internals](#sparse-matrix-and-solver-internals)
+- [Behavior Architecture](#behavior-architecture)
+- [Simulation Lifecycle](#simulation-lifecycle)
+- [Convergence System](#convergence-system)
+- [Analysis Algorithms](#analysis-algorithms)
+- [Transient Integration Details](#transient-integration-details)
+- [AC Small-Signal Linearization](#ac-small-signal-linearization)
+- [Model System](#model-system)
+- [Parameter System](#parameter-system)
+- [Exports And Events](#exports-and-events)
+- [Custom Component Extension Points](#custom-component-extension-points)
+- [Parser-Configurable Solver Settings](#parser-configurable-solver-settings)
+- [Component Stamp Atlas](#component-stamp-atlas)
 
 The formulas are there because the simulator ultimately solves numbers. You can still
 understand the architecture if you treat each formula as a recipe for where a component
@@ -150,11 +177,23 @@ If you are reading engine files, this rough map is useful:
 | Source area | What to look for |
 |-------------|------------------|
 | `BiasingSimulation` | Real-valued load/solve/Newton iteration used by `.OP`, `.DC`, and `.TRAN`. |
-| `Transient` | Time loop around biasing iteration: probe, solve, truncate/evaluate, accept, export. |
+| `Transient` | Time loop around biasing iteration: prepare/probe candidate time, solve, reject/evaluate, accept/export. |
 | `IIntegrationMethod` | Current time, timestep, accepted history, derivative/integral states, and reject/accept control. |
-| `IAcceptBehavior` | Device state that is committed only after a successful solve point. |
+| `IAcceptBehavior` | Device or waveform state that is probed for a candidate point and committed after a successful point. |
 | `ITruncatingBehavior` | Device or helper logic that limits timestep size. |
 | Waveform classes / `IWaveform` | Source values as a function of simulation time. |
+
+In SpiceSharp 3.2.3, the key source facts are:
+
+- `BiasingSimulation.Load()` resets the solver's numeric matrix/RHS state, then calls
+  `IBiasingBehavior.Load()` on the active biasing behaviors.
+- `BiasingSimulation.Iterate()` loads, reorders/factors or refactors, solves, updates
+  biasing behaviors, and checks convergence.
+- `Transient.Execute()` handles operating-point or `UIC` startup, prepares and probes
+  candidate timesteps, rejects failed candidates, evaluates timestep accuracy, and
+  accepts and exports successful points.
+- Current and voltage source `Accept` behaviors forward `Probe()` and `Accept()` to
+  their waveforms, so waveform state follows the same candidate/accepted-point split.
 
 The most important reading habit is to ask:
 
@@ -200,7 +239,7 @@ where:
 $$
 \begin{aligned}
 x &= \text{unknown solution vector} \\
-Y &= \text{admittance/Jacobian matrix} \\
+Y &= \text{current MNA matrix} \\
 \mathrm{rhs} &= \text{right-hand-side vector}
 \end{aligned}
 $$
@@ -217,16 +256,17 @@ $$
 
 The solver receives `Y` and `rhs`, then computes `x`.
 
-In pure linear DC circuits, `Y` can be read as an admittance matrix. In real SpiceSharp
-simulations, it is more general:
+This guide uses `Y` for the matrix being loaded during the current solve attempt and
+`rhs` for the known side of that same linear system. In pure linear DC circuits, `Y`
+can be read as an admittance matrix. In real SpiceSharp simulations, it is more general:
 
 - in nonlinear DC analysis, `Y` is the Newton Jacobian,
 - in AC analysis, `Y` is complex and frequency-dependent,
 - in transient analysis, `Y` includes companion-model terms from the integration method,
 - for ideal voltage-defined devices, `Y` also contains constraint equations.
 
-So the safest name is "the MNA matrix" or "the Jacobian matrix", even though many rows
-look like ordinary conductance/admittance rows.
+So the safest general name is "the MNA matrix." When nonlinear devices are being
+linearized, the same matrix is also the Newton Jacobian for the current guess.
 
 ### Modified Matrix Algorithm Step By Step
 
@@ -807,9 +847,11 @@ each solve attempt:
 ```
 
 This separation is central to SpiceSharp performance. Topology and matrix locations are
-mostly stable, while numeric values change constantly. A transient simulation can reuse
-the same sparse matrix structure across many timesteps, only changing values such as
-source waveforms, nonlinear derivatives, and integration coefficients.
+mostly stable, while numeric values change constantly. In the current SpiceSharp source,
+`BiasingSimulation.Load()` performs the per-attempt numeric reset and then asks each
+active `IBiasingBehavior` to load its contribution. A transient simulation can reuse the
+same sparse matrix structure across many timesteps, only changing values such as source
+waveforms, nonlinear derivatives, and integration coefficients.
 
 The software pattern is:
 
@@ -828,11 +870,14 @@ the biasing load during transient analysis.
 Conceptually, a behavior does this:
 
 ```text
-read present parameters and simulation state
+read present parameters, solution guess, and simulation state
 compute local coefficients
 add coefficients to Y
 add known terms to rhs
 ```
+
+`Load()` does not mean "load the file" or "load a component from the netlist." It means
+"add this behavior's numeric contribution to the matrix/RHS for this solve attempt."
 
 For a linear resistor, the local coefficient is simply $g = 1 / R$.
 
@@ -2188,6 +2233,11 @@ but the flow is roughly:
 8. Accept or update final state
 ```
 
+The list above is a teaching map, not a promise that every analysis calls the same
+methods in the same order. The important split is stable: setup creates states,
+behaviors, variables, and cached matrix locations; execution repeatedly loads numeric
+values, solves, checks, accepts, and exports.
+
 ### State Creation
 
 Simulation states are shared services for behaviors. They include things like:
@@ -2260,6 +2310,11 @@ NOISE: operating point plus frequency-domain noise propagation
 
 SpiceSharpParser's `*WithEvents` simulation wrappers and export objects hook into this
 lifecycle so `.SAVE`, `.PRINT`, `.PLOT`, `.MEAS`, and `.FOUR` can collect data.
+
+For biasing-style solves in SpiceSharp 3.2.3, the repeated core is: reset numeric
+solver state, call behavior `Load()` methods, order/factor or refactor the matrix,
+solve with forward/backward substitution, reset ground, update behavior state, then
+test convergence.
 
 For a junior reader, the useful simplification is:
 
@@ -3163,24 +3218,24 @@ Operating point, DC, transient, AC, and noise all depend on a biasing solution i
 way. A simplified Newton iteration is:
 
 ```text
-create or reuse solver state
-create device behaviors
-apply temperature and parameter updates
+setup:
+  create solver and simulation states
+  create device behaviors
+  bind variables and cache matrix/RHS locations
+  apply temperature and parameter updates
 
 for iteration = 1..maxIterations:
-  clear Y and rhs numeric values
+  Load():
+    reset numeric solver state
+    call each IBiasingBehavior.Load()
 
-  for each biasing behavior:
-    behavior.Load()
-
-  factor Y
+  order/factor or refactor Y
+  store the old solution
   solve Y * x = rhs
+  reset ground to 0
+  call each IBiasingUpdateBehavior.Update()
 
-  for each update behavior:
-    behavior.Update()
-
-  if all convergence behaviors report converged:
-    accept solution
+  if solution and device checks are converged:
     stop
 
 report non-convergence
@@ -3190,6 +3245,11 @@ Linear circuits usually converge in one load/solve pass. Nonlinear circuits use 
 linearization: each nonlinear device is replaced by a local linear approximation around
 the current guess. The guess is solved, the device updates its local operating point,
 and the loop repeats until changes are within tolerances.
+
+SpiceSharp also has convergence aids such as junction initialization, fixed mode,
+gmin stepping, diagonal gmin stepping, source stepping, nodesets, and initial
+conditions. Those aids change how the Newton loop is started or nudged; they do not
+change the basic load/factor/solve/update/check shape.
 
 If you only remember one thing from this section, remember this:
 
@@ -3287,48 +3347,54 @@ transmission line remembers delayed waves. A pulse source changes value at speci
 times.
 
 ```text
-optionally solve operating point
-initialize integration history
+startup:
+  either solve the operating point or use UIC/initial conditions
+  initialize dynamic history from that starting state
+  export the operating point when requested
 
 while time < stopTime:
-  choose timestep
+  accept and export the last successful point
+  prepare the next candidate timestep
 
-  for Newton iteration at this timestep:
-    clear Y and rhs
-    load biasing and time behaviors
-    factor and solve
-    update nonlinear and integration states
-    check convergence
+  repeat until a candidate is accepted:
+    probe the candidate time
 
-  if timestep accepted:
-    accept integration history
-    export transient point
-  else:
-    reduce timestep and retry
+    for Newton iteration at this candidate time:
+      reset Y and rhs
+      load biasing/time contributions
+      factor and solve
+      update nonlinear state
+      check convergence
+
+    if Newton failed:
+      reject candidate and retry smaller
+    else if integration error is too large:
+      reject candidate and retry smaller
+    else:
+      keep candidate as the next successful point
 ```
+
+Conceptually, acceptance happens after a candidate has converged and passed timestep
+accuracy checks. In the current source, `Transient.Execute()` commits the last
+successful point at the start of the next outer-loop pass with `Accept()`, then exports
+it if it is inside the requested output window.
 
 Time-domain capacitors, inductors, transmission lines, Laplace sources, and waveform
-sources all depend on current time and integration history.
+sources all depend on current time and accepted integration history. For the math behind
+the companion terms, see [Transient Integration Details](#transient-integration-details).
 
-Developer analogy: `.TRAN` is a game loop or animation loop, except each frame requires
-solving a circuit.
-
-More precise developer analogy:
+Developer analogy: `.TRAN` is an event loop for circuit time, except each accepted time
+point may require several solve attempts.
 
 ```text
-game loop:
-  choose next frame time
-  update world
-  render frame
-
 transient loop:
   choose next circuit time
-  solve circuit
-  accept/export point
+  probe and solve a candidate point
+  accept/export only if it passes
 ```
 
-The difference is that `.TRAN` may reject a frame. If the numerical result is not good
-enough, SpiceSharp does not keep it. It shrinks the timestep and tries again.
+If the numerical result is not good enough, SpiceSharp does not keep the candidate
+point. It shrinks the timestep and tries again from the last accepted time.
 
 ### Noise
 
@@ -3969,9 +4035,11 @@ else:
   retry
 ```
 
-`IAcceptBehavior` lets devices commit state after a successful point. `ITruncatingBehavior`
-lets devices participate in timestep control by reporting how aggressively the timestep
-should be limited.
+`IAcceptBehavior` has two roles in this lifecycle. `Probe()` lets a device or waveform
+prepare for the candidate time before the solve, and `Accept()` lets it commit state
+after the point is successful. Current and voltage source waveforms use this pattern.
+`ITruncatingBehavior` lets devices participate in timestep control by reporting how
+aggressively the timestep should be limited.
 
 Truncation error is not the same thing as Newton non-convergence. They are two
 different checks:
@@ -3998,7 +4066,7 @@ Accepted means:
 ```text
 the solution converged
 the estimated integration error is acceptable
-device histories are committed
+device and waveform histories are committed
 exports may be produced
 the simulation time moves forward
 ```
@@ -4528,9 +4596,10 @@ model variant has the same closed-form matrix.
 Do not try to memorize this section. Use it like a dictionary:
 
 1. Find the component type.
-2. Read the plain meaning.
-3. Look at which matrix/RHS entries it touches.
-4. Notice whether the stamp is exact or model-dependent.
+2. Check whether the component adds solver unknowns.
+3. Look at the matrix/RHS shape it contributes.
+4. Read the beginner takeaway.
+5. Notice whether the stamp is exact, time/frequency-dependent, or model-dependent.
 
 When a stamp says `Y[p,n] += -g`, read it as:
 
@@ -4538,6 +4607,14 @@ When a stamp says `Y[p,n] += -g`, read it as:
 in the equation for node p,
 the voltage at node n contributes with coefficient -g
 ```
+
+Atlas entries use three recurring labels:
+
+| Label | Meaning |
+|-------|---------|
+| Unknowns | Solver variables added beyond the normal endpoint node voltages. |
+| Stamp shape | The matrix/RHS pattern or model-dependent contribution. |
+| Beginner takeaway | The one-sentence mental model to keep. |
 
 ### R: Resistor
 
@@ -4547,7 +4624,9 @@ $$
 g = \frac{1}{R}
 $$
 
-Stamp:
+Unknowns: none beyond the endpoint node voltages.
+
+Stamp shape:
 
 | Location | Add |
 |----------|-----|
@@ -4565,12 +4644,16 @@ $$
 If either node is ground, its index is 0 and the corresponding ground entries are
 ignored by the real equation system.
 
-Beginner meaning: a resistor connects two nodes and lets current flow based on the
+Beginner takeaway: a resistor connects two nodes and lets current flow based on the
 voltage difference. The four matrix entries are just the two-node KCL bookkeeping.
 
 ### I: Independent Current Source
 
 A DC current source from `p` to `n` contributes only to the RHS:
+
+Unknowns: none.
+
+Stamp shape:
 
 | Location | Add |
 |----------|-----|
@@ -4581,7 +4664,7 @@ In AC, the AC magnitude and phase are used for the complex RHS. In transient ana
 waveforms such as `PULSE`, `SIN`, `PWL`, `SFFM`, and `AM` compute a time-dependent
 current and stamp that current into the RHS at each time point.
 
-Beginner meaning: a current source pushes a known current into the circuit. Because the
+Beginner takeaway: a current source pushes a known current into the circuit. Because the
 current is already known, it goes on the known side (`rhs`) rather than creating a new
 unknown.
 
@@ -4590,13 +4673,13 @@ unknown.
 An ideal voltage source cannot be represented as a simple conductance. MNA adds an
 extra branch-current unknown `b = I(Vsrc)`.
 
-Unknowns:
+Unknowns: one branch current, `b = I(Vsrc)`.
 
 $$
 V(p),\quad V(n),\quad I(\text{Vsrc})
 $$
 
-Stamp:
+Stamp shape:
 
 | Location | Add |
 |----------|-----|
@@ -4615,7 +4698,7 @@ $$
 In transient analysis, waveform voltage sources update `Vsrc` at each time point. In AC,
 the source uses its complex AC value.
 
-Beginner meaning: a voltage source forces a voltage difference. The simulator must add
+Beginner takeaway: a voltage source forces a voltage difference. The simulator must add
 one extra unknown because the source current is whatever it needs to be to enforce that
 voltage.
 
@@ -4626,6 +4709,8 @@ A capacitor has current:
 $$
 i = C\frac{d v(p,n)}{dt}
 $$
+
+Unknowns: none beyond endpoint node voltages for the built-in linear capacitor.
 
 Plain-language model:
 
@@ -4740,7 +4825,7 @@ $$
 i = \frac{dq}{dt}
 $$
 
-Bias / operating point:
+Stamp shape in bias / operating point:
 
 ```text
 ideal capacitor -> open circuit for DC current
@@ -4756,7 +4841,7 @@ However, transient setup still needs a starting stored charge. Without `UIC`, th
 starting charge comes from the operating-point voltage. With `UIC`, an `IC=`
 parameter can seed the initial terminal voltage and therefore the initial charge.
 
-AC:
+Stamp shape in AC:
 
 $$
 y = sC
@@ -4781,7 +4866,7 @@ $$
 So `.AC` does not use timestep history. It uses the frequency point through
 $s = j\omega$.
 
-Transient:
+Stamp shape in transient:
 
 The integration method turns the capacitor into a companion conductance plus a history
 current source:
@@ -4824,7 +4909,7 @@ $$
 
 Trapezoidal and Gear use different coefficients and more history.
 
-Beginner meaning: a capacitor remembers voltage history. In `.OP`, it mostly behaves
+Beginner takeaway: a capacitor remembers voltage history. In `.OP`, it mostly behaves
 like an open circuit. In `.AC`, it becomes frequency-dependent. In `.TRAN`, the
 integration method turns it into a temporary resistor-like stamp plus a history source.
 
@@ -4837,6 +4922,8 @@ v = L\frac{di}{dt}
 $$
 
 MNA usually gives the inductor a branch-current unknown `b = I(L)`.
+
+Unknowns: one branch current, `b = I(L)`.
 
 Plain-language model:
 
@@ -4950,7 +5037,7 @@ $$
 v = \frac{d\Phi}{dt}
 $$
 
-Bias / operating point:
+Stamp shape in bias / operating point:
 
 ```text
 ideal short in steady state, represented through branch equations
@@ -4980,7 +5067,7 @@ That is why an inductor does not look like a plain resistor in MNA. Its natural
 state variable is current, so the solver adds a current unknown and a branch
 equation.
 
-AC:
+Stamp shape in AC:
 
 $$
 V(p) - V(n) = sL I(L)
@@ -5006,7 +5093,7 @@ The frequency behavior also exposes complex voltage, current, power, and branch
 exports. Like the capacitor's AC behavior, it does not use timestep history; the
 dynamic effect comes from $s = j\omega$.
 
-Transient:
+Stamp shape in transient:
 
 The integration method builds an inductor companion relation:
 
@@ -5035,7 +5122,7 @@ only its own $\Phi = Li$; it can also include coupling terms from other inductor
 currents. The hook lets the mutual-inductance behavior modify the flux state
 before the inductor commits the time-domain contribution.
 
-Beginner meaning: an inductor remembers current history. Because its natural unknown is
+Beginner takeaway: an inductor remembers current history. Because its natural unknown is
 current, MNA often gives it a branch-current variable.
 
 Capacitor and inductor side by side:
@@ -5062,6 +5149,9 @@ $$
 M = k\sqrt{L_1L_2}
 $$
 
+Unknowns: none by itself; it uses the branch-current unknowns created by the coupled
+inductors.
+
 For inductor branch currents `b1` and `b2`, the frequency-domain branch equations include
 off-diagonal coupling:
 
@@ -5072,7 +5162,7 @@ V_2 &= sMI_1 + sL_2I_2
 \end{aligned}
 $$
 
-Conceptual AC additions:
+Stamp shape in AC:
 
 | Location | Add |
 |----------|-----|
@@ -5083,7 +5173,7 @@ The self terms `Y[b1,b1]` and `Y[b2,b2]` come from the individual inductors. In
 transient analysis, the same coupling is handled through integration-history terms and
 equivalent coefficients.
 
-Beginner meaning: mutual inductance says two inductors influence each other. That is why
+Beginner takeaway: mutual inductance says two inductors influence each other. That is why
 the matrix gets off-diagonal entries connecting one inductor's branch current to the
 other's equation.
 
@@ -5095,7 +5185,9 @@ $$
 i = g_m\left(V(cp) - V(cn)\right)
 $$
 
-Stamp:
+Unknowns: none beyond output and control node voltages.
+
+Stamp shape:
 
 | Location | Add |
 |----------|-----|
@@ -5106,7 +5198,7 @@ Stamp:
 
 No extra branch unknown is required because the output is a current source.
 
-Beginner meaning: a VCCS is a current source whose value is controlled by a voltage
+Beginner takeaway: a VCCS is a current source whose value is controlled by a voltage
 somewhere else in the circuit.
 
 ### E: Voltage-Controlled Voltage Source
@@ -5117,9 +5209,9 @@ $$
 V(p) - V(n) = \text{gain}\left(V(cp) - V(cn)\right)
 $$
 
-It requires a branch-current unknown `b`.
+Unknowns: one output branch current, `b = I(E)`.
 
-Stamp:
+Stamp shape:
 
 | Location | Add |
 |----------|-----|
@@ -5136,7 +5228,7 @@ $$
 V(p) - V(n) - \text{gain}\left(V(cp) - V(cn)\right) = 0
 $$
 
-Beginner meaning: a VCVS is a voltage source whose voltage is controlled by another
+Beginner takeaway: a VCVS is a voltage source whose voltage is controlled by another
 voltage. Because its output is a voltage source, it needs a branch-current unknown.
 
 ### F: Current-Controlled Current Source
@@ -5147,7 +5239,10 @@ $$
 i = \text{gain}\,I(bc)
 $$
 
-Stamp:
+Unknowns: none for the CCCS itself; it reads an existing controlling branch current
+`bc`.
+
+Stamp shape:
 
 | Location | Add |
 |----------|-----|
@@ -5157,7 +5252,7 @@ Stamp:
 The controlling current is normally the current through a voltage source or another
 MNA branch-current variable.
 
-Beginner meaning: a CCCS is a current source controlled by a measured current somewhere
+Beginner takeaway: a CCCS is a current source controlled by a measured current somewhere
 else.
 
 ### H: Current-Controlled Voltage Source
@@ -5168,9 +5263,10 @@ $$
 V(p) - V(n) = r_{\text{trans}}I(bc)
 $$
 
-It requires its own branch-current unknown `b`.
+Unknowns: one output branch current, `b = I(H)`, plus an existing controlling branch
+current `bc`.
 
-Stamp:
+Stamp shape:
 
 | Location | Add |
 |----------|-----|
@@ -5186,14 +5282,18 @@ $$
 V(p) - V(n) - r_{\text{trans}}I(bc) = 0
 $$
 
-Beginner meaning: a CCVS is a voltage source controlled by a current somewhere else.
+Beginner takeaway: a CCVS is a voltage source controlled by a current somewhere else.
 Because its output is voltage-defined, it needs its own branch-current unknown.
 
 ### B: Behavioral Source
 
 Behavioral sources can be voltage or current outputs with expressions. The expression
 can depend on voltages, currents, parameters, time, frequency, and functions supported
-by the parser and SpiceSharpBehavioral.
+by the parser and the current `SpiceSharpBehavioral` dependency, which is 3.2.0 in this
+repository.
+
+Unknowns: a behavioral current output usually adds none; a behavioral voltage output
+adds a branch-current unknown like an independent voltage source.
 
 For a behavioral current source:
 
@@ -5220,7 +5320,10 @@ For expressions that are purely constant at a point, the stamp may reduce to an
 ordinary independent source. For expressions with `TIME`, dynamic functions, table
 lookups, or `LAPLACE`, the load can change at each timestep or frequency point.
 
-Beginner meaning: behavioral sources are programmable sources. The expression is code
+Stamp shape: expression derivatives go into `Y`; the evaluated constant/residual part
+goes into `rhs`; voltage-output forms also add a voltage-source branch equation.
+
+Beginner takeaway: behavioral sources are programmable sources. The expression is code
 that computes a voltage or current from circuit variables.
 
 ### D: Diode
@@ -5230,6 +5333,8 @@ A diode is nonlinear:
 $$
 i = I_s\left(e^{v_d/(nV_t)} - 1\right)
 $$
+
+Unknowns: none beyond the diode terminal node voltages for the basic diode equation.
 
 Newton iteration replaces it with a local conductance and equivalent current source:
 
@@ -5260,7 +5365,7 @@ RHS stamp for the equivalent diode current from `p` to `n`:
 Junction capacitance and charge storage contribute additional dynamic stamps in AC and
 transient analyses.
 
-Beginner meaning: a diode is not linear. SpiceSharp repeatedly replaces it with a local
+Beginner takeaway: a diode is not linear. SpiceSharp repeatedly replaces it with a local
 "resistor plus current source" approximation until the answer stops changing too much.
 The local resistor value is `gd`; the local current-source correction is `ieq`. On each
 Newton iteration, both are recomputed from the latest diode voltage guess.
@@ -5268,6 +5373,9 @@ Newton iteration, both are recomputed from the latest diode voltage guess.
 ### Q: Bipolar Junction Transistor
 
 A BJT model is nonlinear and model-dependent. It is not one fixed stamp like a resistor.
+
+Unknowns: terminal node voltages, plus any model-created internal node variables.
+
 At each operating point guess, the model computes local small-signal quantities such as:
 
 - base-emitter conductance,
@@ -5288,13 +5396,20 @@ The biasing stamp adds conductances and controlled-source terms to `Y`, plus equ
 currents to `rhs`. AC uses the linearized small-signal model around the operating point.
 Transient adds capacitance and charge companion terms through the integration method.
 
-Beginner meaning: a BJT is a nonlinear multi-terminal device. Do not look for one simple
+Stamp shape: model derivatives form a multi-terminal local Jacobian; residual currents
+and charge-history terms go into `rhs`.
+
+Beginner takeaway: a BJT is a nonlinear multi-terminal device. Do not look for one simple
 stamp; the model computes many local derivatives and equivalent sources.
 
 ### J: JFET
 
 A JFET is also nonlinear and model-dependent. Its stamp is built from local derivatives
-of drain current and gate junction currents. Conceptually, each Newton iteration loads:
+of drain current and gate junction currents.
+
+Unknowns: terminal node voltages, plus any model-created internal variables.
+
+Conceptually, each Newton iteration loads:
 
 - channel conductance terms between drain and source,
 - transconductance controlled by gate-source voltage,
@@ -5304,13 +5419,21 @@ of drain current and gate junction currents. Conceptually, each Newton iteration
 
 The exact coefficients depend on the selected JFET model and current operating region.
 
-Beginner meaning: a JFET is also model-dependent. Its stamp changes with the operating
+Stamp shape: local derivatives go into `Y`; equivalent currents and dynamic history
+terms go into `rhs`.
+
+Beginner takeaway: a JFET is model-dependent. Its stamp changes with the operating
 point.
 
 ### M: MOSFET
 
 MOSFETs have the richest model-dependent stamps. Depending on the model and operating
-region, the local Jacobian can include:
+region, their local Jacobian can include many effects.
+
+Unknowns: terminal node voltages, plus model-created internal variables when the model
+needs them.
+
+Common local terms include:
 
 - drain-source output conductance,
 - gate transconductance,
@@ -5325,13 +5448,19 @@ terminal voltages. The RHS receives residual currents so the linearized system m
 the nonlinear equations at the current guess. AC uses the small-signal linearization.
 Transient uses charge/capacitance companion models.
 
-Beginner meaning: a MOSFET is the most complex common device here. The matrix entries
+Stamp shape: the model loads a multi-terminal Jacobian, equivalent residual currents,
+and charge/capacitance companion terms.
+
+Beginner takeaway: a MOSFET is the most complex common device here. The matrix entries
 come from the model's derivatives, not from one universal four-entry stamp.
 
 ### S And W: Controlled Switches
 
 Voltage-controlled switches (`S`) and current-controlled switches (`W`) behave like a
 conductance that changes based on a control value.
+
+Unknowns: none for voltage-controlled switches; current-controlled switches read an
+existing controlling branch current.
 
 Conceptually:
 
@@ -5342,7 +5471,8 @@ g &= \frac{1}{R_{\text{off}}} && \text{when off}
 \end{aligned}
 $$
 
-Then the switch stamps like a resistor:
+Stamp shape: after the control value picks or blends an effective conductance, the
+switch stamps like a resistor:
 
 | Location | Add |
 |----------|-----|
@@ -5355,7 +5485,7 @@ Real switch models usually smooth or limit transitions to help convergence. Abru
 state changes can make Newton iteration harder because the matrix changes sharply as
 the control crosses the threshold.
 
-Beginner meaning: a switch is roughly a resistor that changes between `Ron` and `Roff`,
+Beginner takeaway: a switch is roughly a resistor that changes between `Ron` and `Roff`,
 but the transition can make convergence harder.
 
 ### T: Lossless Transmission Line
@@ -5367,6 +5497,9 @@ $$
 \text{delay} = \frac{\text{length}}{\text{propagation velocity}}
 $$
 
+Unknowns: behavior-specific terminal and internal variables as needed for the line
+model.
+
 In transient analysis, the line uses history buffers and characteristic impedance to
 inject delayed wave contributions. It behaves like a dynamic two-port whose RHS and
 effective terminal relations depend on previous accepted time points.
@@ -5375,7 +5508,10 @@ In frequency-domain analysis, the line can be represented by frequency-dependent
 two-port relationships. The exact stamp is behavior-specific and depends on line
 parameters, delay, and characteristic impedance.
 
-Beginner meaning: a transmission line has delay. It cannot be explained as one static
+Stamp shape: delayed-history terms feed the RHS and effective two-port relations; AC
+uses frequency-dependent two-port terms.
+
+Beginner takeaway: a transmission line has delay. It cannot be explained as one static
 resistor/capacitor/inductor stamp.
 
 ### Laplace Sources
@@ -5391,6 +5527,9 @@ where `H(s)` is a rational transfer function:
 $$
 H(s) = \frac{\text{numerator}(s)}{\text{denominator}(s)}
 $$
+
+Unknowns: depends on the source kind. Voltage-output forms need a branch-current
+unknown; dynamic transient realization can add internal state variables.
 
 In AC, this is naturally frequency-domain: evaluate $H(j\omega)$ and stamp the equivalent
 controlled-source relationship.
@@ -5410,13 +5549,19 @@ and voltage versus current output:
 | Voltage input | Reads `V(cp,cn)` as the control variable. |
 | Current input | Reads another branch-current variable as the control variable. |
 
-Beginner meaning: a Laplace source is a dynamic filter block inside the circuit. In AC,
+Stamp shape: AC evaluates the transfer function directly; transient analysis uses a
+state realization or companion terms plus optional delay history.
+
+Beginner takeaway: a Laplace source is a dynamic filter block inside the circuit. In AC,
 it is evaluated as a frequency response. In transient analysis, it needs internal state.
 
 ### X: Subcircuit Instance
 
 A subcircuit does not have its own physical matrix stamp. It is a hierarchy and naming
 mechanism.
+
+Unknowns: none directly for the `X` instance; expanded internal devices create whatever
+node, branch, and internal variables they need.
 
 When subcircuits are expanded, internal devices receive generated names and internal
 nodes are mapped into the parent circuit namespace. Then each internal resistor,
@@ -5428,7 +5573,9 @@ The important idea is:
 X instance stamp = sum of stamps from expanded internal components
 ```
 
-Beginner meaning: a subcircuit is like a function call or component macro. It does not
+Stamp shape: the instance contributes the sum of its expanded internal component stamps.
+
+Beginner takeaway: a subcircuit is like a function call or component macro. It does not
 solve separately; its inside parts are mapped into the parent circuit.
 
 ## Reading Solver Failures
