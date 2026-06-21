@@ -38,7 +38,7 @@ This is a long page, so pick a path:
 | If you want to... | Read these sections first |
 |-------------------|---------------------------|
 | Learn the big picture from scratch | [Tiny Electronics Vocabulary](#tiny-electronics-vocabulary), [Main Objects](#main-objects), [Modified Nodal Analysis](#modified-nodal-analysis) |
-| Read SpiceSharp source code | [Source Code Reading Map](#source-code-reading-map), [Setup Versus Load In SpiceSharp](#setup-versus-load-in-spicesharp), [Simulation Lifecycle](#simulation-lifecycle), [Core Biasing Algorithm](#core-biasing-algorithm) |
+| Read SpiceSharp source code | [Source Code Reading Map](#source-code-reading-map), [One Concrete Source Reading Trail](#one-concrete-source-reading-trail), [Simulation Lifecycle](#simulation-lifecycle), [Core Biasing Algorithm](#core-biasing-algorithm) |
 | Understand `.TRAN` behavior | [Analysis Algorithms](#analysis-algorithms), [Transient Integration Details](#transient-integration-details), [Accepted And Rejected Timesteps](#accepted-and-rejected-timesteps) |
 | Look up one component's matrix role | [Stamp Notation](#stamp-notation), then [Component Stamp Atlas](#component-stamp-atlas) |
 | Debug a failing solve | [Convergence System](#convergence-system), [Reading Solver Failures](#reading-solver-failures) |
@@ -194,6 +194,41 @@ In SpiceSharp 3.2.3, the key source facts are:
   accepts and exports successful points.
 - Current and voltage source `Accept` behaviors forward `Probe()` and `Accept()` to
   their waveforms, so waveform state follows the same candidate/accepted-point split.
+
+### One Concrete Source Reading Trail
+
+When the source tree feels too wide, follow one tiny `.OP` example instead of trying to
+understand every analysis at once:
+
+```spice
+V1 in 0 10
+R1 in out 1k
+R2 out 0 2k
+.OP
+```
+
+Read it in this order:
+
+| Step | Source area | What to look for |
+|------|-------------|------------------|
+| 1 | `SpiceNetlistParser.ParseNetlist()` and `SpiceSharpReader.Read()` in SpiceSharpParser | Text becomes a parsed model, then a SpiceSharp `Circuit`, `OP` simulation, and exports. |
+| 2 | SpiceSharp source: `Simulations/Simulation.cs` | `simulation.Execute(circuit)` owns the high-level setup/execute lifecycle. |
+| 3 | SpiceSharp source: `Simulations/Base/Biasing/BiasingSimulation.cs` | `CreateStates()`, `CreateBehaviors()`, `Op()`, `Iterate()`, and `Load()` show the real-valued Newton/biasing loop. |
+| 4 | SpiceSharp source: `Components/RLC/Resistors/Biasing.cs` | `IBiasingBehavior.Load()` adds the resistor conductance stamp into cached matrix locations. |
+| 5 | SpiceSharp source: `Components/Voltagesources/VSRC/Biasing.cs` | The voltage source creates a branch-current unknown and loads the voltage constraint. |
+| 6 | `BiasingSimulation.Iterate()` again | After behaviors load stamps, the solver orders/factors, solves, updates, and checks convergence. |
+| 7 | Export/event code in SpiceSharpParser | After the simulation point is available, parser-created exports read values such as `V(out)` or `I(V1)`. |
+
+The point of this trail is not to memorize file names. It is to see the same lifecycle
+from three angles:
+
+```text
+netlist line -> SpiceSharp entity -> behavior.Load() stamp -> global solve -> export
+```
+
+After that path makes sense for a resistor and voltage source, read `Transient.cs` with
+the same question in mind: "where does this analysis prepare, probe, solve, reject,
+accept, and export a candidate time point?"
 
 The most important reading habit is to ask:
 
