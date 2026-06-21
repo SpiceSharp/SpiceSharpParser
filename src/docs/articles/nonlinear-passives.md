@@ -53,7 +53,7 @@ present current.
 
 For a step-by-step explanation of how `dQ/dV`, `dPhi/dI`, `dQ/dt`, and
 `dPhi/dt` become transient matrix and RHS contributions, see
-[Transient Integration Methods And Engine Derivatives](transient-integration-methods.md).
+[Transient Integration Methods](transient-integration-methods.md).
 
 ## MNA View
 
@@ -240,6 +240,6 @@ $$
 
 ## Related Articles
 
-- [Transient Integration Methods And Engine Derivatives](transient-integration-methods.md)
+- [Transient Integration Methods](transient-integration-methods.md)
 - [.TRAN](tran.md)
 - [.OPTIONS](options.md)

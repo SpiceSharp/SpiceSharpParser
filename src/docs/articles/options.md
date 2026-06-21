@@ -43,7 +43,7 @@ The `.OPTIONS` statement sets simulator options that control accuracy, convergen
 
 These options affect transient companion models and timestep history. For a
 beginner-to-engine-level explanation, see
-[Transient Integration Methods And Engine Derivatives](transient-integration-methods.md).
+[Transient Integration Methods](transient-integration-methods.md).
 
 ### Random / Monte Carlo
 

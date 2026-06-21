@@ -3443,7 +3443,7 @@ Transient analysis turns differential equations into algebraic MNA equations at 
 time point. The integration method is the rule that performs that conversion.
 
 For a more tutorial-style explanation with RC, RL, RLC, rectifier, `Q=`, and
-`Flux=` examples, see [Transient Integration Methods And Engine Derivatives](transient-integration-methods.md).
+`Flux=` examples, see [Transient Integration Methods](transient-integration-methods.md).
 
 If the word "differential" is uncomfortable, read it as "depends on how a value changes
 over time." Capacitors and inductors remember history, so SpiceSharp needs a method for
@@ -3498,10 +3498,12 @@ solution.
 
 ### What The .TRAN Parameters Control
 
-The common syntax is:
+SpiceSharpParser supports these ordinary numeric forms:
 
 ```spice
-.TRAN <tstep> <tstop> [<tstart> [<tmaxstep>]] [UIC]
+.TRAN <tstep> <tstop> [UIC]
+.TRAN <tstep> <tstop> <tmaxstep> [UIC]
+.TRAN <tstep> <tstop> <tstart> <tmaxstep> [UIC]
 ```
 
 These numbers do not all mean "take this exact solver step":
@@ -3510,8 +3512,8 @@ These numbers do not all mean "take this exact solver step":
 |------|-------------------------|
 | `tstep` | Output cadence and initial step hint. It is not a promise that every internal timestep equals this value. |
 | `tstop` | Stop time for the transient analysis. |
-| `tstart` | Time before which output is suppressed; the simulator still solves earlier points because they affect later history. |
-| `tmaxstep` | Maximum internal timestep. This is the main user control for preventing the solver from jumping over fast behavior. |
+| `tmaxstep` | Maximum internal timestep. This is the third numeric argument in the three-number form and the main user control for preventing the solver from jumping over fast behavior. |
+| `tstart` | Time before which output is suppressed; available only in the four-number form. The simulator still solves earlier points because they affect later history. |
 | `UIC` | Skip the DC operating-point startup and seed transient state from initial conditions. |
 
 The important distinction is output time versus internal time. A netlist can ask
