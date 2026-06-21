@@ -12,7 +12,7 @@ For a deeper explanation of matrices, sparse solving, and the simulation algorit
 Browse the documentation by category:
 
 - **Analysis**: [.AC](articles/ac.md), [.DC](articles/dc.md), [.TRAN](articles/tran.md), [.OP](articles/op.md), [.NOISE](articles/noise.md)
-- **Architecture**: [How SpiceSharp Solves Circuits](articles/spicesharp-architecture.md)
+- **Architecture**: [How SpiceSharp Solves Circuits](articles/spicesharp-architecture.md), [Transient Integration Methods](articles/transient-integration-methods.md)
 - **Output**: [.SAVE](articles/save.md), [.PRINT](articles/print.md), [.PLOT](articles/plot.md), [.MEAS](articles/meas.md), [.FOUR](articles/four.md)
 - **Parameters**: [.PARAM](articles/param.md), [.FUNC](articles/func.md), [.LET](articles/let.md), [.SPARAM](articles/sparam.md)
 - **Structure**: [.SUBCKT](articles/subckt.md), [X (Subcircuit Instance)](articles/subcircuit-instance.md), [.INCLUDE](articles/include.md), [.LIB](articles/lib.md), [.GLOBAL](articles/global.md), [.APPENDMODEL](articles/appendmodel.md)

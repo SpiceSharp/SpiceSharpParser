@@ -2,6 +2,10 @@
 
 The `.TRAN` statement defines a transient (time-domain) analysis. The circuit is simulated from time 0 to a specified stop time.
 
+For a tutorial on timestep control, integration methods, companion models, and
+the derivatives used by the engine, see
+[Transient Integration Methods And Engine Derivatives](transient-integration-methods.md).
+
 ## Syntax
 
 ```
@@ -65,3 +69,9 @@ sim.EventExportData += (s, args) =>
     Console.WriteLine(vout.Extract());
 };
 ```
+
+## Related Articles
+
+- [Transient Integration Methods And Engine Derivatives](transient-integration-methods.md)
+- [.OPTIONS](options.md)
+- [.IC](ic.md)

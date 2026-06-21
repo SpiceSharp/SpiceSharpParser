@@ -51,6 +51,10 @@ changes. For example, `Flux=1m*tanh(x)` stores flux as a nonlinear function of
 current, and the small-signal inductance is the slope of that curve at the
 present current.
 
+For a step-by-step explanation of how `dQ/dV`, `dPhi/dI`, `dQ/dt`, and
+`dPhi/dt` become transient matrix and RHS contributions, see
+[Transient Integration Methods And Engine Derivatives](transient-integration-methods.md).
+
 ## Enable Parser Mappings
 
 The custom mappings are not enabled by default. Reference the custom component
@@ -201,3 +205,9 @@ $$
 - Expression functions must be supported by the parser and `SpiceSharpBehavioral`.
 - Unsupported trailing parameters on `Q=` / `Flux=` instances produce validation
   errors instead of being ignored.
+
+## Related Articles
+
+- [Transient Integration Methods And Engine Derivatives](transient-integration-methods.md)
+- [.TRAN](tran.md)
+- [.OPTIONS](options.md)

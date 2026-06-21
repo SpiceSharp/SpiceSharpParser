@@ -2533,6 +2533,9 @@ linearized circuit.
 Transient analysis turns differential equations into algebraic MNA equations at each
 time point. The integration method is the rule that performs that conversion.
 
+For a more tutorial-style explanation with RC, RL, RLC, rectifier, `Q=`, and
+`Flux=` examples, see [Transient Integration Methods And Engine Derivatives](transient-integration-methods.md).
+
 If the word "differential" is uncomfortable, read it as "depends on how a value changes
 over time." Capacitors and inductors remember history, so SpiceSharp needs a method for
 turning that history into numbers for the current timestep.
@@ -3353,11 +3356,136 @@ $$
 i = C\frac{d v(p,n)}{dt}
 $$
 
-Operating point:
+Plain-language model:
 
 ```text
-open circuit, except initial-condition handling
+terminal voltage -> stored charge -> capacitor current
+v                -> q = C*v       -> i = dq/dt
 ```
+
+SpiceSharp cannot directly put `dq/dt` into the linear system. During
+transient analysis it uses the active integration method to convert that
+derivative into algebraic terms for the current candidate timestep. The result
+looks like this to the solver:
+
+```text
+capacitor current now
+  = conductance-like coefficient * capacitor voltage now
+  + current source made from accepted history
+```
+
+So a capacitor in `.TRAN` is easiest to imagine as:
+
+```text
+temporary resistor-like stamp + remembered-history current source
+```
+
+The remembered quantity is charge. The voltage is the unknown solved by the
+node equations, the charge is `q = C*v`, and the integration method computes
+the current from the charge history.
+
+The key rearrangement is easiest to see with backward Euler. Suppose the solver
+is trying candidate timestep `n`, and the previous accepted timestep is `n-1`.
+The previous capacitor voltage is already known:
+
+```text
+known history: v[n-1]
+unknown now:   v[n]
+```
+
+Backward Euler says:
+
+$$
+i_n \approx \frac{q_n - q_{n-1}}{h}
+$$
+
+For a linear capacitor:
+
+$$
+q_n = C v_n
+$$
+
+So:
+
+$$
+i_n \approx \frac{C v_n - C v_{n-1}}{h}
+$$
+
+Split that into the part that contains the unknown and the part that is already
+known:
+
+$$
+i_n \approx \frac{C}{h}v_n - \frac{C}{h}v_{n-1}
+$$
+
+That split is the matrix/RHS split:
+
+| Term | Why it goes there |
+|------|-------------------|
+| `(C/h) * v[n]` | Contains the unknown voltage, so it becomes a matrix coefficient. |
+| `-(C/h) * v[n-1]` | Uses accepted history, so it becomes a RHS/history source term. |
+
+This is why the capacitor can be stamped like a conductance for the current
+timestep even though it is physically storing charge.
+
+In SpiceSharp 3.2.3 the built-in capacitor behavior stack is:
+
+| Behavior | Interfaces | Main job |
+|----------|------------|----------|
+| `Capacitors.Temperature` | `ITemperatureBehavior` | Computes the effective capacitance from parameters, temperature, and multipliers. |
+| `Capacitors.Frequency` | `IFrequencyBehavior` | Stamps the complex AC admittance `sC`. |
+| `Capacitors.Time` | `ITimeBehavior`, `IBiasingBehavior` | Owns charge history and stamps the transient companion model. |
+
+There is no separate public `Capacitors.Biasing` type in this SpiceSharp version.
+The transient behavior, `Capacitors.Time`, also implements `IBiasingBehavior`.
+That is why the same behavior can load the DC/open-circuit part of the capacitor
+and, during transient analysis, add the integration companion terms.
+
+The important runtime pieces are:
+
+| Concept | Meaning |
+|---------|---------|
+| One-port variables | The positive and negative node voltages used to compute `v = V(p)-V(n)`. |
+| `ElementSet` | Cached sparse-matrix/RHS locations for fast repeated loading. |
+| `IBiasingSimulationState` | Real-valued solver state used by `.OP`, `.DC`, and `.TRAN` Newton solves. |
+| `ITimeSimulationState` | Tells the behavior whether transient is using DC initialization or `UIC`. |
+| `IDerivative _qcap` | Integration state that stores capacitor charge and computes `dq/dt`. |
+
+Temperature/effective value:
+
+```text
+instance/model parameters
+  -> temperature behavior
+  -> effective capacitance C
+```
+
+For an ordinary linear capacitor, the stored quantity is:
+
+$$
+q = C v
+$$
+
+The time-domain current is:
+
+$$
+i = \frac{dq}{dt}
+$$
+
+Bias / operating point:
+
+```text
+ideal capacitor -> open circuit for DC current
+```
+
+In a DC operating point, nothing is changing with time, so an ideal capacitor
+does not pass steady-state current. That is the meaning of "capacitor is open
+in DC". The capacitor can still receive an initial voltage for later transient
+history; it just does not add an ordinary DC conductance between its terminals.
+
+In `.OP`, the ideal capacitor contributes no DC conductance between its terminals.
+However, transient setup still needs a starting stored charge. Without `UIC`, that
+starting charge comes from the operating-point voltage. With `UIC`, an `IC=`
+parameter can seed the initial terminal voltage and therefore the initial charge.
 
 AC:
 
@@ -3373,6 +3501,16 @@ The AC stamp is resistor-like with `g` replaced by complex admittance `y`:
 | `Y[p,n]` | $-sC$ |
 | `Y[n,p]` | $-sC$ |
 | `Y[n,n]` | $+sC$ |
+
+The frequency behavior also exposes complex voltage, current, and power exports.
+Conceptually:
+
+$$
+I = s C V
+$$
+
+So `.AC` does not use timestep history. It uses the frequency point through
+`s = j\omega`.
 
 Transient:
 
@@ -3393,6 +3531,17 @@ Stamp:
 | `Y[n,n]` | $+g_{\text{eq}}$ |
 | `rhs[p]` | history-current contribution |
 | `rhs[n]` | opposite history-current contribution |
+
+The time behavior does this conceptually at each candidate timestep:
+
+```text
+read current terminal voltage v
+compute charge q = C * v
+store q in IDerivative
+ask integration method to derive dq/dt
+ask IDerivative for Jacobian/RHS contributions
+stamp conductance-like matrix entries and history current
+```
 
 `geq` and `ihistory` depend on the integration method and previous accepted capacitor
 voltage. For backward Euler, conceptually:
@@ -3420,11 +3569,149 @@ $$
 
 MNA usually gives the inductor a branch-current unknown `b = I(L)`.
 
-DC operating point:
+Plain-language model:
+
+```text
+branch current -> stored flux -> inductor voltage
+i              -> Phi = L*i   -> v = dPhi/dt
+```
+
+This is the dual of the capacitor. A capacitor naturally follows terminal
+voltage. An inductor naturally follows branch current. That is why SpiceSharp
+adds an extra current unknown for an inductor instead of stamping it as only a
+node conductance.
+
+During transient analysis, SpiceSharp cannot directly put `dPhi/dt` into the
+matrix. The integration method converts it into an algebraic branch equation:
+
+```text
+inductor voltage now
+  = resistance-like coefficient * inductor current now
+  + voltage/history term made from accepted current history
+```
+
+So an inductor in `.TRAN` is easiest to imagine as:
+
+```text
+branch-current unknown + branch equation + remembered-history voltage term
+```
+
+The remembered quantity is flux. The branch current is solved by MNA, the flux
+is `Phi = L*i`, and the integration method computes voltage from the flux
+history.
+
+The same backward-Euler rearrangement explains the inductor stamp. Suppose the
+solver is trying candidate timestep `n`, and the previous accepted branch
+current is already known:
+
+```text
+known history: i[n-1]
+unknown now:   i[n] = I(L)
+```
+
+Backward Euler says:
+
+$$
+v_n \approx \frac{\Phi_n - \Phi_{n-1}}{h}
+$$
+
+For a linear inductor:
+
+$$
+\Phi_n = L i_n
+$$
+
+So:
+
+$$
+v_n \approx \frac{L i_n - L i_{n-1}}{h}
+$$
+
+Split unknown current from known history:
+
+$$
+v_n \approx \frac{L}{h}i_n - \frac{L}{h}i_{n-1}
+$$
+
+The branch equation is therefore conceptually:
+
+$$
+V(p) - V(n) \approx \frac{L}{h}I(L) - \frac{L}{h}i_{n-1}
+$$
+
+Matrix/RHS meaning:
+
+| Term | Why it goes there |
+|------|-------------------|
+| `V(p) - V(n)` | Current node voltages, so they are matrix terms in the branch row. |
+| `(L/h) * I(L)` | Current branch-current unknown, so it is a matrix coefficient. |
+| `-(L/h) * i[n-1]` | Accepted current history, so it becomes a RHS/history term. |
+
+The exact sign in the RHS depends on the branch-current orientation and how the
+equation is moved to the left-hand side, but the split is always the important
+idea: current unknown in the matrix, old current history in the RHS.
+
+In SpiceSharp 3.2.3 the built-in inductor behavior stack is:
+
+| Behavior | Interfaces | Main job |
+|----------|------------|----------|
+| `Inductors.Temperature` | `ITemperatureBehavior` | Computes the effective inductance from parameters and multipliers. |
+| `Inductors.Biasing` | `IBiasingBehavior`, `IBranchedBehavior<double>` | Creates and loads the real branch-current equation. |
+| `Inductors.Frequency` | `IFrequencyBehavior`, `IBranchedBehavior<Complex>` | Loads the complex AC branch equation. |
+| `Inductors.Time` | `ITimeBehavior`, `IBiasingBehavior` | Owns flux history and stamps the transient branch companion. |
+
+The important runtime pieces are:
+
+| Concept | Meaning |
+|---------|---------|
+| One-port variables | The positive and negative node voltages used to compute `v = V(p)-V(n)`. |
+| Branch variable | Extra unknown `b = I(L)` for current through the inductor. |
+| `ElementSet` | Cached matrix/RHS locations for node rows and the branch row. |
+| `IBranchedBehavior<T>` | Exposes the branch variable to exports and coupled devices. |
+| `IDerivative _flux` | Integration state that stores flux linkage and computes `dPhi/dt`. |
+| `UpdateFlux` | Hook used by mutual inductance to modify flux before time stamping. |
+
+For an ordinary linear inductor, the stored quantity is:
+
+$$
+\Phi = L i
+$$
+
+The time-domain voltage is:
+
+$$
+v = \frac{d\Phi}{dt}
+$$
+
+Bias / operating point:
 
 ```text
 ideal short in steady state, represented through branch equations
 ```
+
+In a DC operating point, an ideal inductor has zero steady-state voltage. That
+is the meaning of "inductor is short in DC". The current through that short is
+not known in advance, so MNA creates the branch-current unknown `I(L)`.
+
+The biasing behavior creates the branch-current unknown and stamps the ideal
+voltage constraint:
+
+$$
+V(p) - V(n) = 0
+$$
+
+The node rows inject branch current into KCL:
+
+| Location | Add |
+|----------|-----|
+| `Y[p,b]` | $+1$ |
+| `Y[n,b]` | $-1$ |
+| `Y[b,p]` | $+1$ |
+| `Y[b,n]` | $-1$ |
+
+That is why an inductor does not look like a plain resistor in MNA. Its natural
+state variable is current, so the solver adds a current unknown and a branch
+equation.
 
 AC:
 
@@ -3448,6 +3735,10 @@ $$
 V(p) - V(n) - sLI(L) = 0
 $$
 
+The frequency behavior also exposes complex voltage, current, power, and branch
+exports. Like the capacitor's AC behavior, it does not use timestep history; the
+dynamic effect comes from `s = j\omega`.
+
 Transient:
 
 The integration method builds an inductor companion relation:
@@ -3460,8 +3751,41 @@ The branch equation stamps a branch-current column into node KCL, node-voltage t
 into the branch row, an equivalent resistance-like coefficient on `Y[b,b]`, and a
 history term into `rhs[b]`. Exact coefficients depend on the integration method.
 
+The time behavior does this conceptually at each candidate timestep:
+
+```text
+read current branch current i
+compute flux Phi = L * i
+raise UpdateFlux so coupling can adjust flux
+store Phi in IDerivative
+ask integration method to derive dPhi/dt
+ask IDerivative for branch Jacobian/RHS contributions
+stamp branch equation coefficient and history term
+```
+
+`UpdateFlux` is important for mutual inductance. A coupled inductor's flux is not
+only its own `L*i`; it can also include coupling terms from other inductor branch
+currents. The hook lets the mutual-inductance behavior modify the flux state
+before the inductor commits the time-domain contribution.
+
 Beginner meaning: an inductor remembers current history. Because its natural unknown is
 current, MNA often gives it a branch-current variable.
+
+Capacitor and inductor side by side:
+
+| Topic | Capacitor | Inductor |
+|-------|-----------|----------|
+| Stored quantity | Charge `q` | Flux linkage `Phi` |
+| Natural unknown | Terminal voltage `v` | Branch current `i` |
+| Time law | `i = dq/dt` | `v = dPhi/dt` |
+| DC bias | Open circuit | Short branch constraint |
+| AC form | `I = sCV` | `V = sLI` |
+| Transient stamp | Node conductance plus RHS current | Branch coefficient plus RHS voltage/current term |
+| Integration state | `IDerivative _qcap` | `IDerivative _flux` |
+| History accepted after | Accepted timestep | Accepted timestep |
+
+For a numeric walkthrough of the matrix/RHS split, see
+[Transient Integration Methods](transient-integration-methods.md#tiny-numerical-examples).
 
 ### K: Mutual Inductance
 
