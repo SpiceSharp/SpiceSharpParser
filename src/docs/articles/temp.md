@@ -24,6 +24,26 @@ Temperatures are specified in degrees Celsius.
 
 If both `.TEMP` and `.OPTIONS TEMP=` are specified, `.TEMP` takes precedence and overrides any previous `.OPTIONS TEMP` setting.
 
+## MNA View
+
+Temperature does not add its own MNA row. It changes device parameters before
+the devices load their stamps.
+
+Examples:
+
+| Device | Temperature can change |
+|--------|------------------------|
+| Resistor | Effective resistance and conductance. |
+| Diode/BJT | Saturation currents, junction voltages, and derivatives. |
+| MOSFET/JFET | Model currents and local small-signal slopes. |
+
+If multiple temperatures are requested, SpiceSharp runs the simulation at each
+temperature. Each run reloads the MNA matrix using the parameter values for that
+temperature.
+
+For the matrix-loading picture, see
+[How SpiceSharp Solves Circuits](spicesharp-architecture.md#modified-matrix-algorithm-step-by-step).
+
 ## Typical Usage
 
 ```spice

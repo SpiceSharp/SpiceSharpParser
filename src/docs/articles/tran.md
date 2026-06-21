@@ -59,6 +59,30 @@ V2 SIG 0 SIN(0 1 1k)
 
 See the individual waveform documentation for `PULSE`, `SIN`, `PWL`, `SFFM`, and `AM`.
 
+## MNA View
+
+`.TRAN` solves many MNA systems over time. At each candidate timestep, dynamic
+devices are converted into companion models, then the matrix is loaded and
+solved.
+
+Conceptually:
+
+```text
+choose candidate timestep
+build capacitor/inductor companion models
+load MNA matrix and RHS
+solve Newton iterations
+accept or reject the candidate point
+commit history only if accepted
+```
+
+Capacitor and inductor history terms appear as matrix coefficients and RHS
+terms during each candidate solve. If the timestep is rejected, those history
+updates are not committed.
+
+For a numeric MNA example of one transient RC timestep, see
+[Transient Integration Methods](transient-integration-methods.md#example-rc-step-matrix-for-one-candidate-timestep).
+
 ## C# API
 
 ```csharp

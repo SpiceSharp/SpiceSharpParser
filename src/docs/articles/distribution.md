@@ -35,6 +35,15 @@ Set the default distribution for `.MC` analysis:
 .MC 100 TRAN V(OUT) MAX
 ```
 
+## MNA View
+
+`.DISTRIBUTION` does not stamp MNA. It defines how Monte Carlo values are chosen.
+Those chosen values can then change the device parameters that later stamp the
+matrix.
+
+For example, if a distribution varies resistor value, the MNA matrix changes
+because the resistor conductance `1/R` changes in each Monte Carlo run.
+
 ## Notes
 
 - The y-values define relative probability — the simulator normalizes automatically.

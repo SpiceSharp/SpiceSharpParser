@@ -24,6 +24,23 @@ If no parameters are given, `.SAVE` saves all node voltages and branch currents.
 | `I(Vsource)` | Current through a voltage source |
 | `@device[param]` | Device parameter (e.g., `@R1[resistance]`) |
 
+## MNA View
+
+`.SAVE` does not change the MNA matrix. It only decides which values are exported
+after each solve.
+
+The common expressions map to solved state like this:
+
+| Expression | Where it comes from |
+|------------|---------------------|
+| `V(node)` | Node-voltage unknown in the MNA solution vector. |
+| `V(a,b)` | Difference between two node-voltage unknowns. |
+| `I(Vsource)` | Branch-current unknown added for a voltage source. |
+| `@device[param]` | Device behavior property computed from the solved state. |
+
+For example, `I(V1)` is available because an ideal voltage source adds a
+branch-current unknown to MNA.
+
 ## Examples
 
 ```spice

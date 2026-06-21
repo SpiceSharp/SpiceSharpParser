@@ -27,6 +27,15 @@ The `.PLOT` statement specifies signals to capture as XY plot data during simula
 .PLOT TRAN V(OUT) merge
 ```
 
+## MNA View
+
+`.PLOT` does not affect convergence, timestep choice, or matrix loading. It
+records values after the requested analysis has solved its MNA system.
+
+The plotted expressions use the same sources as `.SAVE` and `.PRINT`: node
+voltages, branch currents, and device properties computed from the solved
+state.
+
 ## Merge Behavior
 
 - **Without `merge`**: A separate `XyPlot` is created for each simulation run (except OP).

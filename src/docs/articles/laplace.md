@@ -47,6 +47,27 @@ H(j * omega)
 
 This value is complex. Its magnitude tells you the gain at that frequency, and its angle tells you the phase shift.
 
+## MNA View
+
+`LAPLACE` changes how a source value is computed, but the source still enters the
+same MNA matrix according to its output type.
+
+| Form | MNA role |
+|------|----------|
+| `E` Laplace source | Voltage-output controlled source; adds a branch-current unknown and branch equation. |
+| `G` Laplace source | Current-output controlled source; stamps controlled current into node KCL rows. |
+| `F` Laplace source | Current-output source controlled by another branch current. |
+| `H` Laplace source | Voltage-output source controlled by another branch current; adds a branch equation. |
+| Function-style voltage output | May be lowered through helper voltage sources before matrix loading. |
+| Function-style current output | May be lowered through helper sources, then stamps current into output rows. |
+
+In `.AC`, the transfer contributes complex frequency-domain coefficients. In
+`.TRAN`, the transfer contributes dynamic state and source-equivalent terms that
+are solved with the rest of the circuit at each candidate timestep.
+
+For the shared matrix algorithm, see
+[How SpiceSharp Solves Circuits](spicesharp-architecture.md#modified-matrix-algorithm-step-by-step).
+
 ## Supported Syntax
 
 The supported input expression is a voltage or current probe:

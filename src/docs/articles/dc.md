@@ -50,6 +50,28 @@ V1 OUT 0 0
 .END
 ```
 
+## MNA View
+
+`.DC` is a sequence of operating-point solves. For each sweep value, the source
+parameter is changed, then SpiceSharp solves the real-valued MNA system again.
+
+Conceptually:
+
+```text
+for each sweep value:
+  set swept source value
+  load DC/Newton matrix
+  solve Y*x = rhs
+  export requested values
+```
+
+Linear devices may load the same stamp at every point. Nonlinear devices, such
+as diodes and transistors, recompute their Jacobian and RHS terms during Newton
+iteration at each sweep point.
+
+See [How SpiceSharp Solves Circuits](spicesharp-architecture.md#modified-nodal-analysis)
+for the shared MNA format.
+
 ## C# API
 
 ```csharp

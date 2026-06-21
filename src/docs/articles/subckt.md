@@ -68,6 +68,33 @@ X1 IN OUT1 rc_filter R=10k C=100n
 X2 IN OUT2 rc_filter R=1k C=10n
 ```
 
+## MNA View
+
+`.SUBCKT` defines reusable circuit text. It does not stamp the matrix by itself.
+Only instantiated devices inside an `X...` subcircuit instance contribute MNA
+rows, columns, and RHS terms.
+
+Think of it in two phases:
+
+```text
+parse hierarchy:
+  .SUBCKT defines pins, defaults, and internal statements
+
+build circuit:
+  X instance maps external nodes to subcircuit pins
+  internal nodes are scoped
+  contained devices are created
+
+solve:
+  each contained R, C, L, source, transistor, etc. stamps normal MNA terms
+```
+
+This is why a subcircuit can be reused many times: each instance contributes a
+separate set of internal devices and scoped nodes.
+
+See [X - Subcircuit Instance](subcircuit-instance.md#mna-view) for the
+instance-side view.
+
 ## Node Scoping
 
 Internal nodes in a subcircuit are local — they do not conflict with nodes in the parent circuit or other subcircuit instances. Use `.GLOBAL` to make a node visible across all scopes (e.g., power rails).

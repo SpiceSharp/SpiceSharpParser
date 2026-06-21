@@ -64,6 +64,29 @@ For the transfer-function math, DC gain, frequency response, and phase examples,
 | `ctrl+`, `ctrl-` | Controlling voltage nodes |
 | `gain` | Voltage gain (Vout = gain × Vctrl) |
 
+## MNA View
+
+An `E` source is voltage-output. Like an independent voltage source, it imposes
+a voltage equation and therefore needs a branch-current unknown.
+
+For the linear form:
+
+$$
+V(out+) - V(out-) = A(V(ctrl+) - V(ctrl-))
+$$
+
+MNA adds:
+
+- output node KCL terms for the branch current,
+- a branch row that enforces the controlled voltage equation,
+- control-voltage coefficients in that branch row.
+
+Laplace `E` sources keep the same voltage-output MNA shape, but the gain is
+frequency-shaped or time-domain dynamic.
+
+See [How SpiceSharp Solves Circuits](spicesharp-architecture.md#e-voltage-controlled-voltage-source)
+for the stamp shape.
+
 ## Examples
 
 ```spice

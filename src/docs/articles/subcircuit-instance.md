@@ -28,6 +28,26 @@ X1 A B VCC 0 buffer
 X2 C D VCC 0 buffer
 ```
 
+## MNA View
+
+An `X` instance does not add one special "subcircuit row" to MNA. Instead, the
+reader expands the subcircuit's internal devices into the parent circuit with
+scoped internal node names.
+
+After expansion, MNA sees ordinary devices:
+
+```text
+X1 rc_filter
+  -> R inside X1 stamps a conductance
+  -> C inside X1 stamps AC or transient dynamic terms
+  -> internal node names are scoped to X1
+```
+
+So subcircuits are a hierarchy and naming feature before matrix assembly. The
+matrix is still assembled from the devices inside each instance.
+
+See [.SUBCKT](subckt.md#mna-view) for the definition-side view.
+
 ## Typical Usage
 
 ```spice

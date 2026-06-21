@@ -15,6 +15,19 @@ The `.GLOBAL` statement declares nodes as global, making them visible across sub
 .GLOBAL VCC GND VDD VSS
 ```
 
+## MNA View
+
+`.GLOBAL` affects node identity before MNA assembly. It does not add a stamp by
+itself.
+
+Without `.GLOBAL`, a node named `VCC` inside a subcircuit is scoped to that
+subcircuit instance. With `.GLOBAL VCC`, all references to `VCC` point to the
+same MNA node unknown. That can connect power rails, clocks, or references
+across otherwise isolated subcircuit scopes.
+
+Ground node `0` is already global and is not included as an unknown in the MNA
+solution vector.
+
 ## Typical Usage
 
 ```spice

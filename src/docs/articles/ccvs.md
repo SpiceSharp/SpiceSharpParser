@@ -48,3 +48,24 @@ Vsense A B 0
 - Like the `F` source, the controlling current is measured through a named voltage source.
 - A 0V voltage source acts as an ideal ammeter.
 - For LAPLACE sources, the transfer must be a proper rational polynomial in `s` with finite DC gain. See [LAPLACE Transfer Sources](laplace.md).
+
+## MNA View
+
+An `H` source is voltage-output, so it needs its own branch-current unknown and
+a branch equation, like an independent voltage source.
+
+The controlling current is read from an existing voltage-source branch current,
+often a 0 V sense source:
+
+```text
+read I(Vsense)
+enforce V(out+,out-) = transimpedance * I(Vsense)
+```
+
+MNA therefore contains two branch-current ideas:
+
+- the sense-source branch current used as the control variable,
+- the `H` source output branch current used to enforce its output voltage.
+
+See [How SpiceSharp Solves Circuits](spicesharp-architecture.md#h-current-controlled-voltage-source)
+for the stamp shape.

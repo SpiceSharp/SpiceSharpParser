@@ -25,6 +25,28 @@ J1 DRAIN GATE SOURCE J2N3819
 J2 D G S my_njfet 2.0
 ```
 
+## MNA View
+
+A JFET is nonlinear. Its drain current depends on gate-source and drain-source
+voltage, and its gate junction behaves diode-like. During Newton iteration,
+SpiceSharp linearizes those equations around the current voltage guess.
+
+Conceptually, the JFET contributes:
+
+| Term | MNA role |
+|------|----------|
+| Channel conductance | Matrix slope between drain and source. |
+| Transconductance | Controlled-source Jacobian term from gate voltage. |
+| Gate junction conductance | Diode-like matrix and RHS terms. |
+| Gate capacitances | AC admittance terms or transient companion terms. |
+
+The stamp therefore changes as the operating point moves. `.AC` uses the
+small-signal derivatives from the solved operating point, while `.TRAN` also
+integrates any capacitance terms.
+
+For the deeper solver picture, see
+[How SpiceSharp Solves Circuits](spicesharp-architecture.md#j-jfet).
+
 ## Model Definition
 
 ```spice

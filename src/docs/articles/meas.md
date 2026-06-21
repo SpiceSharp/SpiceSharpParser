@@ -15,6 +15,25 @@ The `.MEAS` (or `.MEASURE`) statement extracts a single scalar number from simul
 | `name` | A label you choose — this is the key used to look up the result in C# | Any identifier (e.g. `rise_time`, `vmax`) |
 | `measurement_spec` | What to measure and how (described in detail below) | One of the 12 measurement types |
 
+## MNA View
+
+`.MEAS` is post-processing. It does not add a device stamp, Jacobian term, or
+RHS term. The analysis runs normally first, solving MNA systems for `.OP`,
+`.DC`, `.AC`, `.TRAN`, or `.NOISE`; then `.MEAS` scans the exported values.
+
+Examples:
+
+| Measurement | MNA relationship |
+|-------------|------------------|
+| `MAX V(OUT)` | Reads stored node-voltage results. |
+| `FIND I(V1) AT=...` | Reads a stored branch-current result. |
+| `DERIV V(OUT)` | Computes slope from saved output samples, not from the solver Jacobian. |
+| `PARAM='vmax/vmin'` | Computes from previous measurement results. |
+
+This distinction matters: a failed measurement does not mean the MNA solve
+failed. It may only mean the requested crossing or window was not found in the
+saved data.
+
 ## Quick Reference — All Measurement Types
 
 | Type | What It Returns | Read More |

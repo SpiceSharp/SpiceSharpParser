@@ -28,6 +28,15 @@ R1 IN OUT 10k
 .ENDIF
 ```
 
+## MNA View
+
+`.IF` chooses which netlist statements exist before circuit setup. It does not
+stamp MNA directly.
+
+The selected branch can still change the matrix. For example, choosing a
+resistor value changes a conductance stamp; including or excluding a capacitor
+changes whether transient integration history exists for that node.
+
 ### Without .ELSE
 
 ```spice

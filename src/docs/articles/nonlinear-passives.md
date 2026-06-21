@@ -55,6 +55,38 @@ For a step-by-step explanation of how `dQ/dV`, `dPhi/dI`, `dQ/dt`, and
 `dPhi/dt` become transient matrix and RHS contributions, see
 [Transient Integration Methods And Engine Derivatives](transient-integration-methods.md).
 
+## MNA View
+
+The custom nonlinear passives still participate in the same MNA system as normal
+components. The difference is that their stamp is built from a stored quantity
+and a local derivative.
+
+For `Q=` capacitors:
+
+```text
+evaluate Q(V)
+evaluate dQ/dV
+use integration history to compute dQ/dt
+stamp Jacobian coefficient into the node matrix
+stamp history/correction current into RHS
+```
+
+For `Flux=` inductors:
+
+```text
+create branch-current unknown I(L)
+evaluate Phi(I)
+evaluate dPhi/dI
+use integration history to compute dPhi/dt
+stamp branch-equation coefficient and RHS history term
+```
+
+So `dQ/dV` and `dPhi/dI` are not exported only for observation. They are the
+local slopes used by the MNA Jacobian at the current Newton guess.
+
+For the general matrix assembly algorithm, see
+[How SpiceSharp Solves Circuits](spicesharp-architecture.md#modified-matrix-algorithm-step-by-step).
+
 ## Enable Parser Mappings
 
 The custom mappings are not enabled by default. Reference the custom component

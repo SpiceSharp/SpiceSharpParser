@@ -26,6 +26,15 @@ The `.PRINT` statement specifies signals to print as tabular data during simulat
 .PRINT AC V(OUT)
 ```
 
+## MNA View
+
+`.PRINT` is an output request, not a device. It does not stamp the matrix.
+During each accepted output point, it reads expressions from the solved MNA
+state and stores them as table rows.
+
+For example, `V(OUT)` reads a node-voltage unknown, while `I(V1)` reads the
+branch-current unknown that MNA created for voltage source `V1`.
+
 ## Output Format
 
 Each `.PRINT` creates a `Print` object in `model.Prints`. The first column contains the independent variable (time for TRAN, frequency for AC, sweep value for DC). Subsequent columns contain the requested signals.

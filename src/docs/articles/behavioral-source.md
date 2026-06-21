@@ -53,6 +53,25 @@ The expression can use:
 - Arithmetic operators: `+`, `-`, `*`, `/`, `**` (power)
 - Parameters defined with `.PARAM`
 
+## MNA View
+
+Behavioral sources evaluate an expression, then load the result according to the
+output type.
+
+| Form | MNA role |
+|------|----------|
+| `B... I={expr}` | Current-output source; stamps current into node KCL rows. |
+| `B... V={expr}` | Voltage-output source; adds a branch-current unknown and branch equation. |
+| Nonlinear expression | Uses local derivatives/Jacobian terms when the expression depends on solved variables. |
+| `LAPLACE(...)` expression | May introduce helper state or helper sources before matrix loading. |
+
+This is why current-output behavioral sources are often easier numerically than
+ideal voltage-output behavioral sources. A voltage output imposes a constraint
+and needs a branch current, just like an independent voltage source.
+
+For more on rows, columns, RHS, and branch-current unknowns, see
+[How SpiceSharp Solves Circuits](spicesharp-architecture.md#modified-nodal-analysis).
+
 ## Supported ABM Forms
 
 SpiceSharpParser supports these analog behavioral modeling constructs:

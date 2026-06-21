@@ -50,6 +50,29 @@ The `.STEP` statement defines a parameter sweep, causing the simulation to run m
 .STEP PARAM temp_val LIST 25 50 75 100
 ```
 
+## MNA View
+
+`.STEP` repeats the requested analysis with different values. It does not add an
+MNA stamp. It changes source, model, or parameter values before each run, then
+the normal devices stamp the matrix for that step.
+
+Conceptually:
+
+```text
+for each step value:
+  apply parameter/source/model value
+  build or update simulation setup
+  run .OP, .DC, .AC, .TRAN, etc.
+  collect exports and measurements for that step
+```
+
+If a stepped value changes a resistor, the resistor conductance changes. If it
+changes a diode model parameter, the diode's Newton derivatives change. If it
+changes a capacitor, the transient companion coefficient changes.
+
+For the shared matrix algorithm, see
+[How SpiceSharp Solves Circuits](spicesharp-architecture.md#modified-nodal-analysis).
+
 ## Multiple Sweeps
 
 Multiple `.STEP` statements create nested sweeps:

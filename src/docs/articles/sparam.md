@@ -23,4 +23,13 @@ The `.SPARAM` statement defines scalar parameters, similar to `.PARAM` but with 
 | Expression support | Yes | Yes (evaluated immediately) |
 | Use in `.STEP` | Can be swept | Pre-computed before sweep |
 
+## MNA View
+
+`.SPARAM` also does not stamp MNA by itself. It eagerly computes a scalar value
+that may later be used by a component, source, model, or analysis setting.
+
+The MNA impact happens only through the statement that consumes the value. For
+example, if `.SPARAM r1=1k` is used by `R1 IN OUT {r1}`, the resistor stamps
+`1/1k` into the matrix.
+
 Use `.SPARAM` when you need a parameter to be fully resolved before any simulation setup occurs.

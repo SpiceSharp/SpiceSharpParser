@@ -14,6 +14,26 @@ If you want the exact syntax supported by SpiceSharpParser, see [LAPLACE Transfe
 
 Keep one practical boundary in mind as you read: SpiceSharpParser supports a focused `LAPLACE` subset. The transfer must be used on an `E`, `G`, `F`, or `H` source; `E` and `G` use `V(node)` or `V(node1,node2)` input, while `F` and `H` use `I(source)` input. The transfer must be a proper rational polynomial in `s` with finite DC gain. Constant `M=`, `TD=`, and `DELAY=` options are supported for those source-level forms. The examples below stay inside that subset.
 
+## MNA View
+
+A Laplace source is still loaded into the same modified nodal analysis system as
+other sources. The transfer function changes the source value or dynamic state,
+but the output type controls the matrix shape:
+
+| Source form | Output type | MNA shape |
+|-------------|-------------|-----------|
+| `E ... LAPLACE` | Voltage output | Adds a branch-current unknown and a voltage constraint row. |
+| `G ... LAPLACE` | Current output | Stamps current into the output node KCL rows. |
+| `F ... LAPLACE` | Current output controlled by current | Reads `I(source)` and stamps output current into node rows. |
+| `H ... LAPLACE` | Voltage output controlled by current | Reads `I(source)` and adds a voltage-output branch equation. |
+
+For `.AC`, the transfer is evaluated with `s = j*omega` and loaded into the
+complex MNA matrix. For `.TRAN`, the transfer becomes equivalent dynamic state
+that is solved together with the rest of the circuit.
+
+For the general matrix algorithm, see
+[How SpiceSharp Solves Circuits](spicesharp-architecture.md#modified-nodal-analysis).
+
 ## Running Example: Sensor To ADC
 
 Imagine a sensor connected to an ADC input:

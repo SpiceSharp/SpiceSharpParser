@@ -65,6 +65,26 @@ For LAPLACE sources, `M=` is a finite constant multiplier folded into the numera
 
 For the transfer-function math, current-source sign convention, frequency response, and phase examples, see [LAPLACE Transfer Sources](laplace.md).
 
+## MNA View
+
+A `G` source is current-output. It does not need its own branch-current unknown.
+Instead, it stamps controlled current into the output node KCL rows.
+
+For the linear form:
+
+$$
+I(out+ \to out-) = g_m(V(ctrl+) - V(ctrl-))
+$$
+
+the matrix receives controlled-source coefficients connecting the output rows to
+the control-voltage columns.
+
+Laplace `G` sources keep the same current-output MNA shape, but the effective
+transconductance is frequency-shaped or time-domain dynamic.
+
+See [How SpiceSharp Solves Circuits](spicesharp-architecture.md#g-voltage-controlled-current-source)
+for the stamp shape.
+
 ## Examples
 
 ```spice

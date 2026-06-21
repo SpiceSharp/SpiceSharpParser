@@ -23,6 +23,28 @@ S1 OUT 0 CTRL 0 SW_MOD
 .MODEL SW_MOD VSWITCH(VT=2.5 VH=0.5 RON=1 ROFF=1MEG)
 ```
 
+## MNA View
+
+A voltage-controlled switch is a resistor whose value is controlled by another
+voltage. After the control voltage chooses an on, off, or transition value, the
+switch stamps like a resistor between `node1` and `node2`.
+
+Conceptually:
+
+```text
+read V(ctrl+, ctrl-)
+choose R between RON and ROFF
+stamp g = 1 / R into the node matrix
+```
+
+The switch has no stored energy, so it does not own integration history. It can
+still make `.TRAN` harder because a sharp control edge can change the matrix
+conductance suddenly, which may force smaller timesteps or extra Newton
+iterations.
+
+For the shared switch stamp, see
+[How SpiceSharp Solves Circuits](spicesharp-architecture.md#s-and-w-controlled-switches).
+
 ## Model Parameters
 
 | Parameter | Description |

@@ -38,6 +38,37 @@ R4 IN OUT rmod L=10u W=2u
 R5 IN OUT VALUE={1k * (1 + V(CTRL))}
 ```
 
+## MNA View
+
+A resistor is the simplest matrix stamp. The simulator converts resistance to
+conductance:
+
+$$
+g = \frac{1}{R}
+$$
+
+For a resistor between nodes `p` and `n`, the current is:
+
+$$
+i = g(V(p)-V(n))
+$$
+
+That contributes only matrix coefficients:
+
+```text
+Y[p,p] += g
+Y[p,n] -= g
+Y[n,p] -= g
+Y[n,n] += g
+```
+
+No extra branch-current unknown is needed, and no integration history is owned
+by a resistor. In transient analysis, resistors still matter because they set
+RC and RL time constants and damping.
+
+See [How SpiceSharp Solves Circuits](spicesharp-architecture.md#modified-nodal-analysis)
+for the full matrix assembly algorithm.
+
 ## Model Definition
 
 ```spice

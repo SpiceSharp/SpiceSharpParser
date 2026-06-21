@@ -47,6 +47,35 @@ C6 OUT 0 Q=1u*x
 See [LTspice-Style Nonlinear Passives](nonlinear-passives.md) for `Q=<expr>`
 capacitors.
 
+## MNA View
+
+A capacitor is dynamic, so its matrix contribution depends on the analysis:
+
+| Analysis | Matrix role |
+|----------|-------------|
+| `.OP` / DC bias | Ideal open circuit, except initial/history setup. |
+| `.AC` | Complex admittance stamp `Y = sC`. |
+| `.TRAN` | Companion conductance plus RHS history current. |
+
+In transient analysis, the integration method rewrites:
+
+$$
+i = \frac{dQ}{dt}
+$$
+
+into a temporary algebraic companion model:
+
+$$
+i \approx g_{\text{eq}}V + i_{\text{history}}
+$$
+
+The `g_eq` part is stamped into the MNA matrix like a conductance. The history
+current is stamped into the RHS. The capacitor commits new charge history only
+after a timestep is accepted.
+
+For the detailed SpiceSharp `Capacitors.Time` behavior and examples, see
+[Transient Integration Methods](transient-integration-methods.md#built-in-capacitor-behavior-stack).
+
 ## Model Definition
 
 ```spice

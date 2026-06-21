@@ -46,3 +46,32 @@ K1 L1 L2 0.95
 ```
 
 See the [K — Mutual Inductance](mutual-inductance.md) article.
+
+## MNA View
+
+An inductor's natural dynamic variable is current, so MNA uses a branch-current
+unknown such as `I(L1)`.
+
+| Analysis | Matrix role |
+|----------|-------------|
+| `.OP` / DC bias | Ideal short branch relation with unknown current. |
+| `.AC` | Branch equation using `V = sL I`. |
+| `.TRAN` | Branch companion coefficient plus RHS history term. |
+
+In transient analysis, the integration method rewrites:
+
+$$
+v = \frac{d\Phi}{dt}
+$$
+
+into a temporary branch equation:
+
+$$
+v \approx r_{\text{eq}}I(L1) + v_{\text{history}}
+$$
+
+The node rows connect the branch current into KCL. The branch row connects node
+voltage, branch current, and the known history term.
+
+For the detailed SpiceSharp `Inductors.Time` behavior and examples, see
+[Transient Integration Methods](transient-integration-methods.md#built-in-inductor-behavior-stack).
