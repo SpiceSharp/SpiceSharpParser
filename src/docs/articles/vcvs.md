@@ -62,7 +62,7 @@ For the transfer-function math, DC gain, frequency response, and phase examples,
 |-----------|-------------|
 | `out+`, `out-` | Output nodes |
 | `ctrl+`, `ctrl-` | Controlling voltage nodes |
-| `gain` | Voltage gain (Vout = gain × Vctrl) |
+| `gain` | Voltage gain ($V_{\text{out}} = \text{gain}\cdot V_{\text{ctrl}}$) |
 
 ## MNA View
 

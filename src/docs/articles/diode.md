@@ -62,13 +62,13 @@ For a worked Newton linearization example, see
 | Parameter | Description | Default |
 |-----------|-------------|---------|
 | `Is` | Saturation current | 1e-14 A |
-| `Rs` | Series resistance | 0 Ω |
+| `Rs` | Series resistance | $0\,\Omega$ |
 | `N` | Emission coefficient | 1 |
 | `Cjo` | Zero-bias junction capacitance | 0 F |
 | `M` | Grading coefficient | 0.5 |
 | `Vj` | Junction potential | 1 V |
 | `tt` | Transit time | 0 s |
-| `BV` | Reverse breakdown voltage | ∞ |
+| `BV` | Reverse breakdown voltage | $\infty$ |
 | `IBV` | Current at breakdown | 1e-3 A |
 
 ## Typical Usage

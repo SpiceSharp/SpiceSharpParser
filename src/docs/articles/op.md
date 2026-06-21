@@ -22,7 +22,8 @@ R2 OUT 0 2k
 .END
 ```
 
-The operating point of `V(OUT)` will be computed as 8V (voltage divider: 12 × 2k / (1k + 2k)).
+The operating point of `V(OUT)` will be computed as 8 V (voltage divider:
+$12\cdot 2k/(1k + 2k)$).
 
 ## MNA View
 

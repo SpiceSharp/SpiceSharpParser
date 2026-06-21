@@ -31,9 +31,12 @@ K2 L3 L4 0.5
 
 ## Ideal Transformer
 
-For an ideal transformer, use a coupling coefficient close to 1.0. The turns ratio is determined by the inductance ratio:
+For an ideal transformer, use a coupling coefficient close to 1.0. The turns
+ratio is determined by the inductance ratio:
 
-$$n = \sqrt{\frac{L_1}{L_2}}$$
+$$
+n = \sqrt{\frac{L_1}{L_2}}
+$$
 
 ```spice
 * 10:1 turns ratio transformer

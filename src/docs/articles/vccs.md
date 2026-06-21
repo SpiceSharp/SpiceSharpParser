@@ -58,7 +58,7 @@ Current limitations:
 |-----------|-------------|
 | `out+`, `out-` | Output nodes |
 | `ctrl+`, `ctrl-` | Controlling voltage nodes |
-| `transconductance` | Gain in siemens (Iout = gm × Vctrl) |
+| `transconductance` | Gain in siemens ($I_{\text{out}} = g_m V_{\text{ctrl}}$) |
 | `M=m` | Multiplier. For linear `G` sources it scales the effective transconductance/current contribution, like multiple equivalent parallel instances. |
 
 For LAPLACE sources, `M=` is a finite constant multiplier folded into the numerator coefficients; it may be positive, negative, or zero. `TD=` and `DELAY=` are supported aliases for a finite constant non-negative runtime delay parameter; use only one delay option and assignment syntax such as `DELAY=1n`.

@@ -82,7 +82,7 @@ Multiple `.STEP` statements create nested sweeps:
 .STEP PARAM c_val LIST 1n 10n 100n
 ```
 
-This runs 3 × 3 = 9 simulations.
+This runs $3 \times 3 = 9$ simulations.
 
 ## Typical Usage
 

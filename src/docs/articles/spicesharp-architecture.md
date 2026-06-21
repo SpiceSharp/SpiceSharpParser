@@ -2208,6 +2208,414 @@ solver says:
   "with those simpler devices, here is the next guess"
 ```
 
+### Newton Iteration In Detail
+
+Newton iteration is the bridge between nonlinear circuit equations and the linear
+matrix solver. The sparse solver can solve this kind of problem:
+
+$$
+Yx = \text{rhs}
+$$
+
+But a nonlinear circuit is not naturally in that shape. A diode, BJT, MOSFET,
+JFET, nonlinear behavioral source, or nonlinear passive may say:
+
+$$
+\text{current} = \text{nonlinear function of voltage/current}
+$$
+
+So the real problem is closer to:
+
+$$
+F(x) = 0
+$$
+
+where:
+
+| Symbol | Meaning in a circuit |
+|--------|----------------------|
+| `x` | Unknown vector: node voltages plus branch currents. |
+| `F(x)` | Equation error, also called residual. |
+| `F(x) = 0` | KCL, voltage constraints, and model equations are all satisfied. |
+
+The residual is "how wrong the circuit equations are at the current guess." If
+KCL at a node says currents should sum to zero, but the current guess leaves
+`1 mA` unbalanced, that `1 mA` is part of the residual.
+
+Classic Newton writes one iteration like this:
+
+$$
+J(x_k)\Delta x = -F(x_k)
+$$
+
+$$
+x_{k+1} = x_k + \Delta x
+$$
+
+where:
+
+| Term | Meaning |
+|------|---------|
+| `x_k` | Current guess. |
+| `F(x_k)` | Residual at the current guess. |
+| `J(x_k)` | Jacobian matrix, the local derivative of `F` with respect to `x`. |
+| `Delta x` | Correction that should improve the guess. |
+| `x_{k+1}` | Next guess. |
+
+Plain English:
+
+```text
+look at how wrong the current guess is
+look at local slopes near that guess
+solve for a correction
+move the guess
+repeat
+```
+
+SPICE-style MNA usually hides the explicit `Delta x` from you. Instead of
+showing:
+
+$$
+J\Delta x = -\text{residual}
+$$
+
+devices stamp an equivalent linearized system:
+
+$$
+Yx_{\text{new}} = \text{rhs}
+$$
+
+Both views describe the same Newton idea. The delta view says "find the change."
+The stamped MNA view says "find the next circuit state directly."
+
+The device behavior is responsible for turning its nonlinear law into a local
+linear stamp. At each Newton iteration, a nonlinear behavior typically does
+this:
+
+```text
+read present guess from the simulation state
+evaluate device current, charge, flux, or control expression
+evaluate local derivatives
+stamp derivatives into the matrix
+stamp correction terms into the RHS
+let the solver compute a new x
+update cached device state
+check whether the change is small enough
+```
+
+The most important derivative is "how much does this device current change if a
+solver unknown changes?" For a one-port diode, that derivative is `dI/dV`. For a
+MOSFET, there are many partial derivatives, such as drain current with respect
+to gate voltage, drain voltage, source voltage, and bulk voltage.
+
+#### A Tiny Newton Example
+
+Before thinking about a whole circuit, solve one nonlinear equation:
+
+$$
+f(v) = v^2 - 2 = 0
+$$
+
+The true answer is:
+
+$$
+v = \sqrt{2} \approx 1.4142
+$$
+
+Newton uses the derivative:
+
+$$
+f'(v) = 2v
+$$
+
+Start with:
+
+$$
+v_0 = 1
+$$
+
+At the first guess:
+
+$$
+\begin{aligned}
+f(v_0) &= 1^2 - 2 = -1 \\
+f'(v_0) &= 2
+\end{aligned}
+$$
+
+The correction is:
+
+$$
+\Delta v = -\frac{f(v_0)}{f'(v_0)}
+          = -\frac{-1}{2}
+          = 0.5
+$$
+
+So:
+
+$$
+v_1 = 1 + 0.5 = 1.5
+$$
+
+Next iteration:
+
+$$
+\begin{aligned}
+f(1.5) &= 1.5^2 - 2 = 0.25 \\
+f'(1.5) &= 3 \\
+\Delta v &= -0.25 / 3 = -0.08333 \\
+v_2 &= 1.41667
+\end{aligned}
+$$
+
+Next iteration:
+
+$$
+\begin{aligned}
+f(1.41667) &\approx 0.00694 \\
+f'(1.41667) &\approx 2.83334 \\
+\Delta v &\approx -0.00245 \\
+v_3 &\approx 1.41422
+\end{aligned}
+$$
+
+The pattern is:
+
+```text
+guess is rough
+derivative gives a useful direction
+correction gets smaller
+guess settles near the true answer
+```
+
+Circuit Newton is the same idea, but `v` becomes a vector of many node voltages
+and branch currents.
+
+#### Newton In MNA Terms
+
+For a circuit, the unknown vector might be:
+
+$$
+x =
+\begin{bmatrix}
+V(\text{in}) \\
+V(\text{out}) \\
+I(\text{V1})
+\end{bmatrix}
+$$
+
+A nonlinear residual might include:
+
+```text
+KCL error at node in
+KCL error at node out
+voltage-source constraint error for V1
+```
+
+At Newton iteration `k`, SpiceSharp asks each behavior to load the local matrix
+for the present guess `x_k`.
+
+Linear devices load the same values every time:
+
+| Device | Why the stamp is fixed during Newton |
+|--------|--------------------------------------|
+| Resistor | `i = g*v` already is linear. |
+| Independent DC current source | RHS value is known. |
+| Independent DC voltage source | Constraint value is known. |
+
+Nonlinear devices load values that depend on the current guess:
+
+| Device | What changes during Newton |
+|--------|----------------------------|
+| Diode | `gd`, equivalent current, junction terms. |
+| BJT | Junction slopes, controlled-current slopes, RHS corrections. |
+| MOSFET | `gm`, `gds`, body effect, junction slopes, charge terms. |
+| Behavioral source | Expression value and derivatives. |
+| Nonlinear `Q=` or `Flux=` device | Local derivative such as `dQ/dV` or `dPhi/dI`. |
+
+This is why a Newton iteration reloads the matrix. The topology may be the same,
+but the numeric coefficients are different because the nonlinear devices are
+being re-approximated around a new guess.
+
+#### Why The RHS Correction Exists
+
+The RHS correction is the part that often feels mysterious. It exists because a
+slope alone is not enough.
+
+Suppose a nonlinear current is:
+
+$$
+i = f(v)
+$$
+
+At guess `v_k`, the tangent line is:
+
+$$
+i \approx f(v_k) + f'(v_k)(v - v_k)
+$$
+
+Rearrange:
+
+$$
+i \approx f'(v_k)v + \left(f(v_k) - f'(v_k)v_k\right)
+$$
+
+The first term is matrix-friendly:
+
+```text
+f'(v_k) * v
+```
+
+The second term is the correction:
+
+```text
+f(v_k) - f'(v_k) * v_k
+```
+
+Without that correction, the straight line would have the right slope but would
+not pass through the actual nonlinear curve at the current guess. Newton needs
+the tangent line, not just a line with the same slope.
+
+For a diode:
+
+$$
+i_d \approx g_d v_d + i_{\text{eq}}
+$$
+
+where:
+
+$$
+i_{\text{eq}} = i_d(v_{d,k}) - g_d v_{d,k}
+$$
+
+Depending on the current direction convention, that equivalent current appears
+with opposite signs in the two terminal RHS entries.
+
+#### One Newton Iteration As A Conversation
+
+The loop can be read as a conversation between device behaviors and the solver:
+
+```text
+simulation state:
+  current guess is x_k
+
+resistor:
+  my slope is constant, I stamp the same conductance again
+
+diode:
+  at this voltage guess, my current is id and my slope is gd
+  I stamp gd into Y and ieq into rhs
+
+MOSFET:
+  at this terminal-voltage guess, my gm/gds/body slopes are these values
+  I stamp the local Jacobian and correction currents
+
+solver:
+  I solve the linear system and produce x_{k+1}
+
+devices:
+  I update my cached voltage/current values
+  I compare old and new values against tolerances
+```
+
+If every nonlinear behavior says the change is small enough, Newton converged.
+If any behavior says "not yet", the simulator reloads and solves again.
+
+#### What Counts As Converged
+
+Convergence is not the same as exact equality. Exact equality is impossible with
+floating-point arithmetic and unnecessary for circuit simulation.
+
+A practical convergence test asks questions like:
+
+```text
+did node voltages stop moving by a meaningful amount?
+did branch currents stop moving by a meaningful amount?
+are nonlinear device currents consistent with the latest voltages?
+are residual errors small enough for the configured tolerances?
+```
+
+The important tolerance idea is:
+
+```text
+allowed error = absolute part + relative part
+```
+
+The absolute part protects values near zero. The relative part scales with large
+signals. SpiceSharpParser maps common options such as `ABSTOL`, `RELTOL`, and
+iteration limits into SpiceSharp simulation parameters.
+
+#### Newton In `.OP`, `.DC`, And `.TRAN`
+
+Newton appears in several analysis loops.
+
+For `.OP`:
+
+```text
+choose initial guess
+run Newton until the DC operating point converges
+export final steady-state values
+```
+
+For `.DC`:
+
+```text
+for each sweep point:
+  set source or parameter value
+  often reuse previous sweep solution as the next initial guess
+  run Newton
+  export sweep value
+```
+
+For `.TRAN`:
+
+```text
+for each candidate timestep:
+  build companion models from accepted history
+  run Newton at this candidate time
+  if Newton fails, reject or reduce the step
+  if Newton converges, test timestep accuracy
+  if timestep is accepted, commit history
+```
+
+This is why "Newton converged" is not the same thing as "the transient step was
+accepted." Newton only proves that the algebraic equations were solved at that
+candidate time. The timestep can still be rejected later if integration error is
+too high.
+
+#### Why Newton Can Fail
+
+Newton works best when the local tangent points toward the real solution. It can
+struggle when that local tangent is a poor guide.
+
+Common causes:
+
+| Cause | Why it hurts Newton |
+|-------|---------------------|
+| Floating node | Matrix has no solid equation for that voltage. |
+| Ideal voltage-source loop | Conflicting constraints can make the matrix singular. |
+| Ideal current-source cutset | KCL can become impossible or ill-conditioned. |
+| Very steep diode or switch transition | Tiny voltage changes create huge slope changes. |
+| Discontinuous behavioral expression | No useful derivative exists at the jump. |
+| Bad initial guess | First tangent points far away from the real solution. |
+| Extreme component ratios | Matrix becomes badly conditioned. |
+
+The usual fixes match those causes:
+
+```text
+add a leakage path for floating nodes
+avoid impossible ideal source networks
+smooth behavioral expressions
+use realistic Ron/Roff values
+provide .NODESET or initial conditions
+relax tolerances only when the requested accuracy allows it
+increase iteration limits only after the model is physically reasonable
+```
+
+Iteration limits such as `ITL1`, `ITL2`, and `ITL4` prevent an endless loop. If
+the limit is hit, the key question is not only "can I allow more iterations?"
+It is also "why are the local linear approximations not settling?"
+
 ### What Linearization Means
 
 Linearization means "replace a curve with a straight line near the current guess."
@@ -3566,11 +3974,9 @@ transient analysis it uses the active integration method to convert that
 derivative into algebraic terms for the current candidate timestep. The result
 looks like this to the solver:
 
-```text
-capacitor current now
-  = conductance-like coefficient * capacitor voltage now
-  + current source made from accepted history
-```
+$$
+i_n \approx g_{\text{eq}}v_n + i_{\text{history}}
+$$
 
 So a capacitor in `.TRAN` is easiest to imagine as:
 
@@ -3579,7 +3985,7 @@ temporary resistor-like stamp + remembered-history current source
 ```
 
 The remembered quantity is charge. The voltage is the unknown solved by the
-node equations, the charge is `q = C*v`, and the integration method computes
+node equations, the charge is $q = Cv$, and the integration method computes
 the current from the charge history.
 
 The key rearrangement is easiest to see with backward Euler. Suppose the solver
@@ -3620,8 +4026,8 @@ That split is the matrix/RHS split:
 
 | Term | Why it goes there |
 |------|-------------------|
-| `(C/h) * v[n]` | Contains the unknown voltage, so it becomes a matrix coefficient. |
-| `-(C/h) * v[n-1]` | Uses accepted history, so it becomes a RHS/history source term. |
+| $(C/h)v_n$ | Contains the unknown voltage, so it becomes a matrix coefficient. |
+| $-(C/h)v_{n-1}$ | Uses accepted history, so it becomes a RHS/history source term. |
 
 This is why the capacitor can be stamped like a conductance for the current
 timestep even though it is physically storing charge.
@@ -3631,7 +4037,7 @@ In SpiceSharp 3.2.3 the built-in capacitor behavior stack is:
 | Behavior | Interfaces | Main job |
 |----------|------------|----------|
 | `Capacitors.Temperature` | `ITemperatureBehavior` | Computes the effective capacitance from parameters, temperature, and multipliers. |
-| `Capacitors.Frequency` | `IFrequencyBehavior` | Stamps the complex AC admittance `sC`. |
+| `Capacitors.Frequency` | `IFrequencyBehavior` | Stamps the complex AC admittance $sC$. |
 | `Capacitors.Time` | `ITimeBehavior`, `IBiasingBehavior` | Owns charge history and stamps the transient companion model. |
 
 There is no separate public `Capacitors.Biasing` type in this SpiceSharp version.
@@ -3643,11 +4049,11 @@ The important runtime pieces are:
 
 | Concept | Meaning |
 |---------|---------|
-| One-port variables | The positive and negative node voltages used to compute `v = V(p)-V(n)`. |
+| One-port variables | The positive and negative node voltages used to compute $v = V(p)-V(n)$. |
 | `ElementSet` | Cached sparse-matrix/RHS locations for fast repeated loading. |
 | `IBiasingSimulationState` | Real-valued solver state used by `.OP`, `.DC`, and `.TRAN` Newton solves. |
 | `ITimeSimulationState` | Tells the behavior whether transient is using DC initialization or `UIC`. |
-| `IDerivative _qcap` | Integration state that stores capacitor charge and computes `dq/dt`. |
+| `IDerivative _qcap` | Integration state that stores capacitor charge and computes $dq/dt$. |
 
 Temperature/effective value:
 
@@ -3708,7 +4114,7 @@ I = s C V
 $$
 
 So `.AC` does not use timestep history. It uses the frequency point through
-`s = j\omega`.
+$s = j\omega$.
 
 Transient:
 
@@ -3782,11 +4188,9 @@ node conductance.
 During transient analysis, SpiceSharp cannot directly put `dPhi/dt` into the
 matrix. The integration method converts it into an algebraic branch equation:
 
-```text
-inductor voltage now
-  = resistance-like coefficient * inductor current now
-  + voltage/history term made from accepted current history
-```
+$$
+v_n \approx r_{\text{eq}}i_n + v_{\text{history}}
+$$
 
 So an inductor in `.TRAN` is easiest to imagine as:
 
@@ -3795,7 +4199,7 @@ branch-current unknown + branch equation + remembered-history voltage term
 ```
 
 The remembered quantity is flux. The branch current is solved by MNA, the flux
-is `Phi = L*i`, and the integration method computes voltage from the flux
+is $\Phi = Li$, and the integration method computes voltage from the flux
 history.
 
 The same backward-Euler rearrangement explains the inductor stamp. Suppose the
@@ -3841,9 +4245,9 @@ Matrix/RHS meaning:
 
 | Term | Why it goes there |
 |------|-------------------|
-| `V(p) - V(n)` | Current node voltages, so they are matrix terms in the branch row. |
-| `(L/h) * I(L)` | Current branch-current unknown, so it is a matrix coefficient. |
-| `-(L/h) * i[n-1]` | Accepted current history, so it becomes a RHS/history term. |
+| $V(p)-V(n)$ | Current node voltages, so they are matrix terms in the branch row. |
+| $(L/h)I(L)$ | Current branch-current unknown, so it is a matrix coefficient. |
+| $-(L/h)i_{n-1}$ | Accepted current history, so it becomes a RHS/history term. |
 
 The exact sign in the RHS depends on the branch-current orientation and how the
 equation is moved to the left-hand side, but the split is always the important
@@ -3862,11 +4266,11 @@ The important runtime pieces are:
 
 | Concept | Meaning |
 |---------|---------|
-| One-port variables | The positive and negative node voltages used to compute `v = V(p)-V(n)`. |
+| One-port variables | The positive and negative node voltages used to compute $v = V(p)-V(n)$. |
 | Branch variable | Extra unknown `b = I(L)` for current through the inductor. |
 | `ElementSet` | Cached matrix/RHS locations for node rows and the branch row. |
 | `IBranchedBehavior<T>` | Exposes the branch variable to exports and coupled devices. |
-| `IDerivative _flux` | Integration state that stores flux linkage and computes `dPhi/dt`. |
+| `IDerivative _flux` | Integration state that stores flux linkage and computes $d\Phi/dt$. |
 | `UpdateFlux` | Hook used by mutual inductance to modify flux before time stamping. |
 
 For an ordinary linear inductor, the stored quantity is:
@@ -3935,7 +4339,7 @@ $$
 
 The frequency behavior also exposes complex voltage, current, power, and branch
 exports. Like the capacitor's AC behavior, it does not use timestep history; the
-dynamic effect comes from `s = j\omega`.
+dynamic effect comes from $s = j\omega$.
 
 Transient:
 
@@ -3962,7 +4366,7 @@ stamp branch equation coefficient and history term
 ```
 
 `UpdateFlux` is important for mutual inductance. A coupled inductor's flux is not
-only its own `L*i`; it can also include coupling terms from other inductor branch
+only its own $\Phi = Li$; it can also include coupling terms from other inductor branch
 currents. The hook lets the mutual-inductance behavior modify the flux state
 before the inductor commits the time-domain contribution.
 
@@ -3975,9 +4379,9 @@ Capacitor and inductor side by side:
 |-------|-----------|----------|
 | Stored quantity | Charge `q` | Flux linkage `Phi` |
 | Natural unknown | Terminal voltage `v` | Branch current `i` |
-| Time law | `i = dq/dt` | `v = dPhi/dt` |
+| Time law | $i = dq/dt$ | $v = d\Phi/dt$ |
 | DC bias | Open circuit | Short branch constraint |
-| AC form | `I = sCV` | `V = sLI` |
+| AC form | $I = sCV$ | $V = sLI$ |
 | Transient stamp | Node conductance plus RHS current | Branch coefficient plus RHS voltage/current term |
 | Integration state | `IDerivative _qcap` | `IDerivative _flux` |
 | History accepted after | Accepted timestep | Accepted timestep |

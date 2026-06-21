@@ -79,4 +79,6 @@ for the full matrix assembly algorithm.
 
 With temperature coefficients:
 
-$$R(T) = R_0 \times [1 + TC_1 \times (T - T_{nom}) + TC_2 \times (T - T_{nom})^2]$$
+$$
+R(T) = R_0 \left[1 + TC_1(T - T_{\text{nom}}) + TC_2(T - T_{\text{nom}})^2\right]
+$$

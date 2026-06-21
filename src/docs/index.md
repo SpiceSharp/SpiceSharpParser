@@ -7,6 +7,8 @@ SpiceSharpParser is a .NET library that parses SPICE netlists and simulates them
 See the [Introduction](articles/intro.md) for installation instructions, a quick example, and an overview of the API.
 For a deeper explanation of matrices, sparse solving, and the simulation algorithm, see [How SpiceSharp Solves Circuits](articles/spicesharp-architecture.md).
 
+Math formulas in these articles use KaTeX-compatible Markdown delimiters: inline formulas use `$...$`, and display formulas use `$$...$$`.
+
 ## Articles
 
 Browse the documentation by category:

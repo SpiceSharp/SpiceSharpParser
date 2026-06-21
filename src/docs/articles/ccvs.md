@@ -28,7 +28,7 @@ H<name> <out+> <out-> LAPLACE = {I(<Vcontrol>)} {<transfer>} [M=<m>] [TD=<delay>
 |-----------|-------------|
 | `out+`, `out-` | Output nodes |
 | `Vcontrol` | Name of a voltage source sensing the control current |
-| `transimpedance` | Gain in ohms (Vout = Rm × Ictrl) |
+| `transimpedance` | Gain in ohms ($V_{\text{out}} = R_m I_{\text{ctrl}}$) |
 
 ## Examples
 

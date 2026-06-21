@@ -871,16 +871,18 @@ derivative, then stamp matrix and RHS contributions.
 
 SPICE solves algebraic systems. It is comfortable with equations like:
 
-```text
-matrix * unknowns = right-hand side
-```
+$$
+Yx = \text{rhs}
+$$
 
 Capacitors and inductors are not purely algebraic. They contain derivatives:
 
-```text
-capacitor: i = C * dv/dt
-inductor:  v = L * di/dt
-```
+$$
+\begin{aligned}
+\text{capacitor:}\quad i &= C\frac{dv}{dt} \\
+\text{inductor:}\quad v &= L\frac{di}{dt}
+\end{aligned}
+$$
 
 Numerical integration is the trick that turns those derivative equations into
 algebraic equations for one timestep.
@@ -947,10 +949,12 @@ still make the same kind of split.
 
 For a capacitor:
 
-```text
-q = C * v
-i = dq/dt
-```
+$$
+\begin{aligned}
+q &= Cv \\
+i &= \frac{dq}{dt}
+\end{aligned}
+$$
 
 At timestep `n`, backward Euler estimates:
 
@@ -958,7 +962,7 @@ $$
 i_n \approx \frac{q_n - q_{n-1}}{h}
 $$
 
-Substitute `q = C*v`:
+Substitute $q = Cv$:
 
 $$
 i_n \approx \frac{C v_n - C v_{n-1}}{h}
@@ -999,10 +1003,12 @@ matrix coefficient and RHS history current.
 
 For an inductor:
 
-```text
-Phi = L * i
-v = dPhi/dt
-```
+$$
+\begin{aligned}
+\Phi &= Li \\
+v &= \frac{d\Phi}{dt}
+\end{aligned}
+$$
 
 At timestep `n`, backward Euler estimates:
 
@@ -1010,7 +1016,7 @@ $$
 v_n \approx \frac{\Phi_n - \Phi_{n-1}}{h}
 $$
 
-Substitute `Phi = L*i`:
+Substitute $\Phi = Li$:
 
 $$
 v_n \approx \frac{L i_n - L i_{n-1}}{h}
@@ -1062,12 +1068,14 @@ behind a normal `C` or `L` element during one candidate timestep.
 
 Capacitor example:
 
-```text
-C = 1 uF
-h = 1 ms
-previous accepted capacitor voltage = 2 V
-current unknown capacitor voltage = v[n]
-```
+$$
+\begin{aligned}
+C &= 1\,\mu\text{F} \\
+h &= 1\,\text{ms} \\
+v_{n-1} &= 2\,\text{V} \\
+v_n &= \text{current unknown capacitor voltage}
+\end{aligned}
+$$
 
 Backward Euler gives:
 
@@ -1077,16 +1085,20 @@ $$
 
 Compute the coefficient:
 
-```text
-C / h = 1e-6 / 1e-3 = 0.001 S
-```
+$$
+\frac{C}{h} =
+\frac{1\times10^{-6}}{1\times10^{-3}}
+= 0.001\,\text{S}
+$$
 
 So the capacitor current equation for this candidate timestep is:
 
-```text
-i[n] = 0.001 * v[n] - 0.001 * 2
-i[n] = 0.001 * v[n] - 0.002 A
-```
+$$
+\begin{aligned}
+i_n &= 0.001v_n - 0.001\cdot2 \\
+    &= 0.001v_n - 0.002\,\text{A}
+\end{aligned}
+$$
 
 Read it as a stamp:
 
@@ -1097,37 +1109,44 @@ Read it as a stamp:
 
 If Newton eventually solves this timestep with:
 
-```text
-v[n] = 2.5 V
-```
+$$
+v_n = 2.5\,\text{V}
+$$
 
 then:
 
-```text
-i[n] = 0.001 * 2.5 - 0.002
-i[n] = 0.0005 A
-```
+$$
+\begin{aligned}
+i_n &= 0.001\cdot2.5 - 0.002 \\
+    &= 0.0005\,\text{A}
+\end{aligned}
+$$
 
 The charge view says the same thing:
 
-```text
-q[n-1] = C * 2.0 = 2.0 uC
-q[n]   = C * 2.5 = 2.5 uC
-dq     = 0.5 uC
-dq / h = 0.5 uC / 1 ms = 0.5 mA
-```
+$$
+\begin{aligned}
+q_{n-1} &= C\cdot2.0 = 2.0\,\mu\text{C} \\
+q_n &= C\cdot2.5 = 2.5\,\mu\text{C} \\
+dq &= 0.5\,\mu\text{C} \\
+\frac{dq}{h} &= \frac{0.5\,\mu\text{C}}{1\,\text{ms}}
+             = 0.5\,\text{mA}
+\end{aligned}
+$$
 
 That is why the companion model is not a trick separate from physics. It is the
 same charge law rewritten into a form the matrix solver can use.
 
 Inductor example:
 
-```text
-L = 10 mH
-h = 1 ms
-previous accepted inductor current = 0.2 A
-current unknown branch current = i[n] = I(L)
-```
+$$
+\begin{aligned}
+L &= 10\,\text{mH} \\
+h &= 1\,\text{ms} \\
+i_{n-1} &= 0.2\,\text{A} \\
+i_n &= I(L)
+\end{aligned}
+$$
 
 Backward Euler gives:
 
@@ -1137,16 +1156,20 @@ $$
 
 Compute the coefficient:
 
-```text
-L / h = 10e-3 / 1e-3 = 10 ohm
-```
+$$
+\frac{L}{h} =
+\frac{10\times10^{-3}}{1\times10^{-3}}
+= 10\,\Omega
+$$
 
 So the branch relation for this candidate timestep is:
 
-```text
-V(p) - V(n) = 10 * I(L) - 10 * 0.2
-V(p) - V(n) = 10 * I(L) - 2 V
-```
+$$
+\begin{aligned}
+V(p) - V(n) &= 10I(L) - 10\cdot0.2 \\
+            &= 10I(L) - 2\,\text{V}
+\end{aligned}
+$$
 
 Read it as a stamp:
 
@@ -1158,25 +1181,29 @@ Read it as a stamp:
 
 If Newton eventually solves this timestep with:
 
-```text
-I(L) = 0.25 A
-```
+$$
+I(L) = 0.25\,\text{A}
+$$
 
 then:
 
-```text
-V(p) - V(n) = 10 * 0.25 - 2
-V(p) - V(n) = 0.5 V
-```
+$$
+\begin{aligned}
+V(p) - V(n) &= 10\cdot0.25 - 2 \\
+            &= 0.5\,\text{V}
+\end{aligned}
+$$
 
 The flux view says the same thing:
 
-```text
-Phi[n-1] = L * 0.20 = 0.0020
-Phi[n]   = L * 0.25 = 0.0025
-dPhi     = 0.0005
-dPhi / h = 0.0005 / 0.001 = 0.5 V
-```
+$$
+\begin{aligned}
+\Phi_{n-1} &= L\cdot0.20 = 0.0020 \\
+\Phi_n &= L\cdot0.25 = 0.0025 \\
+d\Phi &= 0.0005 \\
+\frac{d\Phi}{h} &= \frac{0.0005}{0.001} = 0.5\,\text{V}
+\end{aligned}
+$$
 
 So the inductor companion model is the flux law rewritten into a branch equation
 that MNA can solve.
@@ -1330,7 +1357,7 @@ known history term from the previous accepted current.
 
 | Topic | Capacitor | Inductor |
 |-------|-----------|----------|
-| Stored state | Charge `q = C*v` | Flux `Phi = L*i` |
+| Stored state | Charge $q = Cv$ | Flux $\Phi = Li$ |
 | Time derivative | `dq/dt` is current | `dPhi/dt` is voltage |
 | Solver unknown it naturally uses | Node voltage | Branch current |
 | DC behavior | Open circuit | Short branch constraint |

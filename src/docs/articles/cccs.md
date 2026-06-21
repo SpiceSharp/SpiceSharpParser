@@ -28,7 +28,7 @@ F<name> <out+> <out-> LAPLACE = {I(<Vcontrol>)} {<transfer>} [M=<m>] [TD=<delay>
 |-----------|-------------|
 | `out+`, `out-` | Output nodes (current flows from out+ to out-) |
 | `Vcontrol` | Name of a voltage source sensing the control current |
-| `gain` | Current gain (Iout = gain × Ictrl) |
+| `gain` | Current gain ($I_{\text{out}} = \text{gain}\cdot I_{\text{ctrl}}$) |
 | `M=m` | Multiplier |
 
 ## Examples

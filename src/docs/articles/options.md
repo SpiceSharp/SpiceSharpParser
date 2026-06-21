@@ -78,6 +78,9 @@ states during `.TRAN`.
 
 For the underlying matrix algorithm, see
 [How SpiceSharp Solves Circuits](spicesharp-architecture.md#modified-matrix-algorithm-step-by-step).
+For a detailed explanation of Newton iteration, Jacobians, residuals, and
+convergence, see
+[Newton Iteration In Detail](spicesharp-architecture.md#newton-iteration-in-detail).
 
 ### Flags
 
