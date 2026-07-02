@@ -111,16 +111,33 @@ Using SpiceSharpParser involves three steps:
 
 ### Custom Components
 
-`SpiceSharpParser.CustomComponents` adds opt-in parser mappings for LTspice-style ideal diode models:
+`SpiceSharpParser.CustomComponents` adds opt-in parser mappings for LTspice-style
+ideal diode models and nonlinear passive devices:
 
 ```spice
 .model did D(Ron=0.1 Roff=1e9 Vfwd=0.7 Ilimit=10 Epsilon=10m)
 D1 out 0 did
+
+C1 out 0 Q=1u*x+100n*x*x
+L1 in out Flux=1m*x+100u*x*x
 ```
 
-Enable the mappings with `reader.Settings.UseCustomComponents()` before calling `Read()`. Ideal diode models support LTspice-style `Ron`, `Roff`, `Vfwd`, `Vrev`, `Rrev`, `Ilimit`, `RevIlimit`, `Epsilon`, `RevEpsilon`, `M`, and `N` behavior, while ordinary diode models still fall back to SpiceSharp's built-in semiconductor diode.
+Enable the mappings with `reader.Settings.UseCustomComponents()` before calling `Read()`.
+Ideal diode models support LTspice-style `Ron`, `Roff`, `Vfwd`, `Vrev`, `Rrev`,
+`Ilimit`, `RevIlimit`, `Epsilon`, `RevEpsilon`, `M`, and `N` behavior, while ordinary
+diode models still fall back to SpiceSharp's built-in semiconductor diode.
+
+For nonlinear passives, `Q=` describes stored charge as a function of capacitor
+terminal voltage, and `Flux=` describes stored flux linkage as a function of inductor
+branch current. The local slopes `dQ/dV` and `dFlux/dI` are used for AC small-signal
+behavior and transient companion models. `IC=`, `M=`, and `N=` are supported for these
+custom passive forms.
 
 See [LTspice-Style Ideal Diode](src/docs/articles/ideal-diode.md) for syntax, scaling rules, current-law details, and the optional LTspice-backed golden tests for DC, AC, and transient parity.
+
+See [LTspice-Style Nonlinear Passives](src/docs/articles/nonlinear-passives.md) for
+`Q=` / `Flux=` syntax, transient behavior, scaling rules, and optional LTspice-backed
+golden tests for AC and transient parity.
 
 ### Behavioral Modeling
 
