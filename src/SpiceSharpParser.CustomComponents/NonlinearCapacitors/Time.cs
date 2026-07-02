@@ -77,13 +77,30 @@ namespace SpiceSharpParser.CustomComponents.NonlinearCapacitors
             _chargeState.Derive();
 
             JacobianInfo info = _chargeState.GetContributions(capacitance, voltage);
+
+            // _chargeState represents i = dQ/dt for this candidate timestep.
+            // The solver cannot stamp "dQ/dt" directly, so the integration method
+            // first rewrites it as a current depending on the present unknown plus
+            // accepted history. For example, backward Euler has:
+            // i = dQ/dt ~= (Q_now - Q_prev) / h
+            //              = (1/h) * Q(Vcap) + (-(1/h) * Q_prev).
+            // In the common integration-method notation, a0 = 1/h and the
+            // history term is the already-known previous accepted charge part.
+            // If Q is nonlinear, Newton linearizes it around the current voltage
+            // guess: Q(Vcap) ~= Q(Vguess) + Cinc * (Vcap - Vguess).
+            // Combining those gives the affine form MNA can stamp:
+            // i(Vcap) ~= J * Vcap + rhs.
+            // Here J is roughly a0*Cinc; rhs is the known history plus the tangent
+            // correction a0*(Q(Vguess) - Cinc*Vguess).
+            // Branch current is positive from C+ to C-. The ElementSet order is
+            // Y[pos,pos], Y[pos,neg], Y[neg,pos], Y[neg,neg], rhs[pos], rhs[neg].
             _timeElements.Add(
-                info.Jacobian,
-                -info.Jacobian,
-                -info.Jacobian,
-                info.Jacobian,
-                -info.Rhs,
-                info.Rhs);
+                info.Jacobian, // +J*Vpos in the positive-node KCL row.
+                -info.Jacobian, // -J*Vneg in the positive-node KCL row.
+                -info.Jacobian, // -J*Vpos in the negative-node KCL row.
+                info.Jacobian, // +J*Vneg in the negative-node KCL row.
+                -info.Rhs, // Equivalent current leaving C+ is moved to RHS.
+                info.Rhs); // Same current enters C-, so the RHS sign is opposite.
         }
     }
 }

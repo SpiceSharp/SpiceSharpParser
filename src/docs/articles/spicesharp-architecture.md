@@ -2866,6 +2866,98 @@ The absolute part protects values near zero. The relative part scales with large
 signals. SpiceSharpParser maps common options such as `ABSTOL`, `RELTOL`, and
 iteration limits into SpiceSharp simulation parameters.
 
+#### When Newton Actually Stops
+
+Newton stops when the latest linear solve no longer meaningfully changes the
+nonlinear circuit. In plain terms, the simulator has asked:
+
+```text
+if I rebuild every nonlinear device around this new answer,
+will the answer change enough to matter?
+```
+
+If the answer is "no" for every nonlinear behavior, Newton is converged. If any
+nonlinear behavior says "not yet", SpiceSharp reloads the matrix with updated
+local slopes and equivalent RHS terms, solves again, and checks again.
+
+For a diode, the real equation is nonlinear:
+
+```text
+i = I(v)
+```
+
+At Newton guess `v_k`, the diode loads:
+
+```text
+gd  = dI/dV at v_k
+ieq = I(v_k) - gd*v_k
+i ~= gd*v + ieq
+```
+
+After the matrix solve, the diode sees a new voltage. The next convergence check
+conceptually asks:
+
+```text
+did the diode voltage stop moving enough?
+does the diode current implied by the real curve match closely enough?
+is the remaining mismatch small compared with absolute and relative tolerances?
+```
+
+If not, the new voltage becomes the next guess. The diode recomputes `gd` and
+`ieq`, and the simulator tries another Newton iteration.
+
+For a nonlinear `Q=` capacitor in `.TRAN`, the same idea applies, but the local
+equation also includes integration history:
+
+```text
+Q = Q(V)
+i = dQ/dt
+```
+
+During one candidate timestep, accepted history is fixed. Newton only changes
+the candidate voltage/current guess. Each iteration therefore recomputes:
+
+```text
+Q(V_guess)
+dQ/dV at V_guess
+matrix Jacobian contribution
+RHS history/linearization correction
+```
+
+Newton stops when changing the candidate voltage no longer meaningfully changes
+those local contributions and the global MNA equations balance within tolerance.
+The accepted history still is not updated yet.
+
+This is the important `.TRAN` split:
+
+```text
+Newton convergence:
+  did the nonlinear algebraic equations balance at this candidate time?
+
+timestep acceptance:
+  was the jump from the previous accepted time accurate enough?
+```
+
+So this sequence is possible and normal:
+
+```text
+Newton converged
+local truncation error is too high
+reject timestep
+keep old accepted charge/flux history
+retry with a smaller timestep
+```
+
+That error is not a Newton error. It means the solved candidate point may be
+internally consistent, but the integration method does not trust the time jump
+from the previous accepted point to this one.
+
+One useful mental shortcut:
+
+```text
+Newton stops when another local linearization would not meaningfully change the answer.
+```
+
 #### Newton In `.OP`, `.DC`, And `.TRAN`
 
 Newton appears in several analysis loops.
@@ -3828,6 +3920,181 @@ Jacobian contribution ~ a0 * dQ/dV
 RHS contribution      ~ accepted history plus linearization correction
 ```
 
+#### Worked Example: Nonlinear `Q=` Capacitor In `.TRAN`
+
+Take this LTspice-style charge-defined capacitor:
+
+```spice
+C1 out 0 Q=1u*x + 100n*x*x
+```
+
+For a capacitor, `x` is the terminal voltage. In this example:
+
+```text
+x = V(out, 0)
+```
+
+The component defines stored charge, not capacitance:
+
+$$
+Q(V) = 1u \cdot V + 100n \cdot V^2
+$$
+
+The incremental capacitance is the local slope of the charge curve:
+
+$$
+C_{\text{inc}} = \frac{dQ}{dV}
+$$
+
+The transient current is the time derivative of charge:
+
+$$
+i = \frac{dQ}{dt}
+$$
+
+With backward Euler, the current at candidate timestep `n` has the shape:
+
+```text
+i_n ~= (Q(V_n) - Q_prev) / h
+```
+
+`Q_prev` is known because it comes from the last accepted timestep. `V_n` is not
+known yet, so Newton linearizes the charge expression around the current voltage
+guess `V_k`:
+
+```text
+Q(V_n) ~= Q(V_k) + Cinc_k * (V_n - V_k)
+```
+
+Substitute that into the backward-Euler current equation:
+
+$$
+i_n \approx
+\frac{C_{\text{inc},k}}{h}V_n +
+\frac{Q(V_k) - C_{\text{inc},k}V_k - Q_{\text{prev}}}{h}
+$$
+
+Read it in companion-model form:
+
+```text
+i ~= g_eq * V + i_history_or_correction
+```
+
+where, for backward Euler:
+
+```text
+g_eq = Cinc_k / h
+```
+
+The `g_eq` term goes into the MNA matrix. The history/correction current goes
+into the RHS with opposite signs on the two terminal nodes.
+
+For a capacitor from `p` to `n`, the matrix part is the same four-entry pattern
+as a conductance:
+
+```text
+Y[p,p] += g_eq
+Y[p,n] -= g_eq
+Y[n,p] -= g_eq
+Y[n,n] += g_eq
+```
+
+The RHS part is equal and opposite:
+
+```text
+rhs[p] -= i_history_or_correction
+rhs[n] += i_history_or_correction
+```
+
+The exact sign depends on the device's branch-current convention, but the split
+is stable:
+
+```text
+current unknown sensitivity -> matrix/Jacobian
+accepted history/correction -> RHS
+```
+
+Use one candidate Newton iteration to see the numbers:
+
+```text
+Q(V)   = 1u*V + 100n*V^2
+h      = 1ms
+V_prev = 2V
+V_k    = 3V
+```
+
+Compute the accepted history charge:
+
+```text
+Q_prev = 1u*2 + 100n*2^2 = 2.4uC
+```
+
+Compute the current-guess charge and slope:
+
+```text
+Q(V_k) = 1u*3 + 100n*3^2 = 3.9uC
+Cinc_k = 1u + 200n*3 = 1.6uF
+```
+
+The matrix coefficient is:
+
+```text
+g_eq = Cinc_k / h = 1.6uF / 1ms = 1.6mS
+```
+
+The correction term is:
+
+```text
+i_history_or_correction =
+  (Q(V_k) - Cinc_k*V_k - Q_prev) / h
+  = (3.9uC - 1.6uF*3V - 2.4uC) / 1ms
+  = -3.3mA
+```
+
+So, for this Newton iteration only, the capacitor branch current is approximated
+as:
+
+```text
+i ~= 1.6mS * V - 3.3mA
+```
+
+If the matrix solve changes `V(out)`, the next Newton iteration evaluates
+`EvaluateCharge(...)` and `EvaluateChargeDerivative(...)` at the new voltage
+guess, calls `_chargeState.Derive()` again, and asks `GetContributions(...)` for
+new matrix/RHS numbers. If the candidate timestep is later rejected, those
+candidate charge values are discarded instead of becoming accepted history.
+
+#### Compare With A Diode
+
+A basic diode is nonlinear but algebraic:
+
+```text
+i = I(V)
+```
+
+Newton handles that by computing the local slope `dI/dV` and an equivalent
+current source at the current diode-voltage guess. There is no accepted charge
+history in the basic diode current equation.
+
+A nonlinear `Q=` capacitor is nonlinear and dynamic:
+
+```text
+Q = Q(V)
+i = dQ/dt
+```
+
+So it needs both:
+
+| Device idea | Newton part | Integration-history part |
+|-------------|-------------|--------------------------|
+| Basic diode current | `dI/dV` and equivalent current. | None for the basic algebraic current. |
+| Nonlinear `Q=` capacitor | `dQ/dV` and linearization correction. | Previous accepted charge and timestep coefficient. |
+| Semiconductor junction charge | Local charge/capacitance derivatives. | Accepted charge history and timestep control. |
+
+This is why a diode is often the clearest first nonlinear device, while a
+charge-defined capacitor is the better example for seeing Newton and transient
+integration cooperate.
+
 For a nonlinear flux-defined inductor, the mirror image is:
 
 ```csharp
@@ -4175,6 +4442,111 @@ integration method:
 truncation check:
   is this time jump small enough for that approximation?
 ```
+
+#### What "Timestep Error Is Too High" Means
+
+"Timestep error is too high" means the estimated **local truncation error** is
+larger than the configured tolerances. The candidate solution may satisfy KCL,
+KVL, and the nonlinear device equations at the candidate time, but the
+integration method does not trust the path taken from the last accepted time to
+that candidate time.
+
+For a capacitor, the tracked quantity is charge:
+
+```text
+q = Q(V)
+i = dq/dt
+```
+
+The integration method has only finite history:
+
+```text
+previous accepted charge values
+previous accepted derivatives
+current candidate charge
+current timestep h
+```
+
+From that information it estimates whether the charge curve between the old
+time and the candidate time was represented accurately enough. If the candidate
+step jumped over too much curvature, the local error estimate is too high.
+
+#### When Is A Timestep Too Coarse?
+
+There is no single universal timestep value that is "too coarse." A timestep is
+too coarse when the integration method estimates that its approximation error is
+larger than the allowed error band for the tracked state.
+
+Conceptually:
+
+```text
+estimated local error > allowed error
+```
+
+The allowed error has the same basic tolerance shape used elsewhere in the
+solver:
+
+```text
+allowed error = absolute tolerance + relative tolerance * signal scale
+```
+
+For transient integration, the tracked signal might be capacitor charge,
+inductor flux, or another internal dynamic state. The exact estimate is owned by
+the active integration method, but the meaning is simple:
+
+```text
+the method tried to represent the curve over this time interval
+the curve changed shape too much for this interval size
+the point must be retried with a smaller h
+```
+
+For a capacitor, "changed shape too much" often means the charge or voltage
+curve has strong curvature between accepted points. A large RC charging step is
+a good mental model:
+
+```text
+small h compared with the RC time constant:
+  exponential curve is sampled often
+  local error is usually acceptable
+
+large h compared with the RC time constant:
+  solver jumps across a big curved part of the exponential
+  local error may be too high
+```
+
+For switching circuits, the relevant time scale might not be an RC constant. It
+could be a `PULSE` rise time, a `PWL` corner, a diode turn-on interval, a switch
+threshold crossing, an LC ringing period, or a fast change in nonlinear charge
+or flux. If `h` is too large relative to the fastest important change, the
+candidate point is too coarse even if Newton can solve the equations at that
+point.
+
+Read this as two different questions:
+
+| Question | If yes | If no |
+|----------|--------|-------|
+| Did Newton converge? | The circuit equations balance at the candidate time. | Reload/re-solve, or reject after the iteration limit. |
+| Is local truncation error acceptable? | The timestep is trusted and histories can be committed. | Reject the point, reduce `h`, retry from the previous accepted time. |
+
+So "too high" does not mean:
+
+```text
+the candidate voltage is impossible
+the matrix solve was singular
+the nonlinear equations failed to balance
+```
+
+It means:
+
+```text
+this single time jump is too coarse for the integration method to trust
+```
+
+Common causes are sharp waveform edges, diode turn-on, switch transitions, LC
+ringing, and fast charge or flux changes. The usual response is not to adjust
+the solved voltage directly. The simulator keeps the last accepted history,
+shrinks the timestep, rebuilds the companion models for the smaller `h`, and
+solves the candidate point again.
 
 SpiceSharp uses truncation in two places around the transient loop.
 
@@ -5402,6 +5774,10 @@ RHS stamp for the equivalent diode current from `p` to `n`:
 Junction capacitance and charge storage contribute additional dynamic stamps in AC and
 transient analyses.
 
+Compared with the nonlinear `Q=` capacitor above, the basic diode current is
+only a Newton-linearized algebraic current. Diode model charge terms are the part
+that bring in capacitor-like integration history.
+
 Beginner takeaway: a diode is not linear. SpiceSharp repeatedly replaces it with a local
 "resistor plus current source" approximation until the answer stops changing too much.
 The local resistor value is `gd`; the local current-source correction is `ieq`. On each
@@ -5622,8 +5998,11 @@ solve separately; its inside parts are mapped into the parent circuit.
 | `.TRAN tstep` is the internal timestep. | It is mainly output cadence and an initial hint; internal candidate timesteps can be smaller, larger, accepted, or rejected. |
 | `.AC` simulates a sine wave over time. | `.AC` is small-signal frequency-domain analysis around a DC operating point. |
 | Rejected transient points are still exported. | Rejected candidates are not committed to device history and are not exported. |
+| Newton convergence means a `.TRAN` timestep was accepted. | Newton only means the nonlinear equations balanced at the candidate time. The timestep can still be rejected by integration-error checks. |
+| Timestep error means the MNA solution is invalid. | It usually means the local truncation error is too high: the solved point may balance, but the time jump is too coarse to trust. |
 | `.SAVE`, `.PRINT`, or `.PLOT` changes what the solver computes. | These statements normally choose what values are observed or reported; they do not change the circuit equations. |
 | `UIC` makes transient startup easier. | `UIC` skips the operating-point solve, which is useful for intentional initial conditions but can make startup harder. |
+| `Q=` means capacitance. | `Q=` means stored charge. The capacitance used in the Jacobian is the local slope `dQ/dV`. |
 | Components solve themselves. | Components only stamp local equations into the shared matrix/RHS; the sparse solver solves the global system. |
 | The MNA matrix is always a conductance matrix. | In linear DC it often looks like one, but in Newton, AC, and transient analyses it can be a Jacobian, complex matrix, or companion-model matrix. |
 
