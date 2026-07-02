@@ -58,12 +58,32 @@ Current limitations:
 |-----------|-------------|
 | `out+`, `out-` | Output nodes |
 | `ctrl+`, `ctrl-` | Controlling voltage nodes |
-| `transconductance` | Gain in siemens (Iout = gm × Vctrl) |
+| `transconductance` | Gain in siemens ($I_{\text{out}} = g_m V_{\text{ctrl}}$) |
 | `M=m` | Multiplier. For linear `G` sources it scales the effective transconductance/current contribution, like multiple equivalent parallel instances. |
 
 For LAPLACE sources, `M=` is a finite constant multiplier folded into the numerator coefficients; it may be positive, negative, or zero. `TD=` and `DELAY=` are supported aliases for a finite constant non-negative runtime delay parameter; use only one delay option and assignment syntax such as `DELAY=1n`.
 
 For the transfer-function math, current-source sign convention, frequency response, and phase examples, see [LAPLACE Transfer Sources](laplace.md).
+
+## MNA View
+
+A `G` source is current-output. It does not need its own branch-current unknown.
+Instead, it stamps controlled current into the output node KCL rows.
+
+For the linear form:
+
+$$
+I(out+ \to out-) = g_m(V(ctrl+) - V(ctrl-))
+$$
+
+the matrix receives controlled-source coefficients connecting the output rows to
+the control-voltage columns.
+
+Laplace `G` sources keep the same current-output MNA shape, but the effective
+transconductance is frequency-shaped or time-domain dynamic.
+
+See [How SpiceSharp Solves Circuits](spicesharp-architecture.md#g-voltage-controlled-current-source)
+for the stamp shape.
 
 ## Examples
 

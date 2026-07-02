@@ -19,6 +19,26 @@ The `.NODESET` statement provides initial guesses for node voltages to help the 
 .NODESET V(OUT)=5 V(MID)=2.5
 ```
 
+## MNA View
+
+`.NODESET` is a Newton starting hint, not a permanent matrix stamp. It gives the
+operating-point solver an initial voltage guess for one or more nodes. After
+Newton starts, the normal MNA equations still decide the final voltages.
+
+That distinction matters:
+
+| Statement | MNA effect |
+|-----------|------------|
+| `.NODESET` | Initial guess for Newton, solver may move away from it. |
+| `.IC` with `UIC` | Initial transient state/history seed. |
+| Voltage source | Actual branch equation that forces a voltage. |
+
+Use `.NODESET` for convergence help in circuits with multiple possible
+operating points, such as latches and bistable transistor circuits.
+
+For the Newton loop, see
+[How SpiceSharp Solves Circuits](spicesharp-architecture.md#example-diode-linearization).
+
 ## Difference from .IC
 
 | Feature | .IC | .NODESET |

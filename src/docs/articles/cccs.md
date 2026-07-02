@@ -28,7 +28,7 @@ F<name> <out+> <out-> LAPLACE = {I(<Vcontrol>)} {<transfer>} [M=<m>] [TD=<delay>
 |-----------|-------------|
 | `out+`, `out-` | Output nodes (current flows from out+ to out-) |
 | `Vcontrol` | Name of a voltage source sensing the control current |
-| `gain` | Current gain (Iout = gain × Ictrl) |
+| `gain` | Current gain ($I_{\text{out}} = \text{gain}\cdot I_{\text{ctrl}}$) |
 | `M=m` | Multiplier |
 
 ## Examples
@@ -49,3 +49,23 @@ Vsense CTRL_A CTRL_B 0
 - The controlling current is the current through the named voltage source.
 - A 0V voltage source is commonly used as a current sensor (ammeter).
 - For LAPLACE sources, the transfer must be a proper rational polynomial in `s` with finite DC gain. See [LAPLACE Transfer Sources](laplace.md).
+
+## MNA View
+
+An `F` source is current-output, so it stamps controlled current into the output
+node KCL rows. It does not add its own branch-current unknown.
+
+The control current must already exist as an MNA branch current through a named
+voltage source. A 0 V source is often inserted only to create that measurable
+branch current.
+
+Conceptually:
+
+```text
+read I(Vsense)
+compute output current = gain * I(Vsense)
+stamp output current into node rows
+```
+
+See [How SpiceSharp Solves Circuits](spicesharp-architecture.md#f-current-controlled-current-source)
+for the stamp shape.

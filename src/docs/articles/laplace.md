@@ -10,42 +10,67 @@ If you are new to Laplace transforms, start with [Laplace Transform Basics for C
 
 A LAPLACE source applies a transfer function to an input signal:
 
-```text
-Y(s) = H(s) * X(s)
-H(s) = N(s) / D(s)
-```
+$$
+\begin{aligned}
+Y(s) &= H(s)X(s) \\
+H(s) &= \frac{N(s)}{D(s)}
+\end{aligned}
+$$
 
 Where:
 
 | Term | Meaning |
 |------|---------|
-| `s` | Laplace-domain variable |
-| `X(s)` | Input signal in the Laplace domain |
-| `Y(s)` | Output signal in the Laplace domain |
-| `H(s)` | Transfer function |
-| `N(s)` | Numerator polynomial |
-| `D(s)` | Denominator polynomial |
+| $s$ | Laplace-domain variable |
+| $X(s)$ | Input signal in the Laplace domain |
+| $Y(s)$ | Output signal in the Laplace domain |
+| $H(s)$ | Transfer function |
+| $N(s)$ | Numerator polynomial |
+| $D(s)$ | Denominator polynomial |
 
 For DC operating point analysis, the source is evaluated at:
 
-```text
+$$
 s = 0
-```
+$$
 
 For AC frequency analysis at frequency `f` in hertz, the source is evaluated at:
 
-```text
-s = j * omega
-omega = 2 * pi * f
-```
+$$
+\begin{aligned}
+s &= j\omega \\
+\omega &= 2\pi f
+\end{aligned}
+$$
 
 So the frequency response is:
 
-```text
-H(j * omega)
-```
+$$
+H(j\omega)
+$$
 
 This value is complex. Its magnitude tells you the gain at that frequency, and its angle tells you the phase shift.
+
+## MNA View
+
+`LAPLACE` changes how a source value is computed, but the source still enters the
+same MNA matrix according to its output type.
+
+| Form | MNA role |
+|------|----------|
+| `E` Laplace source | Voltage-output controlled source; adds a branch-current unknown and branch equation. |
+| `G` Laplace source | Current-output controlled source; stamps controlled current into node KCL rows. |
+| `F` Laplace source | Current-output source controlled by another branch current. |
+| `H` Laplace source | Voltage-output source controlled by another branch current; adds a branch equation. |
+| Function-style voltage output | May be lowered through helper voltage sources before matrix loading. |
+| Function-style current output | May be lowered through helper sources, then stamps current into output rows. |
+
+In `.AC`, the transfer contributes complex frequency-domain coefficients. In
+`.TRAN`, the transfer contributes dynamic state and source-equivalent terms that
+are solved with the rest of the circuit at each candidate timestep.
+
+For the shared matrix algorithm, see
+[How SpiceSharp Solves Circuits](spicesharp-architecture.md#modified-matrix-algorithm-step-by-step).
 
 ## Supported Syntax
 
@@ -63,9 +88,9 @@ I(source)
 
 An `E` LAPLACE source is a voltage-controlled voltage source:
 
-```text
-V(out+,out-) = H(s) * V(ctrl+,ctrl-)
-```
+$$
+V(out+,out-) = H(s)V(ctrl+,ctrl-)
+$$
 
 Supported spellings:
 
@@ -79,15 +104,15 @@ E<name> <out+> <out-> LAPLACE = {<input>} {<transfer>} [M=<m>] [TD=<delay>|DELAY
 
 A `G` LAPLACE source is a voltage-controlled current source:
 
-```text
-I(out+ -> out-) = H(s) * V(ctrl+,ctrl-)
-```
+$$
+I(out+ \to out-) = H(s)V(ctrl+,ctrl-)
+$$
 
 For a grounded load resistor connected from `out` to `0`, a positive transconductance usually produces a negative output voltage because the source current is defined from `out+` to `out-`:
 
-```text
-V(out) = -Iout * Rload
-```
+$$
+V(out) = -I_{\text{out}}R_{\text{load}}
+$$
 
 Supported spellings:
 
@@ -101,9 +126,9 @@ G<name> <out+> <out-> LAPLACE = {<input>} {<transfer>} [M=<m>] [TD=<delay>|DELAY
 
 An `F` LAPLACE source is a current-controlled current source:
 
-```text
-I(out+ -> out-) = H(s) * I(Vsense)
-```
+$$
+I(out+ \to out-) = H(s)I(V_{\text{sense}})
+$$
 
 Supported spellings:
 
@@ -117,9 +142,9 @@ F<name> <out+> <out-> LAPLACE = {I(<source>)} {<transfer>} [M=<m>] [TD=<delay>|D
 
 An `H` LAPLACE source is a current-controlled voltage source:
 
-```text
-V(out+,out-) = H(s) * I(Vsense)
-```
+$$
+V(out+,out-) = H(s)I(V_{\text{sense}})
+$$
 
 Supported spellings:
 
@@ -172,105 +197,114 @@ Inline options are local to that call, so mixed expressions can give each `LAPLA
 
 ## Transfer Polynomials
 
-The transfer expression must be a rational polynomial in `s`:
+The transfer expression must be a rational polynomial in $s$:
 
-```text
-H(s) = (b0 + b1*s + b2*s^2 + ...) / (a0 + a1*s + a2*s^2 + ...)
-```
+$$
+H(s) =
+\frac{b_0 + b_1s + b_2s^2 + \cdots}
+{a_0 + a_1s + a_2s^2 + \cdots}
+$$
 
-SpiceSharpParser stores coefficients in ascending powers of `s`:
+SpiceSharpParser stores coefficients in ascending powers of $s$:
 
-```text
-1 + s*tau        -> [1, tau]
-s^2 + 1         -> [1, 0, 1]
-wc / (s + wc)   -> numerator [wc], denominator [wc, 1]
-```
+| Expression | Stored coefficients |
+|------------|---------------------|
+| $1+s\tau$ | `[1, tau]` |
+| $s^2+1$ | `[1, 0, 1]` |
+| $\frac{\omega_c}{s+\omega_c}$ | numerator `[wc]`, denominator `[wc, 1]` |
 
 The transfer must be proper: the numerator degree cannot be greater than the denominator degree. This keeps the source physically usable by the runtime transfer-function behavior.
 
-The DC gain is found by setting `s = 0`:
+The DC gain is found by setting $s = 0$:
 
-```text
-H(0) = N(0) / D(0)
-```
+$$
+H(0) = \frac{N(0)}{D(0)}
+$$
 
 Examples:
 
-```text
-1/(1+s*tau)       -> H(0) = 1
-wc/(s+wc)         -> H(0) = 1
-s/(s+wc)          -> H(0) = 0
-10*wc/(s+wc)      -> H(0) = 10
-```
+| Transfer | DC gain |
+|----------|---------|
+| $\frac{1}{1+s\tau}$ | $H(0) = 1$ |
+| $\frac{\omega_c}{s+\omega_c}$ | $H(0) = 1$ |
+| $\frac{s}{s+\omega_c}$ | $H(0) = 0$ |
+| $\frac{10\omega_c}{s+\omega_c}$ | $H(0) = 10$ |
 
-Transfers with singular DC gain, such as `1/s`, are rejected.
+Transfers with singular DC gain, such as $1/s$, are rejected.
 
 ## Magnitude And Phase
 
-For AC analysis, substitute `s = j*omega`:
+For AC analysis, substitute $s = j\omega$:
 
-```text
-H(j*omega) = real + j*imag
-```
+$$
+H(j\omega) = \operatorname{real} + j\,\operatorname{imag}
+$$
 
 Magnitude:
 
-```text
-|H(j*omega)| = sqrt(real^2 + imag^2)
-```
+$$
+\left|H(j\omega)\right| =
+\sqrt{\operatorname{real}^2 + \operatorname{imag}^2}
+$$
 
 Phase:
 
-```text
-phase = atan2(imag, real)
-```
+$$
+\text{phase} = \operatorname{atan2}(\operatorname{imag}, \operatorname{real})
+$$
 
 ### Low-Pass Example
 
 First-order low-pass:
 
-```text
-H(s) = 1 / (1 + s*tau)
-```
+$$
+H(s) = \frac{1}{1+s\tau}
+$$
 
 The cutoff frequency is:
 
-```text
-fc = 1 / (2*pi*tau)
-wc = 2*pi*fc = 1/tau
-```
+$$
+\begin{aligned}
+f_c &= \frac{1}{2\pi\tau} \\
+\omega_c &= 2\pi f_c = \frac{1}{\tau}
+\end{aligned}
+$$
 
 At cutoff:
 
-```text
-H(j*wc) = 1 / (1 + j)
-        = 0.5 - j*0.5
-|H|     = 1 / sqrt(2)
-phase   = -pi/4
-```
+$$
+\begin{aligned}
+H(j\omega_c) &= \frac{1}{1+j}
+             = 0.5 - j0.5 \\
+\left|H\right| &= \frac{1}{\sqrt{2}} \\
+\text{phase} &= -\frac{\pi}{4}
+\end{aligned}
+$$
 
 Equivalent form:
 
-```text
-H(s) = wc / (s + wc)
-```
+$$
+H(s) = \frac{\omega_c}{s+\omega_c}
+$$
 
 ### High-Pass Example
 
 First-order high-pass:
 
-```text
-H(s) = s / (s + wc)
-```
+$$
+H(s) = \frac{s}{s+\omega_c}
+$$
 
 At cutoff:
 
-```text
-H(j*wc) = j / (1 + j)
-        = 0.5 + j*0.5
-|H|     = 1 / sqrt(2)
-phase   = +pi/4
-```
+$$
+\begin{aligned}
+H(j\omega_c) &= \frac{j}{1+j}
+             = 0.5 + j0.5 \\
+\left|H\right| &= \frac{1}{\sqrt{2}} \\
+\text{phase} &= \frac{\pi}{4}
+\end{aligned}
+$$
 
 ## Practical Modeling Examples
 
@@ -278,11 +312,11 @@ Use `LAPLACE` when the real circuit block is mostly linear and you know the inte
 
 | Real-life block | Useful transfer |
 |-----------------|-----------------|
-| ADC input anti-alias or signal-conditioning pole | `gain*wc/(s+wc)` |
-| Closed-loop amplifier with finite bandwidth | `acl*wp/(s+wp)` |
-| Current-output sensor or transconductance stage | `gm*wc/(s+wc)` on a `G` source |
-| Damped mechanical, LC, or control plant response | `wn*wn/(s*s + 2*zeta*wn*s + wn*wn)` |
-| Lead/lag compensation block | `(1+s/wz)/(1+s/wp)` |
+| ADC input anti-alias or signal-conditioning pole | $\frac{\text{gain}\cdot\omega_c}{s+\omega_c}$ |
+| Closed-loop amplifier with finite bandwidth | $\frac{a_{\text{cl}}\omega_p}{s+\omega_p}$ |
+| Current-output sensor or transconductance stage | $\frac{g_m\omega_c}{s+\omega_c}$ on a `G` source |
+| Damped mechanical, LC, or control plant response | $\frac{\omega_n^2}{s^2 + 2\zeta\omega_n s + \omega_n^2}$ |
+| Lead/lag compensation block | $\frac{1+s/\omega_z}{1+s/\omega_p}$ |
 
 These examples stay within the SpiceSharpParser subset: `E` and `G` sources, voltage input probes, finite DC gain, and proper rational polynomials in `s`.
 
@@ -303,15 +337,16 @@ RLOAD OUT 0 10k
 .END
 ```
 
-At low frequency, `V(OUT)` is about `2*V(IN)`. Near `10 kHz`, the magnitude is about `2/sqrt(2)`.
+At low frequency, `V(OUT)` is about $2V(IN)$. Near $10\,\text{kHz}$, the
+magnitude is about $2/\sqrt{2}$.
 
 ### Finite-Bandwidth Amplifier Approximation
 
 An op-amp circuit with closed-loop gain `acl` cannot keep that gain forever. A simple one-pole approximation places the closed-loop pole at:
 
-```text
-fp = gain_bandwidth / acl
-```
+$$
+f_p = \frac{\text{gain bandwidth}}{a_{\text{cl}}}
+$$
 
 ```spice
 * Closed-loop gain of 20 with a 10 MHz gain-bandwidth approximation
@@ -346,7 +381,9 @@ RLOAD OUT 0 10k
 .END
 ```
 
-At low frequency, the current is approximately `gm*V(SENSE)`. With a grounded load from `OUT` to `0`, the output voltage is negative because the `G` source current direction is from `OUT` to `0`.
+At low frequency, the current is approximately $g_mV(SENSE)$. With a grounded
+load from `OUT` to `0`, the output voltage is negative because the `G` source
+current direction is from `OUT` to `0`.
 
 ### Damped Second-Order Block
 
@@ -365,11 +402,14 @@ RLOAD OUT 0 10k
 .END
 ```
 
-Lower `zeta` gives more peaking near `fn`; higher `zeta` gives a flatter, more damped response.
+Lower $\zeta$ gives more peaking near `fn`; higher $\zeta$ gives a flatter,
+more damped response.
 
 ### Lead/Lag Control Block
 
-Many control examples use pure integrators such as `1/s`, but SpiceSharpParser rejects those because their DC gain is singular. A finite lead/lag block is supported:
+Many control examples use pure integrators such as $1/s$, but SpiceSharpParser
+rejects those because their DC gain is singular. A finite lead/lag block is
+supported:
 
 ```spice
 * Lead block: zero at 1 kHz, pole at 10 kHz
@@ -385,7 +425,8 @@ RLOAD CTRL 0 10k
 .END
 ```
 
-With `fz < fp`, this block adds phase lead and increases gain between the zero and pole. Swap the pole and zero placement for lag-style behavior.
+With $f_z < f_p$, this block adds phase lead and increases gain between the
+zero and pole. Swap the pole and zero placement for lag-style behavior.
 
 ## Worked Examples
 
@@ -402,12 +443,14 @@ RLOAD OUT 0 1k
 .END
 ```
 
-At `.OP`, `s = 0`, so:
+At `.OP`, $s = 0$, so:
 
-```text
-H(0) = 1/(1+0*tau) = 1
-V(OUT) = 1 * V(IN) = 1 V
-```
+$$
+\begin{aligned}
+H(0) &= \frac{1}{1 + 0\cdot\tau} = 1 \\
+V(OUT) &= 1\cdot V(IN) = 1\,\text{V}
+\end{aligned}
+$$
 
 ### Parameterized Low-Pass AC Response
 
@@ -424,12 +467,14 @@ RLOAD OUT 0 1k
 .END
 ```
 
-At `f = fc`, expect:
+At $f = f_c$, expect:
 
-```text
-VM(OUT) ~= 0.707
-VP(OUT) ~= -pi/4 ~= -0.785
-```
+$$
+\begin{aligned}
+VM(OUT) &\approx 0.707 \\
+VP(OUT) &\approx -\frac{\pi}{4} \approx -0.785
+\end{aligned}
+$$
 
 ### High-Pass AC Response
 
@@ -445,12 +490,14 @@ RLOAD OUT 0 1k
 .END
 ```
 
-At `f = fc`, expect:
+At $f = f_c$, expect:
 
-```text
-VM(OUT) ~= 0.707
-VP(OUT) ~= +pi/4 ~= +0.785
-```
+$$
+\begin{aligned}
+VM(OUT) &\approx 0.707 \\
+VP(OUT) &\approx \frac{\pi}{4} \approx 0.785
+\end{aligned}
+$$
 
 ### Inverting Low-Pass
 
@@ -467,9 +514,9 @@ RLOAD OUT 0 1k
 
 At DC:
 
-```text
-H(0) = -gain
-```
+$$
+H(0) = -\text{gain}
+$$
 
 The negative sign adds 180 degrees of phase inversion to the low-pass response.
 
@@ -489,10 +536,15 @@ RLOAD OUT 0 1k
 
 At `.OP`:
 
-```text
-Iout = gm * V(IN) = 1m * 1 = 1 mA
-V(OUT) = -Iout * RLOAD = -1m * 1k = -1 V
-```
+$$
+\begin{aligned}
+I_{\text{out}} &= g_mV(IN) = 1\,\text{mS}\cdot 1\,\text{V}
+               = 1\,\text{mA} \\
+V(OUT) &= -I_{\text{out}}R_{\text{LOAD}}
+       = -1\,\text{mA}\cdot 1\,\text{k}\Omega
+       = -1\,\text{V}
+\end{aligned}
+$$
 
 The negative voltage comes from the current direction of the `G` source and the grounded load.
 
@@ -510,11 +562,13 @@ RLOAD OUT 0 1k
 
 At `.OP`:
 
-```text
-V(INP,INN) = V(INP) - V(INN) = 1.5 V
-H(0) = 1
-V(OUT) = 1.5 V
-```
+$$
+\begin{aligned}
+V(INP,INN) &= V(INP) - V(INN) = 1.5\,\text{V} \\
+H(0) &= 1 \\
+V(OUT) &= 1.5\,\text{V}
+\end{aligned}
+$$
 
 ## Equivalent Supported Spellings
 

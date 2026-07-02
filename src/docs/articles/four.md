@@ -15,6 +15,24 @@
 
 ---
 
+## MNA View
+
+`.FOUR` does not change the circuit matrix. It runs after `.TRAN` has produced
+time-domain samples. Those samples came from many transient MNA solves, but the
+Fourier calculation itself is post-processing.
+
+That means:
+
+- capacitors, inductors, nonlinear devices, and sources shape the waveform
+  during `.TRAN`;
+- `.FOUR` reads the saved waveform;
+- harmonic magnitudes, phase, and THD are computed from samples, not by adding
+  extra MNA equations.
+
+For the transient solve path, see [.TRAN](tran.md#mna-view).
+
+---
+
 ## The Idea, In Plain Language
 
 Read this first. No math.

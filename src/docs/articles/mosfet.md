@@ -29,6 +29,29 @@ M2 OUT IN VDD VDD PMOS_MODEL L=0.5u W=20u
 M3 D G S B my_nmos L=0.18u W=2u M=4
 ```
 
+## MNA View
+
+A MOSFET is a nonlinear four-terminal device, so its matrix stamp changes with
+the current drain/gate/source/bulk operating point. SpiceSharp loads a
+linearized local model during each Newton iteration.
+
+The important MNA pieces are:
+
+| Term | MNA role |
+|------|----------|
+| Output conductance | Matrix slope between drain and source. |
+| Gate transconductance | Controlled-source Jacobian term from `Vgs`. |
+| Body-effect transconductance | Controlled-source Jacobian term from `Vbs`. |
+| Bulk junction conductance | Diode-like matrix and RHS terms. |
+| Terminal charges/capacitances | AC admittance terms or transient companion terms. |
+
+The gate is not just "open" in every analysis. In DC, the ideal gate has no
+oxide current in simple MOS models, but capacitances and charge terms matter in
+`.AC` and `.TRAN`.
+
+For the deeper solver picture, see
+[How SpiceSharp Solves Circuits](spicesharp-architecture.md#m-mosfet).
+
 ## Model Definition
 
 ### NMOS

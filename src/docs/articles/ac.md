@@ -41,6 +41,26 @@ V1 IN 0 DC 0 AC 1 0
 
 The `AC` keyword is followed by magnitude and optional phase (degrees).
 
+## MNA View
+
+`.AC` first solves the DC operating point, then linearizes the circuit around
+that point. Each frequency point solves a complex-valued MNA matrix.
+
+Dynamic devices use frequency-domain stamps instead of timestep history:
+
+| Device | AC matrix role |
+|--------|----------------|
+| Capacitor | Stamps admittance `sC`. |
+| Inductor | Stamps branch relation `V = sL I`. |
+| Nonlinear device | Uses small-signal derivatives from the operating point. |
+| AC source | Provides complex source value in the RHS or branch row. |
+
+So `.AC` does not simulate a large sine wave over time. It solves the linearized
+frequency-domain matrix at each requested frequency.
+
+For the general MNA algorithm, see
+[How SpiceSharp Solves Circuits](spicesharp-architecture.md#frequency-domain-matrix).
+
 ## Typical Usage
 
 ```spice

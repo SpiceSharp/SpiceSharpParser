@@ -18,6 +18,17 @@ The `.APPENDMODEL` statement appends additional parameters to an existing model 
 .APPENDMODEL 1N914 D (Is=LOT=10% Rs=LOT=5%)
 ```
 
+## MNA View
+
+`.APPENDMODEL` modifies model data before simulation. It does not stamp MNA by
+itself, but the changed model parameters can change later device stamps.
+
+For a diode model, appended values can affect:
+
+- DC/Newton current and conductance,
+- AC small-signal derivatives,
+- transient charge or capacitance terms when the model includes them.
+
 ## Notes
 
 - The model must already be defined before `.APPENDMODEL` is used.

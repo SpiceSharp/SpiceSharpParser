@@ -52,3 +52,22 @@ See the [V — Voltage Source](voltage-source.md) article for waveform syntax de
 ```spice
 I1 OUT 0 VALUE={V(CTRL)*1m}
 ```
+
+## MNA View
+
+An ideal current source contributes known current to the RHS vector. It does not
+create a new unknown.
+
+For current defined from `p` to `n`:
+
+```text
+rhs[p] -= I
+rhs[n] += I
+```
+
+If the source value is time-dependent, such as `PULSE`, `SIN`, or `PWL`, the RHS
+value is recomputed at each transient candidate time. The source itself does not
+own integration history; it simply provides a value for the current solve.
+
+See [How SpiceSharp Solves Circuits](spicesharp-architecture.md#modified-nodal-analysis)
+for how RHS values fit into `Y*x = rhs`.

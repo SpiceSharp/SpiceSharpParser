@@ -8,6 +8,7 @@ A capacitor stores energy in an electric field between two conductors.
 C<name> <node+> <node-> <value> [IC=<initial_voltage>] [M=<m>]
 C<name> <node+> <node-> <model_name> [L=<length>] [W=<width>] [IC=<v>]
 C<name> <node+> <node-> VALUE={<expression>}
+C<name> <node+> <node-> Q=<expression> [IC=<initial_voltage>] [M=<m>] [N=<n>]
 ```
 
 | Parameter | Description |
@@ -19,6 +20,7 @@ C<name> <node+> <node-> VALUE={<expression>}
 | `M=m` | Multiplier |
 | `model_name` | Reference to a `.MODEL` definition |
 | `VALUE={expr}` | Behavioral expression |
+| `Q=expr` | LTspice-style charge expression; requires `UseCustomComponents()` |
 
 ## Examples
 
@@ -37,7 +39,42 @@ C4 IN OUT cmod L=10u W=1u IC=1
 
 * Behavioral
 C5 IN OUT VALUE={M*N*1p}
+
+* LTspice-style charge-defined capacitor
+C6 OUT 0 Q=1u*x
 ```
+
+See [LTspice-Style Nonlinear Passives](nonlinear-passives.md) for `Q=<expr>`
+capacitors.
+
+## MNA View
+
+A capacitor is dynamic, so its matrix contribution depends on the analysis:
+
+| Analysis | Matrix role |
+|----------|-------------|
+| `.OP` / DC bias | Ideal open circuit, except initial/history setup. |
+| `.AC` | Complex admittance stamp `Y = sC`. |
+| `.TRAN` | Companion conductance plus RHS history current. |
+
+In transient analysis, the integration method rewrites:
+
+$$
+i = \frac{dQ}{dt}
+$$
+
+into a temporary algebraic companion model:
+
+$$
+i \approx g_{\text{eq}}V + i_{\text{history}}
+$$
+
+The `g_eq` part is stamped into the MNA matrix like a conductance. The history
+current is stamped into the RHS. The capacitor commits new charge history only
+after a timestep is accepted.
+
+For the detailed SpiceSharp `Capacitors.Time` behavior and examples, see
+[Transient Integration Methods](transient-integration-methods.md#built-in-capacitor-behavior-stack).
 
 ## Model Definition
 

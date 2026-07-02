@@ -91,6 +91,31 @@ The current through a voltage source can be measured with `I(Vname)`:
 .SAVE I(V1)
 ```
 
+## MNA View
+
+An ideal voltage source imposes a voltage equation:
+
+$$
+V(p) - V(n) = V_{\text{source}}
+$$
+
+The current through that source is not known in advance, so modified nodal
+analysis adds a branch-current unknown, for example `I(V1)`.
+
+The source contributes:
+
+```text
+node p KCL row:      +I(V1)
+node n KCL row:      -I(V1)
+branch row I(V1):    V(p) - V(n) = source value
+```
+
+That branch-current unknown is also why `I(V1)` can be saved or used as the
+control current for `F` and `H` sources.
+
+See [How SpiceSharp Solves Circuits](spicesharp-architecture.md#modified-matrix-algorithm-step-by-step)
+for a worked voltage-source matrix example.
+
 ## Typical Usage
 
 ```spice

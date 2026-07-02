@@ -16,6 +16,26 @@ This component is separate from the built-in SpiceSharp diode. The built-in diod
 | Shared diode syntax | Accepts `area`, `OFF`, `L`, `W`, and `Rs`; `area` and `Rs` are ignored electrically for LTspice ideal-diode parity. |
 | External parity tests | Optional LTspice-backed goldens cover `.DC`, `.AC`, and `.TRAN` behavior. |
 
+## MNA View
+
+The LTspice-style ideal diode is still loaded as an MNA component. Its current
+law is piecewise linear or smoothly limited, but each Newton load reduces it to
+the same local form used by other nonlinear devices:
+
+$$
+i \approx g_d v + i_{\text{eq}}
+$$
+
+where `g_d` is the local conductance returned by the ideal-diode equation and
+`i_eq` is the RHS correction current.
+
+The component is memoryless, so it does not create capacitor-like or
+inductor-like integration history. In `.TRAN`, it is re-evaluated at each
+candidate time while capacitors, inductors, sources, and transmission lines
+provide the actual time-dependent state.
+
+For the exact stamp entries, see [Biasing Stamp](#biasing-stamp).
+
 ## When To Use It
 
 Use this component when a netlist contains LTspice ideal diode parameters:

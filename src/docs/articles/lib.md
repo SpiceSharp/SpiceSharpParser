@@ -33,6 +33,15 @@ Library files can define named sections:
 .LIB "all_models.lib"
 ```
 
+## MNA View
+
+`.LIB` is also a netlist expansion step. It selects model, parameter, and
+subcircuit definitions before simulation setup. It does not create a matrix
+entry by itself.
+
+The MNA impact appears later when a device uses a selected model or a subcircuit
+instance expands into concrete components.
+
 ## Library File Example
 
 ```spice

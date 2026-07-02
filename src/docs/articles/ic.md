@@ -21,6 +21,24 @@ The `.IC` statement sets initial node voltages for transient analysis. These val
 .IC V(1)=5 V(2)=0 V(3)=3.3
 ```
 
+## MNA View
+
+`.IC` is not a normal device stamp. It changes how transient analysis starts.
+With `.TRAN ... UIC`, the listed node voltages seed the initial solution and
+the initial history used by dynamic devices connected to those nodes.
+
+For an RC circuit, `.IC V(OUT)=0` means the capacitor voltage starts from
+`0 V`. The first transient companion model is then built from that initial
+charge state instead of from a DC operating-point result.
+
+Without `UIC`, SpiceSharp computes the DC operating point first. In that case,
+`.IC` does not force the final DC MNA solution; it is mainly the `UIC` startup
+path that makes `.IC` visible.
+
+See [.TRAN](tran.md#mna-view) and
+[Transient Integration Methods](transient-integration-methods.md#worked-example-8-uic-initial-conditions)
+for how initial conditions seed transient history.
+
 ## Typical Usage
 
 ```spice

@@ -41,6 +41,10 @@ The `.OPTIONS` statement sets simulator options that control accuracy, convergen
 | `METHOD=GEAR` | Gear integration |
 | `METHOD=EULER` | Euler integration |
 
+These options affect transient companion models and timestep history. For a
+beginner-to-engine-level explanation, see
+[Transient Integration Methods](transient-integration-methods.md).
+
 ### Random / Monte Carlo
 
 | Option | Description |
@@ -55,6 +59,28 @@ The `.OPTIONS` statement sets simulator options that control accuracy, convergen
 | `LOCALSOLVER=ON\|OFF` | Enable local solver |
 | `CDFPOINTS=<int>` | CDF interpolation points (minimum 4) |
 | `NORMALLIMIT=<value>` | Normal distribution limit |
+
+## MNA View
+
+Many `.OPTIONS` values do not change the circuit topology. They change how the
+MNA solve is accepted:
+
+| Option family | MNA effect |
+|---------------|------------|
+| Tolerances | Decide when Newton voltage/current changes and residuals are small enough. |
+| Iteration limits | Bound how many times the matrix may be reloaded and solved. |
+| `METHOD=...` | Changes transient companion-model coefficients and history terms. |
+| `GMIN` | Adds or limits tiny conductance paths used to help numerical conditioning. |
+
+For example, changing `METHOD=GEAR` does not change the netlist graph, but it
+changes the matrix/RHS terms loaded by capacitors, inductors, and other dynamic
+states during `.TRAN`.
+
+For the underlying matrix algorithm, see
+[How SpiceSharp Solves Circuits](spicesharp-architecture.md#modified-matrix-algorithm-step-by-step).
+For a detailed explanation of Newton iteration, Jacobians, residuals, and
+convergence, see
+[Newton Iteration In Detail](spicesharp-architecture.md#newton-iteration-in-detail).
 
 ### Flags
 

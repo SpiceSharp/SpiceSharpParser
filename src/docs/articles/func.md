@@ -36,6 +36,20 @@ Functions can be called in any expression context using curly braces:
 R1 IN OUT {parallel(1k, 2k)}
 ```
 
+## MNA View
+
+`.FUNC` defines reusable expression logic. It does not add an MNA row or column.
+The MNA effect depends on where the function is used.
+
+For example:
+
+| Use | MNA effect |
+|-----|------------|
+| Resistor value | Changes the conductance stamped by the resistor. |
+| Source value | Changes RHS or branch-equation source value. |
+| Behavioral expression | May affect current/voltage output and local derivatives. |
+| `.MEAS` or `.LET` expression | Post-processes solved values, no matrix change. |
+
 ## Built-in Functions
 
 SpiceSharpParser includes standard math functions:

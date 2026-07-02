@@ -33,18 +33,42 @@ D3 A B DMOD OFF
 .MODEL 1N914 D(Is=2.52e-9 Rs=0.568 N=1.752 Cjo=4e-12 M=0.4 tt=20e-9)
 ```
 
+## MNA View
+
+A diode is nonlinear, so it does not load one fixed conductance for the whole
+solve. During Newton iteration, the diode is linearized around the current
+voltage guess:
+
+$$
+i \approx g_d v + i_{\text{eq}}
+$$
+
+where `g_d` is the local slope `dI/dV`, and `i_eq` is the equivalent current
+source that makes the straight-line approximation touch the diode curve at the
+current guess.
+
+The matrix receives a resistor-like conductance stamp from `g_d`, and the RHS
+receives the equivalent current term. On the next Newton iteration, both values
+may change because the diode voltage guess changed.
+
+Junction capacitance and transit-time charge add AC/transient dynamic terms when
+the selected diode model includes them.
+
+For a worked Newton linearization example, see
+[How SpiceSharp Solves Circuits](spicesharp-architecture.md#example-diode-linearization).
+
 ### Common Model Parameters
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
 | `Is` | Saturation current | 1e-14 A |
-| `Rs` | Series resistance | 0 Ω |
+| `Rs` | Series resistance | $0\,\Omega$ |
 | `N` | Emission coefficient | 1 |
 | `Cjo` | Zero-bias junction capacitance | 0 F |
 | `M` | Grading coefficient | 0.5 |
 | `Vj` | Junction potential | 1 V |
 | `tt` | Transit time | 0 s |
-| `BV` | Reverse breakdown voltage | ∞ |
+| `BV` | Reverse breakdown voltage | $\infty$ |
 | `IBV` | Current at breakdown | 1e-3 A |
 
 ## Typical Usage

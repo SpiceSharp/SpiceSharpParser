@@ -25,6 +25,29 @@ T1 IN 0 OUT 0 Z0=50 TD=1e-9
 T2 A 0 B 0 Z0=75 TD=5e-9
 ```
 
+## MNA View
+
+A lossless transmission line is a delayed two-port, not a single lumped
+resistor, capacitor, or inductor. Its MNA behavior depends on characteristic
+impedance and propagation delay.
+
+In transient analysis, the line uses accepted waveform history. Present port
+voltages and currents are related to wave values that left the other port one
+delay earlier:
+
+```text
+present port relation
+  = characteristic-impedance term
+  + delayed history contribution
+```
+
+That makes the line similar in spirit to a companion model: the current solve
+sees algebraic matrix/RHS terms, but some RHS terms come from stored accepted
+history. If the timestep is rejected, the delayed history is not advanced.
+
+For the deeper solver picture, see
+[How SpiceSharp Solves Circuits](spicesharp-architecture.md#t-lossless-transmission-line).
+
 ## Typical Usage
 
 ```spice

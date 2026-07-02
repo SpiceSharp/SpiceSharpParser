@@ -33,6 +33,24 @@ C1 OUT 0 1u
 
 Monte Carlo analysis varies parameters that have defined tolerances. Tolerances are specified in model parameters or via distribution definitions (see `.DISTRIBUTION`).
 
+## MNA View
+
+`.MC` repeats an analysis with randomized parameter values. It does not add a
+special Monte Carlo stamp to MNA.
+
+For each run:
+
+```text
+choose randomized parameter/model values
+load the normal device stamps using those values
+solve the requested analysis
+collect the requested output statistic
+```
+
+So Monte Carlo changes the numbers that devices stamp, such as resistor
+conductance, diode derivatives, source values, or transient companion
+coefficients.
+
 ## Notes
 
 - The `SEED` parameter ensures repeatable results across runs.

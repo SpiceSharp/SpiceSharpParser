@@ -15,6 +15,25 @@ The `.MEAS` (or `.MEASURE`) statement extracts a single scalar number from simul
 | `name` | A label you choose — this is the key used to look up the result in C# | Any identifier (e.g. `rise_time`, `vmax`) |
 | `measurement_spec` | What to measure and how (described in detail below) | One of the 12 measurement types |
 
+## MNA View
+
+`.MEAS` is post-processing. It does not add a device stamp, Jacobian term, or
+RHS term. The analysis runs normally first, solving MNA systems for `.OP`,
+`.DC`, `.AC`, `.TRAN`, or `.NOISE`; then `.MEAS` scans the exported values.
+
+Examples:
+
+| Measurement | MNA relationship |
+|-------------|------------------|
+| `MAX V(OUT)` | Reads stored node-voltage results. |
+| `FIND I(V1) AT=...` | Reads a stored branch-current result. |
+| `DERIV V(OUT)` | Computes slope from saved output samples, not from the solver Jacobian. |
+| `PARAM='vmax/vmin'` | Computes from previous measurement results. |
+
+This distinction matters: a failed measurement does not mean the MNA solve
+failed. It may only mean the requested crossing or window was not found in the
+saved data.
+
 ## Quick Reference — All Measurement Types
 
 | Type | What It Returns | Read More |
@@ -87,7 +106,9 @@ C1 OUT 0 1u
 .END
 ```
 
-**Expected result:** ~21.97 ms (RC time constant = 10 kΩ × 1 µF = 10 ms; analytically $\tau \ln(9/1) \approx 21.97$ ms).
+**Expected result:** approximately 21.97 ms
+($\tau = RC = 10\,\text{k}\Omega \cdot 1\,\mu\text{F} = 10\,\text{ms}$, and
+$\tau\ln(9/1) \approx 21.97\,\text{ms}$).
 
 #### Example 2 — Propagation delay between input and output
 
@@ -138,7 +159,8 @@ R1 OUT 0 1k
 .END
 ```
 
-**Expected result:** ~10 µs (half of the 20 µs period).
+**Expected result:** approximately $10\,\mu\text{s}$, half of the
+$20\,\mu\text{s}$ period.
 
 #### Example 5 — Using TD to delay the search start
 
@@ -189,7 +211,8 @@ C1 OUT 0 1u
 .END
 ```
 
-**Expected result:** ~6.93 ms ($\tau \ln 2 = 10\text{ms} \times 0.693$).
+**Expected result:** approximately $6.93\,\text{ms}$
+($\tau\ln 2 = 10\,\text{ms} \times 0.693$).
 
 #### Example 2 — Second rising crossing of a square wave
 
@@ -205,7 +228,8 @@ R1 OUT 0 1k
 .END
 ```
 
-**Expected result:** ~20 µs (second period begins).
+**Expected result:** approximately $20\,\mu\text{s}$, when the second period
+begins.
 
 #### Example 3 — First falling crossing
 
@@ -219,7 +243,7 @@ R1 OUT 0 1k
 .END
 ```
 
-**Expected result:** ~10 µs.
+**Expected result:** approximately $10\,\mu\text{s}$.
 
 #### Example 4 — Using TD to skip early crossings
 
@@ -358,7 +382,8 @@ C1 OUT 0 1u
 .END
 ```
 
-**Expected result:** ~3.935 V ($10 \times (1 - e^{-5/10}) \approx 3.935$).
+**Expected result:** approximately $3.935\,\text{V}$
+($10\left(1 - e^{-5/10}\right) \approx 3.935$).
 
 #### Example 2 — Constant voltage check
 
@@ -392,7 +417,8 @@ C1 OUT 0 1u
 .END
 ```
 
-**Expected result:** > 9.9 V (the capacitor nearly fully charges in 50 ms = 5τ).
+**Expected result:** greater than $9.9\,\text{V}$; the capacitor nearly fully
+charges because $50\,\text{ms} = 5\tau$.
 
 With a window — only consider data between 5 µs and 15 µs:
 
@@ -426,7 +452,11 @@ C1 OUT 0 1u
 
 **Purpose:** Compute the time-weighted average of a signal using trapezoidal integration:
 
-$$\text{AVG} = \frac{1}{t_{\text{end}} - t_{\text{start}}} \int_{t_{\text{start}}}^{t_{\text{end}}} V(t) \, dt$$
+$$
+\text{AVG} =
+\frac{1}{t_{\text{end}} - t_{\text{start}}}
+\int_{t_{\text{start}}}^{t_{\text{end}}} V(t)\,dt
+$$
 
 #### Example 1 — DC voltage across a resistor divider
 
@@ -463,7 +493,13 @@ R1 OUT 0 1k
 
 **Purpose:** Compute the RMS value of a signal using trapezoidal integration:
 
-$$\text{RMS} = \sqrt{\frac{1}{t_{\text{end}} - t_{\text{start}}} \int_{t_{\text{start}}}^{t_{\text{end}}} V(t)^2 \, dt}$$
+$$
+\text{RMS} =
+\sqrt{
+\frac{1}{t_{\text{end}} - t_{\text{start}}}
+\int_{t_{\text{start}}}^{t_{\text{end}}} V(t)^2\,dt
+}
+$$
 
 #### Example — RMS of a sine wave
 
@@ -480,7 +516,8 @@ R1 OUT 0 1k
 .END
 ```
 
-**Expected result:** ~3.536 V ($5 / \sqrt{2} \approx 3.536$).
+**Expected result:** approximately $3.536\,\text{V}$
+($5/\sqrt{2} \approx 3.536$).
 
 ---
 
@@ -506,9 +543,13 @@ R1 OUT 0 1k
 
 **Purpose:** Compute the trapezoidal integral of a signal over time:
 
-$$\text{INTEG} = \int_{t_{\text{start}}}^{t_{\text{end}}} V(t) \, dt$$
+$$
+\text{INTEG} =
+\int_{t_{\text{start}}}^{t_{\text{end}}} V(t)\,dt
+$$
 
-The result has units of (signal unit × time unit). For example, integrating a voltage in volts over seconds gives volt-seconds.
+The result has units of signal unit times time unit. For example, integrating a
+voltage in volts over seconds gives volt-seconds.
 
 #### Example 1 — Integral of a constant voltage
 
@@ -522,7 +563,7 @@ R1 OUT 0 1k
 .END
 ```
 
-**Expected result:** 50 × 10⁻⁶ V·s.
+**Expected result:** $50 \times 10^{-6}\,\text{V}\cdot\text{s}$.
 
 #### Example 2 — Integral over a sub-window
 
@@ -548,7 +589,11 @@ R1 OUT 0 1k
 
 #### Example 1 — Slope of a linear ramp
 
-A PWL source ramps from 0 V to 10 V over 10 µs. The slope is constant at $10 / 10 \times 10^{-6} = 10^{6}$ V/s:
+A PWL source ramps from 0 V to 10 V over 10 us. The slope is constant:
+
+$$
+\frac{10\,\text{V}}{10\times10^{-6}\,\text{s}} = 10^6\,\text{V/s}
+$$
 
 ```spice
 * Linear ramp: 0V at t=0, 10V at t=10µs → slope = 1MV/s
@@ -560,7 +605,7 @@ R1 OUT 0 1k
 .END
 ```
 
-**Expected result:** 1 × 10⁶ V/s.
+**Expected result:** $1 \times 10^6\,\text{V/s}$.
 
 #### Example 2 — Derivative at a threshold crossing (DERIV with WHEN)
 
@@ -578,7 +623,14 @@ C1 OUT 0 1u
 .END
 ```
 
-**Expected result:** ~500 V/s (at $t = \tau \ln 2$, the slope is $\frac{10}{\tau} \cdot e^{-\ln 2} = \frac{10}{0.01} \cdot 0.5 = 500$).
+**Expected result:** approximately $500\,\text{V/s}$. At
+$t = \tau\ln 2$, the slope is:
+
+$$
+\frac{10}{\tau}\cdot e^{-\ln 2}
+= \frac{10}{0.01}\cdot 0.5
+= 500
+$$
 
 ---
 
@@ -649,7 +701,7 @@ For AC analysis, standard `V(node)` is a complex number, so you need specific ex
 | Export | Description | Example Use |
 |--------|-------------|-------------|
 | `VM(node)` | Voltage magnitude | Detecting the −3 dB point |
-| `VDB(node)` | Voltage in decibels (20 log₁₀) | Gain in dB |
+| `VDB(node)` | Voltage in decibels ($20\log_{10}$) | Gain in dB |
 | `VP(node)` | Voltage phase (degrees) | Phase margin |
 | `VR(node)` | Real part of complex voltage | |
 | `VI(node)` | Imaginary part of complex voltage | |

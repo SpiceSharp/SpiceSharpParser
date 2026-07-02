@@ -20,6 +20,15 @@ The `.INCLUDE` statement includes the contents of another file into the current 
 .INCLUDE transistors.mod
 ```
 
+## MNA View
+
+`.INCLUDE` is a netlist expansion step, not an MNA stamp. The included file is
+parsed as if its contents appeared in the main netlist.
+
+If the included file defines only models, it changes how later devices load
+their stamps. If it includes actual components or subcircuits that are
+instantiated, those devices contribute normal MNA rows, columns, and RHS terms.
+
 ## Typical Usage
 
 ```spice

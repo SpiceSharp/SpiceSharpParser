@@ -18,4 +18,10 @@ The `.ST` statement defines a parameter sweep, identical in function to `.STEP`.
 .ST PARAM gain LIST 1 10 100
 ```
 
-See the [.STEP](.step) documentation for full details and examples. The syntax and behavior are identical.
+## MNA View
+
+`.ST` has the same MNA meaning as `.STEP`: it repeats the selected analysis with
+different values. Each sweep point loads the normal matrix for that value.
+
+See the [.STEP](step.md#mna-view) documentation for full details and examples.
+The syntax and behavior are identical.

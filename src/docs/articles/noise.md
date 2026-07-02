@@ -29,6 +29,30 @@ R2 OUT 0 10k
 .END
 ```
 
+## MNA View
+
+Noise analysis is based on the linearized operating point, like `.AC`. The
+simulator first finds the DC bias point, then uses the small-signal MNA system
+to propagate each device's equivalent noise source to the requested output.
+
+Conceptually:
+
+```text
+solve DC operating point
+linearize devices around that point
+for each frequency:
+  evaluate device noise sources
+  solve small-signal matrix responses
+  accumulate output and input-referred noise
+```
+
+The `.NOISE` statement itself does not create a normal circuit component. It
+asks the simulator to use the linearized MNA model and the devices' noise
+behaviors to compute spectral density.
+
+For the related frequency-domain matrix view, see
+[.AC](ac.md#mna-view).
+
 ## C# API
 
 ```csharp

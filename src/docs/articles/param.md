@@ -38,6 +38,22 @@ R2 OUT 0 {2*res}
 V1 IN 0 {vdd}
 ```
 
+## MNA View
+
+`.PARAM` does not stamp the matrix directly. It supplies values that other
+statements use when they load their stamps.
+
+Examples:
+
+| Parameter use | MNA effect |
+|---------------|------------|
+| `R1 IN OUT {res}` | Changes resistor conductance `1/res`. |
+| `C1 OUT 0 {cap}` | Changes AC admittance and transient companion coefficient. |
+| `V1 IN 0 {vdd}` | Changes the RHS or branch equation source value. |
+| `.MODEL ... (Is={is})` | Changes nonlinear derivatives during Newton iteration. |
+
+So parameters are upstream of MNA: they change numbers that devices later stamp.
+
 ## Typical Usage
 
 ```spice

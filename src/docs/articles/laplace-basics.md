@@ -4,15 +4,35 @@ Laplace transforms can look intimidating because they come from higher math, but
 
 For circuit simulation, the practical idea is simple:
 
-```text
-output = transfer_function * input
-```
+$$
+\text{output} = H(s)\cdot\text{input}
+$$
 
 The transfer function describes how a linear block changes a signal. It can say "amplify by 10", "roll off after 1 kHz", "remove DC", "lag the phase", or "ring like a damped resonator".
 
 If you want the exact syntax supported by SpiceSharpParser, see [LAPLACE Transfer Sources](laplace.md). This page focuses on the intuition.
 
 Keep one practical boundary in mind as you read: SpiceSharpParser supports a focused `LAPLACE` subset. The transfer must be used on an `E`, `G`, `F`, or `H` source; `E` and `G` use `V(node)` or `V(node1,node2)` input, while `F` and `H` use `I(source)` input. The transfer must be a proper rational polynomial in `s` with finite DC gain. Constant `M=`, `TD=`, and `DELAY=` options are supported for those source-level forms. The examples below stay inside that subset.
+
+## MNA View
+
+A Laplace source is still loaded into the same modified nodal analysis system as
+other sources. The transfer function changes the source value or dynamic state,
+but the output type controls the matrix shape:
+
+| Source form | Output type | MNA shape |
+|-------------|-------------|-----------|
+| `E ... LAPLACE` | Voltage output | Adds a branch-current unknown and a voltage constraint row. |
+| `G ... LAPLACE` | Current output | Stamps current into the output node KCL rows. |
+| `F ... LAPLACE` | Current output controlled by current | Reads `I(source)` and stamps output current into node rows. |
+| `H ... LAPLACE` | Voltage output controlled by current | Reads `I(source)` and adds a voltage-output branch equation. |
+
+For `.AC`, the transfer is evaluated with $s = j\omega$ and loaded into the
+complex MNA matrix. For `.TRAN`, the transfer becomes equivalent dynamic state
+that is solved together with the rest of the circuit.
+
+For the general matrix algorithm, see
+[How SpiceSharp Solves Circuits](spicesharp-architecture.md#modified-nodal-analysis).
 
 ## Running Example: Sensor To ADC
 
@@ -34,11 +54,12 @@ The real circuit might include an op-amp, resistors, capacitors, sensor capacita
 
 A simple first model might be:
 
-```text
-H(s) = gain * wc / (s + wc)
-```
+$$
+H(s) = \frac{\text{gain}\cdot\omega_c}{s+\omega_c}
+$$
 
-For example, use `gain = 2` and `fc = 10 kHz`, where `wc = 2*pi*fc`.
+For example, use $\text{gain} = 2$ and $f_c = 10\,\text{kHz}$, where
+$\omega_c = 2\pi f_c$.
 
 That one expression says:
 
@@ -128,31 +149,34 @@ The same `H(s)` is interpreted differently by different analyses.
 
 | SPICE view | What it asks | How to think about `s` |
 |------------|--------------|-------------------------|
-| `.OP` | What is the DC operating point? | Set `s = 0`. |
-| `.AC` | What is gain and phase versus frequency? | Set `s = j*omega`. |
+| `.OP` | What is the DC operating point? | Set $s = 0$. |
+| `.AC` | What is gain and phase versus frequency? | Set $s = j\omega$. |
 | `.TRAN` | What waveform happens over time? | The simulator uses the equivalent dynamic behavior. |
 
 For the sensor-to-ADC low-pass:
 
-```text
-H(s) = gain * wc / (s + wc)
-```
+$$
+H(s) = \frac{\text{gain}\cdot\omega_c}{s+\omega_c}
+$$
 
-In `.OP`, set `s = 0`:
+In `.OP`, set $s = 0$:
 
-```text
-H(0) = gain * wc / wc = gain
-```
+$$
+H(0) =
+\frac{\text{gain}\cdot\omega_c}{\omega_c}
+= \text{gain}
+$$
 
 So the DC sensor value is multiplied by `gain`.
 
 In `.AC`, the simulator evaluates:
 
-```text
-H(j*omega)
-```
+$$
+H(j\omega)
+$$
 
-At low frequency, `omega` is small and the gain is close to `gain`. At high frequency, `omega` is large and the gain gets smaller.
+At low frequency, $\omega$ is small and the gain is close to `gain`. At high
+frequency, $\omega$ is large and the gain gets smaller.
 
 In `.TRAN`, a sudden input step does not appear instantly at the output. The output moves toward the final value with a rounded response.
 
@@ -160,29 +184,31 @@ In `.TRAN`, a sudden input step does not appear instantly at the output. The out
 
 A Laplace transfer function is written with a variable named `s`:
 
-```text
+$$
 H(s)
-```
+$$
 
 Think of `s` as a special placeholder for dynamic behavior. It is not a node, not a parameter you define with `.PARAM`, and not a voltage.
 
 For operating point analysis:
 
-```text
+$$
 s = 0
-```
+$$
 
 For AC analysis at frequency `f`:
 
-```text
-s = j * omega
-omega = 2 * pi * f
-```
+$$
+\begin{aligned}
+s &= j\omega \\
+\omega &= 2\pi f
+\end{aligned}
+$$
 
 `j` means a 90 degree phase rotation. You do not need to calculate complex numbers by hand every time. The useful rule is:
 
-- The magnitude of `H(j*omega)` is the gain at that frequency.
-- The angle of `H(j*omega)` is the phase shift at that frequency.
+- The magnitude of $H(j\omega)$ is the gain at that frequency.
+- The angle of $H(j\omega)$ is the phase shift at that frequency.
 
 ## Units Sanity Check
 
@@ -190,45 +216,49 @@ Units make Laplace formulas feel less arbitrary.
 
 | Symbol | Unit | Meaning |
 |--------|------|---------|
-| `f` | Hz | Cycles per second. |
-| `omega`, `w`, `wc`, `wp`, `wz`, `wn` | rad/s | Angular frequency. |
-| `tau` | seconds | Time constant. |
-| `s` | 1/seconds | Laplace variable. |
+| $f$ | Hz | Cycles per second. |
+| $\omega$, $\omega_c$, $\omega_p$, $\omega_z$, $\omega_n$ | rad/s | Angular frequency. |
+| $\tau$ | seconds | Time constant. |
+| $s$ | 1/seconds | Laplace variable. |
 | `gain` | usually unitless | Voltage gain for an `E` source. |
-| `gm` | siemens | Transconductance for a `G` source. |
+| $g_m$ | siemens | Transconductance for a `G` source. |
 
 The terms added together in a transfer function must have compatible units.
 
 In this low-pass:
 
-```text
-H(s) = 1 / (1 + s*tau)
-```
+$$
+H(s) = \frac{1}{1+s\tau}
+$$
 
-`s` has units of `1/seconds`, and `tau` has units of `seconds`, so `s*tau` is unitless. That is why it can be added to `1`.
+$s$ has units of 1/seconds, and $\tau$ has units of seconds, so $s\tau$ is
+unitless. That is why it can be added to 1.
 
 In this equivalent low-pass:
 
-```text
-H(s) = wc / (s + wc)
-```
+$$
+H(s) = \frac{\omega_c}{s+\omega_c}
+$$
 
-`s` and `wc` both have units of `1/seconds`, so they can be added. The ratio is unitless.
+$s$ and $\omega_c$ both have units of 1/seconds, so they can be added. The
+ratio is unitless.
 
 To move between hertz and angular frequency:
 
-```text
-omega = 2 * pi * f
-f = omega / (2 * pi)
-```
+$$
+\begin{aligned}
+\omega &= 2\pi f \\
+f &= \frac{\omega}{2\pi}
+\end{aligned}
+$$
 
 ## Gain And Phase
 
 Gain says how much bigger or smaller the output is than the input.
 
-```text
-gain = output / input
-```
+$$
+\text{gain} = \frac{\text{output}}{\text{input}}
+$$
 
 Examples:
 
@@ -278,21 +308,21 @@ For a resonant system, the magnitude may show a bump. In time-domain language, t
 
 A first-order RC low-pass has this transfer function:
 
-```text
-H(s) = 1 / (1 + s*tau)
-```
+$$
+H(s) = \frac{1}{1+s\tau}
+$$
 
 `tau` is the time constant:
 
-```text
-tau = R * C
-```
+$$
+\tau = RC
+$$
 
 The cutoff frequency is:
 
-```text
-fc = 1 / (2*pi*tau)
-```
+$$
+f_c = \frac{1}{2\pi\tau}
+$$
 
 At the cutoff frequency:
 
@@ -310,17 +340,17 @@ Poles and zeros are places where a transfer function changes behavior.
 
 A pole usually makes gain start falling and phase start lagging:
 
-```text
-H(s) = wc / (s + wc)
-```
+$$
+H(s) = \frac{\omega_c}{s+\omega_c}
+$$
 
 That is a one-pole low-pass filter. Below `fc`, it passes signals. Above `fc`, it rolls off.
 
 A zero usually makes gain start rising and phase start leading:
 
-```text
-H(s) = s / (s + wc)
-```
+$$
+H(s) = \frac{s}{s+\omega_c}
+$$
 
 That is a one-pole high-pass filter. It blocks DC and low frequencies, then passes high frequencies.
 
@@ -337,22 +367,22 @@ In real circuits:
 
 Use this quick checklist:
 
-1. Set `s = 0` to find the DC gain.
-2. Look for terms like `s + wc` or `1 + s*tau`; these are poles.
+1. Set $s = 0$ to find the DC gain.
+2. Look for terms like $s+\omega_c$ or $1+s\tau$; these are poles.
 3. Look for `s` in the numerator; that often means DC is blocked or phase lead is added.
-4. Look for a frequency such as `wc`, `wp`, `wz`, or `wn`; that is where behavior changes.
+4. Look for a frequency such as $\omega_c$, $\omega_p$, $\omega_z$, or $\omega_n$; that is where behavior changes.
 5. Compare the numerator degree with the denominator degree; in SpiceSharpParser, the numerator degree must not be greater.
-6. Convert angular frequency to hertz with `fc = wc/(2*pi)`.
+6. Convert angular frequency to hertz with $f_c = \omega_c/(2\pi)$.
 
 Examples:
 
 | Transfer | What it does |
 |----------|--------------|
-| `1/(1+s*tau)` | Unity-gain low-pass |
-| `wc/(s+wc)` | Same low-pass, written with angular cutoff |
-| `s/(s+wc)` | High-pass that blocks DC |
-| `10*wc/(s+wc)` | Gain of 10 with one-pole bandwidth |
-| `(1+s/wz)/(1+s/wp)` | Lead or lag block, depending on pole/zero placement |
+| $\frac{1}{1+s\tau}$ | Unity-gain low-pass |
+| $\frac{\omega_c}{s+\omega_c}$ | Same low-pass, written with angular cutoff |
+| $\frac{s}{s+\omega_c}$ | High-pass that blocks DC |
+| $\frac{10\omega_c}{s+\omega_c}$ | Gain of 10 with one-pole bandwidth |
+| $\frac{1+s/\omega_z}{1+s/\omega_p}$ | Lead or lag block, depending on pole/zero placement |
 
 ## Choose Your Transfer Function
 
@@ -360,11 +390,11 @@ Start with the behavior you need, then choose a simple transfer function.
 
 | Goal | Try this transfer | Time-domain intuition | Frequency-domain intuition |
 |------|-------------------|-----------------------|----------------------------|
-| Smooth noise or limit bandwidth | `wc/(s+wc)` | Edges become rounded. | Flat, then rolls off. |
-| Add gain and bandwidth limit | `gain*wp/(s+wp)` | Output follows with finite speed. | Gain is `gain` at low frequency, then rolls off. |
-| Block DC | `s/(s+wc)` | A step causes a temporary response that returns toward zero. | Low frequencies are reduced, high frequencies pass. |
-| Model peaking or ringing | `wn*wn/(s*s + 2*zeta*wn*s + wn*wn)` | May overshoot or ring before settling. | May show a bump near `fn`. |
-| Shape phase in a loop | `(1+s/wz)/(1+s/wp)` | Can improve or slow loop response. | Adds lead or lag between zero and pole. |
+| Smooth noise or limit bandwidth | $\frac{\omega_c}{s+\omega_c}$ | Edges become rounded. | Flat, then rolls off. |
+| Add gain and bandwidth limit | $\frac{\text{gain}\cdot\omega_p}{s+\omega_p}$ | Finite-speed output. | Flat gain, then rolloff. |
+| Block DC | $\frac{s}{s+\omega_c}$ | A step causes a temporary response that returns toward zero. | Low frequencies are reduced, high frequencies pass. |
+| Model peaking or ringing | $\frac{\omega_n^2}{s^2 + 2\zeta\omega_n s + \omega_n^2}$ | May overshoot or ring before settling. | May show a bump near `fn`. |
+| Shape phase in a loop | $\frac{1+s/\omega_z}{1+s/\omega_p}$ | Can improve or slow loop response. | Adds lead or lag between zero and pole. |
 
 For the running sensor-to-ADC example, the first or second row is usually the starting point.
 
@@ -389,9 +419,9 @@ When you see a strong frequency-domain change, expect a related time-domain effe
 
 A resistor feeding a capacitor to ground is a low-pass filter:
 
-```text
-H(s) = 1 / (1 + s*R*C)
-```
+$$
+H(s) = \frac{1}{1+sRC}
+$$
 
 Use it for simple bandwidth limits, anti-alias filters, smoothing, and sensor front ends.
 
@@ -401,9 +431,9 @@ In the time domain, it slows edges and smooths noise. In the frequency domain, i
 
 A series capacitor with a resistor to ground blocks DC:
 
-```text
-H(s) = s / (s + wc)
-```
+$$
+H(s) = \frac{s}{s+\omega_c}
+$$
 
 Use it when you want changes or AC content, but not the DC level.
 
@@ -413,16 +443,18 @@ In the time domain, a step appears as a temporary pulse-like response. In the fr
 
 An ideal gain block has the same gain forever, but a real amplifier loses gain at high frequency. A simple closed-loop approximation is:
 
-```text
-H(s) = gain * wp / (s + wp)
-```
+$$
+H(s) = \frac{\text{gain}\cdot\omega_p}{s+\omega_p}
+$$
 
 where:
 
-```text
-fp = gain_bandwidth / gain
-wp = 2*pi*fp
-```
+$$
+\begin{aligned}
+f_p &= \frac{\text{gain bandwidth}}{\text{gain}} \\
+\omega_p &= 2\pi f_p
+\end{aligned}
+$$
 
 This is not a full op-amp macro-model. It is a compact way to include a dominant bandwidth limit.
 
@@ -430,18 +462,20 @@ This is not a full op-amp macro-model. It is a compact way to include a dominant
 
 Some systems have a natural frequency and damping:
 
-```text
-H(s) = wn*wn / (s*s + 2*zeta*wn*s + wn*wn)
-```
+$$
+H(s) =
+\frac{\omega_n^2}{s^2 + 2\zeta\omega_n s + \omega_n^2}
+$$
 
 where:
 
 | Term | Meaning |
 |------|---------|
-| `wn` | Natural angular frequency |
-| `zeta` | Damping ratio |
+| $\omega_n$ | Natural angular frequency |
+| $\zeta$ | Damping ratio |
 
-Smaller `zeta` gives more peaking and ringing. Larger `zeta` gives a flatter, more damped response.
+Smaller $\zeta$ gives more peaking and ringing. Larger $\zeta$ gives a
+flatter, more damped response.
 
 ## Common Misconceptions
 
@@ -481,25 +515,27 @@ These are quick checks for reading transfer functions.
 
 | Question | Answer |
 |----------|--------|
-| What is the DC gain of `10*wc/(s+wc)`? | Set `s = 0`, so the gain is `10`. |
-| Does `s/(s+wc)` pass DC? | No. At `s = 0`, the numerator is `0`. |
-| If `fc` increases in `wc/(s+wc)`, does the block get faster or slower? | Faster. Higher cutoff means shorter time constant. |
+| What is the DC gain of $\frac{10\omega_c}{s+\omega_c}$? | Set $s = 0$, so the gain is 10. |
+| Does $\frac{s}{s+\omega_c}$ pass DC? | No. At $s = 0$, the numerator is 0. |
+| If $f_c$ increases in $\frac{\omega_c}{s+\omega_c}$, does the block get faster or slower? | Faster. Higher cutoff means shorter time constant. |
 | What does `AC 1` on an input source help with in `.AC` analysis? | It sets the input magnitude to 1, so the output magnitude is directly the transfer gain from that source. |
-| What does lower `zeta` usually mean in a second-order block? | More peaking and more ringing. |
-| Why avoid a pure integrator such as `1/s` here? | Its DC gain is singular, so it is outside the supported finite-DC-gain subset. |
+| What does lower $\zeta$ usually mean in a second-order block? | More peaking and more ringing. |
+| Why avoid a pure integrator such as $\frac{1}{s}$ here? | Its DC gain is singular, so it is outside the supported finite-DC-gain subset. |
 
 ## Intuition Checklist
 
 When you see a transfer function, ask:
 
-1. What is the DC gain when `s = 0`?
+1. What is the DC gain when $s = 0$?
 2. Does it pass or block low frequencies?
 3. Where does the gain start changing?
 4. Does the output lead or lag the input?
 5. Would a step be smooth, fast, slow, or ringing?
 6. Is this linear approximation enough, or do nonlinear details matter?
 
-For the sensor-to-ADC example, this checklist says: the DC gain is `gain`, low-frequency sensor signals pass, high-frequency noise is reduced above `fc`, phase lag appears near the cutoff, and time-domain edges become smoother.
+For the sensor-to-ADC example, this checklist says: the DC gain is `gain`,
+low-frequency sensor signals pass, high-frequency noise is reduced above $f_c$,
+phase lag appears near the cutoff, and time-domain edges become smoother.
 
 ## SpiceSharpParser Subset
 
@@ -514,4 +550,7 @@ SpiceSharpParser intentionally supports the practical subset introduced near the
 - Function-style `LAPLACE(input, transfer, ...)` in behavioral expressions, including inline `M=`, `TD=`, and `DELAY=` options.
 - Arbitrary function-style input expressions, lowered through internal helpers when they are not direct probes.
 
-That means many web examples need adaptation before they are valid here. Avoid unsupported forms such as `exp()`, `sqrt()`, pure `1/s`, nested `LAPLACE(...)` calls inside function inputs, ideal delay forms outside the supported `TD=` / `DELAY=` options, and explicit internal-state options.
+That means many web examples need adaptation before they are valid here. Avoid
+unsupported forms such as `exp()`, `sqrt()`, pure $1/s$, nested `LAPLACE(...)`
+calls inside function inputs, ideal delay forms outside the supported `TD=` /
+`DELAY=` options, and explicit internal-state options.

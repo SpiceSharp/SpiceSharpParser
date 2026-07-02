@@ -26,6 +26,29 @@ Q2 OUT BASE 0 NPN_MODEL 2.0
 Q3 C B E PNP_MOD IC=0.7,5.0
 ```
 
+## MNA View
+
+A BJT is a nonlinear three-terminal device. It does not contribute one fixed
+resistor-like stamp. During Newton iteration, SpiceSharp evaluates the model at
+the current collector/base/emitter voltage guess and loads a local linear model.
+
+Conceptually, that linearized model contributes:
+
+| Term | MNA role |
+|------|----------|
+| Junction conductances | Matrix coefficients between transistor terminals. |
+| Controlled current slopes | Jacobian terms such as transconductance. |
+| Equivalent currents | RHS terms that make the linearized model touch the nonlinear curve. |
+| Junction capacitances and charge | AC admittance terms or transient companion terms. |
+
+So in `.OP` and `.DC`, the BJT mainly teaches Newton how terminal currents
+change with terminal voltages. In `.AC`, those operating-point derivatives
+become the small-signal model. In `.TRAN`, charge-storage effects are integrated
+through the same companion-model machinery used by capacitors.
+
+For the deeper solver picture, see
+[How SpiceSharp Solves Circuits](spicesharp-architecture.md#q-bipolar-junction-transistor).
+
 ## Model Definition
 
 ### NPN
