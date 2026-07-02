@@ -3977,41 +3977,53 @@ $$
 Read it in companion-model form:
 
 ```text
-i ~= g_eq * V + i_history_or_correction
+iC ~= J * Vcap + Ieq
+Vcap = V(p) - V(n)
 ```
 
 where, for backward Euler:
 
 ```text
-g_eq = Cinc_k / h
+J   = Cinc_k / h
+Ieq = (Q(V_k) - Cinc_k*V_k - Q_prev) / h
 ```
 
-The `g_eq` term goes into the MNA matrix. The history/correction current goes
-into the RHS with opposite signs on the two terminal nodes.
+`J` is the local slope stamped into the MNA matrix. `Ieq` is the known
+history-plus-tangent-correction current. It is part of the branch-current
+approximation first; then it moves to the solver RHS when the KCL equations are
+written in matrix form.
 
 For a capacitor from `p` to `n`, the matrix part is the same four-entry pattern
 as a conductance:
 
 ```text
-Y[p,p] += g_eq
-Y[p,n] -= g_eq
-Y[n,p] -= g_eq
-Y[n,n] += g_eq
+Y[p,p] += J
+Y[p,n] -= J
+Y[n,p] -= J
+Y[n,n] += J
 ```
 
 The RHS part is equal and opposite:
 
 ```text
-rhs[p] -= i_history_or_correction
-rhs[n] += i_history_or_correction
+rhs[p] -= Ieq
+rhs[n] += Ieq
 ```
 
-The exact sign depends on the device's branch-current convention, but the split
-is stable:
+Those signs come from KCL. The branch current is positive from `p` to `n`, so it
+leaves the positive node and enters the negative node:
+
+```text
+C+ row: +J*V(p) - J*V(n) = -Ieq
+C- row: -J*V(p) + J*V(n) = +Ieq
+```
+
+The exact sign depends on the device's branch-current convention. The split is
+stable:
 
 ```text
 current unknown sensitivity -> matrix/Jacobian
-accepted history/correction -> RHS
+accepted history/tangent correction -> RHS
 ```
 
 Use one candidate Newton iteration to see the numbers:
@@ -4039,13 +4051,13 @@ Cinc_k = 1u + 200n*3 = 1.6uF
 The matrix coefficient is:
 
 ```text
-g_eq = Cinc_k / h = 1.6uF / 1ms = 1.6mS
+J = Cinc_k / h = 1.6uF / 1ms = 1.6mS
 ```
 
 The correction term is:
 
 ```text
-i_history_or_correction =
+Ieq =
   (Q(V_k) - Cinc_k*V_k - Q_prev) / h
   = (3.9uC - 1.6uF*3V - 2.4uC) / 1ms
   = -3.3mA
@@ -4055,7 +4067,7 @@ So, for this Newton iteration only, the capacitor branch current is approximated
 as:
 
 ```text
-i ~= 1.6mS * V - 3.3mA
+iC ~= 1.6mS * Vcap - 3.3mA
 ```
 
 If the matrix solve changes `V(out)`, the next Newton iteration evaluates
