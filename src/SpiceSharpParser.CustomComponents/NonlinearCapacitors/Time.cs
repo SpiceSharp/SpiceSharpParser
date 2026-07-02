@@ -79,28 +79,57 @@ namespace SpiceSharpParser.CustomComponents.NonlinearCapacitors
             JacobianInfo info = _chargeState.GetContributions(capacitance, voltage);
 
             // _chargeState represents i = dQ/dt for this candidate timestep.
-            // The solver cannot stamp "dQ/dt" directly, so the integration method
-            // first rewrites it as a current depending on the present unknown plus
-            // accepted history. For example, backward Euler has:
-            // i = dQ/dt ~= (Q_now - Q_prev) / h
-            //              = (1/h) * Q(Vcap) + (-(1/h) * Q_prev).
-            // In the common integration-method notation, a0 = 1/h and the
-            // history term is the already-known previous accepted charge part.
-            // If Q is nonlinear, Newton linearizes it around the current voltage
-            // guess: Q(Vcap) ~= Q(Vguess) + Cinc * (Vcap - Vguess).
-            // Combining those gives the affine form MNA can stamp:
-            // i(Vcap) ~= J * Vcap + rhs.
-            // Here J is roughly a0*Cinc; rhs is the known history plus the tangent
-            // correction a0*(Q(Vguess) - Cinc*Vguess).
-            // Branch current is positive from C+ to C-. The ElementSet order is
+            // MNA cannot stamp a time derivative directly. GetContributions()
+            // converts the derivative and Newton tangent into a branch-current
+            // companion form:
+            //
+            //   iC ~= J * Vcap + Ieq
+            //   Vcap = Vpos - Vneg
+            //
+            // For backward Euler, dQ/dt ~= (Qnow - Qprev) / h. The current charge
+            // term Qnow depends on the unknown Vcap, while Qprev is accepted
+            // history:
+            //
+            //   i = dQ/dt ~= (Qnow - Qprev) / h
+            //              = (1/h) * Q(Vcap) + (-(1/h) * Qprev)
+            //
+            // In the common integration-method notation:
+            //
+            //   i ~= a0 * Q(Vcap) + history
+            //   a0 = 1/h
+            //   history = -(1/h) * Qprev
+            //
+            // If Q(Vcap) is nonlinear, Newton replaces it by its local tangent
+            // at the current voltage guess:
+            //
+            //   Q(Vcap) ~= Q(Vguess) + Cinc * (Vcap - Vguess)
+            //
+            // Substituting that tangent into the integration formula gives:
+            //
+            //   iC ~= (a0*Cinc) * Vcap
+            //       + history
+            //       + a0 * (Q(Vguess) - Cinc*Vguess)
+            //
+            // So GetContributions returns the two pieces used by MNA:
+            //
+            //   J   ~= a0*Cinc
+            //   Ieq ~= history + a0*(Q(Vguess) - Cinc*Vguess)
+            //
+            // In MNA, the branch current leaves C+ and enters C-. KCL therefore
+            // adds +iC to the C+ row and -iC to the C- row:
+            //
+            //   C+ row: +J*Vpos - J*Vneg = -Ieq
+            //   C- row: -J*Vpos + J*Vneg = +Ieq
+            //
+            // ElementSet order:
             // Y[pos,pos], Y[pos,neg], Y[neg,pos], Y[neg,neg], rhs[pos], rhs[neg].
             _timeElements.Add(
                 info.Jacobian, // +J*Vpos in the positive-node KCL row.
                 -info.Jacobian, // -J*Vneg in the positive-node KCL row.
                 -info.Jacobian, // -J*Vpos in the negative-node KCL row.
                 info.Jacobian, // +J*Vneg in the negative-node KCL row.
-                -info.Rhs, // Equivalent current leaving C+ is moved to RHS.
-                info.Rhs); // Same current enters C-, so the RHS sign is opposite.
+                -info.Rhs, // -Ieq in the positive-node RHS.
+                info.Rhs); // +Ieq in the negative-node RHS.
         }
     }
 }
