@@ -83,7 +83,6 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
         }
 
         [Theory]
-        [InlineData("V1 out 0 PULSE(0 1 0 1n 1n 10n 20n 3)", "PULSE")]
         [InlineData("V1 out 0 SINE(0 1 1k 0 0 0 3)", "SINE")]
         public void When_LtspiceWaveformHasCycleCount_Expect_TargetedError(string sourceLine, string waveformName)
         {
@@ -99,6 +98,46 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
             Assert.True(model.ValidationResult.HasError);
             AssertErrorContains(model.ValidationResult, waveformName);
             AssertErrorContains(model.ValidationResult, "cycle-count");
+        }
+
+        [Fact]
+        public void When_LtspicePulseHasCycleCount_Expect_TransientStopsAfterFiniteCycles()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - finite-cycle PULSE",
+                "V1 out 0 PULSE(0 1 2n 1n 1n 3n 10n 2)",
+                "R1 out 0 1k",
+                ".tran 1n 25n",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+
+            var exports = RunTransientSimulation(model, "V(out)");
+            Assert.NotEmpty(exports);
+            Assert.True(EqualsWithTol(exports, FinitePulseReference));
+        }
+
+        [Theory]
+        [InlineData("V1 out 0 PULSE(0 1 0 1n 1n 10n 0 3)", "period")]
+        [InlineData("V1 out 0 PULSE(0 1 0 1n 1n 10n 20n 0)", "cycle-count")]
+        public void When_LtspicePulseCycleCountArgumentsAreInvalid_Expect_TargetedError(
+            string sourceLine,
+            string expectedMessage)
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - invalid finite-cycle PULSE",
+                sourceLine,
+                "R1 out 0 1k",
+                ".tran 1n 50n",
+                ".save V(out)",
+                ".end");
+
+            Assert.True(model.ValidationResult.HasError);
+            AssertErrorContains(model.ValidationResult, "PULSE");
+            AssertErrorContains(model.ValidationResult, expectedMessage);
         }
 
         [Theory]
@@ -156,6 +195,41 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
             }
 
             return value;
+        }
+
+        private static double FinitePulseReference(double time)
+        {
+            const double initialValue = 0.0;
+            const double pulsedValue = 1.0;
+            const double delay = 2e-9;
+            const double riseTime = 1e-9;
+            const double fallTime = 1e-9;
+            const double pulseWidth = 3e-9;
+            const double period = 10e-9;
+            const double cycleCount = 2.0;
+
+            if (time < delay || time >= delay + (period * cycleCount))
+            {
+                return initialValue;
+            }
+
+            var localTime = (time - delay) % period;
+            if (localTime < riseTime)
+            {
+                return initialValue + ((pulsedValue - initialValue) * localTime / riseTime);
+            }
+
+            if (localTime < riseTime + pulseWidth)
+            {
+                return pulsedValue;
+            }
+
+            if (localTime < riseTime + pulseWidth + fallTime)
+            {
+                return pulsedValue + ((initialValue - pulsedValue) * (localTime - riseTime - pulseWidth) / fallTime);
+            }
+
+            return initialValue;
         }
 
         private static SpiceSharpModel GetSpiceSharpModelWithCompatibility(CompatibilityOptions compatibility, params string[] lines)
