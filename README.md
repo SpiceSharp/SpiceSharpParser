@@ -104,14 +104,32 @@ Using SpiceSharpParser involves three steps:
 |----------|---------|
 | Passive | R (resistor), C (capacitor), L (inductor), K (mutual inductance), T (transmission line) |
 | Semiconductor | D (diode), Q (BJT), M (MOSFET), J (JFET) |
-| Sources | V (voltage), I (current) — DC, AC, PULSE, SIN, PWL, SFFM, AM |
+| Sources | V (voltage), I (current) — DC, AC, PULSE, SIN / SINE, EXP, PWL, SFFM, AM, wave-file input |
 | Controlled sources | E (VCVS), F (CCCS), G (VCCS), H (CCVS) |
 | Behavioral | B (arbitrary behavioral source with V= or I= expressions) |
 | Switches | S (voltage-controlled), W (current-controlled) |
 
+### LTspice Compatibility
+
+LTspice-specific behavior is opt-in so the default parser and reader behavior stays dialect-neutral:
+
+```csharp
+var parser = new SpiceNetlistParser();
+parser.Settings.Compatibility = CompatibilityOptions.LTspice;
+var parseResult = parser.ParseNetlist(netlist);
+
+var reader = new SpiceSharpReader();
+reader.Settings.Compatibility = CompatibilityOptions.LTspice;
+var model = reader.Read(parseResult.FinalModel);
+```
+
+LTspice mode covers fixture-backed generated-netlist syntax such as `.backanno` and selected output/viewer options as warning no-ops, one-argument `.TRAN`, scalar expression aliases, finite-cycle `PULSE(... Ncycles)`, `EXP(...)`, independent-source `tbl=(...)`, R/C model `tc=a[,b]`, and switch threshold aliases. Behavior-changing constructs that are not represented by SpiceSharp are reported with targeted diagnostics instead of being silently ignored.
+
+See the [LTspice compatibility matrix](roadmap/ltspice-compatibility-matrix.md) and [LTspice netlist compatibility plan](roadmap/ltspice-netlist-compatibility-plan.md) for the current support classes, known gaps, and evidence policy. LTspice schematic and symbol import (`.asc` / `.asy`) is out of scope.
+
 ### Custom Components
 
-`SpiceSharpParser.CustomComponents` adds opt-in parser mappings for LTspice-style
+The optional `SpiceSharpParser.CustomComponents` package/project adds opt-in parser mappings for LTspice-style
 ideal diode models and nonlinear passive devices:
 
 ```spice
@@ -122,7 +140,8 @@ C1 out 0 Q=1u*x+100n*x*x
 L1 in out Flux=1m*x+100u*x*x
 ```
 
-Enable the mappings with `reader.Settings.UseCustomComponents()` before calling `Read()`.
+Add `using SpiceSharpParser.CustomComponents;` and enable the mappings with
+`reader.Settings.UseCustomComponents()` before calling `Read()`.
 Ideal diode models support LTspice-style `Ron`, `Roff`, `Vfwd`, `Vrev`, `Rrev`,
 `Ilimit`, `RevIlimit`, `Epsilon`, `RevEpsilon`, `M`, and `N` behavior, while ordinary
 diode models still fall back to SpiceSharp's built-in semiconductor diode.
