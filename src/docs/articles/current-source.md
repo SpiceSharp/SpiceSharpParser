@@ -13,7 +13,7 @@ I<name> <node+> <node-> [DC <dc_value>] [AC <mag> [<phase>]] [<waveform>] [M=<m>
 | `node+`, `node-` | Current flows from node+ through the source to node- |
 | `DC <value>` | DC current value |
 | `AC <mag> [phase]` | AC magnitude and phase |
-| `waveform` | Time-domain waveform (PULSE, SIN, PWL, SFFM, AM) |
+| `waveform` | Time-domain waveform (`PULSE`, `SIN` / `SINE`, `EXP`, `PWL`, `SFFM`, `AM`, wave-file input) |
 | `M=m` | Multiplier (equivalent to m parallel sources) |
 
 ## Examples
@@ -41,11 +41,15 @@ Current sources support the same waveform types as voltage sources:
 
 - `PULSE` — Rectangular pulse train
 - `SIN` / `SINE` — Sinusoidal
+- `EXP` — Exponential rise/fall
 - `PWL` — Piecewise linear
 - `SFFM` — Single-frequency FM
 - `AM` — Amplitude modulation
+- `wavefile=<path> chan=<n> [amplitude=<scale>]` / `WAVE` — Wave-file input
 
-See the [V — Voltage Source](voltage-source.md) article for waveform syntax details.
+See the [V — Voltage Source](voltage-source.md) article for waveform syntax,
+LTspice finite-cycle `PULSE`, unsupported finite-cycle `SINE`, wave-file
+diagnostics, and LTspice source-option notes.
 
 ## Behavioral Current Source
 

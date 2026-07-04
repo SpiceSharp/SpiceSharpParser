@@ -31,20 +31,32 @@ V1 IN 0 AC 1
 
 ## Waveform Types
 
+Waveforms can be written in function form, for example `PULSE(...)`, or as a
+waveform name followed by parameters, for example `PULSE 0 5 0 1n 1n 5u 10u`.
+The same waveform syntax is available on independent current sources.
+
 ### PULSE — Rectangular Pulse Train
 
 ```
 PULSE(<v1> <v2> <delay> <rise> <fall> <pulse_width> <period>)
+PULSE(<v1> <v2> <delay> <rise> <fall> <pulse_width> <period> <Ncycles>)
 ```
 
 ```spice
 V1 IN 0 PULSE(0 5 0 10n 10n 500u 1m)
+V2 GATE 0 PULSE(0 1 2n 1n 1n 3n 10n 2)
 ```
 
-### SIN — Sinusoidal
+The seven-argument form is the normal repeating pulse train. The eight-argument
+LTspice finite-cycle form is available only when `CompatibilityOptions.LTspice`
+is enabled. In that mode, `<Ncycles>` limits the source to that many periods and
+then returns it to `<v1>`. The period and cycle count must be positive.
+
+### SIN / SINE — Sinusoidal
 
 ```
 SIN(<offset> <amplitude> <frequency> [<delay> [<damping> [<phase>]]])
+SINE(<offset> <amplitude> <frequency> [<delay> [<damping> [<phase>]]])
 ```
 
 ```spice
@@ -52,15 +64,39 @@ V1 IN 0 SIN(0 1 1k)
 V2 SIG 0 SIN(2.5 2.5 60 0 0 0)
 ```
 
+LTspice finite-cycle `SINE` arguments are recognized in LTspice compatibility
+mode, but they are not mapped yet and produce a targeted validation error.
+
+### EXP — Exponential Rise/Fall
+
+```
+EXP(<v1> <v2> <td1> <tau1> <td2> <tau2>)
+```
+
+```spice
+V1 IN 0 EXP(0 5 1u 100n 10u 200n)
+```
+
+`EXP` starts at `<v1>`, rises toward `<v2>` after `<td1>` with time constant
+`<tau1>`, and falls back toward `<v1>` after `<td2>` with time constant
+`<tau2>`. Both time constants must be positive.
+
 ### PWL — Piecewise Linear
 
 ```
-PWL(<t1> <v1> <t2> <v2> ... [repeat])
+PWL(<t1> <v1> <t2> <v2> ...)
+PWL file = "<path>"
 ```
 
 ```spice
 V1 IN 0 PWL(0 0 1m 5 2m 5 3m 0)
+V2 IN 0 PWL file = "Resources\pwl_reference.txt"
 ```
+
+Inline PWL data uses time/value pairs. File-backed PWL data reads a local text
+file with a header row followed by two numeric columns; spaces, commas,
+semicolons, and tabs are recognized from the first line. Broader LTspice PWL
+file and repeat variants are not claimed yet.
 
 ### SFFM — Single-Frequency FM
 
@@ -74,7 +110,44 @@ V1 IN 0 SFFM(0 1 1k 5 100)
 
 ### AM — Amplitude Modulation
 
-Available for amplitude-modulated waveforms.
+```
+AM(<amplitude> <offset> <modulation_freq> <carrier_freq> [<delay> [<carrier_phase> [<signal_phase>]]])
+```
+
+```spice
+V1 IN 0 AM(1 0 100 10k 0 0 0)
+```
+
+### Wave-File Input
+
+```
+wavefile=<path> chan=<n> [amplitude=<scale>]
+WAVE wavefile=<path> chan=<n> [amplitude=<scale>]
+```
+
+```spice
+V1 IN 0 wavefile="input.wav" chan=0 amplitude=0.5
+V2 IN 0 WAVE wavefile="input.wav" chan=1
+```
+
+Wave-file input converts the selected audio channel to a PWL waveform. The
+channel must be explicit; LTspice channel defaults are not inferred. Missing
+`wavefile=`, missing `chan=`, missing files, and invalid channel expressions
+produce targeted validation diagnostics.
+
+## LTspice Source Compatibility
+
+With `CompatibilityOptions.LTspice`, independent sources also support
+`tbl=(expr,x1,y1,...)`, which is lowered to the existing behavioral
+`table(...)` expression path:
+
+```spice
+V1 OUT 0 tbl=(V(IN), 0,0, 1,5)
+```
+
+Topology-changing LTspice source options such as `Rser`, `Cpar`, `load`, and
+`R=<value>` are recognized as unsupported and reported with targeted errors.
+They are not silently ignored or synthesized into extra components.
 
 ## Behavioral Voltage Source
 

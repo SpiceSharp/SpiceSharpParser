@@ -62,9 +62,12 @@ Transient analysis is typically paired with time-domain sources:
 ```spice
 V1 IN 0 PULSE(0 5 0 10n 10n 500u 1m)
 V2 SIG 0 SIN(0 1 1k)
+V3 EDGE 0 EXP(0 5 1u 100n 10u 200n)
 ```
 
-See the individual waveform documentation for `PULSE`, `SIN`, `PWL`, `SFFM`, and `AM`.
+See the [voltage-source waveform documentation](voltage-source.md#waveform-types)
+for `PULSE`, `SIN` / `SINE`, `EXP`, `PWL`, `SFFM`, `AM`, wave-file input,
+and LTspice compatibility notes.
 
 ## MNA View
 

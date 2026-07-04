@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Text;
 using SpiceSharpParser.Common;
@@ -80,6 +81,52 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
             Assert.True(model.ValidationResult.HasError);
             AssertErrorContains(model.ValidationResult, "LTspice");
             AssertErrorContains(model.ValidationResult, optionName);
+        }
+
+        [Theory]
+        [InlineData("V1 out 0 WAVE chan=1", "wavefile")]
+        [InlineData("V1 out 0 wavefile=\"missing.wav\"", "chan")]
+        [InlineData("V1 out 0 wavefile=\"missing.wav\" chan=1", "does not exist")]
+        public void When_LtspiceWaveFileSourceIsInvalid_Expect_TargetedError(string sourceLine, string expectedMessage)
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - invalid wavefile",
+                sourceLine,
+                "R1 out 0 1k",
+                ".tran 1n 6n",
+                ".save V(out)",
+                ".end");
+
+            Assert.True(model.ValidationResult.HasError);
+            AssertErrorContains(model.ValidationResult, "wavefile");
+            AssertErrorContains(model.ValidationResult, expectedMessage);
+        }
+
+        [Fact]
+        public void When_LtspiceWaveFileChannelIsInvalid_Expect_TargetedError()
+        {
+            var waveFilePath = Path.GetTempFileName();
+
+            try
+            {
+                var model = GetSpiceSharpModelWithCompatibility(
+                    CompatibilityOptions.LTspice,
+                    "LTspice P2 - invalid wavefile channel",
+                    $"V1 out 0 wavefile=\"{waveFilePath}\" chan=bad",
+                    "R1 out 0 1k",
+                    ".tran 1n 6n",
+                    ".save V(out)",
+                    ".end");
+
+                Assert.True(model.ValidationResult.HasError);
+                AssertErrorContains(model.ValidationResult, "wavefile");
+                AssertErrorContains(model.ValidationResult, "chan");
+            }
+            finally
+            {
+                File.Delete(waveFilePath);
+            }
         }
 
         [Theory]

@@ -213,7 +213,7 @@ Implemented P2 behavior:
 - Added six-argument `EXP(v1 v2 td1 tau1 td2 tau2)` source waveform support with argument-count and positive-tau diagnostics.
 - Added LTspice-mode finite-cycle `PULSE(... Ncycles)` support and targeted diagnostics for unsupported finite-cycle `SINE` arguments.
 - Added LTspice-mode `tbl=(expr,x1,y1,...)` independent-source lowering to the existing behavioral `table(...)` path.
-- Improved `wavefile=<path> chan=<n> [amplitude=<value>]` validation so missing `chan` and missing files produce targeted diagnostics.
+- Improved `wavefile=<path> chan=<n> [amplitude=<value>]` validation so missing `wavefile`, missing `chan`, missing files, and invalid `chan` values produce targeted diagnostics.
 - Added LTspice-mode targeted diagnostics for topology-changing source options `Rser`, `Cpar`, `load`, and `R=<value>`.
 
 Remaining follow-up:

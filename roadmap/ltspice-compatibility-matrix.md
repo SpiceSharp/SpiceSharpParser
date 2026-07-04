@@ -1,6 +1,6 @@
 ---
 title: LTspice Compatibility Matrix
-status: P3 Baseline + .FOUR Support Refresh + Custom Passives + Ideal Diodes + Golden Evidence + Include/Lib Path Evidence
+status: P3 Baseline + .FOUR Support Refresh + Custom Passives + Ideal Diodes + Golden Evidence + Include/Lib Path Evidence + Waveform Docs Refresh
 scope: SpiceSharpParser + SpiceSharp
 last_reviewed: 2026-07-04
 ---
@@ -58,7 +58,7 @@ Compatibility classes:
 | `PULSE(... Ncycles)` | Accepted in LTspice mode | Produces finite-cycle pulse waveform | TRAN supported | Analytic transient fixture | Invalid period or cycle count produces targeted `PULSE` diagnostic | Current parser/runtime | The eighth LTspice argument limits the waveform to `Ncycles` periods, then returns to the initial value. |
 | `SINE(... Ncycles)` | Accepted | Rejected in LTspice mode | Not runnable | None | Targeted LTspice `SINE` cycle-count diagnostic | Current parser/runtime | Finite-cycle waveform behavior is deferred. |
 | Independent source `tbl=(expr,x1,y1,...)` | Accepted in LTspice mode | Lowered to behavioral `table(...)` source | OP supported | Analytic fixture | Invalid form names `tbl` | Current parser/runtime | Parser shim uses the existing source/table expression path. |
-| Source `wavefile=<path> chan=<n> [amplitude=<value>]` | Accepted | Produces wave-file waveform | Existing wave-file behavior | Smoke/diagnostic fixture | Missing `chan` and missing file produce targeted validation | Current parser/runtime | Channel defaults are not inferred. |
+| Source `wavefile=<path> chan=<n> [amplitude=<value>]` | Accepted | Produces wave-file waveform | Existing wave-file behavior | Smoke/diagnostic fixture | Missing `wavefile`, missing `chan`, missing file, and invalid `chan` produce targeted validation | Current parser/runtime | Channel defaults are not inferred. |
 | Source `Rser`, `Cpar`, `load`, `R=<value>` | Accepted | Rejected in LTspice mode | Not runnable | None | Targeted LTspice source-option error names option | Current parser/runtime | Topology-changing source options are not synthesized. |
 | R/C model `tc=a[,b]` | Accepted | Lowered to `tc1` / `tc2` | Existing R/C model behavior | Read fixture | None expected in LTspice mode | Current parser/runtime | Parser shim only; coefficients beyond two are rejected. |
 | LTspice metadata/rating parameters `mfg`, `manufacturer`, `pn`, `part`, `desc`, `description`, `V`, `Irms`, `Ipk` | Accepted | Warning no-op in LTspice mode | No runtime effect | Diagnostic fixture | Default: existing parameter error. LTspice: warning names parameter. | Current parser/runtime | BOM/layout metadata is not used by SpiceSharpParser. |
