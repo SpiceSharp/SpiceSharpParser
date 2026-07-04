@@ -81,7 +81,7 @@ namespace SpiceSharpParser.Common.Processors
         /// </summary>
         /// <param name="statements">Statements.</param>
         /// <param name="currentDirectoryPath">Current directory path.</param>
-        protected Statements Process(Statements statements, string currentDirectoryPath)
+        public Statements Process(Statements statements, string currentDirectoryPath)
         {
             var subCircuits = statements.OfType<SubCircuit>().ToList();
 

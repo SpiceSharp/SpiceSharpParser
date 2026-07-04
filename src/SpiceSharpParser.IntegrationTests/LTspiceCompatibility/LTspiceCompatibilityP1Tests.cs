@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Text;
 using SpiceSharp.Simulations;
@@ -209,13 +210,166 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
             AssertErrorContains(model.ValidationResult, modifier);
         }
 
+        [Theory]
+        [InlineData(".include \"vendor\\models\\load.inc\"")]
+        [InlineData(".include vendor/models/load.inc")]
+        public void When_LtspiceIncludePathUsesQuotesOrSeparators_Expect_IncludedElement(string includeStatement)
+        {
+            string tempDirectory = CreateTempDirectory();
+
+            try
+            {
+                string modelDirectory = Path.Combine(tempDirectory, "vendor", "models");
+                Directory.CreateDirectory(modelDirectory);
+                File.WriteAllText(Path.Combine(modelDirectory, "load.inc"), "RLOAD out 0 1k" + Environment.NewLine);
+
+                var model = GetSpiceSharpModelWithCompatibilityAndWorkingDirectory(
+                    tempDirectory,
+                    CompatibilityOptions.LTspice,
+                    "LTspice P1 - include path fixture",
+                    "VIN out 0 1",
+                    includeStatement,
+                    ".op",
+                    ".save V(out)",
+                    ".end");
+
+                AssertNoValidationIssues(model.ValidationResult);
+                Assert.NotNull(model.Circuit["RLOAD"]);
+                Assert.True(EqualsWithTol(1.0, RunOpSimulation(model, "V(out)")));
+            }
+            finally
+            {
+                DeleteDirectory(tempDirectory);
+            }
+        }
+
+        [Fact]
+        public void When_LtspiceNestedIncludeUsesIncludedFileDirectory_Expect_IncludedElement()
+        {
+            string tempDirectory = CreateTempDirectory();
+
+            try
+            {
+                string vendorDirectory = Path.Combine(tempDirectory, "vendor");
+                string partsDirectory = Path.Combine(vendorDirectory, "parts");
+                Directory.CreateDirectory(partsDirectory);
+                File.WriteAllText(Path.Combine(vendorDirectory, "top.inc"), ".include \"parts\\load.inc\"" + Environment.NewLine);
+                File.WriteAllText(Path.Combine(partsDirectory, "load.inc"), "RLOAD out 0 1k" + Environment.NewLine);
+
+                var model = GetSpiceSharpModelWithCompatibilityAndWorkingDirectory(
+                    tempDirectory,
+                    CompatibilityOptions.LTspice,
+                    "LTspice P1 - nested include path fixture",
+                    "VIN out 0 1",
+                    ".include \"vendor/top.inc\"",
+                    ".op",
+                    ".save V(out)",
+                    ".end");
+
+                AssertNoValidationIssues(model.ValidationResult);
+                Assert.NotNull(model.Circuit["RLOAD"]);
+                Assert.True(EqualsWithTol(1.0, RunOpSimulation(model, "V(out)")));
+            }
+            finally
+            {
+                DeleteDirectory(tempDirectory);
+            }
+        }
+
+        [Fact]
+        public void When_LtspiceSelectedLibUsesQuotedWindowsPath_Expect_SelectedContent()
+        {
+            string tempDirectory = CreateTempDirectory();
+
+            try
+            {
+                string vendorDirectory = Path.Combine(tempDirectory, "vendor");
+                Directory.CreateDirectory(vendorDirectory);
+                File.WriteAllText(
+                    Path.Combine(vendorDirectory, "loads.lib"),
+                    ".lib fast" + Environment.NewLine
+                    + "RFAST out 0 10k" + Environment.NewLine
+                    + ".endl" + Environment.NewLine
+                    + ".lib slow" + Environment.NewLine
+                    + "RSLOW out 0 1k" + Environment.NewLine
+                    + ".endl" + Environment.NewLine);
+
+                var model = GetSpiceSharpModelWithCompatibilityAndWorkingDirectory(
+                    tempDirectory,
+                    CompatibilityOptions.LTspice,
+                    "LTspice P1 - selected lib path fixture",
+                    "VIN out 0 1",
+                    ".lib \"vendor\\loads.lib\" slow",
+                    ".op",
+                    ".save V(out)",
+                    ".end");
+
+                AssertNoValidationIssues(model.ValidationResult);
+                Assert.NotNull(model.Circuit["RSLOW"]);
+                Assert.True(EqualsWithTol(1.0, RunOpSimulation(model, "V(out)")));
+            }
+            finally
+            {
+                DeleteDirectory(tempDirectory);
+            }
+        }
+
+        [Fact]
+        public void When_LtspiceNestedSelectedLibUsesParentLibDirectory_Expect_SelectedContent()
+        {
+            string tempDirectory = CreateTempDirectory();
+
+            try
+            {
+                string vendorDirectory = Path.Combine(tempDirectory, "vendor");
+                string innerDirectory = Path.Combine(vendorDirectory, "inner");
+                string modelDirectory = Path.Combine(innerDirectory, "models");
+                Directory.CreateDirectory(modelDirectory);
+                File.WriteAllText(
+                    Path.Combine(vendorDirectory, "outer.lib"),
+                    ".lib selected" + Environment.NewLine
+                    + ".lib \"inner\\loads.lib\" load" + Environment.NewLine
+                    + ".endl" + Environment.NewLine);
+                File.WriteAllText(
+                    Path.Combine(innerDirectory, "loads.lib"),
+                    ".lib load" + Environment.NewLine
+                    + ".include \"models\\load.inc\"" + Environment.NewLine
+                    + ".endl" + Environment.NewLine);
+                File.WriteAllText(Path.Combine(modelDirectory, "load.inc"), "RLOAD out 0 1k" + Environment.NewLine);
+
+                var model = GetSpiceSharpModelWithCompatibilityAndWorkingDirectory(
+                    tempDirectory,
+                    CompatibilityOptions.LTspice,
+                    "LTspice P1 - nested selected lib path fixture",
+                    "VIN out 0 1",
+                    ".lib \"vendor\\outer.lib\" selected",
+                    ".op",
+                    ".save V(out)",
+                    ".end");
+
+                AssertNoValidationIssues(model.ValidationResult);
+                Assert.NotNull(model.Circuit["RLOAD"]);
+                Assert.True(EqualsWithTol(1.0, RunOpSimulation(model, "V(out)")));
+            }
+            finally
+            {
+                DeleteDirectory(tempDirectory);
+            }
+        }
+
         private static SpiceSharpModel GetSpiceSharpModelWithCompatibility(CompatibilityOptions compatibility, params string[] lines)
+        {
+            return GetSpiceSharpModelWithCompatibilityAndWorkingDirectory(null, compatibility, lines);
+        }
+
+        private static SpiceSharpModel GetSpiceSharpModelWithCompatibilityAndWorkingDirectory(string workingDirectory, CompatibilityOptions compatibility, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
             var parser = new SpiceNetlistParser();
 
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Parsing.IsEndRequired = true;
+            parser.Settings.WorkingDirectory = workingDirectory;
             parser.Settings.Compatibility = compatibility;
 
             var parserResult = parser.ParseNetlist(text);
@@ -230,6 +384,21 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
 
             var spiceSharpReader = new SpiceNetlistReader(spiceSharpSettings);
             return spiceSharpReader.Read(parserResult.FinalModel);
+        }
+
+        private static string CreateTempDirectory()
+        {
+            string tempDirectory = Path.Combine(Path.GetTempPath(), "SpiceSharpParserLtspiceP1_" + Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(tempDirectory);
+            return tempDirectory;
+        }
+
+        private static void DeleteDirectory(string tempDirectory)
+        {
+            if (Directory.Exists(tempDirectory))
+            {
+                Directory.Delete(tempDirectory, true);
+            }
         }
 
         private static void AssertNoErrors(ValidationEntryCollection validation)
