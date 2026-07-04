@@ -2,7 +2,7 @@
 title: LTspice Netlist Compatibility Plan
 status: Draft / Roadmap
 scope: SpiceSharpParser + SpiceSharp
-last_reviewed: 2026-07-02
+last_reviewed: 2026-07-04
 ---
 
 # LTspice Netlist Compatibility Plan
@@ -34,6 +34,7 @@ This roadmap is intentionally parser-first and evidence-first:
 - `.FOUR` transient Fourier post-processing is implemented as dialect-neutral output support. Results are exposed through `SpiceSharpModel.FourierAnalyses`, with coverage for multiple signals, current signals, parameterized frequencies, stepped transient runs, and targeted failure diagnostics.
 - Default reader behavior still rejects LTspice `.backanno`, `.tf`, `.net`, `.ferret`, `.loadbias`, `.savebias`, and `.machine` / `.endmachine` with targeted diagnostics.
 - In LTspice mode, `.backanno` is a warning no-op. The other known unsupported LTspice controls remain targeted errors.
+- Include/lib path evidence covers quoted paths, Windows and slash separators, nested `.include` resolution relative to the including file, selected `.lib` sections, and nested selected `.lib` sections resolved relative to the parent library file.
 - `.TRAN` accepts traditional numeric forms and trailing `UIC`; P1 LTspice mode also accepts `.tran <Tstop>` and `.tran <Tstop> UIC` by deriving `step = Tstop / 50.0`. LTspice `startup`, `steady`, `nodiscard`, and `step` modifiers remain targeted errors.
 - LTspice output/viewer `.options` such as `plotwinsize`, `plotreltol`, `plotvntol`, `plotabstol`, `numdgt`, `measdgt`, `meascplxfmt`, `baudrate`, and `fastaccess` are warning no-ops only in LTspice mode.
 - LTspice behavior-changing `.options` such as `cshunt`, `gshunt`, `srcsteps`, `gminsteps`, `trtol`, `chgtol`, `pivrel`, `pivtol`, and `ptrantau` remain targeted errors.
@@ -184,12 +185,13 @@ Implemented P1 behavior:
 - Added a recognized-no-op control path for `.backanno` in LTspice mode.
 - Kept targeted unsupported diagnostics for `.tf`, `.net`, `.ferret`, `.loadbias`, `.savebias`, and `.machine` / `.endmachine`.
 - Added option classification tables for warning no-ops and behavior-changing unsupported LTspice options.
+- Added include/lib path fixtures for quoted paths, Windows and slash separators, nested includes, selected library sections, and nested selected library sections.
 - Lowered LTspice-mode `.tran <Tstop>` and `.tran <Tstop> UIC` to an explicit compatibility policy: `step = Tstop / 50.0`, with `maxStep = step`.
 - Classified LTspice `.tran` modifiers: `UIC` is supported, while `startup`, `steady`, `nodiscard`, and `step` produce targeted diagnostics.
 
 Remaining follow-up:
 
-- Tighten `.include` / `.lib` fixtures for nested includes, Windows separators, and additional relative-path variants before changing path behavior.
+- Add new `.include` / `.lib` path fixtures only when real-world decks expose additional variants or diagnostics gaps.
 
 Acceptance criteria:
 

@@ -1,8 +1,8 @@
 ---
 title: LTspice Compatibility Matrix
-status: P3 Baseline + .FOUR Support Refresh + Custom Passives + Ideal Diodes + Golden Evidence
+status: P3 Baseline + .FOUR Support Refresh + Custom Passives + Ideal Diodes + Golden Evidence + Include/Lib Path Evidence
 scope: SpiceSharpParser + SpiceSharp
-last_reviewed: 2026-07-02
+last_reviewed: 2026-07-04
 ---
 
 # LTspice Compatibility Matrix
@@ -31,10 +31,12 @@ Compatibility classes:
 | Function-style `LAPLACE(input, transfer)` | Accepted | Lowered through Laplace source/helper path | OP/AC/TRAN covered elsewhere | Analytic fixture | None expected | Current parser/runtime | Existing Laplace tests plus LTspice P0 runnable fixture. |
 | `.param` and `.func` baseline expressions | Accepted | Evaluation context functions/parameters | OP supported | Analytic fixture | None expected | Current parser/runtime | LTspice-specific scoping parity is not claimed. |
 | `.tran <step> <stop>` with `.save` and `.meas` | Accepted | Produces transient simulation, exports, measurements | TRAN supported | Smoke/analytic fixture | None expected | Current parser/runtime | LTspice one-argument `.tran` is a separate gap. |
-| Quoted `.include` | Accepted | Include processor inserts file content | OP supported | Smoke fixture | None expected | Current parser/runtime | Synthetic local fixture only. |
-| Relative `.include` under working directory | Accepted | Include processor resolves relative path | OP supported | Smoke fixture | None expected | Current parser/runtime | Synthetic local fixture only. |
+| Quoted `.include` | Accepted | Include processor inserts file content | OP supported | Smoke fixture | None expected | Current parser/runtime | Synthetic local fixture only; P1 evidence includes quoted Windows-style paths. |
+| Relative `.include` under working directory | Accepted | Include processor resolves relative path | OP supported | Smoke fixture | None expected | Current parser/runtime | Synthetic local fixture only; P1 evidence includes slash-separated paths. |
+| Nested relative `.include` | Accepted | Include processor resolves nested paths relative to the including file | OP supported | Smoke fixture | None expected | Current parser/runtime | Synthetic local fixture only; P1 evidence covers an included file that includes a sibling subdirectory file. |
 | One-argument `.lib <file>` | Accepted | Lib processor inserts file content | OP supported | Smoke fixture | None expected | Current parser/runtime | Synthetic local fixture only. |
-| Selected-section `.lib <file> <section>` | Accepted | Lib processor selects section | OP supported | Smoke fixture | None expected | Current parser/runtime | Synthetic local fixture only. |
+| Selected-section `.lib <file> <section>` | Accepted | Lib processor selects section | OP supported | Smoke fixture | None expected | Current parser/runtime | Synthetic local fixture only; P1 evidence includes quoted Windows-style library paths. |
+| Nested selected `.lib` relative paths | Accepted | Lib processor resolves nested selected libraries and their includes relative to the parent library file | OP supported | Smoke fixture | None expected | Current parser/runtime | Synthetic local fixture only; P1 evidence covers `.lib "vendor\\outer.lib" selected` selecting an inner library under the outer library directory. |
 | `.backanno` | Accepted as control | Default: rejected. LTspice: warning no-op. | LTspice OP smoke supported | Smoke fixture | Default: targeted error. LTspice: warning names `.backanno`. | Current parser/runtime | Generated annotation metadata is not used by SpiceSharpParser. |
 | `.tf` | Accepted as control | Rejected | Not runnable | None | Targeted unsupported LTspice diagnostic | Current parser/runtime | Possible future small-signal feature. |
 | `.four` | Accepted as control | Creates transient Fourier post-processing for `.TRAN` | TRAN supported | Analytic integration/unit evidence | Targeted diagnostics for missing `.TRAN`, missing signal, invalid frequency, too-short transient, and missing signal export | Current parser/runtime | Results are exposed through `model.FourierAnalyses`; one result is produced per signal and per stepped transient simulation. Evidence: `FourTests`, `FourierAnalysisCalculatorTests`, README `FourierAnalyses`. |

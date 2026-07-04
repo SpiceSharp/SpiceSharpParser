@@ -86,13 +86,12 @@ namespace SpiceSharpParser.Common.Processors
             return Process(statements, InitialDirectoryPath);
         }
 
-        private static void ReadSingleLibWithOneArgument(Statements statements, Control lib, List<Statement> allStatements)
+        private static Statements GetSingleLibStatementsWithOneArgument(List<Statement> allStatements)
         {
-            var libStatements = allStatements;
-            statements.Replace(lib, libStatements);
+            return ToStatements(allStatements);
         }
 
-        private static void ReadSingleLibWithTwoArguments(Statements statements, Control lib, List<Statement> allStatements)
+        private static Statements GetSingleLibStatementsWithTwoArguments(Control lib, List<Statement> allStatements)
         {
             // Find lib by entry
             var libEntry = allStatements.SingleOrDefault(s => s is Control c && c.Name == "lib" && c.Parameters.Get(0).Value == lib.Parameters.Get(1).Value);
@@ -114,9 +113,22 @@ namespace SpiceSharpParser.Common.Processors
                 else
                 {
                     var libStatements = allStatements.Skip(libPosition + 1).Take(position - libPosition - 1);
-                    statements.Replace(lib, libStatements);
+                    return ToStatements(libStatements);
                 }
             }
+
+            return null;
+        }
+
+        private static Statements ToStatements(IEnumerable<Statement> statements)
+        {
+            var result = new Statements();
+            foreach (var statement in statements)
+            {
+                result.Add(statement);
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -130,11 +142,23 @@ namespace SpiceSharpParser.Common.Processors
 
             while (libFound)
             {
-                IncludesPreprocessor.Process(statements);
+                ProcessIncludes(statements, currentDirectoryPath);
                 libFound = ReadLibs(statements, currentDirectoryPath);
             }
 
             return statements;
+        }
+
+        private void ProcessIncludes(Statements statements, string currentDirectoryPath)
+        {
+            if (IncludesPreprocessor is IncludesProcessor includesProcessor)
+            {
+                includesProcessor.Process(statements, currentDirectoryPath);
+            }
+            else
+            {
+                IncludesPreprocessor.Process(statements);
+            }
         }
 
         private bool ReadLibs(Statements statements, string currentDirectoryPath)
@@ -211,14 +235,23 @@ namespace SpiceSharpParser.Common.Processors
                 SpiceNetlist includeModel = SpiceNetlistParser.Parse(tokens);
 
                 var allStatements = includeModel.Statements.ToList();
+                Statements libStatements = null;
 
                 if (lib.Parameters.Count == 2)
                 {
-                    ReadSingleLibWithTwoArguments(statements, lib, allStatements);
+                    libStatements = GetSingleLibStatementsWithTwoArguments(lib, allStatements);
                 }
                 else if (lib.Parameters.Count == 1)
                 {
-                    ReadSingleLibWithOneArgument(statements, lib, allStatements);
+                    libStatements = GetSingleLibStatementsWithOneArgument(allStatements);
+                }
+
+                if (libStatements != null)
+                {
+                    var libDirectory = Path.GetDirectoryName(libFullPath);
+                    ProcessIncludes(libStatements, libDirectory);
+                    Process(libStatements, libDirectory);
+                    statements.Replace(lib, libStatements);
                 }
             }
             else
