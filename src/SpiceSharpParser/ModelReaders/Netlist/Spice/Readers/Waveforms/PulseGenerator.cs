@@ -33,33 +33,24 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 throw new ArgumentNullException(nameof(context));
             }
 
-            var argumentCount = parameters.Count == 1 && parameters[0] is VectorParameter vp
-                ? vp.Elements.Count
-                : parameters.Count;
+            parameters = FlattenVector(parameters);
+            var argumentCount = parameters.Count;
 
-            if (argumentCount > 7)
+            if (argumentCount > 8 || (argumentCount == 8 && !context.ReaderSettings.Compatibility.IsLTspice))
             {
-                if (context.ReaderSettings.Compatibility.IsLTspice)
-                {
-                    context.Result.ValidationResult.AddError(
-                        ValidationEntrySource.Reader,
-                        "Unsupported LTspice PULSE cycle-count arguments: finite-cycle PULSE sources are not mapped yet.",
-                        parameters.LineInfo);
-                    return null;
-                }
-
                 context.Result.ValidationResult.AddError(
                     ValidationEntrySource.Reader,
                     "Wrong number of arguments for PULSE waveform",
                     parameters.LineInfo);
+                return null;
+            }
+
+            if (argumentCount == 8)
+            {
+                return GenerateFinitePulse(parameters, context);
             }
 
             var w = new Pulse();
-
-            if (parameters.Count == 1 && parameters[0] is VectorParameter v)
-            {
-                parameters = new ParameterCollection(v.Elements.Select(e => e).Cast<Parameter>().ToList());
-            }
 
             if (parameters.Count >= 1)
             {
@@ -97,6 +88,51 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             }
 
             return w;
+        }
+
+        private static IWaveformDescription GenerateFinitePulse(ParameterCollection parameters, IReadingContext context)
+        {
+            var waveform = new FinitePulse
+            {
+                InitialValue = context.EvaluationContext.Evaluator.EvaluateDouble(parameters[0].Value),
+                PulsedValue = context.EvaluationContext.Evaluator.EvaluateDouble(parameters[1].Value),
+                Delay = context.EvaluationContext.Evaluator.EvaluateDouble(parameters[2].Value),
+                RiseTime = context.EvaluationContext.Evaluator.EvaluateDouble(parameters[3].Value),
+                FallTime = context.EvaluationContext.Evaluator.EvaluateDouble(parameters[4].Value),
+                PulseWidth = context.EvaluationContext.Evaluator.EvaluateDouble(parameters[5].Value),
+                Period = context.EvaluationContext.Evaluator.EvaluateDouble(parameters[6].Value),
+                CycleCount = context.EvaluationContext.Evaluator.EvaluateDouble(parameters[7].Value),
+            };
+
+            if (waveform.Period <= 0.0 || double.IsNaN(waveform.Period) || double.IsInfinity(waveform.Period))
+            {
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    "LTspice finite-cycle PULSE period must be positive.",
+                    parameters[6].LineInfo);
+                return null;
+            }
+
+            if (waveform.CycleCount <= 0.0 || double.IsNaN(waveform.CycleCount) || double.IsInfinity(waveform.CycleCount))
+            {
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    "LTspice finite-cycle PULSE cycle-count must be positive.",
+                    parameters[7].LineInfo);
+                return null;
+            }
+
+            return waveform;
+        }
+
+        private static ParameterCollection FlattenVector(ParameterCollection parameters)
+        {
+            if (parameters.Count == 1 && parameters[0] is VectorParameter vector)
+            {
+                return new ParameterCollection(vector.Elements.Select(element => element).Cast<Parameter>().ToList());
+            }
+
+            return parameters;
         }
     }
 }
