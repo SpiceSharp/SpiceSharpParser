@@ -16,6 +16,17 @@ namespace SpiceSharpParser.Tests.Parsers
             Assert.Equal(3.0, function.Logic("fabs", new[] { -3.0 }, null));
         }
 
+        [Theory]
+        [InlineData(0.0, 10.0)]
+        [InlineData(1.5, 15.0)]
+        [InlineData(4.0, 30.0)]
+        public void When_TableFunctionEvaluates_Expect_ClampedOrInterpolatedValue(double input, double expected)
+        {
+            var function = MathFunctions.CreateTable();
+
+            Assert.Equal(expected, function.Logic("table", new[] { input, 1.0, 10.0, 2.0, 20.0, 3.0, 30.0 }, null));
+        }
+
         [Fact]
         public void When_UnaryBangIsParsed_Expect_NotNode()
         {

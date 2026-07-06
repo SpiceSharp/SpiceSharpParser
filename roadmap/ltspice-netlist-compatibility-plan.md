@@ -29,7 +29,7 @@ This roadmap is intentionally parser-first and evidence-first:
 - P1 adds explicit `CompatibilityOptions` presets in parser and reader settings; both default to `CompatibilityOptions.None`.
 - Validation currently has error and warning levels only. Use warnings for recognized LTspice no-ops until an informational level exists.
 - `ValidationEntryCollection.Warnings` filters warning entries and is covered by warning/error separation tests.
-- Scalar `table(...)` and `tbl(...)` are supported through SpiceSharpBehavioral defaults and covered by LTspice P2 fixtures; `MathFunctions.CreateTable()` still returns `null` and remains a stale parser-owned factory audit item.
+- Scalar `table(...)` and `tbl(...)` are supported through SpiceSharpBehavioral defaults and covered by LTspice P2 fixtures; `MathFunctions.CreateTable()` now returns a parser-owned interpolation helper for direct factory callers.
 - The default mappings register many common controls and devices, but registration does not prove LTspice syntax parity for every variant.
 - `.FOUR` transient Fourier post-processing is implemented as dialect-neutral output support. Results are exposed through `SpiceSharpModel.FourierAnalyses`, with coverage for multiple signals, current signals, parameterized frequencies, stepped transient runs, and targeted failure diagnostics.
 - Default reader behavior still rejects LTspice `.backanno`, `.tf`, `.net`, `.ferret`, `.loadbias`, `.savebias`, and `.machine` / `.endmachine` with targeted diagnostics.
