@@ -83,13 +83,348 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
             AssertErrorContains(model.ValidationResult, "mfg");
         }
 
+        [Fact]
+        public void When_LtspiceResistorSeriesParasiticIsRead_Expect_SynthesizedSeriesResistance()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P3 - resistor Rser",
+                "V1 in 0 1",
+                "R1 in out 90 Rser=10",
+                "RLOAD out 0 900",
+                ".op",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.True(EqualsWithTol(0.9, RunOpSimulation(model, "V(out)")));
+            Assert.Contains(model.Circuit, entity => entity.Name == "R1_rser");
+        }
+
+        [Fact]
+        public void When_LtspiceResistorParallelParasiticIsRead_Expect_SynthesizedParallelResistance()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P3 - resistor Rpar",
+                "V1 in 0 1",
+                "RTOP in out 1k",
+                "R1 out 0 1k Rpar=1k",
+                ".op",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.True(EqualsWithTol(1.0 / 3.0, RunOpSimulation(model, "V(out)")));
+            Assert.Contains(model.Circuit, entity => entity.Name == "R1_rpar");
+        }
+
+        [Fact]
+        public void When_LtspiceResistorParallelCapacitanceIsRead_Expect_SynthesizedRcTransient()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P3 - resistor Cpar",
+                "I1 out 0 PULSE(0 -1m 1n 1n 1n 10u 20u)",
+                "R1 out 0 1k Cpar=1n",
+                ".tran 100n 5u",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.Contains(model.Circuit, entity => entity.Name == "R1_cpar");
+
+            var exports = RunTransientSimulation(model, "V(out)");
+            Assert.NotEmpty(exports);
+
+            var oneTau = exports.OrderBy(export => Math.Abs(export.Item1 - 1e-6)).First();
+            Assert.InRange(oneTau.Item2, 0.55, 0.72);
+            Assert.InRange(exports.Last().Item2, 0.98, 1.01);
+        }
+
+        [Fact]
+        public void When_LtspiceResistorSeriesParasiticIsInsideRepeatedSubcircuits_Expect_InternalNodesAreScoped()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P3 - resistor Rser subcircuit scoping",
+                "V1 in 0 1",
+                "XU1 in out1 rcell",
+                "XU2 in out2 rcell",
+                "RLOAD1 out1 0 900",
+                "RLOAD2 out2 0 400",
+                ".subckt rcell p out",
+                "R1 p out 90 Rser=10",
+                ".ends rcell",
+                ".op",
+                ".save V(out1)",
+                ".save V(out2)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+
+            var exports = RunOpSimulation(model, "V(out1)", "V(out2)");
+            Assert.True(EqualsWithTol(0.9, exports[0]));
+            Assert.True(EqualsWithTol(0.8, exports[1]));
+        }
+
+        [Fact]
+        public void When_LtspiceResistorHasCombinedParasitics_Expect_AllHelpersAndEquivalentOp()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P3 - resistor combined parasitics",
+                "V1 in 0 1",
+                "R1 in out 90 Rser=10 Rpar=900 Cpar=1n",
+                "RLOAD out 0 900",
+                ".op",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.True(EqualsWithTol(10.0 / 11.0, RunOpSimulation(model, "V(out)")));
+            Assert.Contains(model.Circuit, entity => entity.Name == "R1_rser");
+            Assert.Contains(model.Circuit, entity => entity.Name == "R1_rpar");
+            Assert.Contains(model.Circuit, entity => entity.Name == "R1_cpar");
+        }
+
+        [Fact]
+        public void When_LtspiceModelBasedResistorHasSeriesParasitic_Expect_ModelPathUsesInternalNode()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P3 - model-based resistor Rser",
+                ".model rmod R(RSH=1)",
+                "V1 in 0 1",
+                "R1 in out rmod 90 Rser=10",
+                "RLOAD out 0 900",
+                ".op",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.True(EqualsWithTol(0.9, RunOpSimulation(model, "V(out)")));
+            Assert.Contains(model.Circuit, entity => entity.Name == "R1_rser");
+        }
+
+        [Fact]
+        public void When_LtspiceResistorParasiticValuesUseParameters_Expect_HelperExpressionsResolve()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P3 - resistor parameterized parasitics",
+                ".param rs=10",
+                ".param rp=900",
+                ".param cp=1n",
+                "V1 in 0 1",
+                "R1 in out 90 Rser={rs} Rpar={rp} Cpar={cp}",
+                "RLOAD out 0 900",
+                ".op",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.True(EqualsWithTol(10.0 / 11.0, RunOpSimulation(model, "V(out)")));
+            Assert.Contains(model.Circuit, entity => entity.Name == "R1_rser");
+            Assert.Contains(model.Circuit, entity => entity.Name == "R1_rpar");
+            Assert.Contains(model.Circuit, entity => entity.Name == "R1_cpar");
+        }
+
+        [Fact]
+        public void When_LtspiceCapacitorSeriesResistanceIsRead_Expect_SynthesizedSeriesResistance()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P3 - capacitor Rser",
+                "V1 in 0 PULSE(0 1 0 1n 1n 10u 20u)",
+                "RDRIVE in out 900",
+                "C1 out 0 1n Rser=100",
+                ".tran 100n 5u",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.Contains(model.Circuit, entity => entity.Name == "C1_rser");
+
+            var exports = RunTransientSimulation(model, "V(out)");
+            Assert.NotEmpty(exports);
+
+            var oneTau = exports.OrderBy(export => Math.Abs(export.Item1 - 1e-6)).First();
+            Assert.InRange(oneTau.Item2, 0.60, 0.75);
+            Assert.InRange(exports.Last().Item2, 0.98, 1.01);
+        }
+
+        [Fact]
+        public void When_LtspiceCapacitorParallelResistanceIsRead_Expect_SynthesizedParallelResistance()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P3 - capacitor Rpar",
+                "V1 in 0 1",
+                "C1 in out 1n Rpar=1k",
+                "RLOAD out 0 1k",
+                ".op",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.True(EqualsWithTol(0.5, RunOpSimulation(model, "V(out)")));
+            Assert.Contains(model.Circuit, entity => entity.Name == "C1_rpar");
+        }
+
+        [Fact]
+        public void When_LtspiceModelBasedCapacitorHasParallelParasitic_Expect_ModelPathUsesHelper()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P3 - model-based capacitor Rpar",
+                ".model cmod C CJ=1e-6",
+                "V1 in 0 1",
+                "C1 in out cmod L=1u W=1u Rpar=1k",
+                "RLOAD out 0 1k",
+                ".op",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.True(EqualsWithTol(0.5, RunOpSimulation(model, "V(out)")));
+            Assert.Contains(model.Circuit, entity => entity.Name == "C1_rpar");
+        }
+
+        [Fact]
+        public void When_LtspiceCapacitorParallelCapacitanceIsRead_Expect_SynthesizedParallelCapacitor()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P3 - capacitor Cpar",
+                "I1 out 0 PULSE(0 -1m 1n 1n 1n 10u 20u)",
+                "C1 out 0 1n Cpar=1n",
+                "RLOAD out 0 1k",
+                ".tran 100n 8u",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.Contains(model.Circuit, entity => entity.Name == "C1_cpar");
+
+            var exports = RunTransientSimulation(model, "V(out)");
+            Assert.NotEmpty(exports);
+
+            var oneTau = exports.OrderBy(export => Math.Abs(export.Item1 - 2e-6)).First();
+            Assert.InRange(oneTau.Item2, 0.55, 0.72);
+            Assert.InRange(exports.Last().Item2, 0.97, 1.01);
+        }
+
+        [Fact]
+        public void When_LtspiceCapacitorParallelCapacitanceUsesParameter_Expect_HelperExpressionAffectsTransient()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P3 - capacitor parameterized Cpar",
+                ".param cp=1n",
+                "I1 out 0 PULSE(0 -1m 1n 1n 1n 10u 20u)",
+                "C1 out 0 1n Cpar={cp}",
+                "RLOAD out 0 1k",
+                ".tran 100n 8u",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.Contains(model.Circuit, entity => entity.Name == "C1_cpar");
+
+            var exports = RunTransientSimulation(model, "V(out)");
+            Assert.NotEmpty(exports);
+
+            var oneTau = exports.OrderBy(export => Math.Abs(export.Item1 - 2e-6)).First();
+            Assert.InRange(oneTau.Item2, 0.55, 0.72);
+            Assert.InRange(exports.Last().Item2, 0.97, 1.01);
+        }
+
+        [Fact]
+        public void When_LtspiceCapacitorSeriesInductanceIsRead_Expect_SynthesizedInductor()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P3 - capacitor Lser",
+                "C1 out 0 1n Lser=1n",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.Contains(model.Circuit, entity => entity.Name == "C1_lser");
+        }
+
+        [Fact]
+        public void When_LtspiceCapacitorHasCombinedParasitics_Expect_AllHelpersAreSynthesized()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P3 - capacitor combined parasitics",
+                "C1 out 0 1n Rser=1 Lser=1n Rpar=1k Cpar=1n",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.Contains(model.Circuit, entity => entity.Name == "C1_rser");
+            Assert.Contains(model.Circuit, entity => entity.Name == "C1_lser");
+            Assert.Contains(model.Circuit, entity => entity.Name == "C1_rpar");
+            Assert.Contains(model.Circuit, entity => entity.Name == "C1_cpar");
+        }
+
+        [Fact]
+        public void When_LtspiceCapacitorParallelResistanceIsInsideRepeatedSubcircuits_Expect_InternalHelpersAreScoped()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P3 - capacitor Rpar subcircuit scoping",
+                "V1 in 0 1",
+                "XU1 in out1 ccell",
+                "XU2 in out2 ccell",
+                "RLOAD1 out1 0 1k",
+                "RLOAD2 out2 0 3k",
+                ".subckt ccell p out",
+                "C1 p out 1n Rpar=1k",
+                ".ends ccell",
+                ".op",
+                ".save V(out1)",
+                ".save V(out2)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+
+            var exports = RunOpSimulation(model, "V(out1)", "V(out2)");
+            Assert.True(EqualsWithTol(0.5, exports[0]));
+            Assert.True(EqualsWithTol(0.75, exports[1]));
+        }
+
         [Theory]
-        [InlineData("R1 out 0 1k Rser=1", "Rser", "parasitic")]
-        [InlineData("C1 out 0 1n Lser=1n", "Lser", "parasitic")]
+        [InlineData("R1 out 0 1k Rser=1", "Rser")]
+        [InlineData("R1 out 0 1k Rpar=1Meg", "Rpar")]
+        [InlineData("C1 out 0 1n Rser=1", "Rser")]
+        [InlineData("C1 out 0 1n Lser=1n", "Lser")]
+        [InlineData("C1 out 0 1n Rpar=1k", "Rpar")]
+        [InlineData("C1 out 0 1n Cpar=1n", "Cpar")]
+        public void When_ResistorOrCapacitorParasiticIsReadWithoutLtspiceCompatibility_Expect_DefaultError(
+            string componentLine,
+            string parameterName)
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.None,
+                "LTspice P3 - default passive parasitic",
+                componentLine,
+                ".end");
+
+            Assert.True(model.ValidationResult.HasError);
+            AssertErrorContains(model.ValidationResult, parameterName);
+        }
+
+        [Theory]
+        [InlineData("L1 out 0 1u Rser=1", "Rser", "parasitic")]
+        [InlineData("L1 out 0 1u Rpar=1k", "Rpar", "parasitic")]
         [InlineData("L1 out 0 1u Cpar=1p", "Cpar", "parasitic")]
+        [InlineData("L1 out 0 1u RLshunt=1k", "RLshunt", "parasitic")]
         [InlineData("C1 out 0 Q=1n*x", "Q", "charge-defined")]
+        [InlineData("C1 out 0 Q=1n*x Rser=1", "Q", "charge-defined")]
         [InlineData("L1 out 0 Flux=1m*tanh(x)", "Flux", "flux-defined")]
-        public void When_LtspicePassiveInstanceParameterChangesTopology_Expect_TargetedError(
+        public void When_LtspiceUnsupportedPassiveInstanceParameterChangesTopology_Expect_TargetedError(
             string componentLine,
             string parameterName,
             string expectedReason)

@@ -38,6 +38,20 @@ R4 IN OUT rmod L=10u W=2u
 R5 IN OUT VALUE={1k * (1 + V(CTRL))}
 ```
 
+## LTspice Resistor Compatibility
+
+With `CompatibilityOptions.LTspice`, resistor instance parasitics are synthesized
+by the parser as helper components:
+
+```spice
+R1 IN OUT 1k Rser=0.5 Rpar=10Meg Cpar=0.2p
+```
+
+`Rser=<value>` adds a series resistor through an internal node. `Rpar=<value>`
+adds a resistor across the original resistor terminals, and `Cpar=<value>` adds
+a capacitor across the original resistor terminals. The core resistor model is
+not changed.
+
 ## MNA View
 
 A resistor is the simplest matrix stamp. The simulator converts resistance to

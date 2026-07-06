@@ -123,7 +123,18 @@ reader.Settings.Compatibility = CompatibilityOptions.LTspice;
 var model = reader.Read(parseResult.FinalModel);
 ```
 
-LTspice mode covers fixture-backed generated-netlist syntax such as `.backanno` and selected output/viewer options as warning no-ops, one-argument `.TRAN`, scalar expression aliases, finite-cycle `PULSE(... Ncycles)`, `EXP(...)`, independent-source `tbl=(...)`, R/C model `tc=a[,b]`, and switch threshold aliases. Behavior-changing constructs that are not represented by SpiceSharp are reported with targeted diagnostics instead of being silently ignored.
+LTspice mode covers syntax such as:
+
+- `.backanno` and selected output/viewer options as warning no-ops
+- one-argument `.TRAN` with a derived step policy
+- scalar expression aliases and `table(...)` / `tbl(...)`
+- source waveforms including `EXP(...)`, finite-cycle `PULSE(... Ncycles)`, finite-cycle `SINE(... Ncycles)`, and local two-column `PWL file=<path>` data
+- independent-source topology options: `Rser`, `Cpar`, `load`, and `R=<value>`
+- model parameter aliases: resistor and capacitor models accept `tc=<tc1>[,<tc2>]`; voltage switches accept `von` / `voff`; current switches accept `ion` / `ioff`
+- resistor instance parasitics `Rser`, `Rpar`, and `Cpar`
+- capacitor instance parasitics `Rser`, `Lser`, `Rpar`, and `Cpar`
+
+Topology-changing LTspice options that can be represented safely are synthesized as helper components in the parser. Behavior-changing constructs that are not represented by SpiceSharp are reported with targeted diagnostics instead of being silently ignored.
 
 See the [LTspice compatibility matrix](roadmap/ltspice-compatibility-matrix.md) and [LTspice netlist compatibility plan](roadmap/ltspice-netlist-compatibility-plan.md) for the current support classes, known gaps, and evidence policy. LTspice schematic and symbol import (`.asc` / `.asy`) is out of scope.
 

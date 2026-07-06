@@ -27,8 +27,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
             "ipk",
         };
 
-        // These passive parasitics change circuit topology in LTspice. They stay errors until the
-        // parser synthesizes equivalent elements or SpiceSharp exposes an equivalent compact model.
+        // Unsupported passive parasitics change circuit topology in LTspice. Resistor and capacitor
+        // parasitics that are synthesized by the parser are consumed by RLCKGenerator before this
+        // classifier sees component extras.
         private static readonly ISet<string> PassiveParasiticParameters = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
             "rser",

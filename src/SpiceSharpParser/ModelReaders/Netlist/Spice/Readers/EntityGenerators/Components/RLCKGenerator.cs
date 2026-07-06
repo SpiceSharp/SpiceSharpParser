@@ -14,13 +14,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 {
     public class RLCKGenerator : ComponentGenerator
     {
+        private const int CapacitorPinCount = 2;
+
         public override IEntity Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
             switch (type.ToLower())
             {
-                case "r": return GenerateRes(componentIdentifier, parameters, context);
+                case "r": return GenerateRes(componentIdentifier, originalName, parameters, context);
                 case "l": return GenerateInd(componentIdentifier, parameters, context);
-                case "c": return GenerateCap(componentIdentifier, parameters, context);
+                case "c": return GenerateCap(componentIdentifier, originalName, parameters, context);
                 case "k": return GenerateMut(componentIdentifier, parameters, context);
             }
 
@@ -99,8 +101,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of capacitor.
         /// </returns>
-        protected IComponent GenerateCap(string name, ParameterCollection parameters, IReadingContext context)
+        protected IComponent GenerateCap(string name, string originalName, ParameterCollection parameters, IReadingContext context)
         {
+            var externalParameters = parameters;
+            parameters = PrepareLtspiceCapacitorParameters(name, originalName, parameters, context, out var parasiticOptions);
+
             if (parameters.Count >= 3 && LTspiceParameterClassifier.TryRejectUnsupportedPassiveValue(context, name, "C", parameters[2]))
             {
                 return null;
@@ -159,7 +164,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
 
                     evalContext.Parameters.Remove("x");
 
-                    return behavioralCapacitor;
+                    return ApplyLtspiceCapacitorParasitics(name, externalParameters, context, parasiticOptions, behavioralCapacitor);
                 }
             }
 
@@ -295,7 +300,160 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
             }
 
-            return capacitor;
+            return ApplyLtspiceCapacitorParasitics(name, externalParameters, context, parasiticOptions, capacitor);
+        }
+
+        private ParameterCollection PrepareLtspiceCapacitorParameters(
+            string capacitorName,
+            string originalName,
+            ParameterCollection parameters,
+            IReadingContext context,
+            out LtspiceCapacitorParasiticOptions parasiticOptions)
+        {
+            var capacitorParameters = new ParameterCollection(parameters.ToList());
+            parasiticOptions = ExtractLtspiceCapacitorParasitics(capacitorParameters, context);
+
+            if ((parasiticOptions.HasSeriesResistance || parasiticOptions.HasSeriesInductance)
+                && capacitorParameters.Count >= CapacitorPinCount)
+            {
+                var baseName = originalName ?? capacitorName;
+                var capacitorPositiveNodeName = string.Empty;
+
+                if (parasiticOptions.HasSeriesResistance)
+                {
+                    parasiticOptions.SeriesResistanceNodeName = "__ltspice_" + baseName + "_rser";
+                    capacitorPositiveNodeName = parasiticOptions.SeriesResistanceNodeName;
+                }
+
+                if (parasiticOptions.HasSeriesInductance)
+                {
+                    parasiticOptions.SeriesInductanceNodeName = "__ltspice_" + baseName + "_lser";
+                    capacitorPositiveNodeName = parasiticOptions.SeriesInductanceNodeName;
+                }
+
+                capacitorParameters.RemoveAt(0);
+                capacitorParameters.Insert(0, new IdentifierParameter(capacitorPositiveNodeName, parameters[0].LineInfo));
+            }
+
+            return capacitorParameters;
+        }
+
+        private IComponent ApplyLtspiceCapacitorParasitics(
+            string capacitorName,
+            ParameterCollection externalParameters,
+            IReadingContext context,
+            LtspiceCapacitorParasiticOptions parasiticOptions,
+            IComponent component)
+        {
+            if (component == null || !parasiticOptions.HasAny || externalParameters.Count < CapacitorPinCount)
+            {
+                return component;
+            }
+
+            Parameter seriesInputNode = externalParameters[0];
+
+            if (parasiticOptions.HasSeriesResistance)
+            {
+                var seriesOutputNode = new IdentifierParameter(parasiticOptions.SeriesResistanceNodeName, externalParameters[0].LineInfo);
+                var seriesResistor = new Resistor(capacitorName + "_rser");
+                context.CreateNodes(seriesResistor, CreateNodeParameters(seriesInputNode, seriesOutputNode));
+                context.SetParameter(seriesResistor, "resistance", GetLtspiceParasiticValue(parasiticOptions.SeriesResistance), true);
+                context.ContextEntities?.Add(seriesResistor);
+                seriesInputNode = seriesOutputNode;
+            }
+
+            if (parasiticOptions.HasSeriesInductance)
+            {
+                var seriesOutputNode = new IdentifierParameter(parasiticOptions.SeriesInductanceNodeName, externalParameters[0].LineInfo);
+                var seriesInductor = new Inductor(capacitorName + "_lser");
+                context.CreateNodes(seriesInductor, CreateNodeParameters(seriesInputNode, seriesOutputNode));
+                context.SetParameter(seriesInductor, "inductance", GetLtspiceParasiticValue(parasiticOptions.SeriesInductance), true);
+                context.ContextEntities?.Add(seriesInductor);
+            }
+
+            if (parasiticOptions.HasParallelResistance)
+            {
+                var parallelResistor = new Resistor(capacitorName + "_rpar");
+                context.CreateNodes(parallelResistor, CreateNodeParameters(externalParameters[0], externalParameters[1]));
+                context.SetParameter(parallelResistor, "resistance", GetLtspiceParasiticValue(parasiticOptions.ParallelResistance), true);
+                context.ContextEntities?.Add(parallelResistor);
+            }
+
+            if (parasiticOptions.HasParallelCapacitance)
+            {
+                var parallelCapacitor = new Capacitor(capacitorName + "_cpar");
+                context.CreateNodes(parallelCapacitor, CreateNodeParameters(externalParameters[0], externalParameters[1]));
+                context.SetParameter(parallelCapacitor, "capacitance", GetLtspiceParasiticValue(parasiticOptions.ParallelCapacitance), true);
+                context.ContextEntities?.Add(parallelCapacitor);
+            }
+
+            return component;
+        }
+
+        private static LtspiceCapacitorParasiticOptions ExtractLtspiceCapacitorParasitics(
+            ParameterCollection parameters,
+            IReadingContext context)
+        {
+            var result = new LtspiceCapacitorParasiticOptions();
+
+            if (!context.ReaderSettings.Compatibility.IsLTspice || parameters.Count < CapacitorPinCount + 1)
+            {
+                return result;
+            }
+
+            for (var i = parameters.Count - 1; i >= CapacitorPinCount + 1; i--)
+            {
+                if (parameters[i] is AssignmentParameter assignment)
+                {
+                    if (assignment.Name.Equals("rser", StringComparison.OrdinalIgnoreCase))
+                    {
+                        result.SeriesResistance ??= assignment;
+                        parameters.RemoveAt(i);
+                    }
+                    else if (assignment.Name.Equals("lser", StringComparison.OrdinalIgnoreCase))
+                    {
+                        result.SeriesInductance ??= assignment;
+                        parameters.RemoveAt(i);
+                    }
+                    else if (assignment.Name.Equals("rpar", StringComparison.OrdinalIgnoreCase))
+                    {
+                        result.ParallelResistance ??= assignment;
+                        parameters.RemoveAt(i);
+                    }
+                    else if (assignment.Name.Equals("cpar", StringComparison.OrdinalIgnoreCase))
+                    {
+                        result.ParallelCapacitance ??= assignment;
+                        parameters.RemoveAt(i);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private sealed class LtspiceCapacitorParasiticOptions
+        {
+            public Parameter SeriesResistance { get; set; }
+
+            public Parameter SeriesInductance { get; set; }
+
+            public Parameter ParallelResistance { get; set; }
+
+            public Parameter ParallelCapacitance { get; set; }
+
+            public string SeriesResistanceNodeName { get; set; }
+
+            public string SeriesInductanceNodeName { get; set; }
+
+            public bool HasSeriesResistance => SeriesResistance != null;
+
+            public bool HasSeriesInductance => SeriesInductance != null;
+
+            public bool HasParallelResistance => ParallelResistance != null;
+
+            public bool HasParallelCapacitance => ParallelCapacitance != null;
+
+            public bool HasAny => HasSeriesResistance || HasSeriesInductance || HasParallelResistance || HasParallelCapacitance;
         }
 
         /// <summary>
@@ -341,8 +499,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// <returns>
         /// A new instance of resistor.
         /// </returns>
-        protected IEntity GenerateRes(string name, ParameterCollection parameters, IReadingContext context)
+        protected IEntity GenerateRes(string name, string originalName, ParameterCollection parameters, IReadingContext context)
         {
+            var externalParameters = parameters;
+            parameters = PrepareLtspiceResistorParameters(name, originalName, parameters, context, out var parasiticOptions);
+
             if (parameters.Count >= 3 && LTspiceParameterClassifier.TryRejectUnsupportedPassiveValue(context, name, "R", parameters[2]))
             {
                 return null;
@@ -396,7 +557,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         });
                     }
 
-                    return behavioralResistor;
+                    return ApplyLtspiceResistorParasitics(name, externalParameters, context, parasiticOptions, behavioralResistor);
                 }
             }
 
@@ -432,7 +593,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 if (resistanceBased)
                 {
                     context.SetParameter(res, "resistance", something, beforeTemperature: true);
-                    return res;
+                    return ApplyLtspiceResistorParasitics(name, externalParameters, context, parasiticOptions, res);
                 }
 
                 if (modelBased)
@@ -452,7 +613,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             context);
                     });
 
-                    return res;
+                    return ApplyLtspiceResistorParasitics(name, externalParameters, context, parasiticOptions, res);
                 }
 
                 context.Result.ValidationResult.AddError(
@@ -611,7 +772,139 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
             }
 
-            return res;
+            return ApplyLtspiceResistorParasitics(name, externalParameters, context, parasiticOptions, res);
+        }
+
+        private ParameterCollection PrepareLtspiceResistorParameters(
+            string resistorName,
+            string originalName,
+            ParameterCollection parameters,
+            IReadingContext context,
+            out LtspiceResistorParasiticOptions parasiticOptions)
+        {
+            var resistorParameters = new ParameterCollection(parameters.ToList());
+            parasiticOptions = ExtractLtspiceResistorParasitics(resistorParameters, context);
+
+            if (parasiticOptions.HasSeriesResistance && resistorParameters.Count >= Resistor.ResistorPinCount)
+            {
+                parasiticOptions.SeriesNodeName = "__ltspice_" + (originalName ?? resistorName) + "_rser";
+                resistorParameters.RemoveAt(0);
+                resistorParameters.Insert(0, new IdentifierParameter(parasiticOptions.SeriesNodeName, parameters[0].LineInfo));
+            }
+
+            return resistorParameters;
+        }
+
+        private IEntity ApplyLtspiceResistorParasitics(
+            string resistorName,
+            ParameterCollection externalParameters,
+            IReadingContext context,
+            LtspiceResistorParasiticOptions parasiticOptions,
+            IEntity entity)
+        {
+            if (entity == null || !parasiticOptions.HasAny || externalParameters.Count < Resistor.ResistorPinCount)
+            {
+                return entity;
+            }
+
+            if (parasiticOptions.HasSeriesResistance)
+            {
+                var seriesResistor = new Resistor(resistorName + "_rser");
+                context.CreateNodes(
+                    seriesResistor,
+                    CreateNodeParameters(
+                        externalParameters[0],
+                        new IdentifierParameter(parasiticOptions.SeriesNodeName, externalParameters[0].LineInfo)));
+                context.SetParameter(seriesResistor, "resistance", GetLtspiceParasiticValue(parasiticOptions.SeriesResistance), true);
+                context.ContextEntities?.Add(seriesResistor);
+            }
+
+            if (parasiticOptions.HasParallelResistance)
+            {
+                var parallelResistor = new Resistor(resistorName + "_rpar");
+                context.CreateNodes(parallelResistor, CreateNodeParameters(externalParameters[0], externalParameters[1]));
+                context.SetParameter(parallelResistor, "resistance", GetLtspiceParasiticValue(parasiticOptions.ParallelResistance), true);
+                context.ContextEntities?.Add(parallelResistor);
+            }
+
+            if (parasiticOptions.HasParallelCapacitance)
+            {
+                var parallelCapacitor = new Capacitor(resistorName + "_cpar");
+                context.CreateNodes(parallelCapacitor, CreateNodeParameters(externalParameters[0], externalParameters[1]));
+                context.SetParameter(parallelCapacitor, "capacitance", GetLtspiceParasiticValue(parasiticOptions.ParallelCapacitance), true);
+                context.ContextEntities?.Add(parallelCapacitor);
+            }
+
+            return entity;
+        }
+
+        private static LtspiceResistorParasiticOptions ExtractLtspiceResistorParasitics(
+            ParameterCollection parameters,
+            IReadingContext context)
+        {
+            var result = new LtspiceResistorParasiticOptions();
+
+            if (!context.ReaderSettings.Compatibility.IsLTspice || parameters.Count < Resistor.ResistorPinCount)
+            {
+                return result;
+            }
+
+            for (var i = parameters.Count - 1; i >= Resistor.ResistorPinCount; i--)
+            {
+                if (parameters[i] is AssignmentParameter assignment)
+                {
+                    if (assignment.Name.Equals("rser", StringComparison.OrdinalIgnoreCase))
+                    {
+                        result.SeriesResistance ??= assignment;
+                        parameters.RemoveAt(i);
+                    }
+                    else if (assignment.Name.Equals("rpar", StringComparison.OrdinalIgnoreCase))
+                    {
+                        result.ParallelResistance ??= assignment;
+                        parameters.RemoveAt(i);
+                    }
+                    else if (assignment.Name.Equals("cpar", StringComparison.OrdinalIgnoreCase))
+                    {
+                        result.ParallelCapacitance ??= assignment;
+                        parameters.RemoveAt(i);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private static ParameterCollection CreateNodeParameters(Parameter firstNode, Parameter secondNode)
+        {
+            return new ParameterCollection(new List<Parameter>())
+            {
+                firstNode,
+                secondNode,
+            };
+        }
+
+        private static string GetLtspiceParasiticValue(Parameter parameter)
+        {
+            return parameter is AssignmentParameter assignment ? assignment.Value : parameter.Value;
+        }
+
+        private sealed class LtspiceResistorParasiticOptions
+        {
+            public Parameter SeriesResistance { get; set; }
+
+            public Parameter ParallelResistance { get; set; }
+
+            public Parameter ParallelCapacitance { get; set; }
+
+            public string SeriesNodeName { get; set; }
+
+            public bool HasSeriesResistance => SeriesResistance != null;
+
+            public bool HasParallelResistance => ParallelResistance != null;
+
+            public bool HasParallelCapacitance => ParallelCapacitance != null;
+
+            public bool HasAny => HasSeriesResistance || HasParallelResistance || HasParallelCapacitance;
         }
 
         private string MultiplyIfNeeded(string expression, string mExpression, string nExpression)

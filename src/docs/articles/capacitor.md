@@ -47,6 +47,20 @@ C6 OUT 0 Q=1u*x
 See [LTspice-Style Nonlinear Passives](nonlinear-passives.md) for `Q=<expr>`
 capacitors.
 
+## LTspice Capacitor Compatibility
+
+With `CompatibilityOptions.LTspice`, capacitor instance parasitics are
+synthesized by the parser as helper components:
+
+```spice
+C1 OUT 0 1u Rser=0.1 Lser=1n Rpar=100Meg Cpar=0.2p
+```
+
+`Rser=<value>` and `Lser=<value>` add a series helper chain through internal
+nodes. `Rpar=<value>` adds a resistor across the original capacitor terminals,
+and `Cpar=<value>` adds a capacitor across the original capacitor terminals.
+The core capacitor model is not changed.
+
 ## MNA View
 
 A capacitor is dynamic, so its matrix contribution depends on the analysis:
