@@ -215,13 +215,13 @@ Implemented P2 behavior:
 - Added PWL file fixtures for supported local two-column text variants with optional header rows, leading blank/comment lines, and space/comma/semicolon/tab delimiters, plus targeted diagnostics for missing files, empty files, missing data rows, malformed rows, and unsupported LTspice repeat syntax.
 - Added LTspice-mode `tbl=(expr,x1,y1,...)` independent-source lowering to the existing behavioral `table(...)` path.
 - Improved `wavefile=<path> chan=<n> [amplitude=<value>]` validation so missing `wavefile`, missing `chan`, missing files, and invalid `chan` values produce targeted diagnostics.
-- Added LTspice-mode targeted diagnostics for topology-changing source options `Rser`, `Cpar`, `load`, and `R=<value>`.
+- Added LTspice-mode parser synthesis for topology-changing independent-source options: `Rser` adds a series resistor, `Cpar` adds a shunt capacitor, `load` adds a shunt resistor, and `R=<value>` maps to series resistance on voltage sources or load resistance on current sources.
 
 Remaining follow-up:
 
 - Compare existing random functions with LTspice semantics before making numeric claims.
 - Decide whether LTspice boolean XOR can be added without breaking existing `^` exponent behavior.
-- Defer LTspice PWL repeat variants and source-option topology synthesis until fixture-backed runtime behavior is specified.
+- Defer LTspice PWL repeat variants until fixture-backed runtime behavior is specified.
 
 Acceptance criteria:
 

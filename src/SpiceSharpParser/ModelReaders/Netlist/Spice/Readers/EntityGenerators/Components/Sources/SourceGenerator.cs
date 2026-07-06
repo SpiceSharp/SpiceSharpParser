@@ -25,11 +25,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             parameters = parameters.Skip(VoltageSource.PinCount);
 
-            if (AddUnsupportedLtspiceSourceOptionDiagnostics(parameters, context))
-            {
-                return;
-            }
-
             var acParameter = parameters.FirstOrDefault(p => p.Value.ToLower() == "ac");
             if (acParameter != null)
             {
@@ -494,44 +489,199 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             return true;
         }
 
-        private static bool AddUnsupportedLtspiceSourceOptionDiagnostics(ParameterCollection parameters, IReadingContext context)
+        private protected ParameterCollection PrepareLtspiceSourceParameters(
+            string sourceName,
+            string originalName,
+            ParameterCollection parameters,
+            IReadingContext context,
+            bool isCurrentSource,
+            out LtspiceSourceTopologyOptions topologyOptions)
         {
-            if (!context.ReaderSettings.Compatibility.IsLTspice)
+            var sourceParameters = new ParameterCollection(parameters.ToList());
+            topologyOptions = ExtractLtspiceSourceTopologyOptions(sourceParameters, context, isCurrentSource);
+
+            if (topologyOptions.HasSeriesResistance && sourceParameters.Count >= VoltageSource.PinCount)
             {
-                return false;
+                topologyOptions.SeriesNodeName = CreateInternalSourceNodeName(sourceName, originalName);
+                sourceParameters.RemoveAt(0);
+                sourceParameters.Insert(0, new IdentifierParameter(topologyOptions.SeriesNodeName, parameters[0].LineInfo));
             }
 
-            var hasErrors = false;
-            foreach (var assignment in parameters.OfType<AssignmentParameter>())
+            return sourceParameters;
+        }
+
+        private protected IEntity ApplyLtspiceSourceTopology(
+            string sourceName,
+            ParameterCollection externalParameters,
+            IReadingContext context,
+            LtspiceSourceTopologyOptions topologyOptions,
+            IEntity entity)
+        {
+            if (entity == null || !topologyOptions.HasAny || externalParameters.Count < VoltageSource.PinCount)
             {
-                var name = assignment.Name;
-                if (string.Equals(name, "rser", StringComparison.OrdinalIgnoreCase)
-                    || string.Equals(name, "cpar", StringComparison.OrdinalIgnoreCase)
-                    || string.Equals(name, "load", StringComparison.OrdinalIgnoreCase)
-                    || string.Equals(name, "r", StringComparison.OrdinalIgnoreCase))
+                return entity;
+            }
+
+            if (topologyOptions.HasSeriesResistance)
+            {
+                var resistor = new Resistor(sourceName + "_rser");
+                context.CreateNodes(
+                    resistor,
+                    CreateNodeParameters(
+                        externalParameters[0],
+                        new IdentifierParameter(topologyOptions.SeriesNodeName, externalParameters[0].LineInfo)));
+                context.SetParameter(resistor, "resistance", GetLtspiceSourceOptionValue(topologyOptions.SeriesResistance), true);
+                context.ContextEntities?.Add(resistor);
+            }
+
+            if (topologyOptions.HasShuntResistance)
+            {
+                var resistor = new Resistor(sourceName + "_load");
+                context.CreateNodes(resistor, CreateNodeParameters(externalParameters[0], externalParameters[1]));
+                context.SetParameter(resistor, "resistance", GetLtspiceSourceOptionValue(topologyOptions.ShuntResistance), true);
+                context.ContextEntities?.Add(resistor);
+            }
+
+            if (topologyOptions.HasParallelCapacitance)
+            {
+                var capacitor = new Capacitor(sourceName + "_cpar");
+                context.CreateNodes(capacitor, CreateNodeParameters(externalParameters[0], externalParameters[1]));
+                context.SetParameter(capacitor, "capacitance", GetLtspiceSourceOptionValue(topologyOptions.ParallelCapacitance), true);
+                context.ContextEntities?.Add(capacitor);
+            }
+
+            return entity;
+        }
+
+        private static LtspiceSourceTopologyOptions ExtractLtspiceSourceTopologyOptions(
+            ParameterCollection parameters,
+            IReadingContext context,
+            bool isCurrentSource)
+        {
+            var result = new LtspiceSourceTopologyOptions();
+
+            if (!context.ReaderSettings.Compatibility.IsLTspice || parameters.Count < VoltageSource.PinCount)
+            {
+                return result;
+            }
+
+            for (var i = parameters.Count - 1; i >= VoltageSource.PinCount; i--)
+            {
+                if (parameters[i] is AssignmentParameter assignment
+                    && TrySetLtspiceSourceTopologyOption(result, assignment.Name, assignment, isCurrentSource))
                 {
-                    context.Result.ValidationResult.AddError(
-                        ValidationEntrySource.Reader,
-                        $"Unsupported LTspice source option '{name}': topology-changing source options are not synthesized yet.",
-                        assignment.LineInfo);
-                    hasErrors = true;
+                    parameters.RemoveAt(i);
+                    continue;
+                }
+
+                if (parameters[i] is WordParameter word
+                    && IsLtspiceSourceTopologyOption(word.Value))
+                {
+                    if (i + 1 < parameters.Count)
+                    {
+                        TrySetLtspiceSourceTopologyOption(result, word.Value, parameters[i + 1], isCurrentSource);
+                        parameters.RemoveAt(i + 1);
+                        parameters.RemoveAt(i);
+                    }
+                    else
+                    {
+                        context.Result.ValidationResult.AddError(
+                            ValidationEntrySource.Reader,
+                            $"Invalid LTspice source option '{word.Value}': expected '{word.Value}=<value>' or '{word.Value} <value>'.",
+                            word.LineInfo);
+                        parameters.RemoveAt(i);
+                    }
                 }
             }
 
-            foreach (var word in parameters.OfType<WordParameter>())
+            return result;
+        }
+
+        private static bool TrySetLtspiceSourceTopologyOption(
+            LtspiceSourceTopologyOptions result,
+            string optionName,
+            Parameter optionValue,
+            bool isCurrentSource)
+        {
+            if (string.Equals(optionName, "cpar", StringComparison.OrdinalIgnoreCase))
             {
-                var name = word.Value;
-                if (string.Equals(name, "load", StringComparison.OrdinalIgnoreCase))
-                {
-                    context.Result.ValidationResult.AddError(
-                        ValidationEntrySource.Reader,
-                        $"Unsupported LTspice source option '{name}': topology-changing source options are not synthesized yet.",
-                        word.LineInfo);
-                    hasErrors = true;
-                }
+                result.ParallelCapacitance ??= optionValue;
+                return true;
             }
 
-            return hasErrors;
+            if (string.Equals(optionName, "rser", StringComparison.OrdinalIgnoreCase))
+            {
+                result.SeriesResistance ??= optionValue;
+                return true;
+            }
+
+            if (string.Equals(optionName, "load", StringComparison.OrdinalIgnoreCase))
+            {
+                result.ShuntResistance ??= optionValue;
+                return true;
+            }
+
+            if (string.Equals(optionName, "r", StringComparison.OrdinalIgnoreCase))
+            {
+                if (isCurrentSource)
+                {
+                    result.ShuntResistance ??= optionValue;
+                }
+                else
+                {
+                    result.SeriesResistance ??= optionValue;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool IsLtspiceSourceTopologyOption(string optionName)
+        {
+            return string.Equals(optionName, "rser", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(optionName, "cpar", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(optionName, "load", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(optionName, "r", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static ParameterCollection CreateNodeParameters(Parameter firstNode, Parameter secondNode)
+        {
+            return new ParameterCollection(new List<Parameter>())
+            {
+                firstNode,
+                secondNode,
+            };
+        }
+
+        private static string CreateInternalSourceNodeName(string sourceName, string originalName)
+        {
+            return "__ltspice_" + (originalName ?? sourceName) + "_rser";
+        }
+
+        private static string GetLtspiceSourceOptionValue(Parameter parameter)
+        {
+            return parameter is AssignmentParameter assignment ? assignment.Value : parameter.Value;
+        }
+
+        private protected sealed class LtspiceSourceTopologyOptions
+        {
+            public Parameter SeriesResistance { get; set; }
+
+            public Parameter ShuntResistance { get; set; }
+
+            public Parameter ParallelCapacitance { get; set; }
+
+            public string SeriesNodeName { get; set; }
+
+            public bool HasSeriesResistance => SeriesResistance != null;
+
+            public bool HasShuntResistance => ShuntResistance != null;
+
+            public bool HasParallelCapacitance => ParallelCapacitance != null;
+
+            public bool HasAny => HasSeriesResistance || HasShuntResistance || HasParallelCapacitance;
         }
 
         private static bool AddUnsupportedLtspiceExpressionDiagnostics(string expression, SpiceLineInfo lineInfo, IReadingContext context)

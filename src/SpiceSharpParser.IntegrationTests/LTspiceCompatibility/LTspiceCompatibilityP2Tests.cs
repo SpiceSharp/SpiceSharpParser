@@ -193,15 +193,155 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
         }
 
         [Theory]
-        [InlineData("V1 out 0 1 Rser=10", "Rser")]
-        [InlineData("V1 out 0 1 Cpar=1p", "Cpar")]
-        [InlineData("I1 out 0 1 load=1", "load")]
-        [InlineData("V1 out 0 1 R=10", "R")]
-        public void When_LtspiceSourceOptionChangesTopology_Expect_TargetedError(string sourceLine, string optionName)
+        [InlineData("V1 out 0 1 Rser=10")]
+        [InlineData("V1 out 0 1 R=10")]
+        [InlineData("V1 out 0 1 Rser 10")]
+        public void When_LtspiceVoltageSourceSeriesResistanceIsRead_Expect_SynthesizedDivider(string sourceLine)
         {
             var model = GetSpiceSharpModelWithCompatibility(
                 CompatibilityOptions.LTspice,
-                "LTspice P2 - source option",
+                "LTspice P2 - voltage source series resistance",
+                sourceLine,
+                "R1 out 0 90",
+                ".op",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.True(EqualsWithTol(0.9, RunOpSimulation(model, "V(out)")));
+        }
+
+        [Theory]
+        [InlineData("I1 out 0 1 load=1")]
+        [InlineData("I1 out 0 1 R=1")]
+        [InlineData("I1 out 0 1 load 1")]
+        public void When_LtspiceCurrentSourceLoadResistanceIsRead_Expect_SynthesizedShunt(string sourceLine)
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - current source load resistance",
+                sourceLine,
+                "R1 out 0 1k",
+                ".op",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.True(EqualsWithTol(-1000.0 / 1001.0, RunOpSimulation(model, "V(out)")));
+        }
+
+        [Theory]
+        [InlineData("V1 out 0 1 Cpar=1p", "V1_cpar")]
+        [InlineData("I1 out 0 1 Cpar=1p", "I1_cpar")]
+        public void When_LtspiceSourceParallelCapacitanceIsRead_Expect_SynthesizedCapacitor(
+            string sourceLine,
+            string expectedCapacitorName)
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - source parallel capacitance",
+                sourceLine,
+                "R1 out 0 1k",
+                ".op",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.Contains(model.Circuit, entity => entity.Name == expectedCapacitorName);
+        }
+
+        [Fact]
+        public void When_LtspiceBehavioralVoltageSourceHasMultipleTopologyOptions_Expect_AllHelpersAreSynthesized()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - behavioral source topology options",
+                "VCTRL ctrl 0 1",
+                "V1 out 0 VALUE={2*V(ctrl)} Rser=100 load=300 Cpar=1p",
+                ".op",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.True(EqualsWithTol(1.5, RunOpSimulation(model, "V(out)")));
+            Assert.Contains(model.Circuit, entity => entity.Name == "V1_rser");
+            Assert.Contains(model.Circuit, entity => entity.Name == "V1_load");
+            Assert.Contains(model.Circuit, entity => entity.Name == "V1_cpar");
+        }
+
+        [Fact]
+        public void When_LtspiceTableVoltageSourceHasSeriesResistance_Expect_TableAndTopologyLowering()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - table source topology options",
+                "V1 out 0 tbl=(0.5,0,0,1,10) R=10",
+                "R1 out 0 90",
+                ".op",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.True(EqualsWithTol(4.5, RunOpSimulation(model, "V(out)")));
+            Assert.Contains(model.Circuit, entity => entity.Name == "V1_rser");
+        }
+
+        [Fact]
+        public void When_LtspiceCurrentSourceHasLoadAndCpar_Expect_RcTransient()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - current source load and Cpar transient",
+                "I1 out 0 PULSE(0 -1m 1n 1n 1n 10u 20u) load=1k Cpar=1n",
+                ".tran 100n 5u",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+
+            var exports = RunTransientSimulation(model, "V(out)");
+            Assert.NotEmpty(exports);
+
+            var oneTau = exports.OrderBy(export => Math.Abs(export.Item1 - 1e-6)).First();
+            Assert.InRange(oneTau.Item2, 0.55, 0.72);
+            Assert.InRange(exports.Last().Item2, 0.98, 1.01);
+        }
+
+        [Fact]
+        public void When_LtspiceSourceResistanceIsInsideRepeatedSubcircuits_Expect_InternalNodesAreScoped()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - subcircuit source topology options",
+                "XU1 out1 0 sourcecell",
+                "XU2 out2 0 sourcecell",
+                "R1 out1 0 90",
+                "R2 out2 0 40",
+                ".subckt sourcecell p n",
+                "V1 p n 1 Rser=10",
+                ".ends sourcecell",
+                ".op",
+                ".save V(out1)",
+                ".save V(out2)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+
+            var exports = RunOpSimulation(model, "V(out1)", "V(out2)");
+            Assert.True(EqualsWithTol(0.9, exports[0]));
+            Assert.True(EqualsWithTol(0.8, exports[1]));
+        }
+
+        [Theory]
+        [InlineData("V1 out 0 1 Rser", "Rser")]
+        [InlineData("I1 out 0 1 load", "load")]
+        public void When_LtspiceSourceTopologyOptionOmitsValue_Expect_TargetedError(
+            string sourceLine,
+            string optionName)
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - invalid source topology option",
                 sourceLine,
                 "R1 out 0 1k",
                 ".op",

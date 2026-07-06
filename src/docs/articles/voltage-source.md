@@ -152,9 +152,18 @@ With `CompatibilityOptions.LTspice`, independent sources also support
 V1 OUT 0 tbl=(V(IN), 0,0, 1,5)
 ```
 
-Topology-changing LTspice source options such as `Rser`, `Cpar`, `load`, and
-`R=<value>` are recognized as unsupported and reported with targeted errors.
-They are not silently ignored or synthesized into extra components.
+Common topology-changing LTspice source options are synthesized by the parser
+as helper components instead of being passed to the core source model:
+
+```spice
+V1 OUT 0 5 Rser=0.2 Cpar=10p
+I1 OUT 0 1m load=1k
+```
+
+`Rser=<value>` adds a series resistor, `Cpar=<value>` adds a capacitor across
+the source terminals, and `load=<value>` adds a resistor across the source
+terminals. `R=<value>` maps to series resistance on voltage sources and load
+resistance on current sources.
 
 ## Behavioral Voltage Source
 

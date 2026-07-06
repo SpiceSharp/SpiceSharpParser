@@ -1,6 +1,6 @@
 ---
 title: LTspice Compatibility Matrix
-status: P3 Baseline + .FOUR Support Refresh + Custom Passives + Ideal Diodes + Golden Evidence + Include/Lib Path Evidence + Waveform Docs Refresh + PWL Text Variants + Finite SINE
+status: P3 Baseline + .FOUR Support Refresh + Custom Passives + Ideal Diodes + Golden Evidence + Include/Lib Path Evidence + Waveform Docs Refresh + PWL Text Variants + Finite SINE + Source Parasitics
 scope: SpiceSharpParser + SpiceSharp
 last_reviewed: 2026-07-06
 ---
@@ -60,7 +60,7 @@ Compatibility classes:
 | `PWL file=<path>` source waveform | Accepted | Produces PWL waveform from a local two-column text file with optional header row | TRAN supported | Analytic transient fixture | Missing file, empty file, no data rows, malformed rows, and unsupported LTspice repeat forms produce targeted `PWL` diagnostics | Current parser/runtime | File data may start after leading blank lines or full-line comments beginning with `;`, `#`, `*`, or `//`; space, comma, semicolon, and tab delimiters are fixture-backed. Broader LTspice PWL repeat variants are deferred. |
 | Independent source `tbl=(expr,x1,y1,...)` | Accepted in LTspice mode | Lowered to behavioral `table(...)` source | OP supported | Analytic fixture | Invalid form names `tbl` | Current parser/runtime | Parser shim uses the existing source/table expression path. |
 | Source `wavefile=<path> chan=<n> [amplitude=<value>]` | Accepted | Produces wave-file waveform | Existing wave-file behavior | Smoke/diagnostic fixture | Missing `wavefile`, missing `chan`, missing file, and invalid `chan` produce targeted validation | Current parser/runtime | Channel defaults are not inferred. |
-| Source `Rser`, `Cpar`, `load`, `R=<value>` | Accepted | Rejected in LTspice mode | Not runnable | None | Targeted LTspice source-option error names option | Current parser/runtime | Topology-changing source options are not synthesized. |
+| Source `Rser`, `Cpar`, `load`, `R=<value>` | Accepted | Synthesizes helper R/C entities in LTspice mode | OP supported for resistance helpers; Cpar read fixture | Analytic/parser fixture | Malformed value forms produce targeted LTspice source-option diagnostics | Current parser/runtime | Parser-only topology synthesis: `Rser` adds a series resistor, `Cpar` adds a shunt capacitor, `load` adds a shunt resistor, and `R=<value>` maps to series resistance on voltage sources and load resistance on current sources. Core source models are unchanged. |
 | R/C model `tc=a[,b]` | Accepted | Lowered to `tc1` / `tc2` | Existing R/C model behavior | Read fixture | None expected in LTspice mode | Current parser/runtime | Parser shim only; coefficients beyond two are rejected. |
 | LTspice metadata/rating parameters `mfg`, `manufacturer`, `pn`, `part`, `desc`, `description`, `V`, `Irms`, `Ipk` | Accepted | Warning no-op in LTspice mode | No runtime effect | Diagnostic fixture | Default: existing parameter error. LTspice: warning names parameter. | Current parser/runtime | BOM/layout metadata is not used by SpiceSharpParser. |
 | R/C/L instance parasitics `Rser`, `Rpar`, `Cpar`, `Lser`, `RLshunt` | Accepted | Rejected in LTspice mode | Not runnable | None | Targeted LTspice instance-parameter error names parameter | Current parser/runtime | Topology-changing passive parasitics are not synthesized. |

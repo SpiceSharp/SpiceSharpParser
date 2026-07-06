@@ -149,65 +149,72 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         protected IEntity GenerateCurrentSource(string name, string originalName, ParameterCollection parameters, IReadingContext context)
         {
             var evalContext = context.EvaluationContext;
+            var sourceParameters = PrepareLtspiceSourceParameters(
+                name,
+                originalName,
+                parameters,
+                context,
+                isCurrentSource: true,
+                out var topologyOptions);
 
-            if (TryCreateLtspiceTableSource(name, parameters, context, isCurrentSource: true, out var tableEntity))
+            if (TryCreateLtspiceTableSource(name, sourceParameters, context, isCurrentSource: true, out var tableEntity))
             {
-                return tableEntity;
+                return ApplyLtspiceSourceTopology(name, parameters, context, topologyOptions, tableEntity);
             }
 
-            if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
+            if (sourceParameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
             {
-                var valueParameter = (AssignmentParameter)parameters.Single(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");
+                var valueParameter = (AssignmentParameter)sourceParameters.Single(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");
                 string expression = valueParameter.Value;
                 if (TryCreateLaplaceFunctionSource(
                     name,
                     originalName,
-                    parameters,
+                    sourceParameters,
                     context,
                     LaplaceOutputKind.Current,
                     expression,
                     valueParameter,
                     out var laplaceEntity))
                 {
-                    return laplaceEntity;
+                    return ApplyLtspiceSourceTopology(name, parameters, context, topologyOptions, laplaceEntity);
                 }
 
                 if (evalContext.HaveSpiceProperties(expression) || evalContext.HaveFunctions(expression))
                 {
-                    BehavioralCurrentSource entity = CreateBehavioralCurrentSource(name, parameters, context, evalContext, expression);
-                    return entity;
+                    BehavioralCurrentSource entity = CreateBehavioralCurrentSource(name, sourceParameters, context, evalContext, expression);
+                    return ApplyLtspiceSourceTopology(name, parameters, context, topologyOptions, entity);
                 }
             }
 
-            if (parameters.Any(p => p is ExpressionParameter))
+            if (sourceParameters.Any(p => p is ExpressionParameter))
             {
-                var expressionParameter = (ExpressionParameter)parameters.Single(p => p is ExpressionParameter);
+                var expressionParameter = (ExpressionParameter)sourceParameters.Single(p => p is ExpressionParameter);
                 string expression = expressionParameter.Value;
 
                 if (TryCreateLaplaceFunctionSource(
                     name,
                     originalName,
-                    parameters,
+                    sourceParameters,
                     context,
                     LaplaceOutputKind.Current,
                     expression,
                     expressionParameter,
                     out var laplaceEntity))
                 {
-                    return laplaceEntity;
+                    return ApplyLtspiceSourceTopology(name, parameters, context, topologyOptions, laplaceEntity);
                 }
 
                 if (evalContext.HaveSpiceProperties(expressionParameter.Value) || evalContext.HaveFunctions(expressionParameter.Value))
                 {
-                    BehavioralCurrentSource entity = CreateBehavioralCurrentSource(name, parameters, context, evalContext, expression);
-                    return entity;
+                    BehavioralCurrentSource entity = CreateBehavioralCurrentSource(name, sourceParameters, context, evalContext, expression);
+                    return ApplyLtspiceSourceTopology(name, parameters, context, topologyOptions, entity);
                 }
             }
 
             var cs = new CurrentSource(name);
-            context.CreateNodes(cs, parameters);
-            SetSourceParameters(parameters, context, cs, true);
-            return cs;
+            context.CreateNodes(cs, sourceParameters);
+            SetSourceParameters(sourceParameters, context, cs, true);
+            return ApplyLtspiceSourceTopology(name, parameters, context, topologyOptions, cs);
         }
 
         private IEntity CreateCustomCurrentSource(string name, string originalName, ParameterCollection parameters, IReadingContext context, bool isVoltageControlled)

@@ -134,65 +134,72 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         protected IEntity GenerateVoltageSource(string name, string originalName, ParameterCollection parameters, IReadingContext context)
         {
             var evalContext = context.EvaluationContext;
+            var sourceParameters = PrepareLtspiceSourceParameters(
+                name,
+                originalName,
+                parameters,
+                context,
+                isCurrentSource: false,
+                out var topologyOptions);
 
-            if (TryCreateLtspiceTableSource(name, parameters, context, isCurrentSource: false, out var tableEntity))
+            if (TryCreateLtspiceTableSource(name, sourceParameters, context, isCurrentSource: false, out var tableEntity))
             {
-                return tableEntity;
+                return ApplyLtspiceSourceTopology(name, parameters, context, topologyOptions, tableEntity);
             }
 
-            if (parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
+            if (sourceParameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value"))
             {
-                var valueParameter = (AssignmentParameter)parameters.Single(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");
+                var valueParameter = (AssignmentParameter)sourceParameters.Single(p => p is AssignmentParameter ap && ap.Name.ToLower() == "value");
                 string expression = valueParameter.Value;
                 if (TryCreateLaplaceFunctionSource(
                     name,
                     originalName,
-                    parameters,
+                    sourceParameters,
                     context,
                     LaplaceOutputKind.Voltage,
                     expression,
                     valueParameter,
                     out var laplaceEntity))
                 {
-                    return laplaceEntity;
+                    return ApplyLtspiceSourceTopology(name, parameters, context, topologyOptions, laplaceEntity);
                 }
 
                 if (evalContext.HaveSpiceProperties(expression) || evalContext.HaveFunctions(expression))
                 {
-                    BehavioralVoltageSource entity = CreateBehavioralVoltageSource(name, parameters, context, evalContext, expression);
-                    return entity;
+                    BehavioralVoltageSource entity = CreateBehavioralVoltageSource(name, sourceParameters, context, evalContext, expression);
+                    return ApplyLtspiceSourceTopology(name, parameters, context, topologyOptions, entity);
                 }
             }
 
-            if (parameters.Any(p => p is ExpressionParameter ep))
+            if (sourceParameters.Any(p => p is ExpressionParameter ep))
             {
-                var expressionParameter = (ExpressionParameter)parameters.Single(p => p is ExpressionParameter);
+                var expressionParameter = (ExpressionParameter)sourceParameters.Single(p => p is ExpressionParameter);
                 string expression = expressionParameter.Value;
 
                 if (TryCreateLaplaceFunctionSource(
                     name,
                     originalName,
-                    parameters,
+                    sourceParameters,
                     context,
                     LaplaceOutputKind.Voltage,
                     expression,
                     expressionParameter,
                     out var laplaceEntity))
                 {
-                    return laplaceEntity;
+                    return ApplyLtspiceSourceTopology(name, parameters, context, topologyOptions, laplaceEntity);
                 }
 
                 if (evalContext.HaveSpiceProperties(expressionParameter.Value) || evalContext.HaveFunctions(expressionParameter.Value))
                 {
-                    BehavioralVoltageSource entity = CreateBehavioralVoltageSource(name, parameters, context, evalContext, expression);
-                    return entity;
+                    BehavioralVoltageSource entity = CreateBehavioralVoltageSource(name, sourceParameters, context, evalContext, expression);
+                    return ApplyLtspiceSourceTopology(name, parameters, context, topologyOptions, entity);
                 }
             }
 
             var vs = new VoltageSource(name);
-            context.CreateNodes(vs, parameters);
-            SetSourceParameters(parameters, context, vs, false);
-            return vs;
+            context.CreateNodes(vs, sourceParameters);
+            SetSourceParameters(sourceParameters, context, vs, false);
+            return ApplyLtspiceSourceTopology(name, parameters, context, topologyOptions, vs);
         }
 
         protected IEntity CreateCustomVoltageSource(
