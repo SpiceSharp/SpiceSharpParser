@@ -259,24 +259,6 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
             }
         }
 
-        [Theory]
-        [InlineData("V1 out 0 SINE(0 1 1k 0 0 0 3)", "SINE")]
-        public void When_LtspiceWaveformHasCycleCount_Expect_TargetedError(string sourceLine, string waveformName)
-        {
-            var model = GetSpiceSharpModelWithCompatibility(
-                CompatibilityOptions.LTspice,
-                "LTspice P2 - cycle count",
-                sourceLine,
-                "R1 out 0 1k",
-                ".tran 1n 50n",
-                ".save V(out)",
-                ".end");
-
-            Assert.True(model.ValidationResult.HasError);
-            AssertErrorContains(model.ValidationResult, waveformName);
-            AssertErrorContains(model.ValidationResult, "cycle-count");
-        }
-
         [Fact]
         public void When_LtspicePulseHasCycleCount_Expect_TransientStopsAfterFiniteCycles()
         {
@@ -294,6 +276,25 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
             var exports = RunTransientSimulation(model, "V(out)");
             Assert.NotEmpty(exports);
             Assert.True(EqualsWithTol(exports, FinitePulseReference));
+        }
+
+        [Fact]
+        public void When_LtspiceSineHasCycleCount_Expect_TransientStopsAfterFiniteCycles()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - finite-cycle SINE",
+                "V1 out 0 SINE(1 2 250Meg 1n 0 0 2)",
+                "R1 out 0 1k",
+                ".tran 1n 12n",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+
+            var exports = RunTransientSimulation(model, "V(out)");
+            Assert.NotEmpty(exports);
+            Assert.True(EqualsWithTol(exports, FiniteSineReference));
         }
 
         [Theory]
@@ -314,6 +315,27 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
 
             Assert.True(model.ValidationResult.HasError);
             AssertErrorContains(model.ValidationResult, "PULSE");
+            AssertErrorContains(model.ValidationResult, expectedMessage);
+        }
+
+        [Theory]
+        [InlineData("V1 out 0 SINE(0 1 0 0 0 0 3)", "frequency")]
+        [InlineData("V1 out 0 SINE(0 1 1k 0 0 0 0)", "cycle-count")]
+        public void When_LtspiceSineCycleCountArgumentsAreInvalid_Expect_TargetedError(
+            string sourceLine,
+            string expectedMessage)
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - invalid finite-cycle SINE",
+                sourceLine,
+                "R1 out 0 1k",
+                ".tran 1n 50n",
+                ".save V(out)",
+                ".end");
+
+            Assert.True(model.ValidationResult.HasError);
+            AssertErrorContains(model.ValidationResult, "SINE");
             AssertErrorContains(model.ValidationResult, expectedMessage);
         }
 
@@ -407,6 +429,31 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
             }
 
             return initialValue;
+        }
+
+        private static double FiniteSineReference(double time)
+        {
+            const double offset = 1.0;
+            const double amplitude = 2.0;
+            const double frequency = 250e6;
+            const double delay = 1e-9;
+            const double theta = 0.0;
+            const double phase = 0.0;
+            const double cycleCount = 2.0;
+
+            if (time <= delay || time >= delay + (cycleCount / frequency))
+            {
+                return offset;
+            }
+
+            var localTime = time - delay;
+            var result = amplitude * Math.Sin((2.0 * Math.PI * frequency * localTime) + (phase * Math.PI / 180.0));
+            if (!theta.Equals(0.0))
+            {
+                result *= Math.Exp(-localTime * theta);
+            }
+
+            return offset + result;
         }
 
         private static double PwlFileReference(double time)

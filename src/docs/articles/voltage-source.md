@@ -57,15 +57,19 @@ then returns it to `<v1>`. The period and cycle count must be positive.
 ```
 SIN(<offset> <amplitude> <frequency> [<delay> [<damping> [<phase>]]])
 SINE(<offset> <amplitude> <frequency> [<delay> [<damping> [<phase>]]])
+SINE(<offset> <amplitude> <frequency> <delay> <damping> <phase> <Ncycles>)
 ```
 
 ```spice
 V1 IN 0 SIN(0 1 1k)
 V2 SIG 0 SIN(2.5 2.5 60 0 0 0)
+V3 BURST 0 SINE(0 1 1k 0 0 0 3)
 ```
 
-LTspice finite-cycle `SINE` arguments are recognized in LTspice compatibility
-mode, but they are not mapped yet and produce a targeted validation error.
+The seven-argument LTspice finite-cycle form is available only when
+`CompatibilityOptions.LTspice` is enabled. In that mode, `<Ncycles>` limits the
+source to that many periods after `<delay>`, then returns it to `<offset>`.
+The frequency and cycle count must be positive.
 
 ### EXP — Exponential Rise/Fall
 

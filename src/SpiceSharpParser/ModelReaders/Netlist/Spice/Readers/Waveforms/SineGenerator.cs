@@ -33,33 +33,24 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 throw new ArgumentNullException(nameof(context));
             }
 
-            var argumentCount = parameters.Count == 1 && parameters[0] is VectorParameter vp
-                ? vp.Elements.Count
-                : parameters.Count;
+            parameters = FlattenVector(parameters);
+            var argumentCount = parameters.Count;
 
-            if (argumentCount > 6)
+            if (argumentCount > 7 || (argumentCount == 7 && !context.ReaderSettings.Compatibility.IsLTspice))
             {
-                if (context.ReaderSettings.Compatibility.IsLTspice)
-                {
-                    context.Result.ValidationResult.AddError(
-                        ValidationEntrySource.Reader,
-                        "Unsupported LTspice SINE cycle-count arguments: finite-cycle SINE sources are not mapped yet.",
-                        parameters.LineInfo);
-                    return null;
-                }
-
                 context.Result.ValidationResult.AddError(
                     ValidationEntrySource.Reader,
                     "Wrong number of arguments for SINE waveform",
                     parameters.LineInfo);
+                return null;
+            }
+
+            if (argumentCount == 7)
+            {
+                return GenerateFiniteSine(parameters, context);
             }
 
             var w = new Sine();
-
-            if (parameters.Count == 1 && parameters[0] is VectorParameter v)
-            {
-                parameters = new ParameterCollection(v.Elements.Select(e => e).Cast<Parameter>().ToList());
-            }
 
             if (parameters.Count >= 1)
             {
@@ -92,6 +83,50 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             }
 
             return w;
+        }
+
+        private static IWaveformDescription GenerateFiniteSine(ParameterCollection parameters, IReadingContext context)
+        {
+            var waveform = new FiniteSine
+            {
+                Offset = context.Evaluator.EvaluateDouble(parameters[0].Value),
+                Amplitude = context.Evaluator.EvaluateDouble(parameters[1].Value),
+                Frequency = context.Evaluator.EvaluateDouble(parameters[2].Value),
+                Delay = context.Evaluator.EvaluateDouble(parameters[3].Value),
+                Theta = context.Evaluator.EvaluateDouble(parameters[4].Value),
+                Phase = context.Evaluator.EvaluateDouble(parameters[5].Value),
+                CycleCount = context.Evaluator.EvaluateDouble(parameters[6].Value),
+            };
+
+            if (waveform.Frequency <= 0.0 || double.IsNaN(waveform.Frequency) || double.IsInfinity(waveform.Frequency))
+            {
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    "LTspice finite-cycle SINE frequency must be positive.",
+                    parameters[2].LineInfo);
+                return null;
+            }
+
+            if (waveform.CycleCount <= 0.0 || double.IsNaN(waveform.CycleCount) || double.IsInfinity(waveform.CycleCount))
+            {
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    "LTspice finite-cycle SINE cycle-count must be positive.",
+                    parameters[6].LineInfo);
+                return null;
+            }
+
+            return waveform;
+        }
+
+        private static ParameterCollection FlattenVector(ParameterCollection parameters)
+        {
+            if (parameters.Count == 1 && parameters[0] is VectorParameter vector)
+            {
+                return new ParameterCollection(vector.Elements.Select(element => element).Cast<Parameter>().ToList());
+            }
+
+            return parameters;
         }
     }
 }

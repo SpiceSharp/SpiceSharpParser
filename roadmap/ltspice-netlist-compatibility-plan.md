@@ -38,7 +38,7 @@ This roadmap is intentionally parser-first and evidence-first:
 - `.TRAN` accepts traditional numeric forms and trailing `UIC`; P1 LTspice mode also accepts `.tran <Tstop>` and `.tran <Tstop> UIC` by deriving `step = Tstop / 50.0`. LTspice `startup`, `steady`, `nodiscard`, and `step` modifiers remain targeted errors.
 - LTspice output/viewer `.options` such as `plotwinsize`, `plotreltol`, `plotvntol`, `plotabstol`, `numdgt`, `measdgt`, `meascplxfmt`, `baudrate`, and `fastaccess` are warning no-ops only in LTspice mode.
 - LTspice behavior-changing `.options` such as `cshunt`, `gshunt`, `srcsteps`, `gminsteps`, `trtol`, `chgtol`, `pivrel`, `pivtol`, and `ptrantau` remain targeted errors.
-- Source waveform mappings cover `SIN` / `SINE`, `PULSE`, `EXP`, `PWL`, `AM`, `SFFM`, and wave-file input. LTspice finite-cycle `PULSE(... Ncycles)` is supported; finite-cycle `SINE` arguments remain targeted errors, PWL file parsing supports optional header rows, leading blank/comment lines, and space/comma/semicolon/tab delimiters, unsupported PWL repeat syntax produces targeted diagnostics, wave-file channel defaults are not inferred, and topology-changing independent-source instance options remain targeted errors.
+- Source waveform mappings cover `SIN` / `SINE`, `PULSE`, `EXP`, `PWL`, `AM`, `SFFM`, and wave-file input. LTspice finite-cycle `PULSE(... Ncycles)` and `SINE(... Ncycles)` are supported, PWL file parsing supports optional header rows, leading blank/comment lines, and space/comma/semicolon/tab delimiters, unsupported PWL repeat syntax produces targeted diagnostics, wave-file channel defaults are not inferred, and topology-changing independent-source instance options remain targeted errors.
 - MOS model generation currently covers legacy levels 1, 2, and 3. LTspice `VDMOS` and advanced monolithic levels such as BSIM/EKV/HiSIM variants are runtime or intentional-unsupported candidates.
 - Distributed-line support currently starts from lossless `T`. LTspice lossy `O` / `LTRA` and uniform RC-line `URC` models need engine triage before runnable support is claimed.
 - P3 LTspice mode maps R/C model `tc=a[,b]`, switch `von`/`voff`, and current-switch `ion`/`ioff` aliases where they lower to existing parameters.
@@ -211,7 +211,7 @@ Implemented P2 behavior:
 - Kept `^` as the existing exponent operator; LTspice boolean XOR is deferred to avoid changing current semantics.
 - Added LTspice-mode targeted diagnostics for `uplim(...)`, `dnlim(...)`, and unary `~`.
 - Added six-argument `EXP(v1 v2 td1 tau1 td2 tau2)` source waveform support with argument-count and positive-tau diagnostics.
-- Added LTspice-mode finite-cycle `PULSE(... Ncycles)` support and targeted diagnostics for unsupported finite-cycle `SINE` arguments.
+- Added LTspice-mode finite-cycle `PULSE(... Ncycles)` and `SINE(... Ncycles)` support with targeted diagnostics for invalid period/frequency and cycle-count arguments.
 - Added PWL file fixtures for supported local two-column text variants with optional header rows, leading blank/comment lines, and space/comma/semicolon/tab delimiters, plus targeted diagnostics for missing files, empty files, missing data rows, malformed rows, and unsupported LTspice repeat syntax.
 - Added LTspice-mode `tbl=(expr,x1,y1,...)` independent-source lowering to the existing behavioral `table(...)` path.
 - Improved `wavefile=<path> chan=<n> [amplitude=<value>]` validation so missing `wavefile`, missing `chan`, missing files, and invalid `chan` values produce targeted diagnostics.
@@ -221,7 +221,7 @@ Remaining follow-up:
 
 - Compare existing random functions with LTspice semantics before making numeric claims.
 - Decide whether LTspice boolean XOR can be added without breaking existing `^` exponent behavior.
-- Defer finite-cycle `SINE` behavior, LTspice PWL repeat variants, and source-option topology synthesis until fixture-backed runtime behavior is specified.
+- Defer LTspice PWL repeat variants and source-option topology synthesis until fixture-backed runtime behavior is specified.
 
 Acceptance criteria:
 
