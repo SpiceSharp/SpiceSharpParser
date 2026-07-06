@@ -194,21 +194,23 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 return null;
             }
 
-            var separator = GetSeparator(lines[0]);
             var points = new List<Point>();
 
-            for (var i = 1; i < lines.Length; i++)
+            for (var i = 0; i < lines.Length; i++)
             {
                 var line = lines[i];
-                if (string.IsNullOrWhiteSpace(line))
+                if (IsSkippableLine(line))
                 {
                     continue;
                 }
 
-                var parts = SplitLine(line, separator);
-                if (parts.Length < 2
-                    || !double.TryParse(parts[0].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out var time)
-                    || !double.TryParse(parts[1].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out var value))
+                var separator = GetSeparator(line);
+                var firstRowKind = ReadPoint(line, separator, out var firstPoint);
+                if (firstRowKind == PwlFileRowKind.Point)
+                {
+                    points.Add(firstPoint);
+                }
+                else if (firstRowKind == PwlFileRowKind.Malformed)
                 {
                     context.Result.ValidationResult.AddError(
                         ValidationEntrySource.Reader,
@@ -217,7 +219,27 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                     return null;
                 }
 
-                points.Add(new Point(time, value));
+                for (var j = i + 1; j < lines.Length; j++)
+                {
+                    var dataLine = lines[j];
+                    if (IsSkippableLine(dataLine))
+                    {
+                        continue;
+                    }
+
+                    if (ReadPoint(dataLine, separator, out var point) != PwlFileRowKind.Point)
+                    {
+                        context.Result.ValidationResult.AddError(
+                            ValidationEntrySource.Reader,
+                            $"PWL file row {j + 1} is malformed: expected two numeric columns.",
+                            fileParameter.LineInfo);
+                        return null;
+                    }
+
+                    points.Add(point);
+                }
+
+                break;
             }
 
             if (points.Count == 0)
@@ -230,6 +252,43 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             }
 
             return points;
+        }
+
+        private static PwlFileRowKind ReadPoint(string line, char separator, out Point point)
+        {
+            point = default;
+            var parts = SplitLine(line, separator);
+            if (parts.Length < 2)
+            {
+                return PwlFileRowKind.Malformed;
+            }
+
+            var hasTime = double.TryParse(parts[0].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out var time);
+            var hasValue = double.TryParse(parts[1].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out var value);
+
+            if (hasTime && hasValue)
+            {
+                point = new Point(time, value);
+                return PwlFileRowKind.Point;
+            }
+
+            return !hasTime && !hasValue
+                ? PwlFileRowKind.Header
+                : PwlFileRowKind.Malformed;
+        }
+
+        private static bool IsSkippableLine(string line)
+        {
+            if (string.IsNullOrWhiteSpace(line))
+            {
+                return true;
+            }
+
+            var trimmed = line.TrimStart();
+            return trimmed.StartsWith(";", StringComparison.Ordinal)
+                || trimmed.StartsWith("#", StringComparison.Ordinal)
+                || trimmed.StartsWith("*", StringComparison.Ordinal)
+                || trimmed.StartsWith("//", StringComparison.Ordinal);
         }
 
         private static char GetSeparator(string header)
@@ -260,6 +319,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             }
 
             return line.Split(new[] { separator }, StringSplitOptions.None);
+        }
+
+        private enum PwlFileRowKind
+        {
+            Header,
+            Point,
+            Malformed,
         }
     }
 }

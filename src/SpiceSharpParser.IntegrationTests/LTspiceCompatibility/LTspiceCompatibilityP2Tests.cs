@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -80,6 +81,38 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
                     tempDirectory,
                     CompatibilityOptions.LTspice,
                     "LTspice P2 - PWL file",
+                    "V1 out 0 PWL file=\"shape.txt\"",
+                    "R1 out 0 1k",
+                    ".tran 1n 2n",
+                    ".save V(out)",
+                    ".end");
+
+                AssertNoValidationIssues(model.ValidationResult);
+
+                var exports = RunTransientSimulation(model, "V(out)");
+                Assert.NotEmpty(exports);
+                Assert.True(EqualsWithTol(exports, PwlFileReference));
+            }
+            finally
+            {
+                DeleteDirectory(tempDirectory);
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(PwlFileFormatCases))]
+        public void When_LtspicePwlFileUsesSupportedTextVariant_Expect_TransientReferenceValues(string fileContent)
+        {
+            var tempDirectory = CreateTempDirectory();
+
+            try
+            {
+                File.WriteAllText(Path.Combine(tempDirectory, "shape.txt"), fileContent);
+
+                var model = GetSpiceSharpModelWithCompatibilityAndWorkingDirectory(
+                    tempDirectory,
+                    CompatibilityOptions.LTspice,
+                    "LTspice P2 - PWL text variants",
                     "V1 out 0 PWL file=\"shape.txt\"",
                     "R1 out 0 1k",
                     ".tran 1n 2n",
@@ -384,6 +417,52 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
             }
 
             return Math.Max(0.0, (2e-9 - time) / 1e-9);
+        }
+
+        public static IEnumerable<object[]> PwlFileFormatCases()
+        {
+            yield return new object[]
+            {
+                Lines(
+                    "0,0",
+                    "1e-9,1",
+                    "2e-9,0"),
+            };
+
+            yield return new object[]
+            {
+                Lines(
+                    string.Empty,
+                    "; generated PWL data",
+                    "# time value data",
+                    "* exported source waveform",
+                    "0 0",
+                    "1e-9 1",
+                    "2e-9 0"),
+            };
+
+            yield return new object[]
+            {
+                Lines(
+                    "time;value",
+                    "0;0",
+                    "1e-9;1",
+                    "2e-9;0"),
+            };
+
+            yield return new object[]
+            {
+                Lines(
+                    "time\tvalue",
+                    "0\t0",
+                    "1e-9\t1",
+                    "2e-9\t0"),
+            };
+        }
+
+        private static string Lines(params string[] lines)
+        {
+            return string.Join(Environment.NewLine, lines);
         }
 
         private static SpiceSharpModel GetSpiceSharpModelWithCompatibility(CompatibilityOptions compatibility, params string[] lines)
