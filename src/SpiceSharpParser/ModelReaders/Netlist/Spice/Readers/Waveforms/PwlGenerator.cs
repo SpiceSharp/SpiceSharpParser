@@ -1,12 +1,14 @@
-﻿using SpiceSharp.Components;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using SpiceSharp.Components;
 using SpiceSharpParser.Common.FileSystem;
+using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 {
@@ -33,6 +35,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             if (context == null)
             {
                 throw new ArgumentNullException(nameof(context));
+            }
+
+            if (HasUnsupportedLtspiceRepeatSyntax(parameters, context))
+            {
+                return null;
             }
 
             if (parameters.Count > 0 && parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "file"))
@@ -114,22 +121,145 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 
             if (!File.Exists(fullFilePath))
             {
-                throw new ArgumentException("PWL file does not exist:" + fullFilePath);
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    "PWL file does not exist: " + fullFilePath,
+                    fileParameter.LineInfo);
+                return null;
             }
 
-            List<double[]> csvData = CsvFileReader.Read(fullFilePath, true, context.ReaderSettings.ExternalFilesEncoding).ToList();
-            double[] times = new double[csvData.LongCount()];
-            double[] voltages = new double[csvData.LongCount()];
-            var points = new List<Point>();
-
-            for (var i = 0; i < csvData.LongCount(); i++)
+            string[] lines;
+            try
             {
-                times[i] = csvData[i][0];
-                voltages[i] = csvData[i][1];
-                points.Add(new Point(times[i], voltages[i]));
+                var reader = new FileReader(() => context.ReaderSettings.ExternalFilesEncoding);
+                lines = reader.ReadAllLines(fullFilePath);
+            }
+            catch (Exception ex)
+            {
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    "PWL file could not be read: " + fullFilePath,
+                    fileParameter.LineInfo,
+                    ex);
+                return null;
+            }
+
+            var points = ReadPoints(lines, fullFilePath, fileParameter, context);
+            if (points == null)
+            {
+                return null;
             }
 
             return new Pwl() { Points = points };
+        }
+
+        private static bool HasUnsupportedLtspiceRepeatSyntax(ParameterCollection parameters, IReadingContext context)
+        {
+            if (!context.ReaderSettings.Compatibility.IsLTspice)
+            {
+                return false;
+            }
+
+            var repeatParameter = parameters.FirstOrDefault(parameter =>
+                string.Equals(parameter.Value, "repeat", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(parameter.Value, "endrepeat", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(parameter.Value, "forever", StringComparison.OrdinalIgnoreCase)
+                || (parameter is AssignmentParameter assignment
+                    && string.Equals(assignment.Name, "repeat", StringComparison.OrdinalIgnoreCase)));
+
+            if (repeatParameter == null)
+            {
+                return false;
+            }
+
+            context.Result.ValidationResult.AddError(
+                ValidationEntrySource.Reader,
+                "Unsupported LTspice PWL repeat syntax: repeat forms are not mapped yet.",
+                repeatParameter.LineInfo);
+            return true;
+        }
+
+        private static List<Point> ReadPoints(
+            string[] lines,
+            string fullFilePath,
+            Parameter fileParameter,
+            IReadingContext context)
+        {
+            if (lines.Length == 0)
+            {
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    "PWL file is empty: " + fullFilePath,
+                    fileParameter.LineInfo);
+                return null;
+            }
+
+            var separator = GetSeparator(lines[0]);
+            var points = new List<Point>();
+
+            for (var i = 1; i < lines.Length; i++)
+            {
+                var line = lines[i];
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    continue;
+                }
+
+                var parts = SplitLine(line, separator);
+                if (parts.Length < 2
+                    || !double.TryParse(parts[0].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out var time)
+                    || !double.TryParse(parts[1].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out var value))
+                {
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        $"PWL file row {i + 1} is malformed: expected two numeric columns.",
+                        fileParameter.LineInfo);
+                    return null;
+                }
+
+                points.Add(new Point(time, value));
+            }
+
+            if (points.Count == 0)
+            {
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    "PWL file has no data rows: " + fullFilePath,
+                    fileParameter.LineInfo);
+                return null;
+            }
+
+            return points;
+        }
+
+        private static char GetSeparator(string header)
+        {
+            if (header.Contains(";"))
+            {
+                return ';';
+            }
+
+            if (header.Contains(","))
+            {
+                return ',';
+            }
+
+            if (header.Contains('\t'))
+            {
+                return '\t';
+            }
+
+            return ' ';
+        }
+
+        private static string[] SplitLine(string line, char separator)
+        {
+            if (separator == ' ')
+            {
+                return line.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+            }
+
+            return line.Split(new[] { separator }, StringSplitOptions.None);
         }
     }
 }

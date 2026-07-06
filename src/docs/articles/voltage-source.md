@@ -96,7 +96,9 @@ V2 IN 0 PWL file = "Resources\pwl_reference.txt"
 Inline PWL data uses time/value pairs. File-backed PWL data reads a local text
 file with a header row followed by two numeric columns; spaces, commas,
 semicolons, and tabs are recognized from the first line. Broader LTspice PWL
-file and repeat variants are not claimed yet.
+file and repeat variants are not claimed yet. Missing files, empty files,
+missing data rows, malformed rows, and LTspice repeat syntax produce targeted
+`PWL` validation diagnostics.
 
 ### SFFM — Single-Frequency FM
 

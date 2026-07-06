@@ -1,6 +1,6 @@
 ---
 title: LTspice Compatibility Matrix
-status: P3 Baseline + .FOUR Support Refresh + Custom Passives + Ideal Diodes + Golden Evidence + Include/Lib Path Evidence + Waveform Docs Refresh
+status: P3 Baseline + .FOUR Support Refresh + Custom Passives + Ideal Diodes + Golden Evidence + Include/Lib Path Evidence + Waveform Docs Refresh + PWL File Diagnostics
 scope: SpiceSharpParser + SpiceSharp
 last_reviewed: 2026-07-04
 ---
@@ -57,6 +57,7 @@ Compatibility classes:
 | `EXP(...)` source waveform | Accepted | Produces internal exponential waveform | TRAN supported | Analytic fixture | Invalid count/tau diagnostics name `EXP` | Current parser/runtime | P2 supports the six-argument form `EXP(v1 v2 td1 tau1 td2 tau2)`. |
 | `PULSE(... Ncycles)` | Accepted in LTspice mode | Produces finite-cycle pulse waveform | TRAN supported | Analytic transient fixture | Invalid period or cycle count produces targeted `PULSE` diagnostic | Current parser/runtime | The eighth LTspice argument limits the waveform to `Ncycles` periods, then returns to the initial value. |
 | `SINE(... Ncycles)` | Accepted | Rejected in LTspice mode | Not runnable | None | Targeted LTspice `SINE` cycle-count diagnostic | Current parser/runtime | Finite-cycle waveform behavior is deferred. |
+| `PWL file=<path>` source waveform | Accepted | Produces PWL waveform from a local two-column text file with header row | TRAN supported | Analytic transient fixture | Missing file, empty file, no data rows, malformed rows, and unsupported LTspice repeat forms produce targeted `PWL` diagnostics | Current parser/runtime | Existing parser format supports local header-plus-data files with space, comma, semicolon, or tab separators. Broader LTspice PWL file/repeat variants are deferred. |
 | Independent source `tbl=(expr,x1,y1,...)` | Accepted in LTspice mode | Lowered to behavioral `table(...)` source | OP supported | Analytic fixture | Invalid form names `tbl` | Current parser/runtime | Parser shim uses the existing source/table expression path. |
 | Source `wavefile=<path> chan=<n> [amplitude=<value>]` | Accepted | Produces wave-file waveform | Existing wave-file behavior | Smoke/diagnostic fixture | Missing `wavefile`, missing `chan`, missing file, and invalid `chan` produce targeted validation | Current parser/runtime | Channel defaults are not inferred. |
 | Source `Rser`, `Cpar`, `load`, `R=<value>` | Accepted | Rejected in LTspice mode | Not runnable | None | Targeted LTspice source-option error names option | Current parser/runtime | Topology-changing source options are not synthesized. |

@@ -62,6 +62,103 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
             Assert.True(EqualsWithTol(5.0, RunOpSimulation(model, "V(out)")));
         }
 
+        [Fact]
+        public void When_LtspicePwlFileIsRead_Expect_TransientReferenceValues()
+        {
+            var tempDirectory = CreateTempDirectory();
+
+            try
+            {
+                File.WriteAllText(
+                    Path.Combine(tempDirectory, "shape.txt"),
+                    "time,value" + Environment.NewLine
+                    + "0,0" + Environment.NewLine
+                    + "1e-9,1" + Environment.NewLine
+                    + "2e-9,0" + Environment.NewLine);
+
+                var model = GetSpiceSharpModelWithCompatibilityAndWorkingDirectory(
+                    tempDirectory,
+                    CompatibilityOptions.LTspice,
+                    "LTspice P2 - PWL file",
+                    "V1 out 0 PWL file=\"shape.txt\"",
+                    "R1 out 0 1k",
+                    ".tran 1n 2n",
+                    ".save V(out)",
+                    ".end");
+
+                AssertNoValidationIssues(model.ValidationResult);
+
+                var exports = RunTransientSimulation(model, "V(out)");
+                Assert.NotEmpty(exports);
+                Assert.True(EqualsWithTol(exports, PwlFileReference));
+            }
+            finally
+            {
+                DeleteDirectory(tempDirectory);
+            }
+        }
+
+        [Theory]
+        [InlineData("V1 out 0 PWL file=\"missing.txt\"", "does not exist")]
+        [InlineData("V1 out 0 PWL repeat 0 0 1n 1 endrepeat", "repeat")]
+        public void When_LtspicePwlFileOrRepeatSyntaxIsUnsupported_Expect_TargetedError(string sourceLine, string expectedMessage)
+        {
+            var tempDirectory = CreateTempDirectory();
+
+            try
+            {
+                var model = GetSpiceSharpModelWithCompatibilityAndWorkingDirectory(
+                    tempDirectory,
+                    CompatibilityOptions.LTspice,
+                    "LTspice P2 - invalid PWL",
+                    sourceLine,
+                    "R1 out 0 1k",
+                    ".tran 1n 2n",
+                    ".save V(out)",
+                    ".end");
+
+                Assert.True(model.ValidationResult.HasError);
+                AssertErrorContains(model.ValidationResult, "PWL");
+                AssertErrorContains(model.ValidationResult, expectedMessage);
+            }
+            finally
+            {
+                DeleteDirectory(tempDirectory);
+            }
+        }
+
+        [Theory]
+        [InlineData("", "empty")]
+        [InlineData("time,value", "no data")]
+        [InlineData("time,value\r\nnot-a-time,1", "malformed")]
+        public void When_LtspicePwlFileIsMalformed_Expect_TargetedError(string fileContent, string expectedMessage)
+        {
+            var tempDirectory = CreateTempDirectory();
+
+            try
+            {
+                File.WriteAllText(Path.Combine(tempDirectory, "bad.txt"), fileContent);
+
+                var model = GetSpiceSharpModelWithCompatibilityAndWorkingDirectory(
+                    tempDirectory,
+                    CompatibilityOptions.LTspice,
+                    "LTspice P2 - malformed PWL file",
+                    "V1 out 0 PWL file=\"bad.txt\"",
+                    "R1 out 0 1k",
+                    ".tran 1n 2n",
+                    ".save V(out)",
+                    ".end");
+
+                Assert.True(model.ValidationResult.HasError);
+                AssertErrorContains(model.ValidationResult, "PWL");
+                AssertErrorContains(model.ValidationResult, expectedMessage);
+            }
+            finally
+            {
+                DeleteDirectory(tempDirectory);
+            }
+        }
+
         [Theory]
         [InlineData("V1 out 0 1 Rser=10", "Rser")]
         [InlineData("V1 out 0 1 Cpar=1p", "Cpar")]
@@ -279,13 +376,29 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
             return initialValue;
         }
 
+        private static double PwlFileReference(double time)
+        {
+            if (time <= 1e-9)
+            {
+                return time / 1e-9;
+            }
+
+            return Math.Max(0.0, (2e-9 - time) / 1e-9);
+        }
+
         private static SpiceSharpModel GetSpiceSharpModelWithCompatibility(CompatibilityOptions compatibility, params string[] lines)
+        {
+            return GetSpiceSharpModelWithCompatibilityAndWorkingDirectory(null, compatibility, lines);
+        }
+
+        private static SpiceSharpModel GetSpiceSharpModelWithCompatibilityAndWorkingDirectory(string workingDirectory, CompatibilityOptions compatibility, params string[] lines)
         {
             var text = string.Join(Environment.NewLine, lines);
             var parser = new SpiceNetlistParser();
 
             parser.Settings.Lexing.HasTitle = true;
             parser.Settings.Parsing.IsEndRequired = true;
+            parser.Settings.WorkingDirectory = workingDirectory;
             parser.Settings.Compatibility = compatibility;
 
             var parserResult = parser.ParseNetlist(text);
@@ -300,6 +413,21 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
 
             var spiceSharpReader = new SpiceNetlistReader(spiceSharpSettings);
             return spiceSharpReader.Read(parserResult.FinalModel);
+        }
+
+        private static string CreateTempDirectory()
+        {
+            var tempDirectory = Path.Combine(Path.GetTempPath(), "SpiceSharpParserLtspiceP2_" + Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(tempDirectory);
+            return tempDirectory;
+        }
+
+        private static void DeleteDirectory(string tempDirectory)
+        {
+            if (Directory.Exists(tempDirectory))
+            {
+                Directory.Delete(tempDirectory, true);
+            }
         }
 
         private static void AssertNoValidationIssues(ValidationEntryCollection validation)
