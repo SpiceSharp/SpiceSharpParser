@@ -1,6 +1,6 @@
 ---
 name: spicesharp-circuit-design
-description: Structured R&D problem-solving with test-driven verification for designing analog circuits using SpiceSharp and SpiceSharpParser, including modern parser features such as .MEAS, .FOUR, .PRINT, .PLOT, .STEP, .TEMP, .MC, .NOISE, behavioral and LAPLACE sources, and local documentation/test-suite validation. Produces human-readable reports, netlists, tests, and maintains a global backlog of active designs.
+description: Structured R&D problem-solving with test-driven verification for designing and validating analog circuits using SpiceSharp and SpiceSharpParser, including .MEAS, .FOUR, .PRINT, .PLOT, .STEP, .TEMP, .MC, .NOISE, behavioral/LAPLACE sources, LTspice compatibility mode, finite source waveforms, source/passive parasitic synthesis, custom ideal diodes and nonlinear passives, and local documentation/test-suite validation. Produces human-readable reports, netlists, tests, and maintains a global backlog of active designs.
 user-invocable: true
 ---
 
@@ -91,12 +91,12 @@ Use the parser's current netlist features directly instead of reimplementing pos
 
 | Category | Supported features | Primary references |
 |----------|--------------------|--------------------|
-| Analyses | `.OP`, `.DC`, `.AC`, `.TRAN`, `.NOISE` | `src/docs/articles/op.md`, `dc.md`, `ac.md`, `tran.md`, `noise.md` |
+| Analyses | `.OP`, `.DC`, `.AC`, `.TRAN`, `.NOISE`; LTspice one-argument `.TRAN` in compatibility mode | `src/docs/articles/op.md`, `dc.md`, `ac.md`, `tran.md`, `noise.md`; `LTspiceCompatibilityP1Tests.cs` |
 | Output/post-processing | `.SAVE`, `.PRINT`, `.PLOT`, `.MEAS`/`.MEASURE`, `.FOUR`, `.WAVE` | `save.md`, `print.md`, `plot.md`, `meas.md`, `four.md`; `.WAVE` source/control code |
-| Parameters/expressions | `.PARAM`, `.FUNC`, `.LET`, `.SPARAM`, nested exports such as `db(V(out))`, `mag(I(R1))` | `param.md`, `func.md`, `let.md`, `sparam.md`, `meas.md` |
+| Parameters/expressions | `.PARAM`, `.FUNC`, `.LET`, `.SPARAM`, nested exports such as `db(V(out))`, `mag(I(R1))`; LTspice aliases, `table(...)`, `tbl(...)`, `**`, boolean operators | `param.md`, `func.md`, `let.md`, `sparam.md`, `meas.md`; `LTspiceCompatibilityP2Tests.cs` |
 | Sweeps/control/statistics | `.STEP`, `.ST`, `.TEMP`, `.MC`, `.DISTRIBUTION`, `.OPTIONS`, `.IC`, `.NODESET`, `.IF` | `step.md`, `st.md`, `temp.md`, `mc.md`, `distribution.md`, `options.md`, `ic.md`, `nodeset.md`, `if.md` |
-| Structure/models | `.SUBCKT`, `X...`, `.INCLUDE`, `.LIB`, `.GLOBAL`, `.CONNECT`, `.APPENDMODEL`, `.MODEL` | `subckt.md`, `subcircuit-instance.md`, `include.md`, `lib.md`, `global.md`, `appendmodel.md`; `DotStatements/ConnectTests.cs` |
-| Sources/devices | R, C, L, K, D, Q, J, M, V, I, B, E/F/G/H, S/W switches, T transmission line, BVDelay, PULSE/SIN/PWL/EXP/SFFM/AM/WAVE/wavefile, VALUE/TABLE/POLY/LAPLACE | matching component articles and integration tests |
+| Structure/models | `.SUBCKT`, `X...`, `.INCLUDE`, `.LIB`, `.GLOBAL`, `.CONNECT`, `.APPENDMODEL`, `.MODEL`; quoted/nested relative include/lib paths | `subckt.md`, `subcircuit-instance.md`, `include.md`, `lib.md`, `global.md`, `appendmodel.md`; `LTspiceCompatibilityP1Tests.cs`; `DotStatements/ConnectTests.cs` |
+| Sources/devices | R, C, L, K, D, Q, J, M, V, I, B, E/F/G/H, S/W switches, T transmission line, BVDelay, PULSE/SIN/PWL/EXP/SFFM/AM/WAVE/wavefile, VALUE/TABLE/POLY/LAPLACE, LTspice finite-cycle PULSE/SINE, file-backed PWL, source Rser/Cpar/load/R, R/C/L instance parasitics, custom ideal diode and nonlinear Q/Flux passives | matching component articles; `ideal-diode.md`, `nonlinear-passives.md`; `LTspiceCompatibilityP2Tests.cs`, `LTspiceCompatibilityP3Tests.cs`, `LTspiceIdealDiodeIntegrationTests.cs` |
 
 Prefer netlist-native controls for reproducibility:
 - Use `.MEAS` for scalar acceptance criteria, including `TRIG/TARG`, `WHEN`, `FIND`, `MAX`, `MIN`, `AVG`, `RMS`, `PP`, `INTEG`, `DERIV`, and `PARAM`.
@@ -106,6 +106,41 @@ Prefer netlist-native controls for reproducibility:
 - Use `.STEP`, `.TEMP`, `.MC`, and `.DISTRIBUTION` for sweeps, corners, and statistical robustness instead of manual loops.
 
 When `CircuitBuilder` has no dedicated helper for a current feature, use `RawLine()` with the exact netlist statement (for example `.RawLine(".FOUR 1k V(OUT)")`, `.RawLine(".STEP PARAM r LIST 1k 2k 5k")`, `.RawLine(".PLOT TRAN V(OUT) merge")`).
+
+### LTspice Netlists and Custom Components
+
+Use LTspice compatibility when the input netlist came from LTspice or intentionally uses LTspice-only spellings. Set the option on both parser and reader; set the working directory whenever `.INCLUDE`, `.LIB`, or `PWL file=<path>` may resolve relative files.
+
+```csharp
+var parser = new SpiceNetlistParser();
+parser.Settings.Lexing.HasTitle = true;
+parser.Settings.Parsing.IsEndRequired = true;
+parser.Settings.WorkingDirectory = workingDirectory;
+parser.Settings.Compatibility = CompatibilityOptions.LTspice;
+var parseResult = parser.ParseNetlist(netlist);
+
+var reader = new SpiceSharpReader();
+reader.Settings.Compatibility = CompatibilityOptions.LTspice;
+var model = reader.Read(parseResult.FinalModel);
+```
+
+Use `reader.Settings.UseCustomComponents()` only when the design needs `SpiceSharpParser.CustomComponents` mappings:
+
+```csharp
+using SpiceSharpParser.CustomComponents;
+
+reader.Settings.Compatibility = CompatibilityOptions.LTspice;
+reader.Settings.UseCustomComponents();
+```
+
+LTspice compatibility is parser-first and evidence-backed. Before claiming parity, read `roadmap/ltspice-compatibility-matrix.md` and the matching P0/P1/P2/P3 tests.
+
+- Supported parser shims include `.backanno` warning no-op, output/viewer `.OPTIONS` warning no-ops, one-argument `.TRAN` with derived step, `.TRAN ... UIC`, scalar aliases, `table(...)`/`tbl(...)`, `EXP(...)`, finite-cycle `PULSE(... Ncycles)`, finite-cycle `SINE(... Ncycles)`, local two-column `PWL file=<path>`, and source `tbl=(...)`.
+- Topology options are synthesized as helper entities: source `Rser`, `Cpar`, `load`, and `R=<value>`; resistor `Rser`, `Rpar`, `Cpar`; capacitor `Rser`, `Lser`, `Rpar`, `Cpar`; inductor `Rser`, `Lser`, `Rpar`, `RLshunt`, `Cpar`. Helper names use suffixes such as `_rser`, `_cpar`, `_rlshunt`; repeated subcircuits scope internal helper nodes.
+- Model/instance shims include R/C model `tc=a[,b]`, switch aliases `von`/`voff` and `ion`/`ioff`, and metadata/rating parameters (`mfg`, `pn`, `desc`, `V`, `Irms`, etc.) as warning no-ops in LTspice mode.
+- Custom ideal diodes are selected when a `.MODEL D(...)` contains `Ron`, `Roff`, `Vfwd`, `Vrev`, `Rrev`, `Ilimit`, `RevIlimit`, `Epsilon`, or `RevEpsilon`. They support OP/DC/AC/TRAN as memoryless region-wise-linear devices with `M`/`N` scaling, but no junction capacitance, charge storage, temperature physics, or noise.
+- Custom nonlinear passives use `C... Q=<expr>` with `x = V(node+,node-)` and `L... Flux=<expr>` with `x = I(L)`. AC uses the operating-point slope (`dQ/dV`, `dFlux/dI`); transient uses the stored quantity and integration history. `IC=`, `M=`, and `N=` are supported.
+- Unsupported LTspice constructs should produce targeted diagnostics, not silent fallbacks. Known gaps include schematic/symbol import, VDMOS, LTRA/URC, `.TF`/`.NET`, `.TRAN startup|steady|nodiscard|step`, behavior-changing solver options such as `cshunt`, PWL repeat blocks, `uplim(...)`, `dnlim(...)`, and unary `~`.
 
 ---
 
@@ -126,8 +161,8 @@ Create xUnit test project in `tests/CircuitTests/` targeting **net8.0**:
 
 **SpiceSharp Pipeline** (critical — get this right in CircuitTestHelper):
 1. **Trim** C# `@"..."` whitespace: `string.Join(Environment.NewLine, netlist.Split('\n').Select(l => l.Trim()).Where(l => l.Length > 0))`
-2. **Parse**: `var parser = new SpiceNetlistParser(); parser.Settings.Lexing.HasTitle = true; parser.Settings.Parsing.IsEndRequired = true;`
-3. **Read**: `var reader = new SpiceSharpReader(); var model = reader.Read(parseResult.FinalModel);`
+2. **Parse**: `var parser = new SpiceNetlistParser(); parser.Settings.Lexing.HasTitle = true; parser.Settings.Parsing.IsEndRequired = true;` Set `WorkingDirectory` and `CompatibilityOptions.LTspice` when the netlist needs them.
+3. **Read**: `var reader = new SpiceSharpReader();` mirror `CompatibilityOptions.LTspice` on the reader; call `reader.Settings.UseCustomComponents()` for LTspice ideal diodes or `Q=`/`Flux=` passives; then `var model = reader.Read(parseResult.FinalModel);`
 4. **Validate**: check `model.ValidationResult.HasError`
 5. **Attach exports** filtered by simulation: `model.Exports.Where(ex => ex.Simulation == simulation)`
 6. **Run** (all 3 lines required): `var codes = simulation.Run(model.Circuit, -1); codes = simulation.InvokeEvents(codes); codes.ToArray();`
@@ -140,8 +175,9 @@ Create xUnit test project in `tests/CircuitTests/` targeting **net8.0**:
 2. **WebSearch** the circuit type for standard specs, typical values, and design trade-offs
 3. Elicit quantitative specs (frequency, gain, impedance, supply, bandwidth, Q, noise, timing)
 4. Identify required analyses (`.OP`, `.DC`, `.AC`, `.TRAN`, `.NOISE`) and post-processing controls (`.MEAS`, `.FOUR`, `.PRINT`, `.PLOT`, `.SAVE`, `.WAVE` when audio export matters)
-5. Create `circuits/<name>/requirements.md` with spec table, operating conditions, acceptance criteria
-6. Update `backlog.md`
+5. Record dialect and import assumptions: ordinary SPICE, LTspice compatibility, or LTspice compatibility plus custom components
+6. Create `circuits/<name>/requirements.md` with spec table, operating conditions, acceptance criteria
+7. Update `backlog.md`
 
 ### Phase 2: Topology Selection
 
@@ -178,6 +214,10 @@ Create xUnit test project in `tests/CircuitTests/` targeting **net8.0**:
 - Use `.TEMP` for temperature corners and `.STEP PARAM temp_val` + `.OPTIONS TEMP={temp_val}` for continuous temperature sweeps
 - Use `.MC` with `.DISTRIBUTION`/`.APPENDMODEL` for statistical validation once nominal and deterministic corner tests pass
 - Use `.CONNECT` to intentionally short aliases or package pins; prefer clear shared node names when designing from scratch
+- For LTspice-originated netlists, set `CompatibilityOptions.LTspice` on parser and reader before judging support
+- For LTspice `.INCLUDE`, `.LIB`, and `PWL file=<path>`, set parser/reader working directory and use local fixture files in tests
+- Prefer native LTspice source/passive options when validating compatibility; expect synthesized helper components rather than hand-written equivalent helpers
+- Enable `UseCustomComponents()` only for LTspice ideal diode models and nonlinear `Q=`/`Flux=` passives
 
 #### LAPLACE Transfer Sources
 
@@ -740,14 +780,17 @@ var explorer = new DesignSpaceExplorer(netlist)
 ## Known Limitations
 
 ### Works Well
-RC/RL/RLC filters, LAPLACE transfer-function blocks, amplifier stages (CE/CB/CC/CS/diff pair), diode circuits, voltage regulators, AM envelope detection, Wien bridge/phase-shift oscillators, DC power supply, BJT/MOSFET biasing
+RC/RL/RLC filters including explicit LTspice source/passive parasitics, LAPLACE transfer-function blocks, amplifier stages (CE/CB/CC/CS/diff pair), diode circuits including opt-in LTspice ideal diodes, opt-in nonlinear Q/Flux passives, voltage regulators, AM envelope detection, Wien bridge/phase-shift oscillators, DC power supply, BJT/MOSFET biasing
 
 ### Use With Caution
 - **FM/PLLs** — convergence issues, use behavioral-source approximations
 - **RF Mixers** — very small timesteps needed, keep frequencies low or use B elements
-- **>100 MHz** — no parasitic/skin effect modeling, treat as approximate
+- **>100 MHz** — only explicit/synthesized parasitics are represented; no distributed skin-effect modeling, treat as approximate
 - **Crystal oscillators** — startup transients impractical, use `.IC` or short sims
 - **Op-amps** — no built-in device; use `E ... LAPLACE` for finite closed-loop bandwidth approximations, or use detailed behavioral/transistor models for full macro-model behavior
+- **LTspice imports** — compatibility is opt-in and evidence-scoped; `.asc`/`.asy`, VDMOS, LTRA/URC, `.TF`, `.NET`, PWL repeat blocks, selected `.TRAN` modifiers, and behavior-changing solver options remain unsupported or engine-required
+- **Custom ideal diode** — useful for power/rectifier behavior, but excludes junction charge, capacitance, semiconductor temperature physics, and noise
+- **Nonlinear Q/Flux passives** — require `UseCustomComponents()`; verify incremental slope and convergence around the operating point
 
 ### Convergence Tips
 - `.OPTIONS reltol=1e-3 abstol=1e-12 gmin=1e-12`
@@ -766,6 +809,8 @@ When writing tests, consult these for patterns and inspiration:
 - **SpiceSharpParser**: `src/SpiceSharpParser.IntegrationTests/` — `BaseTests.cs`, `Components/`, `DotStatements/`, `AnalogBehavioralModeling/`, `Examples/Circuits/*.cir`
 - **LAPLACE**: `src/docs/articles/laplace.md`, `src/docs/articles/laplace-basics.md`, `src/SpiceSharpParser.IntegrationTests/AnalogBehavioralModeling/LaplaceTests.cs`
 - **Recent dot statements**: `src/docs/articles/four.md`, `meas.md`, `print.md`, `plot.md`, `noise.md`, `step.md`, `mc.md`, `temp.md`; tests in `src/SpiceSharpParser.IntegrationTests/DotStatements/*Tests.cs`
+- **LTspice compatibility**: `roadmap/ltspice-compatibility-matrix.md`, `src/SpiceSharpParser.IntegrationTests/LTspiceCompatibility/LTspiceCompatibilityP0Tests.cs`, `src/SpiceSharpParser.IntegrationTests/LTspiceCompatibility/LTspiceCompatibilityP1Tests.cs`, `src/SpiceSharpParser.IntegrationTests/LTspiceCompatibility/LTspiceCompatibilityP2Tests.cs`, `src/SpiceSharpParser.IntegrationTests/LTspiceCompatibility/LTspiceCompatibilityP3Tests.cs`
+- **Custom components**: `src/docs/articles/ideal-diode.md`, `src/docs/articles/nonlinear-passives.md`, `src/SpiceSharpParser.Tests/CustomComponents/*Tests.cs`, `src/SpiceSharpParser.IntegrationTests/LTspiceCompatibility/LTspiceIdealDiodeIntegrationTests.cs`
 
 Key patterns: tolerance-based assertions (RelTol=1e-3, AbsTol=1e-12), reference function comparison, `.MEAS` validation, string-array netlist construction.
 
@@ -780,6 +825,10 @@ Key patterns: tolerance-based assertions (RelTol=1e-3, AbsTol=1e-12), reference 
 | Zero/empty results | 3-step run pattern? (`Run` → `InvokeEvents` → `ToArray`) Exports filtered by simulation? |
 | Wrong AC results | Using `VM()`/`VDB()` not `V()`? Matched-system 0dB ref = 0.5V not 1V? |
 | Wrong values | `.MODEL` realistic? Node connectivity correct? Units in SI? Sim long enough? |
+| LTspice syntax rejected | Set `CompatibilityOptions.LTspice` on both parser and reader? Check the compatibility matrix for support class. |
+| `Q=`/`Flux=` or ideal diode rejected | Referenced `SpiceSharpParser.CustomComponents` and called `reader.Settings.UseCustomComponents()`? |
+| `.INCLUDE`/`.LIB`/PWL file missing | `WorkingDirectory` set? Paths relative to including file or current working directory? Fixture file present? |
+| Unexpected `_rser`/`_cpar` helpers | LTspice source/passive parasitics synthesize helper entities; inspect helper names and internal node scoping. |
 | `.FOUR` missing/failed | `.TRAN` present? At least one complete final period? Signal expression valid? Check `model.FourierAnalyses[*].Success/ErrorMessage` |
 | `.FOUR` THD/harmonics odd | Fundamental frequency correct? Max step small enough? Final cycles settled? |
 | `.STEP`/`.TEMP` result count unexpected | Measurements and Fourier results produce one result per generated simulation; inspect `SimulationName` |
