@@ -12,823 +12,213 @@ user-invocable: true
 
 > Would you like me to use web resources (WebSearch, web-based datasheets, application notes) during this design session?
 >
-> - **Yes** — I'll search for theory, reference designs, datasheets, and application notes to inform calculations and topology choices.
-> - **No** — I'll work entirely offline using my built-in knowledge, existing codebase examples, and local templates/models.
+> - **Yes** - I'll search for theory, reference designs, datasheets, and application notes to inform calculations and topology choices.
+> - **No** - I'll work entirely offline using my built-in knowledge, existing codebase examples, and local templates/models.
 
-Wait for the user's answer before proceeding. Store their choice and respect it throughout the entire session:
-- If **Yes**: use WebSearch proactively as described in the Research Tools section below.
-- If **No**: skip all WebSearch calls. Do not use WebSearch, WebFetch, or any web-based tool. Rely on built-in knowledge, local files in `templates/`, `models/`, `src/SpiceSharpParser.IntegrationTests/`, and `discoveries.md`.
+Wait for the user's answer before proceeding. Respect the choice throughout the session.
+- If **Yes**: use WebSearch proactively for theory, reference designs, datasheets, and application notes.
+- If **No**: skip WebSearch/WebFetch/web-based tools. Rely on built-in knowledge, local files in `templates/`, `models/`, `src/SpiceSharpParser.IntegrationTests/`, and `discoveries.md`.
 
 ---
 
 # Analog Circuit Design Methodology
 
-You are an analog circuit design engineer using SpiceSharp and SpiceSharpParser. Follow this test-driven methodology. Never guess component values — calculate from first principles, verify via simulation.
+You are an analog circuit design engineer using SpiceSharp and SpiceSharpParser. Follow this test-driven methodology. Never guess component values; calculate from first principles and verify via simulation.
+
+## Reference Routing
+
+Read these bundled references only when the task needs that detail:
+
+- `references/netlist-features.md`: parser feature surface, netlist-native controls, LAPLACE, .FOUR, CircuitBuilder, and analysis/helper APIs.
+- `references/ltspice-compatibility.md`: LTspice imports, compatibility settings, finite waveforms, include/lib/PWL files, source/passive parasitics, custom ideal diodes, nonlinear `Q=`/`Flux=` passives, and known gaps.
+- `references/testing-patterns.md`: `CircuitTestHelper`, parse/read/run pipeline, xUnit assertions, measurement/Fourier/print/plot assertions, reference test suites, and debugging table.
+
+When a statement or helper is summarized here and exact behavior matters, read the reference file first, then the local docs/tests it points to.
 
 ## Golden Rule: Understand Before Computing
 
-Before calculating anything, **deeply understand the domain and physics**. If you cannot explain in plain language *why* each component exists and *what physical role* it plays, stop and study first.
+Before calculating anything, deeply understand the domain and physics. If you cannot explain in plain language why each component exists and what physical role it plays, stop and study first.
 
-- Map the problem to known theory before reaching for simulation
-- Every component value must be justified by an equation or design rule
-- When encountering an unfamiliar topic, **use WebSearch** to refresh on theory before proceeding *(if web resources enabled)*
-- If a simulation fails, diagnose *why* using circuit theory — don't tweak and re-run
-
----
+- Map the problem to known theory before reaching for simulation.
+- Every component value must be justified by an equation or design rule.
+- When encountering an unfamiliar topic, use WebSearch to refresh on theory if web resources are enabled.
+- If a simulation fails, diagnose why using circuit theory before changing values.
 
 ## Research Tools
 
-**Use these proactively — they are your biggest speed advantage.**
+Use research tools proactively:
 
-### WebSearch — Circuit Theory & Datasheets
-Use WebSearch before every new design to:
-- Refresh on topology theory (Barkhausen criterion, filter design tables, biasing rules)
-- Find application notes with proven component values and design procedures
-- Look up transistor/diode model parameters from datasheets
-- Find reference designs to validate your analytical approach
-
-### Excalidraw — Visual Circuit Diagrams
-Use Excalidraw MCP tools to create block diagrams and circuit schematics for documentation:
-- `mcp__claude_ai_Excalidraw__create_view` — create/update circuit diagrams
-- `mcp__claude_ai_Excalidraw__export_to_excalidraw` — export for user editing
-- Include diagrams in `documentation.md` for every design
-
-### Parallel Agents — Concurrent Research
-Launch multiple Agent subagents in parallel when:
-- Researching theory AND exploring existing templates/models simultaneously
-- Running smoke tests on one design while researching fixes for another
-- Exploring the codebase for test patterns while writing netlist
-
----
+- **WebSearch**: topology theory, proven design procedures, datasheets, and reference designs when web resources are enabled.
+- **Excalidraw MCP**: create block diagrams and circuit schematics for documentation when available.
+- **Parallel agents**: use when researching theory, exploring local templates/models, and test-pattern discovery can proceed independently.
 
 ## File Structure
 
 ```
-backlog.md                          — global task tracker across all active designs
-discoveries.md                      — key lessons learned (READ BEFORE STARTING WORK)
+backlog.md                          - global task tracker across all active designs
+discoveries.md                      - key lessons learned (READ BEFORE STARTING WORK)
 circuits/
   <name>/
-    requirements.md                 — quantitative specs, constraints, acceptance criteria
-    <name>.cir                      — SPICE netlist under design
-    results.md                      — simulation results + spec comparison
-    documentation.md                — circuit documentation with Excalidraw diagrams
-models/                             — reusable .MODEL definitions
-templates/                          — known-good reference netlists
+    requirements.md                 - quantitative specs, constraints, acceptance criteria
+    <name>.cir                      - SPICE netlist under design
+    results.md                      - simulation results and spec comparison
+    documentation.md                - circuit documentation with diagrams
+models/                             - reusable .MODEL definitions
+templates/                          - known-good reference netlists
 tests/
-  CircuitTests/                     — xUnit test project
+  CircuitTests/
     CircuitTests.csproj
-    CircuitTestHelper.cs            — shared parse/read/run/assert utilities
-    <CircuitName>Tests.cs           — xUnit test class per circuit
+    CircuitTestHelper.cs            - shared parse/read/run/assert utilities
+    <CircuitName>Tests.cs           - xUnit test class per circuit
 ```
 
-**On every invocation**: read `backlog.md` and `discoveries.md` first.
+On every invocation, read `backlog.md` and `discoveries.md` first when they exist.
 
----
+## Current Feature Surface
 
-## Current SpiceSharpParser Feature Surface
+Use parser-native features instead of ad-hoc C# post-processing when the netlist already supports them:
 
-Use the parser's current netlist features directly instead of reimplementing post-processing in ad-hoc C# when a dot statement exists. For exact syntax, read `src/docs/index.md` first, then the specific article and matching tests under `src/SpiceSharpParser.IntegrationTests/`.
+- Analyses: `.OP`, `.DC`, `.AC`, `.TRAN`, `.NOISE`.
+- Outputs/post-processing: `.SAVE`, `.PRINT`, `.PLOT`, `.MEAS`/`.MEASURE`, `.FOUR`, `.WAVE`.
+- Parameters/control: `.PARAM`, `.FUNC`, `.LET`, `.SPARAM`, `.STEP`, `.ST`, `.TEMP`, `.MC`, `.DISTRIBUTION`, `.OPTIONS`, `.IC`, `.NODESET`, `.IF`.
+- Structure/models: `.SUBCKT`, subcircuit instances, `.INCLUDE`, `.LIB`, `.GLOBAL`, `.CONNECT`, `.APPENDMODEL`, `.MODEL`.
+- Devices/sources: R, C, L, K, D, Q, J, M, V, I, B, controlled sources, switches, transmission lines, PULSE/SIN/PWL/EXP/SFFM/AM/WAVE/wavefile, VALUE/TABLE/POLY/LAPLACE.
+- LTspice mode: one-argument `.TRAN`, finite-cycle PULSE/SINE, file-backed PWL, source/passive parasitics, switch/model aliases, custom ideal diodes, and nonlinear `Q=`/`Flux=` passives.
 
-| Category | Supported features | Primary references |
-|----------|--------------------|--------------------|
-| Analyses | `.OP`, `.DC`, `.AC`, `.TRAN`, `.NOISE`; LTspice one-argument `.TRAN` in compatibility mode | `src/docs/articles/op.md`, `dc.md`, `ac.md`, `tran.md`, `noise.md`; `LTspiceCompatibilityP1Tests.cs` |
-| Output/post-processing | `.SAVE`, `.PRINT`, `.PLOT`, `.MEAS`/`.MEASURE`, `.FOUR`, `.WAVE` | `save.md`, `print.md`, `plot.md`, `meas.md`, `four.md`; `.WAVE` source/control code |
-| Parameters/expressions | `.PARAM`, `.FUNC`, `.LET`, `.SPARAM`, nested exports such as `db(V(out))`, `mag(I(R1))`; LTspice aliases, `table(...)`, `tbl(...)`, `**`, boolean operators | `param.md`, `func.md`, `let.md`, `sparam.md`, `meas.md`; `LTspiceCompatibilityP2Tests.cs` |
-| Sweeps/control/statistics | `.STEP`, `.ST`, `.TEMP`, `.MC`, `.DISTRIBUTION`, `.OPTIONS`, `.IC`, `.NODESET`, `.IF` | `step.md`, `st.md`, `temp.md`, `mc.md`, `distribution.md`, `options.md`, `ic.md`, `nodeset.md`, `if.md` |
-| Structure/models | `.SUBCKT`, `X...`, `.INCLUDE`, `.LIB`, `.GLOBAL`, `.CONNECT`, `.APPENDMODEL`, `.MODEL`; quoted/nested relative include/lib paths | `subckt.md`, `subcircuit-instance.md`, `include.md`, `lib.md`, `global.md`, `appendmodel.md`; `LTspiceCompatibilityP1Tests.cs`; `DotStatements/ConnectTests.cs` |
-| Sources/devices | R, C, L, K, D, Q, J, M, V, I, B, E/F/G/H, S/W switches, T transmission line, BVDelay, PULSE/SIN/PWL/EXP/SFFM/AM/WAVE/wavefile, VALUE/TABLE/POLY/LAPLACE, LTspice finite-cycle PULSE/SINE, file-backed PWL, source Rser/Cpar/load/R, R/C/L instance parasitics, custom ideal diode and nonlinear Q/Flux passives | matching component articles; `ideal-diode.md`, `nonlinear-passives.md`; `LTspiceCompatibilityP2Tests.cs`, `LTspiceCompatibilityP3Tests.cs`, `LTspiceIdealDiodeIntegrationTests.cs` |
-
-Prefer netlist-native controls for reproducibility:
-- Use `.MEAS` for scalar acceptance criteria, including `TRIG/TARG`, `WHEN`, `FIND`, `MAX`, `MIN`, `AVG`, `RMS`, `PP`, `INTEG`, `DERIV`, and `PARAM`.
-- Use `.FOUR` for settled-period harmonic magnitude, phase, normalized dB, and THD from transient waveforms.
-- Use `.PRINT` for tabular exported data and `.PLOT` for structured XY plot data when reports need curves.
-- Use `.WAVE` only when a transient waveform must be exported to a WAV file as a design artifact.
-- Use `.STEP`, `.TEMP`, `.MC`, and `.DISTRIBUTION` for sweeps, corners, and statistical robustness instead of manual loops.
-
-When `CircuitBuilder` has no dedicated helper for a current feature, use `RawLine()` with the exact netlist statement (for example `.RawLine(".FOUR 1k V(OUT)")`, `.RawLine(".STEP PARAM r LIST 1k 2k 5k")`, `.RawLine(".PLOT TRAN V(OUT) merge")`).
-
-### LTspice Netlists and Custom Components
-
-Use LTspice compatibility when the input netlist came from LTspice or intentionally uses LTspice-only spellings. Set the option on both parser and reader; set the working directory whenever `.INCLUDE`, `.LIB`, or `PWL file=<path>` may resolve relative files.
-
-```csharp
-var parser = new SpiceNetlistParser();
-parser.Settings.Lexing.HasTitle = true;
-parser.Settings.Parsing.IsEndRequired = true;
-parser.Settings.WorkingDirectory = workingDirectory;
-parser.Settings.Compatibility = CompatibilityOptions.LTspice;
-var parseResult = parser.ParseNetlist(netlist);
-
-var reader = new SpiceSharpReader();
-reader.Settings.Compatibility = CompatibilityOptions.LTspice;
-var model = reader.Read(parseResult.FinalModel);
-```
-
-Use `reader.Settings.UseCustomComponents()` only when the design needs `SpiceSharpParser.CustomComponents` mappings:
-
-```csharp
-using SpiceSharpParser.CustomComponents;
-
-reader.Settings.Compatibility = CompatibilityOptions.LTspice;
-reader.Settings.UseCustomComponents();
-```
-
-LTspice compatibility is parser-first and evidence-backed. Before claiming parity, read `roadmap/ltspice-compatibility-matrix.md` and the matching P0/P1/P2/P3 tests.
-
-- Supported parser shims include `.backanno` warning no-op, output/viewer `.OPTIONS` warning no-ops, one-argument `.TRAN` with derived step, `.TRAN ... UIC`, scalar aliases, `table(...)`/`tbl(...)`, `EXP(...)`, finite-cycle `PULSE(... Ncycles)`, finite-cycle `SINE(... Ncycles)`, local two-column `PWL file=<path>`, and source `tbl=(...)`.
-- Topology options are synthesized as helper entities: source `Rser`, `Cpar`, `load`, and `R=<value>`; resistor `Rser`, `Rpar`, `Cpar`; capacitor `Rser`, `Lser`, `Rpar`, `Cpar`; inductor `Rser`, `Lser`, `Rpar`, `RLshunt`, `Cpar`. Helper names use suffixes such as `_rser`, `_cpar`, `_rlshunt`; repeated subcircuits scope internal helper nodes.
-- Model/instance shims include R/C model `tc=a[,b]`, switch aliases `von`/`voff` and `ion`/`ioff`, and metadata/rating parameters (`mfg`, `pn`, `desc`, `V`, `Irms`, etc.) as warning no-ops in LTspice mode.
-- Custom ideal diodes are selected when a `.MODEL D(...)` contains `Ron`, `Roff`, `Vfwd`, `Vrev`, `Rrev`, `Ilimit`, `RevIlimit`, `Epsilon`, or `RevEpsilon`. They support OP/DC/AC/TRAN as memoryless region-wise-linear devices with `M`/`N` scaling, but no junction capacitance, charge storage, temperature physics, or noise.
-- Custom nonlinear passives use `C... Q=<expr>` with `x = V(node+,node-)` and `L... Flux=<expr>` with `x = I(L)`. AC uses the operating-point slope (`dQ/dV`, `dFlux/dI`); transient uses the stored quantity and integration history. `IC=`, `M=`, and `N=` are supported.
-- Unsupported LTspice constructs should produce targeted diagnostics, not silent fallbacks. Known gaps include schematic/symbol import, VDMOS, LTRA/URC, `.TF`/`.NET`, `.TRAN startup|steady|nodiscard|step`, behavior-changing solver options such as `cshunt`, PWL repeat blocks, `uplim(...)`, `dnlim(...)`, and unary `~`.
-
----
+For exact syntax and gotchas, read `references/netlist-features.md`; for LTspice-specific support boundaries, read `references/ltspice-compatibility.md`.
 
 ## Phases
 
-Phases are guidelines, not a rigid waterfall. Skip or merge phases when the situation warrants it (e.g., skip Phase 2 if the user specifies the topology; merge Phases 3-4 for simple circuits).
+Phases are guidelines, not a rigid waterfall. Skip or merge phases when the situation warrants it.
 
 ### Phase 0: Bootstrap
 
-*Skip if `tests/CircuitTests/` exists and builds.*
+Skip if `tests/CircuitTests/` exists and builds.
 
-Create xUnit test project in `tests/CircuitTests/` targeting **net8.0**:
-- NuGet: `SpiceSharp`, `xunit`, `xunit.runner.visualstudio`, `Microsoft.NET.Test.Sdk`
-- Project reference: `<ProjectReference Include="../../src/SpiceSharpParser/SpiceSharpParser.csproj" />`
-- Create `CircuitTestHelper.cs` with: `ParseAndRead`, `RunOP`, `RunDC`, `RunAC`, `RunTran`, `GetMeasurements`, `AssertMeasurement`, `AssertMeasurementSuccess`
-- Reference `src/SpiceSharpParser.IntegrationTests/BaseTests.cs` for the parsing/simulation patterns
-- Verify with a trivial RC filter test
-
-**SpiceSharp Pipeline** (critical — get this right in CircuitTestHelper):
-1. **Trim** C# `@"..."` whitespace: `string.Join(Environment.NewLine, netlist.Split('\n').Select(l => l.Trim()).Where(l => l.Length > 0))`
-2. **Parse**: `var parser = new SpiceNetlistParser(); parser.Settings.Lexing.HasTitle = true; parser.Settings.Parsing.IsEndRequired = true;` Set `WorkingDirectory` and `CompatibilityOptions.LTspice` when the netlist needs them.
-3. **Read**: `var reader = new SpiceSharpReader();` mirror `CompatibilityOptions.LTspice` on the reader; call `reader.Settings.UseCustomComponents()` for LTspice ideal diodes or `Q=`/`Flux=` passives; then `var model = reader.Read(parseResult.FinalModel);`
-4. **Validate**: check `model.ValidationResult.HasError`
-5. **Attach exports** filtered by simulation: `model.Exports.Where(ex => ex.Simulation == simulation)`
-6. **Run** (all 3 lines required): `var codes = simulation.Run(model.Circuit, -1); codes = simulation.InvokeEvents(codes); codes.ToArray();`
-7. **Sweep values**: DC=`((DC)simulation).GetCurrentSweepValue().Last()`, AC=`((AC)simulation).Frequency`, TRAN=`((Transient)simulation).Time`
-8. **Measurements**: `model.Measurements` — check `.Success` before reading `.Value`
+Create an xUnit test project in `tests/CircuitTests/` targeting `net8.0`:
+- NuGet: `SpiceSharp`, `xunit`, `xunit.runner.visualstudio`, `Microsoft.NET.Test.Sdk`.
+- Project reference: `<ProjectReference Include="../../src/SpiceSharpParser/SpiceSharpParser.csproj" />`.
+- Create `CircuitTestHelper.cs` with `ParseAndRead`, `RunOP`, `RunDC`, `RunAC`, `RunTran`, `GetMeasurements`, `AssertMeasurement`, and `AssertMeasurementSuccess`.
+- Read `references/testing-patterns.md` before implementing helper methods.
+- Verify with a trivial RC filter test.
 
 ### Phase 1: Requirements
 
-1. Ask the user what circuit they want and its purpose
-2. **WebSearch** the circuit type for standard specs, typical values, and design trade-offs
-3. Elicit quantitative specs (frequency, gain, impedance, supply, bandwidth, Q, noise, timing)
-4. Identify required analyses (`.OP`, `.DC`, `.AC`, `.TRAN`, `.NOISE`) and post-processing controls (`.MEAS`, `.FOUR`, `.PRINT`, `.PLOT`, `.SAVE`, `.WAVE` when audio export matters)
-5. Record dialect and import assumptions: ordinary SPICE, LTspice compatibility, or LTspice compatibility plus custom components
-6. Create `circuits/<name>/requirements.md` with spec table, operating conditions, acceptance criteria
-7. Update `backlog.md`
+1. Ask what circuit is needed and what it is for.
+2. Research the circuit type for standard specs, typical values, and trade-offs when web resources are enabled.
+3. Elicit quantitative specs: frequency, gain, impedance, supply, bandwidth, Q, noise, timing, tolerance, temperature, distortion.
+4. Identify required analyses and post-processing controls.
+5. Record dialect assumptions: ordinary SPICE, LTspice compatibility, or LTspice compatibility plus custom components.
+6. Create `circuits/<name>/requirements.md` with spec table, operating conditions, and acceptance criteria.
+7. Update `backlog.md`.
 
 ### Phase 2: Topology Selection
 
-1. Check `templates/` for a matching starting-point
-2. **WebSearch** for topology comparisons relevant to the requirements
-3. Select topology with documented rationale
-4. Describe topology to user: node names, component roles, signal flow
-5. **Create Excalidraw diagram** showing the block-level signal flow
-6. Wait for user confirmation
+1. Check `templates/` for a matching starting point.
+2. Research topology comparisons when web resources are enabled.
+3. Select topology with documented rationale.
+4. Describe node names, component roles, and signal flow.
+5. Create a diagram when useful.
+6. Wait for user confirmation unless the user asked you to proceed autonomously.
 
 ### Phase 3: Component Calculation
 
-**Before computing**: verify you understand the operating principle well enough to explain it without equations.
+Before computing, verify you understand the operating principle well enough to explain it without equations.
 
-1. **WebSearch** for design equations and worked examples of the chosen topology
-2. Compute all values from design equations — show all math, state all assumptions
-3. Snap to standard values using `StandardValues.NearestE24()` (see AI Tools below)
-4. For reference formulas, consult `src/SpiceSharpParser.IntegrationTests/` for similar circuits
+1. Compute values from design equations; show math and assumptions.
+2. Snap values with `StandardValues` after calculation.
+3. Consult `src/SpiceSharpParser.IntegrationTests/` and `references/netlist-features.md` for similar circuits and helper APIs.
 
-### Phase 4: Netlist & Smoke Test
+### Phase 4: Netlist and Smoke Test
 
-1. Write netlist to `circuits/<name>/<name>.cir` — use `CircuitBuilder` for programmatic construction when beneficial
-2. **Run `SmokeTester.QuickCheck()`** — fix any structural issues before proceeding
-3. Run `NetlistLinter.Lint()` for additional validation
-4. Include `.MEAS` directives for ALL scalar specs that need automated verification
-5. Add `.FOUR` for THD/harmonic specs, `.PRINT` for tabular report data, `.PLOT` for reusable curve data, and `.WAVE` only for requested audio artifacts
+1. Write `circuits/<name>/<name>.cir`; use `CircuitBuilder` for complex or parameterized construction.
+2. Use `.MEAS` for all scalar acceptance criteria.
+3. Add `.FOUR` for THD/harmonic specs, `.PRINT` for report tables, `.PLOT` for reusable curve data, and `.WAVE` only for requested audio artifacts.
+4. Use `.STEP`, `.TEMP`, `.MC`, and `.DISTRIBUTION` for robustness instead of manual loops.
+5. Run `SmokeTester.QuickCheck()` and `NetlistLinter.Lint()` before deeper verification.
+6. For LTspice-originated netlists, read `references/ltspice-compatibility.md`, set `CompatibilityOptions.LTspice` on parser and reader, and enable `UseCustomComponents()` only when ideal diodes or `Q=`/`Flux=` passives require it.
 
-**SPICE quick reference**: For syntax details (devices, waveforms, analyses, expressions), read `src/SpiceSharpParser.IntegrationTests/` examples or use WebSearch. Key rules:
-- Ground is node `0`; every node needs DC path to ground (add 1GΩ if needed)
-- Every semiconductor needs `.MODEL`
-- AC analysis: use `VM()`/`VDB()`/`VP()`, never plain `V()`
-- Prefer `.MEAS` over `.SAVE` for scalar spec verification; use `.SAVE`/`.PRINT`/`.PLOT` only when waveform/table/plot data is actually needed
-- Use `.LET` for reusable dynamic expressions such as power or gain, `.FUNC` for reusable equations, and `.SPARAM` only when immediate scalar evaluation is required before setup/sweeps
-- Use `.TEMP` for temperature corners and `.STEP PARAM temp_val` + `.OPTIONS TEMP={temp_val}` for continuous temperature sweeps
-- Use `.MC` with `.DISTRIBUTION`/`.APPENDMODEL` for statistical validation once nominal and deterministic corner tests pass
-- Use `.CONNECT` to intentionally short aliases or package pins; prefer clear shared node names when designing from scratch
-- For LTspice-originated netlists, set `CompatibilityOptions.LTspice` on parser and reader before judging support
-- For LTspice `.INCLUDE`, `.LIB`, and `PWL file=<path>`, set parser/reader working directory and use local fixture files in tests
-- Prefer native LTspice source/passive options when validating compatibility; expect synthesized helper components rather than hand-written equivalent helpers
-- Enable `UseCustomComponents()` only for LTspice ideal diode models and nonlinear `Q=`/`Flux=` passives
+Core SPICE rules:
+- Ground is node `0`; every node needs a DC path to ground.
+- Every semiconductor needs `.MODEL`.
+- AC analysis uses `VM()`/`VDB()`/`VP()`, not plain `V()`.
+- Prefer clear shared node names over `.CONNECT` unless aliasing/package pins are intentional.
 
-#### LAPLACE Transfer Sources
+### Phase 5: Simulation and Verification
 
-Use `LAPLACE` when a block is mostly linear and the desired transfer function is known: anti-alias poles, finite-bandwidth amplifier approximations, lead/lag compensation, simplified transconductance stages, sensor front ends, and other gain/pole/zero models.
+Every design must produce tests.
 
-Supported source-level spellings:
-
-In the examples below, `E/G<name>` means choose either an `E` or `G` source prefix, and `F/H<name>` means choose either an `F` or `H` source prefix.
-
-```spice
-E/G<name> <out+> <out-> LAPLACE {V(<node>)} = {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
-E/G<name> <out+> <out-> LAPLACE {V(<node1>,<node2>)} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
-E/G<name> <out+> <out-> LAPLACE = {V(<node1>,<node2>)} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
-
-F/H<name> <out+> <out-> LAPLACE {I(<source>)} = {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
-F/H<name> <out+> <out-> LAPLACE {I(<source>)} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
-F/H<name> <out+> <out-> LAPLACE = {I(<source>)} {<transfer>} [M=<m>] [TD=<delay>|DELAY=<delay>]
-```
-
-Function-style forms are also supported:
-
-```spice
-ELOW OUT 0 VALUE={LAPLACE(V(IN), 1/(1+s*tau))}
-BLOW OUT 0 V={LAPLACE(V(IN), wc/(s+wc))}
-BGM OUT 0 I={LAPLACE(V(IN), gm/(1+s*tau))}
-BMIX OUT 0 V={1 + 2*LAPLACE(V(IN), 1/(1+s))}
-BDELAY OUT 0 V={LAPLACE(V(IN), 1/(1+s*tau), M=2, TD=1n)}
-BINHELP OUT 0 V={LAPLACE(2*V(IN), 1/(1+s))}
-```
-
-Rules and gotchas:
-- `E` and `G` use voltage input `V(node)` or `V(node1,node2)`; `F` and `H` use current input `I(source)`.
-- Function-style `LAPLACE(...)` accepts direct probes and arbitrary scalar input expressions; non-probe inputs are lowered through internal helper sources.
-- The transfer must be a finite, proper rational polynomial in `s` with non-singular DC gain.
-- Use `s/(s+wc)` for high-pass behavior; bare `s` is improper and rejected.
-- Avoid unsupported forms such as `1/s`, `sin(s)`, source-level `V(a)-V(b)`, and `V(node)` on `F`/`H`.
-- `M=<m>` is a finite multiplier folded into the numerator. It may be positive, negative, or zero.
-- `TD=<delay>` and `DELAY=<delay>` are aliases; use only one, with assignment syntax, and a non-negative value.
-- Function-style calls may pass inline `M=`, `TD=`, and `DELAY=` options; inline options apply only to that call, so multiple delayed calls are supported when each delay is inline.
-- Source-level delay options still require exactly one `LAPLACE(...)` call.
-- `G` and `F` current is defined from `out+` to `out-`; with a grounded load this may produce inverted output voltage.
-- For details and examples, read `src/docs/articles/laplace.md`, `src/docs/articles/laplace-basics.md`, and `src/SpiceSharpParser.IntegrationTests/AnalogBehavioralModeling/LaplaceTests.cs`.
-
-#### `.FOUR` Fourier / THD Post-Processing
-
-Use `.FOUR` when the requirement includes THD, harmonic content, distortion cleanup, phase of harmonics, square-wave harmonic ratios, or before/after filter harmonic comparison. It is netlist-driven transient post-processing; prefer it over hand-written FFT code when the desired result is a settled periodic waveform metric.
-
-Syntax:
-
-```spice
-.TRAN <step> <stop> [<start>] [<maxstep>]
-.FOUR <fundamental_frequency> <expr1> [<expr2> ...]
-```
-
-Examples:
-
-```spice
-V1 OUT 0 SIN(0 1 1k)
-R1 OUT 0 1k
-.TRAN 1u 10m 0 2u
-.FOUR 1k V(OUT) I(V1)
-```
-
-Rules and gotchas:
-- `.FOUR` requires `.TRAN`; it analyzes the last complete period, so run long enough for startup to settle and for at least one full final period.
-- Choose the true repetition frequency. A wrong `f0` creates misleading harmonics and THD.
-- Use a small max step; aim for at least 20 samples per highest harmonic period, and 50-100 samples for good magnitudes.
-- Results are stored in `model.FourierAnalyses`, one result per signal per transient simulation or `.STEP` point.
-- Each result has `SignalName`, `SimulationName`, `FundamentalFrequency`, `TotalHarmonicDistortionPercent`, `Success`, `ErrorMessage`, and `Harmonics`.
-- Harmonic rows cover DC and harmonics 1-9 with `Magnitude`, `PhaseDegrees`, `NormalizedMagnitude`, and `NormalizedMagnitudeDecibels`; THD is computed from harmonics 2-9.
-- If using `CircuitBuilder`, add `.FOUR` with `RawLine()`; there is no dedicated builder helper.
-- For exact behavior and examples, read `src/docs/articles/four.md` and `src/SpiceSharpParser.IntegrationTests/DotStatements/FourTests.cs`.
-
-### Phase 5: Simulation & Verification
-
-**Every design MUST produce `tests/<CircuitName>Tests.cs`.**
-
-- One test method per spec, descriptive names: `BandpassFilter_Has3dBBandwidthOf10kHz`
-- Inline netlist as string constant; use `CircuitTestHelper` methods
-- Prefer `.MEAS` assertions for scalar specs; check `.Success` before reading `.Value`
-- Assert `.FOUR` results from `model.FourierAnalyses` for harmonic/THD/phase specs
-- Assert `.PRINT` data through `model.Prints` and `.PLOT` data through `model.XyPlots` when report tables or curves are part of the acceptance criteria
-- Use `WaveformAnalyzer` for analysis that has no netlist-native equivalent or for C#-side cross-checks (custom FFT, extra THD checks, stability margins, rise/fall/settling metrics)
-- Run `dotnet test --logger "trx"` — all must pass before Phase 6
-- **10+ assertions per circuit is normal** — verify primary specs, boundary behavior, DC bias, passband/stopband, transient behavior, phase response, sanity checks
-
-**Robustness analysis**: After nominal passes, add deterministic `.STEP` tests for tolerance/corner sweeps, `.TEMP` tests for temperature corners, and `.MC` tests with explicit `SEED=` for statistical checks. Use `.DISTRIBUTION` and `.APPENDMODEL` when device/model variation matters.
+- Read `references/testing-patterns.md` before writing or changing test infrastructure.
+- Use one descriptive test method per spec.
+- Prefer `.MEAS` assertions for scalar specs and check `.Success` before `.Value`.
+- Assert `.FOUR`, `.PRINT`, and `.PLOT` through their structured model results when those artifacts are acceptance criteria.
+- Use `WaveformAnalyzer` only when no netlist-native equivalent exists or when an independent C# cross-check is useful.
+- After nominal tests pass, add deterministic `.STEP` tests, temperature corners, and seeded `.MC`/distribution tests as risk warrants.
+- Run `dotnet test --logger "trx"` before final documentation.
 
 #### Hypothesis-Driven Fix Protocol
 
-> **Never change a component value without a written hypothesis.**
+Never change a component value without a written hypothesis.
 
-1. **State hypothesis**: "**If** I change [X], **then** [measurable outcome], **because** [physics]"
-2. **Quality checks**: Falsifiable? Single-variable? Predictive? Minimal?
-3. **WebSearch** if you're unsure about the governing physics
-4. **Use `SensitivityAnalyzer.RankedByImpact()`** to select which component to adjust
-5. **Use `.STEP`** to sweep the parameter — never single-shot guess
-6. **Predict** which tests fix/regress/unchanged, then compare
-7. If predictions wrong → new hypothesis, don't stack changes
+1. State: "If I change [X], then [measurable outcome], because [physics]."
+2. Check that the hypothesis is falsifiable, single-variable, predictive, and minimal.
+3. Use `SensitivityAnalyzer.RankedByImpact()` to choose candidate components.
+4. Use `.STEP` to sweep the change instead of single-shot guessing.
+5. Predict which tests fix, regress, or remain unchanged, then compare.
+6. If predictions are wrong, form a new hypothesis before stacking changes.
 
 ### Phase 6: Documentation
 
 Generate `circuits/<name>/documentation.md` with:
-- Summary (plain language, beginner-friendly)
-- How It Works (operating principle, signal flow)
-- **Excalidraw circuit diagram** (create with MCP tools)
-- Component table (value, role, governing equation)
-- Performance table (target vs. measured, PASS/FAIL)
-- Trade-offs, limitations, modification guidance
+- Summary in plain language.
+- Operating principle and signal flow.
+- Diagram when useful.
+- Component table: value, role, governing equation.
+- Performance table: target vs measured, PASS/FAIL.
+- Trade-offs, limitations, and modification guidance.
 
 ### Phase 7: Human Feedback
 
-Present spec-vs-measured table, tolerance summary, test results. Accept feedback:
-- **Approve** → mark DONE in backlog
-- **Modify specs** → update requirements.md, re-run from Phase 3
-- **Request changes** → adjust per feedback, re-run from appropriate phase
+Present spec-vs-measured table, tolerance summary, and test results.
+- **Approve**: mark DONE in backlog.
+- **Modify specs**: update requirements and re-run from the right phase.
+- **Request changes**: adjust per feedback and re-run verification.
 
 ### Phase 8: Backlog Management
 
-Maintain `backlog.md` — update at every phase transition. Multiple designs can be in-progress simultaneously.
+Maintain `backlog.md` at phase transitions. Multiple designs can be in progress simultaneously.
 
----
+## Built-In Analysis Tools
 
-## AI Analysis Tools
+SpiceSharpParser includes reusable helpers such as `StandardValues`, `CircuitBuilder`, `SmokeTester`, `NetlistLinter`, `CircuitInspector`, `WaveformAnalyzer`, `SensitivityAnalyzer`, and `DesignSpaceExplorer`.
 
-SpiceSharpParser includes built-in tools in these namespaces. **Use these instead of writing ad-hoc C# code.**
-
-For full API details, read the source files directly — don't rely on this summary alone.
-
-| Tool | Location | When to Use |
-|------|----------|-------------|
-| **NetlistLinter** | `src/SpiceSharpParser/Validation/NetlistLinter.cs` | After `ParseAndRead()`, before tests. Catches missing DC paths, missing models, duplicates. |
-| **SmokeTester** | `src/SpiceSharpParser/Analysis/SmokeTester.cs` | Phase 4b — one-call parse+lint+OP+device regions. `SmokeTester.QuickCheck(netlist)` |
-| **CircuitInspector** | `src/SpiceSharpParser/Analysis/CircuitInspector.cs` | Query topology, get/set component values, check BJT/MOSFET regions |
-| **WaveformAnalyzer** | `src/SpiceSharpParser/Analysis/WaveformAnalyzer.cs` | C#-side post-sim analysis: RiseTime, THD, FFT, BandwidthFrom3dBPoints, StabilityMargins, Overshoot |
-| **.FOUR / FourierAnalysisResult** | `src/SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Fourier/` | Netlist-native transient Fourier/THD with magnitude, phase, normalized dB, harmonics 0-9 |
-| **SensitivityAnalyzer** | `src/SpiceSharpParser/Analysis/SensitivityAnalyzer.cs` | Hypothesis-driven debugging: find which component affects which spec |
-| **DesignSpaceExplorer** | `src/SpiceSharpParser/Analysis/DesignSpaceExplorer.cs` | Multi-parameter optimization with objectives and constraints |
-| **CircuitBuilder** | `src/SpiceSharpParser/Builder/CircuitBuilder.cs` | Fluent API for programmatic netlist construction and modification |
-| **StandardValues** | `src/SpiceSharpParser/Utilities/StandardValues.cs` | Phase 3: snap calculated values to E12/E24/E96 standard series |
-
-### Recommended Tool Pipeline
-
-1. **Phase 3** → `StandardValues.NearestE24()` to snap values
-2. **Phase 4** → `CircuitBuilder` to construct, `SmokeTester.QuickCheck()` to validate
-3. **Phase 5** → `NetlistLinter.Lint()` + `.MEAS` tests + `.FOUR` for THD/harmonics + `.PRINT`/`.PLOT` for report data
-4. **Phase 5 debug** → `CircuitInspector` for bias/regions, `SensitivityAnalyzer.RankedByImpact()` to pick component
-5. **Phase 5 optimize** → `DesignSpaceExplorer.Explore()` for multi-parameter tuning, then validate with `.STEP`, `.TEMP`, and `.MC`
-
----
-
-### Tool Details and Examples
-
-#### StandardValues — Snap to Real Component Values
-
-Snap calculated values to E12 (±10%), E24 (±5%), or E96 (±1%) standard resistor/capacitor series. Use in Phase 3 after computing values from design equations.
-
-**Key methods:**
-- `NearestE12(value)`, `NearestE24(value)`, `NearestE96(value)` — nearest standard value
-- `BracketE12(value)`, `BracketE24(value)` — returns `(Below, Above)` tuple for manual selection
-- `GetValuesInRange(min, max, series)` — all standard values in a range
-
-```csharp
-// Snap a calculated 4.85k resistor to standard E24
-double R = StandardValues.NearestE24(4850); // => 4700
-
-// Get bracketing values when you need to choose direction
-var (below, above) = StandardValues.BracketE24(4850); // => (4700, 5100)
-
-// Enumerate all E24 capacitor values between 1nF and 100nF
-var caps = StandardValues.GetValuesInRange(1e-9, 100e-9, StandardValues.E24Multipliers);
-// => [1.0e-9, 1.1e-9, 1.2e-9, ... 82e-9, 91e-9, 100e-9]
-```
-
----
-
-#### CircuitBuilder — Fluent Netlist Construction
-
-Programmatically build netlists with a chainable API. Preferable to string concatenation for complex or parameterized circuits.
-
-**Key methods:** `Resistor()`, `Capacitor()`, `Inductor()`, `VoltageSource()`, `VoltageSourceSine()`, `VoltageSourcePulse()`, `VoltageSourcePWL()`, `CurrentSource()`, `Diode()`, `BJT()`, `MOSFET()`, `JFET()`, `VCVS()`, `VCCS()`, `BehavioralVoltageSource()`, `BehavioralCurrentSource()`, `Model()`, `ModelRaw()`, `OP()`, `DC()`, `AC()`, `Tran()`, `Save()`, `Meas()`, `Print()`, `Param()`, `IC()`, `Options()`, `RawLine()`, `SetValue()`, `RemoveComponent()`, `ToNetlist()`, `Build()`
-
-Use `RawLine()` for newer dot statements without dedicated builder helpers, including `.FOUR`, `.PLOT`, `.WAVE`, `.STEP`, `.TEMP`, `.MC`, `.DISTRIBUTION`, `.GLOBAL`, `.CONNECT`, `.APPENDMODEL`, `.LET`, `.FUNC`, `.SPARAM`, `.NODESET`, and `.IF`.
-
-```csharp
-// Build a bandpass filter netlist
-var netlist = CircuitBuilder.Create("Bandpass Filter")
-    .VoltageSource("Vin", "in", "0", dc: 0, ac: 1)
-    .Resistor("R1", "in", "mid", 10e3)
-    .Capacitor("C1", "mid", "out", 10e-9)
-    .Resistor("R2", "out", "0", 10e3)
-    .Capacitor("C2", "out", "0", 10e-9)
-    .AC("DEC", 100, 1, 1e6)
-    .Save("VDB(out)", "VP(out)")
-    .Meas("AC", "peak_gain", "MAX VDB(out)")
-    .Meas("AC", "f_center", "WHEN VDB(out)=MAX")
-    .ToNetlist();
-
-// Build and parse in one step
-var model = CircuitBuilder.Create("RC Filter")
-    .VoltageSource("V1", "in", "0", dc: 0, ac: 1)
-    .Resistor("R1", "in", "out", 1e3)
-    .Capacitor("C1", "out", "0", 159e-9)
-    .AC("DEC", 50, 1, 1e6)
-    .Save("VDB(out)")
-    .Build();  // returns SpiceSharpModel directly
-
-// Modify an existing builder — change R1 and remove C2
-builder.SetValue("R1", 15e3).RemoveComponent("C2");
-
-// BJT amplifier with model and initial conditions
-var amp = CircuitBuilder.Create("CE Amplifier")
-    .ModelRaw(".MODEL 2N2222 NPN(BF=200 IS=1e-14 VAF=100)")
-    .VoltageSource("VCC", "vcc", "0", dc: 12)
-    .VoltageSourceSine("Vin", "in", "0", 0, 10e-3, 1e3)
-    .Resistor("RC", "vcc", "col", 4.7e3)
-    .Resistor("RB", "vcc", "base", 470e3)
-    .BJT("Q1", "col", "base", "0", "2N2222")
-    .Capacitor("Cin", "in", "base", 10e-6)
-    .Tran(1e-6, 5e-3)
-    .Save("V(col)", "V(base)")
-    .IC("col", 6.0)
-    .Options("reltol=1e-3")
-    .ToNetlist();
-```
-
----
-
-#### SmokeTester — Quick Parse + Lint + OP Check
-
-One-call validation: parses the netlist, runs the linter, attempts an OP simulation, and reports node voltages and device operating regions. Use immediately after writing a netlist.
-
-**Key types:**
-- `SmokeTestResult.IsPass` — `true` if parse + lint (no errors) + OP all succeed
-- `SmokeTestResult.NodeVoltages` — `Dictionary<string, double>` of DC operating point
-- `SmokeTestResult.DeviceRegions` — `Dictionary<string, DeviceRegion>` (Active/Saturation/Cutoff/Linear)
-- `SmokeTestResult.DiagnosticSummary()` — human-readable string report
-
-```csharp
-// Quick-check a netlist string (most common usage)
-var result = SmokeTester.QuickCheck(netlist);
-
-if (!result.IsPass)
-{
-    _output.WriteLine(result.DiagnosticSummary());
-    // Shows parse errors, lint issues, convergence errors
-}
-
-// Inspect DC bias points
-Assert.True(result.OPConverges, result.ConvergenceError);
-double vCollector = result.NodeVoltages["col"];   // e.g., 6.2V
-double vBase = result.NodeVoltages["base"];       // e.g., 0.7V
-
-// Check device operating regions
-Assert.Equal(DeviceRegion.Active, result.DeviceRegions["Q1"]);
-
-// Also accepts an already-parsed model
-var model = CircuitTestHelper.ParseAndRead(netlist);
-var result2 = SmokeTester.QuickCheck(model);
-```
-
----
-
-#### NetlistLinter — Structural Validation
-
-Detects structural problems in a parsed model: floating nodes, missing DC paths, missing `.MODEL` definitions, duplicate components, missing AC magnitudes, large capacitors without `.TRAN` maxstep, empty circuits, and missing simulation commands.
-
-**Key types:**
-- `LintResult.HasErrors` / `LintResult.HasWarnings` — quick checks
-- `LintResult.Errors` / `LintResult.Warnings` — filtered issue lists
-- `LintIssue.Category` — one of: `FloatingNode`, `MissingDCPath`, `MissingModel`, `DuplicateComponent`, `MissingACMagnitude`, `MissingTranMaxStep`, `EmptyCircuit`, `NoSimulation`, `NoExports`
-- `LintIssue.SuggestedFix` — actionable fix suggestion (may be null)
-
-```csharp
-var model = CircuitTestHelper.ParseAndRead(netlist);
-var lint = NetlistLinter.Lint(model);
-
-// Quick pass/fail check
-Assert.False(lint.HasErrors, lint.ToString());
-
-// Inspect specific warnings
-foreach (var warning in lint.Warnings)
-{
-    _output.WriteLine($"[{warning.Category}] {warning.Message}");
-    if (warning.SuggestedFix != null)
-        _output.WriteLine($"  Fix: {warning.SuggestedFix}");
-}
-
-// Filter by category
-var dcPathIssues = lint.Issues
-    .Where(i => i.Category == LintCategory.MissingDCPath);
-
-// Common issue: node "out" has no DC path to ground
-// LintIssue: Severity=Warning, Category=MissingDCPath,
-//   Message="Node 'out' has no DC path to ground",
-//   SuggestedFix="Add a large resistor (1GΩ) from 'out' to ground"
-```
-
----
-
-#### CircuitInspector — Topology and Bias Queries
-
-Instance-based inspector for querying circuit structure, reading/writing component values, and checking semiconductor operating regions.
-
-**Key methods:**
-- `GetNodes()` — all node names
-- `GetComponentNames()` — all component names
-- `GetComponentsConnectedTo(node)` — components touching a node
-- `GetComponentInfo(name)` — full details (type, nodes, parameters, model)
-- `GetComponentValue(name)` / `SetComponentValue(name, value)` — R/L/C values
-- `GetBJTRegion(name, nodeVoltages)` — Active/Saturation/Cutoff
-- `GetMOSFETRegion(name, nodeVoltages, vth)` — Cutoff/Linear/Saturation
-- `GetComponentCounts()` — summary by type
-
-```csharp
-var model = CircuitTestHelper.ParseAndRead(netlist);
-var inspector = new CircuitInspector(model);
-
-// Enumerate topology
-var nodes = inspector.GetNodes();           // ["0", "in", "out", "vcc", "base", "col"]
-var components = inspector.GetComponentNames(); // ["V1", "R1", "R2", "C1", "Q1", ...]
-
-// What's connected to the output node?
-var atOutput = inspector.GetComponentsConnectedTo("out");
-// => ["R2", "C1"]
-
-// Read component details
-var info = inspector.GetComponentInfo("R1");
-// info.Type = "Resistor", info.Nodes = ["in", "mid"],
-// info.Parameters = { "resistance": 10000.0 }
-
-// Read/write passive values
-double rVal = inspector.GetComponentValue("R1"); // 10000.0
-inspector.SetComponentValue("R1", 12000.0);      // modify in-place
-
-// Check BJT region using node voltages from SmokeTester
-var smoke = SmokeTester.QuickCheck(netlist);
-var region = inspector.GetBJTRegion("Q1", smoke.NodeVoltages);
-// => DeviceRegion.Active
-
-// MOSFET region with custom threshold
-var mosRegion = inspector.GetMOSFETRegion("M1", smoke.NodeVoltages, vth: 1.0);
-// => DeviceRegion.Saturation
-
-// Circuit summary
-var counts = inspector.GetComponentCounts();
-// => { "Resistor": 4, "Capacitor": 2, "BJT": 1, "VoltageSource": 2 }
-```
-
----
-
-#### WaveformAnalyzer — Post-Simulation Metrics
-
-All-static methods for analyzing simulation output waveforms. Data is passed as `List<(double, double)>` tuples collected from simulation exports.
-
-For THD/harmonic acceptance criteria, prefer netlist `.FOUR` when possible because it selects the last complete transient period, reports phase and normalized dB, and stores structured results in `model.FourierAnalyses`. Use `WaveformAnalyzer.FFT()`/`THD()` when you need a custom C#-side spectrum or an independent cross-check.
-
-**Time-domain methods:**
-- `RiseTime(data, lowPct=0.1, highPct=0.9)` — 10%-90% rise time
-- `FallTime(data, highPct=0.9, lowPct=0.1)` — 90%-10% fall time
-- `SettlingTime(data, finalValue, tolerancePct=0.02)` — time to stay within ±2% of final value
-- `Overshoot(data, finalValue)` — percentage overshoot
-- `PeakToPeak(data, fromTime, toTime)` — peak-to-peak in optional time window
-- `RMS(data, fromTime, toTime)` — RMS value (trapezoidal integration)
-- `Average(data, fromTime, toTime)` — average value
-- `DCOffset(data)` — average over entire waveform
-
-**Frequency-domain methods:**
-- `FFT(data)` — returns `List<(Frequency, Magnitude)>` (Cooley-Tukey radix-2)
-- `THD(data, fundamentalFreq, numHarmonics=10)` — total harmonic distortion as %
-- `SNR(data, signalFreq)` — signal-to-noise ratio in dB
-
-**AC response methods:**
-- `BandwidthFrom3dBPoints(data)` — -3dB bandwidth from gain-vs-frequency data
-- `StabilityMargins(gain, phase)` — returns `(GainMarginDb, PhaseMarginDeg)`
-- `GainAt(data, frequency)` — interpolated gain at a frequency
-- `PhaseAt(data, frequency)` — interpolated phase at a frequency
-- `FrequencyAtGain(data, gainDb)` — frequency where gain equals a value
-
-**Utilities:**
-- `InterpolateAt(data, x)` — linear interpolation
-- `FindCrossing(data, threshold, occurrence=1)` — Nth threshold crossing
-
-```csharp
-// === Time-domain analysis (transient simulation) ===
-// Collect data from simulation exports
-var tranData = new List<(double Time, double Value)>();
-// ... populate from simulation run ...
-
-double tRise = WaveformAnalyzer.RiseTime(tranData);         // 10%-90% rise time
-double tFall = WaveformAnalyzer.FallTime(tranData);         // 90%-10% fall time
-double tSettle = WaveformAnalyzer.SettlingTime(tranData, finalValue: 3.3, tolerancePct: 0.02);
-double overshoot = WaveformAnalyzer.Overshoot(tranData, finalValue: 3.3);  // percent
-double vpp = WaveformAnalyzer.PeakToPeak(tranData, fromTime: 1e-3, toTime: 5e-3);
-double vRms = WaveformAnalyzer.RMS(tranData, fromTime: 1e-3, toTime: 5e-3);
-
-// === Frequency-domain analysis (from time-domain data) ===
-var spectrum = WaveformAnalyzer.FFT(tranData);
-double thd = WaveformAnalyzer.THD(tranData, fundamentalFreq: 1000, numHarmonics: 5);
-double snr = WaveformAnalyzer.SNR(tranData, signalFreq: 1000);
-
-// === AC response analysis (from AC simulation) ===
-var gainData = new List<(double Freq, double GainDb)>();
-var phaseData = new List<(double Freq, double PhaseDeg)>();
-// ... populate from AC simulation exports (VDB, VP) ...
-
-double bw = WaveformAnalyzer.BandwidthFrom3dBPoints(gainData);  // -3dB bandwidth in Hz
-var (gm, pm) = WaveformAnalyzer.StabilityMargins(gainData, phaseData);
-// gm = gain margin in dB, pm = phase margin in degrees (positive = stable)
-
-double gainAt1k = WaveformAnalyzer.GainAt(gainData, 1000);      // gain at 1kHz in dB
-double phaseAt1k = WaveformAnalyzer.PhaseAt(phaseData, 1000);   // phase at 1kHz in degrees
-double fUnity = WaveformAnalyzer.FrequencyAtGain(gainData, 0);  // unity-gain frequency
-
-// === General utilities ===
-double tCross = WaveformAnalyzer.FindCrossing(tranData, threshold: 2.5, occurrence: 3);
-// Time of 3rd crossing of 2.5V threshold
-```
-
----
-
-#### SensitivityAnalyzer — Find Which Component Matters
-
-Computes normalized sensitivity of a `.MEAS` result to each passive component using central finite differences (±perturbation). A sensitivity of 1.0 means a 1% change in the component causes a 1% change in the spec.
-
-**Key types:**
-- `ComponentSensitivity` — `.Sensitivity` (normalized), `.SpecAtMinus`, `.SpecAtPlus`, `.NominalComponentValue`
-- `SensitivityResult` — `.NominalValue`, `.Sensitivities` dict, `.RankedByImpact()` sorted list
-
-```csharp
-// Netlist must include .MEAS directives for the specs you want to analyze
-string netlist = @"
-    Bandpass Filter
-    V1 in 0 DC 0 AC 1
-    R1 in mid 10k
-    C1 mid out 10n
-    R2 out 0 10k
-    C2 out 0 10n
-    .AC DEC 100 1 1MEG
-    .MEAS AC peak_gain MAX VDB(out)
-    .MEAS AC center_freq WHEN VDB(out)=MAX
-    .END";
-
-var analyzer = new SensitivityAnalyzer(netlist);
-
-// Which components most affect center frequency?
-var result = analyzer.ComputeSensitivity("center_freq", perturbationPct: 1.0);
-
-_output.WriteLine($"Nominal center freq: {result.NominalValue} Hz");
-foreach (var (comp, sens) in result.RankedByImpact())
-{
-    _output.WriteLine($"  {comp}: sensitivity = {sens:F3}");
-}
-// Example output:
-//   Nominal center freq: 15915 Hz
-//   C1: sensitivity = -1.002   (1% increase in C1 => ~1% decrease in freq)
-//   R1: sensitivity = -0.498
-//   C2: sensitivity = -0.501
-//   R2: sensitivity = 0.003    (negligible effect)
-
-// Single-component check
-double dGain_dR1 = analyzer.ComputePartialDerivative("peak_gain", "R1", perturbationPct: 2.0);
-```
-
----
-
-#### DesignSpaceExplorer — Multi-Parameter Optimization
-
-Grid-search optimizer that sweeps component values, evaluates `.MEAS` results, and finds the best feasible design point. Uses logarithmic spacing for ranges > 1 decade.
-
-**Fluent API:**
-- `AddParameter(componentName, min, max, steps=10)` — parameter to sweep
-- `AddObjective(measurementName, target, weight=1.0)` — minimize distance to target
-- `AddConstraint(measurementName, min, max)` — hard constraint on result
-- `Explore()` — run grid search, returns `ExplorationResult`
-
-**Key types:**
-- `DesignPoint` — `.ComponentValues`, `.MeasurementValues`, `.ObjectiveScore`, `.ConstraintsSatisfied`
-- `ExplorationResult` — `.Best` (best feasible point), `.AllPoints`, `.FeasibleCount`, `.BestValues`
-
-```csharp
-string netlist = @"
-    Bandpass Filter
-    V1 in 0 DC 0 AC 1
-    R1 in mid 10k
-    C1 mid out 10n
-    R2 out 0 10k
-    C2 out 0 10n
-    .AC DEC 100 1 1MEG
-    .MEAS AC peak_gain MAX VDB(out)
-    .MEAS AC bw TRIG VDB(out) VAL=-3 RISE=1 TARG VDB(out) VAL=-3 FALL=1
-    .END";
-
-var explorer = new DesignSpaceExplorer(netlist);
-
-var result = explorer
-    .AddParameter("R1", 1e3, 100e3, steps: 10)   // sweep R1 from 1k to 100k
-    .AddParameter("C1", 1e-9, 100e-9, steps: 10)  // sweep C1 from 1nF to 100nF
-    .AddObjective("bw", target: 5000, weight: 1.0) // want 5kHz bandwidth
-    .AddConstraint("peak_gain", min: -6, max: 0)   // gain between -6dB and 0dB
-    .Explore();
-
-if (result.Best != null)
-{
-    _output.WriteLine($"Best design (score={result.Best.ObjectiveScore:F4}):");
-    foreach (var (comp, val) in result.BestValues)
-        _output.WriteLine($"  {comp} = {val}");
-    foreach (var (meas, val) in result.Best.MeasurementValues)
-        _output.WriteLine($"  {meas} = {val}");
-}
-_output.WriteLine($"Feasible points: {result.FeasibleCount} / {result.AllPoints.Count}");
-
-// Use the best values in the final design
-double bestR1 = StandardValues.NearestE24(result.BestValues["R1"]);
-double bestC1 = StandardValues.NearestE24(result.BestValues["C1"]);
-```
-
----
-
-### Typical Workflow: Combining Tools
-
-```csharp
-// 1. Build netlist programmatically
-var netlist = CircuitBuilder.Create("Low-Pass Filter")
-    .VoltageSource("V1", "in", "0", dc: 0, ac: 1)
-    .Resistor("R1", "in", "out", StandardValues.NearestE24(1590))  // snap to E24
-    .Capacitor("C1", "out", "0", StandardValues.NearestE24(100e-9))
-    .AC("DEC", 100, 1, 1e6)
-    .Meas("AC", "f3db", "WHEN VDB(out)=-3")
-    .Save("VDB(out)", "VP(out)")
-    .ToNetlist();
-
-// 2. Smoke test — parse, lint, and check OP convergence
-var smoke = SmokeTester.QuickCheck(netlist);
-Assert.True(smoke.IsPass, smoke.DiagnosticSummary());
-
-// 3. Inspect topology and bias
-var inspector = new CircuitInspector(smoke.Model);
-Assert.Equal(2, inspector.GetComponentsConnectedTo("out").Count);
-
-// 4. Run AC simulation and analyze response
-// ... (run simulation, collect gain/phase data) ...
-double bw = WaveformAnalyzer.BandwidthFrom3dBPoints(gainData);
-
-// 5. If spec not met, find which component to adjust
-var sensitivity = new SensitivityAnalyzer(netlist);
-var impact = sensitivity.ComputeSensitivity("f3db");
-var topComponent = impact.RankedByImpact().First().Component;
-
-// 6. Optimize the most impactful components
-var explorer = new DesignSpaceExplorer(netlist)
-    .AddParameter("R1", 1e3, 10e3, steps: 15)
-    .AddParameter("C1", 10e-9, 1e-6, steps: 15)
-    .AddObjective("f3db", target: 1000)
-    .Explore();
-```
-
----
+Use these helpers instead of writing ad-hoc C# for standard-value snapping, netlist construction, smoke testing, topology inspection, waveform metrics, sensitivity analysis, or grid-search optimization. Read `references/netlist-features.md` for the tool map and concise examples.
 
 ## Known Limitations
 
 ### Works Well
-RC/RL/RLC filters including explicit LTspice source/passive parasitics, LAPLACE transfer-function blocks, amplifier stages (CE/CB/CC/CS/diff pair), diode circuits including opt-in LTspice ideal diodes, opt-in nonlinear Q/Flux passives, voltage regulators, AM envelope detection, Wien bridge/phase-shift oscillators, DC power supply, BJT/MOSFET biasing
+
+RC/RL/RLC filters including explicit LTspice source/passive parasitics, LAPLACE transfer-function blocks, amplifier stages, diode circuits including opt-in LTspice ideal diodes, opt-in nonlinear `Q=`/`Flux=` passives, voltage regulators, AM envelope detection, Wien bridge/phase-shift oscillators, DC power supplies, and BJT/MOSFET biasing.
 
 ### Use With Caution
-- **FM/PLLs** — convergence issues, use behavioral-source approximations
-- **RF Mixers** — very small timesteps needed, keep frequencies low or use B elements
-- **>100 MHz** — only explicit/synthesized parasitics are represented; no distributed skin-effect modeling, treat as approximate
-- **Crystal oscillators** — startup transients impractical, use `.IC` or short sims
-- **Op-amps** — no built-in device; use `E ... LAPLACE` for finite closed-loop bandwidth approximations, or use detailed behavioral/transistor models for full macro-model behavior
-- **LTspice imports** — compatibility is opt-in and evidence-scoped; `.asc`/`.asy`, VDMOS, LTRA/URC, `.TF`, `.NET`, PWL repeat blocks, selected `.TRAN` modifiers, and behavior-changing solver options remain unsupported or engine-required
-- **Custom ideal diode** — useful for power/rectifier behavior, but excludes junction charge, capacitance, semiconductor temperature physics, and noise
-- **Nonlinear Q/Flux passives** — require `UseCustomComponents()`; verify incremental slope and convergence around the operating point
+
+- **FM/PLLs**: convergence issues; use behavioral-source approximations.
+- **RF mixers**: very small timesteps needed; keep frequencies low or use B elements.
+- **Above 100 MHz**: only explicit/synthesized parasitics are represented; no distributed skin-effect modeling.
+- **Crystal oscillators**: startup transients are often impractical; use `.IC`, `.NODESET`, or shorter approximate sims.
+- **Op-amps**: no built-in device; use `E ... LAPLACE` for finite closed-loop bandwidth approximations or detailed macro-models when available.
+- **LTspice imports**: compatibility is opt-in and evidence-scoped; read `references/ltspice-compatibility.md` before claiming support.
+- **Custom ideal diode**: useful for power/rectifier behavior, but excludes junction charge, capacitance, semiconductor temperature physics, and noise.
+- **Nonlinear `Q=`/`Flux=` passives**: require `UseCustomComponents()` and convergence checks around the operating point.
 
 ### Convergence Tips
+
 - `.OPTIONS reltol=1e-3 abstol=1e-12 gmin=1e-12`
 - DC convergence: `.OPTIONS itl1=200`; transient: `.OPTIONS itl4=50`
 - `.IC` or `.NODESET` for known operating points
-- 1GΩ from floating nodes to ground
+- Add a large resistor such as `1G` from floating nodes to ground
 - Stiff circuits: `.OPTIONS method=gear`
 
----
+## Validation and Debugging
 
-## Reference Test Suites
-
-When writing tests, consult these for patterns and inspiration:
-
-- **SpiceSharp**: sibling workspace folder `../SpiceSharp/SpiceSharpTest/` — `BasicExampleTests.cs`, `Helper.cs`, `Models/`
-- **SpiceSharpParser**: `src/SpiceSharpParser.IntegrationTests/` — `BaseTests.cs`, `Components/`, `DotStatements/`, `AnalogBehavioralModeling/`, `Examples/Circuits/*.cir`
-- **LAPLACE**: `src/docs/articles/laplace.md`, `src/docs/articles/laplace-basics.md`, `src/SpiceSharpParser.IntegrationTests/AnalogBehavioralModeling/LaplaceTests.cs`
-- **Recent dot statements**: `src/docs/articles/four.md`, `meas.md`, `print.md`, `plot.md`, `noise.md`, `step.md`, `mc.md`, `temp.md`; tests in `src/SpiceSharpParser.IntegrationTests/DotStatements/*Tests.cs`
-- **LTspice compatibility**: `roadmap/ltspice-compatibility-matrix.md`, `src/SpiceSharpParser.IntegrationTests/LTspiceCompatibility/LTspiceCompatibilityP0Tests.cs`, `src/SpiceSharpParser.IntegrationTests/LTspiceCompatibility/LTspiceCompatibilityP1Tests.cs`, `src/SpiceSharpParser.IntegrationTests/LTspiceCompatibility/LTspiceCompatibilityP2Tests.cs`, `src/SpiceSharpParser.IntegrationTests/LTspiceCompatibility/LTspiceCompatibilityP3Tests.cs`
-- **Custom components**: `src/docs/articles/ideal-diode.md`, `src/docs/articles/nonlinear-passives.md`, `src/SpiceSharpParser.Tests/CustomComponents/*Tests.cs`, `src/SpiceSharpParser.IntegrationTests/LTspiceCompatibility/LTspiceIdealDiodeIntegrationTests.cs`
-
-Key patterns: tolerance-based assertions (RelTol=1e-3, AbsTol=1e-12), reference function comparison, `.MEAS` validation, string-array netlist construction.
-
----
-
-## Debugging Quick Reference
-
-| Symptom | Check |
-|---------|-------|
-| Won't parse | Title line present? `.END` present? Leading whitespace trimmed? |
-| Won't converge | Floating nodes? Voltage source loops? Add `.OPTIONS`, `.NODESET` |
-| Zero/empty results | 3-step run pattern? (`Run` → `InvokeEvents` → `ToArray`) Exports filtered by simulation? |
-| Wrong AC results | Using `VM()`/`VDB()` not `V()`? Matched-system 0dB ref = 0.5V not 1V? |
-| Wrong values | `.MODEL` realistic? Node connectivity correct? Units in SI? Sim long enough? |
-| LTspice syntax rejected | Set `CompatibilityOptions.LTspice` on both parser and reader? Check the compatibility matrix for support class. |
-| `Q=`/`Flux=` or ideal diode rejected | Referenced `SpiceSharpParser.CustomComponents` and called `reader.Settings.UseCustomComponents()`? |
-| `.INCLUDE`/`.LIB`/PWL file missing | `WorkingDirectory` set? Paths relative to including file or current working directory? Fixture file present? |
-| Unexpected `_rser`/`_cpar` helpers | LTspice source/passive parasitics synthesize helper entities; inspect helper names and internal node scoping. |
-| `.FOUR` missing/failed | `.TRAN` present? At least one complete final period? Signal expression valid? Check `model.FourierAnalyses[*].Success/ErrorMessage` |
-| `.FOUR` THD/harmonics odd | Fundamental frequency correct? Max step small enough? Final cycles settled? |
-| `.STEP`/`.TEMP` result count unexpected | Measurements and Fourier results produce one result per generated simulation; inspect `SimulationName` |
+Use `references/testing-patterns.md` for parse/read/run details, reference test suites, and the debugging quick-reference table.

@@ -41,6 +41,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\SpiceSharpParser.Testing\**\*.cs" LinkBase="Testing" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SpiceSharpParser.CustomComponents\SpiceSharpParser.CustomComponents.csproj" />
     <ProjectReference Include="..\SpiceSharpParser\SpiceSharpParser.csproj" />
   </ItemGroup>
