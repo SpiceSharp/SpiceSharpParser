@@ -395,6 +395,170 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
             Assert.True(EqualsWithTol(0.75, exports[1]));
         }
 
+        [Fact]
+        public void When_LtspiceInductorSeriesResistanceIsRead_Expect_SynthesizedSeriesResistance()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P3 - inductor Rser",
+                "V1 in 0 1",
+                "L1 in out 1m Rser=10",
+                "RLOAD out 0 90",
+                ".op",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.True(EqualsWithTol(0.9, RunOpSimulation(model, "V(out)")));
+            Assert.IsType<Resistor>(model.Circuit["L1_rser"]);
+        }
+
+        [Fact]
+        public void When_LtspiceInductorParallelResistanceIsRead_Expect_SynthesizedTransientShunt()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P3 - inductor Rpar",
+                "I1 out 0 PULSE(0 -1m 1n 1n 1n 10u 20u)",
+                "L1 out 0 1m Rpar=1k",
+                ".tran 100n 5u",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.IsType<Resistor>(model.Circuit["L1_rpar"]);
+
+            var exports = RunTransientSimulation(model, "V(out)");
+            Assert.NotEmpty(exports);
+
+            var oneTau = exports.OrderBy(export => Math.Abs(export.Item1 - 1e-6)).First();
+            Assert.InRange(oneTau.Item2, 0.28, 0.45);
+            Assert.InRange(exports.Last().Item2, -0.02, 0.02);
+        }
+
+        [Fact]
+        public void When_LtspiceInductorRlshuntIsRead_Expect_SynthesizedTransientShunt()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P3 - inductor RLshunt",
+                "I1 out 0 PULSE(0 -1m 1n 1n 1n 10u 20u)",
+                "L1 out 0 1m RLshunt=1k",
+                ".tran 100n 5u",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.IsType<Resistor>(model.Circuit["L1_rlshunt"]);
+
+            var exports = RunTransientSimulation(model, "V(out)");
+            Assert.NotEmpty(exports);
+
+            var oneTau = exports.OrderBy(export => Math.Abs(export.Item1 - 1e-6)).First();
+            Assert.InRange(oneTau.Item2, 0.28, 0.45);
+            Assert.InRange(exports.Last().Item2, -0.02, 0.02);
+        }
+
+        [Fact]
+        public void When_LtspiceInductorParallelCapacitanceIsRead_Expect_SynthesizedParallelCapacitor()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P3 - inductor Cpar",
+                "L1 out 0 1m Cpar=1n",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.IsType<Capacitor>(model.Circuit["L1_cpar"]);
+        }
+
+        [Fact]
+        public void When_LtspiceInductorSeriesInductanceIsRead_Expect_SynthesizedSeriesInductor()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P3 - inductor Lser",
+                "L1 out 0 1m Lser=1u",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.IsType<Inductor>(model.Circuit["L1_lser"]);
+        }
+
+        [Fact]
+        public void When_LtspiceInductorHasCombinedParasitics_Expect_AllHelpersAreSynthesized()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P3 - inductor combined parasitics",
+                "L1 out 0 1m Rser=1 Lser=1u Rpar=1k RLshunt=2k Cpar=1n",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.IsType<Resistor>(model.Circuit["L1_rser"]);
+            Assert.IsType<Inductor>(model.Circuit["L1_lser"]);
+            Assert.IsType<Resistor>(model.Circuit["L1_rpar"]);
+            Assert.IsType<Resistor>(model.Circuit["L1_rlshunt"]);
+            Assert.IsType<Capacitor>(model.Circuit["L1_cpar"]);
+        }
+
+        [Fact]
+        public void When_LtspiceInductorParasiticValuesUseParameters_Expect_HelperExpressionsResolve()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P3 - inductor parameterized parasitics",
+                ".param rs=10",
+                ".param ls=1u",
+                ".param rp=1k",
+                ".param rls=2k",
+                ".param cp=1n",
+                "V1 in 0 1",
+                "L1 in out 1m Rser={rs} Lser={ls} Rpar={rp} RLshunt={rls} Cpar={cp}",
+                "RLOAD out 0 90",
+                ".op",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+
+            var inToOutResistance = 1.0 / ((1.0 / 10.0) + (1.0 / 1000.0) + (1.0 / 2000.0));
+            var expected = 90.0 / (90.0 + inToOutResistance);
+
+            Assert.True(EqualsWithTol(expected, RunOpSimulation(model, "V(out)")));
+            Assert.IsType<Resistor>(model.Circuit["L1_rser"]);
+            Assert.IsType<Inductor>(model.Circuit["L1_lser"]);
+            Assert.IsType<Resistor>(model.Circuit["L1_rpar"]);
+            Assert.IsType<Resistor>(model.Circuit["L1_rlshunt"]);
+            Assert.IsType<Capacitor>(model.Circuit["L1_cpar"]);
+        }
+
+        [Fact]
+        public void When_LtspiceInductorSeriesParasiticIsInsideRepeatedSubcircuits_Expect_InternalNodesAreScoped()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P3 - inductor Rser subcircuit scoping",
+                "V1 in 0 1",
+                "XU1 in out1 lcell",
+                "XU2 in out2 lcell",
+                "RLOAD1 out1 0 90",
+                "RLOAD2 out2 0 40",
+                ".subckt lcell p out",
+                "L1 p out 1m Rser=10",
+                ".ends lcell",
+                ".op",
+                ".save V(out1)",
+                ".save V(out2)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+
+            var exports = RunOpSimulation(model, "V(out1)", "V(out2)");
+            Assert.True(EqualsWithTol(0.9, exports[0]));
+            Assert.True(EqualsWithTol(0.8, exports[1]));
+        }
+
         [Theory]
         [InlineData("R1 out 0 1k Rser=1", "Rser")]
         [InlineData("R1 out 0 1k Rpar=1Meg", "Rpar")]
@@ -402,7 +566,12 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
         [InlineData("C1 out 0 1n Lser=1n", "Lser")]
         [InlineData("C1 out 0 1n Rpar=1k", "Rpar")]
         [InlineData("C1 out 0 1n Cpar=1n", "Cpar")]
-        public void When_ResistorOrCapacitorParasiticIsReadWithoutLtspiceCompatibility_Expect_DefaultError(
+        [InlineData("L1 out 0 1u Rser=1", "Rser")]
+        [InlineData("L1 out 0 1u Lser=1n", "Lser")]
+        [InlineData("L1 out 0 1u Rpar=1k", "Rpar")]
+        [InlineData("L1 out 0 1u RLshunt=1k", "RLshunt")]
+        [InlineData("L1 out 0 1u Cpar=1p", "Cpar")]
+        public void When_PassiveParasiticIsReadWithoutLtspiceCompatibility_Expect_DefaultError(
             string componentLine,
             string parameterName)
         {
@@ -417,10 +586,6 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
         }
 
         [Theory]
-        [InlineData("L1 out 0 1u Rser=1", "Rser", "parasitic")]
-        [InlineData("L1 out 0 1u Rpar=1k", "Rpar", "parasitic")]
-        [InlineData("L1 out 0 1u Cpar=1p", "Cpar", "parasitic")]
-        [InlineData("L1 out 0 1u RLshunt=1k", "RLshunt", "parasitic")]
         [InlineData("C1 out 0 Q=1n*x", "Q", "charge-defined")]
         [InlineData("C1 out 0 Q=1n*x Rser=1", "Q", "charge-defined")]
         [InlineData("L1 out 0 Flux=1m*tanh(x)", "Flux", "flux-defined")]

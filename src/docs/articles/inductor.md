@@ -5,7 +5,7 @@ An inductor stores energy in a magnetic field created by current flowing through
 ## Syntax
 
 ```
-L<name> <node+> <node-> <value> [IC=<initial_current>]
+L<name> <node+> <node-> <value> [IC=<initial_current>] [M=<m>]
 L<name> <node+> <node-> Flux=<expression> [IC=<initial_current>] [M=<m>] [N=<n>]
 ```
 
@@ -14,6 +14,7 @@ L<name> <node+> <node-> Flux=<expression> [IC=<initial_current>] [M=<m>] [N=<n>]
 | `node+`, `node-` | Positive and negative terminal nodes |
 | `value` | Inductance in henries |
 | `IC=i` | Initial current through the inductor (for `UIC`) |
+| `M=m` | Multiplier |
 | `Flux=expr` | LTspice-style flux-linkage expression; requires `UseCustomComponents()` |
 
 ## Examples
@@ -34,6 +35,25 @@ L4 IN OUT Flux=2m*x IC=10m
 
 See [LTspice-Style Nonlinear Passives](nonlinear-passives.md) for
 `Flux=<expr>` inductors.
+
+## LTspice Inductor Compatibility
+
+With `CompatibilityOptions.LTspice`, inductor instance parasitics are
+synthesized by the parser as helper components:
+
+```spice
+L1 IN OUT 10u Rser=0.2 Lser=10n Rpar=100Meg RLshunt=1G Cpar=0.5p
+```
+
+`Rser=<value>` and `Lser=<value>` add a series helper chain through internal
+nodes. `Rpar=<value>` and `RLshunt=<value>` add resistors across the original
+inductor terminals, and `Cpar=<value>` adds a capacitor across the original
+inductor terminals. The core inductor model is not changed.
+
+These LTspice instance parasitics are supported only in LTspice compatibility
+mode. Without that mode, they remain ordinary unsupported inductor parameters.
+`Flux=<expr>` is separate from parasitic synthesis and still requires
+`UseCustomComponents()`.
 
 ## Mutual Inductance
 

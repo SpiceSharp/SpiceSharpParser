@@ -133,6 +133,7 @@ LTspice mode covers syntax such as:
 - model parameter aliases: resistor and capacitor models accept `tc=<tc1>[,<tc2>]`; voltage switches accept `von` / `voff`; current switches accept `ion` / `ioff`
 - resistor instance parasitics `Rser`, `Rpar`, and `Cpar`
 - capacitor instance parasitics `Rser`, `Lser`, `Rpar`, and `Cpar`
+- inductor instance parasitics `Rser`, `Lser`, `Rpar`, `RLshunt`, and `Cpar`
 
 Topology-changing LTspice options that can be represented safely are synthesized as helper components in the parser. Behavior-changing constructs that are not represented by SpiceSharp are reported with targeted diagnostics instead of being silently ignored.
 

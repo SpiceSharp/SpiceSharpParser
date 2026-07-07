@@ -2,7 +2,7 @@
 title: LTspice Netlist Compatibility Plan
 status: Draft / Roadmap
 scope: SpiceSharpParser + SpiceSharp
-last_reviewed: 2026-07-06
+last_reviewed: 2026-07-07
 ---
 
 # LTspice Netlist Compatibility Plan
@@ -42,7 +42,7 @@ This roadmap is intentionally parser-first and evidence-first:
 - MOS model generation currently covers legacy levels 1, 2, and 3. LTspice `VDMOS` and advanced monolithic levels such as BSIM/EKV/HiSIM variants are runtime or intentional-unsupported candidates.
 - Distributed-line support currently starts from lossless `T`. LTspice lossy `O` / `LTRA` and uniform RC-line `URC` models need engine triage before runnable support is claimed.
 - P3 LTspice mode maps R/C model `tc=a[,b]`, switch `von`/`voff`, and current-switch `ion`/`ioff` aliases where they lower to existing parameters.
-- P3 LTspice mode warns on recognized metadata/rating parameters, synthesizes resistor `Rser` / `Rpar` / `Cpar` and capacitor `Rser` / `Lser` / `Rpar` / `Cpar` helper topology, and emits targeted errors for remaining topology-changing passive parasitics, ideal-diode parameters when custom mappings are not enabled, switch current-limiting/series options, `VDMOS`, high MOS levels, three-terminal power-MOS syntax, and `O` / `LTRA` / `U` / `URC` line families. The optional custom component package adds runnable `IdealDiode` support for LTspice-style diode parameters plus `NonlinearCapacitor` / `NonlinearInductor` support for LTspice-style capacitor `Q=` and inductor `Flux=` forms when `UseCustomComponents()` is enabled, with optional LTspice-backed DC/AC/transient golden comparisons when `LTSPICE_EXE` is configured.
+- P3 LTspice mode warns on recognized metadata/rating parameters, synthesizes resistor `Rser` / `Rpar` / `Cpar`, capacitor `Rser` / `Lser` / `Rpar` / `Cpar`, and inductor `Rser` / `Lser` / `Rpar` / `RLshunt` / `Cpar` helper topology, and emits targeted errors for ideal-diode parameters when custom mappings are not enabled, switch current-limiting/series options, `VDMOS`, high MOS levels, three-terminal power-MOS syntax, and `O` / `LTRA` / `U` / `URC` line families. The optional custom component package adds runnable `IdealDiode` support for LTspice-style diode parameters plus `NonlinearCapacitor` / `NonlinearInductor` support for LTspice-style capacitor `Q=` and inductor `Flux=` forms when `UseCustomComponents()` is enabled, with optional LTspice-backed DC/AC/transient golden comparisons when `LTSPICE_EXE` is configured.
 
 ## Scope And Policy
 
@@ -241,12 +241,13 @@ Implemented P3 behavior:
 - Warned on recognized LTspice metadata and rating parameters only in LTspice mode.
 - Added LTspice-mode parser synthesis for resistor instance parasitics: `Rser` adds a series resistor through an internal node, while `Rpar` and `Cpar` add shunts across the resistor terminals.
 - Added LTspice-mode parser synthesis for capacitor instance parasitics: `Rser` and `Lser` add a series helper chain through internal nodes, while `Rpar` and `Cpar` add shunts across the capacitor terminals.
-- Added targeted diagnostics for remaining topology-changing passive parasitics, LTspice ideal-diode parameters when custom mappings are not enabled, switch `Lser` / `Vser` / `Ilimit`, high MOS levels, `VDMOS`, three-terminal power-MOS syntax, and `O` / `LTRA` / `U` / `URC` line families. LTspice ideal-diode parameters, capacitor `Q=`, and inductor `Flux=` remain targeted diagnostics in core LTspice mode but are runnable through `SpiceSharpParser.CustomComponents` as `IdealDiode`, `NonlinearCapacitor`, and `NonlinearInductor`, with optional LTspice-backed DC/AC/transient golden evidence.
+- Added LTspice-mode parser synthesis for inductor instance parasitics: `Rser` and `Lser` add a series helper chain through internal nodes, while `Rpar`, `RLshunt`, and `Cpar` add shunts across the inductor terminals.
+- Added targeted diagnostics for LTspice ideal-diode parameters when custom mappings are not enabled, switch `Lser` / `Vser` / `Ilimit`, high MOS levels, `VDMOS`, three-terminal power-MOS syntax, and `O` / `LTRA` / `U` / `URC` line families. LTspice ideal-diode parameters, capacitor `Q=`, and inductor `Flux=` remain targeted diagnostics in core LTspice mode but are runnable through `SpiceSharpParser.CustomComponents` as `IdealDiode`, `NonlinearCapacitor`, and `NonlinearInductor`, with optional LTspice-backed DC/AC/transient golden evidence.
 
 Remaining follow-up:
 
 - Broaden model-family alias tables only when direct SpiceSharp equivalents are confirmed by fixtures.
-- Add engine or parser-synthesis work before claiming runnable support for `VDMOS`, advanced MOS families, lossy transmission lines, uniform RC lines, or remaining inductor passive parasitics.
+- Add engine or parser-synthesis work before claiming runnable support for `VDMOS`, advanced MOS families, lossy transmission lines, or uniform RC lines.
 - Keep vendor-library import tests synthetic unless redistribution is clearly permitted.
 
 Initial model-family priorities:
