@@ -131,6 +131,7 @@ LTspice mode covers syntax such as:
 - source waveforms including `EXP(...)`, finite-cycle `PULSE(... Ncycles)`, finite-cycle `SINE(... Ncycles)`, and local two-column `PWL file=<path>` data
 - independent-source topology options: `Rser`, `Cpar`, `load`, and `R=<value>`
 - model parameter aliases: resistor and capacitor models accept `tc=<tc1>[,<tc2>]`; voltage switches accept `von` / `voff`; current switches accept `ion` / `ioff`
+- switch model series options `Vser` and `Lser`
 - resistor instance parasitics `Rser`, `Rpar`, and `Cpar`
 - capacitor instance parasitics `Rser`, `Lser`, `Rpar`, and `Cpar`
 - inductor instance parasitics `Rser`, `Lser`, `Rpar`, `RLshunt`, and `Cpar`

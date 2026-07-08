@@ -42,7 +42,7 @@ This roadmap is intentionally parser-first and evidence-first:
 - MOS model generation currently covers legacy levels 1, 2, and 3. LTspice `VDMOS` and advanced monolithic levels such as BSIM/EKV/HiSIM variants are runtime or intentional-unsupported candidates.
 - Distributed-line support currently starts from lossless `T`. LTspice lossy `O` / `LTRA` and uniform RC-line `URC` models need engine triage before runnable support is claimed.
 - P3 LTspice mode maps R/C model `tc=a[,b]`, switch `von`/`voff`, and current-switch `ion`/`ioff` aliases where they lower to existing parameters.
-- P3 LTspice mode warns on recognized metadata/rating parameters, synthesizes resistor `Rser` / `Rpar` / `Cpar`, capacitor `Rser` / `Lser` / `Rpar` / `Cpar`, and inductor `Rser` / `Lser` / `Rpar` / `RLshunt` / `Cpar` helper topology, and emits targeted errors for ideal-diode parameters when custom mappings are not enabled, switch current-limiting/series options, `VDMOS`, high MOS levels, three-terminal power-MOS syntax, and `O` / `LTRA` / `U` / `URC` line families. The optional custom component package adds runnable `IdealDiode` support for LTspice-style diode parameters plus `NonlinearCapacitor` / `NonlinearInductor` support for LTspice-style capacitor `Q=` and inductor `Flux=` forms when `UseCustomComponents()` is enabled, with optional LTspice-backed DC/AC/transient golden comparisons when `LTSPICE_EXE` is configured.
+- P3 LTspice mode warns on recognized metadata/rating parameters, synthesizes resistor `Rser` / `Rpar` / `Cpar`, capacitor `Rser` / `Lser` / `Rpar` / `Cpar`, inductor `Rser` / `Lser` / `Rpar` / `RLshunt` / `Cpar`, and switch `Vser` / `Lser` helper topology, and emits targeted errors for ideal-diode parameters when custom mappings are not enabled, switch current limiting, `VDMOS`, high MOS levels, three-terminal power-MOS syntax, and `O` / `LTRA` / `U` / `URC` line families. The optional custom component package adds runnable `IdealDiode` support for LTspice-style diode parameters plus `NonlinearCapacitor` / `NonlinearInductor` support for LTspice-style capacitor `Q=` and inductor `Flux=` forms when `UseCustomComponents()` is enabled, with optional LTspice-backed DC/AC/transient golden comparisons when `LTSPICE_EXE` is configured.
 
 ## Scope And Policy
 
@@ -242,7 +242,8 @@ Implemented P3 behavior:
 - Added LTspice-mode parser synthesis for resistor instance parasitics: `Rser` adds a series resistor through an internal node, while `Rpar` and `Cpar` add shunts across the resistor terminals.
 - Added LTspice-mode parser synthesis for capacitor instance parasitics: `Rser` and `Lser` add a series helper chain through internal nodes, while `Rpar` and `Cpar` add shunts across the capacitor terminals.
 - Added LTspice-mode parser synthesis for inductor instance parasitics: `Rser` and `Lser` add a series helper chain through internal nodes, while `Rpar`, `RLshunt`, and `Cpar` add shunts across the inductor terminals.
-- Added targeted diagnostics for LTspice ideal-diode parameters when custom mappings are not enabled, switch `Lser` / `Vser` / `Ilimit`, high MOS levels, `VDMOS`, three-terminal power-MOS syntax, and `O` / `LTRA` / `U` / `URC` line families. LTspice ideal-diode parameters, capacitor `Q=`, and inductor `Flux=` remain targeted diagnostics in core LTspice mode but are runnable through `SpiceSharpParser.CustomComponents` as `IdealDiode`, `NonlinearCapacitor`, and `NonlinearInductor`, with optional LTspice-backed DC/AC/transient golden evidence.
+- Added LTspice-mode parser synthesis for switch model `Vser` and `Lser`: `Vser` adds a series voltage source from the first switch terminal toward an internal node, and `Lser` adds a series inductor.
+- Added targeted diagnostics for LTspice ideal-diode parameters when custom mappings are not enabled, switch `Ilimit`, high MOS levels, `VDMOS`, three-terminal power-MOS syntax, and `O` / `LTRA` / `U` / `URC` line families. LTspice ideal-diode parameters, capacitor `Q=`, and inductor `Flux=` remain targeted diagnostics in core LTspice mode but are runnable through `SpiceSharpParser.CustomComponents` as `IdealDiode`, `NonlinearCapacitor`, and `NonlinearInductor`, with optional LTspice-backed DC/AC/transient golden evidence.
 
 Remaining follow-up:
 
@@ -258,7 +259,7 @@ Initial model-family priorities:
 | Diode | Map supported parameters; classify metadata; route LTspice ideal-diode terms through `SpiceSharpParser.CustomComponents` when enabled | Engine changes only for measured blockers outside the custom ideal-diode model |
 | BJT/JFET | Map known SPICE parameters and metadata | Engine changes only with fixtures |
 | MOSFET | Separate legacy levels from LTspice/vendor power models, especially `VDMOS` | Advanced models likely engine-required |
-| Switch | Map threshold, hysteresis, and resistance aliases; diagnose current limiting and one-way behavior | Engine work may be needed |
+| Switch | Map threshold, hysteresis, and resistance aliases; synthesize `Vser` / `Lser`; diagnose current limiting and one-way behavior | Engine work may be needed |
 | Transmission line | Preserve current lossless `T` support | `O` / `LTRA` and `URC` need engine work |
 
 Acceptance criteria:

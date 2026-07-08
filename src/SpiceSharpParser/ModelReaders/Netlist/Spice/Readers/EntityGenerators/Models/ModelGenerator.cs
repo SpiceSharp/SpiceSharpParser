@@ -30,6 +30,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.M
             {
                 if (parameter is AssignmentParameter ap)
                 {
+                    model.SetRawParameter(ap.Name, ap);
+
                     // Store ALL parameters on Model for predicate-based selection
                     try
                     {

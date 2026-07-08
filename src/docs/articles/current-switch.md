@@ -55,6 +55,29 @@ For the shared switch stamp, see
 | `RON` | On-state resistance |
 | `ROFF` | Off-state resistance |
 
+## LTspice Compatibility
+
+With `CompatibilityOptions.LTspice`, `.MODEL CSW(...)` accepts `Vser` and
+`Lser`. These are model-level LTspice options for extra series elements in the
+switch conduction path; they are not additional pins on the `W` instance.
+
+Conceptually, when both are present the reader synthesizes:
+
+```text
+node1 -- Vser -- Lser -- controlled switch -- node2
+```
+
+- `Vser=<value>` adds a fixed series voltage source. The synthesized source is
+  oriented from `node1` toward the internal switch node, so positive `Vser`
+  behaves like a fixed voltage drop before the switch resistance:
+  `V(node1) - V(internal) = Vser`.
+- `Lser=<value>` adds a series inductor in the switch path. This can affect
+  transient simulations because the helper inductor stores energy.
+- If both options are present, `Vser` is placed before `Lser`, then the switch.
+
+The core switch model still supplies the controlled `RON` / `ROFF` resistance.
+`Ilimit` remains unsupported and produces a targeted diagnostic.
+
 ## Notes
 
 - A 0V voltage source is used as a current sensor in the control path.

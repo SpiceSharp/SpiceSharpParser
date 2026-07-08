@@ -66,6 +66,7 @@ Topology-changing options that can be represented safely are synthesized as help
 | Resistor | `Rser`, `Rpar`, `Cpar` | Series resistor through internal node; parallel R/C |
 | Capacitor | `Rser`, `Lser`, `Rpar`, `Cpar` | Series R/L helper chain; parallel R/C |
 | Inductor | `Rser`, `Lser`, `Rpar`, `RLshunt`, `Cpar` | Series R/L helper chain; parallel R/R/C |
+| Switch model | `Vser`, `Lser` | Series voltage-source / inductor helper chain from first switch terminal |
 
 Repeated subcircuits scope internal helper nodes. Parameterized parasitic values are supported in the P3 fixtures.
 
@@ -122,7 +123,7 @@ Known gaps include:
 - Behavior-changing solver options such as `cshunt`, `gshunt`, `srcsteps`, `gminsteps`, `trtol`, `chgtol`, `pivrel`, `pivtol`, and `ptrantau`.
 - PWL repeat blocks and broader LTspice PWL repeat variants.
 - `uplim(...)`, `dnlim(...)`, and unary `~`.
-- Switch `Lser`, `Vser`, and `Ilimit`.
+- Switch `Ilimit`.
 - MOS levels outside 1, 2, and 3.
 - Three-terminal LTspice MOS / power-MOS syntax, `VDMOS`, `O`/`LTRA`, and `U`/`URC`.
 

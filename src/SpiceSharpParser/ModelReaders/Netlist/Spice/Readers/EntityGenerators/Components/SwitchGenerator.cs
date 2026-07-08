@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Collections.Generic;
 using System.Linq;
 using SpiceSharp.Components;
 using SpiceSharp.Entities;
@@ -19,8 +20,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             switch (type.ToLower())
             {
-                case "s": return GenerateVoltageSwitch(componentIdentifier, parameters, context);
-                case "w": return GenerateCurrentSwitch(componentIdentifier, parameters, context);
+                case "s": return GenerateVoltageSwitch(componentIdentifier, originalName, parameters, context);
+                case "w": return GenerateCurrentSwitch(componentIdentifier, originalName, parameters, context);
             }
 
             return null;
@@ -30,12 +31,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// Generates a voltage switch.
         /// </summary>
         /// <param name="name">Name of voltage switch to generate.</param>
+        /// <param name="originalName">Original component name before reader scoping.</param>
         /// <param name="parameters">Parameters for voltage switch.</param>
         /// <param name="context">Reading context.</param>
         /// <returns>
         /// A new voltage switch.
         /// </returns>
-        protected IEntity GenerateVoltageSwitch(string name, ParameterCollection parameters, IReadingContext context)
+        protected IEntity GenerateVoltageSwitch(string name, string originalName, ParameterCollection parameters, IReadingContext context)
         {
             if (parameters.Count < 5)
             {
@@ -47,6 +49,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             var mParameter = parameters.FirstOrDefault(p => p is AssignmentParameter p1 && p1.Name.ToLower() == "m");
 
             var model = context.ModelsRegistry.FindModel(modelName);
+            var externalParameters = parameters;
+            var topologyOptions = ExtractLtspiceSwitchTopology(model, context);
+            parameters = PrepareLtspiceSwitchParameters(
+                name,
+                originalName,
+                parameters,
+                topologyOptions,
+                2);
+
             if (model.Entity is VSwitchModel)
             {
                 BehavioralResistor resistor = new BehavioralResistor(name);
@@ -102,7 +113,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             return parser.Resolve(expression);
                         };
                     });
-                return resistor;
+                return ApplyLtspiceSwitchTopology(name, externalParameters, context, topologyOptions, resistor);
             }
 
             VoltageSwitch vsw = new VoltageSwitch(name);
@@ -140,7 +151,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 context.SetParameter(vsw, "m", mParameter, true);
             }
 
-            return vsw;
+            return ApplyLtspiceSwitchTopology(name, externalParameters, context, topologyOptions, vsw);
         }
 
         private static string GetISwitchExpression(double iOff, double rOff, double iOn, double rOn, string ic, double lm, double lr, double im, double id, string m)
@@ -177,12 +188,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         /// Generates a current switch.
         /// </summary>
         /// <param name="name">Name of current switch.</param>
+        /// <param name="originalName">Original component name before reader scoping.</param>
         /// <param name="parameters">Parameters of current switch.</param>
         /// <param name="context">Reading context.</param>
         /// <returns>
         /// A new instance of current switch.
         /// </returns>
-        private IEntity GenerateCurrentSwitch(string name, ParameterCollection parameters, IReadingContext context)
+        private IEntity GenerateCurrentSwitch(string name, string originalName, ParameterCollection parameters, IReadingContext context)
         {
             if (parameters.Count < 4)
             {
@@ -193,6 +205,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             string modelName = parameters.Get(3).Value;
             var model = context.ModelsRegistry.FindModel(modelName);
             var mParameter = parameters.FirstOrDefault(p => p is AssignmentParameter p1 && p1.Name.ToLower() == "m");
+            var externalParameters = parameters;
+            var topologyOptions = ExtractLtspiceSwitchTopology(model, context);
+            parameters = PrepareLtspiceSwitchParameters(
+                name,
+                originalName,
+                parameters,
+                topologyOptions,
+                2);
 
             if (model.Entity is ISwitchModel)
             {
@@ -249,7 +269,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             return parser.Resolve(expression);
                         };
                     });
-                return resistor;
+                return ApplyLtspiceSwitchTopology(name, externalParameters, context, topologyOptions, resistor);
             }
 
             CurrentSwitch csw = new CurrentSwitch(name);
@@ -299,7 +319,126 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 context.SetParameter(csw, "m", mParameter, true);
             }
 
-            return csw;
+            return ApplyLtspiceSwitchTopology(name, externalParameters, context, topologyOptions, csw);
+        }
+
+        private static LtspiceSwitchTopologyOptions ExtractLtspiceSwitchTopology(Model model, IReadingContext context)
+        {
+            var result = new LtspiceSwitchTopologyOptions();
+
+            if (context?.ReaderSettings?.Compatibility?.IsLTspice != true || model == null)
+            {
+                return result;
+            }
+
+            if (model.TryGetRawParameter("vser", out var seriesVoltage))
+            {
+                result.SeriesVoltage = seriesVoltage;
+            }
+
+            if (model.TryGetRawParameter("lser", out var seriesInductance))
+            {
+                result.SeriesInductance = seriesInductance;
+            }
+
+            return result;
+        }
+
+        private static ParameterCollection PrepareLtspiceSwitchParameters(
+            string switchName,
+            string originalName,
+            ParameterCollection parameters,
+            LtspiceSwitchTopologyOptions topologyOptions,
+            int terminalPinCount)
+        {
+            var switchParameters = new ParameterCollection(parameters.ToList());
+
+            if (!topologyOptions.HasAny || switchParameters.Count < terminalPinCount)
+            {
+                return switchParameters;
+            }
+
+            var baseName = originalName ?? switchName;
+            var switchPositiveNodeName = string.Empty;
+
+            if (topologyOptions.HasSeriesVoltage)
+            {
+                topologyOptions.SeriesVoltageNodeName = "__ltspice_" + baseName + "_vser";
+                switchPositiveNodeName = topologyOptions.SeriesVoltageNodeName;
+            }
+
+            if (topologyOptions.HasSeriesInductance)
+            {
+                topologyOptions.SeriesInductanceNodeName = "__ltspice_" + baseName + "_lser";
+                switchPositiveNodeName = topologyOptions.SeriesInductanceNodeName;
+            }
+
+            switchParameters.RemoveAt(0);
+            switchParameters.Insert(0, new IdentifierParameter(switchPositiveNodeName, parameters[0].LineInfo));
+
+            return switchParameters;
+        }
+
+        private static IEntity ApplyLtspiceSwitchTopology(
+            string switchName,
+            ParameterCollection externalParameters,
+            IReadingContext context,
+            LtspiceSwitchTopologyOptions topologyOptions,
+            IEntity entity)
+        {
+            if (entity == null || !topologyOptions.HasAny || externalParameters.Count < 2)
+            {
+                return entity;
+            }
+
+            Parameter seriesInputNode = externalParameters[0];
+
+            if (topologyOptions.HasSeriesVoltage)
+            {
+                var seriesOutputNode = new IdentifierParameter(topologyOptions.SeriesVoltageNodeName, externalParameters[0].LineInfo);
+                var seriesVoltageSource = new VoltageSource(switchName + "_vser");
+                context.CreateNodes(seriesVoltageSource, CreateNodeParameters(seriesInputNode, seriesOutputNode));
+                context.SetParameter(seriesVoltageSource, "dc", topologyOptions.SeriesVoltage, true);
+                context.ContextEntities?.Add(seriesVoltageSource);
+                seriesInputNode = seriesOutputNode;
+            }
+
+            if (topologyOptions.HasSeriesInductance)
+            {
+                var seriesOutputNode = new IdentifierParameter(topologyOptions.SeriesInductanceNodeName, externalParameters[0].LineInfo);
+                var seriesInductor = new Inductor(switchName + "_lser");
+                context.CreateNodes(seriesInductor, CreateNodeParameters(seriesInputNode, seriesOutputNode));
+                context.SetParameter(seriesInductor, "inductance", topologyOptions.SeriesInductance, true);
+                context.ContextEntities?.Add(seriesInductor);
+            }
+
+            return entity;
+        }
+
+        private static ParameterCollection CreateNodeParameters(Parameter firstNode, Parameter secondNode)
+        {
+            return new ParameterCollection(new List<Parameter>())
+            {
+                firstNode,
+                secondNode,
+            };
+        }
+
+        private sealed class LtspiceSwitchTopologyOptions
+        {
+            public AssignmentParameter SeriesVoltage { get; set; }
+
+            public AssignmentParameter SeriesInductance { get; set; }
+
+            public string SeriesVoltageNodeName { get; set; }
+
+            public string SeriesInductanceNodeName { get; set; }
+
+            public bool HasSeriesVoltage => SeriesVoltage != null;
+
+            public bool HasSeriesInductance => SeriesInductance != null;
+
+            public bool HasAny => HasSeriesVoltage || HasSeriesInductance;
         }
 
         private static string MultiplyIfNeeded(string expression, string mExpression)

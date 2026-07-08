@@ -54,12 +54,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
             "revepsilon",
         };
 
-        // LTspice voltage-switch extras imply added series elements or current limiting. Ron/Roff/Vt/Vh
-        // remain pass-through; these behavior-changing extras need runtime/topology support first.
-        private static readonly ISet<string> UnsupportedSwitchParameters = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        // LTspice switch series extras are handled by SwitchGenerator using helper topology,
+        // not set directly on the SpiceSharp model entity.
+        private static readonly ISet<string> SwitchSeriesParameters = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
             "lser",
             "vser",
+        };
+
+        // LTspice switch current limiting needs nonlinear runtime support and is kept as an
+        // explicit compatibility gap.
+        private static readonly ISet<string> UnsupportedSwitchParameters = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
             "ilimit",
         };
 
@@ -137,11 +143,16 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
                 return true;
             }
 
+            if (IsSwitchModelType(modelType) && SwitchSeriesParameters.Contains(parameter.Name))
+            {
+                return true;
+            }
+
             if (IsSwitchModelType(modelType) && UnsupportedSwitchParameters.Contains(parameter.Name))
             {
                 context.Result.ValidationResult.AddError(
                     ValidationEntrySource.Reader,
-                    $"Unsupported LTspice switch model parameter '{parameter.Name}' on model '{modelName}': switch series elements/current limiting are not synthesized yet.",
+                    $"Unsupported LTspice switch model parameter '{parameter.Name}' on model '{modelName}': switch current limiting is not synthesized yet.",
                     parameter.LineInfo);
                 return true;
             }
@@ -472,7 +483,10 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators
 
         private static bool IsSwitchModelType(string modelType)
         {
-            return IsVoltageSwitchModelType(modelType) || IsCurrentSwitchModelType(modelType);
+            return IsVoltageSwitchModelType(modelType)
+                || IsCurrentSwitchModelType(modelType)
+                || Is(modelType, "vswitch")
+                || Is(modelType, "iswitch");
         }
 
         private static bool IsVoltageSwitchModelType(string modelType)

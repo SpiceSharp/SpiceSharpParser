@@ -54,6 +54,57 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
         }
 
         [Fact]
+        public void When_LtspiceSwitchSeriesVoltageIsRead_Expect_SynthesizedVoltageSource()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P3 - switch Vser",
+                ".param vf=0.2",
+                "V1 in 0 1",
+                "VCTRL ctrl 0 1",
+                "RLOAD in out 100",
+                "S1 out 0 ctrl 0 smod",
+                ".model smod SW(Ron=1m Roff=1Meg Vt=0.5 Vh=0 Vser={vf})",
+                ".op",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.IsType<VoltageSource>(model.Circuit["S1_vser"]);
+            Assert.InRange(RunOpSimulation(model, "V(out)"), 0.199, 0.201);
+        }
+
+        [Fact]
+        public void When_LtspiceSwitchSeriesInductanceIsRead_Expect_SynthesizedInductor()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P3 - switch Lser",
+                ".param ls=1u",
+                "S1 out 0 ctrl 0 smod",
+                ".model smod SW(Ron=1 Roff=1Meg Vt=0.5 Vh=0 Lser={ls})",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.IsType<Inductor>(model.Circuit["S1_lser"]);
+        }
+
+        [Fact]
+        public void When_LtspiceCurrentSwitchSeriesExtrasAreRead_Expect_SynthesizedHelpers()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P3 - current switch series extras",
+                "W1 out 0 VCTRL smod",
+                ".model smod CSW(Ron=1 Roff=1Meg It=1m Ih=0 Vser=0.1 Lser=1u)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.IsType<VoltageSource>(model.Circuit["W1_vser"]);
+            Assert.IsType<Inductor>(model.Circuit["W1_lser"]);
+        }
+
+        [Fact]
         public void When_LtspiceMetadataParametersAreRead_Expect_WarningsOnly()
         {
             var model = GetSpiceSharpModelWithCompatibility(
@@ -627,8 +678,6 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
         }
 
         [Theory]
-        [InlineData("Lser")]
-        [InlineData("Vser")]
         [InlineData("Ilimit")]
         public void When_LtspiceSwitchModelParameterChangesBehavior_Expect_TargetedError(string parameterName)
         {
