@@ -73,3 +73,5 @@ SpiceSharpParser includes standard math functions:
 | `ceil(x)` | Ceiling |
 | `if(cond, t, f)` | Conditional |
 | `limit(x, lo, hi)` | Clamp to range |
+| `uplim(x, upper, zone)` | Smooth upper limit |
+| `dnlim(x, lower, zone)` | Smooth lower limit |

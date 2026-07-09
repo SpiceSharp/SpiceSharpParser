@@ -209,7 +209,7 @@ Implemented P2 behavior:
 - Added dialect-neutral expression support for `fabs(x)`, one-argument `round(x)`, unary `!`, and single-character boolean `&` / `|`.
 - Added fixture-backed evidence for `arccos`, `arcsin`, `arctan`, `sgn`, `pwr`, `pwrs`, `hypot`, scalar `table(...)` / `tbl(...)`, and `**`.
 - Kept `^` as the existing exponent operator; LTspice boolean XOR is deferred to avoid changing current semantics.
-- Added LTspice-mode targeted diagnostics for `uplim(...)`, `dnlim(...)`, and unary `~`.
+- Added LTspice-style smooth limiting support for `uplim(...)` and `dnlim(...)`, while keeping unary `~` as a targeted diagnostic.
 - Added six-argument `EXP(v1 v2 td1 tau1 td2 tau2)` source waveform support with argument-count and positive-tau diagnostics.
 - Added LTspice-mode finite-cycle `PULSE(... Ncycles)` and `SINE(... Ncycles)` support with targeted diagnostics for invalid period/frequency and cycle-count arguments.
 - Added PWL file fixtures for supported local two-column text variants with optional header rows, leading blank/comment lines, and space/comma/semicolon/tab delimiters, plus targeted diagnostics for missing files, empty files, missing data rows, malformed rows, and unsupported LTspice repeat syntax.

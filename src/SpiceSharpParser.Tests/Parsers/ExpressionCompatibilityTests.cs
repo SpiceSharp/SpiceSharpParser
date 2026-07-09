@@ -17,6 +17,28 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Theory]
+        [InlineData(0.0, 0.0)]
+        [InlineData(0.9, 0.8786938680574733)]
+        [InlineData(2.0, 0.9995042495646668)]
+        public void When_UplimFunctionEvaluates_Expect_SmoothUpperLimit(double input, double expected)
+        {
+            var function = MathFunctions.CreateUplim();
+
+            Assert.Equal(expected, function.Logic("uplim", new[] { input, 1.0, 0.2 }, null), 12);
+        }
+
+        [Theory]
+        [InlineData(0.0, 1.0004957504353332)]
+        [InlineData(1.1, 1.1213061319425267)]
+        [InlineData(2.0, 2.0)]
+        public void When_DnlimFunctionEvaluates_Expect_SmoothLowerLimit(double input, double expected)
+        {
+            var function = MathFunctions.CreateDnlim();
+
+            Assert.Equal(expected, function.Logic("dnlim", new[] { input, 1.0, 0.2 }, null), 12);
+        }
+
+        [Theory]
         [InlineData(0.0, 10.0)]
         [InlineData(1.5, 15.0)]
         [InlineData(4.0, 30.0)]

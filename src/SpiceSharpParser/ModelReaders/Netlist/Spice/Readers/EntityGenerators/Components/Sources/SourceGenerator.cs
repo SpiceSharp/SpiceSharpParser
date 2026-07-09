@@ -3,7 +3,6 @@ using SpiceSharp.Components;
 using SpiceSharp.Entities;
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
@@ -692,17 +691,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
 
             var hasErrors = false;
-            foreach (var name in new[] { "uplim", "dnlim" })
-            {
-                if (Regex.IsMatch(expression, @"(?<![A-Za-z0-9_])" + name + @"\s*\(", RegexOptions.IgnoreCase))
-                {
-                    context.Result.ValidationResult.AddError(
-                        ValidationEntrySource.Reader,
-                        $"Unsupported LTspice expression function '{name}': smooth limiting semantics are not mapped yet.",
-                        lineInfo);
-                    hasErrors = true;
-                }
-            }
 
             if (expression.Contains("~"))
             {

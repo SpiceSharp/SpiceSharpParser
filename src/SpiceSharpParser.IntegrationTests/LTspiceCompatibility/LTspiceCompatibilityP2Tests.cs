@@ -18,14 +18,14 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
             var model = GetSpiceSharpModelWithCompatibility(
                 CompatibilityOptions.LTspice,
                 "LTspice P2 - scalar functions",
-                "V1 out 0 VALUE={arccos(1)+arcsin(1)+arctan(1)+fabs(-3)+sgn(-2)+round(1.6)+pwr(2,3)+pwrs(-2,3)+hypot(3,4)+table(1.5,0,0,1,10,2,20)+tbl(1.5,0,0,1,10,2,20)+2**3}",
+                "V1 out 0 VALUE={arccos(1)+arcsin(1)+arctan(1)+fabs(-3)+sgn(-2)+round(1.6)+pwr(2,3)+pwrs(-2,3)+hypot(3,4)+table(1.5,0,0,1,10,2,20)+tbl(1.5,0,0,1,10,2,20)+uplim(2,1,0.2)+dnlim(0,1,0.2)+2**3}",
                 "R1 out 0 1k",
                 ".op",
                 ".save V(out)",
                 ".end");
 
             AssertNoValidationIssues(model.ValidationResult);
-            Assert.True(EqualsWithTol(47.0 + (0.75 * Math.PI), RunOpSimulation(model, "V(out)")));
+            Assert.True(EqualsWithTol(49.0 + (0.75 * Math.PI), RunOpSimulation(model, "V(out)")));
         }
 
         [Fact]
@@ -480,8 +480,27 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
         }
 
         [Theory]
-        [InlineData("uplim(V(in),0,1)", "uplim")]
-        [InlineData("dnlim(V(in),0,1)", "dnlim")]
+        [InlineData("uplim(V(in),1,0.2)", 0.9995042495646668)]
+        [InlineData("dnlim(V(in)-2,1,0.2)", 1.0004957504353332)]
+        public void When_LtspiceSmoothLimitExpressionIsRead_Expect_OpReferenceValue(
+            string expression,
+            double expected)
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - smooth limit expression",
+                "VIN in 0 2",
+                "B1 out 0 V={" + expression + "}",
+                "R1 out 0 1k",
+                ".op",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.True(EqualsWithTol(expected, RunOpSimulation(model, "V(out)")));
+        }
+
+        [Theory]
         [InlineData("~V(in)", "~")]
         public void When_LtspiceUnsupportedExpressionConstructIsRead_Expect_TargetedError(string expression, string constructName)
         {

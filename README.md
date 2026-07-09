@@ -127,7 +127,7 @@ LTspice mode covers syntax such as:
 
 - `.backanno` and selected output/viewer options as warning no-ops
 - one-argument `.TRAN` with a derived step policy
-- scalar expression aliases and `table(...)` / `tbl(...)`
+- scalar expression aliases, `table(...)` / `tbl(...)`, and smooth limiters `uplim(...)` / `dnlim(...)`
 - source waveforms including `EXP(...)`, finite-cycle `PULSE(... Ncycles)`, finite-cycle `SINE(... Ncycles)`, and local two-column `PWL file=<path>` data
 - independent-source topology options: `Rser`, `Cpar`, `load`, and `R=<value>`
 - model parameter aliases: resistor and capacitor models accept `tc=<tc1>[,<tc2>]`; voltage switches accept `von` / `voff`; current switches accept `ion` / `ioff`
@@ -138,7 +138,7 @@ LTspice mode covers syntax such as:
 
 Topology-changing LTspice options that can be represented safely are synthesized as helper components in the parser. Behavior-changing constructs that are not represented by SpiceSharp are reported with targeted diagnostics instead of being silently ignored.
 
-See the [LTspice compatibility matrix](roadmap/ltspice-compatibility-matrix.md) and [LTspice netlist compatibility plan](roadmap/ltspice-netlist-compatibility-plan.md) for the current support classes, known gaps, and evidence policy. LTspice schematic and symbol import (`.asc` / `.asy`) is out of scope.
+See the [LTspice compatibility matrix](roadmap/ltspice-compatibility-matrix.md) and [LTspice netlist compatibility plan](roadmap/ltspice-netlist-compatibility-plan.md) for the current support classes, known gaps, and evidence policy. Selected compatibility surfaces also have optional LTspice-backed golden tests; set `LTSPICE_EXE` to an LTspice executable to enable them. LTspice schematic and symbol import (`.asc` / `.asy`) is out of scope.
 
 ### Custom Components
 
@@ -173,7 +173,7 @@ golden tests for AC and transient parity.
 
 ### Behavioral Modeling
 
-`VALUE={expr}`, `TABLE={expr}`, `POLY(n)`, `B` sources, source-level `E` / `G` / `F` / `H` `LAPLACE` transfer functions, function-style `LAPLACE(input, transfer)` in behavioral expressions, and a full set of built-in math functions. `LAPLACE` supports voltage-controlled and current-controlled forms with rational polynomials in `s`, including finite constant `M=`, `TD=`, and `DELAY=` options. Function-style calls also support call-local options, mixed-expression helper lowering, and arbitrary scalar input expressions.
+`VALUE={expr}`, `TABLE={expr}`, `POLY(n)`, `B` sources, source-level `E` / `G` / `F` / `H` `LAPLACE` transfer functions, function-style `LAPLACE(input, transfer)` in behavioral expressions, and a full set of built-in math functions including LTspice-style `uplim(...)` and `dnlim(...)` smooth limiters. `LAPLACE` supports voltage-controlled and current-controlled forms with rational polynomials in `s`, including finite constant `M=`, `TD=`, and `DELAY=` options. Function-style calls also support call-local options, mixed-expression helper lowering, and arbitrary scalar input expressions.
 
 ## Documentation
 

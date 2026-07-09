@@ -49,6 +49,28 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Functions
         }
 
         /// <summary>
+        /// Get a uplim(x, upper, zone) function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of uplim function.
+        /// </returns>
+        public static IFunction<double, double> CreateUplim()
+        {
+            return new UplimFunction();
+        }
+
+        /// <summary>
+        /// Get a dnlim(x, lower, zone) function.
+        /// </summary>
+        /// <returns>
+        /// A new instance of dnlim function.
+        /// </returns>
+        public static IFunction<double, double> CreateDnlim()
+        {
+            return new DnlimFunction();
+        }
+
+        /// <summary>
         /// Get a cbrt() function.
         /// </summary>
         /// <returns>
