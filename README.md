@@ -128,7 +128,7 @@ LTspice mode covers syntax such as:
 - `.backanno` and selected output/viewer options as warning no-ops
 - one-argument `.TRAN` with a derived step policy
 - scalar expression aliases, `table(...)` / `tbl(...)`, and smooth limiters `uplim(...)` / `dnlim(...)`
-- source waveforms including `EXP(...)`, finite-cycle `PULSE(... Ncycles)`, finite-cycle `SINE(... Ncycles)`, and local two-column `PWL file=<path>` data
+- source waveforms including `EXP(...)`, finite-cycle `PULSE(... Ncycles)`, finite-cycle `SINE(... Ncycles)`, local two-column `PWL file=<path>` data, and simple LTspice `PWL REPEAT FOR` / `REPEAT FOREVER` blocks
 - independent-source topology options: `Rser`, `Cpar`, `load`, and `R=<value>`
 - model parameter aliases: resistor and capacitor models accept `tc=<tc1>[,<tc2>]`; voltage switches accept `von` / `voff`; current switches accept `ion` / `ioff`
 - switch model series options `Vser` and `Lser`

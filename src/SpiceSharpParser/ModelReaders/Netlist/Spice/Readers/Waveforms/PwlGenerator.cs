@@ -17,6 +17,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
     /// </summary>
     public class PwlGenerator : WaveformGenerator
     {
+        private const double TimeEpsilon = 1e-18;
+        private const double ValueEpsilon = 1e-12;
+
         /// <summary>
         /// Generates a new waveform.
         /// </summary>
@@ -37,9 +40,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 throw new ArgumentNullException(nameof(context));
             }
 
-            if (HasUnsupportedLtspiceRepeatSyntax(parameters, context))
+            if (TryCreateLtspiceRepeatingPwl(parameters, context, out var repeatingPwl))
             {
-                return null;
+                return repeatingPwl;
             }
 
             if (parameters.Count > 0 && parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "file"))
@@ -153,30 +156,545 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             return new Pwl() { Points = points };
         }
 
-        private static bool HasUnsupportedLtspiceRepeatSyntax(ParameterCollection parameters, IReadingContext context)
+        private static bool TryCreateLtspiceRepeatingPwl(
+            ParameterCollection parameters,
+            IReadingContext context,
+            out IWaveformDescription waveform)
         {
+            waveform = null;
+
             if (!context.ReaderSettings.Compatibility.IsLTspice)
             {
                 return false;
             }
 
-            var repeatParameter = parameters.FirstOrDefault(parameter =>
-                string.Equals(parameter.Value, "repeat", StringComparison.OrdinalIgnoreCase)
-                || string.Equals(parameter.Value, "endrepeat", StringComparison.OrdinalIgnoreCase)
-                || string.Equals(parameter.Value, "forever", StringComparison.OrdinalIgnoreCase)
-                || (parameter is AssignmentParameter assignment
-                    && string.Equals(assignment.Name, "repeat", StringComparison.OrdinalIgnoreCase)));
+            int repeatIndex = IndexOf(parameters, IsRepeatStart);
+            int endRepeatIndex = IndexOf(parameters, parameter => IsWord(parameter, "endrepeat"));
+            if (repeatIndex < 0)
+            {
+                var strayParameter = parameters.FirstOrDefault(parameter =>
+                    IsWord(parameter, "endrepeat") || IsWord(parameter, "forever"));
+                if (strayParameter != null)
+                {
+                    AddPwlError(
+                        context,
+                        $"LTspice PWL {strayParameter.Value} requires a preceding REPEAT block.",
+                        strayParameter);
+                    return true;
+                }
 
-            if (repeatParameter == null)
+                return false;
+            }
+
+            var repeatParameter = parameters[repeatIndex];
+            if (endRepeatIndex < 0 || endRepeatIndex < repeatIndex)
+            {
+                AddPwlError(context, "LTspice PWL REPEAT requires a matching ENDREPEAT.", repeatParameter);
+                return true;
+            }
+
+            int nestedRepeatIndex = IndexOf(
+                parameters,
+                parameter => IsRepeatStart(parameter),
+                repeatIndex + 1,
+                endRepeatIndex);
+            if (nestedRepeatIndex >= 0)
+            {
+                AddPwlError(context, "Nested LTspice PWL REPEAT blocks are not supported yet.", parameters[nestedRepeatIndex]);
+                return true;
+            }
+
+            if (!TryReadInlinePoints(parameters, 0, repeatIndex, context, repeatParameter, "prefix", 0, out var prefixPoints))
+            {
+                return true;
+            }
+
+            if (!TryReadRepeatCount(parameters, repeatIndex, endRepeatIndex, context, out var repeatCount, out var blockStartIndex))
+            {
+                return true;
+            }
+
+            if (!TryReadInlinePoints(
+                parameters,
+                blockStartIndex,
+                endRepeatIndex - blockStartIndex,
+                context,
+                repeatParameter,
+                "repeat",
+                1,
+                out var repeatPoints))
+            {
+                return true;
+            }
+
+            if (!ValidateRepeatPoints(repeatPoints, context, repeatParameter, out var period))
+            {
+                return true;
+            }
+
+            double repeatStartTime = prefixPoints.Count == 0 ? 0.0 : prefixPoints[prefixPoints.Count - 1].Time;
+            if (!ValidateRepeatBoundary(prefixPoints, repeatPoints, repeatStartTime, context, repeatParameter))
+            {
+                return true;
+            }
+
+            if (repeatCount.HasValue)
+            {
+                if (endRepeatIndex != parameters.Count - 1)
+                {
+                    AddPwlError(context, "LTspice PWL parameters after ENDREPEAT are not supported yet.", parameters[endRepeatIndex]);
+                    return true;
+                }
+
+                var expandedPoints = new List<Point>(prefixPoints);
+                int count = (int)Math.Round(repeatCount.Value);
+                for (var cycle = 0; cycle < count; cycle++)
+                {
+                    double offset = repeatStartTime + (cycle * period);
+                    foreach (var point in repeatPoints)
+                    {
+                        if (!TryAddPoint(
+                            expandedPoints,
+                            new Point(offset + point.Time, point.Value),
+                            context,
+                            repeatParameter))
+                        {
+                            return true;
+                        }
+                    }
+                }
+
+                waveform = new Pwl() { Points = expandedPoints };
+                return true;
+            }
+
+            if (endRepeatIndex != parameters.Count - 1)
+            {
+                AddPwlError(context, "LTspice PWL parameters after REPEAT FOREVER are not supported.", parameters[endRepeatIndex]);
+                return true;
+            }
+
+            waveform = new RepeatingPwl(prefixPoints, repeatPoints, repeatStartTime, null);
+            return true;
+        }
+
+        private static bool TryReadRepeatCount(
+            ParameterCollection parameters,
+            int repeatIndex,
+            int endRepeatIndex,
+            IReadingContext context,
+            out double? repeatCount,
+            out int blockStartIndex)
+        {
+            var repeatParameter = parameters[repeatIndex];
+            repeatCount = null;
+            blockStartIndex = repeatIndex + 1;
+
+            if (repeatParameter is AssignmentParameter repeatAssignment)
+            {
+                if (!TryEvaluateRepeatCount(repeatAssignment.Value, repeatAssignment, context, out var assignmentCount))
+                {
+                    return false;
+                }
+
+                repeatCount = assignmentCount;
+                return true;
+            }
+
+            if (blockStartIndex >= endRepeatIndex)
+            {
+                AddPwlError(context, "LTspice PWL REPEAT requires FOR <n> or FOREVER.", repeatParameter);
+                return false;
+            }
+
+            var next = parameters[blockStartIndex];
+            if (next is BracketParameter foreverBracket
+                && string.Equals(foreverBracket.Name, "forever", StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            if (IsWord(next, "forever"))
+            {
+                blockStartIndex++;
+                return true;
+            }
+
+            if (next is AssignmentParameter forAssignment
+                && string.Equals(forAssignment.Name, "for", StringComparison.OrdinalIgnoreCase))
+            {
+                if (!TryEvaluateRepeatCount(forAssignment.Value, forAssignment, context, out var assignmentCount))
+                {
+                    return false;
+                }
+
+                repeatCount = assignmentCount;
+                blockStartIndex++;
+                return true;
+            }
+
+            if (IsWord(next, "for"))
+            {
+                if (blockStartIndex + 1 >= endRepeatIndex)
+                {
+                    AddPwlError(context, "LTspice PWL REPEAT FOR requires a repeat count.", next);
+                    return false;
+                }
+
+                var countParameter = parameters[blockStartIndex + 1];
+                if (!TryEvaluateRepeatCount(countParameter.Value, countParameter, context, out var wordCount))
+                {
+                    return false;
+                }
+
+                repeatCount = wordCount;
+                blockStartIndex += 2;
+                return true;
+            }
+
+            AddPwlError(context, "LTspice PWL REPEAT requires FOR <n> or FOREVER.", repeatParameter);
+            return false;
+        }
+
+        private static bool TryEvaluateRepeatCount(
+            string expression,
+            Parameter parameter,
+            IReadingContext context,
+            out double repeatCount)
+        {
+            repeatCount = 0.0;
+
+            try
+            {
+                repeatCount = context.Evaluator.EvaluateDouble(expression);
+            }
+            catch (Exception ex)
+            {
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    "LTspice PWL repeat count could not be evaluated.",
+                    parameter.LineInfo,
+                    ex);
+                return false;
+            }
+
+            if (repeatCount <= 0 || Math.Abs(repeatCount - Math.Round(repeatCount)) > ValueEpsilon)
+            {
+                AddPwlError(context, "LTspice PWL repeat count must be a positive integer.", parameter);
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool TryReadInlinePoints(
+            ParameterCollection parameters,
+            int startIndex,
+            int count,
+            IReadingContext context,
+            Parameter diagnosticParameter,
+            string sectionName,
+            int minimumPointCount,
+            out List<Point> points)
+        {
+            points = new List<Point>();
+            var values = new List<double>();
+
+            for (var i = startIndex; i < startIndex + count; i++)
+            {
+                var parameter = parameters[i];
+                if (parameter is VectorParameter vector)
+                {
+                    foreach (var element in vector.Elements)
+                    {
+                        if (!TryAppendPointValue(element.Value, element, context, values))
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else if (parameter is PointParameter point)
+                {
+                    foreach (var item in point.Values.Items)
+                    {
+                        if (!TryAppendPointValue(item.Value, item, context, values))
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else if (parameter is BracketParameter bracket
+                    && string.Equals(bracket.Name, "forever", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (!TryAppendPointValues(bracket.Parameters, context, values))
+                    {
+                        return false;
+                    }
+                }
+                else if (parameter is AssignmentParameter)
+                {
+                    AddPwlError(context, $"LTspice PWL {sectionName} data contains an unexpected assignment.", parameter);
+                    return false;
+                }
+                else
+                {
+                    if (!TryAppendPointValue(parameter.Value, parameter, context, values))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            if (values.Count % 2 != 0)
+            {
+                AddPwlError(context, $"LTspice PWL {sectionName} data expects time/value pairs.", diagnosticParameter);
+                return false;
+            }
+
+            for (var i = 0; i < values.Count / 2; i++)
+            {
+                points.Add(new Point(values[2 * i], values[(2 * i) + 1]));
+            }
+
+            if (points.Count < minimumPointCount)
+            {
+                AddPwlError(context, $"LTspice PWL {sectionName} data has no time/value points.", diagnosticParameter);
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool TryAppendPointValues(
+            ParameterCollection parameters,
+            IReadingContext context,
+            List<double> values)
+        {
+            for (var i = 0; i < parameters.Count; i++)
+            {
+                var parameter = parameters[i];
+                if (parameter is VectorParameter vector)
+                {
+                    foreach (var element in vector.Elements)
+                    {
+                        if (!TryAppendPointValue(element.Value, element, context, values))
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else if (parameter is PointParameter point)
+                {
+                    foreach (var item in point.Values.Items)
+                    {
+                        if (!TryAppendPointValue(item.Value, item, context, values))
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    if (!TryAppendPointValue(parameter.Value, parameter, context, values))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private static bool TryAppendPointValue(
+            string expression,
+            Parameter parameter,
+            IReadingContext context,
+            List<double> values)
+        {
+            bool isTimeValue = values.Count % 2 == 0;
+            if (isTimeValue && expression.TrimStart().StartsWith("+", StringComparison.Ordinal))
+            {
+                AddPwlError(context, "LTspice PWL relative +time points are not supported yet.", parameter);
+                return false;
+            }
+
+            if (!TryEvaluatePointValue(expression, parameter, context, out var value))
             {
                 return false;
             }
 
+            values.Add(value);
+            return true;
+        }
+
+        private static bool TryEvaluatePointValue(
+            string expression,
+            Parameter parameter,
+            IReadingContext context,
+            out double value)
+        {
+            value = 0.0;
+
+            try
+            {
+                value = context.Evaluator.EvaluateDouble(expression);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    "LTspice PWL repeat point could not be evaluated.",
+                    parameter.LineInfo,
+                    ex);
+                return false;
+            }
+        }
+
+        private static bool ValidateRepeatPoints(
+            IReadOnlyList<Point> repeatPoints,
+            IReadingContext context,
+            Parameter repeatParameter,
+            out double period)
+        {
+            period = repeatPoints[repeatPoints.Count - 1].Time;
+
+            for (var i = 0; i < repeatPoints.Count; i++)
+            {
+                if (repeatPoints[i].Time < -TimeEpsilon)
+                {
+                    AddPwlError(context, "LTspice PWL repeat times must be non-negative.", repeatParameter);
+                    return false;
+                }
+
+                if (i > 0 && repeatPoints[i].Time <= repeatPoints[i - 1].Time + TimeEpsilon)
+                {
+                    AddPwlError(context, "LTspice PWL repeat times must be strictly increasing.", repeatParameter);
+                    return false;
+                }
+            }
+
+            if (period <= TimeEpsilon)
+            {
+                AddPwlError(context, "LTspice PWL repeat period must be positive.", repeatParameter);
+                return false;
+            }
+
+            Point first = repeatPoints[0];
+            Point last = repeatPoints[repeatPoints.Count - 1];
+            if (Math.Abs(first.Time) <= TimeEpsilon && Math.Abs(first.Value - last.Value) > ValueEpsilon)
+            {
+                AddPwlError(
+                    context,
+                    "LTspice PWL repeat data is contradictory: a zero-time first point must match the final repeated value.",
+                    repeatParameter);
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool ValidateRepeatBoundary(
+            IReadOnlyList<Point> prefixPoints,
+            IReadOnlyList<Point> repeatPoints,
+            double repeatStartTime,
+            IReadingContext context,
+            Parameter repeatParameter)
+        {
+            if (prefixPoints.Count == 0)
+            {
+                return true;
+            }
+
+            for (var i = 1; i < prefixPoints.Count; i++)
+            {
+                if (prefixPoints[i].Time < prefixPoints[i - 1].Time - TimeEpsilon)
+                {
+                    AddPwlError(context, "LTspice PWL prefix times must be non-decreasing before REPEAT.", repeatParameter);
+                    return false;
+                }
+            }
+
+            if (Math.Abs(repeatPoints[0].Time) <= TimeEpsilon
+                && Math.Abs(prefixPoints[prefixPoints.Count - 1].Value - repeatPoints[0].Value) > ValueEpsilon)
+            {
+                AddPwlError(
+                    context,
+                    "LTspice PWL repeat data is contradictory at the REPEAT boundary.",
+                    repeatParameter);
+                return false;
+            }
+
+            return repeatStartTime >= prefixPoints[prefixPoints.Count - 1].Time - TimeEpsilon;
+        }
+
+        private static bool TryAddPoint(
+            List<Point> points,
+            Point point,
+            IReadingContext context,
+            Parameter repeatParameter)
+        {
+            if (points.Count > 0)
+            {
+                Point previous = points[points.Count - 1];
+                if (Math.Abs(point.Time - previous.Time) <= TimeEpsilon)
+                {
+                    if (Math.Abs(point.Value - previous.Value) > ValueEpsilon)
+                    {
+                        AddPwlError(context, "LTspice PWL repeat expansion creates contradictory values at the same time.", repeatParameter);
+                        return false;
+                    }
+
+                    return true;
+                }
+
+                if (point.Time < previous.Time)
+                {
+                    AddPwlError(context, "LTspice PWL repeat expansion creates non-monotonic point times.", repeatParameter);
+                    return false;
+                }
+            }
+
+            points.Add(point);
+            return true;
+        }
+
+        private static int IndexOf(
+            ParameterCollection parameters,
+            Func<Parameter, bool> predicate,
+            int startIndex = 0,
+            int endIndex = -1)
+        {
+            int effectiveEndIndex = endIndex < 0 ? parameters.Count : endIndex;
+            for (var i = startIndex; i < effectiveEndIndex; i++)
+            {
+                if (predicate(parameters[i]))
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        private static bool IsRepeatStart(Parameter parameter)
+        {
+            return IsWord(parameter, "repeat")
+                || (parameter is AssignmentParameter assignment
+                    && string.Equals(assignment.Name, "repeat", StringComparison.OrdinalIgnoreCase));
+        }
+
+        private static bool IsWord(Parameter parameter, string value)
+        {
+            return string.Equals(parameter.Value, value, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static void AddPwlError(IReadingContext context, string message, Parameter parameter)
+        {
             context.Result.ValidationResult.AddError(
                 ValidationEntrySource.Reader,
-                "Unsupported LTspice PWL repeat syntax: repeat forms are not mapped yet.",
-                repeatParameter.LineInfo);
-            return true;
+                message,
+                parameter.LineInfo);
         }
 
         private static List<Point> ReadPoints(

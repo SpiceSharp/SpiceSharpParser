@@ -80,6 +80,47 @@ namespace SpiceSharpParser.Tests.LTspiceCompatibility
             }
         }
 
+        [Fact]
+        public void AsciiRawReader_WhenValuesUseMultilineBlocks_ReadsSeries()
+        {
+            string path = Path.GetTempFileName();
+            string[] rawLines =
+            {
+                "Title: multiline",
+                "Date: Thu Jul 09 12:00:00 2026",
+                "Plotname: Transient Analysis",
+                "Flags: real forward",
+                "No. Variables: 3",
+                "No. Points: 2",
+                "Variables:",
+                "\t0\ttime\ttime",
+                "\t1\tV(out)\tvoltage",
+                "\t2\tV(in)\tvoltage",
+                "Values:",
+                "\t0\t0.000000000000000e+00",
+                "\t\t1.000000000000000e+00",
+                "\t\t2.000000000000000e+00",
+                "\t1\t1.000000000000000e-09",
+                "\t\t3.000000000000000e+00",
+                "\t\t4.000000000000000e+00",
+            };
+
+            try
+            {
+                File.WriteAllLines(path, rawLines);
+
+                var raw = LtspiceAsciiRawFile.Read(path);
+                var series = LtspiceAsciiRawFile.GetRealSeries(raw, "V(out)");
+                var expected = new[] { (Time: 0.0, Value: 1.0), (Time: 1e-9, Value: 3.0) };
+
+                Assert.Equal(expected, series);
+            }
+            finally
+            {
+                File.Delete(path);
+            }
+        }
+
         private static IReadOnlyList<LtspiceGoldenCase> CreateOpCases()
         {
             return new[]
@@ -114,8 +155,8 @@ namespace SpiceSharpParser.Tests.LTspiceCompatibility
                     new[] { "V(out)" },
                     absoluteTolerance: 1e-7,
                     relativeTolerance: 1e-6),
-
-                new LtspiceGoldenCase(
+                    
+                 new LtspiceGoldenCase(
                     "op_resistor_parasitics",
                     BuildNetlist(
                         "op_resistor_parasitics",
@@ -158,7 +199,7 @@ namespace SpiceSharpParser.Tests.LTspiceCompatibility
                         "VSINE sine 0 SINE(1 2 250Meg 1n 0 0 2)",
                         "RP pulse 0 1k",
                         "RS sine 0 1k",
-                        ".tran 0.25n 25n 0 0.25n",
+                        ".tran 0.05n 25n 0 0.05n",
                         ".save V(pulse) V(sine)"),
                     new[] { "V(pulse)", "V(sine)" },
                     new[] { 0.5e-9, 2.5e-9, 3.5e-9, 6.5e-9, 8.5e-9, 12.5e-9, 13.5e-9, 16.5e-9, 22.5e-9, 24.0e-9 },
@@ -172,10 +213,24 @@ namespace SpiceSharpParser.Tests.LTspiceCompatibility
                         ".options plotwinsize=0 reltol=1e-6 abstol=1e-12",
                         "VEXP out 0 EXP(0 1 1n 1n 4n 1n)",
                         "RLOAD out 0 1k",
-                        ".tran 0.25n 6n 0 0.25n",
+                        ".tran 0.05n 6n 0 0.05n",
                         ".save V(out)"),
                     new[] { "V(out)" },
                     new[] { 0.5e-9, 1.5e-9, 2.5e-9, 3.5e-9, 4.5e-9, 5.5e-9 },
+                    absoluteTolerance: 2e-3,
+                    relativeTolerance: 2e-3),
+
+                new LtspiceTransientGoldenCase(
+                    "tran_pwl_repeat_for",
+                    BuildNetlist(
+                        "tran_pwl_repeat_for",
+                        ".options plotwinsize=0 reltol=1e-6 abstol=1e-12",
+                        "VPWL out 0 PWL REPEAT FOR 3 (1n,1,3n,3) ENDREPEAT",
+                        "RLOAD out 0 1k",
+                        ".tran 0.25n 9.5n 0 0.25n",
+                        ".save V(out)"),
+                    new[] { "V(out)" },
+                    new[] { 0.5e-9, 1.5e-9, 2.5e-9, 3.5e-9, 4.5e-9, 6.5e-9, 8.5e-9, 9.25e-9 },
                     absoluteTolerance: 2e-3,
                     relativeTolerance: 2e-3),
             };
@@ -289,16 +344,24 @@ namespace SpiceSharpParser.Tests.LTspiceCompatibility
 
                 string output = process.StandardOutput.ReadToEnd();
                 string error = process.StandardError.ReadToEnd();
+                string log = ReadLtspiceLog(circuitPath);
+                var result = new ProcessResult(output, error, log);
                 if (process.ExitCode != 0)
                 {
                     throw new InvalidOperationException(
                         $"LTspice exited with code {process.ExitCode} for '{circuitPath}'."
                         + Environment.NewLine
-                        + new ProcessResult(output, error));
+                        + result);
                 }
 
-                return new ProcessResult(output, error);
+                return result;
             }
+        }
+
+        private static string ReadLtspiceLog(string circuitPath)
+        {
+            string logPath = Path.ChangeExtension(circuitPath, ".log");
+            return File.Exists(logPath) ? File.ReadAllText(logPath) : string.Empty;
         }
 
         private static bool WaitForFile(string path, int timeoutMilliseconds)
@@ -476,20 +539,7 @@ namespace SpiceSharpParser.Tests.LTspiceCompatibility
                 int cursor = valuesIndex + 1;
                 for (int pointIndex = 0; pointIndex < pointCount; pointIndex++)
                 {
-                    var point = new Complex[variableCount];
-                    for (int variableIndex = 0; variableIndex < variableCount; variableIndex++)
-                    {
-                        string line = ReadNextNonEmptyLine(lines, ref cursor, path);
-                        string[] parts = SplitRawLine(line);
-                        if (parts.Length < 2)
-                        {
-                            throw new FormatException($"Invalid LTspice value line in '{path}': {line}");
-                        }
-
-                        point[variableIndex] = ParseComplex(parts[parts.Length - 1]);
-                    }
-
-                    points.Add(point);
+                    points.Add(ReadPoint(lines, ref cursor, pointIndex, variableCount, path));
                 }
 
                 return new LtspiceAsciiRawFile(variables, points);
@@ -552,6 +602,53 @@ namespace SpiceSharpParser.Tests.LTspiceCompatibility
                 return line.Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
             }
 
+            private static Complex[] ReadPoint(string[] lines, ref int cursor, int pointIndex, int variableCount, string path)
+            {
+                string firstLine = ReadNextNonEmptyLine(lines, ref cursor, path);
+                string[] firstParts = SplitRawLine(firstLine);
+                if (firstParts.Length == 0 || !IsInteger(firstParts[0]))
+                {
+                    throw new FormatException($"Invalid LTspice value line in '{path}': {firstLine}");
+                }
+
+                int actualPointIndex = int.Parse(firstParts[0], CultureInfo.InvariantCulture);
+                if (actualPointIndex != pointIndex)
+                {
+                    throw new FormatException(
+                        $"Unexpected LTspice point index in '{path}': expected {pointIndex}, got {actualPointIndex}.");
+                }
+
+                var values = new List<Complex>();
+                AddValues(firstParts, 1, values);
+                while (values.Count < variableCount)
+                {
+                    string line = ReadNextNonEmptyLine(lines, ref cursor, path);
+                    string[] parts = SplitRawLine(line);
+                    AddValues(parts, 0, values);
+                }
+
+                if (values.Count != variableCount)
+                {
+                    throw new FormatException(
+                        $"Invalid LTspice point in '{path}': expected {variableCount} values, got {values.Count}.");
+                }
+
+                return values.ToArray();
+            }
+
+            private static void AddValues(string[] parts, int startIndex, List<Complex> values)
+            {
+                for (int i = startIndex; i < parts.Length; i++)
+                {
+                    values.Add(ParseComplex(parts[i]));
+                }
+            }
+
+            private static bool IsInteger(string value)
+            {
+                return int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out _);
+            }
+
             private static double ParseDouble(string value)
             {
                 return double.Parse(value, NumberStyles.Float, CultureInfo.InvariantCulture);
@@ -593,15 +690,18 @@ namespace SpiceSharpParser.Tests.LTspiceCompatibility
 
         private sealed class ProcessResult
         {
-            public ProcessResult(string output, string error)
+            public ProcessResult(string output, string error, string log)
             {
                 this.Output = output;
                 this.Error = error;
+                this.Log = log;
             }
 
             private string Output { get; }
 
             private string Error { get; }
+
+            private string Log { get; }
 
             public override string ToString()
             {
@@ -611,7 +711,11 @@ namespace SpiceSharpParser.Tests.LTspiceCompatibility
                     + Environment.NewLine
                     + "stderr:"
                     + Environment.NewLine
-                    + this.Error;
+                    + this.Error
+                    + Environment.NewLine
+                    + "log:"
+                    + Environment.NewLine
+                    + this.Log;
             }
         }
     }

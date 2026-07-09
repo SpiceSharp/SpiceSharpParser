@@ -90,20 +90,26 @@ V1 IN 0 EXP(0 5 1u 100n 10u 200n)
 ```
 PWL(<t1> <v1> <t2> <v2> ...)
 PWL file = "<path>"
+PWL REPEAT FOR <n> (<t1>,<v1>,...) ENDREPEAT
+PWL REPEAT FOREVER (<t1>,<v1>,...) ENDREPEAT
 ```
 
 ```spice
 V1 IN 0 PWL(0 0 1m 5 2m 5 3m 0)
 V2 IN 0 PWL file = "Resources\pwl_reference.txt"
+V3 IN 0 PWL REPEAT FOR 3 (1m,1,3m,3) ENDREPEAT
 ```
 
 Inline PWL data uses time/value pairs. File-backed PWL data reads a local text
 file with two numeric columns and an optional header row. Leading blank lines
 and full-line comments beginning with `;`, `#`, `*`, or `//` are skipped.
 Spaces, commas, semicolons, and tabs are recognized from the first meaningful
-line. Broader LTspice PWL repeat variants are not claimed yet. Missing files,
-empty files, missing data rows, malformed rows, and LTspice repeat syntax
-produce targeted `PWL` validation diagnostics.
+line. In LTspice mode, simple non-nested `REPEAT FOR <n>` and `REPEAT FOREVER`
+blocks are supported with local repeat times. Nested repeats, trigger-based
+PWL restarts, time/value scale factors, `SCOPEDATA`, and relative `+time`
+points are not claimed yet. Missing files, empty files, missing data rows,
+malformed rows, and unsupported LTspice PWL variants produce targeted `PWL`
+validation diagnostics.
 
 ### SFFM — Single-Frequency FM
 

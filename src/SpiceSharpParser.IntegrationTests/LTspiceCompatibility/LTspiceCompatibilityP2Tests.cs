@@ -131,10 +131,70 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
             }
         }
 
+        [Fact]
+        public void When_LtspicePwlRepeatForIsRead_Expect_ExpandedTransientReferenceValues()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - PWL repeat for",
+                "V1 out 0 PWL REPEAT FOR 3 (1n,1,3n,3) ENDREPEAT",
+                "R1 out 0 1k",
+                ".tran 0.5n 9.5n",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+
+            var exports = RunTransientSimulation(model, "V(out)");
+            Assert.NotEmpty(exports);
+            Assert.True(EqualsWithTol(exports, PwlRepeatForReference));
+        }
+
+        [Fact]
+        public void When_LtspicePwlRepeatForeverIsRead_Expect_RepeatingTransientReferenceValues()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - PWL repeat forever",
+                "V1 out 0 PWL REPEAT FOREVER (0,0,1n,1,2n,0) ENDREPEAT",
+                "R1 out 0 1k",
+                ".tran 0.5n 5n",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+
+            var exports = RunTransientSimulation(model, "V(out)");
+            Assert.NotEmpty(exports);
+            Assert.True(EqualsWithTol(exports, PwlRepeatTriangleReference));
+        }
+
+        [Theory]
+        [InlineData("V1 out 0 PWL REPEAT FOR 2 (0,0,1n,1,2n,0) ENDREPEAT")]
+        [InlineData("V1 out 0 PWL REPEAT for=2 (0,0,1n,1,2n,0) ENDREPEAT")]
+        [InlineData("V1 out 0 PWL repeat=2 (0,0,1n,1,2n,0) endrepeat")]
+        public void When_LtspicePwlRepeatCountVariantIsRead_Expect_FiniteRepeat(string sourceLine)
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - PWL repeat count variant",
+                sourceLine,
+                "R1 out 0 1k",
+                ".tran 0.5n 5n",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+
+            var exports = RunTransientSimulation(model, "V(out)");
+            Assert.NotEmpty(exports);
+            Assert.True(EqualsWithTol(exports, PwlFiniteRepeatTriangleReference));
+        }
+
         [Theory]
         [InlineData("V1 out 0 PWL file=\"missing.txt\"", "does not exist")]
-        [InlineData("V1 out 0 PWL repeat 0 0 1n 1 endrepeat", "repeat")]
-        public void When_LtspicePwlFileOrRepeatSyntaxIsUnsupported_Expect_TargetedError(string sourceLine, string expectedMessage)
+        [InlineData("V1 out 0 PWL repeat 0 0 1n 1 endrepeat", "FOR")]
+        public void When_LtspicePwlFileOrBareRepeatSyntaxIsInvalid_Expect_TargetedError(string sourceLine, string expectedMessage)
         {
             var tempDirectory = CreateTempDirectory();
 
@@ -158,6 +218,30 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
             {
                 DeleteDirectory(tempDirectory);
             }
+        }
+
+        [Theory]
+        [InlineData("V1 out 0 PWL REPEAT FOR 2 (0,0,1n,0)", "ENDREPEAT")]
+        [InlineData("V1 out 0 PWL REPEAT FOR 0 (0,0,1n,0) ENDREPEAT", "repeat count")]
+        [InlineData("V1 out 0 PWL REPEAT FOR 2 (0,0,1n) ENDREPEAT", "time/value")]
+        [InlineData("V1 out 0 PWL REPEAT FOR 2 (0,0,0,0) ENDREPEAT", "increasing")]
+        [InlineData("V1 out 0 PWL REPEAT FOR 2 (0,0,1n,1) ENDREPEAT", "contradictory")]
+        [InlineData("V1 out 0 PWL REPEAT FOR 2 (0,0,+1n,0) ENDREPEAT", "relative")]
+        [InlineData("V1 out 0 PWL ENDREPEAT", "requires")]
+        public void When_LtspicePwlRepeatSyntaxIsMalformed_Expect_TargetedError(string sourceLine, string expectedMessage)
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - malformed PWL repeat",
+                sourceLine,
+                "R1 out 0 1k",
+                ".tran 1n 6n",
+                ".save V(out)",
+                ".end");
+
+            Assert.True(model.ValidationResult.HasError);
+            AssertErrorContains(model.ValidationResult, "PWL");
+            AssertErrorContains(model.ValidationResult, expectedMessage);
         }
 
         [Theory]
@@ -623,6 +707,56 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
             }
 
             return Math.Max(0.0, (2e-9 - time) / 1e-9);
+        }
+
+        private static double PwlRepeatForReference(double time)
+        {
+            const double period = 3e-9;
+            const double firstPointTime = 1e-9;
+            const double stopTime = 9e-9;
+
+            if (time >= stopTime)
+            {
+                return 3.0;
+            }
+
+            var cycle = (int)Math.Floor(time / period);
+            var localTime = time - (cycle * period);
+            if (localTime < firstPointTime)
+            {
+                if (cycle == 0)
+                {
+                    return 1.0;
+                }
+
+                return 3.0 + ((1.0 - 3.0) * localTime / firstPointTime);
+            }
+
+            return 1.0 + ((3.0 - 1.0) * (localTime - firstPointTime) / (period - firstPointTime));
+        }
+
+        private static double PwlRepeatTriangleReference(double time)
+        {
+            const double halfPeriod = 1e-9;
+            const double period = 2e-9;
+            var localTime = time % period;
+            if (localTime <= halfPeriod)
+            {
+                return localTime / halfPeriod;
+            }
+
+            return (period - localTime) / halfPeriod;
+        }
+
+        private static double PwlFiniteRepeatTriangleReference(double time)
+        {
+            const double stopTime = 4e-9;
+            if (time >= stopTime)
+            {
+                return 0.0;
+            }
+
+            return PwlRepeatTriangleReference(time);
         }
 
         public static IEnumerable<object[]> PwlFileFormatCases()
