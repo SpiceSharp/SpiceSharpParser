@@ -1312,6 +1312,25 @@ docs/verification/phase-06.md
 
 Stop after Phase 6.
 
+## Optional coupling-first roadmap fork
+
+Electrical-mechanical coupling has no technical dependency on the contact or
+cam phases. If the product direction stops after Phase 6, the detailed
+coupling milestone in Phase 12 may be separately authorized as the next and
+only feature milestone while Phases 7-11 remain unimplemented. In that case:
+
+- do not claim that the skipped phases are complete;
+- use `docs/verification/coupling-01.md` rather than creating empty Phase
+  7-11 reports;
+- implement only the motor-driven rotor and existing-mechanism samples;
+- keep the motor-driven cam case conditional on the cam phases ever being
+  implemented;
+- stop after the coupling milestone and return to documentation, samples, and
+  productization rather than contact physics.
+
+This fork is the shortest route to demonstrating why the mechanical equations
+live inside SpiceSharp. It does not authorize implementation by itself.
+
 ---
 
 # 14. Phase 7 — Geometry primitives for explicit contact
@@ -1822,76 +1841,745 @@ Stop after Phase 11.
 
 ---
 
-# 19. Phase 12 — Electrical–mechanical coupling
+# 19. Phase 12 — Reciprocal electrical–mechanical coupling
 
 ## Goal
 
-Demonstrate the main advantage of building mechanics inside SpiceSharp: direct coupling to an electrical circuit.
+Demonstrate the main architectural reason for placing mechanics inside
+SpiceSharp: electrical node voltages, electrical branch current, and rigid-body
+angular velocity participate in one ordinary SpiceSharp transient solve.
 
-## Implement
+The first component is a passive, ideal DC motor/generator transducer. It is
+not a voltage-controlled `AppliedTorque2D`, a callback that samples circuit
+current after a step, or a pair of separately advanced simulations. Torque and
+back-EMF are reciprocal off-diagonal terms in the same matrix.
 
-A minimal, explicit DC-motor coupling component.
+This phase is transient-only. Do not add AC, noise, temperature, magnetic
+saturation, commutation ripple, thermal winding behavior, or parser syntax
+until the transient power-conjugate component is complete and verified.
 
-Equations:
+## Applications and product boundary
 
-\[
-\tau=K_t i
-\]
+This milestone supports circuit-centric mechatronic studies where electrical
+loading and mechanism motion must affect one another during the same timestep:
 
-\[
-e=K_e\omega
-\]
+- startup current, acceleration, and speed droop of a motor-driven mechanism;
+- stall current and torque sizing against an explicit supply and winding;
+- back-EMF, regenerative operation, and dynamic braking into a resistor;
+- voltage reversal, load steps, and supply-current ripple caused by a
+  slider-crank or other already implemented mechanism;
+- effects of source resistance, current limiting implemented in the circuit,
+  winding inductance, flyback paths, and switching circuits on shaft motion;
+- effects of inertia, drag, payload, joint stiffness, and damping on circuit
+  current and electrical energy consumption;
+- compact actuator/sensor demonstrations for controls, power electronics,
+  education, and reduced-order digital prototypes.
 
-The electrical side sees back EMF. The mechanical rotational coordinate sees motor torque.
+The differentiator is not broader rigid-body simulation. It is that the
+electrical network and mechanical coordinates share one Newton system, so
+back-EMF and torque are simultaneous reciprocal terms rather than delayed data
+exchanged between two engines.
 
-Potential public entity:
+This does not make the project a replacement for a general real-time 2D/3D
+collision engine. Do not claim support for large contact stacks, game-style
+collision detection, articulated robotics at interactive rates, finite-element
+electromagnetics, magnetic field geometry, or detailed motor commutation. For
+those uses, a specialized physics or electromagnetic engine may be the primary
+model and coupling would require a separately designed co-simulation boundary.
 
-```csharp
-new DcMotorCoupler2D(
-    "motor",
-    positiveElectricalNode: "motor+",
-    negativeElectricalNode: "motor-",
-    body: "rotor",
-    torqueConstant: ...,
-    backEmfConstant: ...,
-    localShaftSign: 1.0);
+## Locally verified SpiceSharp API fit
+
+The pinned SpiceSharp 3.2.3 package and existing repository components provide
+the required supported APIs:
+
+- derive the two-terminal entity from `Component<TParameters>`;
+- declare `[Pin(0, "+")]` and `[Pin(1, "-")]`, construct with pin count 2,
+  and call `Connect(positive, negative)`;
+- create a `ComponentBindingContext` so the behavior receives
+  `IComponentBindingContext.Nodes`;
+- call `context.Nodes.CheckNodes(2)`;
+- obtain terminal variables through
+  `IBiasingSimulationState.GetSharedVariable(context.Nodes[index])`;
+- create a private current unknown with
+  `CreatePrivateVariable(Name.Combine("branch"), Units.Ampere)`;
+- expose that unknown through `IBranchedBehavior<double>.Branch`;
+- resolve `IRigidBody2DBehavior` once during behavior construction using the
+  same `Reference(...).GetContainer(...).GetValue<T>()` pattern as existing
+  mechanical loads;
+- map terminal, branch, and body angular-velocity variables through
+  `IBiasingSimulationState.Map`;
+- precompute the coupled sparse locations in one `ElementSet<double>`;
+- use `ITimeSimulationState.UseDc` to distinguish requested-state operating
+  point behavior from transient torque loading;
+- use `IAcceptBehavior` for stable public power and conversion diagnostics.
+
+The repository's `NonlinearInductor` is concrete evidence for the two-pin
+component, shared terminal variables, private ampere-valued branch,
+`IBranchedBehavior<double>`, transient derivative state, and `ElementSet`
+patterns. The existing rigid-body load and joint behaviors prove mapping and
+stamping into `IRigidBody2DBehavior.AngularVelocityVariable`.
+
+No private SpiceSharp reflection or parser dependency is required.
+
+## Scope decision: ideal transducer, external winding
+
+Implement one ideal transducer and keep winding resistance and inductance as
+ordinary SpiceSharp components:
+
+```text
+VoltageSource -> Resistor -> Inductor -> DcMotorCoupler2D -> ground
 ```
 
-The motor winding resistance and inductance may remain ordinary SpiceSharp resistor/inductor components, or the coupler may include them only if doing so produces a clearer and better tested API.
+Reasons:
 
-## Required tests
+- `Resistor` already owns copper loss `R*i^2`;
+- `Inductor` already owns flux history and magnetic energy `0.5*L*i^2`;
+- their DC, transient, initial-condition, and export semantics are already
+  tested by SpiceSharp;
+- the coupler can focus on energy conversion rather than duplicating standard
+  electrical devices;
+- locked-rotor current, electrical time constant, and winding initial current
+  remain visible in an ordinary equivalent circuit;
+- users may replace the simple winding with a richer external circuit without
+  changing the mechanical component.
 
-1. Locked rotor electrical current.
-2. No-load speed with viscous drag.
-3. Step-voltage transient compared with an independent state-space ODE solution.
-4. Reversal polarity and sign.
-5. Electrical power, mechanical power, copper loss, magnetic-energy change, kinetic-energy change, and damping loss balance.
-6. Coupled Jacobian versus finite difference.
-7. A motor-driven cam follower sample.
+Do not add optional resistance or inductance properties to the first coupler.
+An integrated winding may be considered only after the external-component
+version passes all energy and backdrive tests.
+
+## Public entity contract
+
+```csharp
+[Pin(0, "+"), Pin(1, "-")]
+public sealed class DcMotorCoupler2D
+    : Component<DcMotorCoupler2DParameters>
+{
+    public DcMotorCoupler2D(
+        string name,
+        string positiveNode,
+        string negativeNode,
+        string bodyName,
+        double motorConstant,
+        double shaftSign = 1.0);
+}
+```
+
+Required public properties:
+
+```text
+BodyName       immutable referenced rigid-body entity name
+MotorConstant positive finite ideal SI motor constant
+ShaftSign      exactly +1 or -1
+```
+
+Use one `MotorConstant`, not independently configurable `Kt` and `Ke`, for
+the ideal component. In coherent SI units:
+
+```text
+K = Kt = Ke
+Kt units: N*m/A
+Ke units: V/(rad/s)
+```
+
+Radians are dimensionless in the power identity. Separate unequal constants
+would imply an unreported efficiency, loss, or gain and are therefore not part
+of an ideal passive transducer.
+
+The coupled body supplies rotor inertia. The coupler must not create a hidden
+mechanical body, hidden inertia, electrical ground, winding resistor,
+inductor, drag, gear ratio, or load torque.
+
+## Direction and sign convention
+
+Define:
+
+```text
+v = V(positiveNode) - V(negativeNode)
+i > 0 enters the positive electrical terminal
+omega > 0 is the body's counterclockwise angular velocity
+s = ShaftSign, exactly +1 or -1
+```
+
+The ideal transducer law is:
+
+\[
+e=sK\omega
+\]
+
+\[
+\tau_{body}=sKi
+\]
+
+and the electrical branch equation is:
+
+\[
+v-e=0.
+\]
+
+Positive `v*i` is electrical power absorbed by the transducer. Positive
+`tauBody*omega` is mechanical power delivered to the body. Therefore:
+
+\[
+p_{electrical}-p_{shaft}
+=vi-\tau_{body}\omega
+=0.
+\]
+
+This convention produces motoring when electrical power enters and generator
+operation when mechanical power enters. Reversing either terminal polarity or
+`ShaftSign` must produce the documented mapped result without changing the
+underlying power identity.
+
+## Unknowns and local equations
+
+The behavior uses the shared positive and negative node voltages, one private
+branch-current unknown, and the existing body angular velocity:
+
+```text
+local columns = [vp, vn, i, omega]
+local rows    = [KCL positive, KCL negative, motor branch, body angular dynamics]
+```
+
+Transient residual contributions are:
+
+```text
+Rpositive +=  i
+Rnegative += -i
+Rbranch   +=  vp - vn - s*K*omega
+Rbody     += -s*K*i
+```
+
+`Rbody` follows the existing mechanical convention `R = inertia - Q`, hence
+the negative motor-torque term.
+
+The complete constant matrix contribution is:
+
+| Row | Column | Value | Meaning |
+| --- | --- | ---: | --- |
+| positive-node KCL | branch current | `+1` | current entering positive terminal |
+| negative-node KCL | branch current | `-1` | current leaving negative terminal |
+| branch equation | positive voltage | `+1` | terminal voltage |
+| branch equation | negative voltage | `-1` | terminal voltage |
+| branch equation | body omega | `-s*K` | back-EMF coupling |
+| body angular dynamics | branch current | `-s*K` | torque coupling in residual form |
+
+The two off-diagonal conversion terms are equal under the chosen power
+variables. This reciprocity is an explicit test target. The component has no
+nonzero RHS for constant `K` and `s`.
+
+Do not finite-difference this linear production law. Direct matrix-value tests
+must still verify every location and sign; end-to-end tests verify the mapped
+solver rows and columns.
+
+## Operating-point and transient lifecycle
+
+The electrical branch must exist during the DC operating point so the circuit
+is not topologically different between DC and transient:
+
+```text
+DC:
+    stamp positive/negative KCL
+    stamp vp - vn - s*K*omega = 0
+    do not stamp motor torque into the body row
+
+Transient:
+    stamp the same electrical equations
+    additionally stamp -s*K*i into body angular dynamics
+```
+
+The body behavior holds its requested initial angle and angular velocity
+during DC. The branch equation therefore sees the requested initial omega and
+the external winding circuit determines a consistent initial current. Motor
+torque begins with the other mechanical loads during transient loading.
+
+This intentional initialization asymmetry preserves the Phase 3/4 requested-
+state contract. It must be documented and tested; it is not an equilibrium
+solve for the complete motor-mechanism system.
+
+If later requirements demand electromechanical static equilibrium, define a
+new explicit initialization policy rather than silently changing this phase.
+
+## Behavior construction outline
+
+Construction may allocate and cache:
+
+1. the two shared terminal variables;
+2. the private ampere-valued branch variable;
+3. the resolved `IRigidBody2DBehavior` reference;
+4. mapped positive, negative, branch, and angular-dynamics indices;
+5. one `ElementSet<double>` for all six transient matrix entries;
+6. cached trial and accepted diagnostic scalars;
+7. `ITimeSimulationState`.
+
+The load path must perform no reflection, name lookup, behavior lookup,
+matrix-location lookup, LINQ, list construction, or allocation. Because the
+law is linear, it fills constant cached values and adds the precomputed element
+set.
+
+The body entity must precede the coupler in behavior-construction order under
+the current deterministic reference contract. Ordinary electrical component
+ordering must not affect results beyond floating-point assembly order.
+
+## Typed accepted diagnostics
+
+Expose a type-specific behavior interface, for example:
+
+```csharp
+public interface IDcMotorCoupler2DBehavior : IBehavior
+{
+    IVariable<double> Branch { get; }
+    double Voltage { get; }
+    double Current { get; }
+    double BackEmf { get; }
+    double TorqueOnBody { get; }
+    double ElectricalPowerIn { get; }
+    double ShaftPowerOut { get; }
+    double ConversionPowerResidual { get; }
+}
+```
+
+Definitions:
+
+```text
+Voltage                 vp - vn
+Current                 branch current, positive into + terminal
+BackEmf                 s*K*omega
+TorqueOnBody            s*K*i
+ElectricalPowerIn       Voltage*Current
+ShaftPowerOut           TorqueOnBody*omega
+ConversionPowerResidual ElectricalPowerIn-ShaftPowerOut
+```
+
+Publish values from the last accepted transient timepoint using
+`IAcceptBehavior`. Never expose the last Newton trial as an accepted power
+measurement. Generated real-property names should include at least:
+
+```text
+v, i, backemf, torque, electricalpower, shaftpower, conversionresidual
+```
+
+Copper loss and magnetic energy do not belong to this behavior when the
+winding uses external `Resistor` and `Inductor` entities. Samples and energy
+tests calculate them from the explicit circuit parameters and accepted
+current.
+
+## Validation and setup diagnostics
+
+Reject before transient loading:
+
+- a null, empty, or unresolved body name;
+- a referenced entity without `IRigidBody2DBehavior`;
+- nonfinite or nonpositive `MotorConstant`;
+- a `ShaftSign` other than exactly `+1` or `-1`;
+- an invalid pin count or missing terminal name;
+- nonfinite requested body initial angular velocity;
+- unsupported simulation modes when no appropriate behavior exists.
+
+The ordinary SpiceSharp validation rules remain responsible for floating
+electrical nodes and voltage-defined loops. Add contextual motor diagnostics
+where useful, but do not disable or bypass those rules.
+
+Warn locally, without mutating the model, about:
+
+- identical positive and negative terminal names;
+- estimated stall current or torque far outside configured diagnostic limits;
+- electrical time constant `L/R`, mechanical time constant `J/b`, or coupled
+  natural modes poorly resolved by maximum timestep;
+- a zero-load, zero-drag model that has no finite settling time.
+
+The coupler cannot infer an arbitrary external winding or complete circuit
+topology from its own binding context. Detection of an ideal voltage-source
+loop, nonpositive external winding resistance, floating networks, and
+whole-system timestep risks belongs to ordinary SpiceSharp validation or the
+optional read-only Phase 13 setup validator. Phase 12 tests should still
+construct those bad setups and record which supported validation layer reports
+them; do not add a hidden topology walker to the component.
+
+Do not clamp current, torque, omega, voltage, back-EMF, or power. Nonfinite
+solver values must remain visible as failures.
+
+## Required equation and topology tests
+
+1. Two electrical terminals and one private branch variable are created with
+   volt and ampere units respectively.
+2. `IBranchedBehavior<double>.Branch` exposes the same current unknown used by
+   the matrix stamp.
+3. Positive and negative KCL entries are exact opposites.
+4. The branch row stamps `vp-vn-s*K*omega=0` with the exact mapped omega
+   column.
+5. The body dynamics row stamps `-s*K*i` with the exact branch column.
+6. The reciprocal off-diagonal coefficients are equal for an ideal SI motor.
+7. Direct values satisfy `backEmf=s*K*omega` and `torque=s*K*i`.
+8. `electricalPowerIn-shaftPowerOut` is zero within roundoff at arbitrary
+   finite current and omega.
+9. `ShaftSign=-1`, reversed terminals, reversed voltage, and reversed shaft
+   velocity each follow a named sign table.
+10. DC includes the electrical branch but excludes transient mechanical
+    torque, preserving the requested body state.
+11. Missing body, wrong entity type, invalid constant, invalid sign, and bad
+    terminal topology fail with the motor name in the diagnostic.
+12. Body-before-coupler ordering succeeds; a coupler placed before its body
+    fails during setup with a descriptive reference error.
+
+## Required isolated operating cases
+
+### Locked rotor / stall
+
+Use a sufficiently stiff, separately verified weld or angular fixture and an
+explicit winding resistance. For supply `V` and resistance `R` after the
+electrical transient settles:
+
+\[
+i_{stall}=\frac{V}{R}
+\]
+
+\[
+\tau_{stall}=K\frac{V}{R}.
+\]
+
+Report the residual fixture motion and demonstrate convergence as fixture
+stiffness increases and timestep decreases. Do not call a compliant fixture
+an exact lock.
+
+### No-load speed with viscous drag
+
+For resistance `R`, motor constant `K`, body angular drag `b`, supply `V`, and
+negligible load torque, the steady state is:
+
+\[
+\omega_{ss}=\frac{VK}{K^2+Rb}
+\]
+
+\[
+i_{ss}=\frac{Vb}{K^2+Rb}.
+\]
+
+Test several `R`, `b`, and polarity values. As `b` approaches zero, verify
+`omega` approaches `V/K` and current approaches zero without asserting a
+finite settling time at exactly zero drag.
+
+### Loaded steady state
+
+With constant opposing load torque `tauLoad` and drag `b`:
+
+\[
+i=\frac{b\omega+\tau_{load}}{K}
+\]
+
+\[
+V=Ri+K\omega.
+\]
+
+Compare current, speed droop, motor torque, and load power with the analytic
+solution for positive and negative load torque.
+
+### Backdriven generator
+
+- Open-circuit approximation: connect a documented high resistance and drive
+  the shaft mechanically; terminal voltage approaches `s*K*omega` and current
+  approaches zero.
+- Resistive load: connect a finite load resistance; induced current creates a
+  motor torque opposing the applied mechanical drive.
+- Near short circuit: use a small positive resistance, not a hidden current or
+  torque clamp; verify braking torque and copper loss while monitoring
+  conditioning.
+- Reverse shaft direction and confirm voltage, current, and torque polarity.
+
+## Independent coupled transient oracle
+
+With explicit winding `R`, `L`, rotor inertia `J`, angular drag `b`, supply
+`V(t)`, and opposing load torque `tauLoad(t)`, compare production results with
+an independent high-resolution state-space integration:
+
+\[
+L\dot i=V(t)-Ri-sK\omega
+\]
+
+\[
+J\dot\omega=sKi-b\omega-\tau_{load}(t)
+\]
+
+or:
+
+\[
+\frac{d}{dt}
+\begin{bmatrix}i\\\omega\end{bmatrix}
+=
+\begin{bmatrix}
+-R/L & -sK/L\\
+sK/J & -b/J
+\end{bmatrix}
+\begin{bmatrix}i\\\omega\end{bmatrix}
++
+\begin{bmatrix}V/L\\-\tau_{load}/J\end{bmatrix}.
+\]
+
+The reference must not call the production coupler equation. Use either an
+analytic matrix-exponential solution for constant inputs or a fourth-order
+reference integrator with a step at least 50 times smaller than the smallest
+production maximum timestep.
+
+Exercise:
+
+- voltage step from rest;
+- nonzero initial current and angular velocity;
+- voltage reversal;
+- load-torque step;
+- motoring-to-generating transition;
+- underdamped and overdamped parameter sets where applicable;
+- timestep refinement at `h`, `h/2`, and `h/4`.
+
+## Energy and power verification
+
+For an external ideal supply, winding resistor and inductor, rotor inertia,
+angular drag, and external mechanical load, integrate:
+
+\[
+E_{supply}=\int V_{supply}i\,dt
+\]
+
+\[
+E_{copper}=\int Ri^2\,dt
+\]
+
+\[
+E_{drag}=\int b\omega^2\,dt
+\]
+
+\[
+E_{load}=\int \tau_{load}\omega\,dt
+\]
+
+\[
+E_{magnetic}=\frac12Li^2,
+\qquad
+E_{kinetic}=\frac12J\omega^2.
+\]
+
+The driven-system budget is:
+
+\[
+E_{supply}
+-E_{copper}
+-E_{drag}
+-E_{load}
+-\Delta E_{magnetic}
+-\Delta E_{kinetic}
+\approx0.
+\]
+
+For a backdriven generator, include mechanical input work with the opposite
+boundary direction and verify electrical energy delivered to the load. Always
+state the sign convention used by the numerical integral.
+
+Also integrate the coupler-local conversion residual:
+
+\[
+\int(vi-\tau\omega)dt\approx0.
+\]
+
+Do not combine supplied energy, loss, and stored energy into an unsigned total
+that can hide sign mistakes.
+
+## Coupled mechanism verification
+
+The mandatory mechanism case uses already implemented Phase 6 components:
+
+```text
+Voltage source
+    -> winding resistor and inductor
+    -> DcMotorCoupler2D
+    -> revolute-supported crank
+    -> compliant slider-crank
+    -> payload force
+```
+
+Test:
+
+- startup from rest;
+- at least one full crank revolution after startup;
+- slider reversal at both dead centers;
+- increased payload produces increased mean/RMS current and speed droop;
+- reversing supply polarity reverses the mechanism after the transient;
+- backdriving the slider returns electrical energy to a resistive load;
+- loop-closure error remains within the Phase 6 normalized limit;
+- supply energy closes against copper loss, body kinetic energy, joint elastic
+  storage, joint damping, payload work, and the coupler residual.
+
+A motor-driven cam follower is conditional: add it only if Phases 10-11 have
+actually been implemented. Skipping contact and cam phases must not block the
+motor-driven rotor or slider-crank acceptance cases.
+
+## Determinism and metamorphic checks
+
+- Repeat identical runs and compare accepted traces within roundoff.
+- Reverse terminal polarity together with shaft sign and verify the mapped
+  trajectory.
+- Mirror the planar mechanism and map torque/angle signs.
+- Reorder independent electrical components and mechanical loads; results may
+  differ only by documented floating-point assembly effects.
+- Scale `K`, `R`, `L`, `J`, and `b` over a documented practical range and
+  report electrical and mechanical time constants.
+- Verify no per-load allocation after behavior construction.
 
 ## Acceptance thresholds
 
 ```text
-state-space trajectory normalized RMS error <= 1e-3
-power-balance residual <= 1e-3 of supplied energy over the run
-Jacobian relative mismatch <= 5e-5
+direct stamp coefficient error                  exactly zero
+ideal instantaneous conversion-power residual <= 1e-12 scale-aware
+steady-state current and speed relative error  <= 2e-4
+state-space trajectory normalized RMS error    <= 1e-3
+integrated system energy-budget residual       <= 1e-3 of supplied/input energy
+integrated coupler conversion residual         <= 1e-10 of transferred energy
+Phase 6 mechanism closure-error limits         unchanged
 ```
 
-## Sample
+If small transferred energy makes a relative power tolerance ill-conditioned,
+use and report a physically scaled absolute floor rather than dividing by a
+near-zero number. Tolerances may not be weakened without the usual measured
+refinement evidence.
 
-Add:
+## Samples
+
+Add small samples in increasing order:
 
 ```text
-DcMotorMechanism
+Learning/11MotorConstant
+Learning/12MotorWithWinding
+DcMotorRotor
+DcMotorSliderCrank
+DcMotorCamFollower      conditional on implemented cam phases
+```
+
+`Learning/11MotorConstant` should directly show `backEmf=K*omega` and
+`torque=K*current` with the sign convention. `Learning/12MotorWithWinding`
+should show the ordinary source/resistor/inductor/coupler circuit and print
+current, speed, back-EMF, torque, electrical power, and shaft power.
+
+## Deferred coupling variants
+
+Do not add these to the first coupling milestone, but preserve compatible
+energy/sign conventions:
+
+- translational voice-coil coupler with `F=K*i` and
+  `e=K*dot(axis, pointVelocity)`, including the body-local point torque;
+- ideal rotational or translational sensors with an explicitly documented
+  nonreciprocal, infinite-input-impedance measurement contract;
+- solenoid/variable-reluctance actuator derived from a flux-linkage or
+  co-energy model `lambda(i,x)`, where voltage and force come from the same
+  differentiable energy function;
+- nonlinear saturation and hysteresis models;
+- thermal winding resistance and temperature coupling;
+- multi-phase, commutated, brushless, or stepper motors;
+- gearing inside the transducer.
+
+For any future nonlinear magnetic actuator, require one authoritative smooth
+energy/co-energy function, analytic mixed derivatives, Maxwell reciprocity,
+and a closed electrical-mechanical energy budget. Independent force and
+back-EMF curves without an integrability check are not acceptable.
+
+## Required ADR content
+
+Create `ADR-0008-reciprocal-electromechanical-coupling.md` before production
+code. It must record at least:
+
+1. **Context:** why circuit-mechanism feedback cannot be represented by a
+   one-way applied torque or by reading an export after each accepted point.
+2. **Decision:** use one SpiceSharp solve with an electrical branch current and
+   the existing body angular-velocity unknown in the same sparse stamp.
+3. **Passivity decision:** use one ideal SI constant `K=Kt=Ke` and the exact
+   electrical/shaft power identity.
+4. **Topology decision:** keep winding resistance and inductance as external
+   standard SpiceSharp components.
+5. **Initialization decision:** retain the electrical branch in DC but suppress
+   motor torque during DC to preserve requested mechanical initial state.
+6. **Sign decision:** define terminal current, voltage, positive body rotation,
+   `ShaftSign`, motor torque, and generator operation with worked numeric
+   examples for both signs.
+7. **Lifecycle decision:** resolve body references and sparse locations once;
+   publish only accepted diagnostic values.
+8. **Scope decision:** transient only; parser syntax, AC linearization,
+   efficiency maps, saturation, thermal behavior, commutation, gearing, and
+   generalized co-simulation are deferred.
+9. **Consequences:** one additional branch unknown per coupler, six transient
+   matrix entries, body-before-coupler construction ordering, exact reciprocal
+   energy conversion, and potential conditioning problems in ideal zero-
+   impedance loops.
+10. **Alternatives rejected for this milestone:** post-step callback coupling,
+    two independently stepped solvers, voltage-controlled torque without
+    back-EMF, arbitrary unequal `Kt`/`Ke`, a hidden rotor body, and a monolithic
+    motor that duplicates resistor/inductor behavior.
+11. **Revisit triggers:** a demonstrated need for AC analysis, static
+    electromechanical equilibrium, variable/nonlinear magnetic energy,
+    externally clocked co-simulation, or construction-order-independent
+    references.
+
+The ADR equations, matrix signs, and DC policy must be copied into focused
+tests. If implementation evidence forces any of these decisions to change,
+update and review the ADR before changing the production stamp.
+
+## Planned files
+
+```text
+src/SpiceSharp.Physics2D/Coupling/DcMotorCoupler2D.cs
+src/SpiceSharp.Physics2D/Coupling/DcMotorCoupler2DParameters.cs
+src/SpiceSharp.Physics2D/Coupling/DcMotorCoupler2DBehavior.cs
+src/SpiceSharp.Physics2D/Coupling/IDcMotorCoupler2DBehavior.cs
+src/SpiceSharp.Physics2D.Tests/Coupling/DcMotorStampTests.cs
+src/SpiceSharp.Physics2D.Tests/Coupling/DcMotorTransientTests.cs
+src/SpiceSharp.Physics2D.Tests/Coupling/DcMotorEnergyTests.cs
+src/SpiceSharp.Physics2D.Tests/Coupling/DcMotorMechanismTests.cs
+docs/architecture/ADR-0008-reciprocal-electromechanical-coupling.md
 ```
 
 ## Verification report
+
+Use:
 
 ```text
 docs/verification/phase-12.md
 ```
 
-Stop after Phase 12.
+or, when using the coupling-first roadmap fork after Phase 6:
+
+```text
+docs/verification/coupling-01.md
+```
+
+The report must include exact SpiceSharp API evidence, the final sparse stamp,
+all sign conventions, operating-point behavior, state-space parameters,
+timestep refinement, instantaneous and integrated power residuals, sample
+outputs, allocations, and confirmation that no skipped phase was implemented.
+
+## Planning evidence inspected
+
+The detailed plan above is grounded in:
+
+```text
+pinned SpiceSharp 3.2.3 XML documentation:
+    Component<T>
+    ComponentBindingContext / IComponentBindingContext.Nodes
+    IBranchedBehavior<double>.Branch
+    IVariableFactory.GetSharedVariable
+    IVariableFactory.CreatePrivateVariable
+    IBiasingSimulationState.Map
+    ElementSet<double>
+    ITimeSimulationState.UseDc
+    IAcceptBehavior
+
+repository examples:
+    src/SpiceSharpParser.CustomComponents/NonlinearInductor.cs
+    src/SpiceSharpParser.CustomComponents/NonlinearInductors/
+        NonlinearInductorVariables.cs
+        Biasing.cs
+        Time.cs
+    src/SpiceSharp.Physics2D/Bodies/IRigidBody2DBehavior.cs
+    src/SpiceSharp.Physics2D/Forces/RigidBodyLoadBehavior.cs
+    src/SpiceSharp.Physics2D/Joints/JointBehaviorBase.cs
+```
+
+Stop after Phase 12, or after the separately authorized coupling-first
+milestone.
 
 ---
 
@@ -2044,7 +2732,8 @@ sliding contact
 lift-law cam follower
 geometric roller cam follower
 DC-motor-driven rotor
-DC-motor-driven cam follower
+DC-motor-driven slider-crank
+DC-motor-driven cam follower (only when Phases 10-11 are implemented)
 ```
 
 ## Randomized tests
@@ -2142,6 +2831,12 @@ Stop after Phase 14.
 ```
 
 Do not publish a checkpoint if its phase report is incomplete.
+
+For the coupling-first fork after Phase 6, do not reserve or publish empty
+contact/cam checkpoints. Publish an explicitly named
+`0.4-electromechanical` checkpoint only after `coupling-01.md` is complete;
+the sequential roadmap keeps the `0.6-electromechanical` name above. This is a
+release-label fork, not a claim that Phases 7-11 were completed.
 
 ---
 
@@ -3005,15 +3700,11 @@ does not contain enough geometry.
 
 ## 28.8 Phase 12 additions — reciprocal motor coupling
 
-State the ideal SI passivity contract explicitly. Choose one of:
-
-1. a single ideal motor constant with numerically equal torque and back-EMF
-   constants in SI units; or
-2. separate `Kt` and `Ke` only with an explicit conversion/efficiency model
-   whose loss or gain appears in the energy budget.
-
-Do not expose arbitrary unequal constants while also claiming an ideal closing
-power balance.
+Use the Phase 12 decision: one ideal SI motor constant with numerically equal
+torque and back-EMF constants. A future component may use separate `Kt` and
+`Ke` only with an explicit conversion/efficiency model whose loss or gain
+appears in the energy budget. Do not expose arbitrary unequal constants while
+also claiming an ideal closing power balance.
 
 Directly verify the off-diagonal coupled stamp. With the configured shaft sign,
 the electrical back-EMF derivative and mechanical torque derivative must be
@@ -3028,7 +3719,18 @@ Add backdrive tests:
   stored magnetic-energy change;
 - reversing electrical polarity and reversing shaft direction map consistently.
 
-Extend the motor-driven cam verification with unloaded and preloaded cases:
+Always extend the motor-driven Phase 6 slider-crank verification with unloaded
+and loaded cases:
+
+- payload force or inertia increases armature current;
+- finite supply voltage produces loaded speed droop;
+- current and torque ripple are phase-correlated with crank angle and slider
+  force;
+- integrated supply energy closes against copper loss, magnetic and kinetic
+  energy changes, elastic storage, damping, and payload work.
+
+Only when Phases 10-11 exist, also extend the motor-driven cam verification
+with unloaded and preloaded cases:
 
 - follower preload or mass increases armature current;
 - finite supply voltage produces loaded speed droop;
@@ -3041,8 +3743,11 @@ Export at least:
 
 ```text
 voltage,current,backEmf,electricalPower,shaftPower,copperLoss,
-camAngle,camTorque,followerForce,gap
+bodyAngle,bodyTorque,mechanismPosition,mechanismForce
 ```
+
+The conditional cam sample additionally exports
+`camAngle,camTorque,followerForce,gap`.
 
 ## 28.9 Phase 13 additions — setup validator and accepted diagnostics
 
@@ -3170,8 +3875,10 @@ component stamps add rather than overwrite one another and that shaft power
 matches the sum of both branches.
 
 For the motor, include stall, no-load, backdriven, and loaded speed-current
-points plus the motor-driven cam. For completed springs and joints, include
-under-, near-critical-, and over-damped cases and slow-load/reversal cases.
+points plus the motor-driven rotor and slider-crank. Include the motor-driven
+cam only when its prerequisite phases exist. For completed springs and joints,
+include under-, near-critical-, and over-damped cases and slow-load/reversal
+cases.
 
 Classify tests by expected runtime, for example:
 
