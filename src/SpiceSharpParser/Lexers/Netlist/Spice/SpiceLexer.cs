@@ -62,7 +62,8 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
             builder.AddRegexRule(new LexerInternalRule("LETTER", "[a-zA-Zµ]"));
             builder.AddRegexRule(new LexerInternalRule("CHARACTER", @"[a-zA-Z0-9\-\+§µ_&]"));
             builder.AddRegexRule(new LexerInternalRule("DIGIT", "[0-9]"));
-            var specialCharacters = (_options.Compatibility ?? CompatibilityOptions.None).IsLTspice
+            var compatibility = _options.Compatibility ?? CompatibilityOptions.None;
+            var specialCharacters = compatibility.IsLTspice || compatibility.IsPSpice
                 ? @"[\/\\_\.:%!\#\-;\<\>\^\*\[\]~]"
                 : @"[\/\\_\.:%!\#\-;\<\>\^\*\[\]]";
             builder.AddRegexRule(new LexerInternalRule("SPECIAL", specialCharacters));

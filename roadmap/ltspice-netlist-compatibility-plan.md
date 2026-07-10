@@ -211,7 +211,7 @@ Implemented P2 behavior:
 
 - Added dialect-neutral expression support for `fabs(x)`, one-argument `round(x)`, unary `!`, and single-character boolean `&` / `|`.
 - Added fixture-backed evidence for `arccos`, `arcsin`, `arctan`, `sgn`, `pwr`, `pwrs`, `hypot`, scalar `table(...)` / `tbl(...)`, and `**`.
-- Added explicit PSpice-mode `^` as boolean XOR with `&`, `^`, `|` precedence, while default/SPICE3f5 and LTspice modes retain `^` exponent behavior.
+- Added explicit PSpice-mode unary `~` as boolean NOT and `^` as boolean XOR with `&`, `^`, `|` precedence, while default/SPICE3f5 rejects `~` and retains `^` exponent behavior; LTspice mode uses `~` for NOT and retains `^` exponent behavior.
 - Added LTspice-mode unary `~` as a boolean-NOT alias and `xor(a,b)` as a two-argument boolean XOR function.
 - Added LTspice-style smooth limiting support for `uplim(...)` and `dnlim(...)`.
 - Added six-argument `EXP(v1 v2 td1 tau1 td2 tau2)` source waveform support with argument-count and positive-tau diagnostics.

@@ -628,6 +628,60 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
             Assert.True(EqualsWithTol(expected, RunOpSimulation(model, "V(out)")));
         }
 
+        [Theory]
+        [InlineData("~0", 1.0)]
+        [InlineData("~1", 0.0)]
+        public void When_PspiceTildeNotIsReadInPspiceMode_Expect_OpReferenceValue(
+            string expression,
+            double expected)
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.PSpice,
+                "PSpice - tilde NOT",
+                "B1 out 0 V={" + expression + "}",
+                "R1 out 0 1k",
+                ".op",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.True(EqualsWithTol(expected, RunOpSimulation(model, "V(out)")));
+        }
+
+        [Fact]
+        public void When_PspiceBooleanOperatorsAreUsedByFunc_Expect_ResolvedValues()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.PSpice,
+                "PSpice - boolean operators in func",
+                ".func invert(a)=~a",
+                "B1 out 0 V={invert(0)}",
+                "R1 out 0 1k",
+                ".op",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.True(EqualsWithTol(1.0, RunOpSimulation(model, "V(out)")));
+        }
+
+        [Fact]
+        public void When_PspiceTildeNotIsUsedByParam_Expect_ResolvedValue()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.PSpice,
+                "PSpice - tilde NOT in param",
+                ".param notzero={~0}",
+                "V1 out 0 {notzero}",
+                "R1 out 0 1k",
+                ".op",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.True(EqualsWithTol(1.0, RunOpSimulation(model, "V(out)")));
+        }
+
         [Fact]
         public void When_CaretPowerIsReadByDefault_Expect_Spice3ExponentBehavior()
         {

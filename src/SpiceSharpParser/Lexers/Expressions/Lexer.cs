@@ -113,7 +113,7 @@ namespace SpiceSharpParser.Lexers.Expressions
                 case '/': Type = TokenType.Divide; Continue(); break;
                 case '%': Type = TokenType.Mod; Continue(); break;
                 case '^': Type = IsPSpice ? TokenType.Xor : TokenType.Power; Continue(); break;
-                case '~': Type = IsLTspice ? TokenType.Bang : TokenType.Unknown; Continue(); break;
+                case '~': Type = IsLTspice || IsPSpice ? TokenType.Bang : TokenType.Unknown; Continue(); break;
                 case '?': Type = TokenType.Huh; Continue(); break;
                 case ':': Type = TokenType.Colon; Continue(); break;
                 case '(': Type = TokenType.LeftParenthesis; Continue(); break;

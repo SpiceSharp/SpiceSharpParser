@@ -68,7 +68,17 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Fact]
-        public void When_UnaryTildeIsParsedWithoutLtspiceMode_Expect_DefaultError()
+        public void When_UnaryTildeIsParsedInPspiceMode_Expect_NotNode()
+        {
+            var node = Parser.Parse(
+                Lexer.FromString("~0", CompatibilityOptions.PSpice),
+                true);
+
+            Assert.Equal(NodeTypes.Not, node.NodeType);
+        }
+
+        [Fact]
+        public void When_UnaryTildeIsParsedByDefault_Expect_Error()
         {
             Assert.Throws<SpiceSharpParser.Parsers.Expression.ParserException>(
                 () => Parser.Parse(Lexer.FromString("~0"), true));

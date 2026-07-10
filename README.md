@@ -137,12 +137,13 @@ Expression operators are dialect-aware:
 | Mode | Boolean NOT | Boolean XOR | Exponentiation |
 |------|-------------|-------------|----------------|
 | Default / SPICE3f5 | `!` | — | `**` or `^` |
-| PSpice compatibility | `!` | `^` | `**` |
+| PSpice compatibility | `!` or `~` | `^` | `**` |
 | LTspice compatibility | `!` or `~` | `xor(a,b)` | `**` or `^` |
 
-For PSpice expressions, boolean operators bind in the order `&`, then `^`, then
-`|`. In default and LTspice modes, caret remains an exponent operator. LTspice
-function-style `xor(a,b)` requires exactly two arguments.
+For PSpice expressions, `~` is unary NOT and binary boolean operators bind in
+the order `&`, then `^`, then `|`. In default and LTspice modes, caret remains
+an exponent operator. LTspice function-style `xor(a,b)` requires exactly two
+arguments.
 
 LTspice mode covers syntax such as:
 
