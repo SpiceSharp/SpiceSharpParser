@@ -53,6 +53,13 @@ The expression can use:
 - Arithmetic operators: `+`, `-`, `*`, `/`, `**` (power)
 - Parameters defined with `.PARAM`
 
+Default expressions follow SPICE3f5 and accept `^` or `**` for exponentiation.
+With `CompatibilityOptions.PSpice`, `^` becomes boolean XOR and `**` remains
+exponentiation; the boolean precedence order is `&`, then `^`, then `|`. With
+`CompatibilityOptions.LTspice`, expressions also accept unary `~` as a
+boolean-NOT alias and `xor(a,b)` as two-argument boolean XOR, while `^` remains
+an exponent operator.
+
 ## MNA View
 
 Behavioral sources evaluate an expression, then load the result according to the

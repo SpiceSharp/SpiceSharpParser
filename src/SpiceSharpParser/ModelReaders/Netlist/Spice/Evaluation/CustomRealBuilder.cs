@@ -21,17 +21,24 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
         private readonly ConcurrentDictionary<string, Export> _exporterInstances = new ();
 
         private readonly SpiceNetlistCaseSensitivitySettings _caseSettings;
+        private readonly CompatibilityOptions _compatibility;
 
-        public CustomRealBuilder(EvaluationContext context, SpiceNetlistCaseSensitivitySettings caseSettings, bool throwOnErrors, VariablesFactory variablesFactory)
+        public CustomRealBuilder(
+            EvaluationContext context,
+            SpiceNetlistCaseSensitivitySettings caseSettings,
+            bool throwOnErrors,
+            VariablesFactory variablesFactory,
+            CompatibilityOptions compatibility = null)
         {
             _caseSettings = caseSettings;
+            _compatibility = compatibility ?? CompatibilityOptions.None;
 
             FunctionFound += OnDefaultFunctionFound;
             FunctionFound += OnCustomFunctionFound;
             VariableFound += OnVariableFound;
             Context = context;
             ThrowOnErrors = throwOnErrors;
-            Variables = variablesFactory.CreateVariables(context, this);
+            Variables = variablesFactory.CreateVariables(context, this, _compatibility);
         }
 
         public EvaluationContext Context { get; }
@@ -238,11 +245,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 
                 for (var i = 0; i < argumentsDefinition.Length; i++)
                 {
-                    var argumentValue = Build(Parser.Parse(Lexer.FromString(argumentsDefinition[i])));
+                    var argumentValue = Build(Parser.Parse(Lexer.FromString(argumentsDefinition[i], _compatibility)));
                     Context.Arguments.Add(argumentsDefinition[i], new ConstantExpression(argumentValue));
                 }
 
-                return Build(Parser.Parse(Lexer.FromString(functionBody)));
+                return Build(Parser.Parse(Lexer.FromString(functionBody, _compatibility)));
             }
 
             return null;

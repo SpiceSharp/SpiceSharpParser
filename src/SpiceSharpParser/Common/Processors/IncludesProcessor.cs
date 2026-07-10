@@ -140,6 +140,7 @@ namespace SpiceSharpParser.Common.Processors
                 var lexerSettings = new SpiceLexerSettings(LexerSettings.IsDotStatementNameCaseSensitive)
                 {
                     HasTitle = false,
+                    Compatibility = LexerSettings.Compatibility,
                 };
 
                 var tokens = TokenProviderPool.GetSpiceTokenProvider(lexerSettings).GetTokens(includeContent);

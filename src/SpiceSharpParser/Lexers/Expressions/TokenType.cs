@@ -94,6 +94,11 @@
         Or,
 
         /// <summary>
+        /// Exclusive or.
+        /// </summary>
+        Xor,
+
+        /// <summary>
         /// And.
         /// </summary>
         And,

@@ -16,7 +16,23 @@ namespace SpiceSharpParser.Lexers.Expressions
         /// Creates a lexer for a Spice behavioral expression.
         /// </summary>
         public static Lexer FromString(string expression)
-            => new(expression);
+            => new(expression, CompatibilityOptions.None);
+
+        /// <summary>
+        /// Creates a lexer for a Spice behavioral expression using the specified dialect compatibility.
+        /// </summary>
+        public static Lexer FromString(string expression, CompatibilityOptions compatibility)
+            => new(expression, compatibility);
+
+        /// <summary>
+        /// Gets a value indicating whether LTspice expression syntax is enabled.
+        /// </summary>
+        public bool IsLTspice { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether PSpice expression syntax is enabled.
+        /// </summary>
+        public bool IsPSpice { get; }
 
         /// <summary>
         /// Gets the current token type.
@@ -42,9 +58,12 @@ namespace SpiceSharpParser.Lexers.Expressions
         /// Initializes a new instance of the <see cref="Lexer"/> class.
         /// </summary>
         /// <param name="expression">The expression.</param>
-        private Lexer(string expression)
+        private Lexer(string expression, CompatibilityOptions compatibility)
         {
             _expression = expression ?? throw new ArgumentNullException(nameof(expression));
+            compatibility ??= CompatibilityOptions.None;
+            IsLTspice = compatibility.IsLTspice;
+            IsPSpice = compatibility.IsPSpice;
             Index = 0;
             Next();
         }
@@ -93,7 +112,8 @@ namespace SpiceSharpParser.Lexers.Expressions
                     break;
                 case '/': Type = TokenType.Divide; Continue(); break;
                 case '%': Type = TokenType.Mod; Continue(); break;
-                case '^': Type = TokenType.Power; Continue(); break;
+                case '^': Type = IsPSpice ? TokenType.Xor : TokenType.Power; Continue(); break;
+                case '~': Type = IsLTspice ? TokenType.Bang : TokenType.Unknown; Continue(); break;
                 case '?': Type = TokenType.Huh; Continue(); break;
                 case ':': Type = TokenType.Colon; Continue(); break;
                 case '(': Type = TokenType.LeftParenthesis; Continue(); break;

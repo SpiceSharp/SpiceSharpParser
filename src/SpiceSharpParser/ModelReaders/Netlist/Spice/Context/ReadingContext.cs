@@ -363,8 +363,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             var variablesFactory = new VariablesFactory();
 
             var parser = new ExpressionParser(
-                new CustomRealBuilder(evalContext, ReaderSettings.CaseSensitivity, false, variablesFactory),
-                false);
+                new CustomRealBuilder(
+                    evalContext,
+                    ReaderSettings.CaseSensitivity,
+                    false,
+                    variablesFactory,
+                    ReaderSettings.Compatibility),
+                false,
+                ReaderSettings.Compatibility);
 
             return parser;
         }
@@ -378,11 +384,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             var variablesFactory = new VariablesFactory();
 
             var parser = new ExpressionResolver(
-                new CustomRealBuilder(evalContext,  ReaderSettings.CaseSensitivity, false, variablesFactory),
+                new CustomRealBuilder(
+                    evalContext,
+                    ReaderSettings.CaseSensitivity,
+                    false,
+                    variablesFactory,
+                    ReaderSettings.Compatibility),
                 EvaluationContext,
                 false,
                 ReaderSettings.CaseSensitivity,
-                variablesFactory);
+                variablesFactory,
+                ReaderSettings.Compatibility);
 
             return parser;
         }

@@ -74,8 +74,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 Settings.CaseSensitivity.IsDistributionNameCaseSensitive,
                 seed: Settings.Seed);
 
-            IExpressionParserFactory expressionParserFactory = new ExpressionParserFactory(Settings.CaseSensitivity);
-            IExpressionResolverFactory expressionResolverFactory = new ExpressionResolverFactory(Settings.CaseSensitivity);
+            IExpressionParserFactory expressionParserFactory = new ExpressionParserFactory(
+                Settings.CaseSensitivity,
+                Settings.Compatibility);
+            IExpressionResolverFactory expressionResolverFactory = new ExpressionResolverFactory(
+                Settings.CaseSensitivity,
+                Settings.Compatibility);
             IExpressionFeaturesReader expressionFeaturesReader = new ExpressionFeaturesReader(expressionParserFactory, expressionResolverFactory);
 
             EvaluationContext evaluationContext = new SpiceEvaluationContext(

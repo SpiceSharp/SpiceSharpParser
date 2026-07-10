@@ -2,7 +2,7 @@
 title: LTspice Netlist Compatibility Plan
 status: Draft / Roadmap
 scope: SpiceSharpParser + SpiceSharp
-last_reviewed: 2026-07-07
+last_reviewed: 2026-07-10
 ---
 
 # LTspice Netlist Compatibility Plan
@@ -50,7 +50,7 @@ Goals:
 
 - Make common LTspice-generated netlists parse, read, and run when their features can be represented safely by SpiceSharp and SpiceSharpBehavioral.
 - Prefer parser compatibility shims and explicit diagnostics before adding runtime behavior.
-- Preserve existing PSpice/ngspice-compatible behavior by default.
+- Preserve SPICE3f5/ngspice-compatible behavior by default and gate PSpice/LTspice operator differences behind explicit presets.
 - Build a small permission-safe fixture corpus; do not commit copied vendor libraries unless their license clearly permits redistribution.
 - Record known divergences instead of making blanket numeric-parity claims.
 
@@ -78,7 +78,9 @@ Add compatibility settings as an explicit options object, not as scattered boole
 public sealed class CompatibilityOptions
 {
     public static CompatibilityOptions None { get; }
+    public static CompatibilityOptions PSpice { get; }
     public static CompatibilityOptions LTspice { get; }
+    public bool IsPSpice { get; }
     public bool IsLTspice { get; }
 }
 ```
@@ -181,6 +183,7 @@ Implemented P1 behavior:
 
 - Added `CompatibilityOptions` and wired it into parser and reader settings.
 - Preserved default behavior with `CompatibilityOptions.None`.
+- Added `CompatibilityOptions.PSpice` for fixture-backed PSpice expression differences.
 - Added `CompatibilityOptions.LTspice` with only fixture-backed behavior enabled.
 - Added a recognized-no-op control path for `.backanno` in LTspice mode.
 - Kept targeted unsupported diagnostics for `.tf`, `.net`, `.ferret`, `.loadbias`, `.savebias`, and `.machine` / `.endmachine`.
@@ -208,8 +211,9 @@ Implemented P2 behavior:
 
 - Added dialect-neutral expression support for `fabs(x)`, one-argument `round(x)`, unary `!`, and single-character boolean `&` / `|`.
 - Added fixture-backed evidence for `arccos`, `arcsin`, `arctan`, `sgn`, `pwr`, `pwrs`, `hypot`, scalar `table(...)` / `tbl(...)`, and `**`.
-- Kept `^` as the existing exponent operator; LTspice boolean XOR is deferred to avoid changing current semantics.
-- Added LTspice-style smooth limiting support for `uplim(...)` and `dnlim(...)`, while keeping unary `~` as a targeted diagnostic.
+- Added explicit PSpice-mode `^` as boolean XOR with `&`, `^`, `|` precedence, while default/SPICE3f5 and LTspice modes retain `^` exponent behavior.
+- Added LTspice-mode unary `~` as a boolean-NOT alias and `xor(a,b)` as a two-argument boolean XOR function.
+- Added LTspice-style smooth limiting support for `uplim(...)` and `dnlim(...)`.
 - Added six-argument `EXP(v1 v2 td1 tau1 td2 tau2)` source waveform support with argument-count and positive-tau diagnostics.
 - Added LTspice-mode finite-cycle `PULSE(... Ncycles)` and `SINE(... Ncycles)` support with targeted diagnostics for invalid period/frequency and cycle-count arguments.
 - Added PWL file fixtures for supported local two-column text variants with optional header rows, leading blank/comment lines, and space/comma/semicolon/tab delimiters, plus targeted diagnostics for missing files, empty files, missing data rows, and malformed rows.
@@ -221,7 +225,6 @@ Implemented P2 behavior:
 Remaining follow-up:
 
 - Compare existing random functions with LTspice semantics before making numeric claims.
-- Decide whether LTspice boolean XOR can be added without breaking existing `^` exponent behavior.
 - Defer nested/combined LTspice PWL specs, trigger restarts, time/value scale factors, `SCOPEDATA`, and relative `+time` points until fixture-backed runtime behavior is specified.
 
 Acceptance criteria:

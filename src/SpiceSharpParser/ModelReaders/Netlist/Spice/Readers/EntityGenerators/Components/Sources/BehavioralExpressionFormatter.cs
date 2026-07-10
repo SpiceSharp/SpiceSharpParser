@@ -118,7 +118,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     return "(" + left + ") || (" + right + ")";
 
                 case NodeTypes.Xor:
-                    return "(" + left + ") ^ (" + right + ")";
+                    return "xor(" + left + "," + right + ")";
 
                 case NodeTypes.Pow:
                     return "(" + left + ") ** (" + right + ")";

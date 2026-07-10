@@ -37,5 +37,10 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
         /// Gets or sets a value indicating whether bus syntax is enabled.
         /// </summary>
         public bool EnableBusSyntax { get; set; }
+
+        /// <summary>
+        /// Gets or sets dialect compatibility options used while recognizing expressions.
+        /// </summary>
+        public CompatibilityOptions Compatibility { get; set; } = CompatibilityOptions.None;
     }
 }

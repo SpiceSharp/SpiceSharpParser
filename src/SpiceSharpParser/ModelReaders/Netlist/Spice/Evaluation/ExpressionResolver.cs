@@ -18,7 +18,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             EvaluationContext context,
             bool throwOnErrors,
             SpiceNetlistCaseSensitivitySettings caseSettings,
-            VariablesFactory variablesFactory = null)
+            VariablesFactory variablesFactory = null,
+            CompatibilityOptions compatibility = null)
         {
             DoubleBuilder = doubleBuilder;
 
@@ -26,6 +27,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
             ThrowOnErrors = throwOnErrors;
             CaseSettings = caseSettings;
             VariablesFactory = variablesFactory;
+            Compatibility = compatibility ?? CompatibilityOptions.None;
         }
 
         public EvaluationContext Context { get; }
@@ -36,11 +38,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
 
         public VariablesFactory VariablesFactory { get; }
 
+        public CompatibilityOptions Compatibility { get; }
+
         protected RealBuilder DoubleBuilder { get; }
 
         public Node Resolve(string expression)
         {
-            var node = Parser.Parse(Lexer.FromString(expression));
+            var node = Parser.Parse(Lexer.FromString(expression, Compatibility));
             try
             {
                 var resolver = new Resolver();
@@ -127,7 +131,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
                 var body = Context.FunctionsBody[functionName];
                 if (body != null)
                 {
-                    var bodyNode = Parser.Parse(Lexer.FromString(body));
+                    var bodyNode = Parser.Parse(Lexer.FromString(body, Compatibility));
 
                     result[functionName] = new StaticResolverFunction(
                         functionName,

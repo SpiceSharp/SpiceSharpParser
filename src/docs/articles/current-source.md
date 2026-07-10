@@ -48,7 +48,7 @@ Current sources support the same waveform types as voltage sources:
 - `wavefile=<path> chan=<n> [amplitude=<scale>]` / `WAVE` — Wave-file input
 
 See the [V — Voltage Source](voltage-source.md) article for waveform syntax,
-LTspice finite-cycle `PULSE`, unsupported finite-cycle `SINE`, wave-file
+LTspice finite-cycle `PULSE` and `SINE`, wave-file
 diagnostics, and LTspice source-option notes.
 
 ## Behavioral Current Source

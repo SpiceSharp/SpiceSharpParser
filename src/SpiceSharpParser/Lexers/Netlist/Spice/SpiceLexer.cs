@@ -62,7 +62,10 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
             builder.AddRegexRule(new LexerInternalRule("LETTER", "[a-zA-Zµ]"));
             builder.AddRegexRule(new LexerInternalRule("CHARACTER", @"[a-zA-Z0-9\-\+§µ_&]"));
             builder.AddRegexRule(new LexerInternalRule("DIGIT", "[0-9]"));
-            builder.AddRegexRule(new LexerInternalRule("SPECIAL", @"[\/\\_\.:%!\#\-;\<\>\^\*\[\]]"));
+            var specialCharacters = (_options.Compatibility ?? CompatibilityOptions.None).IsLTspice
+                ? @"[\/\\_\.:%!\#\-;\<\>\^\*\[\]~]"
+                : @"[\/\\_\.:%!\#\-;\<\>\^\*\[\]]";
+            builder.AddRegexRule(new LexerInternalRule("SPECIAL", specialCharacters));
             builder.AddRegexRule(new LexerTokenRule<SpiceLexerState>(
                 (int)SpiceTokenType.WHITESPACE,
                 "A whitespace characters that will be ignored",
@@ -228,7 +231,7 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 {
                     try
                     {
-                        var lexer = Lexer.FromString(textToLex);
+                        var lexer = Lexer.FromString(textToLex, _options.Compatibility);
                         Parser.Parse(lexer, false);
 
                         int length = lexer.Index - lexer.Content.Length;

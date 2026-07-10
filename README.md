@@ -109,19 +109,40 @@ Using SpiceSharpParser involves three steps:
 | Behavioral | B (arbitrary behavioral source with V= or I= expressions) |
 | Switches | S (voltage-controlled), W (current-controlled) |
 
-### LTspice Compatibility
+### Dialect Compatibility
 
-LTspice-specific behavior is opt-in so the default parser and reader behavior stays dialect-neutral:
+Dialect-specific behavior is opt-in. Without it, expressions retain the
+SPICE3f5-compatible default operator rules:
 
 ```csharp
+var compatibility = CompatibilityOptions.None; // SPICE3f5-compatible default
+// var compatibility = CompatibilityOptions.PSpice;
+// var compatibility = CompatibilityOptions.LTspice;
+
 var parser = new SpiceNetlistParser();
-parser.Settings.Compatibility = CompatibilityOptions.LTspice;
+parser.Settings.Compatibility = compatibility;
 var parseResult = parser.ParseNetlist(netlist);
 
 var reader = new SpiceSharpReader();
-reader.Settings.Compatibility = CompatibilityOptions.LTspice;
+reader.Settings.Compatibility = compatibility;
 var model = reader.Read(parseResult.FinalModel);
 ```
+
+Use the same preset for the parser and reader. Select
+`CompatibilityOptions.PSpice` when caret means boolean XOR, or
+`CompatibilityOptions.LTspice` for the supported LTspice-specific syntax.
+
+Expression operators are dialect-aware:
+
+| Mode | Boolean NOT | Boolean XOR | Exponentiation |
+|------|-------------|-------------|----------------|
+| Default / SPICE3f5 | `!` | — | `**` or `^` |
+| PSpice compatibility | `!` | `^` | `**` |
+| LTspice compatibility | `!` or `~` | `xor(a,b)` | `**` or `^` |
+
+For PSpice expressions, boolean operators bind in the order `&`, then `^`, then
+`|`. In default and LTspice modes, caret remains an exponent operator. LTspice
+function-style `xor(a,b)` requires exactly two arguments.
 
 LTspice mode covers syntax such as:
 
@@ -163,7 +184,9 @@ For nonlinear passives, `Q=` describes stored charge as a function of capacitor
 terminal voltage, and `Flux=` describes stored flux linkage as a function of inductor
 branch current. The local slopes `dQ/dV` and `dFlux/dI` are used for AC small-signal
 behavior and transient companion models. `IC=`, `M=`, and `N=` are supported for these
-custom passive forms.
+custom passive forms. LTspice natively supports `M` on capacitors and inductors but
+not `N`; nonlinear-passive `N` is a parser extension that models explicit series
+cells. The LTspice-backed goldens compare it with equivalent native LTspice circuits.
 
 See [LTspice-Style Ideal Diode](src/docs/articles/ideal-diode.md) for syntax, scaling rules, current-law details, and the optional LTspice-backed golden tests for DC, AC, and transient parity.
 

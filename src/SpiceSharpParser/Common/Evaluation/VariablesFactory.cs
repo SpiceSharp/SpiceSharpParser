@@ -9,14 +9,18 @@ namespace SpiceSharpParser.Common.Evaluation
 {
     public class VariablesFactory
     {
-        public List<CustomVariable<Func<double>>> CreateVariables(IEvaluationContext context,  RealBuilder builder)
+        public List<CustomVariable<Func<double>>> CreateVariables(
+            IEvaluationContext context,
+            RealBuilder builder,
+            CompatibilityOptions compatibility = null)
         {
             var result = new List<CustomVariable<Func<double>>>();
+            compatibility ??= CompatibilityOptions.None;
 
             // setup variables
             foreach (var variable in context.Arguments)
             {
-                var variableNode = Parser.Parse(Lexer.FromString(variable.Value.ValueExpression));
+                var variableNode = Parser.Parse(Lexer.FromString(variable.Value.ValueExpression, compatibility));
 
                 result.Add(
                     new CustomVariable<Func<double>>() { Name = variable.Key, VariableNode = variableNode, Value = () => builder.Build(variableNode) });
@@ -30,7 +34,7 @@ namespace SpiceSharpParser.Common.Evaluation
                 }
                 else
                 {
-                    var variableNode = Parser.Parse(Lexer.FromString(variable.Value.ValueExpression));
+                    var variableNode = Parser.Parse(Lexer.FromString(variable.Value.ValueExpression, compatibility));
                     result.Add(new CustomVariable<Func<double>>() { Name = variable.Key, VariableNode = variableNode, Value = () => builder.Build(variableNode) });
                 }
             }

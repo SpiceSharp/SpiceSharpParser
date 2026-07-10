@@ -48,12 +48,24 @@ namespace SpiceSharpParser.Parsers.Expression
 
         private static Node ParseConditionalOr(Lexer lexer)
         {
-            var result = ParseConditionalAnd(lexer);
+            var result = ParseConditionalXor(lexer);
             while (lexer.Type == TokenType.Or)
             {
                 lexer.Next();
-                var right = ParseConditionalAnd(lexer);
+                var right = ParseConditionalXor(lexer);
                 result = Node.Or(result, right);
+            }
+            return result;
+        }
+
+        private static Node ParseConditionalXor(Lexer lexer)
+        {
+            var result = ParseConditionalAnd(lexer);
+            while (lexer.Type == TokenType.Xor)
+            {
+                lexer.Next();
+                var right = ParseConditionalAnd(lexer);
+                result = Node.Xor(result, right);
             }
             return result;
         }
@@ -300,7 +312,19 @@ namespace SpiceSharpParser.Parsers.Expression
                                     else if (lexer.Type != TokenType.RightParenthesis)
                                         throw new ParserException("Expected closing parenthesis but found '{0}'".FormatString(lexer.Content));
                                 }
-                                result = Node.Function(name, arguments);
+                                if (lexer.IsLTspice && string.Equals(name, "xor", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    if (arguments.Count != 2)
+                                    {
+                                        throw new ParserException("LTspice xor() expects exactly two arguments");
+                                    }
+
+                                    result = Node.Xor(arguments[0], arguments[1]);
+                                }
+                                else
+                                {
+                                    result = Node.Function(name, arguments);
+                                }
                                 lexer.Next();
                                 break;
                         }

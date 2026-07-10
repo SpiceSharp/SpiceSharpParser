@@ -61,7 +61,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 context.ReaderSettings.CaseSensitivity,
                 context.Evaluator.EvaluateDouble,
                 (message, lineInfo, exception) => AddError(context, message, lineInfo, exception),
-                LaplaceSourceInputKind.Voltage);
+                LaplaceSourceInputKind.Voltage,
+                context.ReaderSettings.Compatibility);
         }
 
         public LaplaceSourceDefinition ParseCurrentControlledSource(
@@ -76,7 +77,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 context.ReaderSettings.CaseSensitivity,
                 context.Evaluator.EvaluateDouble,
                 (message, lineInfo, exception) => AddError(context, message, lineInfo, exception),
-                LaplaceSourceInputKind.Current);
+                LaplaceSourceInputKind.Current,
+                context.ReaderSettings.Compatibility);
         }
 
         public LaplaceSourceDefinition ParseVoltageControlledSource(
@@ -85,7 +87,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             EvaluationContext evaluationContext,
             SpiceNetlistCaseSensitivitySettings caseSettings,
             Func<string, double> evaluateDouble,
-            Action<string, SpiceLineInfo, Exception> addError)
+            Action<string, SpiceLineInfo, Exception> addError,
+            CompatibilityOptions compatibility = null)
         {
             return ParseSource(
                 sourceName,
@@ -94,7 +97,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 caseSettings,
                 evaluateDouble,
                 addError,
-                LaplaceSourceInputKind.Voltage);
+                LaplaceSourceInputKind.Voltage,
+                compatibility);
         }
 
         public LaplaceSourceDefinition ParseCurrentControlledSource(
@@ -103,7 +107,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             EvaluationContext evaluationContext,
             SpiceNetlistCaseSensitivitySettings caseSettings,
             Func<string, double> evaluateDouble,
-            Action<string, SpiceLineInfo, Exception> addError)
+            Action<string, SpiceLineInfo, Exception> addError,
+            CompatibilityOptions compatibility = null)
         {
             return ParseSource(
                 sourceName,
@@ -112,7 +117,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 caseSettings,
                 evaluateDouble,
                 addError,
-                LaplaceSourceInputKind.Current);
+                LaplaceSourceInputKind.Current,
+                compatibility);
         }
 
         private LaplaceSourceDefinition ParseSource(
@@ -122,7 +128,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             SpiceNetlistCaseSensitivitySettings caseSettings,
             Func<string, double> evaluateDouble,
             Action<string, SpiceLineInfo, Exception> addError,
-            LaplaceSourceInputKind expectedInputKind)
+            LaplaceSourceInputKind expectedInputKind,
+            CompatibilityOptions compatibility)
         {
             if (!IsLaplaceSource(parameters))
             {
@@ -182,7 +189,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 transferFunction = new LaplaceExpressionParser(
                     evaluationContext,
-                    lineInfo: syntax.LineInfo).Parse(syntax.TransferExpression);
+                    lineInfo: syntax.LineInfo,
+                    compatibility: compatibility).Parse(syntax.TransferExpression);
             }
             catch (LaplaceExpressionException ex)
             {

@@ -11,20 +11,24 @@ namespace SpiceSharpParser.Common
     {
         public ExpressionParser(
             RealBuilder doubleBuilder,
-            bool throwOnErrors)
+            bool throwOnErrors,
+            CompatibilityOptions compatibility = null)
         {
             DoubleBuilder = doubleBuilder;
             ThrowOnErrors = throwOnErrors;
+            Compatibility = compatibility ?? CompatibilityOptions.None;
         }
 
         public bool ThrowOnErrors { get; }
+
+        public CompatibilityOptions Compatibility { get; }
 
         protected RealBuilder DoubleBuilder { get; }
 
         public IEnumerable<string> GetFunctions(string expression)
         {
             var list = new List<string>();
-            var node = Parser.Parse(Lexer.FromString(expression));
+            var node = Parser.Parse(Lexer.FromString(expression, Compatibility));
             DoubleBuilder.FunctionFound += (_, e) =>
             {
                 list.Add(e.Function.Name);
@@ -48,7 +52,7 @@ namespace SpiceSharpParser.Common
 
         public IEnumerable<Node> GetVariables(string expression)
         {
-            var node = Parser.Parse(Lexer.FromString(expression));
+            var node = Parser.Parse(Lexer.FromString(expression, Compatibility));
             return GetVariables(node);
         }
 
@@ -78,7 +82,7 @@ namespace SpiceSharpParser.Common
 
         public double Evaluate(string expression)
         {
-            var node = Parser.Parse(Lexer.FromString(expression));
+            var node = Parser.Parse(Lexer.FromString(expression, Compatibility));
             return DoubleBuilder.Build(node);
         }
     }

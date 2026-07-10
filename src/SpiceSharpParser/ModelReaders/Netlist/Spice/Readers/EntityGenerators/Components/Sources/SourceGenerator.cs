@@ -179,11 +179,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             entity = null;
 
-            if (AddUnsupportedLtspiceExpressionDiagnostics(expression, expressionParameter?.LineInfo ?? parameters.LineInfo, context))
-            {
-                return true;
-            }
-
             var excludedParameters = new List<Parameter>();
             if (expressionParameter != null)
             {
@@ -208,7 +203,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     : localEntityName,
                 entityName => context.ContextEntities != null
                     && context.ContextEntities.Any(existing => existing.Name == entityName),
-                expressionParameter?.LineInfo ?? parameters.LineInfo);
+                expressionParameter?.LineInfo ?? parameters.LineInfo,
+                context.ReaderSettings.Compatibility);
 
             var result = lowerer.Lower(
                 name,
@@ -281,11 +277,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             EvaluationContext evalContext,
             string expression)
         {
-            if (AddUnsupportedLtspiceExpressionDiagnostics(expression, parameters.LineInfo, context))
-            {
-                return null;
-            }
-
             var entity = new BehavioralVoltageSource(name);
             context.CreateNodes(entity, parameters.Take(BehavioralVoltageSource.BehavioralVoltageSourcePinCount));
             entity.Parameters.Expression = expression;
@@ -318,11 +309,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             EvaluationContext evalContext,
             string expression)
         {
-            if (AddUnsupportedLtspiceExpressionDiagnostics(expression, parameters.LineInfo, context))
-            {
-                return null;
-            }
-
             var mParameter = (AssignmentParameter)parameters.FirstOrDefault(p =>
                 p is AssignmentParameter asgParameter && asgParameter.Name.ToLower() == "m");
 
@@ -463,11 +449,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             }
 
             var expression = NormalizeExpression(parts[0]);
-            if (AddUnsupportedLtspiceExpressionDiagnostics(expression, tableParameter.LineInfo, context))
-            {
-                return true;
-            }
-
             var points = new List<PointParameter>();
             for (var i = 1; i < parts.Count; i += 2)
             {
@@ -681,27 +662,6 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             public bool HasParallelCapacitance => ParallelCapacitance != null;
 
             public bool HasAny => HasSeriesResistance || HasShuntResistance || HasParallelCapacitance;
-        }
-
-        private static bool AddUnsupportedLtspiceExpressionDiagnostics(string expression, SpiceLineInfo lineInfo, IReadingContext context)
-        {
-            if (!context.ReaderSettings.Compatibility.IsLTspice || string.IsNullOrWhiteSpace(expression))
-            {
-                return false;
-            }
-
-            var hasErrors = false;
-
-            if (expression.Contains("~"))
-            {
-                context.Result.ValidationResult.AddError(
-                    ValidationEntrySource.Reader,
-                    "Unsupported LTspice expression operator '~': unary bitwise/boolean inversion is not mapped yet.",
-                    lineInfo);
-                hasErrors = true;
-            }
-
-            return hasErrors;
         }
 
         private static IEnumerable<string> SplitTopLevelList(string value)

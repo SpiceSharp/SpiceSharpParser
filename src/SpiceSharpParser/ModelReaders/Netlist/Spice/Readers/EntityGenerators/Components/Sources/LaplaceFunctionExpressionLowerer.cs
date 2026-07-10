@@ -25,6 +25,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         private readonly Func<string, string> _generateEntityName;
         private readonly Func<string, bool> _entityExists;
         private readonly SpiceLineInfo _lineInfo;
+        private readonly CompatibilityOptions _compatibility;
         private readonly BehavioralExpressionFormatter _formatter = new BehavioralExpressionFormatter();
         private readonly List<string> _errors = new List<string>();
 
@@ -34,7 +35,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             Action<string, SpiceLineInfo, Exception> addError,
             Func<string, string> generateEntityName,
             Func<string, bool> entityExists,
-            SpiceLineInfo lineInfo)
+            SpiceLineInfo lineInfo,
+            CompatibilityOptions compatibility = null)
         {
             _evaluationContext = evaluationContext ?? throw new ArgumentNullException(nameof(evaluationContext));
             _evaluateDouble = evaluateDouble ?? throw new ArgumentNullException(nameof(evaluateDouble));
@@ -42,6 +44,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             _generateEntityName = generateEntityName ?? (name => name);
             _entityExists = entityExists ?? (_ => false);
             _lineInfo = lineInfo;
+            _compatibility = compatibility ?? CompatibilityOptions.None;
         }
 
         public LaplaceFunctionLoweringResult Lower(
@@ -61,7 +64,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             Node root;
             try
             {
-                root = ExpressionParser.Parse(Lexer.FromString(expression), true);
+                root = ExpressionParser.Parse(Lexer.FromString(expression, _compatibility), true);
             }
             catch (Exception ex)
             {

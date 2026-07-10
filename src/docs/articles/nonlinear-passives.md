@@ -213,6 +213,13 @@ inductance, power, and `dfluxdt`.
 written for one cell; the generated component scales the stored quantity to the
 whole instance.
 
+LTspice natively accepts `M` for capacitor and inductor instances, but it does
+not accept `N` for these devices. `N` on the custom nonlinear passives is a
+SpiceSharpParser series-cell extension. The optional LTspice-backed golden tests
+therefore compare `N` cases with equivalent LTspice circuits: an effective
+parallel multiplier for the linear capacitor cases and explicit series
+inductors for the inductor cases.
+
 For capacitors, the component multiplies the single-cell charge by `M` and
 divides it by `N`:
 

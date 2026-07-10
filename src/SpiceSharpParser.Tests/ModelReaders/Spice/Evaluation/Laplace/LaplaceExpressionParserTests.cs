@@ -4,11 +4,11 @@ using System.Numerics;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Mathematics.Probability;
+using SpiceSharpParser.Lexers.Expressions;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Laplace;
-using SpiceSharpParser.Lexers.Expressions;
 using Xunit;
 using Parser = SpiceSharpParser.Parsers.Expression.Parser;
 
@@ -32,8 +32,8 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation.Laplace
         {
             get
             {
-                yield return new object[] { "1/(1+s^0.5)" };
-                yield return new object[] { "1/(1+s^-1)" };
+                yield return new object[] { "1/(1+s**0.5)" };
+                yield return new object[] { "1/(1+s**-1)" };
                 yield return new object[] { "sin(s)/(1+s)" };
                 yield return new object[] { "random()/(1+s)" };
                 yield return new object[] { "gauss(1)/(1+s)" };
@@ -46,7 +46,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation.Laplace
                 yield return new object[] { "1/0" };
                 yield return new object[] { "1/(s-s)" };
                 yield return new object[] { "unknown/(1+s)" };
-                yield return new object[] { "1/(1+s+s^2+s^3+s^4+s^5+s^6+s^7+s^8+s^9+s^10+s^11)" };
+                yield return new object[] { "1/(1+s+s**2+s**3+s**4+s**5+s**6+s**7+s**8+s**9+s**10+s**11)" };
             }
         }
 
@@ -128,7 +128,25 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation.Laplace
         [Fact]
         public void When_SPowerTwoIsParsed_Expect_SecondOrderNumerator()
         {
+            var transfer = Parse("(s**2)/(s**2+s+1)");
+
+            AssertTransfer(new[] { 0.0, 0.0, 1.0 }, new[] { 1.0, 1.0, 1.0 }, transfer);
+        }
+
+        [Fact]
+        public void When_DefaultCaretPowerIsParsed_Expect_SecondOrderNumerator()
+        {
             var transfer = Parse("(s^2)/(s^2+s+1)");
+
+            AssertTransfer(new[] { 0.0, 0.0, 1.0 }, new[] { 1.0, 1.0, 1.0 }, transfer);
+        }
+
+        [Fact]
+        public void When_LtspiceCaretPowerIsParsed_Expect_SecondOrderNumerator()
+        {
+            var transfer = new LaplaceExpressionParser(
+                CreateContext(),
+                compatibility: CompatibilityOptions.LTspice).Parse("(s^2)/(s^2+s+1)");
 
             AssertTransfer(new[] { 0.0, 0.0, 1.0 }, new[] { 1.0, 1.0, 1.0 }, transfer);
         }
@@ -136,7 +154,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation.Laplace
         [Fact]
         public void When_DenominatorHasInteriorZero_Expect_InteriorZeroPreserved()
         {
-            var transfer = Parse("1/(s^2+1)");
+            var transfer = Parse("1/(s**2+1)");
 
             AssertTransfer(new[] { 1.0 }, new[] { 1.0, 0.0, 1.0 }, transfer);
         }
@@ -199,7 +217,7 @@ namespace SpiceSharpParser.Tests.ModelReaders.Spice.Evaluation.Laplace
             context.SetParameter("wc", "2*PI*fc");
             var wc = 2.0 * Math.PI * 1000.0;
 
-            var transfer = Parse("wc^2/(s^2+sqrt(2)*wc*s+wc^2)", context);
+            var transfer = Parse("wc**2/(s**2+sqrt(2)*wc*s+wc**2)", context);
 
             AssertTransfer(new[] { wc * wc }, new[] { wc * wc, Math.Sqrt(2.0) * wc, 1.0 }, transfer);
         }

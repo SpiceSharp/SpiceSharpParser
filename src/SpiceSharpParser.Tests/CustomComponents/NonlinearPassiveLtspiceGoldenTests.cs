@@ -26,7 +26,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
 
             foreach (var testCase in CreateCapacitorAcCases())
             {
-                var raw = RunLtspiceRaw(ltspiceExecutable, testCase.Name, testCase.NetlistLines);
+                var raw = RunLtspiceRaw(ltspiceExecutable, testCase.Name, testCase.LtspiceNetlistLines);
                 var ltspicePoint = LtspiceAsciiRawFile.GetComplexSeries(raw, "V(out)").Single();
                 var spiceSharpPoint = RunSpiceSharpAcVoltage(testCase.NetlistLines, "out");
 
@@ -48,7 +48,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
 
             foreach (var testCase in CreateInductorAcCases())
             {
-                var raw = RunLtspiceRaw(ltspiceExecutable, testCase.Name, testCase.NetlistLines);
+                var raw = RunLtspiceRaw(ltspiceExecutable, testCase.Name, testCase.LtspiceNetlistLines);
                 var ltspicePoint = LtspiceAsciiRawFile.GetComplexSeries(raw, "V(out)").Single();
                 var spiceSharpPoint = RunSpiceSharpAcVoltage(testCase.NetlistLines, "out");
 
@@ -70,7 +70,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
 
             foreach (var testCase in CreateCapacitorTransientCases())
             {
-                var raw = RunLtspiceRaw(ltspiceExecutable, testCase.Name, testCase.NetlistLines);
+                var raw = RunLtspiceRaw(ltspiceExecutable, testCase.Name, testCase.LtspiceNetlistLines);
                 var ltspiceSeries = LtspiceAsciiRawFile.GetRealSeries(raw, "V(out)");
                 var spiceSharpSeries = RunSpiceSharpTransientVoltage(testCase.NetlistLines, "out");
 
@@ -93,7 +93,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
 
             foreach (var testCase in CreateInductorTransientCases())
             {
-                var raw = RunLtspiceRaw(ltspiceExecutable, testCase.Name, testCase.NetlistLines);
+                var raw = RunLtspiceRaw(ltspiceExecutable, testCase.Name, testCase.LtspiceNetlistLines);
                 var ltspiceSeries = LtspiceAsciiRawFile.GetRealSeries(raw, "V(out)");
                 var spiceSharpSeries = RunSpiceSharpTransientVoltage(testCase.NetlistLines, "out");
 
@@ -111,6 +111,19 @@ namespace SpiceSharpParser.Tests.CustomComponents
 
         private static IReadOnlyList<LtspicePassiveCase> CreateCapacitorAcCases()
         {
+            var scaledNetlistLines = new[]
+            {
+                "V1 in 0 DC 0 AC 1",
+                "R1 in out 470",
+                "C1 out 0 Q=2u*x M=3 N=2",
+            };
+            var scaledLtspiceLines = new[]
+            {
+                "V1 in 0 DC 0 AC 1",
+                "R1 in out 470",
+                "C1 out 0 Q=2u*x M=1.5",
+            };
+
             return new[]
             {
                 CreateAcCase(
@@ -131,16 +144,30 @@ namespace SpiceSharpParser.Tests.CustomComponents
                     "R1 in out 200",
                     "C1 out 0 Q=500n*x+50n*x*x+20n*x*x*x"),
 
-                CreateAcCase(
+                CreateAcCaseWithLtspiceReference(
                     "cap_ac_scaled_m_n",
-                    "V1 in 0 DC 0 AC 1",
-                    "R1 in out 470",
-                    "C1 out 0 Q=2u*x M=3 N=2"),
+                    scaledNetlistLines,
+                    scaledLtspiceLines),
             };
         }
 
         private static IReadOnlyList<LtspicePassiveCase> CreateInductorAcCases()
         {
+            var scaledNetlistLines = new[]
+            {
+                "V1 in 0 DC 1 AC 1",
+                "R1 in out 10",
+                "L1 out 0 Flux=1m*x M=2 N=3",
+            };
+            var scaledLtspiceLines = new[]
+            {
+                "V1 in 0 DC 1 AC 1",
+                "R1 in out 10",
+                "L1A out lmid1 Flux=1m*x M=2",
+                "L1B lmid1 lmid2 Flux=1m*x M=2",
+                "L1C lmid2 0 Flux=1m*x M=2",
+            };
+
             return new[]
             {
                 CreateAcCase(
@@ -161,16 +188,33 @@ namespace SpiceSharpParser.Tests.CustomComponents
                     "R1 in out 10",
                     "L1 out 0 Flux=500u*x+100u*x*x+50u*x*x*x"),
 
-                CreateAcCase(
+                CreateAcCaseWithLtspiceReference(
                     "ind_ac_scaled_m_n",
-                    "V1 in 0 DC 1 AC 1",
-                    "R1 in out 10",
-                    "L1 out 0 Flux=1m*x M=2 N=3"),
+                    scaledNetlistLines,
+                    scaledLtspiceLines),
             };
         }
 
         private static IReadOnlyList<LtspicePassiveTransientCase> CreateCapacitorTransientCases()
         {
+            var scaledLtspiceLines = new[]
+            {
+                "V1 in 0 5",
+                "R1 in out 1k",
+                "C1 out 0 Q=1u*x M=0.5 IC=0",
+                ".tran 5u 750u 0 2.5u uic",
+            };
+            var initialConditionLtspiceLines = new[]
+            {
+                "VPRE pre 0 3",
+                "VCTRL ctrl 0 PULSE(1 0 1n 1p 1p 2m 4m)",
+                "SINIT out pre ctrl 0 SWINIT",
+                ".model SWINIT SW(Ron=1m Roff=1T Vt=0.5)",
+                "R1 out 0 1k",
+                "C1 out 0 Q=1u*x+50n*x*x",
+                ".tran 10u 1m 0 5u",
+            };
+
             return new[]
             {
                 CreateTransientCase(
@@ -197,7 +241,8 @@ namespace SpiceSharpParser.Tests.CustomComponents
                     "V1 in 0 5",
                     "R1 in out 1k",
                     "C1 out 0 Q=1u*x M=2 N=4 IC=0",
-                    ".tran 5u 750u 0 2.5u uic"),
+                    ".tran 5u 750u 0 2.5u uic",
+                    ltspiceCircuitLines: scaledLtspiceLines),
 
                 CreateTransientCase(
                     "cap_tran_quadratic_ic_discharge",
@@ -207,12 +252,23 @@ namespace SpiceSharpParser.Tests.CustomComponents
                     "C1 out 0 Q=1u*x+50n*x*x IC=3",
                     ".tran 10u 1m 0 5u uic",
                     absoluteTolerance: 2e-3,
-                    relativeTolerance: 2e-3),
+                    relativeTolerance: 2e-3,
+                    ltspiceCircuitLines: initialConditionLtspiceLines),
             };
         }
 
         private static IReadOnlyList<LtspicePassiveTransientCase> CreateInductorTransientCases()
         {
+            var scaledLtspiceLines = new[]
+            {
+                "V1 in 0 0",
+                "L1A in lmid1 Flux=1m*x M=2 IC=0.5",
+                "L1B lmid1 lmid2 Flux=1m*x M=2 IC=0.5",
+                "L1C lmid2 out Flux=1m*x M=2 IC=0.5",
+                "R1 out 0 10",
+                ".tran 2u 400u 0 1u uic",
+            };
+
             return new[]
             {
                 CreateTransientCase(
@@ -239,7 +295,8 @@ namespace SpiceSharpParser.Tests.CustomComponents
                     "V1 in 0 0",
                     "L1 in out Flux=1m*x M=2 N=3 IC=0.5",
                     "R1 out 0 10",
-                    ".tran 2u 400u 0 1u uic"),
+                    ".tran 2u 400u 0 1u uic",
+                    ltspiceCircuitLines: scaledLtspiceLines),
 
                 CreateTransientCase(
                     "ind_tran_cubic_flux_voltage_step",
@@ -258,6 +315,19 @@ namespace SpiceSharpParser.Tests.CustomComponents
             return new LtspicePassiveCase(name, BuildNetlist(name, circuitLines.Concat(new[] { ".ac lin 1 1k 1k" }).ToArray()));
         }
 
+        private static LtspicePassiveCase CreateAcCaseWithLtspiceReference(
+            string name,
+            string[] circuitLines,
+            string[] ltspiceCircuitLines)
+        {
+            return new LtspicePassiveCase(
+                name,
+                BuildNetlist(name, circuitLines.Concat(new[] { ".ac lin 1 1k 1k" }).ToArray()),
+                ltspiceNetlistLines: BuildNetlist(
+                    name + "_reference",
+                    ltspiceCircuitLines.Concat(new[] { ".ac lin 1 1k 1k" }).ToArray()));
+        }
+
         private static LtspicePassiveTransientCase CreateTransientCase(
             string name,
             double[] sampleTimes,
@@ -266,14 +336,20 @@ namespace SpiceSharpParser.Tests.CustomComponents
             string secondDeviceLine,
             string transientLine,
             double absoluteTolerance = 1e-3,
-            double relativeTolerance = 1e-3)
+            double relativeTolerance = 1e-3,
+            IReadOnlyList<string> ltspiceCircuitLines = null)
         {
+            IReadOnlyList<string> ltspiceNetlistLines = ltspiceCircuitLines == null
+                ? null
+                : BuildNetlist(name + "_reference", ltspiceCircuitLines.ToArray());
+
             return new LtspicePassiveTransientCase(
                 name,
                 BuildNetlist(name, sourceLine, firstDeviceLine, secondDeviceLine, transientLine),
                 sampleTimes,
                 absoluteTolerance,
-                relativeTolerance);
+                relativeTolerance,
+                ltspiceNetlistLines);
         }
 
         private static IReadOnlyList<string> BuildNetlist(string name, params string[] bodyLines)
@@ -374,16 +450,24 @@ namespace SpiceSharpParser.Tests.CustomComponents
 
                 string output = process.StandardOutput.ReadToEnd();
                 string error = process.StandardError.ReadToEnd();
+                string log = ReadLtspiceLog(circuitPath);
+                var result = new ProcessResult(output, error, log);
                 if (process.ExitCode != 0)
                 {
                     throw new InvalidOperationException(
                         $"LTspice exited with code {process.ExitCode} for '{circuitPath}'."
                         + Environment.NewLine
-                        + new ProcessResult(output, error));
+                        + result);
                 }
 
-                return new ProcessResult(output, error);
+                return result;
             }
+        }
+
+        private static string ReadLtspiceLog(string circuitPath)
+        {
+            string logPath = Path.ChangeExtension(circuitPath, ".log");
+            return File.Exists(logPath) ? File.ReadAllText(logPath) : string.Empty;
         }
 
         private static bool WaitForFile(string path, int timeoutMilliseconds)
@@ -551,10 +635,12 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 string name,
                 IReadOnlyList<string> netlistLines,
                 double absoluteTolerance = 1e-6,
-                double relativeTolerance = 1e-4)
+                double relativeTolerance = 1e-4,
+                IReadOnlyList<string> ltspiceNetlistLines = null)
             {
                 this.Name = name;
                 this.NetlistLines = netlistLines;
+                this.LtspiceNetlistLines = ltspiceNetlistLines ?? netlistLines;
                 this.AbsoluteTolerance = absoluteTolerance;
                 this.RelativeTolerance = relativeTolerance;
             }
@@ -562,6 +648,8 @@ namespace SpiceSharpParser.Tests.CustomComponents
             public string Name { get; }
 
             public IReadOnlyList<string> NetlistLines { get; }
+
+            public IReadOnlyList<string> LtspiceNetlistLines { get; }
 
             public double AbsoluteTolerance { get; }
 
@@ -575,10 +663,12 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 IReadOnlyList<string> netlistLines,
                 double[] sampleTimes,
                 double absoluteTolerance,
-                double relativeTolerance)
+                double relativeTolerance,
+                IReadOnlyList<string> ltspiceNetlistLines = null)
             {
                 this.Name = name;
                 this.NetlistLines = netlistLines;
+                this.LtspiceNetlistLines = ltspiceNetlistLines ?? netlistLines;
                 this.SampleTimes = sampleTimes;
                 this.AbsoluteTolerance = absoluteTolerance;
                 this.RelativeTolerance = relativeTolerance;
@@ -587,6 +677,8 @@ namespace SpiceSharpParser.Tests.CustomComponents
             public string Name { get; }
 
             public IReadOnlyList<string> NetlistLines { get; }
+
+            public IReadOnlyList<string> LtspiceNetlistLines { get; }
 
             public double[] SampleTimes { get; }
 
@@ -632,20 +724,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 int cursor = valuesIndex + 1;
                 for (int pointIndex = 0; pointIndex < pointCount; pointIndex++)
                 {
-                    var point = new Complex[variableCount];
-                    for (int variableIndex = 0; variableIndex < variableCount; variableIndex++)
-                    {
-                        string line = ReadNextNonEmptyLine(lines, ref cursor, path);
-                        string[] parts = SplitRawLine(line);
-                        if (parts.Length < 2)
-                        {
-                            throw new FormatException($"Invalid LTspice value line in '{path}': {line}");
-                        }
-
-                        point[variableIndex] = ParseComplex(parts[parts.Length - 1]);
-                    }
-
-                    points.Add(point);
+                    points.Add(ReadPoint(lines, ref cursor, pointIndex, variableCount, path));
                 }
 
                 return new LtspiceAsciiRawFile(variables, points);
@@ -712,6 +791,57 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 return line.Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
             }
 
+            private static Complex[] ReadPoint(
+                string[] lines,
+                ref int cursor,
+                int pointIndex,
+                int variableCount,
+                string path)
+            {
+                string firstLine = ReadNextNonEmptyLine(lines, ref cursor, path);
+                string[] firstParts = SplitRawLine(firstLine);
+                if (firstParts.Length == 0 || !IsInteger(firstParts[0]))
+                {
+                    throw new FormatException($"Invalid LTspice value line in '{path}': {firstLine}");
+                }
+
+                int actualPointIndex = int.Parse(firstParts[0], CultureInfo.InvariantCulture);
+                if (actualPointIndex != pointIndex)
+                {
+                    throw new FormatException(
+                        $"Unexpected LTspice point index in '{path}': expected {pointIndex}, got {actualPointIndex}.");
+                }
+
+                var values = new List<Complex>();
+                AddValues(firstParts, 1, values);
+                while (values.Count < variableCount)
+                {
+                    string line = ReadNextNonEmptyLine(lines, ref cursor, path);
+                    AddValues(SplitRawLine(line), 0, values);
+                }
+
+                if (values.Count != variableCount)
+                {
+                    throw new FormatException(
+                        $"Invalid LTspice point in '{path}': expected {variableCount} values, got {values.Count}.");
+                }
+
+                return values.ToArray();
+            }
+
+            private static void AddValues(string[] parts, int startIndex, List<Complex> values)
+            {
+                for (int i = startIndex; i < parts.Length; i++)
+                {
+                    values.Add(ParseComplex(parts[i]));
+                }
+            }
+
+            private static bool IsInteger(string value)
+            {
+                return int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out _);
+            }
+
             private static double ParseDouble(string value)
             {
                 return double.Parse(value, NumberStyles.Float, CultureInfo.InvariantCulture);
@@ -753,15 +883,18 @@ namespace SpiceSharpParser.Tests.CustomComponents
 
         private sealed class ProcessResult
         {
-            public ProcessResult(string output, string error)
+            public ProcessResult(string output, string error, string log)
             {
                 this.Output = output;
                 this.Error = error;
+                this.Log = log;
             }
 
             private string Output { get; }
 
             private string Error { get; }
+
+            private string Log { get; }
 
             public override string ToString()
             {
@@ -771,7 +904,11 @@ namespace SpiceSharpParser.Tests.CustomComponents
                     + Environment.NewLine
                     + "stderr:"
                     + Environment.NewLine
-                    + this.Error;
+                    + this.Error
+                    + Environment.NewLine
+                    + "log:"
+                    + Environment.NewLine
+                    + this.Log;
             }
         }
     }

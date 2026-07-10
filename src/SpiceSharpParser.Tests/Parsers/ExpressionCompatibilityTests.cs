@@ -57,6 +57,55 @@ namespace SpiceSharpParser.Tests.Parsers
             Assert.Equal(NodeTypes.Not, node.NodeType);
         }
 
+        [Fact]
+        public void When_UnaryTildeIsParsedInLtspiceMode_Expect_NotNode()
+        {
+            var node = Parser.Parse(
+                Lexer.FromString("~0", CompatibilityOptions.LTspice),
+                true);
+
+            Assert.Equal(NodeTypes.Not, node.NodeType);
+        }
+
+        [Fact]
+        public void When_UnaryTildeIsParsedWithoutLtspiceMode_Expect_DefaultError()
+        {
+            Assert.Throws<SpiceSharpParser.Parsers.Expression.ParserException>(
+                () => Parser.Parse(Lexer.FromString("~0"), true));
+        }
+
+        [Theory]
+        [InlineData("xor(0,1)")]
+        [InlineData("XOR(1,0)")]
+        public void When_XorFunctionIsParsedInLtspiceMode_Expect_XorNode(string expression)
+        {
+            var node = Parser.Parse(
+                Lexer.FromString(expression, CompatibilityOptions.LTspice),
+                true);
+
+            Assert.Equal(NodeTypes.Xor, node.NodeType);
+        }
+
+        [Fact]
+        public void When_XorFunctionIsParsedWithoutLtspiceMode_Expect_FunctionNode()
+        {
+            var node = Parser.Parse(Lexer.FromString("xor(0,1)"), true);
+
+            Assert.Equal(NodeTypes.Function, node.NodeType);
+        }
+
+        [Theory]
+        [InlineData("xor(0)")]
+        [InlineData("xor(0,1,0)")]
+        public void When_XorFunctionHasWrongArityInLtspiceMode_Expect_TargetedError(string expression)
+        {
+            var exception = Assert.Throws<SpiceSharpParser.Parsers.Expression.ParserException>(
+                () => Parser.Parse(Lexer.FromString(expression, CompatibilityOptions.LTspice), true));
+
+            Assert.Contains("xor", exception.Message, System.StringComparison.OrdinalIgnoreCase);
+            Assert.Contains("two arguments", exception.Message, System.StringComparison.OrdinalIgnoreCase);
+        }
+
         [Theory]
         [InlineData("1&0")]
         [InlineData("1&&0")]
@@ -79,12 +128,54 @@ namespace SpiceSharpParser.Tests.Parsers
 
         [Theory]
         [InlineData("2**3")]
-        [InlineData("2^3")]
         public void When_PowerOperatorIsParsed_Expect_PowerNode(string expression)
         {
             var node = Parser.Parse(Lexer.FromString(expression), true);
 
             Assert.Equal(NodeTypes.Pow, node.NodeType);
+        }
+
+        [Fact]
+        public void When_CaretIsParsedByDefault_Expect_Spice3PowerNode()
+        {
+            var node = Parser.Parse(Lexer.FromString("2^3"), true);
+
+            Assert.Equal(NodeTypes.Pow, node.NodeType);
+        }
+
+        [Fact]
+        public void When_CaretIsParsedInPspiceMode_Expect_XorNode()
+        {
+            var node = Parser.Parse(
+                Lexer.FromString("1^0", CompatibilityOptions.PSpice),
+                true);
+
+            Assert.Equal(NodeTypes.Xor, node.NodeType);
+        }
+
+        [Fact]
+        public void When_CaretIsParsedInLtspiceMode_Expect_PowerNode()
+        {
+            var node = Parser.Parse(
+                Lexer.FromString("2^3", CompatibilityOptions.LTspice),
+                true);
+
+            Assert.Equal(NodeTypes.Pow, node.NodeType);
+        }
+
+        [Fact]
+        public void When_PspiceLogicalOperatorsAreParsed_Expect_AndBeforeXorBeforeOr()
+        {
+            var orNode = Assert.IsType<BinaryOperatorNode>(
+                Parser.Parse(
+                    Lexer.FromString("1|0^1&0", CompatibilityOptions.PSpice),
+                    true));
+            var xorNode = Assert.IsType<BinaryOperatorNode>(orNode.Right);
+            var andNode = Assert.IsType<BinaryOperatorNode>(xorNode.Right);
+
+            Assert.Equal(NodeTypes.Or, orNode.NodeType);
+            Assert.Equal(NodeTypes.Xor, xorNode.NodeType);
+            Assert.Equal(NodeTypes.And, andNode.NodeType);
         }
     }
 }

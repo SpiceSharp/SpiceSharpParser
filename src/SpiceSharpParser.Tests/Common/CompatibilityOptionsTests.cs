@@ -14,6 +14,7 @@ namespace SpiceSharpParser.Tests.Common
 
             Assert.Same(CompatibilityOptions.None, settings.Compatibility);
             Assert.False(settings.Compatibility.IsLTspice);
+            Assert.False(settings.Compatibility.IsPSpice);
         }
 
         [Fact]
@@ -23,6 +24,24 @@ namespace SpiceSharpParser.Tests.Common
 
             Assert.Same(CompatibilityOptions.None, settings.Compatibility);
             Assert.False(settings.Compatibility.IsLTspice);
+            Assert.False(settings.Compatibility.IsPSpice);
+        }
+
+        [Fact]
+        public void When_PSpiceCompatibilityIsAssigned_Expect_SettingsExposeIt()
+        {
+            var parserSettings = new SpiceNetlistParserSettings();
+            var readerSettings = new SpiceNetlistReaderSettings();
+
+            parserSettings.Compatibility = CompatibilityOptions.PSpice;
+            readerSettings.Compatibility = CompatibilityOptions.PSpice;
+
+            Assert.Same(CompatibilityOptions.PSpice, parserSettings.Compatibility);
+            Assert.Same(CompatibilityOptions.PSpice, readerSettings.Compatibility);
+            Assert.True(parserSettings.Compatibility.IsPSpice);
+            Assert.True(readerSettings.Compatibility.IsPSpice);
+            Assert.False(parserSettings.Compatibility.IsLTspice);
+            Assert.False(readerSettings.Compatibility.IsLTspice);
         }
 
         [Fact]
@@ -38,6 +57,8 @@ namespace SpiceSharpParser.Tests.Common
             Assert.Same(CompatibilityOptions.LTspice, readerSettings.Compatibility);
             Assert.True(parserSettings.Compatibility.IsLTspice);
             Assert.True(readerSettings.Compatibility.IsLTspice);
+            Assert.False(parserSettings.Compatibility.IsPSpice);
+            Assert.False(readerSettings.Compatibility.IsPSpice);
         }
 
         [Fact]

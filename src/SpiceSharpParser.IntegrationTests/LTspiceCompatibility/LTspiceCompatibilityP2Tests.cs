@@ -585,22 +585,113 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
         }
 
         [Theory]
-        [InlineData("~V(in)", "~")]
-        public void When_LtspiceUnsupportedExpressionConstructIsRead_Expect_TargetedError(string expression, string constructName)
+        [InlineData("~0", 1.0)]
+        [InlineData("~1", 0.0)]
+        [InlineData("xor(0,0)", 0.0)]
+        [InlineData("xor(0,1)", 1.0)]
+        [InlineData("xor(1,0)", 1.0)]
+        [InlineData("xor(1,1)", 0.0)]
+        public void When_LtspiceBooleanAliasesAreRead_Expect_OpReferenceValue(string expression, double expected)
         {
             var model = GetSpiceSharpModelWithCompatibility(
                 CompatibilityOptions.LTspice,
-                "LTspice P2 - expression diagnostic",
-                "VIN in 0 0",
+                "LTspice P2 - boolean expression aliases",
                 "B1 out 0 V={" + expression + "}",
                 "R1 out 0 1k",
                 ".op",
                 ".save V(out)",
                 ".end");
 
-            Assert.True(model.ValidationResult.HasError);
-            AssertErrorContains(model.ValidationResult, "LTspice");
-            AssertErrorContains(model.ValidationResult, constructName);
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.True(EqualsWithTol(expected, RunOpSimulation(model, "V(out)")));
+        }
+
+        [Theory]
+        [InlineData("0^0", 0.0)]
+        [InlineData("0^1", 1.0)]
+        [InlineData("1^0", 1.0)]
+        [InlineData("1^1", 0.0)]
+        public void When_PspiceCaretXorIsReadInPspiceMode_Expect_OpReferenceValue(
+            string expression,
+            double expected)
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.PSpice,
+                "PSpice - caret XOR",
+                "B1 out 0 V={" + expression + "}",
+                "R1 out 0 1k",
+                ".op",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.True(EqualsWithTol(expected, RunOpSimulation(model, "V(out)")));
+        }
+
+        [Fact]
+        public void When_CaretPowerIsReadByDefault_Expect_Spice3ExponentBehavior()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.None,
+                "SPICE3f5 - caret exponent",
+                "B1 out 0 V={2^3}",
+                "R1 out 0 1k",
+                ".op",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.True(EqualsWithTol(8.0, RunOpSimulation(model, "V(out)")));
+        }
+
+        [Fact]
+        public void When_CaretPowerIsReadInLtspiceMode_Expect_ExistingExponentBehavior()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - caret exponent",
+                "B1 out 0 V={2^3}",
+                "R1 out 0 1k",
+                ".op",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.True(EqualsWithTol(8.0, RunOpSimulation(model, "V(out)")));
+        }
+
+        [Fact]
+        public void When_LaplaceCaretPowerIsReadInLtspiceMode_Expect_ExistingExponentBehavior()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - Laplace caret exponent",
+                "VIN in 0 2",
+                "E1 out 0 LAPLACE {V(in)} = {1/(s^2+1)}",
+                "R1 out 0 1k",
+                ".op",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.True(EqualsWithTol(2.0, RunOpSimulation(model, "V(out)")));
+        }
+
+        [Fact]
+        public void When_LtspiceBooleanAliasesAreUsedByFunc_Expect_ResolvedValues()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - boolean aliases in func",
+                ".func exclusive(a,b)=xor(a,b)",
+                "B1 out 0 V={~0+exclusive(1,0)}",
+                "R1 out 0 1k",
+                ".op",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.True(EqualsWithTol(2.0, RunOpSimulation(model, "V(out)")));
         }
 
         [Theory]

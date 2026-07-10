@@ -25,7 +25,7 @@ namespace SpiceSharpParser.Tests.LTspiceCompatibility
 
             foreach (var testCase in CreateOpCases())
             {
-                var raw = RunLtspiceRaw(ltspiceExecutable, testCase.Name, testCase.NetlistLines);
+                var raw = RunLtspiceRaw(ltspiceExecutable, testCase.Name, testCase.LtspiceNetlistLines);
                 var model = ReadWithLtspiceCompatibility(testCase.NetlistLines);
                 var actualValues = SpiceSimulationTestHelper.RunOp(model, testCase.ExportNames);
 
@@ -51,7 +51,7 @@ namespace SpiceSharpParser.Tests.LTspiceCompatibility
 
             foreach (var testCase in CreateTransientCases())
             {
-                var raw = RunLtspiceRaw(ltspiceExecutable, testCase.Name, testCase.NetlistLines);
+                var raw = RunLtspiceRaw(ltspiceExecutable, testCase.Name, testCase.LtspiceNetlistLines);
                 var model = ReadWithLtspiceCompatibility(testCase.NetlistLines);
 
                 foreach (var exportName in testCase.ExportNames)
@@ -144,6 +144,27 @@ namespace SpiceSharpParser.Tests.LTspiceCompatibility
                     relativeTolerance: 1e-6),
 
                 new LtspiceGoldenCase(
+                    "op_boolean_aliases",
+                    BuildNetlist(
+                        "op_boolean_aliases",
+                        ".options plotwinsize=0",
+                        "VLOW low 0 0",
+                        "VHIGH high 0 1",
+                        "BNOT0 not0 0 V={~V(low)}",
+                        "BNOT1 not1 0 V={~V(high)}",
+                        "BXOR10 xor10 0 V={xor(V(high),V(low))}",
+                        "BXOR11 xor11 0 V={xor(V(high),V(high))}",
+                        "RNOT0 not0 0 1k",
+                        "RNOT1 not1 0 1k",
+                        "RXOR10 xor10 0 1k",
+                        "RXOR11 xor11 0 1k",
+                        ".op",
+                        ".save V(not0) V(not1) V(xor10) V(xor11)"),
+                    new[] { "V(not0)", "V(not1)", "V(xor10)", "V(xor11)" },
+                    absoluteTolerance: 1e-7,
+                    relativeTolerance: 1e-6),
+
+                new LtspiceGoldenCase(
                     "op_source_series_resistance",
                     BuildNetlist(
                         "op_source_series_resistance",
@@ -155,8 +176,10 @@ namespace SpiceSharpParser.Tests.LTspiceCompatibility
                     new[] { "V(out)" },
                     absoluteTolerance: 1e-7,
                     relativeTolerance: 1e-6),
-                    
-                 new LtspiceGoldenCase(
+
+                // LTspice rejects Rser/Rpar on a resistor line, so its reference
+                // uses the explicit topology that the parser shorthand synthesizes.
+                new LtspiceGoldenCase(
                     "op_resistor_parasitics",
                     BuildNetlist(
                         "op_resistor_parasitics",
@@ -168,7 +191,17 @@ namespace SpiceSharpParser.Tests.LTspiceCompatibility
                         ".save V(out)"),
                     new[] { "V(out)" },
                     absoluteTolerance: 1e-7,
-                    relativeTolerance: 1e-6),
+                    relativeTolerance: 1e-6,
+                    ltspiceNetlistLines: BuildNetlist(
+                        "op_resistor_parasitics_reference",
+                        ".options plotwinsize=0",
+                        "V1 in 0 1",
+                        "R1_RSER in r1core 10",
+                        "R1 r1core out 90",
+                        "R1_RPAR in out 900",
+                        "RLOAD out 0 900",
+                        ".op",
+                        ".save V(out)")),
 
                 new LtspiceGoldenCase(
                     "op_capacitor_parallel_resistance",
@@ -465,10 +498,12 @@ namespace SpiceSharpParser.Tests.LTspiceCompatibility
                 IReadOnlyList<string> netlistLines,
                 string[] exportNames,
                 double absoluteTolerance,
-                double relativeTolerance)
+                double relativeTolerance,
+                IReadOnlyList<string> ltspiceNetlistLines = null)
             {
                 this.Name = name;
                 this.NetlistLines = netlistLines;
+                this.LtspiceNetlistLines = ltspiceNetlistLines ?? netlistLines;
                 this.ExportNames = exportNames;
                 this.AbsoluteTolerance = absoluteTolerance;
                 this.RelativeTolerance = relativeTolerance;
@@ -477,6 +512,8 @@ namespace SpiceSharpParser.Tests.LTspiceCompatibility
             public string Name { get; }
 
             public IReadOnlyList<string> NetlistLines { get; }
+
+            public IReadOnlyList<string> LtspiceNetlistLines { get; }
 
             public string[] ExportNames { get; }
 

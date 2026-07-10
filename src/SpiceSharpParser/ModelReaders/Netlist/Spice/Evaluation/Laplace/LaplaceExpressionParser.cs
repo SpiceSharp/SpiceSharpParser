@@ -20,15 +20,18 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Laplace
         private readonly EvaluationContext _context;
         private readonly LaplaceExpressionOptions _options;
         private readonly SpiceLineInfo _lineInfo;
+        private readonly CompatibilityOptions _compatibility;
 
         public LaplaceExpressionParser(
             EvaluationContext context,
             LaplaceExpressionOptions options = null,
-            SpiceLineInfo lineInfo = null)
+            SpiceLineInfo lineInfo = null,
+            CompatibilityOptions compatibility = null)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _options = options ?? new LaplaceExpressionOptions();
             _lineInfo = lineInfo;
+            _compatibility = compatibility ?? CompatibilityOptions.None;
         }
 
         public LaplaceTransferFunction Parse(string expression)
@@ -40,7 +43,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Laplace
 
             try
             {
-                var node = Parser.Parse(Lexer.FromString(expression), true);
+                var node = Parser.Parse(Lexer.FromString(expression, _compatibility), true);
                 return Parse(node);
             }
             catch (LaplaceExpressionException)
@@ -142,7 +145,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Laplace
 
             if (!parameter.CanProvideValueDirectly)
             {
-                var parameterNode = Parser.Parse(Lexer.FromString(parameter.ValueExpression), true);
+                var parameterNode = Parser.Parse(Lexer.FromString(parameter.ValueExpression, _compatibility), true);
                 if (ContainsLaplaceSymbol(parameterNode))
                 {
                     throw CreateException("laplace transfer expression reserves symbol 's'; use a different parameter name");
@@ -485,7 +488,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Laplace
                     return "(" + left + ") / (" + right + ")";
 
                 case NodeTypes.Pow:
-                    return "(" + left + ") ^ (" + right + ")";
+                    return "(" + left + ") ** (" + right + ")";
 
                 default:
                     throw CreateException("laplace transfer expression must be a rational polynomial in s");

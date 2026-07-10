@@ -97,6 +97,7 @@ namespace SpiceSharpParser
             }
 
             var result = new SpiceNetlistParseResult { ValidationResult = new ValidationEntryCollection() };
+            Settings.Lexing.Compatibility = Settings.Compatibility;
 
             // Get tokens
             try
@@ -162,8 +163,8 @@ namespace SpiceSharpParser
 
             var objectNameGenerator = new ObjectNameGenerator(string.Empty, ".");
             INameGenerator nameGenerator = new NameGenerator(nodeNameGenerator, objectNameGenerator);
-            var expressionParserFactory = new ExpressionParserFactory(Settings.CaseSensitivity);
-            var expressionResolverFactory = new ExpressionResolverFactory(Settings.CaseSensitivity);
+            var expressionParserFactory = new ExpressionParserFactory(Settings.CaseSensitivity, Settings.Compatibility);
+            var expressionResolverFactory = new ExpressionResolverFactory(Settings.CaseSensitivity, Settings.Compatibility);
 
             EvaluationContext context = new SpiceEvaluationContext(
                 string.Empty,

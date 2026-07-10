@@ -16,7 +16,11 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                 throw new ArgumentNullException(nameof(settings));
             }
 
-            string key = settings.HasTitle + "_" + settings.IsDotStatementNameCaseSensitive;
+            string key = settings.HasTitle
+                + "_" + settings.IsDotStatementNameCaseSensitive
+                + "_" + settings.EnableBusSyntax
+                + "_" + (settings.Compatibility ?? CompatibilityOptions.None).IsLTspice
+                + "_" + (settings.Compatibility ?? CompatibilityOptions.None).IsPSpice;
 
             _cacheLock.EnterUpgradeableReadLock();
             try
@@ -26,7 +30,11 @@ namespace SpiceSharpParser.Lexers.Netlist.Spice
                     _cacheLock.EnterWriteLock();
                     try
                     {
-                        var provider = new SpiceTokenProvider(settings.HasTitle, settings.IsDotStatementNameCaseSensitive, settings.EnableBusSyntax);
+                        var provider = new SpiceTokenProvider(
+                            settings.HasTitle,
+                            settings.IsDotStatementNameCaseSensitive,
+                            settings.EnableBusSyntax,
+                            settings.Compatibility);
                         _providers[key] = provider;
                         return provider;
                     }

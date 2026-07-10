@@ -125,7 +125,7 @@ Coefficient order is ascending powers of `s`:
 ```text
 1 + tau*s      -> [1, tau]
 s + wc         -> [wc, 1]
-s^2 + a*s + b  -> [b, a, 1]
+s**2 + a*s + b -> [b, a, 1]
 ```
 
 For:
@@ -332,7 +332,7 @@ A + B      -> (An*Bd + Bn*Ad) / (Ad*Bd)
 A - B      -> (An*Bd - Bn*Ad) / (Ad*Bd)
 A * B      -> (An*Bn) / (Ad*Bd)
 A / B      -> (An*Bd) / (Ad*Bn)
-A ^ n      -> (An^n) / (Ad^n), where n is a non-negative integer
+A ** n     -> (An**n) / (Ad**n), where n is a non-negative integer
 -A         -> (-An) / Ad
 ```
 
@@ -358,7 +358,7 @@ Do not perform polynomial GCD simplification in v1. It adds complexity and is no
 - Reject hidden symbolic parameter expansion such as `.PARAM pole={s+1000}`.
 - Reject improper transfers (`deg N > deg D`) in the MVP.
 - Reject singular DC gain (`D(0) == 0`) unless a focused spike proves the runtime handles the target scenario safely.
-- Preserve interior zeros: `s^2 + 1` is `[1, 0, 1]`, not `[1, 1]`.
+- Preserve interior zeros: `s**2 + 1` is `[1, 0, 1]`, not `[1, 1]`.
 - Trim only leading near-zero high-order coefficients.
 
 Suggested tolerances:
@@ -766,7 +766,7 @@ Place near [src/SpiceSharpParser.Tests/Parsers](../src/SpiceSharpParser.Tests/Pa
 - Rational add, subtract, multiply, divide, power.
 - Zero denominator rejection.
 - Coefficients for all worked examples.
-- Rejection of `s^0.5`, `s^-1`, `sin(s)`, `exp(s)`, `V(x)*s`, stochastic functions, and hidden symbolic parameters.
+- Rejection of `s**0.5`, `s**-1`, `sin(s)`, `exp(s)`, `V(x)*s`, stochastic functions, and hidden symbolic parameters.
 
 ### Source Parser Tests
 
@@ -1053,7 +1053,7 @@ E1 out 0 LAPLACE
 E2 out 0 LAPLACE {V(in)}
 E3 out 0 LAPLACE {V(in)} = {}
 E4 out 0 LAPLACE {V(in)} = {sin(s)}
-E5 out 0 LAPLACE {V(in)} = {s^0.5}
+E5 out 0 LAPLACE {V(in)} = {s**0.5}
 E6 out 0 LAPLACE {V(in)} = {1 / 0}
 E7 out 0 LAPLACE {V(a)-V(b)} = {1/(1+s)}
 ```
