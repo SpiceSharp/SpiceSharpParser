@@ -2318,3 +2318,937 @@ exact static friction
 ```
 
 it belongs in a future custom simulation type or a dedicated physics engine, not in this package.
+
+---
+
+# 28. Review addendum — transferable lessons from `physics_engine`
+
+**Review date:** 2026-07-10
+
+The sibling `physics_engine` workspace project was reviewed for ideas that can
+strengthen this plan. It is a real-time, three-dimensional, sequential-impulse
+engine, so its solver implementation is not a source architecture for
+`SpiceSharp.Physics2D`. The useful material is primarily its validation
+strategy, mechanism oracles, invariance tests, energy accounting, and explicit
+treatment of geometric degeneracies.
+
+This addendum supplements Sections 1–27. It applies prospectively to Phases
+6–14 and to Phase 14 regression coverage for completed components. It does not
+reopen Phases 0–5, add a dependency on `physics_engine`, or authorize work from
+a later phase during an earlier task.
+
+## 28.1 Architectural filter
+
+Transfer these ideas:
+
+- structured setup issues with severity, category, entity name, and stable
+  diagnostic code;
+- cheap local validation followed by optional topology- and profile-level
+  validation;
+- analytic physical oracles rather than tests that only assert finite output;
+- isolated component tests with unrelated forces and contacts disabled;
+- sustained mechanism tests under load, reversal, and backdrive;
+- conservative, dissipative, and externally driven energy-budget categories;
+- deterministic repeated-run, symmetry, coordinate-frame, scale, and entity
+  insertion-order checks;
+- explicit reporting of characteristic frequency, damping ratio, geometric
+  error, and timestep resolution;
+- deterministic sampling of user-supplied laws over their declared domain;
+- test speed categories and machine-readable test results for long regression
+  runs.
+
+Do not transfer:
+
+- a custom world step or fixed-step loop;
+- sequential impulses, PGS/TGS, warm starting, Baumgarte bias, NGS, shock
+  propagation, position projection, or accumulated-impulse state;
+- force, torque, impulse, velocity, or derivative clamps that silently change
+  the requested equation;
+- fallback normals or axes such as a fixed unit vector when geometry is
+  degenerate;
+- silent replacement of NaN or infinity with zero;
+- sleep/wake systems, island solvers, dynamic contact topology, broad phase,
+  manifolds, CCD, collision callbacks, or runtime constraint creation;
+- rendering, GPU, scene-threading, or snapshot infrastructure;
+- `float`-based OpenTK mathematics;
+- hard unilateral branches, breakable wrappers, latches, or trigger state
+  machines without a separately approved smooth formulation and phase.
+
+SpiceSharp remains the only owner of transient stepping, Newton iteration,
+integration history, sparse solving, and accepted/rejected timepoints.
+
+## 28.2 Cross-phase verification layers
+
+Every new physical component from Phase 6 onward should be verified at the
+following layers where applicable:
+
+1. **Equation law:** direct values, signs, units, limiting cases, passivity,
+   and analytic Jacobian against an independent finite difference.
+2. **Isolated transient:** one component in zero gravity or otherwise isolated
+   from unrelated contacts and loads, compared with an analytic solution.
+3. **Coupled mechanism:** the component in a small mechanism under a known
+   static or dynamic load, including reverse drive when the law is reciprocal.
+4. **Metamorphic invariance:** equivalent results under rigid translation,
+   rigid rotation, mirror reflection, endpoint swap with mapped signs, and
+   entity insertion-order changes.
+5. **Resolution study:** at least `h`, `h/2`, and `h/4` for time-dependent
+   acceptance cases and a parameter sweep for regularization or stiffness.
+6. **Setup diagnostics:** invalid references and non-finite or degenerate
+   parameters fail before transient loading; suspicious but valid scaling is
+   reported without mutating the model.
+7. **Sustained regression:** run for a physical duration stated in periods,
+   revolutions, or settling times and compare against an oracle, not merely
+   `IsFinite`.
+
+Classify every integration scenario before asserting energy behavior:
+
+```text
+Conservative
+    no damping, friction, contact damping, source, or prescribed motion
+    assert bounded total-energy drift with timestep refinement
+
+Dissipative
+    passive damping or friction and no source
+    assert nonpositive component power and a closing energy-loss budget
+
+Driven
+    applied force, torque, voltage source, prescribed motion, or preload work
+    assert input work/power closes against stored-energy change and losses
+```
+
+The general integrated budget is:
+
+\[
+E(t)-E(0)-W_{external}(0,t)+E_{dissipated}(0,t)\approx0
+\]
+
+Use scale-aware absolute and relative tolerances and report the actual residual.
+Do not assume that total mechanical energy must decrease in a driven case.
+
+## 28.3 Phase 6 additions — compliant joints
+
+### Reference-state semantics
+
+Define deterministic reference state for every joint:
+
+- `RevoluteJoint2D` has explicit local anchors. Initial anchor mismatch is an
+  intentional preload and is never silently erased.
+- `WeldJoint2D` and `PrismaticJoint2D` expose an explicit relative reference
+  angle, or a clearly named construction mode that captures it from the entity
+  initial states during behavior binding, before the operating point.
+- An omitted reference value must not be inferred from a later Newton iterate.
+- Tests cover zero preload, explicit preload, world anchoring, two-body
+  anchoring, and reversed endpoint order.
+
+Large initial anchor or angle preload is valid when finite, but should produce
+a setup warning containing the joint name and estimated initial force/torque.
+
+### Full rotating-guide formulation
+
+Replace the abbreviated prismatic description in Phase 6 with the following
+minimum formulation. For a guide axis attached to body A:
+
+\[
+a=R(\theta_A)a_l
+\]
+
+\[
+n=\operatorname{perpendicular}(a)
+\]
+
+\[
+d=p_B-p_A
+\]
+
+Normal error and free axial travel are:
+
+\[
+e_n=n\cdot d
+\]
+
+\[
+s=a\cdot d
+\]
+
+The normal error rate is:
+
+\[
+\dot e_n=n\cdot(v_B^{point}-v_A^{point})
+-\omega_A a\cdot d
+\]
+
+The second term is required because the guide normal rotates with body A. For
+a world-fixed guide it is zero.
+
+With `perpendicular(x,y)=(-y,x)`, the position derivatives include:
+
+\[
+\frac{\partial e_n}{\partial x_A}=-n,
+\qquad
+\frac{\partial e_n}{\partial x_B}=n
+\]
+
+\[
+\frac{\partial e_n}{\partial\theta_A}
+=-a\cdot d-n\cdot\operatorname{perpendicular}(r_A)
+\]
+
+\[
+\frac{\partial e_n}{\partial\theta_B}
+=n\cdot\operatorname{perpendicular}(r_B)
+\]
+
+For scalar compliant effort
+
+\[
+\lambda=k_ne_n+c_n\dot e_n
+\]
+
+stamp generalized load from the error Jacobian:
+
+\[
+Q=-J^T\lambda
+\]
+
+This includes the guide-orientation torque. Applying only a normal force at the
+anchor is incomplete when the guide itself rotates. The production behavior
+must include the full derivative of `Q`, including the state dependence of
+`J`, `e_n`, and `dot e_n`.
+
+### Energy, power, and reaction semantics
+
+For the isotropic revolute compliance:
+
+\[
+U_{revolute}=\frac12 k_p(e_p\cdot e_p)
+\]
+
+\[
+P_{dissipated}=c_p(e_v\cdot e_v)\ge0
+\]
+
+Weld energy adds:
+
+\[
+U_{angle}=\frac12k_\theta e_\theta^2
+\]
+
+Prismatic energy adds the constrained normal and relative-angle terms:
+
+\[
+U_{prismatic}=\frac12k_ne_n^2+\frac12k_\theta e_\theta^2
+\]
+
+`DissipatedPower` means positive energy loss rate. Mechanical power contributed
+by the damper is its negative. Tests must cover:
+
+- zero error and zero relative speed;
+- force/torque as the negative gradient of stored energy;
+- nonnegative dissipated power;
+- zero net internal linear force;
+- zero net internal world-origin moment;
+- static support reaction approaching a known applied weight or torque;
+- underdamped, near-critical, and overdamped isolated cases using effective
+  mass or inertia;
+- disturbance recovery and slow load reversal.
+
+Diagnostics must be type-specific and define direction:
+
+```text
+Revolute
+    AnchorError
+    AnchorVelocityError
+
+Prismatic
+    NormalError
+    NormalVelocityError
+    AxialTravel
+    RelativeAngleError
+
+Weld
+    AnchorError
+    AnchorVelocityError
+    RelativeAngleError
+
+All joints
+    ForceOnA / ForceOnB
+    TorqueOnA / TorqueOnB
+    StoredElasticEnergy
+    DissipatedPower
+```
+
+Do not expose an unsigned or ambiguously named `ReactionForce`. Values must
+represent a documented accepted transient timepoint, not the last Newton load.
+
+### Joint setup validation
+
+Reject during setup:
+
+- missing or unresolved bodies;
+- the same body used as both dynamic endpoints unless a specific joint law
+  documents meaningful self-connection behavior;
+- non-finite anchors, axes, coefficients, and reference values;
+- a zero-length guide axis;
+- negative stiffness or damping;
+- world-to-world joints and other topologies with no dynamic row;
+- a reference mode whose initial state cannot be resolved deterministically.
+
+Warn, without modifying the model, about:
+
+- large initial preload;
+- a local anchor several declared characteristic body lengths from its center;
+- duplicate parallel compliant joints;
+- inconsistent initial geometry in a closed loop;
+- a local natural period that is poorly resolved by maximum timestep.
+
+Because the joints are compliant, duplicate or nominally over-constrained
+topology is generally a conditioning warning, not automatically a hard error.
+
+Mechanism tests must isolate joint behavior first, then test the slider-crank
+and four-bar under payload, drive reversal, and at least one complete cycle
+after initial transients. Report loop-closure error and power balance over the
+cycle.
+
+## 28.4 Phase 7 additions — geometry contract and degeneracy gate
+
+### Shape data and orientation
+
+Define local-space shape contracts before implementation:
+
+```text
+CircleShape2D(LocalCenter, Radius)
+PlaneShape2D(LocalUnitNormal, LocalOffset)
+SegmentShape2D(LocalStart, LocalEnd)
+```
+
+`PlaneShape2D` is an oriented, one-sided half-space boundary. State explicitly
+whether `SegmentShape2D` is two-sided or has a configured front normal; do not
+infer side from current body position. Geometry queries receive explicit body
+poses and return world-space results.
+
+Reject non-finite values, `Radius <= 0`, a zero plane normal, and a segment
+below a documented scale-aware minimum length. Normalize valid configured axes
+once during setup. Never substitute an arbitrary axis for invalid input.
+
+### Result invariants and swap operation
+
+Require:
+
+\[
+PointOnB-PointOnA=Gap\,Normal
+\]
+
+Define one authoritative swap operation:
+
+```text
+Swap(g) = (
+    Gap: g.Gap,
+    Normal: -g.Normal,
+    PointOnA: g.PointOnB,
+    PointOnB: g.PointOnA,
+    mapped feature/status)
+```
+
+Define canonical ordering for each query. Reversed queries must call the swap
+operation rather than independently recomputing signs.
+
+Add deterministic property tests, with fixed seeds, for:
+
+- rigid translation and rotation covariance;
+- uniform geometric scaling;
+- A/B swap identity;
+- point-gap reconstruction;
+- repeated-query bitwise determinism where the runtime permits it;
+- analytic derivatives against finite differences while the same geometric
+  feature remains active.
+
+### Analytic derivative result
+
+Phase 7 currently asks for finite-difference geometry derivatives but does not
+define an analytic derivative API. Add either:
+
+```text
+ContactGeometryDerivatives2D
+```
+
+or equivalent internal derivative storage consumed directly by Phase 8. It
+must cover the gap, normal, and contact-point derivatives with respect to all
+participating body pose variables. Do not reconstruct these derivatives by
+finite difference inside contact loading.
+
+Return feature and differentiability status, for example:
+
+```text
+CirclePlane
+CircleCircle
+SegmentInterior
+SegmentStart
+SegmentEnd
+FeatureBoundary
+NormalUndefined
+```
+
+### Mandatory degeneracy decision before Phase 8
+
+Coincident circle centers do not have a unique unit normal. A circle center
+exactly on its closest segment point has the same problem. A closest point on a
+hard finite segment also changes derivative branch at each endpoint.
+
+Before Phase 8 begins, its ADR must choose and test one of these strategies for
+each dynamic contact type:
+
+1. a rotationally covariant smooth regularization with complete analytic
+   derivatives and documented non-unit behavior near its scale;
+2. a mathematically justified stateful normal based only on accepted history,
+   with deterministic retry/rollback semantics proven against SpiceSharp; or
+3. an explicit domain restriction that rejects or defers the degenerate or
+   feature-switching case.
+
+A fixed fallback direction may be returned only as diagnostic geometry marked
+`IsDifferentiable = false`; it must not enter a production Newton force stamp.
+Do not claim a unit-normal tolerance inside a regularized neighborhood where
+the selected formulation is intentionally non-unit.
+
+For circle-segment contact, either provide a smooth closest-feature blend or
+limit the first dynamic component to a fixed smooth feature region. The hard
+`clamp` used by ordinary closest-point-on-segment geometry is not by itself a
+smooth Phase 8 force law.
+
+Phase 8 is blocked until this degeneracy/feature-transition decision is
+documented and its derivative contract is verified.
+
+## 28.5 Phases 8–9 additions — contact scaling and passivity
+
+### Exact-zero smooth contact activation
+
+The normal-law proposal in Phase 8 must be revised before implementation. The
+square-root positive part
+
+\[
+\frac12(x+\sqrt{x^2+\epsilon^2})
+\]
+
+is useful for regularization, but it is strictly positive for every finite
+negative input. Applying another positive-part regularization to the final
+normal force also produces a nonzero force when its input is zero. Used as
+written in Phase 8, the law therefore has an infinite-range repulsive tail and
+cannot be exactly inactive while separated.
+
+For the first contact model, use a compact one-sided `C2` ramp such as:
+
+\[
+P_\epsilon(x)=
+\begin{cases}
+0,&x\le0\\
+\epsilon(6t^3-8t^4+3t^5),\quad t=x/\epsilon,&0<x<\epsilon\\
+x,&x\ge\epsilon
+\end{cases}
+\]
+
+Its value, first derivative, and second derivative match at both boundaries.
+The implementation may use branches because the resulting mathematical law is
+`C2`; it must provide the exact analytic derivatives for each region.
+
+This ramp changes compliance inside its activation interval. The static
+`mg/k` oracle is valid only when the predicted equilibrium penetration lies in
+the linear region, or else the test must compare against the exact inverse of
+the configured ramp law. Report the ratio of equilibrium penetration to
+`epsilon_delta`.
+
+Use:
+
+\[
+\delta_+=P_{\epsilon_\delta}(-g)
+\]
+
+and a dimensionless `C2` activation:
+
+\[
+S_\epsilon(x)=
+\begin{cases}
+0,&x\le0\\
+10t^3-15t^4+6t^5,\quad t=x/\epsilon,&0<x<\epsilon\\
+1,&x\ge\epsilon
+\end{cases}
+\]
+
+For the v1 linear contact law:
+
+\[
+F_{elastic}=k\delta_+
+\]
+
+\[
+F_{damping}=cS_{\epsilon_\delta}(-g)
+P_{\epsilon_v}(-v_n)
+\]
+
+\[
+F_n=F_{elastic}+F_{damping}
+\]
+
+No outer positive-part or force clamp is needed: both terms are nonnegative,
+and both are exactly zero for `g >= 0`. Damping is active only for closing
+motion and penetration activation, so its two-body mechanical power satisfies:
+
+\[
+P_{damping}=F_{damping}v_n\le0
+\]
+
+Fix the v1 exponents to linear elastic response and ordinary viscous units.
+Do not expose the original damping exponent `r`. A later Hertz-like law may be
+added only with an explicitly named coefficient whose units are
+`N/m^p`, a defined tangent stiffness, and separate tests. `NormalStiffness` in
+`N/m` is dimensionally correct only for `p = 1`.
+
+Add direct tests for exact zero force at every positive gap, `C2` boundary
+matching, monotonic elastic force, nonpositive damping power, zero damping on
+separation, and the full analytic Jacobian on each smooth region. Test close to
+both ramp boundaries without centering a finite-difference stencil across a
+piecewise boundary.
+
+### Directional effective mass
+
+Make the Phase 8 timestep diagnostic explicit. For a contact row along normal
+`n` with center-to-contact lever arms `rA` and `rB`, the two-dimensional inverse
+effective mass is:
+
+\[
+m_{eff}^{-1}=
+m_A^{-1}+m_B^{-1}
++\frac{(r_A\times n)^2}{I_A}
++\frac{(r_B\times n)^2}{I_B}
+\]
+
+Omit world/static terms. Use the local tangent stiffness of the nonlinear
+normal law at the current or estimated operating penetration:
+
+\[
+k_t=\frac{\partial F_{elastic}}{\partial\delta}
+\]
+
+Then report:
+
+\[
+\omega_n\approx\sqrt{k_t/m_{eff}}
+\]
+
+and, where a linearized damping coefficient is meaningful:
+
+\[
+\zeta\approx\frac{c_t}{2\sqrt{k_t m_{eff}}}
+\]
+
+The setup diagnostic should report estimated points per period at the
+configured maximum timestep. It must never change the timestep, stiffness, or
+damping automatically.
+
+### Contact and friction verification
+
+Add these tests to Phases 8 and 9:
+
+- swap the two dynamic shapes and verify mapped force, torque, gap, and power;
+- rigidly rotate the complete scene, including gravity and fixed geometry, and
+  verify mapped trajectories;
+- verify off-center effective mass against an independently derived impulse or
+  acceleration response without implementing an impulse solver;
+- verify elastic contact storage and damping loss in an isolated normal
+  oscillator;
+- sweep smoothing length, smoothing speed, stiffness, and timestep rather than
+  validating only one tuned case;
+- verify that increasing damping does not increase rebound energy;
+- verify long sliding runs at low, nominal, and high slip speed;
+- verify deterministic repeated trajectories on both sides of zero slip;
+- verify that contact and friction never create net internal force or
+  world-origin moment for a two-body pair.
+
+Tangential slip velocity must use full surface-point velocity for both bodies:
+
+\[
+v_t=t\cdot
+\left(v_B+\omega_B\operatorname{perpendicular}(r_B)
+-v_A-\omega_A\operatorname{perpendicular}(r_A)\right)
+\]
+
+The tangent convention must be derived once from the oriented normal and map
+consistently under A/B swap. Friction passivity is checked using the complete
+point-force power, not center velocity alone.
+
+For `RegularizedFrictionLaw`, also test:
+
+- odd symmetry: `Ft(-vt) = -Ft(vt)`;
+- origin slope: `dFt/dvt = -mu*Fn/vs` at zero slip;
+- monotonic force magnitude as `abs(vt)` increases;
+- `mu = 0` reproduces the Phase 8 normal-only trajectory;
+- exact zero friction whenever normal contact is inactive;
+- high-slip incline acceleration approaches
+  `g*(sin(angle) - mu*cos(angle))` under the documented sign convention.
+
+In v1, `ContactMaterial2D` is the already-combined material owned by one
+explicit contact entity. Do not add implicit per-body material combination.
+Validate every material value as finite, with positive normal stiffness,
+nonnegative damping and friction coefficient, and strictly positive smoothing
+scales. Exceptions include the contact entity name.
+
+Do not import restitution impulses, static/dynamic friction pairs, manifold
+warm starts, penetration slop, hard stick/slip branches, or force caps. Contact
+instability must remain visible through convergence failure, resolution
+studies, and setup guidance.
+
+## 28.6 Phase 10 additions — lift-law validation and preload oracle
+
+### Lift-law validation contract
+
+Require `ICamLiftLaw.Period` to be finite and strictly positive. During setup,
+sample the declared operating domain deterministically, including both sides
+of the periodic seam, and validate:
+
+- `s(theta)`, `s'(theta)`, and `s''(theta)` are finite and do not throw;
+- position, first derivative, and second derivative are periodic;
+- configured lift fits the follower's declared travel range;
+- derivative and acceleration scales are reported for timestep guidance.
+
+Retain runtime fail-fast checks because a user implementation can still be
+stateful or invalid. Never replace invalid law output with zero, clamp a
+derivative, or finite-difference a derivative in production.
+
+Add tests for invalid/nonpositive period, non-finite values from each method,
+exceptions, second-derivative seam mismatch, and validation that does not
+mutate the law.
+
+### Define the polynomial law
+
+Define `PolynomialCamLiftLaw` as a `C2` rise–dwell–return law using normalized
+3-4-5 motion for rise and return:
+
+\[
+q(u)=10u^3-15u^4+6u^5,
+\qquad 0\le u\le1
+\]
+
+Segment spans must be finite, positive where motion occurs, nonoverlapping,
+and sum to exactly one period under a deterministic boundary-ownership rule.
+At every rise/dwell/return join, position is continuous and both velocity and
+acceleration approach zero. Test `s`, `s'`, and `s''` at both sides of every
+boundary and verify near-zero follower velocity during dwell.
+
+### Quantitative preload/lift-off oracle
+
+For prescribed cam angular speed and acceleration, the follower acceleration
+implied by the lift law is:
+
+\[
+a_f=s''(\theta)\omega^2+s'(\theta)\dot\omega
+\]
+
+Use this to estimate the maximum separating inertial plus external load. Test
+preload just below and just above the predicted contact-maintenance threshold,
+with timestep refinement for the compliant transition. The sample must include
+an explicit return spring and report contact-loss count as well as gap.
+
+Exercise arbitrary periods and multi-lobe laws. A law with period `2*pi/n`
+must produce exactly `n` lift cycles per shaft revolution. Run at least ten
+revolutions without seam force/torque spikes and compare cycle-aligned output
+after initial transients.
+
+Add reciprocal-load tests: follower preload must increase cam reaction torque,
+and a follower-side disturbance must transmit mechanical power back to the cam
+with the virtual-work sign convention.
+
+## 28.7 Phase 11 additions — profile admissibility and pressure angle
+
+Before constructing geometric roller contact, validate:
+
+- periodic closure of position, first derivative, and second derivative;
+- finite samples and nonzero tangent magnitude;
+- one documented winding and outward-normal convention;
+- finite curvature;
+- no ambiguous equal-distance branch in the declared operating range, or an
+  explicit deterministic branch policy;
+- regular roller-offset geometry, with `1 +/- rollerRadius*curvature` bounded
+  away from zero according to the chosen normal convention;
+- no cusp, undercut, or self-intersection in the contact offset used by the
+  tested operating range.
+
+Reverse parameterization must not change physical gap, outward normal, or
+contact force. Uniform scale and rigid-transform tests must map closest point,
+normal, curvature, and gap correctly.
+
+Add geometric pressure-angle diagnostics:
+
+\[
+\alpha=\cos^{-1}(|n\cdot a_f|)
+\]
+
+where `a_f` is the follower-axis unit vector. Export instantaneous and maximum
+pressure angle and test analytic circle/ellipse cases. A configurable design
+warning may be emitted above a documented threshold, but it must never modify
+the force law. Pressure angle belongs to geometric Phase 11; a lift law alone
+does not contain enough geometry.
+
+## 28.8 Phase 12 additions — reciprocal motor coupling
+
+State the ideal SI passivity contract explicitly. Choose one of:
+
+1. a single ideal motor constant with numerically equal torque and back-EMF
+   constants in SI units; or
+2. separate `Kt` and `Ke` only with an explicit conversion/efficiency model
+   whose loss or gain appears in the energy budget.
+
+Do not expose arbitrary unequal constants while also claiming an ideal closing
+power balance.
+
+Directly verify the off-diagonal coupled stamp. With the configured shaft sign,
+the electrical back-EMF derivative and mechanical torque derivative must be
+power-conjugate.
+
+Add backdrive tests:
+
+- open circuit: terminal voltage approaches `Ke*omega` with the documented
+  polarity;
+- resistive or shorted load: induced current creates torque opposing rotation;
+- mechanical energy lost during backdrive closes against copper loss and any
+  stored magnetic-energy change;
+- reversing electrical polarity and reversing shaft direction map consistently.
+
+Extend the motor-driven cam verification with unloaded and preloaded cases:
+
+- follower preload or mass increases armature current;
+- finite supply voltage produces loaded speed droop;
+- current and torque ripple are phase-correlated with cam slope and follower
+  force;
+- integrated supply energy closes against copper loss, magnetic and kinetic
+  energy changes, elastic storage, damping, and contact dissipation.
+
+Export at least:
+
+```text
+voltage,current,backEmf,electricalPower,shaftPower,copperLoss,
+camAngle,camTorque,followerForce,gap
+```
+
+## 28.9 Phase 13 additions — setup validator and accepted diagnostics
+
+Add an optional read-only setup validator over the explicit SpiceSharp entity
+collection. It may accept a read-only validation context containing such
+values as the configured maximum timestep, but it is not a world, solver,
+force accumulator, or alternate setup lifecycle. It never changes parameters
+or topology.
+
+Suggested levels:
+
+```text
+Basic
+    unresolved references
+    NaN / infinity
+    invalid signs and ranges
+    degenerate axes, shapes, and world-to-world no-ops
+
+Standard
+    characteristic-frequency and timestep-resolution warnings
+    suspicious regularization-to-length ratios
+    large anchor lever arms when a characteristic length is declared
+    duplicate components and initial contact overlap
+
+Full
+    compliant-joint topology and closed-loop consistency warnings
+    cam-law domain and seam sampling
+    geometric-cam regularity, curvature, and pressure-angle checks
+    electromechanical passivity configuration
+```
+
+Each issue contains:
+
+```text
+StableCode
+Severity: Error / Warning / Info
+Category
+EntityName or involved entity names
+Message with values and units
+Optional suggested corrective action
+```
+
+Errors represent configurations that cannot produce the documented equation.
+Warnings represent conditioning, resolution, or unusual-but-valid modeling
+choices. Tests must assert stable codes and structured fields rather than full
+English message text.
+
+Add characteristic diagnostics where mathematically defined:
+
+- directional effective mass or inertia;
+- local tangent stiffness;
+- natural frequency and period;
+- damping ratio;
+- maximum timestep divided by local period;
+- regularization divided by characteristic geometric scale;
+- initial preload force/torque;
+- cam maximum slope, acceleration, curvature, and pressure angle.
+
+Diagnostics and exports must identify accepted-timepoint semantics. Do not
+publish mutable last-Newton values as if they were accepted history. If the
+SpiceSharp API cannot expose an accepted value reliably, omit that diagnostic
+and record the limitation.
+
+Define `EnergyDiagnostics2D` and `ResidualDiagnostics2D` rather than leaving
+them as directory placeholders. They are opt-in and should remain
+allocation-free in the load path. Where values are reliable, include:
+
+```text
+kinetic and stored elastic energy
+elastic and damping portions of normal force
+reversible elastic power
+nonnegative damping and friction loss rates
+action/reaction force residual
+world-origin torque residual
+first non-finite time, entity, and channel
+normalized accepted-timepoint energy-balance residual
+```
+
+Do not label an internal SpiceSharp Newton residual as a physics residual unless
+the supported public API exposes it with unambiguous iteration/timepoint
+semantics.
+
+## 28.10 Phase 14 additions — oracle-based regression matrix
+
+For every regression scene, record:
+
+```text
+physical duration in periods, revolutions, or settling times
+initial phase and initial preload
+maximum timestep and at least one refined timestep
+expected direction and analytic amplitude/frequency/ratio where available
+maximum geometric error
+peak force, torque, power, and current where applicable
+contact-loss or lift-off count
+cycle-to-cycle residual after settling
+energy or power-budget residual
+deterministic repeated-run comparison
+```
+
+Add a metamorphic matrix across representative components:
+
+- rigid translation of the complete model;
+- rigid rotation of model, gravity, planes, guide axes, and outputs;
+- mirror reflection with mapped torque signs;
+- A/B endpoint swap with mapped reactions;
+- entity insertion-order permutation;
+- uniform length/mass/stiffness scaling with analytically scaled expected
+  frequency or trajectory;
+- initial angles on both sides of every periodic seam;
+- low, nominal, and high operating speed;
+- low, nominal, and high mass ratio and lever arm;
+- regularization and timestep sweeps around documented guidance boundaries.
+
+Use accepted export trajectories to create a deterministic fingerprint for
+test comparison if useful. Build the fingerprint from stable entity-name order
+and explicitly quantized double values at fixed query times. On mismatch,
+report the first differing entity, channel, time, and values. Promise only
+same-runtime, same-configuration determinism unless cross-runtime evidence is
+measured. Do not use reflection to snapshot or restore SpiceSharp private
+integration or Newton state, and do not promise rollback.
+
+For cams, include preload just below/above lift-off, multiple revolutions, and
+two phase-offset followers on one shaft. The latter verifies that independent
+component stamps add rather than overwrite one another and that shaft power
+matches the sum of both branches.
+
+For the motor, include stall, no-load, backdriven, and loaded speed-current
+points plus the motor-driven cam. For completed springs and joints, include
+under-, near-critical-, and over-damped cases and slow-load/reversal cases.
+
+Classify tests by expected runtime, for example:
+
+```text
+Fast
+    direct laws, Jacobians, validation, and short analytic transients
+
+Integration
+    mechanisms, multi-period convergence, and energy budgets
+
+LongRunning
+    full regression corpus, parameter sweeps, and performance baselines
+```
+
+Emit machine-readable test results for the long suite and use a documented
+hang timeout. Keep failures reproducible by recording deterministic seed,
+parameters, timestep, integration method, target framework, and commit.
+
+Settling checks must use a tail window rather than one favorable final sample.
+Report mean error or penetration, RMS velocity, peak-to-peak chatter, force
+balance, and the window duration. Sweep both mass ratio and the dimensionless
+resolution ratio
+
+\[
+\chi=h\sqrt{k_t/m_{eff}}
+\]
+
+through the documented operating range. When a deterministic randomized case
+fails, print the full generated parameters and promote the minimized case to a
+named fixed regression before release.
+
+Performance reports must include both total allocation and steady-state
+allocation after behavior construction. Report cost per accepted point in
+addition to wall time, because rejected Newton/timepoint work may otherwise be
+hidden.
+
+## 28.11 Deferred candidates discovered by the review
+
+The following concepts are potentially useful but are not added to the current
+phase scope:
+
+```text
+GearCoupling2D
+RackAndPinionCoupling2D
+PulleyCoupling2D
+smooth tension-only spring
+progressive spring
+bistable spring
+joint limits, motors, latches, detents, and breakable elements
+```
+
+A compliant gear relation is a plausible future component:
+
+\[
+C=R\theta_A+\theta_B-C_0
+\]
+
+\[
+\dot C=R\omega_A+\omega_B
+\]
+
+but it must receive a separate approved phase or plan revision with analytic
+Jacobians, loop-consistency validation, power tests, and unbounded-angle
+semantics. None of these candidates may be pulled into Phase 6 or Phase 14
+merely because the reference project contains an impulse-based version.
+
+## 28.12 Non-normative review evidence
+
+The following sibling-project artifacts motivated this addendum. They are
+review provenance only and are not package inputs or dependencies:
+
+```text
+physics_engine/src/PhysicsEngine/Diagnostics/SetupValidator.cs
+physics_engine/src/PhysicsEngine/Diagnostics/ValidationRules.cs
+physics_engine/src/PhysicsEngine/Dynamics/PrismaticConstraint.cs
+physics_engine/src/PhysicsEngine/Dynamics/CamFollowerConstraint.cs
+physics_engine/src/PhysicsEngine/Dynamics/ContactSolver.cs
+physics_engine/docs/engine/reference/Effective-Mass-Computation.md
+physics_engine/docs/engine/reference/Coupling-Constraints-Math.md
+physics_engine/docs/general/mechanisms/motion-conversion/cams/Cam-Follower-Physics.md
+physics_engine/tests/PhysicsEngine.Tests/Constraints/SpringDamperVerificationTests.cs
+physics_engine/tests/PhysicsEngine.Tests/Collision/CollisionResponseTests.cs
+physics_engine/tests/PhysicsEngine.Tests/Stability/AdvancedDiagnosticTests.cs
+physics_engine/tests/PhysicsEngine.Tests/Stability/ContactTuningTests.cs
+physics_engine/tests/PhysicsEngine.Tests/Stability/RobustnessInvarianceTests.cs
+physics_engine/tests/PhysicsEngine.Tests/Stability/DeterministicReplayTests.cs
+physics_engine/tests/PhysicsEngine.Tests/Validation/CamProfileValidationTests.cs
+physics_engine/tests/PhysicsEngine.Tests/Validation/AnchorLeverArmTests.cs
+physics_engine/tests/PhysicsEngine.Tests/Constraints/ConstraintMechanismVerificationTests.cs
+physics_engine/tests/PhysicsEngine.Tests/Constraints/MechanismUnderLoadTests.cs
+physics_engine/tests/PhysicsEngine.Tests/Mechanisms/RackAndPinionTests.cs
+```
+
+Where the reference project silently clamps, substitutes values, or uses an
+iterative-impulse workaround, this plan deliberately keeps the equation visible
+and requires either setup rejection, a smooth analytic regularization, or a
+documented convergence failure.
