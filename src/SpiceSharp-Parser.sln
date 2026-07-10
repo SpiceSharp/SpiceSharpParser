@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceSharp.Physics2D.Tests"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceSharp.Physics2D.Samples.FreeFall", "..\samples\SpiceSharp.Physics2D.Samples\FreeFall\SpiceSharp.Physics2D.Samples.FreeFall.csproj", "{6A0D32BF-7BB2-47B9-AD18-3E19E486A6A1}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceSharp.Physics2D.Samples.Pendulum", "..\samples\SpiceSharp.Physics2D.Samples\Pendulum\SpiceSharp.Physics2D.Samples.Pendulum.csproj", "{B8A940F7-B936-490C-A85A-DA5FF99AD8A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -94,6 +96,12 @@ Global
 		{6A0D32BF-7BB2-47B9-AD18-3E19E486A6A1}.ERRORS|Any CPU.Build.0 = Release|Any CPU
 		{6A0D32BF-7BB2-47B9-AD18-3E19E486A6A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A0D32BF-7BB2-47B9-AD18-3E19E486A6A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8A940F7-B936-490C-A85A-DA5FF99AD8A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8A940F7-B936-490C-A85A-DA5FF99AD8A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8A940F7-B936-490C-A85A-DA5FF99AD8A6}.ERRORS|Any CPU.ActiveCfg = Release|Any CPU
+		{B8A940F7-B936-490C-A85A-DA5FF99AD8A6}.ERRORS|Any CPU.Build.0 = Release|Any CPU
+		{B8A940F7-B936-490C-A85A-DA5FF99AD8A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8A940F7-B936-490C-A85A-DA5FF99AD8A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
