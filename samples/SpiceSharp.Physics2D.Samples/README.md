@@ -3,6 +3,10 @@
 The samples cover the implemented Phase 00–06 API. They use ordinary
 SpiceSharp `Transient` simulations and do not depend on any later phase.
 
+New to the project? Read the short
+[project README](../../src/SpiceSharp.Physics2D/README.md), then follow the
+[getting-started tutorial](../../docs/tutorials/spicesharp-physics2d-getting-started.md).
+
 ## Start here: numbered learning path
 
 If you are learning the library, begin with the
