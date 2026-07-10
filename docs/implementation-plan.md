@@ -1,0 +1,2320 @@
+# SpiceSharp.Physics2D
+## Phase-by-phase Codex implementation plan
+
+**Purpose:** Implement a useful, verified 2D mechanical-physics library using the existing SpiceSharp `Transient` simulation and custom SpiceSharp entities/behaviors only.
+
+**Target package name:** `SpiceSharp.Physics2D`
+
+**Core restriction:** Do not implement a custom simulation type, custom time integrator, custom global solver, impulse solver, collision world, or game engine.
+
+The library will represent mechanical state as SpiceSharp solver variables and will stamp smooth mechanical differential equations into the existing transient Newton/MNA system.
+
+---
+
+# 1. Product goal
+
+Create a small but credible 2D mechanics library that supports:
+
+- translational and rotational generalized coordinates;
+- planar rigid bodies;
+- gravity;
+- applied force and torque;
+- linear and angular damping;
+- springs and dampers between body-local anchor points;
+- compliant revolute, prismatic, and weld joints;
+- explicitly declared smooth circle/plane and circle/circle contacts;
+- regularized friction;
+- custom cam lift laws;
+- roller-follower contact against a smooth cam profile;
+- mechanical exports and diagnostics;
+- optional electrical-to-mechanical coupling in later phases.
+
+The intended use cases are:
+
+- mass–spring–damper systems;
+- pendulums;
+- double pendulums with compliant joints;
+- slider-crank mechanisms;
+- soft four-bar mechanisms;
+- spring-loaded followers;
+- custom cam profiles;
+- explicit soft impacts;
+- small electromechanical mechanisms.
+
+The library is **not** intended to support:
+
+- rigid impulse contact;
+- exact complementarity constraints;
+- automatic collision-pair discovery;
+- broad-phase collision detection;
+- persistent contact manifolds;
+- exact Coulomb static friction;
+- large stacks or piles of rigid objects;
+- continuous collision detection;
+- game-engine scenes;
+- dynamically created solver variables during transient execution.
+
+---
+
+# 2. Non-negotiable architecture rules
+
+Codex must follow all of these rules in every phase.
+
+## 2.1 Use ordinary SpiceSharp `Transient`
+
+All mechanics must execute through the existing SpiceSharp transient simulation.
+
+Do not create:
+
+```text
+MechanicalTransient2D
+PhysicsSimulation
+CustomTransient
+MechanicalSolver
+```
+
+Do not subclass or replace the built-in transient solver.
+
+## 2.2 Use custom SpiceSharp entities and behaviors
+
+Persistent mechanical model objects are SpiceSharp entities:
+
+```text
+MechanicalCoordinate
+RigidBody2D
+Gravity2D
+PointForce2D
+AppliedTorque2D
+DistanceSpringDamper2D
+RevoluteJoint2D
+PrismaticJoint2D
+WeldJoint2D
+CircleGroundContact2D
+CircleCircleContact2D
+CamFollowerContact2D
+```
+
+Each entity creates the behavior interfaces required by the existing simulation, such as the exact supported forms of:
+
+```text
+IBiasingBehavior
+ITimeBehavior
+IConvergenceBehavior
+```
+
+Codex must verify the repository's actual public API before using any interface or helper.
+
+## 2.3 Mechanics is stamped as equations
+
+For one generalized coordinate, use two unknowns:
+
+```text
+q = generalized position
+u = generalized velocity
+```
+
+The governing equations are:
+
+\[
+\dot q-u=0
+\]
+
+\[
+M\dot u-Q(q,u,t)=0
+\]
+
+where:
+
+- \(M\) is generalized mass or rotational inertia;
+- \(Q\) is the total generalized force.
+
+For a planar rigid body, create three coordinate pairs:
+
+```text
+x, vx
+y, vy
+angle, omega
+```
+
+The body stamps only inertia and kinematic relations. Force, joint, and contact components stamp their contributions directly into the corresponding body equations.
+
+## 2.4 Do not use a global force accumulator
+
+Do not build a separate world step that first gathers all forces.
+
+Each behavior must stamp its own force and Jacobian contributions into the SpiceSharp matrix and RHS during the normal SpiceSharp load pass.
+
+## 2.5 Dynamic topology is forbidden
+
+All body-to-body interactions must be declared before simulation starts.
+
+A contact is an explicit entity such as:
+
+```csharp
+new CircleGroundContact2D(...);
+new CircleCircleContact2D(...);
+```
+
+Do not search for contacts automatically.
+
+## 2.6 Smooth equations only
+
+All nonlinear mechanics equations must be continuously differentiable enough for Newton iteration.
+
+Avoid raw:
+
+```text
+Math.Max
+Math.Min
+Math.Sign
+if penetration > 0
+absolute value with a hard cusp
+discontinuous friction
+instantaneous collision impulses
+```
+
+Use documented smooth approximations with analytic derivatives.
+
+## 2.7 Double precision throughout
+
+Use a custom double-precision `Vector2D`.
+
+Do not use `System.Numerics.Vector2` as the authoritative physics type because it stores `float`.
+
+## 2.8 Analytic Jacobians are required
+
+Every nonlinear component must provide its Jacobian.
+
+Every nonlinear component must also have an automated central-finite-difference test comparing the analytic Jacobian against an independent numerical approximation.
+
+Do not ship finite differences in the production load loop.
+
+## 2.9 No parser work before the physics API is stable
+
+The first release is programmatic C# only.
+
+Do not modify SpiceSharpParser during these phases.
+
+## 2.10 One Codex task equals one phase
+
+Codex must:
+
+1. implement only the requested phase;
+2. add all required tests;
+3. run the complete test suite;
+4. write `docs/verification/phase-XX.md`;
+5. summarize measured results;
+6. stop.
+
+Codex must not begin the next phase.
+
+---
+
+# 3. Proposed repository structure
+
+Codex may adapt paths to the target repository, but should preserve this separation:
+
+```text
+src/
+  SpiceSharp.Physics2D/
+    Mathematics/
+      Vector2D.cs
+      Matrix2x2D.cs
+      SmoothFunctions.cs
+      AngleMath.cs
+
+    Core/
+      MechanicalCoordinate.cs
+      MechanicalCoordinateParameters.cs
+      IMechanicalCoordinateBehavior.cs
+      MechanicalInitialConditionMode.cs
+
+    Bodies/
+      RigidBody2D.cs
+      RigidBody2DParameters.cs
+      IRigidBody2DBehavior.cs
+      BodyLocalPoint2D.cs
+
+    Forces/
+      Gravity2D.cs
+      AppliedForce2D.cs
+      PointForce2D.cs
+      AppliedTorque2D.cs
+      LinearDrag2D.cs
+      AngularDrag2D.cs
+
+    Connections/
+      DistanceSpringDamper2D.cs
+      RotationalSpringDamper2D.cs
+
+    Joints/
+      RevoluteJoint2D.cs
+      PrismaticJoint2D.cs
+      WeldJoint2D.cs
+
+    Contact/
+      ContactMaterial2D.cs
+      CircleGroundContact2D.cs
+      CircleCircleContact2D.cs
+      SmoothContactLaw.cs
+      RegularizedFrictionLaw.cs
+
+    Cams/
+      ICamLiftLaw.cs
+      PeriodicCubicSpline1D.cs
+      CamLiftContact2D.cs
+      IParametricCurve2D.cs
+      PeriodicSplineCurve2D.cs
+      RollerCamContact2D.cs
+
+    Coupling/
+      DcMotorCoupler2D.cs
+
+    Exports/
+      MechanicalCoordinateExports.cs
+      RigidBody2DExports.cs
+      ContactExports.cs
+
+    Diagnostics/
+      EnergyDiagnostics2D.cs
+      ResidualDiagnostics2D.cs
+
+    Internal/
+      NonlinearStamp.cs
+      BehaviorLookup.cs
+      SolverVariablePair.cs
+
+tests/
+  SpiceSharp.Physics2D.Tests/
+    ApiProof/
+    Mathematics/
+    Coordinates/
+    Bodies/
+    Forces/
+    Connections/
+    Joints/
+    Contact/
+    Cams/
+    Coupling/
+    Integration/
+    Jacobians/
+    Regression/
+
+samples/
+  SpiceSharp.Physics2D.Samples/
+    FreeFall/
+    Oscillator/
+    Pendulum/
+    SliderCrank/
+    BouncingCircle/
+    CamFollower/
+    DcMotorMechanism/
+
+docs/
+  architecture/
+  equations/
+  verification/
+```
+
+---
+
+# 4. General implementation conventions
+
+## 4.1 Units
+
+Use SI units:
+
+```text
+position        metre
+velocity        metre/second
+angle           radian
+angular speed   radian/second
+mass            kilogram
+inertia         kilogram metre squared
+force           newton
+torque          newton metre
+stiffness       newton/metre
+damping         newton second/metre
+time            second
+```
+
+Do not encode units in variable names such as `PositionMm`.
+
+## 4.2 Angles
+
+Store body angle as an unbounded real value in radians.
+
+Do not wrap the authoritative angle state after every step.
+
+Only wrap relative-angle errors where the physical component requires a shortest-angle difference.
+
+## 4.3 Initial conditions
+
+The first implementation must support:
+
+```csharp
+InitialPosition
+InitialVelocity
+```
+
+For the transient operating-point stage, the default initialization policy must lock the generalized coordinate to its requested initial position and velocity.
+
+Do not attempt a general mechanical static-equilibrium solver in the first release.
+
+Potential API:
+
+```csharp
+public enum MechanicalInitialConditionMode
+{
+    HoldSpecifiedStateDuringOperatingPoint
+}
+```
+
+Do not add another enum member until a tested behavior exists.
+
+## 4.4 Scaling
+
+The first implementation uses direct SI values.
+
+Add diagnostics for badly scaled values, but do not silently rescale user values.
+
+Examples of warnings:
+
+```text
+mass <= 0
+inertia <= 0
+contact stiffness produces an estimated natural period below 10 times the maximum timestep
+length regularization is too large relative to rest length
+friction smoothing speed is nonpositive
+```
+
+## 4.5 Runtime allocation
+
+After behavior construction:
+
+- no reflection in load loops;
+- no dictionary lookup by entity name in load loops;
+- no LINQ in load loops;
+- no per-load arrays or lists;
+- no per-load delegates;
+- no hidden conversion to `float`.
+
+Resolve linked body behaviors during behavior construction and cache all solver locations.
+
+## 4.6 Failure behavior
+
+Throw descriptive exceptions during setup for invalid topology or parameters.
+
+During simulation:
+
+- do not hide NaN;
+- do not replace infinity with zero;
+- do not catch convergence exceptions unless adding useful context and rethrowing;
+- include entity names in diagnostic exceptions.
+
+---
+
+# 5. Numerical formulation
+
+## 5.1 Generalized coordinate
+
+Unknown vector:
+
+\[
+z=
+\begin{bmatrix}
+q\\
+u
+\end{bmatrix}
+\]
+
+Residual:
+
+\[
+R_q=\dot q-u
+\]
+
+\[
+R_u=M\dot u-Q(q,u,t)
+\]
+
+The coordinate behavior owns and stamps:
+
+- derivative state for \(q\);
+- derivative state for \(u\), or momentum \(Mu\);
+- the `-u` term in the kinematic equation;
+- the inertial contribution \(M\dot u\);
+- operating-point initial-condition equations.
+
+Force components add \(-Q\) to the dynamics residual and the corresponding derivatives.
+
+## 5.2 Newton stamping
+
+For a nonlinear residual \(R(z)=0\), stamp:
+
+\[
+J(z_k)z_{k+1}=J(z_k)z_k-R(z_k)
+\]
+
+Codex must implement one tested internal helper or a documented explicit pattern for nonlinear mechanical stamping.
+
+The helper must not conceal signs. Its tests must include a scalar nonlinear residual with a known Newton step.
+
+## 5.3 Body-local anchor point
+
+For local anchor \(r_l=(r_x,r_y)\) and body angle \(\theta\):
+
+\[
+r_w=
+\begin{bmatrix}
+\cos\theta&-\sin\theta\\
+\sin\theta&\cos\theta
+\end{bmatrix}r_l
+\]
+
+World anchor:
+
+\[
+p=p_c+r_w
+\]
+
+Point velocity:
+
+\[
+v_p=
+\begin{bmatrix}v_x\\v_y\end{bmatrix}
++
+\omega
+\begin{bmatrix}-r_{w,y}\\r_{w,x}\end{bmatrix}
+\]
+
+Torque from a world force:
+
+\[
+\tau=r_{w,x}F_y-r_{w,y}F_x
+\]
+
+All derivatives with respect to angle, translational velocity, and angular velocity must be tested.
+
+## 5.4 Smooth positive part
+
+Provide a shared function:
+
+\[
+\operatorname{positive}_\epsilon(x)=
+\frac12\left(x+\sqrt{x^2+\epsilon^2}\right)
+\]
+
+Also provide its first derivative.
+
+Do not duplicate slightly different smoothing formulas across contact components.
+
+## 5.5 Smooth friction
+
+Initial regularized friction:
+
+\[
+F_t=-\mu F_n\tanh(v_t/v_s)
+\]
+
+where \(v_s>0\) is the smoothing speed.
+
+This model is viscous-like near zero velocity and Coulomb-like away from zero. It is not exact static friction; document that clearly.
+
+---
+
+# 6. Global quality gates
+
+Every phase must pass:
+
+```bash
+dotnet restore
+dotnet format --verify-no-changes
+dotnet build -c Release --no-restore
+dotnet test -c Release --no-build
+```
+
+If the repository does not use `dotnet format`, Codex must document the existing formatting command rather than inventing one.
+
+Every phase report must include:
+
+```text
+Commit or working-tree identifier
+Target framework(s)
+SpiceSharp package/project version
+Build command and result
+Test command and result
+Number of tests added
+Number of tests passed
+Numerical tolerances
+Measured maximum errors
+Known limitations
+Files added or modified
+Confirmation that later phases were not implemented
+```
+
+Do not weaken a numerical tolerance merely to make a test pass.
+
+A tolerance change requires:
+
+1. measured results before and after;
+2. an explanation of the numerical source;
+3. a convergence study when time integration is involved;
+4. an update to the verification report.
+
+---
+
+# 7. Phase 0 — Repository baseline and exact SpiceSharp API proof
+
+## Goal
+
+Prove the exact public SpiceSharp APIs required to implement a two-state transient custom component.
+
+Do not implement physics.
+
+## Required investigation
+
+Codex must inspect the repository or pinned package source for current examples of:
+
+- capacitor transient behavior;
+- inductor transient behavior;
+- a component that creates a private solver variable;
+- a component that links to another entity's behavior;
+- nonlinear Jacobian/RHS stamping;
+- parameter/property exports;
+- initial conditions in transient analysis;
+- behavior registration attributes or builders.
+
+Document exact class and method names in:
+
+```text
+docs/architecture/ADR-0001-spicesharp-extension-points.md
+```
+
+## Implementation
+
+Create a temporary but production-quality `TransientApiProbe` component that:
+
+- has no mechanical terminology;
+- allocates two private real solver variables;
+- creates and initializes two integration derivative states;
+- stamps two coupled linear differential equations;
+- exposes both state values as properties;
+- can be linked to a second probe behavior by entity name;
+- runs under the existing `Transient` class;
+- uses only public or intentionally supported APIs.
+
+Suggested proof equations:
+
+\[
+\dot a=b
+\]
+
+\[
+\dot b=-a
+\]
+
+with \(a(0)=1\), \(b(0)=0\).
+
+This is a harmonic oscillator used only to verify infrastructure.
+
+## Required tests
+
+1. Behavior is created for `Transient`.
+2. Both solver variables exist and are independently queryable.
+3. Initial conditions are applied.
+4. At \(t=0\), exported values match the requested state.
+5. Oscillator remains finite for at least ten periods.
+6. Reducing maximum timestep improves trajectory error.
+7. A linked probe resolves another behavior during setup.
+8. No private reflection into SpiceSharp internals is used.
+9. Existing SpiceSharp tests remain unchanged and passing.
+
+## Acceptance gate
+
+- the proof runs with the repository's actual SpiceSharp version;
+- all APIs are named and cited in the ADR;
+- no mechanics classes exist;
+- no custom simulation type exists;
+- no custom solver or integrator exists.
+
+## Verification report
+
+```text
+docs/verification/phase-00.md
+```
+
+Stop after Phase 0.
+
+---
+
+# 8. Phase 1 — Double-precision mathematics and numerical test support
+
+## Goal
+
+Create the small mathematics layer needed by later mechanics components.
+
+Do not add SpiceSharp entities in this phase.
+
+## Implement
+
+```text
+Vector2D
+Matrix2x2D
+AngleMath
+SmoothFunctions
+FiniteDifferenceJacobian
+NumericAssert
+TimeSeriesComparison
+```
+
+`Vector2D` must support:
+
+- addition and subtraction;
+- scalar multiplication and division;
+- dot product;
+- 2D scalar cross product;
+- perpendicular vector;
+- squared length and length;
+- normalized vector with explicit epsilon handling;
+- rotation by angle;
+- equality only for exact structural use;
+- separate approximate-comparison helpers.
+
+`SmoothFunctions` must support:
+
+- smooth positive part and derivative;
+- smooth negative part and derivative;
+- smooth absolute value and derivative;
+- `tanh` friction function and derivative;
+- safe regularized vector length.
+
+## Required tests
+
+- algebra identities;
+- rotation invariance of length;
+- cross-product signs;
+- derivative checks for every smooth function;
+- behavior near zero;
+- behavior for magnitudes many times larger than epsilon;
+- no `float` fields;
+- no dependency on `System.Numerics.Vector2`.
+
+## Acceptance gate
+
+For central finite differences with appropriate step size:
+
+```text
+maximum derivative mismatch <= 1e-7
+```
+
+Use scale-aware assertions.
+
+## Verification report
+
+```text
+docs/verification/phase-01.md
+```
+
+Stop after Phase 1.
+
+---
+
+# 9. Phase 2 — `MechanicalCoordinate`
+
+## Goal
+
+Implement one generalized mechanical coordinate entirely inside ordinary SpiceSharp `Transient`.
+
+## Public API
+
+A possible API is:
+
+```csharp
+var coordinate = new MechanicalCoordinate(
+    "slider",
+    generalizedMass: 2.0,
+    initialPosition: 0.25,
+    initialVelocity: -0.1);
+```
+
+Required public properties:
+
+```text
+Position
+Velocity
+GeneralizedMass
+InitialPosition
+InitialVelocity
+GeneralizedForce
+KineticEnergy
+```
+
+`GeneralizedForce` is the current net force represented by stamped connected components if a reliable diagnostic can be calculated. If not, omit it rather than reporting a misleading number.
+
+## Internal behavior contract
+
+Expose a behavior interface that later force entities can bind to:
+
+```csharp
+public interface IMechanicalCoordinateBehavior : IBehavior
+{
+    IVariable<double> PositionVariable { get; }
+    IVariable<double> VelocityVariable { get; }
+
+    // Exact row/location abstractions must follow the proven API.
+}
+```
+
+Do not expose mutable raw solver arrays publicly.
+
+## Required capabilities
+
+- initial position and velocity;
+- generalized mass greater than zero;
+- transient integration;
+- operating-point initial-state hold;
+- parameter/property export;
+- deterministic behavior lookup;
+- support for external components adding force terms.
+
+## Add test-only force components
+
+Create internal test entities:
+
+```text
+ConstantGeneralizedForce
+LinearGeneralizedDamping
+LinearGeneralizedSpringToReference
+```
+
+Do not make them public yet unless their API is already final.
+
+## Required tests
+
+1. Zero force, zero initial velocity: position remains constant.
+2. Zero force, nonzero velocity: constant-velocity motion.
+3. Constant force: compare to analytic acceleration.
+4. Linear damping: compare velocity to exponential decay.
+5. Linear spring: compare small oscillator period.
+6. Damped oscillator: compare decay envelope and damped frequency.
+7. Negative or zero mass is rejected during setup.
+8. Initial-condition mode is deterministic.
+9. Results converge under maximum-timestep refinement.
+10. Energy is constant for the undamped oscillator within integration tolerance.
+11. Exported position and velocity refer to behavior state, not stale entity parameters.
+
+## Acceptance thresholds
+
+For smooth analytic cases using a sufficiently small maximum timestep:
+
+```text
+constant-force position relative error <= 1e-4
+constant-force velocity relative error <= 1e-5
+damped-decay relative error <= 2e-4
+oscillator period relative error <= 2e-3
+```
+
+Also show results for:
+
+```text
+h
+h/2
+h/4
+```
+
+The error should generally decrease. If the selected SpiceSharp integration method has a known order or damping behavior, document it rather than asserting an unsupported convergence order.
+
+## Verification report
+
+```text
+docs/verification/phase-02.md
+```
+
+Stop after Phase 2.
+
+---
+
+# 10. Phase 3 — `RigidBody2D`
+
+## Goal
+
+Build a planar rigid body from three verified generalized coordinates:
+
+```text
+x translation
+y translation
+rotation
+```
+
+## Public API
+
+```csharp
+var body = new RigidBody2D(
+    "body",
+    mass: 1.5,
+    inertia: 0.08,
+    initialPosition: new Vector2D(0.0, 1.0),
+    initialAngle: 0.2,
+    initialLinearVelocity: new Vector2D(0.5, 0.0),
+    initialAngularVelocity: 2.0);
+```
+
+Required properties:
+
+```text
+PositionX
+PositionY
+Angle
+VelocityX
+VelocityY
+AngularVelocity
+Mass
+Inertia
+LinearKineticEnergy
+AngularKineticEnergy
+KineticEnergy
+```
+
+## Design rule
+
+`RigidBody2D` may internally share coordinate implementation code, but should present one body entity and one body behavior to linked components.
+
+Do not require users to manually create six nodes or three coordinate entities.
+
+## Add geometry helpers
+
+Implement and test:
+
+```text
+LocalPointToWorld
+LocalVectorToWorld
+WorldPointToLocal
+WorldVectorToLocal
+GetPointVelocity
+ComputeTorque
+```
+
+## Required tests
+
+1. Constant world force through center of mass.
+2. Constant torque.
+3. Combined force and torque.
+4. No-force inertial motion.
+5. Local/world transform round trip.
+6. Point velocity with pure angular motion.
+7. Torque sign for known force/lever-arm cases.
+8. Translational and rotational kinetic energy.
+9. Invalid mass or inertia rejected.
+10. Angle is not forcibly wrapped.
+11. Two bodies have independent solver variables.
+12. Repeated runs are deterministic.
+
+## Acceptance thresholds
+
+Use analytic constant-force and constant-torque solutions:
+
+```text
+linear velocity relative error <= 1e-5
+angular velocity relative error <= 1e-5
+position/angle relative or scale-aware absolute error <= 1e-4
+transform round-trip absolute error <= 1e-12
+```
+
+## Verification report
+
+```text
+docs/verification/phase-03.md
+```
+
+Stop after Phase 3.
+
+---
+
+# 11. Phase 4 — Basic force and torque components
+
+## Goal
+
+Implement practical force components that stamp into `RigidBody2D`.
+
+## Implement
+
+```text
+Gravity2D
+AppliedForce2D
+PointForce2D
+AppliedTorque2D
+LinearDrag2D
+AngularDrag2D
+```
+
+## Required semantics
+
+### `Gravity2D`
+
+Apply:
+
+\[
+F=m g
+\]
+
+Allow a world acceleration vector.
+
+### `AppliedForce2D`
+
+Apply a force through the center of mass.
+
+Support initially:
+
+- constant world force;
+- a time function using the exact SpiceSharp-supported waveform/function mechanism, or a package-owned delegate if lifecycle and determinism are clear.
+
+Do not add expression parsing.
+
+### `PointForce2D`
+
+Apply a force at a body-local point.
+
+Support force coordinates explicitly:
+
+```text
+World
+BodyLocal
+```
+
+If the force vector is body-local, rotate it into the world frame and include all angle derivatives.
+
+### `AppliedTorque2D`
+
+Apply scalar world torque.
+
+### `LinearDrag2D`
+
+\[
+F=-c(v-v_{medium})
+\]
+
+### `AngularDrag2D`
+
+\[
+\tau=-c_\omega(\omega-\omega_{medium})
+\]
+
+## Required tests
+
+- free fall;
+- projectile motion without drag;
+- exponential velocity decay with linear drag;
+- angular-speed decay;
+- off-center force produces expected torque;
+- equal center force produces no torque;
+- local force rotates with body;
+- analytic Jacobian versus finite difference for `PointForce2D`;
+- force superposition;
+- component order does not change results beyond roundoff.
+
+## Acceptance thresholds
+
+```text
+free-fall velocity relative error <= 1e-5
+free-fall position relative error <= 1e-4
+drag decay relative error <= 2e-4
+point-force torque absolute error <= 1e-11 for direct evaluation
+Jacobian relative mismatch <= 2e-6
+```
+
+## Sample
+
+Add:
+
+```text
+samples/SpiceSharp.Physics2D.Samples/FreeFall
+```
+
+It must output CSV with:
+
+```text
+time,x,y,vx,vy,angle,omega
+```
+
+## Verification report
+
+```text
+docs/verification/phase-04.md
+```
+
+Stop after Phase 4.
+
+---
+
+# 12. Phase 5 — Distance and rotational spring-dampers
+
+## Goal
+
+Implement nonlinear force transfer between two rigid bodies through local anchor points.
+
+## Implement
+
+```text
+DistanceSpringDamper2D
+RotationalSpringDamper2D
+```
+
+Allow either body endpoint to refer to a fixed world anchor where appropriate.
+
+## Distance spring-damper
+
+For anchor points \(p_A,p_B\):
+
+\[
+d=p_B-p_A
+\]
+
+Use regularized length:
+
+\[
+L_\epsilon=\sqrt{d\cdot d+\epsilon_L^2}
+\]
+
+\[
+n=d/L_\epsilon
+\]
+
+Relative anchor velocity:
+
+\[
+v_r=v_B^{point}-v_A^{point}
+\]
+
+Normal speed:
+
+\[
+v_n=n\cdot v_r
+\]
+
+Force magnitude:
+
+\[
+f=k(L-L_0)+cv_n
+\]
+
+Apply equal-and-opposite forces and corresponding torques.
+
+Document that regularization modifies behavior when anchor separation is comparable to \(\epsilon_L\).
+
+## Rotational spring-damper
+
+\[
+e_\theta=\operatorname{wrapToPi}
+(\theta_B-\theta_A-\theta_0)
+\]
+
+\[
+e_\omega=\omega_B-\omega_A
+\]
+
+\[
+\tau=k_\theta e_\theta+c_\theta e_\omega
+\]
+
+Ensure torque signs oppose the relative error.
+
+## Required tests
+
+1. Two-body spring force is equal and opposite.
+2. Net internal linear force is zero.
+3. Net internal torque about the world origin is zero within tolerance.
+4. One-body spring to world.
+5. Oscillation frequency for a simple reduced-mass case.
+6. Damped oscillation.
+7. Off-center anchors generate torque.
+8. Pure rotational spring.
+9. Wrapped angle error near \(-\pi/\pi\).
+10. Full analytic Jacobian versus finite difference.
+11. No NaN at nearly coincident anchors.
+12. Timestep-refinement study.
+
+## Acceptance thresholds
+
+```text
+force-action/reaction residual <= 1e-11 N
+world torque residual <= 1e-10 N m
+Jacobian relative mismatch <= 5e-6
+oscillator frequency relative error <= 3e-3
+```
+
+## Sample
+
+Add:
+
+```text
+samples/SpiceSharp.Physics2D.Samples/Pendulum
+```
+
+Use a compliant connection, not an exact rigid constraint.
+
+## Verification report
+
+```text
+docs/verification/phase-05.md
+```
+
+Stop after Phase 5.
+
+---
+
+# 13. Phase 6 — Compliant joints
+
+## Goal
+
+Provide mechanism-building components that remain smooth and compatible with ordinary SpiceSharp Newton solving.
+
+## Implement
+
+```text
+RevoluteJoint2D
+PrismaticJoint2D
+WeldJoint2D
+```
+
+These are compliant joints, not exact Lagrange-multiplier constraints.
+
+## Revolute joint
+
+For anchor error:
+
+\[
+e_p=p_B-p_A
+\]
+
+and relative point velocity:
+
+\[
+e_v=v_B^{point}-v_A^{point}
+\]
+
+Apply:
+
+\[
+F=K_p e_p+C_p e_v
+\]
+
+with signs chosen to reduce the error.
+
+Allow isotropic stiffness/damping first. A 2x2 stiffness matrix is optional only after scalar behavior is verified.
+
+## Weld joint
+
+Combine:
+
+- compliant revolute-anchor constraint;
+- rotational spring-damper.
+
+## Prismatic joint
+
+Define a guide axis attached either to world or body A.
+
+Constrain:
+
+- anchor displacement normal to the axis;
+- relative normal velocity;
+- relative angle.
+
+Leave translation along the axis free unless optional axial spring/damping is enabled.
+
+The axis orientation may depend on body angle, requiring analytic derivatives.
+
+## Required tests
+
+### Revolute
+
+- single pendulum period;
+- bounded anchor separation;
+- force action/reaction;
+- off-center torque balance.
+
+### Weld
+
+- two bodies move approximately as one body under slow loading;
+- relative angle remains bounded;
+- relative anchor error remains bounded.
+
+### Prismatic
+
+- free motion along axis;
+- suppressed motion normal to axis;
+- rotating guide-axis Jacobian;
+- slider under axial force.
+
+### Mechanisms
+
+- compliant slider-crank;
+- compliant four-bar with low-speed drive.
+
+## Important diagnostics
+
+Each joint must expose:
+
+```text
+PositionError
+VelocityError
+ReactionForce
+ReactionTorque where applicable
+StoredElasticEnergy
+DissipatedPower
+```
+
+Label reaction values as compliant-element forces, not exact rigid-constraint multipliers.
+
+## Acceptance thresholds
+
+Thresholds depend on user stiffness and timestep. Use normalized criteria in tests:
+
+```text
+maximum anchor error <= 1e-3 times characteristic link length
+maximum prismatic normal error <= 1e-3 times stroke
+Jacobian relative mismatch <= 1e-5
+```
+
+Tests must demonstrate that reducing timestep and/or increasing stiffness reduces geometric error until numerical conditioning becomes limiting.
+
+## Samples
+
+Add:
+
+```text
+SliderCrank
+CompliantFourBar
+```
+
+## Verification report
+
+```text
+docs/verification/phase-06.md
+```
+
+Stop after Phase 6.
+
+---
+
+# 14. Phase 7 — Geometry primitives for explicit contact
+
+## Goal
+
+Implement deterministic, independently testable geometry calculations before adding contact forces.
+
+Do not add dynamic contact behavior in this phase.
+
+## Implement
+
+```text
+CircleShape2D
+PlaneShape2D
+SegmentShape2D
+ClosestPointOnSegment
+CirclePlaneGeometry
+CircleCircleGeometry
+CircleSegmentGeometry
+```
+
+Geometry result:
+
+```csharp
+public readonly record struct ContactGeometry2D(
+    double Gap,
+    Vector2D Normal,
+    Vector2D PointOnA,
+    Vector2D PointOnB);
+```
+
+Convention:
+
+```text
+normal points from shape A toward shape B
+gap > 0 means separated
+gap = 0 means touching
+gap < 0 means geometric overlap
+```
+
+Keep the convention identical everywhere.
+
+## Required tests
+
+- translated and rotated invariance;
+- symmetry under swapping shapes with adjusted normal;
+- circle-plane analytic cases;
+- circle-circle analytic cases;
+- circle-segment endpoint and interior cases;
+- degenerate segment rejected;
+- normal is unit length within tolerance;
+- contact points reproduce the gap;
+- finite-difference geometry derivatives for smooth, non-feature-switching cases.
+
+## Acceptance thresholds
+
+```text
+analytic gap absolute error <= 1e-12
+normal length error <= 1e-12
+contact-point consistency <= 1e-11
+```
+
+Feature transitions at segment endpoints may be nondifferentiable. Document them and do not use such transitions as Newton test points.
+
+## Verification report
+
+```text
+docs/verification/phase-07.md
+```
+
+Stop after Phase 7.
+
+---
+
+# 15. Phase 8 — Smooth normal contact
+
+## Goal
+
+Add explicitly declared, smooth, compliant contact.
+
+## Implement
+
+```text
+SmoothContactLaw
+CircleGroundContact2D
+CircleCircleContact2D
+CircleSegmentContact2D
+```
+
+Do not add friction yet.
+
+## Normal law
+
+For gap \(g\), geometric penetration is:
+
+\[
+\delta=-g
+\]
+
+Smoothed penetration:
+
+\[
+\delta_+=\operatorname{positive}_\epsilon(\delta)
+\]
+
+Relative normal speed:
+
+\[
+v_n=n\cdot(v_B^{point}-v_A^{point})
+\]
+
+Use a non-attractive law. A suitable first formulation is:
+
+\[
+F_{elastic}=k\delta_+^p
+\]
+
+\[
+F_{damping}=c\delta_+^r
+\operatorname{positive}_{\epsilon_v}(-v_n)
+\]
+
+\[
+F_n=\operatorname{positive}_{\epsilon_F}
+(F_{elastic}+F_{damping})
+\]
+
+Default exponent:
+
+```text
+p = 1
+```
+
+Optional Hertz-like exponent:
+
+```text
+p = 1.5
+```
+
+All exponents and zero behavior must be well defined.
+
+## Time-step guidance
+
+Expose a diagnostic estimate:
+
+\[
+\omega_n\approx\sqrt{k/m_{effective}}
+\]
+
+and warn when the configured maximum timestep is too large relative to the contact period.
+
+Do not attempt to change the SpiceSharp timestep from inside the component in this phase.
+
+## Required tests
+
+1. Static circle on ground: penetration approaches approximately \(mg/k\) for linear contact.
+2. No attractive force when separated beyond smoothing region.
+3. Smooth force around contact onset.
+4. Damped impact does not add energy.
+5. Circle-circle equal-and-opposite force and torque.
+6. Circle-segment interior contact.
+7. Analytic Jacobian versus finite difference.
+8. Force increases monotonically with penetration for supported parameters.
+9. No NaN at zero relative speed.
+10. Timestep and stiffness convergence study.
+
+## Acceptance thresholds
+
+```text
+static penetration relative error <= 2% after transient settling
+separated force <= documented smoothing-force bound
+action/reaction force residual <= 1e-10 N
+Jacobian relative mismatch <= 2e-5
+```
+
+The 2% static threshold may be tightened after measured behavior is known. Do not loosen it without evidence.
+
+## Sample
+
+Add:
+
+```text
+BouncingCircle
+```
+
+Export:
+
+```text
+time,y,vy,gap,penetration,normalForce,totalEnergy
+```
+
+## Verification report
+
+```text
+docs/verification/phase-08.md
+```
+
+Stop after Phase 8.
+
+---
+
+# 16. Phase 9 — Regularized friction and contact material
+
+## Goal
+
+Add smooth tangential contact behavior while preserving Newton compatibility.
+
+## Implement
+
+```text
+ContactMaterial2D
+RegularizedFrictionLaw
+friction support in explicit contact entities
+```
+
+Parameters:
+
+```text
+NormalStiffness
+NormalDamping
+NormalExponent
+FrictionCoefficient
+FrictionSmoothingSpeed
+PenetrationSmoothing
+VelocitySmoothing
+```
+
+Do not call the friction coefficient “static friction” or “dynamic friction” in this model. It is one regularized Coulomb coefficient.
+
+## Friction law
+
+\[
+F_t=-\mu F_n\tanh(v_t/v_s)
+\]
+
+where tangent direction is consistently derived from the normal.
+
+Apply friction forces at the contact point, including torque.
+
+## Required tests
+
+1. Friction is zero when normal force is zero.
+2. Friction opposes slip.
+3. \(|F_t|<\mu F_n\) for finite slip and approaches the limit asymptotically.
+4. Near-zero slip is smooth.
+5. Sliding block decelerates without numerical chatter.
+6. Inclined plane settles to a small creep speed rather than falsely claiming exact sticking.
+7. Angular response from off-center friction.
+8. Analytic Jacobian versus finite difference.
+9. Mechanical power from friction is nonpositive within tolerance.
+10. Repeated simulation is deterministic.
+
+## Acceptance thresholds
+
+```text
+friction bound violation <= 1e-12 N in direct law tests
+positive friction power <= 1e-10 W plus scale-aware tolerance
+Jacobian relative mismatch <= 3e-5
+```
+
+Document creep near zero velocity as an expected property of regularization.
+
+## Verification report
+
+```text
+docs/verification/phase-09.md
+```
+
+Stop after Phase 9.
+
+---
+
+# 17. Phase 10 — Cam lift laws and translating follower
+
+## Goal
+
+Implement the first practical cam/follower component using an exact lift law rather than general collision geometry.
+
+## Implement
+
+```text
+ICamLiftLaw
+HarmonicCamLiftLaw
+PolynomialCamLiftLaw
+PeriodicCubicSpline1D
+CamLiftContact2D
+```
+
+## Lift-law interface
+
+```csharp
+public interface ICamLiftLaw
+{
+    double Period { get; }
+    double EvaluatePosition(double angle);
+    double EvaluateFirstDerivative(double angle);
+    double EvaluateSecondDerivative(double angle);
+}
+```
+
+Derivatives are with respect to cam angle, not time.
+
+## Component model
+
+Inputs:
+
+```text
+cam body angle and angular velocity
+follower body position and velocity
+world follower axis
+clearance
+contact stiffness and damping
+optional follower offset
+```
+
+Gap:
+
+\[
+g=y_f-s(\theta_c)-clearance
+\]
+
+using the correct sign convention for the configured follower axis.
+
+Gap speed:
+
+\[
+\dot g=v_f-s'(\theta_c)\omega_c
+\]
+
+Use the verified smooth contact law.
+
+The cam reaction torque must follow virtual work:
+
+\[
+\tau_c=-F_n s'(\theta_c)
+\]
+
+with signs validated by power balance.
+
+## Required tests
+
+1. Constant-radius/no-lift law.
+2. Sinusoidal lift law.
+3. Polynomial rise/dwell/return law.
+4. Periodic spline continuity at the seam.
+5. Spline value and derivative against independent finite differences.
+6. Follower remains in contact under sufficient preload.
+7. Lift-off produces near-zero contact force.
+8. Recontact remains finite and converges with timestep.
+9. Cam torque and follower force satisfy power balance:
+   \[
+   \tau\omega+Fv\approx0
+   \]
+   excluding damping and stored contact energy.
+10. Full component Jacobian versus finite difference.
+
+## Acceptance thresholds
+
+```text
+spline seam position mismatch <= 1e-12
+spline seam first-derivative mismatch <= 1e-10
+spline derivative finite-difference mismatch <= 1e-7 scale-aware
+contact power-balance residual <= 1e-5 of characteristic power
+Jacobian relative mismatch <= 5e-5
+```
+
+## Sample
+
+Add:
+
+```text
+CamFollower
+```
+
+Export:
+
+```text
+time,camAngle,camOmega,followerPosition,followerVelocity,
+lift,gap,normalForce,camReactionTorque
+```
+
+## Verification report
+
+```text
+docs/verification/phase-10.md
+```
+
+Stop after Phase 10.
+
+---
+
+# 18. Phase 11 — Geometric roller cam profile
+
+## Goal
+
+Support a smooth custom 2D cam curve and circular roller follower.
+
+This phase is more difficult than the lift-law component and must not begin until Phase 10 is stable.
+
+## Implement
+
+```text
+IParametricCurve2D
+CurveSample2D
+ClosestPointResult2D
+PeriodicSplineCurve2D
+RollerCamContact2D
+```
+
+Interface:
+
+```csharp
+public interface IParametricCurve2D
+{
+    double Period { get; }
+    CurveSample2D Evaluate(double parameter);
+    ClosestPointResult2D FindClosestPoint(
+        Vector2D localPoint,
+        double initialParameter);
+}
+```
+
+`CurveSample2D` contains:
+
+```text
+Position
+FirstDerivative
+SecondDerivative
+UnitTangent
+UnitNormal
+Curvature
+```
+
+## Closest-point algorithm
+
+Use:
+
+- previous accepted/contact parameter as initial seed;
+- periodic parameter wrapping;
+- safeguarded Newton iteration;
+- bounded step size;
+- fallback coarse sampling followed by local refinement;
+- deterministic tie-breaking;
+- explicit failure diagnostics.
+
+Do not search an unbounded number of samples during every Newton load.
+
+Cache the closest parameter in the behavior and update it carefully. Do not commit iteration history as accepted transient history until SpiceSharp accepts the timestep if the API exposes the distinction. If that distinction cannot be safely observed, document the limitation and use a deterministic recomputation strategy.
+
+## Roller contact
+
+Transform roller center into cam-local coordinates.
+
+Find closest cam point and normal.
+
+Gap:
+
+\[
+g=distance(center,curve)-rollerRadius-clearance
+\]
+
+Use the verified smooth normal/friction laws.
+
+Apply:
+
+- force and torque to follower;
+- equal-and-opposite force and torque to cam;
+- complete derivatives, including closest-point dependence where practical.
+
+If exact implicit differentiation of the closest-point parameter is too large for this phase, Codex must first implement and validate the envelope-theorem form for regular closest points, document its assumptions, and reject singular curve cases.
+
+## Required tests
+
+1. Circle cam against analytic result.
+2. Eccentric circle.
+3. Ellipse.
+4. Periodic spline seam.
+5. Closest-point invariance under rigid transform.
+6. Closest-point orthogonality condition.
+7. Roller gap against analytic circle geometry.
+8. Force/torque action-reaction.
+9. Power balance.
+10. Profile parameter continuity over multiple revolutions.
+11. Fallback seed path.
+12. Jacobian test away from curvature singularities and branch changes.
+13. Timestep/profile-resolution convergence.
+
+## Acceptance thresholds
+
+```text
+analytic circle gap error <= 1e-10 m
+closest-point orthogonality residual <= 1e-10 scale-aware
+action/reaction force residual <= 1e-9 N
+action/reaction world torque residual <= 1e-8 N m
+Jacobian relative mismatch <= 2e-4 in regular cases
+```
+
+The looser Jacobian threshold reflects closest-point conditioning; report actual values.
+
+## Verification report
+
+```text
+docs/verification/phase-11.md
+```
+
+Stop after Phase 11.
+
+---
+
+# 19. Phase 12 — Electrical–mechanical coupling
+
+## Goal
+
+Demonstrate the main advantage of building mechanics inside SpiceSharp: direct coupling to an electrical circuit.
+
+## Implement
+
+A minimal, explicit DC-motor coupling component.
+
+Equations:
+
+\[
+\tau=K_t i
+\]
+
+\[
+e=K_e\omega
+\]
+
+The electrical side sees back EMF. The mechanical rotational coordinate sees motor torque.
+
+Potential public entity:
+
+```csharp
+new DcMotorCoupler2D(
+    "motor",
+    positiveElectricalNode: "motor+",
+    negativeElectricalNode: "motor-",
+    body: "rotor",
+    torqueConstant: ...,
+    backEmfConstant: ...,
+    localShaftSign: 1.0);
+```
+
+The motor winding resistance and inductance may remain ordinary SpiceSharp resistor/inductor components, or the coupler may include them only if doing so produces a clearer and better tested API.
+
+## Required tests
+
+1. Locked rotor electrical current.
+2. No-load speed with viscous drag.
+3. Step-voltage transient compared with an independent state-space ODE solution.
+4. Reversal polarity and sign.
+5. Electrical power, mechanical power, copper loss, magnetic-energy change, kinetic-energy change, and damping loss balance.
+6. Coupled Jacobian versus finite difference.
+7. A motor-driven cam follower sample.
+
+## Acceptance thresholds
+
+```text
+state-space trajectory normalized RMS error <= 1e-3
+power-balance residual <= 1e-3 of supplied energy over the run
+Jacobian relative mismatch <= 5e-5
+```
+
+## Sample
+
+Add:
+
+```text
+DcMotorMechanism
+```
+
+## Verification report
+
+```text
+docs/verification/phase-12.md
+```
+
+Stop after Phase 12.
+
+---
+
+# 20. Phase 13 — Exports, diagnostics, documentation, and packaging
+
+## Goal
+
+Make the package usable without changing the numerical model.
+
+## Implement exports
+
+Provide stable export/query helpers for:
+
+### Coordinate
+
+```text
+Position
+Velocity
+Acceleration if reliably computed
+KineticEnergy
+```
+
+### Body
+
+```text
+PositionX
+PositionY
+Angle
+VelocityX
+VelocityY
+AngularVelocity
+KineticEnergy
+```
+
+### Spring/joint
+
+```text
+Length
+Extension
+Force
+Torque
+StoredEnergy
+DissipatedPower
+PositionError
+VelocityError
+```
+
+### Contact
+
+```text
+Gap
+SmoothedPenetration
+NormalForce
+TangentialForce
+SlipVelocity
+NormalPower
+FrictionPower
+```
+
+### Cam
+
+```text
+ProfileParameter
+Lift
+Gap
+ContactForce
+CamReactionTorque
+```
+
+## Documentation
+
+Create:
+
+```text
+README.md
+docs/architecture/overview.md
+docs/equations/generalized-coordinate.md
+docs/equations/rigid-body.md
+docs/equations/springs-and-joints.md
+docs/equations/smooth-contact.md
+docs/equations/cam-follower.md
+docs/limitations.md
+docs/numerical-guidance.md
+```
+
+`docs/limitations.md` must prominently state:
+
+- contacts are explicit;
+- contacts are compliant;
+- no exact rigid-body impulses;
+- no exact static friction;
+- joint constraints are compliant;
+- large stiffness requires small timesteps;
+- output contact force depends on the compliant model and numerical resolution;
+- this is not a game engine.
+
+## Packaging
+
+- package metadata;
+- XML documentation;
+- nullable reference types;
+- deterministic build if repository supports it;
+- symbol package if repository conventions use one;
+- license compliance;
+- no parser dependency;
+- no dependency on a game or geometry engine.
+
+## Acceptance gate
+
+All samples run.
+
+Public APIs have XML documentation.
+
+No analyzer warnings introduced unless documented and justified.
+
+## Verification report
+
+```text
+docs/verification/phase-13.md
+```
+
+Stop after Phase 13.
+
+---
+
+# 21. Phase 14 — Robustness, regression corpus, and performance baseline
+
+## Goal
+
+Establish confidence before declaring version 1.0.
+
+Do not add new physics features.
+
+## Regression scenes
+
+Include at least:
+
+```text
+1D oscillator
+free fall
+projectile
+damped pendulum
+double pendulum
+slider-crank
+four-bar
+circle-ground settling
+circle-ground impact
+circle-circle impact
+sliding contact
+lift-law cam follower
+geometric roller cam follower
+DC-motor-driven rotor
+DC-motor-driven cam follower
+```
+
+## Randomized tests
+
+Use deterministic seeds.
+
+Generate valid parameter combinations within documented ranges for:
+
+- body mass and inertia;
+- spring stiffness and damping;
+- anchor locations;
+- contact stiffness and damping;
+- friction coefficient;
+- cam speed and follower preload.
+
+Reject invalid generated scenes rather than silently clipping parameters.
+
+Assertions:
+
+- no NaN or infinity;
+- simulation either completes or fails with a categorized convergence exception;
+- internal force pairs balance;
+- dissipative elements do not generate net positive power beyond tolerance;
+- deterministic repeated run;
+- exported values remain finite.
+
+## Performance baseline
+
+Measure, but do not optimize prematurely:
+
+```text
+1 body
+10 bodies with explicit springs
+25 bodies with explicit springs
+10 explicit contacts
+cam follower for 10,000 accepted points
+```
+
+Report:
+
+- wall time;
+- allocated bytes if available;
+- accepted time points;
+- rejected points if available;
+- Newton iteration count if available;
+- peak memory if available.
+
+Do not promise real-time performance.
+
+## Release gate
+
+Version 1.0 may be proposed only when:
+
+- all earlier phase reports exist;
+- all regression scenes pass;
+- all nonlinear components have Jacobian tests;
+- limitations are documented;
+- no tolerance was weakened without recorded evidence;
+- no hidden custom simulation or solver was added;
+- a clean clone can restore, build, test, and run samples.
+
+## Verification report
+
+```text
+docs/verification/phase-14.md
+```
+
+Stop after Phase 14.
+
+---
+
+# 22. Release checkpoints
+
+```text
+0.1-coordinate
+    Phase 2 complete
+
+0.2-rigid-body
+    Phase 4 complete
+
+0.3-mechanisms
+    Phase 6 complete
+
+0.4-smooth-contact
+    Phase 9 complete
+
+0.5-cam
+    Phase 11 complete
+
+0.6-electromechanical
+    Phase 12 complete
+
+1.0
+    Phase 14 complete
+```
+
+Do not publish a checkpoint if its phase report is incomplete.
+
+---
+
+# 23. Verification report template
+
+Each `docs/verification/phase-XX.md` should follow:
+
+```markdown
+# Phase XX verification
+
+## Scope implemented
+
+## Explicitly not implemented
+
+## SpiceSharp API used
+
+## Files changed
+
+## Commands executed
+
+## Test summary
+
+## Numerical cases
+
+### Case name
+- Parameters:
+- Maximum timestep:
+- Integration method:
+- Expected result:
+- Measured result:
+- Absolute error:
+- Relative error:
+- h / h/2 / h/4 results:
+
+## Jacobian verification
+- Component:
+- State:
+- Analytic:
+- Finite difference:
+- Maximum absolute mismatch:
+- Maximum relative mismatch:
+
+## Energy or power checks
+
+## Determinism check
+
+## Performance observations
+
+## Known limitations
+
+## Decision
+PASS / FAIL
+
+## Confirmation
+No work from a later phase was implemented.
+```
+
+---
+
+# 24. Reusable Codex prompt for every phase
+
+Use this prompt and replace the phase number and name:
+
+```text
+Implement only Phase <N> — <PHASE NAME> from the attached
+SpiceSharp.Physics2D implementation plan.
+
+Hard constraints:
+- Use the existing SpiceSharp Transient simulation.
+- Do not create a custom simulation type.
+- Do not create a custom global solver or time integrator.
+- Do not implement work assigned to later phases.
+- Use only the exact SpiceSharp APIs verified for this repository.
+- Preserve all existing behavior and tests.
+- Use double precision throughout.
+- Add analytic Jacobians and finite-difference tests for every nonlinear
+  equation introduced in this phase.
+- Do not weaken an existing numerical tolerance without measured evidence
+  and a written rationale.
+
+Before coding:
+1. Inspect the current repository state and previous phase verification report.
+2. Confirm that all prerequisite phases are complete.
+3. State the files and APIs you expect to modify.
+
+Then:
+1. Implement the phase.
+2. Add all required automated tests.
+3. Run restore, formatting verification, Release build, and the complete tests.
+4. Run every numerical acceptance case specified by the phase.
+5. Write docs/verification/phase-<NN>.md using the supplied template.
+6. Report exact measured errors and commands.
+7. Confirm that no later-phase work was implemented.
+8. Stop.
+```
+
+---
+
+# 25. First prompt to give Codex
+
+```text
+Implement Phase 0 — Repository baseline and exact SpiceSharp API proof from
+the attached SpiceSharp.Physics2D implementation plan.
+
+Do not implement mechanics.
+
+Prove, using the repository's actual pinned SpiceSharp version, that an
+ordinary custom component running under the existing Transient simulation can:
+
+- allocate two private real solver variables;
+- create and initialize transient derivative states;
+- stamp two coupled differential equations;
+- expose both states as queryable properties;
+- resolve a linked entity behavior during behavior construction;
+- run without reflection into private SpiceSharp internals.
+
+Use the harmonic API-proof equations specified by Phase 0. Add the required
+ADR, tests, and docs/verification/phase-00.md. Run the complete repository
+build and tests, report exact measured results, confirm that no mechanics was
+implemented, and stop.
+```
+
+---
+
+# 26. Human review checklist before authorizing the next phase
+
+Check all answers are **yes**:
+
+```text
+[ ] Did Codex implement only the requested phase?
+[ ] Is ordinary SpiceSharp Transient still the only simulation?
+[ ] Were no custom solver or integration method added?
+[ ] Are all solver variables created during setup?
+[ ] Are linked behaviors resolved before load loops?
+[ ] Are nonlinear residual signs documented?
+[ ] Are analytic Jacobians independently tested?
+[ ] Are time-step refinement results reported?
+[ ] Are energy, power, or action-reaction checks present where applicable?
+[ ] Are tests deterministic?
+[ ] Did the complete pre-existing test suite pass?
+[ ] Does the phase verification report contain measured values?
+[ ] Were no tolerances weakened without evidence?
+[ ] Are limitations stated honestly?
+[ ] Did Codex stop?
+```
+
+Authorize the next phase only if every applicable item passes.
+
+---
+
+# 27. Final technical boundary
+
+This project is successful when it provides a verified library for **small, smooth, explicitly connected 2D mechanical systems inside SpiceSharp**.
+
+The project must not gradually turn into a hidden rigid-body engine.
+
+The correct boundary is:
+
+```text
+SpiceSharp owns
+    transient stepping
+    Newton iteration
+    integration history
+    sparse equation solving
+    behavior lifecycle
+    solver variables
+    exports and properties
+
+SpiceSharp.Physics2D owns
+    mechanical equations
+    rigid-body coordinate mapping
+    force and torque stamps
+    smooth springs and joints
+    explicit compliant contacts
+    regularized friction
+    cam profile evaluation
+    electromechanical coupling
+    physics-specific tests and diagnostics
+```
+
+When a requested feature requires:
+
+```text
+dynamic contact topology
+impact impulses
+complementarity
+persistent manifolds
+broad phase
+CCD
+exact static friction
+```
+
+it belongs in a future custom simulation type or a dedicated physics engine, not in this package.
