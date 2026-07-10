@@ -27,6 +27,9 @@
   coordinates, and finite nonnegative damping.
 - Added a FreeFall executable sample to the solution. It emits invariant CSV
   columns `time,x,y,vx,vy,angle,omega`.
+- Removed the unrelated electrical validation resistor from rigid-body load
+  tests and the FreeFall sample; body validation metadata supplies the existing
+  ground reference without adding an equation.
 
 ## Explicitly not implemented
 
@@ -352,13 +355,21 @@ to Phase 14.
   behavior-construction order.
 - No authoritative net-force, net-torque, acceleration, or per-component
   diagnostic export is provided because components stamp directly.
-- A pure zero-pin circuit does not satisfy SpiceSharp electrical validation;
-  tests and the sample retain the isolated grounded validation resistor
-  documented by Phase 0.
+- Pure mechanical load circuits pass default validation without unrelated
+  electrical topology; load entities themselves remain zero-pin direct stamps.
 - Large loads, damping coefficients, or disparate scales are not silently
   rescaled.
 
 ## Decision
+
+### Post-review corrective verification
+
+An end-to-end off-center world-point-force transient now compares the actual
+production behavior stamp against an independent fourth-order nonlinear
+rotation reference. At maximum timestep `0.0005 s`, the maximum angle/angular-
+velocity absolute error is `9.331235506504498e-9`. This exercises the mapped
+angle column and Newton RHS path that the direct equation Jacobian test does
+not cover. The Phase 4-focused Release suite now has 22 passing tests.
 
 PASS.
 

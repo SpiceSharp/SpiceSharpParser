@@ -37,20 +37,23 @@ internal static class RotationalSpringDamper2DEquation
         double[] loads,
         double[,] jacobian)
     {
-        double error = AngleMath.WrapSigned(angleB - angleA - referenceAngle);
+        double rawError = angleB - angleA - referenceAngle;
+        double error = AngleMath.WrapSigned(rawError);
         double relativeAngularVelocity = angularVelocityB - angularVelocityA;
-        double torqueOnA = (stiffness * error) + (damping * relativeAngularVelocity);
+        double tangentStiffness = stiffness * System.Math.Cos(rawError);
+        double torqueOnA = (stiffness * System.Math.Sin(rawError))
+            + (damping * relativeAngularVelocity);
 
         loads[0] = torqueOnA;
         loads[1] = -torqueOnA;
 
-        jacobian[0, 0] = -stiffness;
+        jacobian[0, 0] = -tangentStiffness;
         jacobian[0, 1] = -damping;
-        jacobian[0, 2] = stiffness;
+        jacobian[0, 2] = tangentStiffness;
         jacobian[0, 3] = damping;
-        jacobian[1, 0] = stiffness;
+        jacobian[1, 0] = tangentStiffness;
         jacobian[1, 1] = damping;
-        jacobian[1, 2] = -stiffness;
+        jacobian[1, 2] = -tangentStiffness;
         jacobian[1, 3] = -damping;
 
         return new RotationalSpringDamper2DEvaluation(

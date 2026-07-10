@@ -3,6 +3,7 @@ using SpiceSharp.Entities;
 using SpiceSharp.Physics2D.Core;
 using SpiceSharp.Physics2D.Mathematics;
 using SpiceSharp.Simulations;
+using SpiceSharp.Validation;
 using System;
 
 namespace SpiceSharp.Physics2D.Bodies
@@ -11,7 +12,7 @@ namespace SpiceSharp.Physics2D.Bodies
     /// Represents a planar rigid body integrated by an ordinary SpiceSharp
     /// transient simulation.
     /// </summary>
-    public sealed class RigidBody2D : Entity<RigidBody2DParameters>
+    public sealed class RigidBody2D : Entity<RigidBody2DParameters>, IRuleSubject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RigidBody2D"/> class.
@@ -132,5 +133,8 @@ namespace SpiceSharp.Physics2D.Bodies
             behaviors.Add(new RigidBody2DBehavior(context));
             simulation.EntityBehaviors.Add(behaviors);
         }
+
+        void IRuleSubject.Apply(IRules rules) =>
+            MechanicalValidation.RegisterGroundReference(this, rules);
     }
 }

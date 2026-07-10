@@ -776,6 +776,8 @@ Do not expose mutable raw solver arrays publicly.
 - operating-point initial-state hold;
 - parameter/property export;
 - deterministic behavior lookup;
+- default SpiceSharp validation for a purely mechanical circuit without an
+  unrelated electrical component;
 - support for external components adding force terms.
 
 ## Add test-only force components
@@ -803,6 +805,8 @@ Do not make them public yet unless their API is already final.
 9. Results converge under maximum-timestep refinement.
 10. Energy is constant for the undamped oscillator within integration tolerance.
 11. Exported position and velocity refer to behavior state, not stale entity parameters.
+12. A coordinate-only circuit passes default `Transient` validation without a
+    dummy resistor or disabled validation.
 
 ## Acceptance thresholds
 
@@ -909,6 +913,8 @@ ComputeTorque
 10. Angle is not forcibly wrapped.
 11. Two bodies have independent solver variables.
 12. Repeated runs are deterministic.
+13. A body-only circuit passes default `Transient` validation without a dummy
+    resistor or disabled validation.
 
 ## Acceptance thresholds
 
@@ -1010,6 +1016,8 @@ F=-c(v-v_{medium})
 - equal center force produces no torque;
 - local force rotates with body;
 - analytic Jacobian versus finite difference for `PointForce2D`;
+- an off-center world-force transient against an independent nonlinear
+  trajectory reference, exercising the production Newton stamp;
 - force superposition;
 - component order does not change results beyond roundoff.
 
@@ -1104,9 +1112,10 @@ Document that regularization modifies behavior when anchor separation is compara
 
 ## Rotational spring-damper
 
+Let the unbounded relative error be:
+
 \[
-e_\theta=\operatorname{wrapToPi}
-(\theta_B-\theta_A-\theta_0)
+e_\theta=\theta_B-\theta_A-\theta_0
 \]
 
 \[
@@ -1114,10 +1123,15 @@ e_\omega=\omega_B-\omega_A
 \]
 
 \[
-\tau=k_\theta e_\theta+c_\theta e_\omega
+\tau=k_\theta\sin(e_\theta)+c_\theta e_\omega
 \]
 
-Ensure torque signs oppose the relative error.
+Here `k_theta` is the tangent stiffness at the reference angle. This periodic
+law is smooth across every `+/-pi` representation seam; a separately reported
+shortest-angle diagnostic may use `wrapToPi`, but the solver residual and
+Jacobian must not use a discontinuous wrapped-linear law. Ensure torque signs
+oppose the relative error for `abs(wrapToPi(e_theta)) < pi` and stamp the exact
+angle derivative `k_theta*cos(e_theta)`.
 
 ## Required tests
 
@@ -1129,10 +1143,13 @@ Ensure torque signs oppose the relative error.
 6. Damped oscillation.
 7. Off-center anchors generate torque.
 8. Pure rotational spring.
-9. Wrapped angle error near \(-\pi/\pi\).
+9. Torque and analytic Jacobian remain smooth through relative error
+   \(-\pi/\pi\), while the diagnostic shortest-angle representation wraps.
 10. Full analytic Jacobian versus finite difference.
 11. No NaN at nearly coincident anchors.
 12. Timestep-refinement study.
+13. An off-center production transient matches an independent nonlinear
+    rigid-body trajectory reference.
 
 ## Acceptance thresholds
 

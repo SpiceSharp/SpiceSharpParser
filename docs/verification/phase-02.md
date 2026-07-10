@@ -14,6 +14,8 @@
   components without exposing mutable solver arrays.
 - Added live exports for position, velocity, generalized mass, initial state,
   and kinetic energy.
+- Added public-rule validation participation so coordinate-only circuits pass
+  default SpiceSharp validation without unrelated electrical topology.
 - Added internal test-only constant-force, linear-damping, and
   spring-to-reference entities. Each force behavior stamps its own dynamics
   contribution during its normal SpiceSharp load pass.
@@ -270,12 +272,18 @@ Phase 14.
 - Position and velocity variables use SpiceSharp's `Units.Volt` only as solver
   bookkeeping because the pinned public unit catalog has no mechanical or
   dimensionless generalized-coordinate units.
-- A pure zero-pin circuit does not satisfy SpiceSharp's electrical validation;
-  tests retain the isolated grounded validation resistor documented by
-  Phase 0.
+- Pure coordinate-only circuits register the existing ground reference through
+  SpiceSharp's public validation rules; no electrical pin or solver stamp is
+  added and validation remains enabled.
 - Large masses, stiffnesses, or disparate scales are not silently rescaled.
 
 ## Decision
+
+### Post-review corrective verification
+
+`CoordinateOnlyCircuitPassesDefaultValidation` runs an ordinary `Transient`
+over a circuit containing only one `MechanicalCoordinate`. Validation remains
+enabled, no dummy resistor is present, and the case passes in Release.
 
 PASS.
 

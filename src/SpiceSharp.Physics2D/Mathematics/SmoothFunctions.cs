@@ -16,10 +16,11 @@ namespace SpiceSharp.Physics2D.Mathematics
             double root = Hypot(x, epsilon);
             if (x >= 0.0)
             {
-                return 0.5 * (x + root);
+                return x + (0.5 * (root - x));
             }
 
-            return 0.5 * epsilon * (epsilon / (root - x));
+            double normalizedX = x / root;
+            return ((0.5 * epsilon) * (epsilon / root)) / (1.0 - normalizedX);
         }
 
         /// <summary>
@@ -34,7 +35,8 @@ namespace SpiceSharp.Physics2D.Mathematics
                 return 0.5 * (1.0 + (x / root));
             }
 
-            return 0.5 * (epsilon / root) * (epsilon / (root - x));
+            double epsilonRatio = epsilon / root;
+            return (0.5 * epsilonRatio * epsilonRatio) / (1.0 - (x / root));
         }
 
         /// <summary>

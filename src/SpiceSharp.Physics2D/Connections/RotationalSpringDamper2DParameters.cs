@@ -29,9 +29,10 @@ public sealed class RotationalSpringDamper2DParameters : ParameterSet<Rotational
     }
 
     /// <summary>
-    /// Gets or sets the rotational stiffness in newton-meters per radian.
+    /// Gets or sets the tangent rotational stiffness at the reference angle,
+    /// in newton-meters per radian.
     /// </summary>
-    [ParameterName("stiffness"), ParameterInfo("Rotational stiffness in newton-meters per radian")]
+    [ParameterName("stiffness"), ParameterInfo("Reference-angle tangent stiffness in newton-meters per radian")]
     [GreaterThanOrEquals(0.0)]
     [Finite]
     public double Stiffness

@@ -1,5 +1,4 @@
 using SpiceSharp;
-using SpiceSharp.Components;
 using SpiceSharp.Physics2D.Bodies;
 using SpiceSharp.Physics2D.Forces;
 using SpiceSharp.Physics2D.Mathematics;
@@ -267,6 +266,60 @@ namespace SpiceSharp.Physics2D.Tests.Forces
         }
 
         [Fact]
+        public void OffCenterWorldPointForceStampMatchesIndependentNonlinearReference()
+        {
+            const double mass = 1.3;
+            const double inertia = 0.7;
+            const double initialAngle = 0.4;
+            const double initialOmega = -0.1;
+            const double stopTime = 0.4;
+            var localPoint = new Vector2D(0.0, 0.8);
+            var force = new Vector2D(0.0, 2.0);
+            var body = new RigidBody2D(
+                "body",
+                mass,
+                inertia,
+                initialAngle: initialAngle,
+                initialAngularVelocity: initialOmega);
+            BodySample actual = ForceTestSimulation.Run(
+                body,
+                0.0005,
+                stopTime,
+                new PointForce2D(
+                    "world-point-force",
+                    body.Name,
+                    localPoint,
+                    force,
+                    ForceCoordinateSystem2D.World))
+                .FinalTransient;
+            double[] expectedRotation = IntegrateWorldPointForceRotation(
+                initialAngle,
+                initialOmega,
+                inertia,
+                localPoint,
+                force,
+                stopTime,
+                40000);
+            double expectedVelocityY = (force.Y / mass) * stopTime;
+            double expectedPositionY = 0.5 * (force.Y / mass) * stopTime * stopTime;
+            double maximumAngularError = Math.Max(
+                Math.Abs(expectedRotation[0] - actual.Angle),
+                Math.Abs(expectedRotation[1] - actual.AngularVelocity));
+
+            Console.WriteLine(FormattableString.Invariant(
+                $"World point-force production-stamp maximum angular state error={maximumAngularError:R}."));
+
+            NumericAssert.Equal(expectedRotation[0], actual.Angle, 2e-7, 2e-7);
+            NumericAssert.Equal(
+                expectedRotation[1],
+                actual.AngularVelocity,
+                2e-7,
+                2e-7);
+            NumericAssert.Equal(expectedVelocityY, actual.VelocityY, 1e-9, 1e-9);
+            NumericAssert.Equal(expectedPositionY, actual.PositionY, 1e-7, 1e-7);
+        }
+
+        [Fact]
         public void ForcesSuperimposeThroughAdditiveStamps()
         {
             var firstBody = CreateSuperpositionBody();
@@ -336,6 +389,40 @@ namespace SpiceSharp.Physics2D.Tests.Forces
             AssertSetupFailure(
                 body,
                 new AngularDrag2D("invalid-drag", body.Name, damping));
+        }
+
+        private static double[] IntegrateWorldPointForceRotation(
+            double initialAngle,
+            double initialAngularVelocity,
+            double inertia,
+            Vector2D localPoint,
+            Vector2D worldForce,
+            double duration,
+            int steps)
+        {
+            double angle = initialAngle;
+            double angularVelocity = initialAngularVelocity;
+            double step = duration / steps;
+            for (int index = 0; index < steps; index++)
+            {
+                double acceleration1 = AngularAcceleration(angle);
+                double angleRate2 = angularVelocity + (0.5 * step * acceleration1);
+                double acceleration2 = AngularAcceleration(angle + (0.5 * step * angularVelocity));
+                double angleRate3 = angularVelocity + (0.5 * step * acceleration2);
+                double acceleration3 = AngularAcceleration(angle + (0.5 * step * angleRate2));
+                double angleRate4 = angularVelocity + (step * acceleration3);
+                double acceleration4 = AngularAcceleration(angle + (step * angleRate3));
+
+                angle += (step / 6.0)
+                    * (angularVelocity + (2.0 * angleRate2) + (2.0 * angleRate3) + angleRate4);
+                angularVelocity += (step / 6.0)
+                    * (acceleration1 + (2.0 * acceleration2) + (2.0 * acceleration3) + acceleration4);
+            }
+
+            return new[] { angle, angularVelocity };
+
+            double AngularAcceleration(double currentAngle) =>
+                Vector2D.Cross(localPoint.Rotate(currentAngle), worldForce) / inertia;
         }
 
         private static MotionError FreeFallErrors(double maximumTimestep)
@@ -468,7 +555,6 @@ namespace SpiceSharp.Physics2D.Tests.Forces
             };
             var simulation = new Transient("tran", method);
             var circuit = new Circuit(
-                new Resistor("validation-reference", "unused", "0", 1.0),
                 body,
                 load);
 

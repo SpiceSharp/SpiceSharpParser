@@ -1,6 +1,7 @@
 using SpiceSharp.Behaviors;
 using SpiceSharp.Entities;
 using SpiceSharp.Simulations;
+using SpiceSharp.Validation;
 using System;
 
 namespace SpiceSharp.Physics2D.Core
@@ -9,7 +10,7 @@ namespace SpiceSharp.Physics2D.Core
     /// Represents one generalized mechanical coordinate integrated by an
     /// ordinary SpiceSharp transient simulation.
     /// </summary>
-    public sealed class MechanicalCoordinate : Entity<MechanicalCoordinateParameters>
+    public sealed class MechanicalCoordinate : Entity<MechanicalCoordinateParameters>, IRuleSubject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MechanicalCoordinate"/> class.
@@ -84,5 +85,8 @@ namespace SpiceSharp.Physics2D.Core
             behaviors.Add(new MechanicalCoordinateBehavior(context));
             simulation.EntityBehaviors.Add(behaviors);
         }
+
+        void IRuleSubject.Apply(IRules rules) =>
+            MechanicalValidation.RegisterGroundReference(this, rules);
     }
 }

@@ -45,10 +45,10 @@ constitutive law therefore needs an explicit smooth regularization with
 documented physical consequences rather than an arbitrary direction branch.
 
 Relative rotation presents a separate periodicity problem. Body angles remain
-unbounded solver states under ADR-0004, but a rotational spring should use the
-shortest relative angular error. The chosen wrap has a branch seam at `+/-pi`;
-the component must define where its analytic derivative is valid rather than
-pretending the seam is globally differentiable.
+unbounded solver states under ADR-0004, while equivalent orientations must
+produce equivalent torque. A wrapped-linear error has a `2*pi*k` torque jump
+at `+/-pi`, so the constitutive law uses a smooth periodic restoring torque and
+reserves wrapping for diagnostic presentation only.
 
 Phase 5 implements compliant force transfer only. Exact distance constraints,
 revolute joints, Lagrange multipliers, unilateral contact, friction, and
@@ -344,53 +344,44 @@ reference relative angle `theta0`, rotational stiffness `kTheta`, and damping
 `cTheta`, evaluate:
 
 ```text
-eTheta = AngleMath.WrapSigned(thetaB - thetaA - theta0)
+eThetaRaw = thetaB - thetaA - theta0
+eThetaDiagnostic = AngleMath.WrapSigned(eThetaRaw)
 eOmega = omegaB - omegaA
 
-tauA = kTheta*eTheta + cTheta*eOmega
+tauA = kTheta*sin(eThetaRaw) + cTheta*eOmega
 tauB = -tauA
 ```
 
-`WrapSigned` returns the half-open interval `[-pi, pi)`. If B is positively
-ahead of A, A receives positive torque and B receives negative torque, so the
-pair opposes the relative error. If A is world and B is a body, only `tauB` is
-stamped and is restoring. If B is world and A is a body, only `tauA` is
-stamped and is likewise restoring.
+`kTheta` is the tangent stiffness at the reference angle. `WrapSigned` returns
+the half-open interval `[-pi, pi)` for diagnostics, but it does not enter the
+solver load. If B is positively ahead of A within the principal interval, A
+receives positive torque and B receives negative torque, so the pair opposes
+the relative error. If A is world and B is a body, only `tauB` is stamped and
+is restoring. If B is world and A is a body, only `tauA` is stamped and is
+likewise restoring.
 
 `ReferenceAngle` must be finite. Rotational stiffness and damping must be
 finite and nonnegative. A world endpoint's fixed angle must be finite and its
 angular velocity is exactly zero.
 
-Away from the wrap seam, the complete analytic Jacobian is constant:
+The complete analytic Jacobian is smooth and periodic. With
+`kt = kTheta*cos(eThetaRaw)`:
 
 ```text
              thetaA  omegaA  thetaB  omegaB
-d(tauA)/dz = [ -k,     -c,      k,      c ]
-d(tauB)/dz = [  k,      c,     -k,     -c ]
+d(tauA)/dz = [ -kt,     -c,      kt,      c ]
+d(tauB)/dz = [  kt,      c,     -kt,     -c ]
 ```
 
-### Wrapped-angle seam
+### Periodic seam
 
 The body angles themselves remain unbounded and are never rewritten or
-wrapped in solver storage. Only relative error is wrapped inside the
-rotational constitutive law.
-
-The selected shortest-error function is continuous across equivalent angle
-representations such as one endpoint just below `+pi` and the other just above
-`-pi`. It nevertheless has an unavoidable branch discontinuity at the exact
-relative error represented by `+/-pi`. At that point the restoring direction
-is ambiguous and a global derivative does not exist.
-
-The component uses derivative one for the wrapped error within each branch.
-Therefore:
-
-- Newton iterates must not rely on a derivative exactly at the branch seam;
-- a timestep that crosses the seam may require ordinary SpiceSharp timestep
-  reduction or additional Newton work;
-- tests exercise equivalent representations near the seam without claiming
-  differentiability at the exact boundary;
-- Phase 5 does not smooth the seam, add hysteresis, or preserve a separate
-  winding-number state.
+wrapped in solver storage. Both `sin(eThetaRaw)` and its derivative
+`cos(eThetaRaw)` agree at equivalent `+/-pi` representations, so Newton sees no
+branch seam. The antipodal orientation is an unstable zero-torque equilibrium
+of the periodic potential `kTheta*(1-cos(eThetaRaw))`; this is explicit model
+behavior, not a hidden clamp or a winding-history rule. Tests finite-difference
+the analytic Jacobian with a stencil centered on the diagnostic wrap seam.
 
 ### Residual and Newton stamp
 
@@ -535,16 +526,15 @@ custom integrator or constraint projection.
 - Finite differences in production: rejected because analytic derivatives are
   deterministic, allocation-free, and avoid perturbation noise in a strongly
   coupled nonlinear stamp.
-- Leaving rotational error unwrapped: rejected because equivalent physical
-  orientations separated by `2*pi` would produce different torque and the
-  spring could restore along the long path.
+- Using an unwrapped linear rotational error: rejected because equivalent
+  physical orientations separated by `2*pi` would produce different torque.
 - Wrapping the body solver angles themselves: rejected because ADR-0004 makes
   angle unbounded and other components depend on continuous solver history.
-- Replacing wrapped linear angular error with `sin(eTheta)`: rejected because
-  it changes the intended linear torsional stiffness law and has zero slope at
-  the antipodal orientation rather than making the ambiguity explicit.
-- Claiming the wrap seam is differentiable: rejected because shortest signed
-  angle necessarily changes branch at `+/-pi` without additional state.
+- A wrapped-linear angular error: rejected because its torque jumps by
+  `2*pi*kTheta` at the antipodal branch seam and violates the global smooth-law
+  requirement.
+- A separate shortest-angle diagnostic in the solver residual: rejected; the
+  diagnostic may wrap, but only the periodic `sin/cos` law is stamped.
 - Adding seam hysteresis or a winding-number history in Phase 5: rejected
   because it introduces path-dependent state and lifecycle decisions beyond a
   memoryless spring-damper.
@@ -597,12 +587,13 @@ custom integrator or constraint projection.
 
 ## Verification
 
-See [Phase 5 verification](../verification/phase-05.md). Fourteen Phase 5
+See [Phase 5 verification](../verification/phase-05.md). Sixteen Phase 5
 tests cover action/reaction, zero net internal linear force, zero net
 world-origin torque, body-to-world attachment, off-center torque, a pure
-rotational spring, wrapped-angle representation near the seam, full analytic
-distance and rotational Jacobians, coincident anchors, reduced-mass frequency,
-damped analytic motion, pure rotational frequency, and timestep refinement.
+rotational spring, a smooth periodic seam, full analytic distance and
+rotational Jacobians, coincident anchors, reduced-mass frequency, damped
+analytic motion, pure rotational frequency, timestep refinement, and an
+off-center production transient against an independent nonlinear reference.
 
 The measured force action/reaction error and world-origin torque residual are
 both zero. The maximum scale-aware Jacobian mismatches are
@@ -610,7 +601,9 @@ both zero. The maximum scale-aware Jacobian mismatches are
 `2.105423613230073e-10` for the rotational connection, against a `5e-6`
 limit. The reduced-mass oscillator frequency relative error is
 `2.2222331169160068e-6`, against a `3e-3` limit. The pure rotational
-oscillator frequency relative error is `1.3334268135212213e-6`.
+small-amplitude oscillator frequency relative error is
+`1.5757813460237635e-4`; the remaining difference is the expected amplitude
+dependence of the periodic sine law.
 
 The damped world spring final-displacement absolute error is
 `2.6532872210993652e-6 m`. Timestep-refinement endpoint errors decrease from
@@ -618,8 +611,10 @@ The damped world spring final-displacement absolute error is
 `3.163552069973541e-6 m`. Coincident-anchor load and Jacobian values are all
 finite.
 
-The Pendulum sample completes through `3 s` with finite CSV output and a final
-compliant anchor error of `0.004321287349603146 m`. The focused Physics2D suite
-passes 116 tests with zero warnings. The complete repository suite passes with
-2,419 tests passed, 11 skipped, and no failures; its remaining parser and test
-warnings are the pre-existing repository baseline.
+The off-center production trajectory differs from its independent reference by
+at most `4.6107812567974804e-8`. The Pendulum sample completes through `3 s`
+with finite CSV output and a final compliant anchor error of
+`0.004321287349603146 m`. The focused Physics2D suite passes 125 tests with zero
+warnings. The complete repository suite passes with 2,428 tests passed, 11
+skipped, and no failures; its remaining parser and test warnings are the
+pre-existing repository baseline.

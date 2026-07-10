@@ -91,6 +91,92 @@ namespace SpiceSharp.Physics2D.Tests.Connections
         }
 
         [Fact]
+        public void OffCenterDistanceStampMatchesIndependentNonlinearReference()
+        {
+            const double mass = 1.4;
+            const double inertia = 0.8;
+            const double restLength = 0.9;
+            const double stiffness = 6.0;
+            const double damping = 0.5;
+            const double regularization = 1e-4;
+            const double stopTime = 0.3;
+            var worldAnchor = new Vector2D(0.1, -0.2);
+            var localAnchor = new Vector2D(0.3, -0.4);
+            var initialPosition = new Vector2D(1.0, 0.5);
+            var initialVelocity = new Vector2D(0.2, -0.1);
+            const double initialAngle = 0.35;
+            const double initialAngularVelocity = 0.3;
+            var body = new RigidBody2D(
+                "body",
+                mass,
+                inertia,
+                initialPosition,
+                initialAngle,
+                initialVelocity,
+                initialAngularVelocity);
+            var connection = new DistanceSpringDamper2D(
+                "off-center",
+                MechanicalAnchor2D.World(worldAnchor),
+                MechanicalAnchor2D.Body(body.Name, localAnchor),
+                restLength,
+                stiffness,
+                damping,
+                regularization);
+            ConnectionSample actual = ConnectionTestSimulation.Run(
+                body,
+                null,
+                0.0005,
+                stopTime,
+                connection).Final;
+            double[] expected = IntegrateDistanceReference(
+                new[]
+                {
+                    initialPosition.X,
+                    initialPosition.Y,
+                    initialAngle,
+                    initialVelocity.X,
+                    initialVelocity.Y,
+                    initialAngularVelocity,
+                },
+                mass,
+                inertia,
+                worldAnchor,
+                localAnchor,
+                restLength,
+                stiffness,
+                damping,
+                regularization,
+                stopTime,
+                60000);
+            double maximumError = 0.0;
+            double[] actualState =
+            {
+                actual.XA,
+                actual.YA,
+                actual.AngleA,
+                actual.VelocityXA,
+                actual.VelocityYA,
+                actual.AngularVelocityA,
+            };
+            for (int index = 0; index < expected.Length; index++)
+            {
+                maximumError = Math.Max(
+                    maximumError,
+                    Math.Abs(expected[index] - actualState[index]));
+            }
+
+            Console.WriteLine(FormattableString.Invariant(
+                $"Off-center distance production-stamp maximum state error={maximumError:R}."));
+
+            NumericAssert.Equal(expected[0], actual.XA, 2e-6, 2e-6);
+            NumericAssert.Equal(expected[1], actual.YA, 2e-6, 2e-6);
+            NumericAssert.Equal(expected[2], actual.AngleA, 2e-6, 2e-6);
+            NumericAssert.Equal(expected[3], actual.VelocityXA, 2e-6, 2e-6);
+            NumericAssert.Equal(expected[4], actual.VelocityYA, 2e-6, 2e-6);
+            NumericAssert.Equal(expected[5], actual.AngularVelocityA, 2e-6, 2e-6);
+        }
+
+        [Fact]
         public void WorldAttachedRotationalSpringMatchesPureAngularOscillator()
         {
             const double inertia = 0.5;
@@ -99,7 +185,7 @@ namespace SpiceSharp.Physics2D.Tests.Connections
                 "body",
                 1.0,
                 inertia,
-                initialAngle: 0.25);
+                initialAngle: 0.05);
             var spring = new RotationalSpringDamper2D(
                 "torsion",
                 RotationalEndpoint2D.World(),
@@ -162,6 +248,83 @@ namespace SpiceSharp.Physics2D.Tests.Connections
                 spring).Final.XA;
             double expected = 0.4 * Math.Cos(Math.Sqrt(stiffness) * stopTime);
             return Math.Abs(actual - expected);
+        }
+
+        private static double[] IntegrateDistanceReference(
+            double[] initialState,
+            double mass,
+            double inertia,
+            Vector2D worldAnchor,
+            Vector2D localAnchor,
+            double restLength,
+            double stiffness,
+            double damping,
+            double regularization,
+            double duration,
+            int steps)
+        {
+            var state = (double[])initialState.Clone();
+            double step = duration / steps;
+            for (int index = 0; index < steps; index++)
+            {
+                double[] derivative1 = EvaluateDistanceReference(state);
+                double[] derivative2 = EvaluateDistanceReference(
+                    AddScaled(state, derivative1, 0.5 * step));
+                double[] derivative3 = EvaluateDistanceReference(
+                    AddScaled(state, derivative2, 0.5 * step));
+                double[] derivative4 = EvaluateDistanceReference(
+                    AddScaled(state, derivative3, step));
+                for (int stateIndex = 0; stateIndex < state.Length; stateIndex++)
+                {
+                    state[stateIndex] += (step / 6.0)
+                        * (derivative1[stateIndex]
+                            + (2.0 * derivative2[stateIndex])
+                            + (2.0 * derivative3[stateIndex])
+                            + derivative4[stateIndex]);
+                }
+            }
+
+            return state;
+
+            double[] EvaluateDistanceReference(double[] current)
+            {
+                var position = new Vector2D(current[0], current[1]);
+                double angle = current[2];
+                var velocity = new Vector2D(current[3], current[4]);
+                double angularVelocity = current[5];
+                Vector2D radius = localAnchor.Rotate(angle);
+                Vector2D separation = position + radius - worldAnchor;
+                double length = Math.Sqrt(
+                    separation.LengthSquared + (regularization * regularization));
+                Vector2D direction = separation / length;
+                Vector2D pointVelocity = velocity
+                    + (radius.Perpendicular() * angularVelocity);
+                double normalSpeed = Vector2D.Dot(direction, pointVelocity);
+                double forceMagnitude = (stiffness * (length - restLength))
+                    + (damping * normalSpeed);
+                Vector2D forceOnBody = -direction * forceMagnitude;
+                double torque = Vector2D.Cross(radius, forceOnBody);
+                return new[]
+                {
+                    velocity.X,
+                    velocity.Y,
+                    angularVelocity,
+                    forceOnBody.X / mass,
+                    forceOnBody.Y / mass,
+                    torque / inertia,
+                };
+            }
+        }
+
+        private static double[] AddScaled(double[] state, double[] derivative, double scale)
+        {
+            var result = new double[state.Length];
+            for (int index = 0; index < state.Length; index++)
+            {
+                result[index] = state[index] + (scale * derivative[index]);
+            }
+
+            return result;
         }
 
         private static double EstimatePeriod(

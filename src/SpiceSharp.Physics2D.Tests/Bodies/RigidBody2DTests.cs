@@ -1,5 +1,4 @@
 using SpiceSharp;
-using SpiceSharp.Components;
 using SpiceSharp.Physics2D.Bodies;
 using SpiceSharp.Physics2D.Mathematics;
 using SpiceSharp.Physics2D.Tests.Numerics;
@@ -14,6 +13,18 @@ namespace SpiceSharp.Physics2D.Tests.Bodies
 {
     public class RigidBody2DTests
     {
+        [Fact]
+        public void BodyOnlyCircuitPassesDefaultValidation()
+        {
+            var body = new RigidBody2D("body", 1.0, 1.0);
+            Transient simulation = CreateSimulation(0.01, 0.02);
+
+            Exception exception = Record.Exception(() =>
+                simulation.Run(new Circuit(body)).ToArray());
+
+            Assert.Null(exception);
+        }
+
         [Fact]
         public void ConstantWorldForceThroughCenterMatchesAnalyticSolution()
         {
@@ -274,9 +285,7 @@ namespace SpiceSharp.Physics2D.Tests.Bodies
         {
             var body = new RigidBody2D("invalid-body", mass, inertia);
             var simulation = CreateSimulation(0.01, 0.1);
-            var circuit = new Circuit(
-                new Resistor("validation-reference", "unused", "0", 1.0),
-                body);
+            var circuit = new Circuit(body);
 
             SpiceSharpException exception = Assert.Throws<SpiceSharpException>(() =>
                 simulation.Run(circuit).ToArray());
@@ -323,7 +332,6 @@ namespace SpiceSharp.Physics2D.Tests.Bodies
                 initialAngularVelocity: -1.0);
             Transient simulation = CreateSimulation(0.02, 0.4);
             simulation.Run(new Circuit(
-                new Resistor("validation-reference", "unused", "0", 1.0),
                 first,
                 second)).ToArray();
             IRigidBody2DBehavior firstBehavior = simulation.EntityBehaviors[first.Name]
@@ -501,7 +509,6 @@ namespace SpiceSharp.Physics2D.Tests.Bodies
                 "kineticenergy");
             var entities = new List<SpiceSharp.Entities.IEntity>
             {
-                new Resistor("validation-reference", "unused", "0", 1.0),
                 body,
             };
             entities.AddRange(connectedEntities);

@@ -1,5 +1,4 @@
 using SpiceSharp;
-using SpiceSharp.Components;
 using SpiceSharp.Physics2D.Bodies;
 using SpiceSharp.Physics2D.Forces;
 using SpiceSharp.Physics2D.Mathematics;
@@ -37,7 +36,6 @@ namespace SpiceSharp.Physics2D.Samples.FreeFall
             var angle = new RealPropertyExport(simulation, body.Name, "angle");
             var omega = new RealPropertyExport(simulation, body.Name, "omega");
             var circuit = new Circuit(
-                new Resistor("validation-reference", "unused", "0", 1.0),
                 body,
                 gravity);
 

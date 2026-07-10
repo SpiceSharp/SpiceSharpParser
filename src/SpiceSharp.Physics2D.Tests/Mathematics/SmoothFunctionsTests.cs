@@ -42,12 +42,31 @@ namespace SpiceSharp.Physics2D.Tests.Mathematics
         [Fact]
         public void StableFormsRemainFiniteAtLargeMagnitude()
         {
-            const double magnitude = 1e200;
+            const double magnitude = 1e308;
 
             Assert.True(double.IsFinite(SmoothFunctions.PositivePart(magnitude, 1.0)));
             Assert.True(double.IsFinite(SmoothFunctions.PositivePart(-magnitude, 1.0)));
             Assert.True(double.IsFinite(SmoothFunctions.NegativePart(-magnitude, 1.0)));
             Assert.True(double.IsFinite(SmoothFunctions.Absolute(magnitude, 1.0)));
+            NumericAssert.Equal(
+                magnitude,
+                SmoothFunctions.PositivePart(magnitude, 1.0),
+                0.0,
+                1e-15);
+
+            double rootTwo = Math.Sqrt(2.0);
+            double expectedPositive = (0.5 * (1.0 + rootTwo)) * magnitude;
+            double expectedNegativeInput = (0.5 * (rootTwo - 1.0)) * magnitude;
+            NumericAssert.Equal(
+                expectedPositive,
+                SmoothFunctions.PositivePart(magnitude, magnitude),
+                0.0,
+                1e-15);
+            NumericAssert.Equal(
+                expectedNegativeInput,
+                SmoothFunctions.PositivePart(-magnitude, magnitude),
+                0.0,
+                1e-15);
             Assert.True(double.IsFinite(
                 SmoothFunctions.RegularizedLength(new Vector2D(3e200, 4e200), 1.0)));
             NumericAssert.Equal(

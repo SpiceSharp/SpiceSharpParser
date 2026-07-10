@@ -1,5 +1,4 @@
 using SpiceSharp;
-using SpiceSharp.Components;
 using SpiceSharp.Physics2D.Core;
 using SpiceSharp.Physics2D.Tests.Numerics;
 using SpiceSharp.Simulations;
@@ -13,6 +12,18 @@ namespace SpiceSharp.Physics2D.Tests.Coordinates
 {
     public class MechanicalCoordinateTests
     {
+        [Fact]
+        public void CoordinateOnlyCircuitPassesDefaultValidation()
+        {
+            var coordinate = new MechanicalCoordinate("coordinate", 1.0);
+            Transient simulation = CreateSimulation(0.01, 0.02);
+
+            Exception exception = Record.Exception(() =>
+                simulation.Run(new Circuit(coordinate)).ToArray());
+
+            Assert.Null(exception);
+        }
+
         [Fact]
         public void ZeroForceAndZeroVelocityKeepPositionConstant()
         {
@@ -164,9 +175,7 @@ namespace SpiceSharp.Physics2D.Tests.Coordinates
         {
             var coordinate = new MechanicalCoordinate("invalid-coordinate", mass);
             var simulation = CreateSimulation(0.01, 0.1);
-            var circuit = new Circuit(
-                new Resistor("validation-reference", "unused", "0", 1.0),
-                coordinate);
+            var circuit = new Circuit(coordinate);
 
             SpiceSharpException exception = Assert.Throws<SpiceSharpException>(() =>
                 simulation.Run(circuit).ToArray());
@@ -457,7 +466,6 @@ namespace SpiceSharp.Physics2D.Tests.Coordinates
             var samples = new List<CoordinateSample>();
             var entities = new List<SpiceSharp.Entities.IEntity>
             {
-                new Resistor("validation-reference", "unused", "0", 1.0),
                 coordinate,
             };
             entities.AddRange(connectedEntities);

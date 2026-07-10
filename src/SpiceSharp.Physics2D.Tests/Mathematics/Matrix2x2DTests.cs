@@ -51,5 +51,14 @@ namespace SpiceSharp.Physics2D.Tests.Mathematics
             Assert.True(exact.ApproximatelyEquals(nearby, 1e-11, 1e-11));
             Assert.False(exact.ApproximatelyEquals(nearby, 1e-14, 1e-14));
         }
+
+        [Fact]
+        public void ApproximateEqualityRejectsMatchingNonfiniteComponents()
+        {
+            var left = new Matrix2x2D(double.NaN, 0.0, 0.0, 1.0);
+            var right = new Matrix2x2D(double.NaN, 0.0, 0.0, 1.0);
+
+            Assert.False(left.ApproximatelyEquals(right, 0.0, 0.0));
+        }
     }
 }

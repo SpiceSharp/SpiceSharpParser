@@ -237,14 +237,14 @@ namespace SpiceSharp.Physics2D.Mathematics
             double absoluteTolerance,
             double relativeTolerance)
         {
-            if (left.Equals(right))
-            {
-                return true;
-            }
-
             if (!IsFinite(left) || !IsFinite(right))
             {
                 return false;
+            }
+
+            if (left.Equals(right))
+            {
+                return true;
             }
 
             double scale = Math.Max(Math.Abs(left), Math.Abs(right));

@@ -7,6 +7,8 @@
 - Added one public `IRigidBody2DBehavior` exposing six private solver
   variables: world x/y position, unbounded angle, world x/y velocity, and
   angular velocity.
+- Added public-rule validation participation so body-only circuits pass default
+  SpiceSharp validation without unrelated electrical topology.
 - Added three position derivative histories and three generalized-momentum
   histories. Translational momentum uses `M*v`; angular momentum uses
   `I*omega`.
@@ -279,13 +281,20 @@ Phase 14.
 - All six private solver variables use SpiceSharp's `Units.Volt` only as
   solver bookkeeping because the pinned public unit catalog has no mechanical
   generalized-coordinate units.
-- A pure zero-pin circuit does not satisfy SpiceSharp's electrical validation;
-  tests retain the isolated grounded validation resistor documented by Phase
-  0.
+- Pure body-only circuits register the existing ground reference through
+  SpiceSharp's public validation rules; no electrical pin or solver stamp is
+  added and validation remains enabled.
 - Mass, inertia, and initial values are validated, but large or disparate SI
   scales are not silently rescaled.
 
 ## Decision
+
+### Post-review corrective verification
+
+`BodyOnlyCircuitPassesDefaultValidation` runs an ordinary `Transient` over a
+circuit containing only one `RigidBody2D`. Validation remains enabled, no dummy
+resistor is present, and the case passes in Release. All retained body tests
+now run without unrelated electrical validation topology.
 
 PASS.
 

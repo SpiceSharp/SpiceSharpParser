@@ -1,5 +1,4 @@
 using SpiceSharp;
-using SpiceSharp.Components;
 using SpiceSharp.Physics2D.Bodies;
 using SpiceSharp.Physics2D.Connections;
 using SpiceSharp.Physics2D.Forces;
@@ -50,7 +49,6 @@ namespace SpiceSharp.Physics2D.Samples.Pendulum
             var vy = new RealPropertyExport(simulation, body.Name, "vy");
             var omega = new RealPropertyExport(simulation, body.Name, "omega");
             var circuit = new Circuit(
-                new Resistor("validation-reference", "unused", "0", 1.0),
                 body,
                 pivot,
                 gravity);

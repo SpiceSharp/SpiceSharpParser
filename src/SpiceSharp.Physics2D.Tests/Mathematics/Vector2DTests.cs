@@ -94,6 +94,18 @@ namespace SpiceSharp.Physics2D.Tests.Mathematics
             Assert.False(exact.ApproximatelyEquals(nearby, 1e-14, 1e-14));
         }
 
+        [Theory]
+        [InlineData(double.NaN)]
+        [InlineData(double.PositiveInfinity)]
+        [InlineData(double.NegativeInfinity)]
+        public void ApproximateEqualityRejectsMatchingNonfiniteComponents(double value)
+        {
+            var left = new Vector2D(value, 0.0);
+            var right = new Vector2D(value, 0.0);
+
+            Assert.False(left.ApproximatelyEquals(right, 0.0, 0.0));
+        }
+
         [Fact]
         public void LengthAvoidsIntermediateOverflow()
         {

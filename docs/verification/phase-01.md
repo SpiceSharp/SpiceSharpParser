@@ -12,6 +12,10 @@
 - Retained exact structural equality separately from approximate comparisons.
 - Used stable scaled-length formulas to avoid intermediate overflow for large
   finite vector components.
+- Approximate vector/matrix comparisons reject every non-finite component,
+  including matching NaN and infinity values.
+- The smooth positive/negative-part stable forms remain finite through
+  magnitude `1e308`, including a comparably scaled smoothing parameter.
 
 ## Explicitly not implemented
 
@@ -216,6 +220,14 @@ to VSTest. This is not the formal performance baseline assigned to Phase 14.
   in the complete retry; no Phase 1 code participates in that parser circuit.
 
 ## Decision
+
+### Post-review corrective verification
+
+Four boundary cases were added after the Phase 00-05 implementation review:
+three non-finite vector comparison cases and one matrix comparison case. The
+large-magnitude smoothing case was strengthened from `1e200` to `1e308` and
+now also covers `x` and `epsilon` at the same scale. All cases pass in Release;
+the complete Physics2D project now contains 125 passing tests.
 
 PASS.
 

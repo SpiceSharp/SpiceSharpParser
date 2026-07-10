@@ -115,9 +115,10 @@ namespace SpiceSharp.Physics2D.Tests.Connections
                     loads,
                     jacobian);
 
-            NumericAssert.Equal(2.0, result.TorqueOnA, 1e-12, 1e-12);
-            NumericAssert.Equal(2.0, loads[0], 1e-12, 1e-12);
-            NumericAssert.Equal(-2.0, loads[1], 1e-12, 1e-12);
+            double expected = 8.0 * Math.Sin(0.25);
+            NumericAssert.Equal(expected, result.TorqueOnA, 1e-12, 1e-12);
+            NumericAssert.Equal(expected, loads[0], 1e-12, 1e-12);
+            NumericAssert.Equal(-expected, loads[1], 1e-12, 1e-12);
         }
 
         [Fact]
@@ -138,7 +139,50 @@ namespace SpiceSharp.Physics2D.Tests.Connections
                     jacobian);
 
             NumericAssert.Equal(0.03, result.AngleError, 1e-12, 1e-12);
-            NumericAssert.Equal(0.3, loads[0], 1e-12, 1e-12);
+            NumericAssert.Equal(10.0 * Math.Sin(0.03), loads[0], 1e-12, 1e-12);
+        }
+
+        [Fact]
+        public void RotationalTorqueAndJacobianAreSmoothAcrossDiagnosticSeam()
+        {
+            const double stiffness = 7.0;
+            const double offset = 1e-7;
+            double[] below = EvaluateRotationAtError(Math.PI - offset, stiffness);
+            double[] above = EvaluateRotationAtError(Math.PI + offset, stiffness);
+            double expectedMagnitude = stiffness * Math.Sin(offset);
+
+            NumericAssert.Equal(expectedMagnitude, below[0], 1e-13, 1e-9);
+            NumericAssert.Equal(-expectedMagnitude, above[0], 1e-13, 1e-9);
+            NumericAssert.Equal(0.0, below[0] + above[0], 1e-13, 1e-9);
+
+            double[] state = { 0.0, 0.0, Math.PI, 0.0 };
+            var loads = new double[2];
+            var analytic = new double[2, 4];
+            RotationalSpringDamper2DEquation.Evaluate(
+                state[0],
+                state[1],
+                state[2],
+                state[3],
+                0.0,
+                stiffness,
+                0.0,
+                loads,
+                analytic);
+            double[,] numerical = FiniteDifferenceJacobian.Calculate(
+                values => EvaluateRotationAtError(values[2] - values[0], stiffness),
+                state,
+                relativeStep: 1e-6,
+                minimumStep: 1e-7);
+
+            NumericComparison comparison = NumericAssert.JacobianEqual(
+                analytic,
+                numerical,
+                2e-9,
+                5e-6,
+                "RotationalSpringDamper2D diagnostic seam");
+
+            Console.WriteLine(FormattableString.Invariant(
+                $"Rotational seam Jacobian maximum absolute mismatch={comparison.MaximumAbsoluteMismatch:R}."));
         }
 
         [Fact]
@@ -263,6 +307,23 @@ namespace SpiceSharp.Physics2D.Tests.Connections
                 0.4,
                 loads,
                 jacobian);
+        }
+
+        private static double[] EvaluateRotationAtError(double error, double stiffness)
+        {
+            var loads = new double[2];
+            var jacobian = new double[2, 4];
+            RotationalSpringDamper2DEquation.Evaluate(
+                0.0,
+                0.0,
+                error,
+                0.0,
+                0.0,
+                stiffness,
+                0.0,
+                loads,
+                jacobian);
+            return loads;
         }
 
         private static ConnectionBodyState2D ToBodyState(double[] state, int offset) =>

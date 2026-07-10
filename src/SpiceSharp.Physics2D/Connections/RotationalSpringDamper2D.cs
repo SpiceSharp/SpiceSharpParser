@@ -14,9 +14,11 @@ namespace SpiceSharp.Physics2D.Connections;
 /// Transfers restoring and damping torque between two body or world rotations.
 /// </summary>
 /// <remarks>
-/// Relative angle error is wrapped to the half-open interval [-pi, pi). The
-/// analytic derivative is valid on each branch; the exact +/-pi branch seam is
-/// discontinuous and should not be used as a Newton linearization point.
+/// The restoring torque is the smooth periodic law <c>k * sin(error)</c>.
+/// <see cref="RotationalSpringDamper2DParameters.Stiffness"/> is therefore the
+/// tangent stiffness at the reference angle. The reported relative angle error
+/// is wrapped to the half-open interval [-pi, pi), but the stamped torque and
+/// Jacobian remain continuous across that diagnostic seam.
 /// </remarks>
 public sealed class RotationalSpringDamper2D : Entity<RotationalSpringDamper2DParameters>
 {
@@ -57,7 +59,10 @@ public sealed class RotationalSpringDamper2D : Entity<RotationalSpringDamper2DPa
         set => Parameters.ReferenceAngle = value;
     }
 
-    /// <summary>Gets or sets the rotational stiffness in newton-meters per radian.</summary>
+    /// <summary>
+    /// Gets or sets the tangent rotational stiffness at the reference angle,
+    /// in newton-meters per radian.
+    /// </summary>
     public double Stiffness
     {
         get => Parameters.Stiffness;

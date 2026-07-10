@@ -43,6 +43,11 @@ ordinary zero-pin `Entity<RigidBody2DParameters>`. It creates one
 [`RigidBody2DBehavior`](../../src/SpiceSharp.Physics2D/Bodies/RigidBody2DBehavior.cs)
 for an ordinary SpiceSharp `Transient`.
 
+Like `MechanicalCoordinate`, the body implements SpiceSharp's public
+`IRuleSubject` hook and registers the existing ground reference during
+validation. This is validation metadata only: the body remains zero-pin and
+adds no electrical solver equation.
+
 The body is mathematically composed of three generalized coordinates but does
 not instantiate three nested `MechanicalCoordinate` entities or behavior
 containers. The one behavior creates and owns all six private variables:
@@ -359,9 +364,8 @@ only to make numerical acceptance measurements reproducible.
   reliable ownership model exists.
 - Mechanical states carry placeholder SpiceSharp unit metadata, and extreme
   or mixed-domain scales may require a future explicit conditioning policy.
-- A circuit containing only zero-pin bodies still needs ordinary SpiceSharp
-  electrical validation topology; tests use the isolated grounded resistor
-  established by ADR-0001.
+- A circuit containing only bodies passes default SpiceSharp validation; tests
+  no longer add unrelated electrical topology or disable validation.
 
 ## Verification
 

@@ -46,6 +46,12 @@ real solver variables:
 - `PositionVariable`, whose row owns the kinematic equation;
 - `VelocityVariable`, whose row owns the generalized dynamics equation.
 
+The entity also implements SpiceSharp's public `IRuleSubject` validation hook.
+It registers the existing ground reference with the biasing conductive rules;
+this adds no pin, solver variable, matrix entry, or electrical equation. It
+only lets a purely mechanical circuit satisfy the ordinary ground-presence
+validation that otherwise requires an unrelated electrical component.
+
 The solver unknown vector is `(q, u)`. Momentum is not a third unknown. During
 transient load, the coordinate behavior contributes only:
 
@@ -258,9 +264,8 @@ does not hard-code either the method or a timestep.
   supported mechanical-unit mechanism exists.
 - Extreme mass, stiffness, damping, or mixed-domain scales may require future
   explicit scaling policy; this phase does not conceal conditioning problems.
-- A circuit containing only zero-pin mechanical entities still needs ordinary
-  SpiceSharp electrical validation topology. Tests retain the isolated
-  grounded resistor documented by ADR-0001.
+- Purely mechanical circuits pass default SpiceSharp validation through the
+  entity's read-only validation-rule registration; validation is not disabled.
 
 ## Verification
 
