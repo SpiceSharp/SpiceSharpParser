@@ -57,13 +57,13 @@ documented in
 
 ## Files changed
 
-- `src/SpiceSharp.Physics2D/Core/MechanicalInitialConditionMode.cs`
-- `src/SpiceSharp.Physics2D/Core/MechanicalCoordinateParameters.cs`
-- `src/SpiceSharp.Physics2D/Core/IMechanicalCoordinateBehavior.cs`
-- `src/SpiceSharp.Physics2D/Core/MechanicalCoordinate.cs`
-- `src/SpiceSharp.Physics2D/Core/MechanicalCoordinateBehavior.cs`
-- `src/SpiceSharp.Physics2D.Tests/Coordinates/TestGeneralizedForces.cs`
-- `src/SpiceSharp.Physics2D.Tests/Coordinates/MechanicalCoordinateTests.cs`
+- `src/SpiceSharpMechanical2D/Core/MechanicalInitialConditionMode.cs`
+- `src/SpiceSharpMechanical2D/Core/MechanicalCoordinateParameters.cs`
+- `src/SpiceSharpMechanical2D/Core/IMechanicalCoordinateBehavior.cs`
+- `src/SpiceSharpMechanical2D/Core/MechanicalCoordinate.cs`
+- `src/SpiceSharpMechanical2D/Core/MechanicalCoordinateBehavior.cs`
+- `src/SpiceSharpMechanical2D.Tests/Coordinates/TestGeneralizedForces.cs`
+- `src/SpiceSharpMechanical2D.Tests/Coordinates/MechanicalCoordinateTests.cs`
 - `docs/architecture/ADR-0003-mechanical-coordinate-and-direct-force-stamping.md`
 - `docs/verification/phase-02.md`
 
@@ -80,21 +80,21 @@ Working-tree base: `248b4ddc8f040977cf6cd7c9524ba134b08d1ca5`.
     integration-test files.
   - The repository has no checked-in formatter command or formatter gate, so
     unrelated parser files were preserved.
-- `dotnet format SpiceSharp.Physics2D/SpiceSharp.Physics2D.csproj
+- `dotnet format SpiceSharpMechanical2D/SpiceSharpMechanical2D.csproj
   --verify-no-changes --no-restore --verbosity minimal`
   - Result: PASS.
-- `dotnet format SpiceSharp.Physics2D.Tests/SpiceSharp.Physics2D.Tests.csproj
+- `dotnet format SpiceSharpMechanical2D.Tests/SpiceSharpMechanical2D.Tests.csproj
   --verify-no-changes --no-restore --verbosity minimal`
   - Result: PASS.
-- `dotnet build SpiceSharp.Physics2D/SpiceSharp.Physics2D.csproj -c Release
+- `dotnet build SpiceSharpMechanical2D/SpiceSharpMechanical2D.csproj -c Release
   --no-restore --no-incremental`
   - Result: PASS for `netstandard2.0` and `net8.0`; 0 warnings, 0 errors.
-- `dotnet test SpiceSharp.Physics2D.Tests/SpiceSharp.Physics2D.Tests.csproj
+- `dotnet test SpiceSharpMechanical2D.Tests/SpiceSharpMechanical2D.Tests.csproj
   -c Release --no-restore --filter
-  "FullyQualifiedName~SpiceSharp.Physics2D.Tests.Coordinates" --logger
+  "FullyQualifiedName~SpiceSharpMechanical2D.Tests.Coordinates" --logger
   "console;verbosity=detailed"`
   - Result: PASS; 14 passed, 0 skipped, 0 failed.
-- `dotnet test SpiceSharp.Physics2D.Tests/SpiceSharp.Physics2D.Tests.csproj
+- `dotnet test SpiceSharpMechanical2D.Tests/SpiceSharpMechanical2D.Tests.csproj
   -c Release --no-build --no-restore`
   - Result: PASS; 62 passed, 0 skipped, 0 failed.
 - `dotnet build SpiceSharp-Parser.sln -c Release --no-restore --verbosity
@@ -113,7 +113,7 @@ Working-tree base: `248b4ddc8f040977cf6cd7c9524ba134b08d1ca5`.
   cases.
 - Complete solution: 2,365 passed, 11 skipped, 0 failed.
 - Test-project breakdown:
-  - `SpiceSharp.Physics2D.Tests`: 62 passed.
+  - `SpiceSharpMechanical2D.Tests`: 62 passed.
   - `SpiceSharpParser.AIExamples`: 948 passed.
   - `SpiceSharpParser.Tests`: 408 passed, 9 skipped.
   - `SpiceSharpParser.IntegrationTests`: 947 passed, 2 skipped.

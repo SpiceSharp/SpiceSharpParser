@@ -6,7 +6,7 @@
 
 ## Context
 
-`SpiceSharp.Physics2D` needs a first mechanical state that can participate in
+`SpiceSharpMechanical2D` needs a first mechanical state that can participate in
 ordinary SpiceSharp transient analysis. One generalized coordinate must carry
 position, velocity, inertia, and deterministic initial conditions while
 remaining open to forces supplied by components introduced in later phases.
@@ -37,9 +37,9 @@ exposing mutable solver storage.
 
 ### State and equation ownership
 
-[`MechanicalCoordinate`](../../src/SpiceSharp.Physics2D/Core/MechanicalCoordinate.cs)
+[`MechanicalCoordinate`](../../src/SpiceSharpMechanical2D/Core/MechanicalCoordinate.cs)
 is an ordinary zero-pin `Entity<MechanicalCoordinateParameters>`. Its
-[`MechanicalCoordinateBehavior`](../../src/SpiceSharp.Physics2D/Core/MechanicalCoordinateBehavior.cs)
+[`MechanicalCoordinateBehavior`](../../src/SpiceSharpMechanical2D/Core/MechanicalCoordinateBehavior.cs)
 implements both `IBiasingBehavior` and `ITimeBehavior` and creates two private
 real solver variables:
 
@@ -149,7 +149,7 @@ the test project under the convention established by
 
 ### Setup-time topology and behavior contract
 
-[`IMechanicalCoordinateBehavior`](../../src/SpiceSharp.Physics2D/Core/IMechanicalCoordinateBehavior.cs)
+[`IMechanicalCoordinateBehavior`](../../src/SpiceSharpMechanical2D/Core/IMechanicalCoordinateBehavior.cs)
 exposes the two `IVariable<double>` instances and read-only mechanical state:
 position, velocity, generalized mass, requested initial state, and kinetic
 energy. It does not expose solver indices, matrix locations, mutable arrays,

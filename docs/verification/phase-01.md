@@ -37,18 +37,18 @@ The numerical conventions are recorded in
 
 ## Files changed
 
-- `src/SpiceSharp.Physics2D/Mathematics/Vector2D.cs`
-- `src/SpiceSharp.Physics2D/Mathematics/Matrix2x2D.cs`
-- `src/SpiceSharp.Physics2D/Mathematics/AngleMath.cs`
-- `src/SpiceSharp.Physics2D/Mathematics/SmoothFunctions.cs`
-- `src/SpiceSharp.Physics2D.Tests/Mathematics/Vector2DTests.cs`
-- `src/SpiceSharp.Physics2D.Tests/Mathematics/Matrix2x2DTests.cs`
-- `src/SpiceSharp.Physics2D.Tests/Mathematics/AngleMathTests.cs`
-- `src/SpiceSharp.Physics2D.Tests/Mathematics/SmoothFunctionsTests.cs`
-- `src/SpiceSharp.Physics2D.Tests/Numerics/FiniteDifferenceJacobian.cs`
-- `src/SpiceSharp.Physics2D.Tests/Numerics/NumericAssert.cs`
-- `src/SpiceSharp.Physics2D.Tests/Numerics/TimeSeriesComparison.cs`
-- `src/SpiceSharp.Physics2D.Tests/Numerics/NumericalTestSupportTests.cs`
+- `src/SpiceSharpMechanical2D/Mathematics/Vector2D.cs`
+- `src/SpiceSharpMechanical2D/Mathematics/Matrix2x2D.cs`
+- `src/SpiceSharpMechanical2D/Mathematics/AngleMath.cs`
+- `src/SpiceSharpMechanical2D/Mathematics/SmoothFunctions.cs`
+- `src/SpiceSharpMechanical2D.Tests/Mathematics/Vector2DTests.cs`
+- `src/SpiceSharpMechanical2D.Tests/Mathematics/Matrix2x2DTests.cs`
+- `src/SpiceSharpMechanical2D.Tests/Mathematics/AngleMathTests.cs`
+- `src/SpiceSharpMechanical2D.Tests/Mathematics/SmoothFunctionsTests.cs`
+- `src/SpiceSharpMechanical2D.Tests/Numerics/FiniteDifferenceJacobian.cs`
+- `src/SpiceSharpMechanical2D.Tests/Numerics/NumericAssert.cs`
+- `src/SpiceSharpMechanical2D.Tests/Numerics/TimeSeriesComparison.cs`
+- `src/SpiceSharpMechanical2D.Tests/Numerics/NumericalTestSupportTests.cs`
 - `docs/architecture/ADR-0002-double-precision-mathematics.md`
 - `docs/verification/phase-01.md`
 
@@ -65,16 +65,16 @@ Working-tree base: `d828c4f8693744bdc8c8e72417c4f2c086251f9b`.
     parser and integration-test files.
   - The repository has no checked-in formatter command or formatter gate, so
     unrelated parser files were preserved as required.
-- `dotnet format SpiceSharp.Physics2D/SpiceSharp.Physics2D.csproj
+- `dotnet format SpiceSharpMechanical2D/SpiceSharpMechanical2D.csproj
   --verify-no-changes --no-restore --verbosity minimal`
   - Result: PASS.
-- `dotnet format SpiceSharp.Physics2D.Tests/SpiceSharp.Physics2D.Tests.csproj
+- `dotnet format SpiceSharpMechanical2D.Tests/SpiceSharpMechanical2D.Tests.csproj
   --verify-no-changes --no-restore --verbosity minimal`
   - Result: PASS.
-- `dotnet build SpiceSharp.Physics2D/SpiceSharp.Physics2D.csproj -c Release
+- `dotnet build SpiceSharpMechanical2D/SpiceSharpMechanical2D.csproj -c Release
   --no-restore --no-incremental`
   - Result: PASS for `netstandard2.0` and `net8.0`; 0 warnings, 0 errors.
-- `dotnet test SpiceSharp.Physics2D.Tests/SpiceSharp.Physics2D.Tests.csproj
+- `dotnet test SpiceSharpMechanical2D.Tests/SpiceSharpMechanical2D.Tests.csproj
   -c Release --no-restore --logger "console;verbosity=detailed"`
   - Result: PASS; 48 passed, 0 skipped, 0 failed.
 - `dotnet build SpiceSharp-Parser.sln -c Release --no-restore --verbosity
@@ -101,7 +101,7 @@ Working-tree base: `d828c4f8693744bdc8c8e72417c4f2c086251f9b`.
 - Physics2D test project: 48 passed, including the 8 retained Phase 0 cases.
 - Complete solution: 2,351 passed, 11 skipped, 0 failed.
 - Test-project breakdown:
-  - `SpiceSharp.Physics2D.Tests`: 48 passed.
+  - `SpiceSharpMechanical2D.Tests`: 48 passed.
   - `SpiceSharpParser.AIExamples`: 948 passed.
   - `SpiceSharpParser.Tests`: 408 passed, 9 skipped.
   - `SpiceSharpParser.IntegrationTests`: 947 passed, 2 skipped.

@@ -58,10 +58,10 @@ constraint stabilization belong to later phases.
 
 ### Public connection entities
 
-Provide two ordinary zero-pin entities in `SpiceSharp.Physics2D.Connections`:
+Provide two ordinary zero-pin entities in `SpiceSharpMechanical2D.Connections`:
 
-- [`DistanceSpringDamper2D`](../../src/SpiceSharp.Physics2D/Connections/DistanceSpringDamper2D.cs);
-- [`RotationalSpringDamper2D`](../../src/SpiceSharp.Physics2D/Connections/RotationalSpringDamper2D.cs).
+- [`DistanceSpringDamper2D`](../../src/SpiceSharpMechanical2D/Connections/DistanceSpringDamper2D.cs);
+- [`RotationalSpringDamper2D`](../../src/SpiceSharpMechanical2D/Connections/RotationalSpringDamper2D.cs).
 
 Both entities have immutable endpoints and mutable, validated physical
 parameters. They create `IBiasingBehavior` instances only for simulations
@@ -75,7 +75,7 @@ multiplier, or separate mechanics solve.
 
 ### Explicit endpoint value types and frames
 
-[`MechanicalAnchor2D`](../../src/SpiceSharp.Physics2D/Connections/MechanicalAnchor2D.cs)
+[`MechanicalAnchor2D`](../../src/SpiceSharpMechanical2D/Connections/MechanicalAnchor2D.cs)
 represents one distance-connection endpoint. It has two explicit construction
 modes:
 
@@ -89,7 +89,7 @@ center of mass. For a world anchor, `Point` is an immutable point in world
 coordinates. The frame is never inferred from a name, a zero vector, or the
 other endpoint.
 
-[`RotationalEndpoint2D`](../../src/SpiceSharp.Physics2D/Connections/RotationalEndpoint2D.cs)
+[`RotationalEndpoint2D`](../../src/SpiceSharpMechanical2D/Connections/RotationalEndpoint2D.cs)
 similarly provides:
 
 ```text
@@ -458,7 +458,7 @@ ADR-0005, values observed during `Load()` can belong to an intermediate or
 rejected Newton iteration and are not automatically accepted-timepoint
 diagnostics.
 
-The [`Pendulum`](../../samples/SpiceSharp.Physics2D.Samples/Pendulum/Program.cs)
+The [`Pendulum`](../../samples/SpiceSharpMechanical2D.Samples/Pendulum/Program.cs)
 sample demonstrates a compliant pivot by connecting a body-local point to a
 fixed world point with a stiff, damped, zero-rest-length
 `DistanceSpringDamper2D`. Gravity is an ordinary Phase 4 load. The sample uses

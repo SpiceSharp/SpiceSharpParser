@@ -70,29 +70,29 @@ stamps, and point-force linearization are documented in
 
 ## Files changed
 
-- `src/SpiceSharp.Physics2D/Forces/ForceFunction2D.cs`
-- `src/SpiceSharp.Physics2D/Forces/ForceCoordinateSystem2D.cs`
-- `src/SpiceSharp.Physics2D/Forces/RigidBodyLoadBehavior.cs`
-- `src/SpiceSharp.Physics2D/Forces/PointForce2DEquation.cs`
-- `src/SpiceSharp.Physics2D/Forces/Gravity2DParameters.cs`
-- `src/SpiceSharp.Physics2D/Forces/Gravity2D.cs`
-- `src/SpiceSharp.Physics2D/Forces/AppliedForce2DParameters.cs`
-- `src/SpiceSharp.Physics2D/Forces/AppliedForce2D.cs`
-- `src/SpiceSharp.Physics2D/Forces/PointForce2DParameters.cs`
-- `src/SpiceSharp.Physics2D/Forces/PointForce2D.cs`
-- `src/SpiceSharp.Physics2D/Forces/AppliedTorque2DParameters.cs`
-- `src/SpiceSharp.Physics2D/Forces/AppliedTorque2D.cs`
-- `src/SpiceSharp.Physics2D/Forces/LinearDrag2DParameters.cs`
-- `src/SpiceSharp.Physics2D/Forces/LinearDrag2D.cs`
-- `src/SpiceSharp.Physics2D/Forces/AngularDrag2DParameters.cs`
-- `src/SpiceSharp.Physics2D/Forces/AngularDrag2D.cs`
-- `src/SpiceSharp.Physics2D/Properties/AssemblyInfo.cs`
-- `src/SpiceSharp.Physics2D.Tests/Forces/ForceTestSimulation.cs`
-- `src/SpiceSharp.Physics2D.Tests/Forces/BasicForceTests.cs`
-- `src/SpiceSharp.Physics2D.Tests/Forces/PointForce2DJacobianTests.cs`
+- `src/SpiceSharpMechanical2D/Forces/ForceFunction2D.cs`
+- `src/SpiceSharpMechanical2D/Forces/ForceCoordinateSystem2D.cs`
+- `src/SpiceSharpMechanical2D/Forces/RigidBodyLoadBehavior.cs`
+- `src/SpiceSharpMechanical2D/Forces/PointForce2DEquation.cs`
+- `src/SpiceSharpMechanical2D/Forces/Gravity2DParameters.cs`
+- `src/SpiceSharpMechanical2D/Forces/Gravity2D.cs`
+- `src/SpiceSharpMechanical2D/Forces/AppliedForce2DParameters.cs`
+- `src/SpiceSharpMechanical2D/Forces/AppliedForce2D.cs`
+- `src/SpiceSharpMechanical2D/Forces/PointForce2DParameters.cs`
+- `src/SpiceSharpMechanical2D/Forces/PointForce2D.cs`
+- `src/SpiceSharpMechanical2D/Forces/AppliedTorque2DParameters.cs`
+- `src/SpiceSharpMechanical2D/Forces/AppliedTorque2D.cs`
+- `src/SpiceSharpMechanical2D/Forces/LinearDrag2DParameters.cs`
+- `src/SpiceSharpMechanical2D/Forces/LinearDrag2D.cs`
+- `src/SpiceSharpMechanical2D/Forces/AngularDrag2DParameters.cs`
+- `src/SpiceSharpMechanical2D/Forces/AngularDrag2D.cs`
+- `src/SpiceSharpMechanical2D/Properties/AssemblyInfo.cs`
+- `src/SpiceSharpMechanical2D.Tests/Forces/ForceTestSimulation.cs`
+- `src/SpiceSharpMechanical2D.Tests/Forces/BasicForceTests.cs`
+- `src/SpiceSharpMechanical2D.Tests/Forces/PointForce2DJacobianTests.cs`
 - `docs/architecture/ADR-0005-direct-rigid-body-loads-and-point-force-linearization.md`
-- `samples/SpiceSharp.Physics2D.Samples/FreeFall/SpiceSharp.Physics2D.Samples.FreeFall.csproj`
-- `samples/SpiceSharp.Physics2D.Samples/FreeFall/Program.cs`
+- `samples/SpiceSharpMechanical2D.Samples/FreeFall/SpiceSharpMechanical2D.Samples.FreeFall.csproj`
+- `samples/SpiceSharpMechanical2D.Samples/FreeFall/Program.cs`
 - `src/SpiceSharp-Parser.sln`
 - `docs/verification/phase-04.md`
 
@@ -103,9 +103,9 @@ Working-tree base:
 
 Target frameworks:
 
-- `SpiceSharp.Physics2D`: `netstandard2.0` and `net8.0`;
-- `SpiceSharp.Physics2D.Tests`: `net8.0`;
-- `SpiceSharp.Physics2D.Samples.FreeFall`: `net8.0`.
+- `SpiceSharpMechanical2D`: `netstandard2.0` and `net8.0`;
+- `SpiceSharpMechanical2D.Tests`: `net8.0`;
+- `SpiceSharpMechanical2D.Samples.FreeFall`: `net8.0`.
 
 Pinned package:
 
@@ -123,36 +123,36 @@ Pinned package:
     phases.
   - No Physics2D, Phase 4 test, or FreeFall sample file appeared in the
     diagnostic.
-- `dotnet format src/SpiceSharp.Physics2D/SpiceSharp.Physics2D.csproj
+- `dotnet format src/SpiceSharpMechanical2D/SpiceSharpMechanical2D.csproj
   --verify-no-changes --no-restore --verbosity minimal`
   - Result: PASS.
 - `dotnet format
-  src/SpiceSharp.Physics2D.Tests/SpiceSharp.Physics2D.Tests.csproj
+  src/SpiceSharpMechanical2D.Tests/SpiceSharpMechanical2D.Tests.csproj
   --verify-no-changes --no-restore --verbosity minimal`
   - Result: PASS.
 - `dotnet format
-  samples/SpiceSharp.Physics2D.Samples/FreeFall/SpiceSharp.Physics2D.Samples.FreeFall.csproj
+  samples/SpiceSharpMechanical2D.Samples/FreeFall/SpiceSharpMechanical2D.Samples.FreeFall.csproj
   --verify-no-changes --no-restore --verbosity minimal`
   - Result: PASS.
-- `dotnet build src/SpiceSharp.Physics2D/SpiceSharp.Physics2D.csproj
+- `dotnet build src/SpiceSharpMechanical2D/SpiceSharpMechanical2D.csproj
   -c Release --no-restore --no-incremental`
   - Result: PASS for `netstandard2.0` and `net8.0`; 0 warnings, 0 errors.
 - `dotnet test
-  src/SpiceSharp.Physics2D.Tests/SpiceSharp.Physics2D.Tests.csproj
+  src/SpiceSharpMechanical2D.Tests/SpiceSharpMechanical2D.Tests.csproj
   -c Release --no-restore --filter
-  "FullyQualifiedName~SpiceSharp.Physics2D.Tests.Forces" --logger
+  "FullyQualifiedName~SpiceSharpMechanical2D.Tests.Forces" --logger
   "console;verbosity=detailed"`
   - Result: PASS; 21 passed, 0 skipped, 0 failed.
 - `dotnet test
-  src/SpiceSharp.Physics2D.Tests/SpiceSharp.Physics2D.Tests.csproj
+  src/SpiceSharpMechanical2D.Tests/SpiceSharpMechanical2D.Tests.csproj
   -c Release --no-build --no-restore --logger "console;verbosity=minimal"`
   - Result: PASS; 102 passed, 0 skipped, 0 failed.
 - `dotnet build
-  samples/SpiceSharp.Physics2D.Samples/FreeFall/SpiceSharp.Physics2D.Samples.FreeFall.csproj
+  samples/SpiceSharpMechanical2D.Samples/FreeFall/SpiceSharpMechanical2D.Samples.FreeFall.csproj
   -c Release --no-restore --no-incremental`
   - Result: PASS; 0 warnings, 0 errors.
 - `dotnet run --project
-  samples/SpiceSharp.Physics2D.Samples/FreeFall/SpiceSharp.Physics2D.Samples.FreeFall.csproj
+  samples/SpiceSharpMechanical2D.Samples/FreeFall/SpiceSharpMechanical2D.Samples.FreeFall.csproj
   -c Release --no-build --no-restore`
   - Result: PASS; emitted the required CSV header and finite samples from time
     0 through 2 seconds.
@@ -174,7 +174,7 @@ Pinned package:
   Phase 3 cases.
 - Complete solution: 2,405 passed, 11 skipped, 0 failed.
 - Test-project breakdown:
-  - `SpiceSharp.Physics2D.Tests`: 102 passed;
+  - `SpiceSharpMechanical2D.Tests`: 102 passed;
   - `SpiceSharpParser.AIExamples`: 948 passed;
   - `SpiceSharpParser.Tests`: 408 passed, 9 skipped;
   - `SpiceSharpParser.IntegrationTests`: 947 passed, 2 skipped;

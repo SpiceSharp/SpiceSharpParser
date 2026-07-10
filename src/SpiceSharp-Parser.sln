@@ -21,19 +21,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceSharpParser.Tests", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiceSharpParser.AIExamples", "SpiceSharpParser.AIExamples\SpiceSharpParser.AIExamples.csproj", "{2AB238C7-D9DC-94E6-1355-4CDA8CE3429B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceSharp.Physics2D", "SpiceSharp.Physics2D\SpiceSharp.Physics2D.csproj", "{4758E0A9-BE20-4F6B-8E17-8B3D58350EE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceSharpMechanical2D", "SpiceSharpMechanical2D\SpiceSharpMechanical2D.csproj", "{4758E0A9-BE20-4F6B-8E17-8B3D58350EE1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceSharp.Physics2D.Tests", "SpiceSharp.Physics2D.Tests\SpiceSharp.Physics2D.Tests.csproj", "{89877962-3A97-4A55-8E11-0E0B76223166}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceSharpMechanical2D.Tests", "SpiceSharpMechanical2D.Tests\SpiceSharpMechanical2D.Tests.csproj", "{89877962-3A97-4A55-8E11-0E0B76223166}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceSharp.Physics2D.Samples.FreeFall", "..\samples\SpiceSharp.Physics2D.Samples\FreeFall\SpiceSharp.Physics2D.Samples.FreeFall.csproj", "{6A0D32BF-7BB2-47B9-AD18-3E19E486A6A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceSharpMechanical2D.Samples.FreeFall", "..\samples\SpiceSharpMechanical2D.Samples\FreeFall\SpiceSharpMechanical2D.Samples.FreeFall.csproj", "{6A0D32BF-7BB2-47B9-AD18-3E19E486A6A1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceSharp.Physics2D.Samples.Pendulum", "..\samples\SpiceSharp.Physics2D.Samples\Pendulum\SpiceSharp.Physics2D.Samples.Pendulum.csproj", "{B8A940F7-B936-490C-A85A-DA5FF99AD8A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceSharpMechanical2D.Samples.Pendulum", "..\samples\SpiceSharpMechanical2D.Samples\Pendulum\SpiceSharpMechanical2D.Samples.Pendulum.csproj", "{B8A940F7-B936-490C-A85A-DA5FF99AD8A6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceSharp.Physics2D.Samples.SliderCrank", "..\samples\SpiceSharp.Physics2D.Samples\SliderCrank\SpiceSharp.Physics2D.Samples.SliderCrank.csproj", "{E959B1B9-E53D-4B48-B122-002C6CA5A765}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceSharpMechanical2D.Samples.SliderCrank", "..\samples\SpiceSharpMechanical2D.Samples\SliderCrank\SpiceSharpMechanical2D.Samples.SliderCrank.csproj", "{E959B1B9-E53D-4B48-B122-002C6CA5A765}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceSharp.Physics2D.Samples.CompliantFourBar", "..\samples\SpiceSharp.Physics2D.Samples\CompliantFourBar\SpiceSharp.Physics2D.Samples.CompliantFourBar.csproj", "{FAA3F934-D14F-4D7F-93F1-E12D46A4DF62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceSharpMechanical2D.Samples.CompliantFourBar", "..\samples\SpiceSharpMechanical2D.Samples\CompliantFourBar\SpiceSharpMechanical2D.Samples.CompliantFourBar.csproj", "{FAA3F934-D14F-4D7F-93F1-E12D46A4DF62}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceSharp.Physics2D.Samples.FeatureGallery", "..\samples\SpiceSharp.Physics2D.Samples\FeatureGallery\SpiceSharp.Physics2D.Samples.FeatureGallery.csproj", "{2CB9F2D6-64A7-4A58-A6F7-9BD93CEAB602}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpiceSharpMechanical2D.Samples.FeatureGallery", "..\samples\SpiceSharpMechanical2D.Samples\FeatureGallery\SpiceSharpMechanical2D.Samples.FeatureGallery.csproj", "{2CB9F2D6-64A7-4A58-A6F7-9BD93CEAB602}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

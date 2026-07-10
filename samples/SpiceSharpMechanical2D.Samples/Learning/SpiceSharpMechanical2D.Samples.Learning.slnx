@@ -1,0 +1,12 @@
+<Solution>
+  <Project Path="01VectorBasics/SpiceSharpMechanical2D.Samples.Learning.01VectorBasics.csproj" />
+  <Project Path="02CoordinateCoasting/SpiceSharpMechanical2D.Samples.Learning.02CoordinateCoasting.csproj" />
+  <Project Path="03RigidBodyCoasting/SpiceSharpMechanical2D.Samples.Learning.03RigidBodyCoasting.csproj" />
+  <Project Path="04Gravity/SpiceSharpMechanical2D.Samples.Learning.04Gravity.csproj" />
+  <Project Path="05PushAndSpin/SpiceSharpMechanical2D.Samples.Learning.05PushAndSpin.csproj" />
+  <Project Path="06Drag/SpiceSharpMechanical2D.Samples.Learning.06Drag.csproj" />
+  <Project Path="07TwoBodySpring/SpiceSharpMechanical2D.Samples.Learning.07TwoBodySpring.csproj" />
+  <Project Path="08RevolutePendulum/SpiceSharpMechanical2D.Samples.Learning.08RevolutePendulum.csproj" />
+  <Project Path="09WeldedBody/SpiceSharpMechanical2D.Samples.Learning.09WeldedBody.csproj" />
+  <Project Path="10PrismaticSlider/SpiceSharpMechanical2D.Samples.Learning.10PrismaticSlider.csproj" />
+</Solution>

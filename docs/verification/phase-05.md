@@ -7,7 +7,7 @@ The verified corrective tree is intentionally uncommitted.
 
 Target frameworks:
 
-- `SpiceSharp.Physics2D`: `netstandard2.0` and `net8.0`;
+- `SpiceSharpMechanical2D`: `netstandard2.0` and `net8.0`;
 - tests and samples: `net8.0`.
 
 Pinned package: `SpiceSharp` 3.2.3.
@@ -86,29 +86,29 @@ branch discontinuity at `+/-pi`.
 
 Production:
 
-- `src/SpiceSharp.Physics2D/Core/MechanicalValidation.cs`;
-- `src/SpiceSharp.Physics2D/Core/MechanicalCoordinate.cs`;
-- `src/SpiceSharp.Physics2D/Bodies/RigidBody2D.cs`;
-- `src/SpiceSharp.Physics2D/Mathematics/Vector2D.cs`;
-- `src/SpiceSharp.Physics2D/Mathematics/SmoothFunctions.cs`;
-- `src/SpiceSharp.Physics2D/Connections/RotationalSpringDamper2D.cs`;
-- `src/SpiceSharp.Physics2D/Connections/RotationalSpringDamper2DEquation.cs`;
-- `src/SpiceSharp.Physics2D/Connections/RotationalSpringDamper2DParameters.cs`.
+- `src/SpiceSharpMechanical2D/Core/MechanicalValidation.cs`;
+- `src/SpiceSharpMechanical2D/Core/MechanicalCoordinate.cs`;
+- `src/SpiceSharpMechanical2D/Bodies/RigidBody2D.cs`;
+- `src/SpiceSharpMechanical2D/Mathematics/Vector2D.cs`;
+- `src/SpiceSharpMechanical2D/Mathematics/SmoothFunctions.cs`;
+- `src/SpiceSharpMechanical2D/Connections/RotationalSpringDamper2D.cs`;
+- `src/SpiceSharpMechanical2D/Connections/RotationalSpringDamper2DEquation.cs`;
+- `src/SpiceSharpMechanical2D/Connections/RotationalSpringDamper2DParameters.cs`.
 
 Tests and samples:
 
-- `src/SpiceSharp.Physics2D.Tests/Mathematics/Vector2DTests.cs`;
-- `src/SpiceSharp.Physics2D.Tests/Mathematics/Matrix2x2DTests.cs`;
-- `src/SpiceSharp.Physics2D.Tests/Mathematics/SmoothFunctionsTests.cs`;
-- `src/SpiceSharp.Physics2D.Tests/Coordinates/MechanicalCoordinateTests.cs`;
-- `src/SpiceSharp.Physics2D.Tests/Bodies/RigidBody2DTests.cs`;
-- `src/SpiceSharp.Physics2D.Tests/Forces/BasicForceTests.cs`;
-- `src/SpiceSharp.Physics2D.Tests/Forces/ForceTestSimulation.cs`;
-- `src/SpiceSharp.Physics2D.Tests/Connections/ConnectionEquationTests.cs`;
-- `src/SpiceSharp.Physics2D.Tests/Connections/ConnectionTestSimulation.cs`;
-- `src/SpiceSharp.Physics2D.Tests/Connections/ConnectionTransientTests.cs`;
-- `samples/SpiceSharp.Physics2D.Samples/FreeFall/Program.cs`;
-- `samples/SpiceSharp.Physics2D.Samples/Pendulum/Program.cs`.
+- `src/SpiceSharpMechanical2D.Tests/Mathematics/Vector2DTests.cs`;
+- `src/SpiceSharpMechanical2D.Tests/Mathematics/Matrix2x2DTests.cs`;
+- `src/SpiceSharpMechanical2D.Tests/Mathematics/SmoothFunctionsTests.cs`;
+- `src/SpiceSharpMechanical2D.Tests/Coordinates/MechanicalCoordinateTests.cs`;
+- `src/SpiceSharpMechanical2D.Tests/Bodies/RigidBody2DTests.cs`;
+- `src/SpiceSharpMechanical2D.Tests/Forces/BasicForceTests.cs`;
+- `src/SpiceSharpMechanical2D.Tests/Forces/ForceTestSimulation.cs`;
+- `src/SpiceSharpMechanical2D.Tests/Connections/ConnectionEquationTests.cs`;
+- `src/SpiceSharpMechanical2D.Tests/Connections/ConnectionTestSimulation.cs`;
+- `src/SpiceSharpMechanical2D.Tests/Connections/ConnectionTransientTests.cs`;
+- `samples/SpiceSharpMechanical2D.Samples/FreeFall/Program.cs`;
+- `samples/SpiceSharpMechanical2D.Samples/Pendulum/Program.cs`.
 
 Documentation:
 

@@ -56,21 +56,21 @@
 
 ## Files added or changed
 
-- `src/SpiceSharp.Physics2D/Joints/Dual12.cs`
-- `src/SpiceSharp.Physics2D/Joints/JointEquationSupport.cs`
-- `src/SpiceSharp.Physics2D/Joints/JointBehaviorBase.cs`
-- `src/SpiceSharp.Physics2D/Joints/JointValidation.cs`
-- `src/SpiceSharp.Physics2D/Joints/RevoluteJoint2D*.cs`
-- `src/SpiceSharp.Physics2D/Joints/WeldJoint2D*.cs`
-- `src/SpiceSharp.Physics2D/Joints/PrismaticJoint2D*.cs`
-- `src/SpiceSharp.Physics2D/Joints/IRevoluteJoint2DBehavior.cs`
-- `src/SpiceSharp.Physics2D/Joints/IWeldJoint2DBehavior.cs`
-- `src/SpiceSharp.Physics2D/Joints/IPrismaticJoint2DBehavior.cs`
-- `src/SpiceSharp.Physics2D.Tests/Joints/JointEquationTests.cs`
-- `src/SpiceSharp.Physics2D.Tests/Joints/JointTransientTests.cs`
-- `src/SpiceSharp.Physics2D.Tests/Joints/MechanismVerificationTests.cs`
-- `samples/SpiceSharp.Physics2D.Samples/SliderCrank/*`
-- `samples/SpiceSharp.Physics2D.Samples/CompliantFourBar/*`
+- `src/SpiceSharpMechanical2D/Joints/Dual12.cs`
+- `src/SpiceSharpMechanical2D/Joints/JointEquationSupport.cs`
+- `src/SpiceSharpMechanical2D/Joints/JointBehaviorBase.cs`
+- `src/SpiceSharpMechanical2D/Joints/JointValidation.cs`
+- `src/SpiceSharpMechanical2D/Joints/RevoluteJoint2D*.cs`
+- `src/SpiceSharpMechanical2D/Joints/WeldJoint2D*.cs`
+- `src/SpiceSharpMechanical2D/Joints/PrismaticJoint2D*.cs`
+- `src/SpiceSharpMechanical2D/Joints/IRevoluteJoint2DBehavior.cs`
+- `src/SpiceSharpMechanical2D/Joints/IWeldJoint2DBehavior.cs`
+- `src/SpiceSharpMechanical2D/Joints/IPrismaticJoint2DBehavior.cs`
+- `src/SpiceSharpMechanical2D.Tests/Joints/JointEquationTests.cs`
+- `src/SpiceSharpMechanical2D.Tests/Joints/JointTransientTests.cs`
+- `src/SpiceSharpMechanical2D.Tests/Joints/MechanismVerificationTests.cs`
+- `samples/SpiceSharpMechanical2D.Samples/SliderCrank/*`
+- `samples/SpiceSharpMechanical2D.Samples/CompliantFourBar/*`
 - `src/SpiceSharp-Parser.sln`
 - `docs/architecture/ADR-0007-compliant-planar-joints.md`
 - `docs/verification/phase-06.md`
@@ -79,7 +79,7 @@
 
 Target frameworks:
 
-- `SpiceSharp.Physics2D`: `netstandard2.0` and `net8.0`;
+- `SpiceSharpMechanical2D`: `netstandard2.0` and `net8.0`;
 - tests and samples: `net8.0`.
 
 Pinned package: `SpiceSharp` 3.2.3.
@@ -91,16 +91,16 @@ Pinned package: `SpiceSharp` 3.2.3.
 - `dotnet format` on the Physics2D project, Physics2D test project, and both
   new sample projects with `--no-restore`
   - Result: PASS.
-- `dotnet build src/SpiceSharp.Physics2D/SpiceSharp.Physics2D.csproj
+- `dotnet build src/SpiceSharpMechanical2D/SpiceSharpMechanical2D.csproj
   -c Release --no-restore --verbosity minimal`
   - Result: PASS for both target frameworks; 0 warnings, 0 errors.
 - `dotnet test
-  src/SpiceSharp.Physics2D.Tests/SpiceSharp.Physics2D.Tests.csproj
+  src/SpiceSharpMechanical2D.Tests/SpiceSharpMechanical2D.Tests.csproj
   -c Release --no-build --no-restore --filter
-  FullyQualifiedName~SpiceSharp.Physics2D.Tests.Joints`
+  FullyQualifiedName~SpiceSharpMechanical2D.Tests.Joints`
   - Result: PASS; 17 passed, 0 skipped, 0 failed.
 - `dotnet test
-  src/SpiceSharp.Physics2D.Tests/SpiceSharp.Physics2D.Tests.csproj
+  src/SpiceSharpMechanical2D.Tests/SpiceSharpMechanical2D.Tests.csproj
   -c Release --no-restore`
   - Result: PASS; 142 passed, 0 skipped, 0 failed.
 - Release builds of both new sample projects with `--no-restore`

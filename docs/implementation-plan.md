@@ -1,9 +1,9 @@
-# SpiceSharp.Physics2D
+# SpiceSharpMechanical2D
 ## Phase-by-phase Codex implementation plan
 
 **Purpose:** Implement a useful, verified 2D mechanical-physics library using the existing SpiceSharp `Transient` simulation and custom SpiceSharp entities/behaviors only.
 
-**Target package name:** `SpiceSharp.Physics2D`
+**Target package name:** `SpiceSharpMechanical2D`
 
 **Core restriction:** Do not implement a custom simulation type, custom time integrator, custom global solver, impulse solver, collision world, or game engine.
 
@@ -216,7 +216,7 @@ Codex may adapt paths to the target repository, but should preserve this separat
 
 ```text
 src/
-  SpiceSharp.Physics2D/
+  SpiceSharpMechanical2D/
     Mathematics/
       Vector2D.cs
       Matrix2x2D.cs
@@ -285,7 +285,7 @@ src/
       SolverVariablePair.cs
 
 tests/
-  SpiceSharp.Physics2D.Tests/
+  SpiceSharpMechanical2D.Tests/
     ApiProof/
     Mathematics/
     Coordinates/
@@ -301,7 +301,7 @@ tests/
     Regression/
 
 samples/
-  SpiceSharp.Physics2D.Samples/
+  SpiceSharpMechanical2D.Samples/
     FreeFall/
     Oscillator/
     Pendulum/
@@ -1036,7 +1036,7 @@ Jacobian relative mismatch <= 2e-6
 Add:
 
 ```text
-samples/SpiceSharp.Physics2D.Samples/FreeFall
+samples/SpiceSharpMechanical2D.Samples/FreeFall
 ```
 
 It must output CSV with:
@@ -1165,7 +1165,7 @@ oscillator frequency relative error <= 3e-3
 Add:
 
 ```text
-samples/SpiceSharp.Physics2D.Samples/Pendulum
+samples/SpiceSharpMechanical2D.Samples/Pendulum
 ```
 
 Use a compliant connection, not an exact rigid constraint.
@@ -2521,14 +2521,14 @@ update and review the ADR before changing the production stamp.
 ## Planned files
 
 ```text
-src/SpiceSharp.Physics2D/Coupling/DcMotorCoupler2D.cs
-src/SpiceSharp.Physics2D/Coupling/DcMotorCoupler2DParameters.cs
-src/SpiceSharp.Physics2D/Coupling/DcMotorCoupler2DBehavior.cs
-src/SpiceSharp.Physics2D/Coupling/IDcMotorCoupler2DBehavior.cs
-src/SpiceSharp.Physics2D.Tests/Coupling/DcMotorStampTests.cs
-src/SpiceSharp.Physics2D.Tests/Coupling/DcMotorTransientTests.cs
-src/SpiceSharp.Physics2D.Tests/Coupling/DcMotorEnergyTests.cs
-src/SpiceSharp.Physics2D.Tests/Coupling/DcMotorMechanismTests.cs
+src/SpiceSharpMechanical2D/Coupling/DcMotorCoupler2D.cs
+src/SpiceSharpMechanical2D/Coupling/DcMotorCoupler2DParameters.cs
+src/SpiceSharpMechanical2D/Coupling/DcMotorCoupler2DBehavior.cs
+src/SpiceSharpMechanical2D/Coupling/IDcMotorCoupler2DBehavior.cs
+src/SpiceSharpMechanical2D.Tests/Coupling/DcMotorStampTests.cs
+src/SpiceSharpMechanical2D.Tests/Coupling/DcMotorTransientTests.cs
+src/SpiceSharpMechanical2D.Tests/Coupling/DcMotorEnergyTests.cs
+src/SpiceSharpMechanical2D.Tests/Coupling/DcMotorMechanismTests.cs
 docs/architecture/ADR-0008-reciprocal-electromechanical-coupling.md
 ```
 
@@ -2573,9 +2573,9 @@ repository examples:
         NonlinearInductorVariables.cs
         Biasing.cs
         Time.cs
-    src/SpiceSharp.Physics2D/Bodies/IRigidBody2DBehavior.cs
-    src/SpiceSharp.Physics2D/Forces/RigidBodyLoadBehavior.cs
-    src/SpiceSharp.Physics2D/Joints/JointBehaviorBase.cs
+    src/SpiceSharpMechanical2D/Bodies/IRigidBody2DBehavior.cs
+    src/SpiceSharpMechanical2D/Forces/RigidBodyLoadBehavior.cs
+    src/SpiceSharpMechanical2D/Joints/JointBehaviorBase.cs
 ```
 
 Stop after Phase 12, or after the separately authorized coupling-first
@@ -2902,7 +2902,7 @@ Use this prompt and replace the phase number and name:
 
 ```text
 Implement only Phase <N> — <PHASE NAME> from the attached
-SpiceSharp.Physics2D implementation plan.
+SpiceSharpMechanical2D implementation plan.
 
 Hard constraints:
 - Use the existing SpiceSharp Transient simulation.
@@ -2939,7 +2939,7 @@ Then:
 
 ```text
 Implement Phase 0 — Repository baseline and exact SpiceSharp API proof from
-the attached SpiceSharp.Physics2D implementation plan.
+the attached SpiceSharpMechanical2D implementation plan.
 
 Do not implement mechanics.
 
@@ -3005,7 +3005,7 @@ SpiceSharp owns
     solver variables
     exports and properties
 
-SpiceSharp.Physics2D owns
+SpiceSharpMechanical2D owns
     mechanical equations
     rigid-body coordinate mapping
     force and torque stamps
@@ -3040,7 +3040,7 @@ it belongs in a future custom simulation type or a dedicated physics engine, not
 The sibling `physics_engine` workspace project was reviewed for ideas that can
 strengthen this plan. It is a real-time, three-dimensional, sequential-impulse
 engine, so its solver implementation is not a source architecture for
-`SpiceSharp.Physics2D`. The useful material is primarily its validation
+`SpiceSharpMechanical2D`. The useful material is primarily its validation
 strategy, mechanism oracles, invariance tests, energy accounting, and explicit
 treatment of geometric degeneracies.
 

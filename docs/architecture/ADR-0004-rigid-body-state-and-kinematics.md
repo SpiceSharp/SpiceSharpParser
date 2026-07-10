@@ -6,7 +6,7 @@
 
 ## Context
 
-`SpiceSharp.Physics2D` needs a planar rigid body that later force, spring,
+`SpiceSharpMechanical2D` needs a planar rigid body that later force, spring,
 joint, contact, and cam components can reference as one mechanical object. A
 body has three generalized coordinates at its center of mass:
 
@@ -38,9 +38,9 @@ world step or global load accumulator.
 
 ### One entity and one behavior
 
-[`RigidBody2D`](../../src/SpiceSharp.Physics2D/Bodies/RigidBody2D.cs) is one
+[`RigidBody2D`](../../src/SpiceSharpMechanical2D/Bodies/RigidBody2D.cs) is one
 ordinary zero-pin `Entity<RigidBody2DParameters>`. It creates one
-[`RigidBody2DBehavior`](../../src/SpiceSharp.Physics2D/Bodies/RigidBody2DBehavior.cs)
+[`RigidBody2DBehavior`](../../src/SpiceSharpMechanical2D/Bodies/RigidBody2DBehavior.cs)
 for an ordinary SpiceSharp `Transient`.
 
 Like `MechanicalCoordinate`, the body implements SpiceSharp's public
@@ -176,7 +176,7 @@ introduce a seam into solver state.
 
 Body-local points are expressed relative to the center of mass. The public
 geometry helpers on
-[`IRigidBody2DBehavior`](../../src/SpiceSharp.Physics2D/Bodies/IRigidBody2DBehavior.cs)
+[`IRigidBody2DBehavior`](../../src/SpiceSharpMechanical2D/Bodies/IRigidBody2DBehavior.cs)
 use the current solver iterate and implement:
 
 ```text

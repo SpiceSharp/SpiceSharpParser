@@ -6,7 +6,7 @@
 
 ## Context
 
-Future `SpiceSharp.Physics2D` components will evaluate geometry, generalized
+Future `SpiceSharpMechanical2D` components will evaluate geometry, generalized
 forces, and analytic Jacobians inside SpiceSharp's transient Newton iterations.
 Those calculations need one authoritative numerical convention before any
 mechanical entity is introduced.
@@ -29,8 +29,8 @@ and the independent numerical test support used to verify their Jacobians.
 
 ### Authoritative scalar and storage precision
 
-All authoritative mathematics state uses `double`. [`Vector2D`](../../src/SpiceSharp.Physics2D/Mathematics/Vector2D.cs)
-and [`Matrix2x2D`](../../src/SpiceSharp.Physics2D/Mathematics/Matrix2x2D.cs)
+All authoritative mathematics state uses `double`. [`Vector2D`](../../src/SpiceSharpMechanical2D/Mathematics/Vector2D.cs)
+and [`Matrix2x2D`](../../src/SpiceSharpMechanical2D/Mathematics/Matrix2x2D.cs)
 are immutable `readonly struct` values containing only double-precision
 coordinates or matrix elements.
 
@@ -95,7 +95,7 @@ normalizable only when its finite length is strictly greater than epsilon:
 ### Angle conventions
 
 Authoritative body angles in later phases remain unbounded real values.
-[`AngleMath`](../../src/SpiceSharp.Physics2D/Mathematics/AngleMath.cs) is only
+[`AngleMath`](../../src/SpiceSharpMechanical2D/Mathematics/AngleMath.cs) is only
 for display and relative-angle calculations.
 
 - `WrapSigned` returns the half-open interval `[-pi, pi)`. Both seam
@@ -108,7 +108,7 @@ for display and relative-angle calculations.
 ### Shared smooth functions
 
 All later contact and friction components must reuse
-[`SmoothFunctions`](../../src/SpiceSharp.Physics2D/Mathematics/SmoothFunctions.cs)
+[`SmoothFunctions`](../../src/SpiceSharpMechanical2D/Mathematics/SmoothFunctions.cs)
 instead of defining local variants. Smoothing parameters must be finite and
 strictly positive.
 
@@ -153,7 +153,7 @@ not represent exact static friction.
 
 Production nonlinear components must use analytic derivatives. Central finite
 differences are confined to the test project in
-[`FiniteDifferenceJacobian`](../../src/SpiceSharp.Physics2D.Tests/Numerics/FiniteDifferenceJacobian.cs).
+[`FiniteDifferenceJacobian`](../../src/SpiceSharpMechanical2D.Tests/Numerics/FiniteDifferenceJacobian.cs).
 
 For each input column, the default test step is:
 
@@ -161,9 +161,9 @@ For each input column, the default test step is:
 max(1e-7, 1e-5 * max(1, abs(state)))
 ```
 
-[`NumericAssert`](../../src/SpiceSharp.Physics2D.Tests/Numerics/NumericAssert.cs)
+[`NumericAssert`](../../src/SpiceSharpMechanical2D.Tests/Numerics/NumericAssert.cs)
 combines absolute and relative tolerances and reports maximum mismatches.
-[`TimeSeriesComparison`](../../src/SpiceSharp.Physics2D.Tests/Numerics/TimeSeriesComparison.cs)
+[`TimeSeriesComparison`](../../src/SpiceSharpMechanical2D.Tests/Numerics/TimeSeriesComparison.cs)
 linearly interpolates an actual series at reference times and reports maximum
 absolute and normalized RMS error. These helpers may allocate because they are
 test-only; they must not be called from SpiceSharp load loops.

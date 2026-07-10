@@ -33,7 +33,7 @@ timepoint.
 
 ### Public joint entities
 
-Add three zero-pin entities in `SpiceSharp.Physics2D.Joints`:
+Add three zero-pin entities in `SpiceSharpMechanical2D.Joints`:
 
 - `RevoluteJoint2D`;
 - `WeldJoint2D`;

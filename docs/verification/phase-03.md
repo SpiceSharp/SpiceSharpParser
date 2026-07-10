@@ -68,12 +68,12 @@ public behavior boundary are documented in
 
 ## Files changed
 
-- `src/SpiceSharp.Physics2D/Bodies/RigidBody2DParameters.cs`
-- `src/SpiceSharp.Physics2D/Bodies/RigidBody2D.cs`
-- `src/SpiceSharp.Physics2D/Bodies/IRigidBody2DBehavior.cs`
-- `src/SpiceSharp.Physics2D/Bodies/RigidBody2DBehavior.cs`
-- `src/SpiceSharp.Physics2D.Tests/Bodies/TestRigidBodyLoad2D.cs`
-- `src/SpiceSharp.Physics2D.Tests/Bodies/RigidBody2DTests.cs`
+- `src/SpiceSharpMechanical2D/Bodies/RigidBody2DParameters.cs`
+- `src/SpiceSharpMechanical2D/Bodies/RigidBody2D.cs`
+- `src/SpiceSharpMechanical2D/Bodies/IRigidBody2DBehavior.cs`
+- `src/SpiceSharpMechanical2D/Bodies/RigidBody2DBehavior.cs`
+- `src/SpiceSharpMechanical2D.Tests/Bodies/TestRigidBodyLoad2D.cs`
+- `src/SpiceSharpMechanical2D.Tests/Bodies/RigidBody2DTests.cs`
 - `docs/architecture/ADR-0004-rigid-body-state-and-kinematics.md`
 - `docs/verification/phase-03.md`
 
@@ -84,8 +84,8 @@ Working-tree base:
 
 Target frameworks:
 
-- `SpiceSharp.Physics2D`: `netstandard2.0` and `net8.0`;
-- `SpiceSharp.Physics2D.Tests`: `net8.0`.
+- `SpiceSharpMechanical2D`: `netstandard2.0` and `net8.0`;
+- `SpiceSharpMechanical2D.Tests`: `net8.0`.
 
 Pinned package:
 
@@ -101,24 +101,24 @@ Pinned package:
     parser and integration-test whitespace violations recorded by earlier
     phases.
   - No Phase 3 file appeared in the diagnostic.
-- `dotnet format src/SpiceSharp.Physics2D/SpiceSharp.Physics2D.csproj
+- `dotnet format src/SpiceSharpMechanical2D/SpiceSharpMechanical2D.csproj
   --verify-no-changes --no-restore --verbosity minimal`
   - Result: PASS.
 - `dotnet format
-  src/SpiceSharp.Physics2D.Tests/SpiceSharp.Physics2D.Tests.csproj
+  src/SpiceSharpMechanical2D.Tests/SpiceSharpMechanical2D.Tests.csproj
   --verify-no-changes --no-restore --verbosity minimal`
   - Result: PASS.
-- `dotnet build src/SpiceSharp.Physics2D/SpiceSharp.Physics2D.csproj
+- `dotnet build src/SpiceSharpMechanical2D/SpiceSharpMechanical2D.csproj
   -c Release --no-restore --no-incremental`
   - Result: PASS for `netstandard2.0` and `net8.0`; 0 warnings, 0 errors.
 - `dotnet test
-  src/SpiceSharp.Physics2D.Tests/SpiceSharp.Physics2D.Tests.csproj
+  src/SpiceSharpMechanical2D.Tests/SpiceSharpMechanical2D.Tests.csproj
   -c Release --no-restore --filter
-  "FullyQualifiedName~SpiceSharp.Physics2D.Tests.Bodies" --logger
+  "FullyQualifiedName~SpiceSharpMechanical2D.Tests.Bodies" --logger
   "console;verbosity=detailed"`
   - Result: PASS; 19 passed, 0 skipped, 0 failed.
 - `dotnet test
-  src/SpiceSharp.Physics2D.Tests/SpiceSharp.Physics2D.Tests.csproj
+  src/SpiceSharpMechanical2D.Tests/SpiceSharpMechanical2D.Tests.csproj
   -c Release --no-build --no-restore --logger "console;verbosity=minimal"`
   - Result: PASS; 81 passed, 0 skipped, 0 failed.
 - `dotnet build src/SpiceSharp-Parser.sln -c Release --no-restore
@@ -138,7 +138,7 @@ Pinned package:
   Phase 2 cases.
 - Complete solution: 2,384 passed, 11 skipped, 0 failed.
 - Test-project breakdown:
-  - `SpiceSharp.Physics2D.Tests`: 81 passed;
+  - `SpiceSharpMechanical2D.Tests`: 81 passed;
   - `SpiceSharpParser.AIExamples`: 948 passed;
   - `SpiceSharpParser.Tests`: 408 passed, 9 skipped;
   - `SpiceSharpParser.IntegrationTests`: 947 passed, 2 skipped;

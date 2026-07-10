@@ -6,7 +6,7 @@
 
 ## Context
 
-`SpiceSharp.Physics2D` must put future equations into the existing SpiceSharp
+`SpiceSharpMechanical2D` must put future equations into the existing SpiceSharp
 transient Newton/MNA system. Before introducing any mechanical terminology or
 model, Phase 0 needs to prove that the pinned dependency supports two private
 real unknowns, two integration-history states, coupled equation stamps,

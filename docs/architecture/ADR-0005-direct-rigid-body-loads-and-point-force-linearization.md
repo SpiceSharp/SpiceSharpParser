@@ -35,14 +35,14 @@ objects in the load loop.
 
 ### Public load entities
 
-Provide six ordinary zero-pin entities in `SpiceSharp.Physics2D.Forces`:
+Provide six ordinary zero-pin entities in `SpiceSharpMechanical2D.Forces`:
 
-- [`Gravity2D`](../../src/SpiceSharp.Physics2D/Forces/Gravity2D.cs);
-- [`AppliedForce2D`](../../src/SpiceSharp.Physics2D/Forces/AppliedForce2D.cs);
-- [`PointForce2D`](../../src/SpiceSharp.Physics2D/Forces/PointForce2D.cs);
-- [`AppliedTorque2D`](../../src/SpiceSharp.Physics2D/Forces/AppliedTorque2D.cs);
-- [`LinearDrag2D`](../../src/SpiceSharp.Physics2D/Forces/LinearDrag2D.cs);
-- [`AngularDrag2D`](../../src/SpiceSharp.Physics2D/Forces/AngularDrag2D.cs).
+- [`Gravity2D`](../../src/SpiceSharpMechanical2D/Forces/Gravity2D.cs);
+- [`AppliedForce2D`](../../src/SpiceSharpMechanical2D/Forces/AppliedForce2D.cs);
+- [`PointForce2D`](../../src/SpiceSharpMechanical2D/Forces/PointForce2D.cs);
+- [`AppliedTorque2D`](../../src/SpiceSharpMechanical2D/Forces/AppliedTorque2D.cs);
+- [`LinearDrag2D`](../../src/SpiceSharpMechanical2D/Forces/LinearDrag2D.cs);
+- [`AngularDrag2D`](../../src/SpiceSharpMechanical2D/Forces/AngularDrag2D.cs).
 
 Each entity has an immutable referenced body name and mutable parameters that
 callers configure before behavior construction. Each creates an
@@ -137,7 +137,7 @@ constant world force
 ForceFunction2D(time) -> world force
 ```
 
-[`ForceFunction2D`](../../src/SpiceSharp.Physics2D/Forces/ForceFunction2D.cs)
+[`ForceFunction2D`](../../src/SpiceSharpMechanical2D/Forces/ForceFunction2D.cs)
 is a package-owned vector delegate. Its input is
 `IIntegrationMethod.Time`, the timepoint currently being probed by
 SpiceSharp. A non-null function takes precedence over the constant-force
@@ -164,7 +164,7 @@ callbacks.
 ### Point-force frames
 
 `PointForce2D.LocalPoint` is always a body-local point measured from the center
-of mass. [`ForceCoordinateSystem2D`](../../src/SpiceSharp.Physics2D/Forces/ForceCoordinateSystem2D.cs)
+of mass. [`ForceCoordinateSystem2D`](../../src/SpiceSharpMechanical2D/Forces/ForceCoordinateSystem2D.cs)
 makes the force-vector frame explicit:
 
 ```text

@@ -2,7 +2,7 @@
 
 ## Scope implemented
 
-- Added the `SpiceSharp.Physics2D` package project targeting `netstandard2.0`
+- Added the `SpiceSharpMechanical2D` package project targeting `netstandard2.0`
   and `net8.0`.
 - Added the non-mechanical `TransientApiProbe` entity.
 - Allocated two private real solver variables and two derivative histories.
@@ -46,13 +46,13 @@ for source evidence and signature details.
 ## Files changed
 
 - `src/SpiceSharp-Parser.sln`
-- `src/SpiceSharp.Physics2D/SpiceSharp.Physics2D.csproj`
-- `src/SpiceSharp.Physics2D/ApiProbe/TransientApiProbe.cs`
-- `src/SpiceSharp.Physics2D/ApiProbe/TransientApiProbeParameters.cs`
-- `src/SpiceSharp.Physics2D/ApiProbe/ITransientApiProbeBehavior.cs`
-- `src/SpiceSharp.Physics2D/ApiProbe/TransientApiProbeBehavior.cs`
-- `src/SpiceSharp.Physics2D.Tests/SpiceSharp.Physics2D.Tests.csproj`
-- `src/SpiceSharp.Physics2D.Tests/ApiProof/TransientApiProbeTests.cs`
+- `src/SpiceSharpMechanical2D/SpiceSharpMechanical2D.csproj`
+- `src/SpiceSharpMechanical2D/ApiProbe/TransientApiProbe.cs`
+- `src/SpiceSharpMechanical2D/ApiProbe/TransientApiProbeParameters.cs`
+- `src/SpiceSharpMechanical2D/ApiProbe/ITransientApiProbeBehavior.cs`
+- `src/SpiceSharpMechanical2D/ApiProbe/TransientApiProbeBehavior.cs`
+- `src/SpiceSharpMechanical2D.Tests/SpiceSharpMechanical2D.Tests.csproj`
+- `src/SpiceSharpMechanical2D.Tests/ApiProof/TransientApiProbeTests.cs`
 - `docs/architecture/ADR-0001-spicesharp-extension-points.md`
 - `docs/verification/phase-00.md`
 
@@ -71,10 +71,10 @@ Working-tree base: `ce88fd13a8346f47bb2dfbd5602c9203446ae2d7`.
     GitHub workflows, and there is no `.editorconfig`, formatter manifest, or
     formatting script. The plan's "repository does not use dotnet format"
     exception therefore applies; unrelated parser files were preserved.
-- `dotnet format SpiceSharp.Physics2D/SpiceSharp.Physics2D.csproj
+- `dotnet format SpiceSharpMechanical2D/SpiceSharpMechanical2D.csproj
   --verify-no-changes --no-restore --verbosity minimal`
   - Result: PASS.
-- `dotnet format SpiceSharp.Physics2D.Tests/SpiceSharp.Physics2D.Tests.csproj
+- `dotnet format SpiceSharpMechanical2D.Tests/SpiceSharpMechanical2D.Tests.csproj
   --verify-no-changes --no-restore --verbosity minimal`
   - Result: PASS.
 - `dotnet build SpiceSharp-Parser.sln -c Release --no-restore --verbosity
