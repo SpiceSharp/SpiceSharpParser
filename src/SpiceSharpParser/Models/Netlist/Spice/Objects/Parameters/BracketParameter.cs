@@ -63,7 +63,7 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters
         /// <returns>A clone of the object.</returns>
         public override SpiceObject Clone()
         {
-            return new BracketParameter(Name, Parameters, LineInfo);
+            return new BracketParameter(Name, (ParameterCollection)Parameters.Clone(), LineInfo);
         }
     }
 }

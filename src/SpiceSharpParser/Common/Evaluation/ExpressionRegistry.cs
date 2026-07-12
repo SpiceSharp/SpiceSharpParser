@@ -220,10 +220,22 @@ namespace SpiceSharpParser.Common.Evaluation
         public ExpressionRegistry Clone()
         {
             var result = new ExpressionRegistry(IsParameterNameCaseSensitive, IsExpressionNameCaseSensitive);
+            var clonedExpressions = new Dictionary<Expression, Expression>();
+
+            Expression GetClone(Expression expression)
+            {
+                if (!clonedExpressions.TryGetValue(expression, out var clone))
+                {
+                    clone = expression.Clone();
+                    clonedExpressions.Add(expression, clone);
+                }
+
+                return clone;
+            }
 
             foreach (var parameter in Parameters)
             {
-                result.Parameters[parameter.Key] = parameter.Value.Clone();
+                result.Parameters[parameter.Key] = GetClone(parameter.Value);
             }
 
             foreach (var dep in ParametersDependencies)
@@ -231,7 +243,6 @@ namespace SpiceSharpParser.Common.Evaluation
                 result.ParametersDependencies[dep.Key] = new HashSet<string>(dep.Value);
             }
 
-            List<Expression> addedExpressions = new List<Expression>();
             foreach (var exprDep in ParametersExpressionsDependencies)
             {
                 foreach (var expr in exprDep.Value)
@@ -241,37 +252,19 @@ namespace SpiceSharpParser.Common.Evaluation
                         result.ParametersExpressionsDependencies[exprDep.Key] = new List<Expression>();
                     }
 
-                    var clone = expr.Clone();
+                    var clone = GetClone(expr);
                     result.ParametersExpressionsDependencies[exprDep.Key].Add(clone);
-
-                    if (UnnamedExpressions.Contains(expr))
-                    {
-                        result.UnnamedExpressions.Add(clone);
-                        addedExpressions.Add(expr);
-                    }
-
-                    if (expr is NamedExpression ne)
-                    {
-                        addedExpressions.Add(expr);
-                        result.NamedExpressions[ne.Name] = ne;
-                    }
                 }
             }
 
             foreach (var expression in NamedExpressions)
             {
-                if (!result.NamedExpressions.ContainsKey(expression.Key))
-                {
-                    result.NamedExpressions.Add(expression.Key, (NamedExpression)expression.Value.Clone());
-                }
+                result.NamedExpressions.Add(expression.Key, (NamedExpression)GetClone(expression.Value));
             }
 
             foreach (var expression in UnnamedExpressions)
             {
-                if (!addedExpressions.Contains(expression))
-                {
-                    result.UnnamedExpressions.Add(expression.Clone());
-                }
+                result.UnnamedExpressions.Add(GetClone(expression));
             }
 
             return result;

@@ -1,4 +1,6 @@
-﻿using Xunit;
+﻿using System.Linq;
+using SpiceSharpParser.Models.Netlist.Spice.Objects;
+using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.Macros
 {
@@ -85,6 +87,48 @@ namespace SpiceSharpParser.IntegrationTests.Macros
 
             Assert.False(result.ValidationResult.HasError);
             Assert.False(result.ValidationResult.HasWarning);
+        }
+
+        [Fact]
+        public void MixedDimensionComponentSuffixesExpandEveryCombination()
+        {
+            var result = ParseNetlistRaw(
+                enableBusSyntax: true,
+                "Suffix notation",
+                "R1<0:1><0:2> input output 100",
+                ".END");
+
+            var componentNames = result.FinalModel.Statements
+                .OfType<Component>()
+                .Select(component => component.Name);
+
+            Assert.Equal(
+                new[]
+                {
+                    "R1<0><0>",
+                    "R1<0><1>",
+                    "R1<0><2>",
+                    "R1<1><0>",
+                    "R1<1><1>",
+                    "R1<1><2>",
+                },
+                componentNames);
+        }
+
+        [Fact]
+        public void ComponentSuffixRangeIncludesLastReachableStep()
+        {
+            var result = ParseNetlistRaw(
+                enableBusSyntax: true,
+                "Suffix notation",
+                "R1<0:4:3> input output 100",
+                ".END");
+
+            var componentNames = result.FinalModel.Statements
+                .OfType<Component>()
+                .Select(component => component.Name);
+
+            Assert.Equal(new[] { "R1<0>", "R1<3>" }, componentNames);
         }
     }
 }

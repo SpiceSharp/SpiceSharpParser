@@ -29,7 +29,7 @@ namespace SpiceSharpParser.Common.StringComparers
         public override int GetHashCode(string obj)
         {
             // Make sure the hash code is case insensitive
-            return obj.ToLowerInvariant().GetHashCode();
+            return StringComparer.OrdinalIgnoreCase.GetHashCode(obj);
         }
     }
 }

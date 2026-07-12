@@ -93,7 +93,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
 
             return
                 Elements
-                    .First(e => e.Key.Equals(key, StringComparison.CurrentCultureIgnoreCase)).Value;
+                    .First(e => e.Key.Equals(key, StringComparison.OrdinalIgnoreCase)).Value;
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
                 return Elements.TryGetValue(key, out value);
             }
 
-            value = Elements.FirstOrDefault(e => e.Key.Equals(key, StringComparison.CurrentCultureIgnoreCase)).Value;
+            value = Elements.FirstOrDefault(e => e.Key.Equals(key, StringComparison.OrdinalIgnoreCase)).Value;
             return value != null;
         }
 

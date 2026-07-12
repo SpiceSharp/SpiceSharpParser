@@ -81,7 +81,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Waveforms
 
             if (parameters.Count == 7)
             {
-                result.Add(SetProperty(waveformId, "SignalPhase", parameters[5].Value, context));
+                result.Add(SetProperty(waveformId, "SignalPhase", parameters[6].Value, context));
             }
 
             return result;

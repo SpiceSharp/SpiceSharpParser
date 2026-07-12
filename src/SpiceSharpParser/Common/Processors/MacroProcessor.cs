@@ -84,26 +84,22 @@ namespace SpiceSharpParser.Common.Processors
 
         private List<string> GetSuffixes(List<SuffixDimension> dimensions)
         {
-            var result = new List<string>();
+            var result = new List<string>() { string.Empty };
 
-            for (var dimensionIndex = dimensions.Count - 1; dimensionIndex >= 0; dimensionIndex--)
+            foreach (var dimension in dimensions)
             {
-                var dimension = dimensions[dimensionIndex];
-                if (dimensionIndex != 0)
-                {
-                    var newResult = new List<string>();
+                var dimensionSuffixes = GetSuffixes(dimension, string.Empty);
+                var expanded = new List<string>();
 
-                    foreach (var resultItem in result)
+                foreach (var prefix in result)
+                {
+                    foreach (var suffix in dimensionSuffixes)
                     {
-                        newResult.AddRange(GetSuffixes(dimension, resultItem));
+                        expanded.Add(prefix + suffix);
                     }
+                }
 
-                    result = newResult;
-                }
-                else
-                {
-                    result.AddRange(GetSuffixes(dimension, string.Empty));
-                }
+                result = expanded;
             }
 
             return result;
@@ -161,11 +157,11 @@ namespace SpiceSharpParser.Common.Processors
             {
                 var dimensionCount = 0;
 
-                foreach (var node in dimensions[0].Nodes)
+                foreach (var node in dimensions[i].Nodes)
                 {
                     if (node is RangeNode range)
                     {
-                        dimensionCount += ((System.Math.Abs(range.Start - range.Stop) + 1) / (range.Step ?? 1)) * (range.Multiply ?? 1);
+                        dimensionCount += ((System.Math.Abs(range.Start - range.Stop) / (range.Step ?? 1)) + 1) * (range.Multiply ?? 1);
                     }
                     else
                     {

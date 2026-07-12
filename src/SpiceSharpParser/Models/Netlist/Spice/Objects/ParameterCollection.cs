@@ -155,12 +155,19 @@ namespace SpiceSharpParser.Models.Netlist.Spice.Objects
 
                 if (value is BracketParameter bp)
                 {
+                    bool found = false;
                     foreach (var val in Values)
                     {
                         if (val is BracketParameter bp2 && bp2.Name == bp.Name)
                         {
                             bp2.Parameters.Set(bp.Parameters);
+                            found = true;
                         }
+                    }
+
+                    if (!found)
+                    {
+                        Values.Add(value);
                     }
                 }
             }

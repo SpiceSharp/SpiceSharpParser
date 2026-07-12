@@ -86,7 +86,7 @@ namespace SpiceSharpParser.Lexers.BusPrefix
         /// </summary>
         public void Reset()
         {
-            _index = 0;
+            _index = -1;
         }
     }
 }
