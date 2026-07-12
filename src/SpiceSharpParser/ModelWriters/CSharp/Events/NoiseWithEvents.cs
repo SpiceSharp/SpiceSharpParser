@@ -64,16 +64,19 @@ namespace SpiceSharpParser.Common
 
                     case Noise.BeforeExecute:
                         EventBeforeExecute?.Invoke(this, EventArgs.Empty);
-
-                        if (this is IBiasingSimulation)
-                        {
-                            EventBeforeTemperature?.Invoke(this, null);
-                        }
-
                         break;
 
                     case Noise.AfterExecute:
                         EventAfterExecute?.Invoke(this, EventArgs.Empty);
+                        break;
+
+                    case Noise.BeforeTemperature:
+                        var state = this.GetState<ITemperatureSimulationState>();
+                        EventBeforeTemperature?.Invoke(this, new TemperatureStateEventArgs(state));
+                        break;
+
+                    case Noise.AfterTemperature:
+                        EventAfterTemperature?.Invoke(this, EventArgs.Empty);
                         break;
 
 
