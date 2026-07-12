@@ -24,6 +24,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         public override IEntity Generate(string componentIdentifier, string originalName, string type, ParameterCollection parameters, IReadingContext context)
         {
             SubCircuit subCircuit = FindSubcircuitDefinition(parameters, context);
+            if (subCircuit == null)
+            {
+                return null;
+            }
+
             bool hasParameters = GetAssigmentParametersCount(parameters, out _) != 0;
 
             if (context.ReaderSettings.ExpandSubcircuits || hasParameters)
@@ -182,9 +187,20 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             // first step is to find subcircuit name in parameters, a=b parameters needs to be skipped
             int skipCount = 0;
-            while (parameters[parameters.Count - skipCount - 1] is AssignmentParameter || parameters[parameters.Count - skipCount - 1].Value.ToLower() == "params:")
+            while (skipCount < parameters.Count
+                && (parameters[parameters.Count - skipCount - 1] is AssignmentParameter
+                    || parameters[parameters.Count - skipCount - 1].Value.ToLower() == "params:"))
             {
                 skipCount++;
+            }
+
+            if (skipCount == parameters.Count)
+            {
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    "Could not find subcircuit name for subcircuit instance",
+                    parameters.LineInfo);
+                return null;
             }
 
             string subCircuitDefinitionName = parameters.Get(parameters.Count - skipCount - 1).Value;
@@ -200,6 +216,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 }
                 return result;
             }
+
+            context.Result.ValidationResult.AddError(
+                ValidationEntrySource.Reader,
+                $"Could not find '{subCircuitDefinitionName}' subcircuit",
+                parameters.LineInfo);
 
             return null;
         }

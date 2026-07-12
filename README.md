@@ -28,6 +28,7 @@ Install-Package SpiceSharp-Parser
 using System;
 using System.Linq;
 using SpiceSharpParser;
+using SpiceSharpParser.Common;
 
 var netlist = string.Join(Environment.NewLine,
     "Low-pass RC filter",
