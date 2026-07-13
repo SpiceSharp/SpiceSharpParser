@@ -399,6 +399,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
         {
             points = new List<Point>();
             var values = new List<double>();
+            var relativeTimes = new List<bool>();
 
             for (var i = startIndex; i < startIndex + count; i++)
             {
@@ -407,7 +408,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 {
                     foreach (var element in vector.Elements)
                     {
-                        if (!TryAppendPointValue(element.Value, element, context, values))
+                        if (!TryAppendPointValue(element.Value, element, context, values, relativeTimes))
                         {
                             return false;
                         }
@@ -417,7 +418,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 {
                     foreach (var item in point.Values.Items)
                     {
-                        if (!TryAppendPointValue(item.Value, item, context, values))
+                        if (!TryAppendPointValue(item.Value, item, context, values, relativeTimes))
                         {
                             return false;
                         }
@@ -426,7 +427,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 else if (parameter is BracketParameter bracket
                     && string.Equals(bracket.Name, "forever", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (!TryAppendPointValues(bracket.Parameters, context, values))
+                    if (!TryAppendPointValues(bracket.Parameters, context, values, relativeTimes))
                     {
                         return false;
                     }
@@ -438,7 +439,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 }
                 else
                 {
-                    if (!TryAppendPointValue(parameter.Value, parameter, context, values))
+                    if (!TryAppendPointValue(parameter.Value, parameter, context, values, relativeTimes))
                     {
                         return false;
                     }
@@ -451,9 +452,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 return false;
             }
 
+            double previousTime = 0.0;
             for (var i = 0; i < values.Count / 2; i++)
             {
-                points.Add(new Point(values[2 * i], values[(2 * i) + 1]));
+                double time = values[2 * i];
+                if (relativeTimes[i])
+                {
+                    time += previousTime;
+                    if (double.IsNaN(time) || double.IsInfinity(time))
+                    {
+                        AddPwlError(context, $"LTspice PWL {sectionName} relative +time produced a non-finite time.", diagnosticParameter);
+                        return false;
+                    }
+                }
+
+                points.Add(new Point(time, values[(2 * i) + 1]));
+                previousTime = time;
             }
 
             if (points.Count < minimumPointCount)
@@ -468,7 +482,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
         private static bool TryAppendPointValues(
             ParameterCollection parameters,
             IReadingContext context,
-            List<double> values)
+            List<double> values,
+            List<bool> relativeTimes)
         {
             for (var i = 0; i < parameters.Count; i++)
             {
@@ -477,7 +492,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 {
                     foreach (var element in vector.Elements)
                     {
-                        if (!TryAppendPointValue(element.Value, element, context, values))
+                        if (!TryAppendPointValue(element.Value, element, context, values, relativeTimes))
                         {
                             return false;
                         }
@@ -487,7 +502,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 {
                     foreach (var item in point.Values.Items)
                     {
-                        if (!TryAppendPointValue(item.Value, item, context, values))
+                        if (!TryAppendPointValue(item.Value, item, context, values, relativeTimes))
                         {
                             return false;
                         }
@@ -495,7 +510,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 }
                 else
                 {
-                    if (!TryAppendPointValue(parameter.Value, parameter, context, values))
+                    if (!TryAppendPointValue(parameter.Value, parameter, context, values, relativeTimes))
                     {
                         return false;
                     }
@@ -509,14 +524,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             string expression,
             Parameter parameter,
             IReadingContext context,
-            List<double> values)
+            List<double> values,
+            List<bool> relativeTimes)
         {
             bool isTimeValue = values.Count % 2 == 0;
-            if (isTimeValue && expression.TrimStart().StartsWith("+", StringComparison.Ordinal))
-            {
-                AddPwlError(context, "LTspice PWL relative +time points are not supported yet.", parameter);
-                return false;
-            }
+            bool isRelativeTime = isTimeValue && expression.TrimStart().StartsWith("+", StringComparison.Ordinal);
 
             if (!TryEvaluatePointValue(expression, parameter, context, out var value))
             {
@@ -524,6 +536,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             }
 
             values.Add(value);
+            if (isTimeValue)
+            {
+                relativeTimes.Add(isRelativeTime);
+            }
+
             return true;
         }
 

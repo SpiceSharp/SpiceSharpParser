@@ -169,6 +169,44 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
             Assert.True(EqualsWithTol(exports, PwlRepeatTriangleReference));
         }
 
+        [Fact]
+        public void When_LtspicePwlRepeatForUsesRelativeTimes_Expect_ExpandedTransientReferenceValues()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - PWL repeat for relative times",
+                "V1 out 0 PWL REPEAT FOR 2 (0,0,+1n,1,+1n,0) ENDREPEAT",
+                "R1 out 0 1k",
+                ".tran 0.5n 4.5n",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+
+            var exports = RunTransientSimulation(model, "V(out)");
+            Assert.NotEmpty(exports);
+            Assert.True(EqualsWithTol(exports, PwlFiniteRepeatTriangleReference));
+        }
+
+        [Fact]
+        public void When_LtspicePwlRepeatForeverUsesRelativeTimes_Expect_RepeatingTransientReferenceValues()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - PWL repeat forever relative times",
+                "V1 out 0 PWL REPEAT FOREVER (0,0,+1n,1,+1n,0) ENDREPEAT",
+                "R1 out 0 1k",
+                ".tran 0.5n 5n",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+
+            var exports = RunTransientSimulation(model, "V(out)");
+            Assert.NotEmpty(exports);
+            Assert.True(EqualsWithTol(exports, PwlRepeatTriangleReference));
+        }
+
         [Theory]
         [InlineData("V1 out 0 PWL REPEAT FOR 2 (0,0,1n,1,2n,0) ENDREPEAT")]
         [InlineData("V1 out 0 PWL REPEAT for=2 (0,0,1n,1,2n,0) ENDREPEAT")]
@@ -226,7 +264,7 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
         [InlineData("V1 out 0 PWL REPEAT FOR 2 (0,0,1n) ENDREPEAT", "time/value")]
         [InlineData("V1 out 0 PWL REPEAT FOR 2 (0,0,0,0) ENDREPEAT", "increasing")]
         [InlineData("V1 out 0 PWL REPEAT FOR 2 (0,0,1n,1) ENDREPEAT", "contradictory")]
-        [InlineData("V1 out 0 PWL REPEAT FOR 2 (0,0,+1n,0) ENDREPEAT", "relative")]
+        [InlineData("V1 out 0 PWL REPEAT FOR 2 (0,0,+1e309,0) ENDREPEAT", "non-finite")]
         [InlineData("V1 out 0 PWL ENDREPEAT", "requires")]
         public void When_LtspicePwlRepeatSyntaxIsMalformed_Expect_TargetedError(string sourceLine, string expectedMessage)
         {

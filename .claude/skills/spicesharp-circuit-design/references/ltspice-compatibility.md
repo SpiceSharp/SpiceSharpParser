@@ -50,6 +50,7 @@ Without `UseCustomComponents()`, core LTspice mode reports targeted diagnostics 
 - `EXP(...)` waveform.
 - Finite-cycle `PULSE(... Ncycles)` and finite-cycle `SINE(... Ncycles)`.
 - Local two-column `PWL file=<path>` with optional header row and comment/blank-line handling.
+- Simple non-nested `PWL REPEAT FOR <n>` and `REPEAT FOREVER` blocks, including relative `+time` values accumulated from the preceding point.
 - Independent source `tbl=(expr,x1,y1,...)`, lowered to behavioral `table(...)`.
 - R/C model `tc=a[,b]`, lowered to `tc1`/`tc2`.
 - Switch aliases `von`/`voff` and `ion`/`ioff`, lowered to midpoint/hysteresis forms.
@@ -121,7 +122,7 @@ Known gaps include:
 - `.TF`, `.NET`, `.FERRET`, `.LOADBIAS`, `.SAVEBIAS`, `.MACHINE` / `.ENDMACHINE`.
 - `.TRAN startup`, `steady`, `nodiscard`, and `step`.
 - Behavior-changing solver options such as `cshunt`, `gshunt`, `srcsteps`, `gminsteps`, `trtol`, `chgtol`, `pivrel`, `pivtol`, and `ptrantau`.
-- PWL repeat blocks and broader LTspice PWL repeat variants.
+- Nested/combined PWL repeat blocks, trigger restarts, time/value scale factors, and `SCOPEDATA`.
 - `uplim(...)`, `dnlim(...)`, and unary `~`.
 - Switch `Ilimit`.
 - MOS levels outside 1, 2, and 3.

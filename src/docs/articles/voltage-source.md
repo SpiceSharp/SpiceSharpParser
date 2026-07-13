@@ -98,18 +98,64 @@ PWL REPEAT FOREVER (<t1>,<v1>,...) ENDREPEAT
 V1 IN 0 PWL(0 0 1m 5 2m 5 3m 0)
 V2 IN 0 PWL file = "Resources\pwl_reference.txt"
 V3 IN 0 PWL REPEAT FOR 3 (1m,1,3m,3) ENDREPEAT
+V4 IN 0 PWL REPEAT FOREVER (0,0,+1m,1,+1m,0) ENDREPEAT
 ```
+
+#### Relative `+time` points
+
+Prefixing a time with `+` makes it relative to the preceding point in the
+repeat block. The values are still ordinary values; only the time field in
+each time/value pair is accumulated.
+
+For example, this source rises from 0 V to 5 V in 1 ms, stays at 5 V for
+2 ms, and falls back to 0 V over the next 1 ms:
+
+```spice
+V1 OUT 0 PWL REPEAT FOREVER (0,0,+1m,5,+2m,5,+1m,0) ENDREPEAT
+```
+
+The relative times expand as follows:
+
+| Time token | Calculation | Absolute point |
+| --- | --- | --- |
+| `0` | First time is absolute | `(0, 0 V)` |
+| `+1m` | `0 + 1 ms` | `(1 ms, 5 V)` |
+| `+2m` | `1 ms + 2 ms` | `(3 ms, 5 V)` |
+| `+1m` | `3 ms + 1 ms` | `(4 ms, 0 V)` |
+
+It is therefore equivalent to this absolute-time block:
+
+```spice
+V1 OUT 0 PWL REPEAT FOREVER (0,0,1m,5,3m,5,4m,0) ENDREPEAT
+```
+
+`REPEAT FOREVER` starts the same local 4 ms block again after `ENDREPEAT`.
+The `+time` accumulation restarts at local time zero for every cycle:
+
+```text
+Local time:  0 ms   1 ms       3 ms   4 ms
+Voltage:     0 V    5 V        5 V    0 V
+Cycle:       |----------- first ---------|
+Global time: 0 ms   1 ms       3 ms   4 ms   5 ms       7 ms   8 ms
+Voltage:     0 V    5 V        5 V    0 V    5 V        5 V    0 V
+			  |------ cycle 1 ------|     |------ cycle 2 ------|
+```
+
+With `REPEAT FOR 3`, the same 4 ms block is emitted three times. After the
+third copy, the source holds the final value. Times must remain increasing
+after expansion; invalid or non-finite relative times produce a targeted
+`PWL` validation error.
 
 Inline PWL data uses time/value pairs. File-backed PWL data reads a local text
 file with two numeric columns and an optional header row. Leading blank lines
 and full-line comments beginning with `;`, `#`, `*`, or `//` are skipped.
 Spaces, commas, semicolons, and tabs are recognized from the first meaningful
 line. In LTspice mode, simple non-nested `REPEAT FOR <n>` and `REPEAT FOREVER`
-blocks are supported with local repeat times. Nested repeats, trigger-based
-PWL restarts, time/value scale factors, `SCOPEDATA`, and relative `+time`
-points are not claimed yet. Missing files, empty files, missing data rows,
-malformed rows, and unsupported LTspice PWL variants produce targeted `PWL`
-validation diagnostics.
+blocks are supported with local repeat times. A time prefixed by `+` is added
+to the preceding time in the repeat block. Nested repeats, trigger-based PWL
+restarts, time/value scale factors, and `SCOPEDATA` are not claimed yet.
+Missing files, empty files, missing data rows, malformed rows, and unsupported
+LTspice PWL variants produce targeted `PWL` validation diagnostics.
 
 ### SFFM — Single-Frequency FM
 

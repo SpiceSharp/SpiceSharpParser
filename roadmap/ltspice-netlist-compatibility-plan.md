@@ -217,7 +217,7 @@ Implemented P2 behavior:
 - Added six-argument `EXP(v1 v2 td1 tau1 td2 tau2)` source waveform support with argument-count and positive-tau diagnostics.
 - Added LTspice-mode finite-cycle `PULSE(... Ncycles)` and `SINE(... Ncycles)` support with targeted diagnostics for invalid period/frequency and cycle-count arguments.
 - Added PWL file fixtures for supported local two-column text variants with optional header rows, leading blank/comment lines, and space/comma/semicolon/tab delimiters, plus targeted diagnostics for missing files, empty files, missing data rows, and malformed rows.
-- Added LTspice-mode support for simple non-nested `PWL REPEAT FOR <n>` and `REPEAT FOREVER` blocks with local repeat times, analytic transient fixtures, malformed-repeat diagnostics, and optional LTspice-backed transient golden evidence for `REPEAT FOR`.
+- Added LTspice-mode support for simple non-nested `PWL REPEAT FOR <n>` and `REPEAT FOREVER` blocks with absolute local times and relative `+time` values accumulated from the preceding point, analytic transient fixtures, malformed-repeat diagnostics, and optional LTspice-backed transient golden evidence for `REPEAT FOR`.
 - Added LTspice-mode `tbl=(expr,x1,y1,...)` independent-source lowering to the existing behavioral `table(...)` path.
 - Improved `wavefile=<path> chan=<n> [amplitude=<value>]` validation so missing `wavefile`, missing `chan`, missing files, and invalid `chan` values produce targeted diagnostics.
 - Added LTspice-mode parser synthesis for topology-changing independent-source options: `Rser` adds a series resistor, `Cpar` adds a shunt capacitor, `load` adds a shunt resistor, and `R=<value>` maps to series resistance on voltage sources or load resistance on current sources.
@@ -225,7 +225,7 @@ Implemented P2 behavior:
 Remaining follow-up:
 
 - Compare existing random functions with LTspice semantics before making numeric claims.
-- Defer nested/combined LTspice PWL specs, trigger restarts, time/value scale factors, `SCOPEDATA`, and relative `+time` points until fixture-backed runtime behavior is specified.
+- Defer nested/combined LTspice PWL specs, trigger restarts, time/value scale factors, and `SCOPEDATA` until fixture-backed runtime behavior is specified.
 
 Acceptance criteria:
 
