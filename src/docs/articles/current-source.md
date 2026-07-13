@@ -45,7 +45,7 @@ Current sources support the same waveform types as voltage sources:
 - `PWL` — Piecewise linear
 - `SFFM` — Single-frequency FM
 - `AM` — Amplitude modulation
-- `wavefile=<path> chan=<n> [amplitude=<scale>]` / `WAVE` — Wave-file input
+- `wavefile=<path> [chan=<n>] [amplitude=<scale>]` / `WAVE` — Wave-file input; LTspice mode defaults to channel 0
 
 See the [V — Voltage Source](voltage-source.md) article for waveform syntax,
 LTspice finite-cycle `PULSE` and `SINE`, wave-file

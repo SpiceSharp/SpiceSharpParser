@@ -180,19 +180,20 @@ V1 IN 0 AM(1 0 100 10k 0 0 0)
 ### Wave-File Input
 
 ```
-wavefile=<path> chan=<n> [amplitude=<scale>]
-WAVE wavefile=<path> chan=<n> [amplitude=<scale>]
+wavefile=<path> [chan=<n>] [amplitude=<scale>]
+WAVE wavefile=<path> [chan=<n>] [amplitude=<scale>]
 ```
 
 ```spice
-V1 IN 0 wavefile="input.wav" chan=0 amplitude=0.5
+V1 IN 0 wavefile="input.wav" amplitude=0.5
 V2 IN 0 WAVE wavefile="input.wav" chan=1
 ```
 
 Wave-file input converts the selected audio channel to a PWL waveform. The
-channel must be explicit; LTspice channel defaults are not inferred. Missing
-`wavefile=`, missing `chan=`, missing files, and invalid channel expressions
-produce targeted validation diagnostics.
+first channel is channel 0. In LTspice mode, omitting `chan=<n>` selects
+channel 0; default mode still requires an explicit channel. Missing
+`wavefile=`, missing files, and invalid explicit channel expressions produce
+targeted validation diagnostics.
 
 ## LTspice Source Compatibility
 

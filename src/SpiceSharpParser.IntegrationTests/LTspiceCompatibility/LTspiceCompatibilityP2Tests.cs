@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using SpiceSharp.Components;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms.Wave;
 using Xunit;
 
 namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
@@ -477,7 +479,7 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
 
         [Theory]
         [InlineData("V1 out 0 WAVE chan=1", "wavefile")]
-        [InlineData("V1 out 0 wavefile=\"missing.wav\"", "chan")]
+        [InlineData("V1 out 0 wavefile=\"missing.wav\"", "does not exist")]
         [InlineData("V1 out 0 wavefile=\"missing.wav\" chan=1", "does not exist")]
         public void When_LtspiceWaveFileSourceIsInvalid_Expect_TargetedError(string sourceLine, string expectedMessage)
         {
@@ -493,6 +495,92 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
             Assert.True(model.ValidationResult.HasError);
             AssertErrorContains(model.ValidationResult, "wavefile");
             AssertErrorContains(model.ValidationResult, expectedMessage);
+        }
+
+        [Fact]
+        public void When_LtspiceWaveFileOmitsChannel_Expect_ChannelZero()
+        {
+            var tempDirectory = CreateTempDirectory();
+
+            try
+            {
+                WriteMonoWaveFile(Path.Combine(tempDirectory, "input.wav"));
+                var model = GetSpiceSharpModelWithCompatibilityAndWorkingDirectory(
+                    tempDirectory,
+                    CompatibilityOptions.LTspice,
+                    "LTspice P2 - default wavefile channel",
+                    "V1 out 0 wavefile=\"input.wav\"",
+                    "R1 out 0 1k",
+                    ".tran 1m 2m",
+                    ".save V(out)",
+                    ".end");
+
+                AssertNoValidationIssues(model.ValidationResult);
+                var source = Assert.IsType<VoltageSource>(model.Circuit["V1"]);
+                var waveform = Assert.IsType<Wave>(source.Parameters.Waveform);
+                Assert.Equal(0, waveform.Channel);
+            }
+            finally
+            {
+                DeleteDirectory(tempDirectory);
+            }
+        }
+
+        [Fact]
+        public void When_LtspiceWaveFileSpecifiesChannel_Expect_ExplicitChannel()
+        {
+            var tempDirectory = CreateTempDirectory();
+
+            try
+            {
+                WriteStereoWaveFile(Path.Combine(tempDirectory, "input.wav"));
+                var model = GetSpiceSharpModelWithCompatibilityAndWorkingDirectory(
+                    tempDirectory,
+                    CompatibilityOptions.LTspice,
+                    "LTspice P2 - explicit wavefile channel",
+                    "V1 out 0 wavefile=\"input.wav\" chan=1",
+                    "R1 out 0 1k",
+                    ".tran 1m 2m",
+                    ".save V(out)",
+                    ".end");
+
+                AssertNoValidationIssues(model.ValidationResult);
+                var source = Assert.IsType<VoltageSource>(model.Circuit["V1"]);
+                var waveform = Assert.IsType<Wave>(source.Parameters.Waveform);
+                Assert.Equal(1, waveform.Channel);
+            }
+            finally
+            {
+                DeleteDirectory(tempDirectory);
+            }
+        }
+
+        [Fact]
+        public void When_DefaultWaveFileOmitsChannel_Expect_TargetedError()
+        {
+            var tempDirectory = CreateTempDirectory();
+
+            try
+            {
+                WriteMonoWaveFile(Path.Combine(tempDirectory, "input.wav"));
+                var model = GetSpiceSharpModelWithCompatibilityAndWorkingDirectory(
+                    tempDirectory,
+                    CompatibilityOptions.None,
+                    "Default mode - missing wavefile channel",
+                    "V1 out 0 wavefile=\"input.wav\"",
+                    "R1 out 0 1k",
+                    ".tran 1m 2m",
+                    ".save V(out)",
+                    ".end");
+
+                Assert.True(model.ValidationResult.HasError);
+                AssertErrorContains(model.ValidationResult, "wavefile");
+                AssertErrorContains(model.ValidationResult, "chan");
+            }
+            finally
+            {
+                DeleteDirectory(tempDirectory);
+            }
         }
 
         [Fact]
@@ -987,6 +1075,27 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
         {
             return string.Join(Environment.NewLine, lines);
         }
+
+        private static void WriteMonoWaveFile(string path)
+        {
+            new WaveFileWriter().Write(
+                path,
+                1000,
+                1.0,
+                16,
+                new[] { (0.0, 0.0), (0.001, 0.5), (0.002, 0.0) });
+        }
+
+            private static void WriteStereoWaveFile(string path)
+            {
+                new WaveFileWriter().Write(
+                path,
+                1000,
+                1.0,
+                16,
+                new[] { (0.0, 0.0), (0.001, 0.5), (0.002, 0.0) },
+                new[] { (0.0, 0.0), (0.001, -0.5), (0.002, 0.0) });
+            }
 
         private static SpiceSharpModel GetSpiceSharpModelWithCompatibility(CompatibilityOptions compatibility, params string[] lines)
         {

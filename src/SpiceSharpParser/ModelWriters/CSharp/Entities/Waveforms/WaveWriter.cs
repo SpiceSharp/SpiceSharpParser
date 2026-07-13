@@ -42,7 +42,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Waveforms
         private List<CSharpStatement> CreateWaveFromFile(ParameterCollection parameters, IWriterContext context, out string waveFormId)
         {
             var fileParameter = (AssignmentParameter)parameters.First(p => p is AssignmentParameter ap && ap.Name.ToLower() == "wavefile");
-            var channelParameter = (AssignmentParameter)parameters.First(p => p is AssignmentParameter ap && ap.Name.ToLower() == "chan");
+            var channelParameter = (AssignmentParameter)parameters.FirstOrDefault(p => p is AssignmentParameter ap && ap.Name.ToLower() == "chan");
             var ampliduteParameter = (AssignmentParameter)parameters.FirstOrDefault(p => p is AssignmentParameter ap && ap.Name.ToLower() == "amplitude");
 
             var filePath = PathConverter.Convert(fileParameter.Value);
@@ -61,7 +61,9 @@ namespace SpiceSharpParser.ModelWriters.CSharp.Entities.Waveforms
                 amplitude = context.EvaluationContext.Evaluate(ampliduteParameter.Value);
             }
 
-            int channel = (int)context.EvaluationContext.Evaluate(channelParameter.Value);
+            int channel = channelParameter == null
+                ? 0
+                : (int)context.EvaluationContext.Evaluate(channelParameter.Value);
 
             var result = new List<CSharpStatement>();
             waveFormId = context.GetNewIdentifier("wave");

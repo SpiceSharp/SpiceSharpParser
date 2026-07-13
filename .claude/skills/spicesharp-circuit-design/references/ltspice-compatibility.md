@@ -51,6 +51,7 @@ Without `UseCustomComponents()`, core LTspice mode reports targeted diagnostics 
 - Finite-cycle `PULSE(... Ncycles)` and finite-cycle `SINE(... Ncycles)`.
 - Local two-column `PWL file=<path>` with optional header row and comment/blank-line handling.
 - Simple non-nested `PWL REPEAT FOR <n>` and `REPEAT FOREVER` blocks, including relative `+time` values accumulated from the preceding point.
+- Wave-file sources with omitted `chan=<n>` defaulting to channel 0 in LTspice mode.
 - Independent source `tbl=(expr,x1,y1,...)`, lowered to behavioral `table(...)`.
 - R/C model `tc=a[,b]`, lowered to `tc1`/`tc2`.
 - Switch aliases `von`/`voff` and `ion`/`ioff`, lowered to midpoint/hysteresis forms.

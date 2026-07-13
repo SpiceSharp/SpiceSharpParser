@@ -57,11 +57,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 
             if (channelParameter == null)
             {
-                context.Result.ValidationResult.AddError(
-                    ValidationEntrySource.Reader,
-                    "wavefile source requires explicit chan=<n>; LTspice channel defaults are not inferred.",
-                    fileParameter.LineInfo);
-                return null;
+                if (!context.ReaderSettings.Compatibility.IsLTspice)
+                {
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        "wavefile source requires explicit chan=<n>.",
+                        fileParameter.LineInfo);
+                    return null;
+                }
             }
 
             var filePath = PathConverter.Convert(fileParameter.Value);
@@ -85,19 +88,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 amplitude = context.Evaluator.EvaluateDouble(ampliduteParameter.Value);
             }
 
-            int channel;
-            try
+            int channel = 0;
+            if (channelParameter != null)
             {
-                channel = (int)context.Evaluator.EvaluateDouble(channelParameter.Value);
-            }
-            catch (Exception ex)
-            {
-                context.Result.ValidationResult.AddError(
-                    ValidationEntrySource.Reader,
-                    "wavefile source chan=<n> must evaluate to a channel number.",
-                    channelParameter.LineInfo,
-                    ex);
-                return null;
+                try
+                {
+                    channel = (int)context.Evaluator.EvaluateDouble(channelParameter.Value);
+                }
+                catch (Exception ex)
+                {
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        "wavefile source chan=<n> must evaluate to a channel number.",
+                        channelParameter.LineInfo,
+                        ex);
+                    return null;
+                }
             }
 
             return new Wave.Wave(fileContent, channel, amplitude);
