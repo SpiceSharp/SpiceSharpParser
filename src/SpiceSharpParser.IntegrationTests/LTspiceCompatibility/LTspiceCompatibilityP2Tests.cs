@@ -878,6 +878,32 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
             }
         }
 
+        [Fact]
+        public void When_LtspiceRandIsUsedInValueSource_Expect_NonzeroTransientValues()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - rand in VALUE source",
+                "V1 IN 0 VALUE=1+rand(1e5*time)",
+                "R1 IN 0 100",
+                ".TRAN 1e-5 50e-3",
+                ".SAVE V(IN)",
+                ".END");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            Assert.IsType<BehavioralVoltageSource>(model.Circuit["V1"]);
+
+            var simulation = model.Simulations.Single();
+            var export = model.Exports.Find(candidate => candidate.Name == "V(IN)");
+            var values = new List<double>();
+            simulation.EventExportData += (sender, args) => values.Add(export.Extract());
+            simulation.Execute(model.Circuit);
+
+            Assert.NotEmpty(values);
+            Assert.All(values, value => Assert.InRange(value, 1.0, 2.0));
+            Assert.Contains(values, value => value > 1.01);
+        }
+
         [Theory]
         [InlineData("~0", 1.0)]
         [InlineData("~1", 0.0)]
