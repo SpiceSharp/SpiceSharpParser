@@ -39,7 +39,7 @@ This roadmap is intentionally parser-first and evidence-first:
 - `.TRAN` accepts traditional numeric forms and trailing `UIC`; P1 LTspice mode also accepts `.tran <Tstop>` and `.tran <Tstop> UIC` by deriving `step = Tstop / 50.0`. LTspice `startup`, `steady`, `nodiscard`, and `step` modifiers remain targeted errors.
 - LTspice output/viewer `.options` such as `plotwinsize`, `plotreltol`, `plotvntol`, `plotabstol`, `numdgt`, `measdgt`, `meascplxfmt`, `baudrate`, and `fastaccess` are warning no-ops only in LTspice mode.
 - LTspice behavior-changing `.options` such as `cshunt`, `gshunt`, `srcsteps`, `gminsteps`, `trtol`, `chgtol`, `pivrel`, `pivtol`, and `ptrantau` remain targeted errors.
-- Source waveform mappings cover `SIN` / `SINE`, `PULSE`, `EXP`, `PWL`, `AM`, `SFFM`, and wave-file input. LTspice finite-cycle `PULSE(... Ncycles)` and `SINE(... Ncycles)` are supported, PWL file parsing supports optional header rows, leading blank/comment lines, and space/comma/semicolon/tab delimiters, simple non-nested LTspice `PWL REPEAT FOR` / `REPEAT FOREVER` blocks are supported, broader PWL variants still produce targeted diagnostics, omitted wave-file channels default to channel 0 in LTspice mode, and topology-changing independent-source options synthesize parser helper components.
+- Source waveform mappings cover `SIN` / `SINE`, `PULSE`, `EXP`, `PWL`, `AM`, `SFFM`, and wave-file input. LTspice finite-cycle `PULSE(... Ncycles)` and `SINE(... Ncycles)` are supported, PWL file parsing supports optional header rows, leading blank/comment lines, and space/comma/semicolon/tab delimiters, `TIME_SCALE_FACTOR` / `VALUE_SCALE_FACTOR` apply to inline, file-backed, and supported repeat forms, simple non-nested LTspice `PWL REPEAT FOR` / `REPEAT FOREVER` blocks are supported, broader PWL variants still produce targeted diagnostics, omitted wave-file channels default to channel 0 in LTspice mode, and topology-changing independent-source options synthesize parser helper components.
 - MOS model generation currently covers legacy levels 1, 2, and 3. LTspice `VDMOS` and advanced monolithic levels such as BSIM/EKV/HiSIM variants are runtime or intentional-unsupported candidates.
 - Distributed-line support currently starts from lossless `T`. LTspice lossy `O` / `LTRA` and uniform RC-line `URC` models need engine triage before runnable support is claimed.
 - P3 LTspice mode maps R/C model `tc=a[,b]`, switch `von`/`voff`, and current-switch `ion`/`ioff` aliases where they lower to existing parameters.
@@ -220,13 +220,14 @@ Implemented P2 behavior:
 - Added LTspice-mode finite-cycle `PULSE(... Ncycles)` and `SINE(... Ncycles)` support with targeted diagnostics for invalid period/frequency and cycle-count arguments.
 - Added PWL file fixtures for supported local two-column text variants with optional header rows, leading blank/comment lines, and space/comma/semicolon/tab delimiters, plus targeted diagnostics for missing files, empty files, missing data rows, and malformed rows.
 - Added LTspice-mode support for simple non-nested `PWL REPEAT FOR <n>` and `REPEAT FOREVER` blocks with absolute local times and relative `+time` values accumulated from the preceding point, analytic transient fixtures, malformed-repeat diagnostics, and optional LTspice-backed transient golden evidence for `REPEAT FOR`.
+- Added LTspice-mode PWL `TIME_SCALE_FACTOR` and `VALUE_SCALE_FACTOR` support for inline, local-file, and supported repeat forms. Assignments precede PWL specifications, may appear in either order, use LTspice's last-assignment-wins behavior, preserve negative/zero value scaling, and have analytic, diagnostic, generated-C#, and direct LTspice-backed transient coverage.
 - Added LTspice-mode `tbl=(expr,x1,y1,...)` independent-source lowering to the existing behavioral `table(...)` path.
 - Added the LTspice channel-0 default for `wavefile=<path> [chan=<n>] [amplitude=<value>]`, retained the explicit-channel requirement in default mode, preserved generated C# parity, and kept targeted diagnostics for missing files and invalid explicit channels.
 - Added LTspice-mode parser synthesis for topology-changing independent-source options: `Rser` adds a series resistor, `Cpar` adds a shunt capacitor, `load` adds a shunt resistor, and `R=<value>` maps to series resistance on voltage sources or load resistance on current sources.
 
 Remaining follow-up:
 
-- Defer nested/combined LTspice PWL specs, trigger restarts, time/value scale factors, and `SCOPEDATA` until fixture-backed runtime behavior is specified.
+- Defer nested/combined LTspice PWL specs, trigger restarts, and `SCOPEDATA` until fixture-backed runtime behavior is specified.
 
 Acceptance criteria:
 

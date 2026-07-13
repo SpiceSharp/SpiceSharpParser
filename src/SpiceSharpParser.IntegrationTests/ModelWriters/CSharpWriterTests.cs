@@ -302,5 +302,35 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
 
             simulation.Run(circuit);
         }
+
+        [Fact]
+        public void When_LtspicePwlScaleFactorsAreWritten_Expect_ScaledGeneratedPoints()
+        {
+            var parser = new SpiceNetlistParser();
+            parser.Settings.Compatibility = CompatibilityOptions.LTspice;
+            var parseResult = parser.ParseNetlist(string.Join(
+                System.Environment.NewLine,
+                "Generated LTspice PWL scale factors",
+                "V1 out 0 PWL TIME_SCALE_FACTOR=2 VALUE_SCALE_FACTOR=3 (0,1,1,2,2,0)",
+                "R1 out 0 1k",
+                ".tran 0.25 4",
+                ".end"));
+
+            var writer = new SpiceSharpCSharpWriter
+            {
+                Compatibility = CompatibilityOptions.LTspice,
+            };
+            var classText = writer.WriteCreateCircuitClass("LtspicePwlScale", parseResult.FinalModel).GetText().ToString();
+            var circuit = writer.CreateCircuit(parseResult.FinalModel);
+            var source = Assert.IsType<VoltageSource>(circuit["V1"]);
+            var waveform = Assert.IsType<Pwl>(source.Parameters.Waveform);
+
+            Assert.Contains("SetPoints(0,3,2,6,4,0)", classText);
+            Assert.Collection(
+                waveform.Points,
+                point => Assert.Equal((0.0, 3.0), (point.Time, point.Value)),
+                point => Assert.Equal((2.0, 6.0), (point.Time, point.Value)),
+                point => Assert.Equal((4.0, 0.0), (point.Time, point.Value)));
+        }
     }
 }

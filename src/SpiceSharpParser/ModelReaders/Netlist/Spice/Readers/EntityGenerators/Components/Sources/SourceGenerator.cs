@@ -90,6 +90,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 {
                     if (context.WaveformReader.Supports(bp.Name, context))
                     {
+                        var misplacedPwlScaleFactor = context.ReaderSettings.Compatibility.IsLTspice
+                            && string.Equals(bp.Name, "pwl", StringComparison.OrdinalIgnoreCase)
+                            ? parameters.Skip(1).FirstOrDefault(parameter =>
+                                parameter is AssignmentParameter assignment
+                                && (string.Equals(assignment.Name, "time_scale_factor", StringComparison.OrdinalIgnoreCase)
+                                    || string.Equals(assignment.Name, "value_scale_factor", StringComparison.OrdinalIgnoreCase)))
+                            : null;
+                        if (misplacedPwlScaleFactor != null)
+                        {
+                            context.Result.ValidationResult.AddError(
+                                ValidationEntrySource.Reader,
+                                "LTspice PWL TIME_SCALE_FACTOR and VALUE_SCALE_FACTOR must precede all PWL specifications.",
+                                misplacedPwlScaleFactor.LineInfo);
+                            return;
+                        }
+
                         var waveform = context.WaveformReader.Generate(bp.Name, bp.Parameters, context);
                         if (waveform != null)
                         {

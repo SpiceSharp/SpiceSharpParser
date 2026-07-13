@@ -90,6 +90,7 @@ V1 IN 0 EXP(0 5 1u 100n 10u 200n)
 ```
 PWL(<t1> <v1> <t2> <v2> ...)
 PWL file = "<path>"
+PWL TIME_SCALE_FACTOR=<time-factor> VALUE_SCALE_FACTOR=<value-factor> <PwlSpec>
 PWL REPEAT FOR <n> (<t1>,<v1>,...) ENDREPEAT
 PWL REPEAT FOREVER (<t1>,<v1>,...) ENDREPEAT
 ```
@@ -99,7 +100,20 @@ V1 IN 0 PWL(0 0 1m 5 2m 5 3m 0)
 V2 IN 0 PWL file = "Resources\pwl_reference.txt"
 V3 IN 0 PWL REPEAT FOR 3 (1m,1,3m,3) ENDREPEAT
 V4 IN 0 PWL REPEAT FOREVER (0,0,+1m,1,+1m,0) ENDREPEAT
+V5 IN 0 PWL TIME_SCALE_FACTOR=2 VALUE_SCALE_FACTOR=-3 (0,0,1m,1,2m,0)
 ```
+
+#### Time and value scale factors
+
+In LTspice mode, `TIME_SCALE_FACTOR` multiplies every PWL time and
+`VALUE_SCALE_FACTOR` multiplies every PWL magnitude. The assignments must
+precede all inline, file, or repeat PWL specifications. They may appear in
+either order, and repeated assignments follow LTspice's last-value-wins rule.
+
+The time factor must be positive and finite. The value factor must be finite;
+zero and negative value factors are valid. Expressions and parameters are
+evaluated before scaling. Scaling also changes repeat periods because every
+local repeat time is multiplied by the time factor.
 
 #### Relative `+time` points
 
@@ -152,8 +166,9 @@ and full-line comments beginning with `;`, `#`, `*`, or `//` are skipped.
 Spaces, commas, semicolons, and tabs are recognized from the first meaningful
 line. In LTspice mode, simple non-nested `REPEAT FOR <n>` and `REPEAT FOREVER`
 blocks are supported with local repeat times. A time prefixed by `+` is added
-to the preceding time in the repeat block. Nested repeats, trigger-based PWL
-restarts, time/value scale factors, and `SCOPEDATA` are not claimed yet.
+to the preceding time in the repeat block. Time/value scale factors apply to
+inline, file-backed, and supported repeat forms. Nested repeats, trigger-based
+PWL restarts, and `SCOPEDATA` are not claimed yet.
 Missing files, empty files, missing data rows, malformed rows, and unsupported
 LTspice PWL variants produce targeted `PWL` validation diagnostics.
 

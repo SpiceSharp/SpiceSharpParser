@@ -268,6 +268,22 @@ namespace SpiceSharpParser.Tests.LTspiceCompatibility
                     relativeTolerance: 2e-3),
 
                 new LtspiceTransientGoldenCase(
+                    "tran_pwl_scale_factors",
+                    BuildNetlist(
+                        "tran_pwl_scale_factors",
+                        ".options plotwinsize=0 reltol=1e-6 abstol=1e-12",
+                        "VINLINE inline 0 PWL TIME_SCALE_FACTOR=2 VALUE_SCALE_FACTOR=3 (0,1,1,2,2,0)",
+                        "VREPEAT repeat 0 PWL TIME_SCALE_FACTOR=2 VALUE_SCALE_FACTOR=4 REPEAT FOR 2 (0,0,+1,1,+1,0) ENDREPEAT",
+                        "RINLINE inline 0 1k",
+                        "RREPEAT repeat 0 1k",
+                        ".tran 0.025 8 0 0.025",
+                        ".save V(inline) V(repeat)"),
+                    new[] { "V(inline)", "V(repeat)" },
+                    new[] { 0.5, 1.0, 2.0, 3.0, 3.5, 4.5, 5.0, 6.0, 7.0, 7.5 },
+                    absoluteTolerance: 2e-4,
+                    relativeTolerance: 2e-4),
+
+                new LtspiceTransientGoldenCase(
                     "tran_behavioral_random_functions",
                     BuildNetlist(
                         "tran_behavioral_random_functions",

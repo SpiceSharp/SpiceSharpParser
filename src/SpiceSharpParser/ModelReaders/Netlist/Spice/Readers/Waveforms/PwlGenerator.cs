@@ -40,29 +40,38 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 throw new ArgumentNullException(nameof(context));
             }
 
-            if (TryCreateLtspiceRepeatingPwl(parameters, context, out var repeatingPwl))
+            if (!TryExtractLtspiceScaleFactors(parameters, context, out var pwlParameters, out var scaleFactors))
+            {
+                return null;
+            }
+
+            if (TryCreateLtspiceRepeatingPwl(pwlParameters, context, scaleFactors, out var repeatingPwl))
             {
                 return repeatingPwl;
             }
 
-            if (parameters.Count > 0 && parameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "file"))
+            if (pwlParameters.Count > 0 && pwlParameters.Any(p => p is AssignmentParameter ap && ap.Name.ToLower() == "file"))
             {
-                return CreatePwlFromFile(parameters, context);
+                return CreatePwlFromFile(pwlParameters, context, scaleFactors);
             }
 
-            bool vectorMode = parameters.Count > 1 && parameters[1] is VectorParameter vp && vp.Elements.Count == 2;
+            bool vectorMode = pwlParameters.Any(parameter =>
+                parameter is VectorParameter || parameter is PointParameter);
 
             if (!vectorMode)
             {
-                return CreatePwlFromSequence(parameters, context);
+                return CreatePwlFromSequence(pwlParameters, context, scaleFactors);
             }
             else
             {
-                return CreatePwlFromVector(parameters, context);
+                return CreatePwlFromVector(pwlParameters, context, scaleFactors);
             }
         }
 
-        private static IWaveformDescription CreatePwlFromSequence(ParameterCollection parameters, IReadingContext context)
+        private static IWaveformDescription CreatePwlFromSequence(
+            ParameterCollection parameters,
+            IReadingContext context,
+            PwlScaleFactors scaleFactors)
         {
             if (parameters.Count % 2 != 0)
             {
@@ -80,10 +89,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 points.Add(new Point(times[i], voltages[i]));
             }
 
-            return new Pwl() { Points = points };
+            return TryScalePoints(points, scaleFactors, context, parameters.FirstOrDefault(), out var scaledPoints)
+                ? new Pwl() { Points = scaledPoints }
+                : null;
         }
 
-        private static IWaveformDescription CreatePwlFromVector(ParameterCollection parameters, IReadingContext context)
+        private static IWaveformDescription CreatePwlFromVector(
+            ParameterCollection parameters,
+            IReadingContext context,
+            PwlScaleFactors scaleFactors)
         {
             List<double> values = new List<double>();
 
@@ -94,10 +108,22 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                     values.Add(context.Evaluator.EvaluateDouble(vp2.Elements[0].Value));
                     values.Add(context.Evaluator.EvaluateDouble(vp2.Elements[1].Value));
                 }
+                else if (parameters[i] is PointParameter point)
+                {
+                    foreach (var item in point.Values.Items)
+                    {
+                        values.Add(context.Evaluator.EvaluateDouble(item.Value));
+                    }
+                }
                 else
                 {
                     values.Add(context.Evaluator.EvaluateDouble(parameters[i].Value));
                 }
+            }
+
+            if (values.Count % 2 != 0)
+            {
+                throw new ArgumentException("PWL waveform expects even count of parameters");
             }
 
             int pwlPoints = values.Count / 2;
@@ -112,10 +138,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 points.Add(new Point(times[i], voltages[i]));
             }
 
-            return new Pwl() { Points = points };
+            return TryScalePoints(points, scaleFactors, context, parameters.FirstOrDefault(), out var scaledPoints)
+                ? new Pwl() { Points = scaledPoints }
+                : null;
         }
 
-        private static IWaveformDescription CreatePwlFromFile(ParameterCollection parameters, IReadingContext context)
+        private static IWaveformDescription CreatePwlFromFile(
+            ParameterCollection parameters,
+            IReadingContext context,
+            PwlScaleFactors scaleFactors)
         {
             var fileParameter = (AssignmentParameter)parameters.First(p => p is AssignmentParameter ap && ap.Name.ToLower() == "file");
             var filePath = PathConverter.Convert(fileParameter.Value);
@@ -153,12 +184,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 return null;
             }
 
-            return new Pwl() { Points = points };
+            return TryScalePoints(points, scaleFactors, context, fileParameter, out var scaledPoints)
+                ? new Pwl() { Points = scaledPoints }
+                : null;
         }
 
         private static bool TryCreateLtspiceRepeatingPwl(
             ParameterCollection parameters,
             IReadingContext context,
+            PwlScaleFactors scaleFactors,
             out IWaveformDescription waveform)
         {
             waveform = null;
@@ -227,6 +261,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 return true;
             }
 
+            if (!TryScalePoints(prefixPoints, scaleFactors, context, repeatParameter, out prefixPoints)
+                || !TryScalePoints(repeatPoints, scaleFactors, context, repeatParameter, out repeatPoints))
+            {
+                return true;
+            }
+
             if (!ValidateRepeatPoints(repeatPoints, context, repeatParameter, out var period))
             {
                 return true;
@@ -276,6 +316,154 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
 
             waveform = new RepeatingPwl(prefixPoints, repeatPoints, repeatStartTime, null);
             return true;
+        }
+
+        private static bool TryExtractLtspiceScaleFactors(
+            ParameterCollection parameters,
+            IReadingContext context,
+            out ParameterCollection pwlParameters,
+            out PwlScaleFactors scaleFactors)
+        {
+            pwlParameters = parameters;
+            scaleFactors = PwlScaleFactors.Identity;
+
+            if (!context.ReaderSettings.Compatibility.IsLTspice)
+            {
+                return true;
+            }
+
+            double timeScale = 1.0;
+            double valueScale = 1.0;
+            int firstPwlSpecIndex = 0;
+            AssignmentParameter timeScaleAssignment = null;
+            AssignmentParameter valueScaleAssignment = null;
+
+            while (firstPwlSpecIndex < parameters.Count
+                && parameters[firstPwlSpecIndex] is AssignmentParameter assignment
+                && IsScaleFactor(assignment))
+            {
+                if (IsTimeScaleFactor(assignment))
+                {
+                    timeScaleAssignment = assignment;
+                }
+                else
+                {
+                    valueScaleAssignment = assignment;
+                }
+
+                firstPwlSpecIndex++;
+            }
+
+            if (timeScaleAssignment != null
+                && !TryEvaluateScaleFactor(timeScaleAssignment, context, out timeScale))
+            {
+                return false;
+            }
+
+            if (valueScaleAssignment != null
+                && !TryEvaluateScaleFactor(valueScaleAssignment, context, out valueScale))
+            {
+                return false;
+            }
+
+            pwlParameters = parameters.Skip(firstPwlSpecIndex);
+            var misplacedFactor = pwlParameters.FirstOrDefault(parameter =>
+                parameter is AssignmentParameter assignment && IsScaleFactor(assignment));
+            if (misplacedFactor != null)
+            {
+                AddPwlError(
+                    context,
+                    "LTspice PWL TIME_SCALE_FACTOR and VALUE_SCALE_FACTOR must precede all PWL specifications.",
+                    misplacedFactor);
+                return false;
+            }
+
+            scaleFactors = new PwlScaleFactors(timeScale, valueScale, firstPwlSpecIndex > 0);
+            return true;
+        }
+
+        private static bool TryEvaluateScaleFactor(
+            AssignmentParameter assignment,
+            IReadingContext context,
+            out double factor)
+        {
+            factor = 0.0;
+            string factorName = assignment.Name.ToUpperInvariant();
+
+            try
+            {
+                factor = context.Evaluator.EvaluateDouble(assignment.Value);
+            }
+            catch (Exception ex)
+            {
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    $"LTspice PWL {factorName} could not be evaluated.",
+                    assignment.LineInfo,
+                    ex);
+                return false;
+            }
+
+            if (double.IsNaN(factor) || double.IsInfinity(factor))
+            {
+                AddPwlError(context, $"LTspice PWL {factorName} must be finite.", assignment);
+                return false;
+            }
+
+            if (IsTimeScaleFactor(assignment) && factor <= 0.0)
+            {
+                AddPwlError(context, "LTspice PWL TIME_SCALE_FACTOR must be positive.", assignment);
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool TryScalePoints(
+            IReadOnlyList<Point> points,
+            PwlScaleFactors scaleFactors,
+            IReadingContext context,
+            Parameter diagnosticParameter,
+            out List<Point> scaledPoints)
+        {
+            if (!scaleFactors.IsSpecified)
+            {
+                scaledPoints = points.ToList();
+                return true;
+            }
+
+            scaledPoints = new List<Point>(points.Count);
+            foreach (var point in points)
+            {
+                double time = point.Time * scaleFactors.Time;
+                double value = point.Value * scaleFactors.Value;
+                if (double.IsNaN(time)
+                    || double.IsInfinity(time)
+                    || double.IsNaN(value)
+                    || double.IsInfinity(value))
+                {
+                    AddPwlError(
+                        context,
+                        "LTspice PWL scale factors produced a non-finite time or value.",
+                        diagnosticParameter);
+                    return false;
+                }
+
+                scaledPoints.Add(new Point(time, value));
+            }
+
+            return true;
+        }
+
+        private static bool IsScaleFactor(AssignmentParameter assignment)
+        {
+            return IsTimeScaleFactor(assignment)
+                || string.Equals(assignment.Name, "value_scale_factor", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool IsTimeScaleFactor(AssignmentParameter assignment)
+        {
+            return string.Equals(assignment.Name, "time_scale_factor", StringComparison.OrdinalIgnoreCase);
         }
 
         private static bool TryReadRepeatCount(
@@ -861,6 +1049,24 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             Header,
             Point,
             Malformed,
+        }
+
+        private readonly struct PwlScaleFactors
+        {
+            public static readonly PwlScaleFactors Identity = new PwlScaleFactors(1.0, 1.0, false);
+
+            public PwlScaleFactors(double time, double value, bool isSpecified)
+            {
+                Time = time;
+                Value = value;
+                IsSpecified = isSpecified;
+            }
+
+            public double Time { get; }
+
+            public double Value { get; }
+
+            public bool IsSpecified { get; }
         }
     }
 }

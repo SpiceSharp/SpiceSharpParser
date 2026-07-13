@@ -134,6 +134,100 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
         }
 
         [Fact]
+        public void When_LtspicePwlScaleFactorsAreRead_Expect_ScaledTransientReferenceValues()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - PWL scale factors",
+                ".param ts=2 vs=3",
+                "V1 out 0 PWL VALUE_SCALE_FACTOR={vs} TIME_SCALE_FACTOR={ts} (0,1,1,2,2,0)",
+                "R1 out 0 1k",
+                ".tran 0.25 4",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+
+            var exports = RunTransientSimulation(model, "V(out)");
+            Assert.NotEmpty(exports);
+            Assert.True(EqualsWithTol(exports, PwlScaledReference));
+        }
+
+        [Fact]
+        public void When_LtspicePwlScaleFactorsAreRepeated_Expect_LastAssignmentWins()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - duplicate PWL scale factors",
+                "V1 out 0 PWL TIME_SCALE_FACTOR=0 VALUE_SCALE_FACTOR=1e309 TIME_SCALE_FACTOR=4 VALUE_SCALE_FACTOR=-3 (0,0,1,1,2,0)",
+                "R1 out 0 1k",
+                ".tran 0.5 8",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+
+            var exports = RunTransientSimulation(model, "V(out)");
+            Assert.NotEmpty(exports);
+            Assert.True(EqualsWithTol(exports, PwlLastScaleFactorReference));
+        }
+
+        [Fact]
+        public void When_LtspiceCurrentPwlHasScaleFactors_Expect_ScaledWaveformPoints()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - current PWL scale factors",
+                "I1 out 0 PWL TIME_SCALE_FACTOR=2 VALUE_SCALE_FACTOR=-3 (0,1,1,2)",
+                "R1 out 0 1k",
+                ".tran 0.25 2",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+            var source = Assert.IsType<CurrentSource>(model.Circuit["I1"]);
+            var waveform = Assert.IsType<Pwl>(source.Parameters.Waveform);
+            Assert.Collection(
+                waveform.Points,
+                point => Assert.Equal((0.0, -3.0), (point.Time, point.Value)),
+                point => Assert.Equal((2.0, -6.0), (point.Time, point.Value)));
+        }
+
+        [Fact]
+        public void When_LtspicePwlFileHasScaleFactors_Expect_ScaledFilePoints()
+        {
+            var tempDirectory = CreateTempDirectory();
+
+            try
+            {
+                File.WriteAllText(
+                    Path.Combine(tempDirectory, "shape.txt"),
+                    "0,1" + Environment.NewLine
+                    + "1,2" + Environment.NewLine
+                    + "2,0" + Environment.NewLine);
+
+                var model = GetSpiceSharpModelWithCompatibilityAndWorkingDirectory(
+                    tempDirectory,
+                    CompatibilityOptions.LTspice,
+                    "LTspice P2 - scaled PWL file",
+                    "V1 out 0 PWL TIME_SCALE_FACTOR=2 VALUE_SCALE_FACTOR=3 file=\"shape.txt\"",
+                    "R1 out 0 1k",
+                    ".tran 0.25 4",
+                    ".save V(out)",
+                    ".end");
+
+                AssertNoValidationIssues(model.ValidationResult);
+
+                var exports = RunTransientSimulation(model, "V(out)");
+                Assert.NotEmpty(exports);
+                Assert.True(EqualsWithTol(exports, PwlScaledReference));
+            }
+            finally
+            {
+                DeleteDirectory(tempDirectory);
+            }
+        }
+
+        [Fact]
         public void When_LtspicePwlRepeatForIsRead_Expect_ExpandedTransientReferenceValues()
         {
             var model = GetSpiceSharpModelWithCompatibility(
@@ -209,6 +303,25 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
             Assert.True(EqualsWithTol(exports, PwlRepeatTriangleReference));
         }
 
+        [Fact]
+        public void When_LtspicePwlRepeatUsesScaleFactors_Expect_ScaledPeriodAndValues()
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - scaled PWL repeat",
+                "V1 out 0 PWL TIME_SCALE_FACTOR=2 VALUE_SCALE_FACTOR=4 REPEAT FOR 2 (0,0,+1,1,+1,0) ENDREPEAT",
+                "R1 out 0 1k",
+                ".tran 0.5 8",
+                ".save V(out)",
+                ".end");
+
+            AssertNoValidationIssues(model.ValidationResult);
+
+            var exports = RunTransientSimulation(model, "V(out)");
+            Assert.NotEmpty(exports);
+            Assert.True(EqualsWithTol(exports, PwlScaledRepeatReference));
+        }
+
         [Theory]
         [InlineData("V1 out 0 PWL REPEAT FOR 2 (0,0,1n,1,2n,0) ENDREPEAT")]
         [InlineData("V1 out 0 PWL REPEAT for=2 (0,0,1n,1,2n,0) ENDREPEAT")]
@@ -276,6 +389,30 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
                 sourceLine,
                 "R1 out 0 1k",
                 ".tran 1n 6n",
+                ".save V(out)",
+                ".end");
+
+            Assert.True(model.ValidationResult.HasError);
+            AssertErrorContains(model.ValidationResult, "PWL");
+            AssertErrorContains(model.ValidationResult, expectedMessage);
+        }
+
+        [Theory]
+        [InlineData("V1 out 0 PWL TIME_SCALE_FACTOR=0 (0,0,1,1)", "positive")]
+        [InlineData("V1 out 0 PWL TIME_SCALE_FACTOR=-1 (0,0,1,1)", "positive")]
+        [InlineData("V1 out 0 PWL VALUE_SCALE_FACTOR=1e309 (0,0,1,1)", "finite")]
+        [InlineData("V1 out 0 PWL (0,0,1,1) TIME_SCALE_FACTOR=2", "precede")]
+        [InlineData("V1 out 0 PWL TIME_SCALE_FACTOR=1e308 (0,0,10,1)", "non-finite")]
+        public void When_LtspicePwlScaleFactorIsInvalid_Expect_TargetedError(
+            string sourceLine,
+            string expectedMessage)
+        {
+            var model = GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - invalid PWL scale factor",
+                sourceLine,
+                "R1 out 0 1k",
+                ".tran 0.1 2",
                 ".save V(out)",
                 ".end");
 
@@ -1011,6 +1148,26 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
             return Math.Max(0.0, (2e-9 - time) / 1e-9);
         }
 
+        private static double PwlScaledReference(double time)
+        {
+            if (time <= 2.0)
+            {
+                return 3.0 + (1.5 * time);
+            }
+
+            return Math.Max(0.0, 12.0 - (3.0 * time));
+        }
+
+        private static double PwlLastScaleFactorReference(double time)
+        {
+            if (time <= 4.0)
+            {
+                return -0.75 * time;
+            }
+
+            return Math.Min(0.0, (0.75 * time) - 6.0);
+        }
+
         private static double PwlRepeatForReference(double time)
         {
             const double period = 3e-9;
@@ -1059,6 +1216,22 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
             }
 
             return PwlRepeatTriangleReference(time);
+        }
+
+        private static double PwlScaledRepeatReference(double time)
+        {
+            if (time >= 8.0)
+            {
+                return 0.0;
+            }
+
+            var localTime = time % 4.0;
+            if (localTime <= 2.0)
+            {
+                return 2.0 * localTime;
+            }
+
+            return 2.0 * (4.0 - localTime);
         }
 
         private static SpiceSharpModel CreateBehavioralRandomFunctionModel(string step)
