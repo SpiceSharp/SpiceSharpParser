@@ -30,6 +30,7 @@ This roadmap is intentionally parser-first and evidence-first:
 - Validation currently has error and warning levels only. Use warnings for recognized LTspice no-ops until an informational level exists.
 - `ValidationEntryCollection.Warnings` filters warning entries and is covered by warning/error separation tests.
 - Scalar `table(...)` and `tbl(...)` are supported through SpiceSharpBehavioral defaults and covered by LTspice P2 fixtures; `MathFunctions.CreateTable()` now returns a parser-owned interpolation helper for direct factory callers.
+- LTspice-mode behavioral `rand(x)`, `random(x)`, and `white(x)` are lowered to deterministic runtime math with LTspice-compatible ranges and interpolation envelopes. The parser-owned hash does not claim LTspice's exact proprietary pseudorandom sequence.
 - The default mappings register many common controls and devices, but registration does not prove LTspice syntax parity for every variant.
 - `.FOUR` transient Fourier post-processing is implemented as dialect-neutral output support. Results are exposed through `SpiceSharpModel.FourierAnalyses`, with coverage for multiple signals, current signals, parameterized frequencies, stepped transient runs, and targeted failure diagnostics.
 - Default reader behavior still rejects LTspice `.backanno`, `.tf`, `.net`, `.ferret`, `.loadbias`, `.savebias`, and `.machine` / `.endmachine` with targeted diagnostics.
@@ -214,6 +215,7 @@ Implemented P2 behavior:
 - Added explicit PSpice-mode unary `~` as boolean NOT and `^` as boolean XOR with `&`, `^`, `|` precedence, while default/SPICE3f5 rejects `~` and retains `^` exponent behavior; LTspice mode uses `~` for NOT and retains `^` exponent behavior.
 - Added LTspice-mode unary `~` as a boolean-NOT alias and `xor(a,b)` as a two-argument boolean XOR function.
 - Added LTspice-style smooth limiting support for `uplim(...)` and `dnlim(...)`.
+- Added LTspice-mode behavioral `rand(x)`, `random(x)`, and `white(x)` lowering with strict arity, deterministic timestep-independent values, generated C# parity, analytic transient coverage, and an optional LTspice-backed interpolation-envelope golden. The exact LTspice pseudorandom sequence remains an explicit numeric divergence.
 - Added six-argument `EXP(v1 v2 td1 tau1 td2 tau2)` source waveform support with argument-count and positive-tau diagnostics.
 - Added LTspice-mode finite-cycle `PULSE(... Ncycles)` and `SINE(... Ncycles)` support with targeted diagnostics for invalid period/frequency and cycle-count arguments.
 - Added PWL file fixtures for supported local two-column text variants with optional header rows, leading blank/comment lines, and space/comma/semicolon/tab delimiters, plus targeted diagnostics for missing files, empty files, missing data rows, and malformed rows.
@@ -224,7 +226,6 @@ Implemented P2 behavior:
 
 Remaining follow-up:
 
-- Compare existing random functions with LTspice semantics before making numeric claims.
 - Defer nested/combined LTspice PWL specs, trigger restarts, time/value scale factors, and `SCOPEDATA` until fixture-backed runtime behavior is specified.
 
 Acceptance criteria:

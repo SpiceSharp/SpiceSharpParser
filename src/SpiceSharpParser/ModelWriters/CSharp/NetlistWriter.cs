@@ -18,18 +18,25 @@ namespace SpiceSharpParser.ModelWriters.CSharp
 
         protected SimulationsWriter SimulationsWriter { get; }
 
-        public CSharpClass Write(string className, Statements statements)
+        public CSharpClass Write(
+            string className,
+            Statements statements,
+            CompatibilityOptions compatibility = null)
         {
             if (statements == null)
             {
                 throw new ArgumentNullException(nameof(statements));
             }
 
+            compatibility = compatibility ?? CompatibilityOptions.None;
+
             var context = new WriterContext();
             context.EvaluationContext = new EvaluationContext(
                 new ExpressionParser(
                     new SpiceSharpBehavioral.Builders.Direct.RealBuilder(),
-                    false));
+                    false,
+                    compatibility),
+                compatibility);
 
             var allStatements = CircuitWriter.Write(
                 true,

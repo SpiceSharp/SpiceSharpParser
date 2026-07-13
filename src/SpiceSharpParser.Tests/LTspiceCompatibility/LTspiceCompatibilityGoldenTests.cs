@@ -266,6 +266,26 @@ namespace SpiceSharpParser.Tests.LTspiceCompatibility
                     new[] { 0.5e-9, 1.5e-9, 2.5e-9, 3.5e-9, 4.5e-9, 6.5e-9, 8.5e-9, 9.25e-9 },
                     absoluteTolerance: 2e-3,
                     relativeTolerance: 2e-3),
+
+                new LtspiceTransientGoldenCase(
+                    "tran_behavioral_random_functions",
+                    BuildNetlist(
+                        "tran_behavioral_random_functions",
+                        ".options plotwinsize=0 reltol=1e-6 abstol=1e-12",
+                        ".func smooth(x)=x*x*(3-2*x)",
+                        ".func randomphase(x)=limit((x-floor(x)-0.125)/0.75,0,1)",
+                        "BRAND randerr 0 V={rand(time*4)-rand(floor(time*4))}",
+                        "BRANDOM randomerr 0 V={random(time*4)-(rand(floor(time*4))+(rand(floor(time*4)+1)-rand(floor(time*4)))*smooth(randomphase(time*4)))}",
+                        "BWHITE whiteerr 0 V={white(time*4)-(rand(floor(time*4))-0.5+(rand(floor(time*4)+1)-rand(floor(time*4)))*smooth(time*4-floor(time*4)))}",
+                        "RRAND randerr 0 1k",
+                        "RRANDOM randomerr 0 1k",
+                        "RWHITE whiteerr 0 1k",
+                        ".tran 0.0025 1 0 0.0025",
+                        ".save V(randerr) V(randomerr) V(whiteerr)"),
+                    new[] { "V(randerr)", "V(randomerr)", "V(whiteerr)" },
+                    new[] { 0.025, 0.05, 0.125, 0.20, 0.30, 0.375, 0.45, 0.55, 0.625, 0.70, 0.80, 0.875, 0.95 },
+                    absoluteTolerance: 2e-6,
+                    relativeTolerance: 2e-6),
             };
         }
 

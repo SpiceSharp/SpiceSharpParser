@@ -15,6 +15,11 @@ namespace SpiceSharpParser
 {
     public class SpiceSharpCSharpWriter
     {
+        /// <summary>
+        /// Gets or sets dialect-specific expression compatibility used by generated behavioral sources.
+        /// </summary>
+        public CompatibilityOptions Compatibility { get; set; } = CompatibilityOptions.None;
+
         public SyntaxNode WriteCreateCircuitClass(string className, SpiceNetlist model, bool validateClass = true)
         {
             if (className is null)
@@ -28,7 +33,7 @@ namespace SpiceSharpParser
             }
 
             var writer = new NetlistWriter(new StatementsWriter(), new SimulationsWriter());
-            var @class = writer.Write(className, model.Statements);
+            var @class = writer.Write(className, model.Statements, Compatibility);
             var translator = new CSharpStatementTranslator();
             var code = translator.GetCSharpCode(@class);
             var rootNode = CSharpSyntaxTree.ParseText(code).GetRoot();

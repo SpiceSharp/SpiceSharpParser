@@ -710,6 +710,37 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
             Assert.True(EqualsWithTol(expected, RunOpSimulation(model, "V(out)")));
         }
 
+        [Fact]
+        public void When_LtspiceBehavioralRandomFunctionsAreRead_Expect_DeterministicTransientShapes()
+        {
+            var fineModel = CreateBehavioralRandomFunctionModel("0.005");
+            var coarseModel = CreateBehavioralRandomFunctionModel("0.01");
+
+            AssertNoValidationIssues(fineModel.ValidationResult);
+            AssertNoValidationIssues(coarseModel.ValidationResult);
+
+            var fineRand = RunTransientSimulation(fineModel, "V(randout)");
+            var fineRandom = RunTransientSimulation(fineModel, "V(randomout)");
+            var fineWhite = RunTransientSimulation(fineModel, "V(whiteout)");
+            var coarseRand = RunTransientSimulation(coarseModel, "V(randout)");
+            var coarseRandom = RunTransientSimulation(coarseModel, "V(randomout)");
+            var coarseWhite = RunTransientSimulation(coarseModel, "V(whiteout)");
+
+            Assert.All(fineRand, point => Assert.InRange(point.Item2, 0.0, 1.0));
+            Assert.All(fineRandom, point => Assert.InRange(point.Item2, 0.0, 1.0));
+            Assert.All(fineWhite, point => Assert.InRange(point.Item2, -0.5, 0.5));
+
+            Assert.Equal(Sample(fineRand, 0.05), Sample(fineRand, 0.20), 12);
+            Assert.Equal(Sample(fineRand, 0.30), Sample(fineRand, 0.45), 12);
+
+            foreach (var time in new[] { 0.05, 0.125, 0.20, 0.30, 0.375, 0.45, 0.55, 0.625, 0.70, 0.80, 0.875, 0.95 })
+            {
+                Assert.InRange(Math.Abs(Sample(fineRand, time) - Sample(coarseRand, time)), 0.0, 1e-9);
+                Assert.InRange(Math.Abs(Sample(fineRandom, time) - Sample(coarseRandom, time)), 0.0, 3e-3);
+                Assert.InRange(Math.Abs(Sample(fineWhite, time) - Sample(coarseWhite, time)), 0.0, 3e-3);
+            }
+        }
+
         [Theory]
         [InlineData("~0", 1.0)]
         [InlineData("~1", 0.0)]
@@ -1028,6 +1059,51 @@ namespace SpiceSharpParser.IntegrationTests.LTspiceCompatibility
             }
 
             return PwlRepeatTriangleReference(time);
+        }
+
+        private static SpiceSharpModel CreateBehavioralRandomFunctionModel(string step)
+        {
+            return GetSpiceSharpModelWithCompatibility(
+                CompatibilityOptions.LTspice,
+                "LTspice P2 - behavioral random functions",
+                "BRAND randout 0 V={rand(time*4)}",
+                "BRANDOM randomout 0 V={random(time*4)}",
+                "BWHITE whiteout 0 V={white(time*4)}",
+                "RRAND randout 0 1k",
+                "RRANDOM randomout 0 1k",
+                "RWHITE whiteout 0 1k",
+                ".tran " + step + " 1 0 " + step,
+                ".save V(randout) V(randomout) V(whiteout)",
+                ".end");
+        }
+
+        private static double Sample(IReadOnlyList<Tuple<double, double>> points, double time)
+        {
+            if (time <= points[0].Item1)
+            {
+                return points[0].Item2;
+            }
+
+            for (var index = 1; index < points.Count; index++)
+            {
+                if (time > points[index].Item1)
+                {
+                    continue;
+                }
+
+                var before = points[index - 1];
+                var after = points[index];
+                var width = after.Item1 - before.Item1;
+                if (Math.Abs(width) < 1e-30)
+                {
+                    return after.Item2;
+                }
+
+                var fraction = (time - before.Item1) / width;
+                return before.Item2 + ((after.Item2 - before.Item2) * fraction);
+            }
+
+            return points[points.Count - 1].Item2;
         }
 
         public static IEnumerable<object[]> PwlFileFormatCases()

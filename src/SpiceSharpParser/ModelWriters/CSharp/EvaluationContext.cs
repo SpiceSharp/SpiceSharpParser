@@ -9,12 +9,17 @@ namespace SpiceSharpParser.ModelWriters.CSharp
 {
     public class EvaluationContext : IEvaluationContext
     {
-        public EvaluationContext(ExpressionParser parser)
+        public EvaluationContext(
+            ExpressionParser parser,
+            CompatibilityOptions compatibility = null)
         {
             Parser = parser;
+            Compatibility = compatibility ?? CompatibilityOptions.None;
         }
 
         public ExpressionParser Parser { get; }
+
+        public CompatibilityOptions Compatibility { get; }
 
         public Dictionary<string, Expression> Parameters { get; set; } = new Dictionary<string, Expression>();
 
@@ -39,7 +44,7 @@ namespace SpiceSharpParser.ModelWriters.CSharp
 
         public string Transform(string expression)
         {
-            var node = Parsers.Expression.Parser.Parse(Lexer.FromString(expression));
+            var node = Parsers.Expression.Parser.Parse(Lexer.FromString(expression, Compatibility));
             var transformer = new ExpressionTransformer(Variables.Select(v => v.Key).ToList(), Functions);
             var parameterFunction = transformer.Transform(node);
             return parameterFunction;

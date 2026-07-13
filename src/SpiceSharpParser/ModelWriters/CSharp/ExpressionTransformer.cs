@@ -73,6 +73,12 @@ namespace SpiceSharpParser.ModelWriters.CSharp
                 case VariableNode vn:
                     if (vn.NodeType == NodeTypes.Variable)
                     {
+                        if (string.Equals(vn.Name, "time", System.StringComparison.OrdinalIgnoreCase)
+                            || string.Equals(vn.Name, "freq", System.StringComparison.OrdinalIgnoreCase))
+                        {
+                            return vn.Name;
+                        }
+
                         if (Variables.Contains(vn.Name))
                         {
                             return $"{{{vn.Name}}}";

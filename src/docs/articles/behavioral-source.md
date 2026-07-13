@@ -41,6 +41,9 @@ B7 OUT 0 V={1 + 2*LAPLACE(V(IN), 1/(1+s))}
 
 * Laplace call-local multiplier and delay
 B8 OUT 0 V={LAPLACE(2*V(IN), 1/(1+s*tau), M=2, TD=1n)}
+
+* LTspice-compatible deterministic noise-like waveform
+B9 OUT 0 V={white(time*100k)}
 ```
 
 ## Expressions
@@ -58,7 +61,20 @@ With `CompatibilityOptions.PSpice`, unary `~` is boolean NOT, `^` becomes
 boolean XOR, and `**` remains exponentiation; the boolean precedence order is
 `&`, then `^`, then `|`. With `CompatibilityOptions.LTspice`, expressions also
 accept unary `~` as a boolean-NOT alias and `xor(a,b)` as two-argument boolean
-XOR, while `^` remains an exponent operator.
+XOR, while `^` remains an exponent operator. LTspice mode also supports
+`rand(x)`, `random(x)`, and `white(x)` in behavioral expressions:
+
+- `rand(x)` holds a deterministic value in `[0, 1)` for each integer interval.
+- `random(x)` uses the same values with LTspice's delayed cubic transition envelope.
+- `white(x)` uses a full-interval cubic transition and is centered in `[-0.5, 0.5)`.
+
+The argument is commonly a scaled `time`, such as `white(time*100k)`. These
+functions are stateless functions of their argument, so solver retries and
+timestep choices do not consume a random stream. SpiceSharpParser preserves the
+LTspice ranges and interpolation shapes but uses its own deterministic hash; the
+exact pseudorandom sequence is not numerically identical to LTspice. The existing
+zero-argument `random()` parser extension remains available and continues to use
+the configured simulation randomizer.
 
 ## MNA View
 

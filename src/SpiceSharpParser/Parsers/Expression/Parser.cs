@@ -321,6 +321,11 @@ namespace SpiceSharpParser.Parsers.Expression
 
                                     result = Node.Xor(arguments[0], arguments[1]);
                                 }
+                                else if (lexer.IsLTspice
+                                    && LtspiceRandomFunctionLowerer.TryLower(name, arguments, out var loweredRandomFunction))
+                                {
+                                    result = loweredRandomFunction;
+                                }
                                 else
                                 {
                                     result = Node.Function(name, arguments);

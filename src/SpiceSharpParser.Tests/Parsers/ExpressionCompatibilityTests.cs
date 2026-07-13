@@ -117,6 +117,77 @@ namespace SpiceSharpParser.Tests.Parsers
         }
 
         [Theory]
+        [InlineData("rand(0.25)", "rand")]
+        [InlineData("random(0.25)", "random")]
+        [InlineData("white(0.25)", "white")]
+        public void When_LtspiceBehavioralRandomFunctionIsParsed_Expect_LoweredExpression(
+            string expression,
+            string functionName)
+        {
+            var node = Parser.Parse(
+                Lexer.FromString(expression, CompatibilityOptions.LTspice),
+                true);
+
+            Assert.DoesNotContain(
+                functionName + "(",
+                node.ToString(),
+                System.StringComparison.OrdinalIgnoreCase);
+            Assert.Contains("floor", node.ToString(), System.StringComparison.OrdinalIgnoreCase);
+        }
+
+        [Fact]
+        public void When_ZeroArgumentRandomIsParsedInLtspiceMode_Expect_ExistingExtensionIsPreserved()
+        {
+            var node = Assert.IsType<FunctionNode>(Parser.Parse(
+                Lexer.FromString("random()", CompatibilityOptions.LTspice),
+                true));
+
+            Assert.Equal("random", node.Name, ignoreCase: true);
+            Assert.Empty(node.Arguments);
+        }
+
+        [Theory]
+        [InlineData("rand()", "rand")]
+        [InlineData("rand(1,2)", "rand")]
+        [InlineData("random(1,2)", "random")]
+        [InlineData("white()", "white")]
+        [InlineData("white(1,2)", "white")]
+        public void When_LtspiceBehavioralRandomFunctionHasWrongArity_Expect_TargetedError(
+            string expression,
+            string functionName)
+        {
+            var exception = Assert.Throws<SpiceSharpParser.Parsers.Expression.ParserException>(
+                () => Parser.Parse(
+                    Lexer.FromString(expression, CompatibilityOptions.LTspice),
+                    true));
+
+            Assert.Contains(functionName, exception.Message, System.StringComparison.OrdinalIgnoreCase);
+            Assert.Contains("one argument", exception.Message, System.StringComparison.OrdinalIgnoreCase);
+        }
+
+        [Fact]
+        public void When_LtspiceBehavioralRandomFunctionsAreEvaluated_Expect_StepAndSmoothRelationships()
+        {
+            var builder = new SpiceSharpBehavioral.Builders.Direct.RealBuilder();
+            SpiceSharpBehavioral.Builders.Direct.RealBuilderHelper.RegisterDefaultFunctions(builder);
+            var expressionParser = new SpiceSharpParser.Common.ExpressionParser(
+                builder,
+                true,
+                CompatibilityOptions.LTspice);
+
+            var rand0 = expressionParser.Evaluate("rand(0)");
+            var rand1 = expressionParser.Evaluate("rand(1)");
+            var midpoint = (rand0 + rand1) / 2.0;
+
+            Assert.Equal(0.5, rand0, 12);
+            Assert.Equal(rand0, expressionParser.Evaluate("rand(0.999)"), 12);
+            Assert.Equal(rand1, expressionParser.Evaluate("rand(1.999)"), 12);
+            Assert.Equal(midpoint, expressionParser.Evaluate("random(0.5)"), 12);
+            Assert.Equal(midpoint - 0.5, expressionParser.Evaluate("white(0.5)"), 12);
+            Assert.Equal(0.0, expressionParser.Evaluate("white(0)"), 12);
+        }
+
+        [Theory]
         [InlineData("1&0")]
         [InlineData("1&&0")]
         public void When_AndOperatorIsParsed_Expect_AndNode(string expression)

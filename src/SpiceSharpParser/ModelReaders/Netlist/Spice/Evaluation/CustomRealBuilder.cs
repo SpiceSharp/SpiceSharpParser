@@ -221,7 +221,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation
         {
             if (Context.Functions.ContainsKey(name))
             {
-                var function = Context.Functions[name].First();
+                var function = Context.Functions[name].FirstOrDefault(candidate =>
+                    candidate.ArgumentsCount < 0 || candidate.ArgumentsCount == functionArguments.Count);
+
+                if (function == null)
+                {
+                    throw new SpiceSharpParserException(
+                        $"Function '{name}' does not accept {functionArguments.Count} arguments.");
+                }
 
                 if (function is IFunction<double, double> doubleFunction)
                 {

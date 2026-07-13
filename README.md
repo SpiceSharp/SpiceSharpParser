@@ -150,7 +150,7 @@ LTspice mode covers syntax such as:
 
 - `.backanno` and selected output/viewer options as warning no-ops
 - one-argument `.TRAN` with a derived step policy
-- scalar expression aliases, `table(...)` / `tbl(...)`, and smooth limiters `uplim(...)` / `dnlim(...)`
+- scalar expression aliases, `table(...)` / `tbl(...)`, smooth limiters `uplim(...)` / `dnlim(...)`, and deterministic behavioral `rand(x)`, `random(x)`, and `white(x)` waveforms
 - source waveforms including `EXP(...)`, finite-cycle `PULSE(... Ncycles)`, finite-cycle `SINE(... Ncycles)`, local two-column `PWL file=<path>` data, and simple LTspice `PWL REPEAT FOR` / `REPEAT FOREVER` blocks
 - independent-source topology options: `Rser`, `Cpar`, `load`, and `R=<value>`
 - model parameter aliases: resistor and capacitor models accept `tc=<tc1>[,<tc2>]`; voltage switches accept `von` / `voff`; current switches accept `ion` / `ioff`
@@ -158,6 +158,15 @@ LTspice mode covers syntax such as:
 - resistor instance parasitics `Rser`, `Rpar`, and `Cpar`
 - capacitor instance parasitics `Rser`, `Lser`, `Rpar`, and `Cpar`
 - inductor instance parasitics `Rser`, `Lser`, `Rpar`, `RLshunt`, and `Cpar`
+
+Behavioral `rand(x)`, `random(x)`, and `white(x)` reproduce LTspice's value
+ranges, integer-interval holding, interpolation timing, and smoothing rules. They
+use a parser-owned deterministic hash, so their exact pseudorandom values do not
+match LTspice's proprietary sequence. The LTspice-backed transient golden test
+is therefore an invariant comparison: it checks the holding and interpolation
+relationships while canceling the actual random samples; it is not a
+sample-for-sample sequence comparison. The existing zero-argument `random()`
+extension is separate from LTspice's one-argument `random(x)` behavior.
 
 Topology-changing LTspice options that can be represented safely are synthesized as helper components in the parser. Behavior-changing constructs that are not represented by SpiceSharp are reported with targeted diagnostics instead of being silently ignored.
 

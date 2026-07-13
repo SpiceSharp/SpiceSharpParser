@@ -272,5 +272,35 @@ namespace SpiceSharpParser.IntegrationTests.ModelWriters
             Assert.Equal(new[] { 1.0, 1e-6 }, e.Parameters.Denominator);
             Assert.Equal(1e-9, e.Parameters.Delay);
         }
+
+        [Fact]
+        public void When_LtspiceBehavioralRandomFunctionsAreWritten_Expect_GeneratedCircuitRuns()
+        {
+            var parser = new SpiceNetlistParser();
+            parser.Settings.Compatibility = CompatibilityOptions.LTspice;
+            var parseResult = parser.ParseNetlist(string.Join(
+                System.Environment.NewLine,
+                "Generated LTspice behavioral random functions",
+                "B1 out 0 V={rand(time*4)+random(time*4)+white(time*4)}",
+                "R1 out 0 1k",
+                ".tran 0.02 0.2",
+                ".end"));
+
+            var writer = new SpiceSharpCSharpWriter
+            {
+                Compatibility = CompatibilityOptions.LTspice,
+            };
+            var classText = writer.WriteCreateCircuitClass("LtspiceRandom", parseResult.FinalModel).GetText().ToString();
+            var circuit = writer.CreateCircuit(parseResult.FinalModel);
+            var simulation = Assert.Single(writer.CreateSimulations(parseResult.FinalModel));
+
+            Assert.DoesNotContain("rand(", classText, System.StringComparison.OrdinalIgnoreCase);
+            Assert.DoesNotContain("random(", classText, System.StringComparison.OrdinalIgnoreCase);
+            Assert.DoesNotContain("white(", classText, System.StringComparison.OrdinalIgnoreCase);
+            Assert.Contains("floor(", classText, System.StringComparison.OrdinalIgnoreCase);
+            Assert.IsType<BehavioralVoltageSource>(circuit["B1"]);
+
+            simulation.Run(circuit);
+        }
     }
 }
