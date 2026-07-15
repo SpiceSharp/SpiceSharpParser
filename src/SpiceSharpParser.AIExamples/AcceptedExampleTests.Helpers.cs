@@ -1,5 +1,8 @@
 using System.Security.Cryptography;
 using System.Text;
+using SpiceSharp.Simulations;
+using SpiceSharpParser;
+using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using Xunit;
 
 namespace SpiceSharpParserAIExamples;
@@ -11,14 +14,60 @@ public sealed partial class AcceptedExampleTests
     private static AcceptedExampleCase RunAcceptedExample(string id, string netlist)
     {
         var testCase = AcceptedExampleFixture.Get(id);
-        Assert.Equal(testCase.NetlistHash, ShortHash(NormalizeInlineNetlist(netlist)));
-        return RunAcceptedExample(testCase);
+        var normalizedNetlist = NormalizeInlineNetlist(netlist);
+        Assert.Equal(testCase.NetlistHash, ShortHash(normalizedNetlist));
+        AssertAcceptedExampleIntegrity(testCase, Integrity.Value);
+        return ExecuteAcceptedExample(testCase, normalizedNetlist);
     }
 
-    private static AcceptedExampleCase RunAcceptedExample(AcceptedExampleCase testCase)
+    private static AcceptedExampleCase ExecuteAcceptedExample(AcceptedExampleCase testCase, string netlist)
     {
-        AssertAcceptedExampleIntegrity(testCase, Integrity.Value);
-        return testCase;
+        var parser = new SpiceNetlistParser();
+        var parseResult = parser.ParseNetlist(netlist);
+        var reader = new SpiceNetlistReader(new SpiceNetlistReaderSettings());
+        var model = reader.Read(parseResult.FinalModel);
+
+        Assert.False(
+            model.ValidationResult.HasError,
+            $"{CaseLabel(testCase)}: parser/reader validation failed: {string.Join(Environment.NewLine, model.ValidationResult.Select(item => item.Message))}");
+
+        foreach (var simulation in model.Simulations)
+        {
+            simulation.InvokeEvents(simulation.Run(model.Circuit, -1)).ToArray();
+        }
+
+        var measurements = model.Measurements
+            .SelectMany(entry => entry.Value.Select((measurement, index) => new MeasurementReport
+            {
+                Name = measurement.Name,
+                Key = entry.Key,
+                Index = index,
+                Value = measurement.Value,
+                ValueIsFinite = double.IsFinite(measurement.Value),
+                Success = measurement.Success,
+                MeasurementType = measurement.MeasurementType,
+                SimulationName = measurement.SimulationName,
+            }))
+            .ToList();
+
+        return new AcceptedExampleCase
+        {
+            Id = testCase.Id,
+            Source = testCase.Source,
+            ExampleId = testCase.ExampleId,
+            TestName = testCase.TestName,
+            NetlistHash = testCase.NetlistHash,
+            GeneratorModel = testCase.GeneratorModel,
+            GeneratorSource = testCase.GeneratorSource,
+            QualityTier = testCase.QualityTier,
+            Status = testCase.Status,
+            PytestStatus = testCase.PytestStatus,
+            PromptCount = testCase.PromptCount,
+            RepresentativePrompt = testCase.RepresentativePrompt,
+            PairIds = testCase.PairIds,
+            Prompts = testCase.Prompts,
+            Measurements = measurements,
+        };
     }
 
     private static string NormalizeInlineNetlist(string netlist) =>

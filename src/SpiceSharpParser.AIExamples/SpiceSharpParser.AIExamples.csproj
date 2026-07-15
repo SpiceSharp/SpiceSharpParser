@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="SpiceSharp" Version="3.2.3" />
     <PackageReference Include="xunit" Version="2.9.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -18,5 +19,9 @@
   <ItemGroup>
     <Content Include="accepted_examples_fixture.jsonl" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="accepted_examples_manifest.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SpiceSharpParser\SpiceSharpParser.csproj" />
   </ItemGroup>
 </Project>
