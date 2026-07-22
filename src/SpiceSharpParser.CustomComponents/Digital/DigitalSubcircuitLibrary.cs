@@ -165,6 +165,106 @@ namespace SpiceSharpParser.CustomComponents.Digital
         }
 
         /// <summary>
+        /// Adds a non-inverting Schmitt trigger with separate rising and falling thresholds.
+        /// </summary>
+        public IReadOnlyList<IEntity> AddSchmittBuffer(
+            Circuit circuit,
+            string instanceName,
+            string inputNode,
+            string outputNode,
+            string positiveSupplyNode,
+            string negativeSupplyNode,
+            DigitalSchmittParameters parameters = null)
+        {
+            IReadOnlyDictionary<string, string> overrides = parameters?.ToOverrides();
+            return Library.AddInstance(
+                circuit,
+                "DIG_SCHMITT_BUF",
+                instanceName,
+                new[] { inputNode, outputNode, positiveSupplyNode, negativeSupplyNode },
+                overrides);
+        }
+
+        /// <summary>
+        /// Adds an inverting Schmitt trigger with separate rising and falling thresholds.
+        /// </summary>
+        public IReadOnlyList<IEntity> AddSchmittInverter(
+            Circuit circuit,
+            string instanceName,
+            string inputNode,
+            string outputNode,
+            string positiveSupplyNode,
+            string negativeSupplyNode,
+            DigitalSchmittParameters parameters = null)
+        {
+            IReadOnlyDictionary<string, string> overrides = parameters?.ToOverrides();
+            return Library.AddInstance(
+                circuit,
+                "DIG_SCHMITT_NOT",
+                instanceName,
+                new[] { inputNode, outputNode, positiveSupplyNode, negativeSupplyNode },
+                overrides);
+        }
+
+        /// <summary>
+        /// Adds a non-inverting tri-state driver with an active-high output enable.
+        /// </summary>
+        public IReadOnlyList<IEntity> AddTriStateBuffer(
+            Circuit circuit,
+            string instanceName,
+            string inputNode,
+            string outputEnableNode,
+            string outputNode,
+            string positiveSupplyNode,
+            string negativeSupplyNode,
+            DigitalTriStateParameters parameters = null)
+        {
+            IReadOnlyDictionary<string, string> overrides = parameters?.ToOverrides();
+            return Library.AddInstance(
+                circuit,
+                "DIG_TRI_BUF",
+                instanceName,
+                new[]
+                {
+                    inputNode,
+                    outputEnableNode,
+                    outputNode,
+                    positiveSupplyNode,
+                    negativeSupplyNode,
+                },
+                overrides);
+        }
+
+        /// <summary>
+        /// Adds an inverting tri-state driver with an active-high output enable.
+        /// </summary>
+        public IReadOnlyList<IEntity> AddTriStateInverter(
+            Circuit circuit,
+            string instanceName,
+            string inputNode,
+            string outputEnableNode,
+            string outputNode,
+            string positiveSupplyNode,
+            string negativeSupplyNode,
+            DigitalTriStateParameters parameters = null)
+        {
+            IReadOnlyDictionary<string, string> overrides = parameters?.ToOverrides();
+            return Library.AddInstance(
+                circuit,
+                "DIG_TRI_NOT",
+                instanceName,
+                new[]
+                {
+                    inputNode,
+                    outputEnableNode,
+                    outputNode,
+                    positiveSupplyNode,
+                    negativeSupplyNode,
+                },
+                overrides);
+        }
+
+        /// <summary>
         /// Adds a two-input gate instance.
         /// </summary>
         public IReadOnlyList<IEntity> AddBinaryGate(
@@ -194,6 +294,144 @@ namespace SpiceSharpParser.CustomComponents.Digital
                 positiveSupplyNode,
                 negativeSupplyNode,
                 parameters);
+        }
+
+        /// <summary>
+        /// Adds a 2:1 multiplexer. A low select chooses D0 and a high select chooses D1.
+        /// </summary>
+        public IReadOnlyList<IEntity> AddMultiplexer2(
+            Circuit circuit,
+            string instanceName,
+            string data0Node,
+            string data1Node,
+            string selectNode,
+            string outputNode,
+            string positiveSupplyNode,
+            string negativeSupplyNode,
+            DigitalGateParameters parameters = null)
+        {
+            IReadOnlyDictionary<string, string> overrides = parameters?.ToOverrides();
+            return Library.AddInstance(
+                circuit,
+                "DIG_MUX2",
+                instanceName,
+                new[]
+                {
+                    data0Node,
+                    data1Node,
+                    selectNode,
+                    outputNode,
+                    positiveSupplyNode,
+                    negativeSupplyNode,
+                },
+                overrides);
+        }
+
+        /// <summary>
+        /// Adds a 4:1 multiplexer with S0 as the least-significant select bit.
+        /// </summary>
+        public IReadOnlyList<IEntity> AddMultiplexer4(
+            Circuit circuit,
+            string instanceName,
+            string data0Node,
+            string data1Node,
+            string data2Node,
+            string data3Node,
+            string select0Node,
+            string select1Node,
+            string outputNode,
+            string positiveSupplyNode,
+            string negativeSupplyNode,
+            DigitalGateParameters parameters = null)
+        {
+            IReadOnlyDictionary<string, string> overrides = parameters?.ToOverrides();
+            return Library.AddInstance(
+                circuit,
+                "DIG_MUX4",
+                instanceName,
+                new[]
+                {
+                    data0Node,
+                    data1Node,
+                    data2Node,
+                    data3Node,
+                    select0Node,
+                    select1Node,
+                    outputNode,
+                    positiveSupplyNode,
+                    negativeSupplyNode,
+                },
+                overrides);
+        }
+
+        /// <summary>
+        /// Adds a one-bit full adder.
+        /// </summary>
+        public IReadOnlyList<IEntity> AddFullAdder(
+            Circuit circuit,
+            string instanceName,
+            string firstInputNode,
+            string secondInputNode,
+            string carryInputNode,
+            string sumOutputNode,
+            string carryOutputNode,
+            string positiveSupplyNode,
+            string negativeSupplyNode,
+            DigitalGateParameters parameters = null)
+        {
+            IReadOnlyDictionary<string, string> overrides = parameters?.ToOverrides();
+            return Library.AddInstance(
+                circuit,
+                "DIG_FULL_ADDER",
+                instanceName,
+                new[]
+                {
+                    firstInputNode,
+                    secondInputNode,
+                    carryInputNode,
+                    sumOutputNode,
+                    carryOutputNode,
+                    positiveSupplyNode,
+                    negativeSupplyNode,
+                },
+                overrides);
+        }
+
+        /// <summary>
+        /// Adds an active-high 2-to-4 decoder with A as the least-significant address bit.
+        /// </summary>
+        public IReadOnlyList<IEntity> AddDecoder2To4(
+            Circuit circuit,
+            string instanceName,
+            string address0Node,
+            string address1Node,
+            string enableNode,
+            string output0Node,
+            string output1Node,
+            string output2Node,
+            string output3Node,
+            string positiveSupplyNode,
+            string negativeSupplyNode,
+            DigitalGateParameters parameters = null)
+        {
+            IReadOnlyDictionary<string, string> overrides = parameters?.ToOverrides();
+            return Library.AddInstance(
+                circuit,
+                "DIG_DEC2TO4",
+                instanceName,
+                new[]
+                {
+                    address0Node,
+                    address1Node,
+                    enableNode,
+                    output0Node,
+                    output1Node,
+                    output2Node,
+                    output3Node,
+                    positiveSupplyNode,
+                    negativeSupplyNode,
+                },
+                overrides);
         }
 
         /// <summary>

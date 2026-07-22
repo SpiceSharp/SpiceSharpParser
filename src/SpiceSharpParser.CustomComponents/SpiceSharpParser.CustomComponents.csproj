@@ -9,7 +9,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/SpiceSharp/SpiceSharpParser</RepositoryUrl>
     <RepositoryType></RepositoryType>
-    <PackageTags>circuit electronics spice custom components ideal diode nonlinear capacitor inductor digital timer 555</PackageTags>
+    <PackageTags>circuit electronics spice custom components ideal diode nonlinear capacitor inductor digital logic schmitt tri-state multiplexer timer 555</PackageTags>
     <PackageId>SpiceSharpParser.CustomComponents</PackageId>
     <Product>SpiceSharpParser.CustomComponents</Product>
     <Description>Custom SpiceSharp components for SpiceSharpParser integrations.</Description>

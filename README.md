@@ -20,8 +20,9 @@ A .NET library that parses SPICE netlists and simulates them using [SpiceSharp](
   definitions in circuits assembled directly with the SpiceSharp API.
 - Mix parsed netlists, programmatically created SpiceSharp components, and the
   optional `SpiceSharpParser.CustomComponents` models in one circuit.
-- Use built-in digital gates, a comparator, an SR latch, an open-drain stage,
-  and a functional 555 timer from an embedded and packaged SPICE library.
+- Use twenty built-in digital and mixed-signal models: gates, Schmitt inputs,
+  tri-state drivers, multiplexers, arithmetic/routing blocks, a comparator,
+  an SR latch, an open-drain stage, and a functional 555 timer.
 - Drive acceptance tests from netlist-native `.MEAS`, `.PRINT`, `.PLOT`, and
   `.FOUR` results instead of reimplementing every calculation in C#.
 
@@ -52,7 +53,7 @@ Install-Package SpiceSharpParser.CustomComponents
 | Parse and compile SPICE netlists | `SpiceSharp-Parser` |
 | Load user-authored `.SUBCKT` libraries into SpiceSharp | `SpiceSharp-Parser` |
 | LTspice-style ideal diode and nonlinear `Q=`/`Flux=` passives | `SpiceSharpParser.CustomComponents` |
-| Embedded digital gates, comparator, latch, open-drain, and 555 timer | `SpiceSharpParser.CustomComponents` |
+| Embedded digital gates, routing, bus drivers, comparator, latch, open-drain, and 555 timer | `SpiceSharpParser.CustomComponents` |
 
 ## Quick Example
 
@@ -484,7 +485,7 @@ See [LTspice-Style Nonlinear Passives](src/docs/articles/nonlinear-passives.md) 
 `Q=` / `Flux=` syntax, transient behavior, scaling rules, and optional LTspice-backed
 golden tests for AC and transient parity.
 
-#### Digital and Functional 555 Library
+#### Digital Component and Functional 555 Library
 
 The custom-components package ships a parameterized mixed-signal library built
 on `SpiceSubcircuitLibrary`. It is available in two forms:
@@ -510,6 +511,14 @@ a conventional netlist.
 | `DigitalGateKind.Nor2` | `DIG_NOR2` | A, B, Y, VDD, VSS | Two-input NOR |
 | `DigitalGateKind.Xor2` | `DIG_XOR2` | A, B, Y, VDD, VSS | Two-input XOR |
 | `DigitalGateKind.Xnor2` | `DIG_XNOR2` | A, B, Y, VDD, VSS | Two-input XNOR |
+| `AddSchmittBuffer` | `DIG_SCHMITT_BUF` | A, Y, VDD, VSS | Non-inverting input with hysteresis |
+| `AddSchmittInverter` | `DIG_SCHMITT_NOT` | A, Y, VDD, VSS | Inverting input with hysteresis |
+| `AddTriStateBuffer` | `DIG_TRI_BUF` | A, OE, Y, VDD, VSS | Active-high output enable |
+| `AddTriStateInverter` | `DIG_TRI_NOT` | A, OE, Y, VDD, VSS | Active-high enable, inverted data |
+| `AddMultiplexer2` | `DIG_MUX2` | D0, D1, S, Y, VDD, VSS | S=0 selects D0; S=1 selects D1 |
+| `AddMultiplexer4` | `DIG_MUX4` | D0, D1, D2, D3, S0, S1, Y, VDD, VSS | S0 is the least-significant select bit |
+| `AddFullAdder` | `DIG_FULL_ADDER` | A, B, CIN, SUM, COUT, VDD, VSS | One-bit sum and carry |
+| `AddDecoder2To4` | `DIG_DEC2TO4` | A, B, EN, Y0, Y1, Y2, Y3, VDD, VSS | Active-high enable and one-hot outputs |
 | `AddComparator` | `DIG_COMP` | P, N, Y, VDD, VSS | High when P exceeds N plus `VOFF` |
 | `AddOpenDrain` | `DIG_OPEN_DRAIN` | A, Y, VDD, VSS | Active-high low-side pull-down |
 | `AddSetResetLatch` | `DIG_SR_LATCH` | S, R, Q, QB, VDD, VSS | Active-high, reset-dominant state |
@@ -517,6 +526,40 @@ a conventional netlist.
 
 `TIMER555` uses the standard package order from pin 1 through pin 8. Instance
 names still follow SPICE rules and must begin with `X`.
+
+##### Logic at a Glance
+
+For ordinary inputs, logic high means
+`V(pin,VSS) > VTH * V(VDD,VSS)`; equality is low. A high output targets VDD
+and a low output targets VSS after transport delay and through a finite output
+stage. Floating inputs tend low through `RIN`.
+
+| Family | Implemented logic |
+| --- | --- |
+| Buffer / inverter | `Y=A` / `Y=NOT A` |
+| AND / NAND | `Y=A AND B` / its complement |
+| OR / NOR | `Y=A OR B` / its complement |
+| XOR / XNOR | High for unequal inputs / high for equal inputs |
+| Schmitt pair | Set above `VTH_RISE`, reset below `VTH_FALL`, otherwise retain the previous state |
+| Tri-state pair | Active-high OE; drive A or `NOT A` through `RON`, otherwise release through `ROFF` |
+| 2:1 mux | S=0 selects D0; S=1 selects D1 |
+| 4:1 mux | Select index is `2*S1 + S0` |
+| Full adder | `SUM=A XOR B XOR CIN`; COUT is high when at least two inputs are high |
+| 2-to-4 decoder | Active-high EN; output index is `2*B + A`; disabled outputs are all low |
+| Comparator | High only when `V(P,N) > VOFF`; it has no hysteresis |
+| Open drain | A=1 pulls Y low; A=0 releases Y; an external pull-up establishes high |
+| SR latch | Active-high S/R; reset wins when both are high; otherwise set, reset, or hold |
+| 555 timer | Priority is active-low RESET, then low TRIG, then high THRESH, then hold |
+
+`TPD` is transport delay before the output RC response; it is not the complete
+threshold-to-threshold delay under load. Tri-state Z is an electrical
+approximation (`ROFF` and `COUT`), not an HDL logic value. The 555 applies
+`TPD` to multiple internal stages, so it is not a single pin-to-pin delay.
+
+The full component-by-component truth tables, Boolean equations, pin
+semantics, startup rules, timing model, loading formulas, bus contention, and
+limitations are in the
+[Digital and 555 Subcircuit Library logic reference](src/docs/articles/digital-subcircuits.md#logic-and-electrical-conventions).
 
 ##### Pure SpiceSharp Gate Example
 
@@ -554,6 +597,59 @@ foreach (int _ in op.Run(circuit))
 `AddBuffer` and `AddInverter` are unary shortcuts. `AddGate` accepts an ordered
 input collection when the kind is selected dynamically. `AddBinaryGate`
 handles the remaining six `DigitalGateKind` values.
+
+##### Input Conditioning and Tri-State Routing
+
+Milestone A adds explicit APIs for analog/digital boundaries and data routing:
+
+```csharp
+var digital = DigitalSubcircuitLibrary.LoadBuiltIn();
+
+digital.AddSchmittBuffer(
+    circuit,
+    "XINPUT",
+    inputNode: "sensor",
+    outputNode: "conditioned",
+    positiveSupplyNode: "vdd",
+    negativeSupplyNode: "0",
+    new DigitalSchmittParameters
+    {
+        RisingThresholdRatio = 0.65,
+        FallingThresholdRatio = 0.35,
+    });
+
+digital.AddMultiplexer2(
+    circuit,
+    "XROUTE",
+    data0Node: "conditioned",
+    data1Node: "alternate",
+    selectNode: "select",
+    outputNode: "routed",
+    positiveSupplyNode: "vdd",
+    negativeSupplyNode: "0");
+
+digital.AddTriStateBuffer(
+    circuit,
+    "XBUS",
+    inputNode: "routed",
+    outputEnableNode: "enable",
+    outputNode: "bus",
+    positiveSupplyNode: "vdd",
+    negativeSupplyNode: "0",
+    new DigitalTriStateParameters
+    {
+        OnResistance = 50.0,
+        OffResistance = 1e12,
+    });
+```
+
+OE is active high. When disabled, a tri-state output is an electrical high-Z
+node with `ROFF` to VSS and `COUT`; there is no separate HDL-style `Z` value.
+Multiple enabled drivers therefore produce a finite contention voltage rather
+than an ideal-source singularity.
+
+The checked text-netlist equivalent is
+[`circuits/digital-milestone-a/milestone-a-routing.cir`](circuits/digital-milestone-a/milestone-a-routing.cir).
 
 ##### Comparator, Latch, and Open-Drain Examples
 
@@ -715,6 +811,37 @@ digital.AddBuffer(
 | `OutputResistance` | `ROUT` | 50 ohms | Finite output drive |
 | `OutputCapacitance` | `COUT` | 5 pF | Intrinsic output loading |
 
+Multiplexers, the full adder, and the decoder also accept
+`DigitalGateParameters`. Schmitt and tri-state models use typed parameter
+objects for their additional electrical contracts:
+
+| Schmitt property | SPICE name | Default |
+| --- | --- | ---: |
+| `RisingThresholdRatio` | `VTH_RISE` | 0.65 |
+| `FallingThresholdRatio` | `VTH_FALL` | 0.35 |
+| `PropagationDelay` | `TPD` | 10 ns |
+| `InputResistance` | `RIN` | 1 GOhm |
+| `OutputResistance` | `ROUT` | 50 ohms |
+| `OutputCapacitance` | `COUT` | 5 pF |
+| `StateResistance` | `RSTATE` | 1 kOhm |
+| `HoldResistance` | `RHOLD` | 1 TOhm |
+| `StateCapacitance` | `CMEM` | 1 pF |
+
+`RisingThresholdRatio` must be greater than `FallingThresholdRatio`. Inside
+that band the previous state is retained.
+
+| Tri-state property | SPICE name | Default |
+| --- | --- | ---: |
+| `LogicThresholdRatio` | `VTH` | 0.5 |
+| `PropagationDelay` | `TPD` | 10 ns |
+| `InputResistance` | `RIN` | 1 GOhm |
+| `OnResistance` | `RON` | 50 ohms |
+| `OffResistance` | `ROFF` | 1 TOhm |
+| `OutputCapacitance` | `COUT` | 5 pF |
+
+`OffResistance` must be greater than `OnResistance`. Typed values are checked
+before any entities are added to the target circuit.
+
 The comparator, latch, open-drain, and timer methods accept raw SPICE parameter
 overrides as `IReadOnlyDictionary<string, string>`:
 
@@ -734,6 +861,9 @@ digital.AddTimer555(
 
 | Subcircuit | Default parameters |
 | --- | --- |
+| `DIG_SCHMITT_BUF`, `DIG_SCHMITT_NOT` | `VTH_RISE=0.65 VTH_FALL=0.35 TPD=10n RIN=1G ROUT=50 COUT=5p RSTATE=1k RHOLD=1T CMEM=1p` |
+| `DIG_TRI_BUF`, `DIG_TRI_NOT` | `VTH=0.5 TPD=10n RIN=1G RON=50 ROFF=1T COUT=5p` |
+| `DIG_MUX2`, `DIG_MUX4`, `DIG_FULL_ADDER`, `DIG_DEC2TO4` | `VTH=0.5 TPD=10n RIN=1G ROUT=50 COUT=5p` |
 | `DIG_COMP` | `VOFF=0 TPD=10n RIN=1G ROUT=50 COUT=5p` |
 | `DIG_OPEN_DRAIN` | `VTH=0.5 RIN=1G RON=10 ROFF=1T COUT=5p` |
 | `DIG_SR_LATCH` | `VTH=0.5 TPD=10n RIN=1G ROUT=50 COUT=5p RSTATE=1k RHOLD=1T CMEM=1p` |
@@ -784,6 +914,10 @@ Use a vendor macro-model when those effects are acceptance criteria.
 More detail:
 
 - [Digital and 555 Subcircuit Library](src/docs/articles/digital-subcircuits.md)
+- [Digital component roadmap](roadmap/digital-component-library-roadmap.md)
+- [Milestone A requirements](circuits/digital-milestone-a/requirements.md)
+- [Milestone A design notes](circuits/digital-milestone-a/documentation.md)
+- [Milestone A verification results](circuits/digital-milestone-a/results.md)
 - [555 requirements](circuits/timer555/requirements.md)
 - [555 design notes](circuits/timer555/documentation.md)
 - [555 measured results](circuits/timer555/results.md)
@@ -801,7 +935,7 @@ workflow-specific guide:
 | --- | --- |
 | Parser introduction and first simulation | [Introduction](src/docs/articles/intro.md) |
 | Loading text subcircuits into C#-built circuits | [Programmatic Subcircuit Libraries](src/docs/articles/subcircuit-library.md) |
-| Digital components and functional 555 | [Digital and 555 Subcircuit Library](src/docs/articles/digital-subcircuits.md) |
+| Digital logic, truth tables, routing, buses, and functional 555 | [Digital and 555 Subcircuit Library](src/docs/articles/digital-subcircuits.md) |
 | Stable compiler diagnostic codes | [Diagnostic Reference](docs/diagnostics.md) |
 | LTspice compatibility status | [Compatibility Matrix](roadmap/ltspice-compatibility-matrix.md) |
 | Custom ideal diode | [LTspice-Style Ideal Diode](src/docs/articles/ideal-diode.md) |
@@ -812,6 +946,8 @@ Repository-level circuit artifacts provide executable examples alongside the
 API documentation:
 
 - [Functional 555 astable netlist](circuits/timer555/timer555-astable.cir)
+- [Digital Milestone A routing netlist](circuits/digital-milestone-a/milestone-a-routing.cir)
+- [Digital component roadmap](roadmap/digital-component-library-roadmap.md)
 - [555 quantitative requirements](circuits/timer555/requirements.md)
 - [555 design and modeling notes](circuits/timer555/documentation.md)
 - [555 measured results and regression evidence](circuits/timer555/results.md)

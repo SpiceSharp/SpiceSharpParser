@@ -51,7 +51,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
         {
             DigitalSubcircuitLibrary digital = DigitalSubcircuitLibrary.LoadBuiltIn();
 
-            Assert.Equal(12, digital.Library.Subcircuits.Count);
+            Assert.Equal(20, digital.Library.Subcircuits.Count);
             SpiceSubcircuitInfo inverter = digital.Library["DIG_NOT"];
             Assert.Equal(new[] { "A", "Y", "VDD", "VSS" }, inverter.Pins);
             Assert.Equal("0.5", inverter.DefaultParameters["VTH"]);
@@ -419,6 +419,34 @@ namespace SpiceSharpParser.Tests.CustomComponents
             Assert.InRange(period, 0.95 * 207.9e-6, 1.05 * 207.9e-6);
             Assert.InRange(highTime, 0.95 * 138.6e-6, 1.05 * 138.6e-6);
             Assert.InRange(lowTime, 0.95 * 69.3e-6, 1.05 * 69.3e-6);
+        }
+
+        [Fact]
+        public void MilestoneARoutingExample_CompilesIncludesAndMeasuresBusBehavior()
+        {
+            string path = FindRepositoryFile(
+                "circuits",
+                "digital-milestone-a",
+                "milestone-a-routing.cir");
+            SpiceCompilationResult result = SpiceCompiler.CompileFile(path);
+
+            Assert.True(result.Success, string.Join(Environment.NewLine, result.Diagnostics));
+            Assert.NotNull(result.Model);
+
+            SpiceSimulationTestHelper.RunTransientPair(
+                result.Model,
+                "V(conditioned)",
+                "V(bus)");
+            double conditionedHigh =
+                SpiceNetlistAssertions.AssertMeasurementSuccess(result.Model, "conditioned_high").Value;
+            double disabledBus =
+                SpiceNetlistAssertions.AssertMeasurementSuccess(result.Model, "disabled_bus").Value;
+            double enabledBus =
+                SpiceNetlistAssertions.AssertMeasurementSuccess(result.Model, "enabled_bus").Value;
+
+            Assert.InRange(conditionedHigh, 4.9, 5.0);
+            Assert.InRange(disabledBus, 0.0, 0.1);
+            Assert.InRange(enabledBus, 4.9, 5.0);
         }
 
         [Fact]

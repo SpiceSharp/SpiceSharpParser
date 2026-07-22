@@ -1,0 +1,22 @@
+Digital Milestone A input-conditioning and routing example
+.include "../../src/SpiceSharpParser.CustomComponents/Digital/Netlists/standard-digital.lib"
+
+VDD vdd 0 5
+VIN input 0 PULSE(0 5 10n 1n 1n 70n 160n)
+VOE enable 0 PULSE(0 5 30n 1n 1n 50n 160n)
+VSELECT select 0 0
+VLOW low 0 0
+RPULLDOWN bus 0 10k
+RROUTE routed 0 100k
+
+XINPUT input conditioned vdd 0 DIG_SCHMITT_BUF
+XROUTE conditioned low select routed vdd 0 DIG_MUX2
+XBUS routed enable bus vdd 0 DIG_TRI_BUF
+
+.OPTIONS method=gear
+.TRAN 100p 100n 0 100p UIC
+.MEAS TRAN conditioned_high FIND V(conditioned) AT=25n
+.MEAS TRAN disabled_bus FIND V(bus) AT=25n
+.MEAS TRAN enabled_bus FIND V(bus) AT=60n
+.SAVE V(input) V(conditioned) V(routed) V(enable) V(bus)
+.END

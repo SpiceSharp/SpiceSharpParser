@@ -1,6 +1,6 @@
 # Digital Component Library Roadmap
 
-Status: Proposed
+Status: Active — Milestone A implemented on 2026-07-22
 
 ## Purpose
 
@@ -16,18 +16,22 @@ from duplicating state, delay, and output-stage logic.
 
 ## Current Baseline
 
-The embedded `standard-digital.lib` currently provides twelve definitions:
+The embedded `standard-digital.lib` currently provides twenty definitions:
 
 | Category | Existing definitions |
 | --- | --- |
 | Unary gates | `DIG_BUF`, `DIG_NOT` |
 | Binary gates | `DIG_AND2`, `DIG_NAND2`, `DIG_OR2`, `DIG_NOR2`, `DIG_XOR2`, `DIG_XNOR2` |
+| Input conditioning | `DIG_SCHMITT_BUF`, `DIG_SCHMITT_NOT` |
+| Bus drivers | `DIG_TRI_BUF`, `DIG_TRI_NOT` |
+| Routing and arithmetic | `DIG_MUX2`, `DIG_MUX4`, `DIG_FULL_ADDER`, `DIG_DEC2TO4` |
 | Mixed-signal primitives | `DIG_COMP`, `DIG_OPEN_DRAIN` |
 | Stateful primitive | `DIG_SR_LATCH` |
 | Integrated functional model | `TIMER555` |
 
-The current facade exposes typed gate parameters and explicit methods for the
-comparator, SR latch, open-drain stage, and 555 timer.
+The facade exposes typed gate, Schmitt, and tri-state parameters plus explicit
+methods for routing/arithmetic blocks, the comparator, SR latch, open-drain
+stage, and 555 timer.
 
 ## Goals
 
@@ -75,7 +79,8 @@ comparator, SR latch, open-drain stage, and 555 timer.
 
 ## Priority 1: Core Primitives
 
-These should be the next development milestone.
+Milestone A items are complete. The D latch and D flip-flop remain the first
+clocked-state work for Milestone B.
 
 | Order | Component | Proposed subcircuit and ordered pins | Proposed facade API |
 | ---: | --- | --- | --- |
@@ -89,6 +94,9 @@ These should be the next development milestone.
 | 8 | D flip-flop | `DIG_DFF D CLK Q QB PRE CLR VDD VSS` | `AddDFlipFlop` |
 | 9 | Full adder | `DIG_FULL_ADDER A B CIN SUM COUT VDD VSS` | `AddFullAdder` |
 | 10 | 2-to-4 decoder | `DIG_DEC2TO4 A B EN Y0 Y1 Y2 Y3 VDD VSS` | `AddDecoder2To4` |
+
+Implemented in Milestone A: orders 1–6, 9, and 10. Deferred to Milestone B:
+orders 7 and 8.
 
 ### Schmitt-Trigger Requirements
 
@@ -348,7 +356,7 @@ NuGet content inspection.
 
 ## Recommended Delivery Milestones
 
-### Milestone A: Analog/Digital Boundary and Routing
+### Milestone A: Analog/Digital Boundary and Routing — Complete
 
 1. Schmitt buffer and inverter.
 2. Tri-state buffer and inverter.
@@ -417,8 +425,8 @@ standard-logic devices provide useful functional contracts:
 
 ## Recommended Immediate Next Step
 
-Start Milestone A with `DIG_SCHMITT_BUF`, `DIG_SCHMITT_NOT`, and
-`DIG_TRI_BUF`. Before implementation, define the exact rising/falling
-threshold defaults, enable polarity, disabled leakage target, startup state,
-and timing acceptance criteria. These components unlock reliable analog input
-conditioning and bus behavior for nearly every later milestone.
+Start Milestone B by specifying deterministic initialization and asynchronous
+PRE/CLR priority for `DIG_D_LATCH` and positive-edge `DIG_DFF`. Reuse the
+Milestone A conventions for explicit state-node DC paths, supply-relative
+thresholds, finite output stages, fail-before-mutation typed validation, and
+direct text-netlist verification.

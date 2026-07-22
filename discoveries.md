@@ -79,3 +79,33 @@ tiny capacitance.
 use Gear for switching-heavy transients when appropriate, and set transient
 `tmax` well below both propagation delay and output edge time. The functional
 555 uses `ROUT=20` and `COUT=2n` by default (about an 88 ns 10%-to-90% edge).
+
+---
+
+## 6. High-impedance behavioral outputs need a visible resistive path
+
+**Problem:** Two tri-state behavioral current drivers on one bus have a finite
+electrical solution, but SpiceSharp topology validation can still report the
+bus as lacking a DC path.
+
+**Root Cause:** A topology rule does not infer conductance hidden inside an
+arbitrary conditional behavioral expression.
+
+**Solution:** Represent disabled leakage with an explicit `ROFF` resistor from
+the output to the local reference. Use the behavioral current source only for
+the enabled `RON` drive. The circuit then exposes the same high-Z physics to
+both the solver and structural validation. It also supports external bias and
+finite opposing-driver contention without ideal voltage-source loops.
+
+---
+
+## 7. Hysteresis is state, not a two-threshold combinational expression
+
+**Problem:** A nominal Schmitt transfer written without memory either chatters
+inside the hysteresis band or has undefined behavior there.
+
+**Solution:** Store the accepted high/low state on a capacitor, force it only
+above the rising threshold or below the falling threshold, and hold it between
+thresholds. Add a high-value resistor so DC startup is deterministic and the
+state node passes structural validation. Validate `VTH_RISE > VTH_FALL` before
+adding the subcircuit instance.
