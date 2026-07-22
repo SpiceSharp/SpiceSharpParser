@@ -10,17 +10,49 @@ A .NET library that parses SPICE netlists and simulates them using [SpiceSharp](
 
 **Targets:** .NET Standard 2.0 / .NET 8.0
 
+## Highlights
+
+- Parse complete SPICE netlists into ordinary SpiceSharp circuits and
+  simulations.
+- Compile user and vendor files with structured diagnostics, recursive
+  `.INCLUDE`/`.LIB` discovery, source locations, and optional structural linting.
+- Load reusable `.SUBCKT` libraries from text files and instantiate selected
+  definitions in circuits assembled directly with the SpiceSharp API.
+- Mix parsed netlists, programmatically created SpiceSharp components, and the
+  optional `SpiceSharpParser.CustomComponents` models in one circuit.
+- Use built-in digital gates, a comparator, an SR latch, an open-drain stage,
+  and a functional 555 timer from an embedded and packaged SPICE library.
+- Drive acceptance tests from netlist-native `.MEAS`, `.PRINT`, `.PLOT`, and
+  `.FOUR` results instead of reimplementing every calculation in C#.
+
 ## Installation
 
-```
+Install the parser for ordinary netlist parsing and compilation:
+
+```bash
 dotnet add package SpiceSharp-Parser
 ```
 
-Or via the NuGet Package Manager:
+Add the optional custom-components package when you need the ideal diode,
+nonlinear passive, or built-in digital/555 models:
 
+```bash
+dotnet add package SpiceSharpParser.CustomComponents
 ```
+
+NuGet Package Manager equivalents:
+
+```powershell
 Install-Package SpiceSharp-Parser
+Install-Package SpiceSharpParser.CustomComponents
 ```
+
+| Requirement | Package |
+| --- | --- |
+| Parse and compile SPICE netlists | `SpiceSharp-Parser` |
+| Load user-authored `.SUBCKT` libraries into SpiceSharp | `SpiceSharp-Parser` |
+| LTspice-style ideal diode and nonlinear `Q=`/`Flux=` passives | `SpiceSharpParser.CustomComponents` |
+| Embedded digital gates, comparator, latch, open-drain, and 555 timer | `SpiceSharpParser.CustomComponents` |
 
 ## Quick Example
 
@@ -159,6 +191,21 @@ Using SpiceSharpParser involves three steps:
 2. **Read** — translate the parse-tree into SpiceSharp simulation objects with `SpiceSharpReader.Read()`.
 3. **Simulate** — run the SpiceSharp simulations and collect results via exports and events.
 
+### Which API Should I Use?
+
+| Goal | Recommended API |
+| --- | --- |
+| Compile an application- or user-supplied file with diagnostics | `SpiceCompiler.CompileFile(...)` |
+| Parse an in-memory netlist with direct control over parser and reader settings | `SpiceNetlistParser` followed by `SpiceSharpReader` |
+| Load selected `.SUBCKT` definitions into a programmatic SpiceSharp circuit | `SpiceSubcircuitLibrary.LoadFile(...)` or `LoadText(...)` |
+| Use the packaged digital and functional 555 models | `DigitalSubcircuitLibrary.LoadBuiltIn()` |
+| Parse LTspice ideal diodes or nonlinear passives | `reader.Settings.UseCustomComponents()` |
+| Load a user library containing those custom components | `SpiceCompileOptions.ConfigureReader` with `UseCustomComponents()` |
+
+These paths are composable. For example, a netlist can be parsed with custom
+component mappings, then extended with normal SpiceSharp entities and built-in
+digital subcircuits before its simulations are executed.
+
 For direct reader use, `SpiceSharpReader.ReadResult()` returns a
 `SpiceNetlistReadResult`. Its `Diagnostics` are immutable and source-located,
 `PartialModel` preserves successfully translated objects for inspection, and
@@ -182,11 +229,30 @@ reader failures still throw.
 | `Title` | Netlist title (first line) |
 | `FourierAnalyses` | Fourier analysis results from .FOUR statements |
 
-### Reusable Subcircuit Libraries
+### Reusable Text Subcircuit Libraries
 
 `SpiceSubcircuitLibrary` loads include-style text files containing `.SUBCKT`
 definitions and adds selected instances to an ordinary programmatic SpiceSharp
 `Circuit`. Library files do not need a title or `.END` statement.
+
+A library can contain several related definitions and shared models:
+
+```spice
+* digital.lib
+.SUBCKT NAND2 A B Y VDD VSS PARAMS: VTH=0.5
+RINA A VSS 1G
+RINB B VSS 1G
+BY Y VSS V={if(V(A,VSS)>VTH*V(VDD,VSS),if(V(B,VSS)>VTH*V(VDD,VSS),0,V(VDD,VSS)),V(VDD,VSS))}
+.ENDS NAND2
+
+.SUBCKT RC_FILTER IN OUT GND PARAMS: R=10k C=100p
+R1 IN OUT {R}
+C1 OUT GND {C}
+.ENDS RC_FILTER
+```
+
+The pin order after each `.SUBCKT` name is the instance contract. Defaults
+declared after `PARAMS:` can be overridden independently for every instance.
 
 ```csharp
 using SpiceSharp;
@@ -224,6 +290,22 @@ library.AddInstance(
 // Run any normal SpiceSharp simulation against circuit.
 ```
 
+For generated or embedded library text, use `LoadText` instead of writing a
+temporary file:
+
+```csharp
+using System.IO;
+
+string libraryText = File.ReadAllText("digital.lib");
+var library = SpiceSubcircuitLibrary.LoadText(
+    libraryText,
+    sourceName: "embedded/digital.lib");
+```
+
+The returned entities are ordinary SpiceSharp entities. You can connect them
+to resistors, sources, semiconductor devices, custom components, or other
+expanded subcircuits and then choose any normal SpiceSharp simulation.
+
 The loader exposes pin and default-parameter metadata through
 `library.Subcircuits`. Nested `.INCLUDE` files, root model definitions, nested
 subcircuits, parameter overrides, case-sensitivity settings, and configured
@@ -234,6 +316,43 @@ expansion. Instance names must start with `X`.
 For netlists that use `SpiceSharpParser.CustomComponents`, install that optional
 package and set `ConfigureReader = settings => settings.UseCustomComponents()`
 on the compile options.
+
+```csharp
+using SpiceSharpParser.CustomComponents;
+
+var customOptions = new SpiceCompileOptions
+{
+    Dialect = SpiceDialect.LTspice,
+    ExpandSubcircuits = true,
+    ConfigureReader = settings => settings.UseCustomComponents(),
+};
+
+var customLibrary = SpiceSubcircuitLibrary.LoadFile(
+    "power-and-digital.lib",
+    customOptions);
+```
+
+#### Library Metadata and Failure Handling
+
+| Property | Purpose |
+| --- | --- |
+| `Subcircuits` | Ordered pins and default parameters for every top-level definition |
+| `Dependencies` | Recursively resolved `.INCLUDE` and `.LIB` files |
+| `Diagnostics` | Non-fatal parser, compatibility, and reader diagnostics |
+
+Loading or translating an invalid library throws
+`SpiceSubcircuitLibraryException` with structured diagnostics. API mistakes
+such as an unknown definition, wrong node count, an instance name without the
+`X` prefix, or a generated-name collision are rejected before the target
+circuit is mutated.
+
+#### What Is Copied into the Target Circuit?
+
+- The selected subcircuit implementation and any nested definitions it uses.
+- Required shared `.MODEL`, parameter, function, and global context.
+- Custom component entities when the reader configuration enables them.
+- No top-level analysis, output, or unrelated circuit components from the
+  library file.
 
 See [Loading Subcircuits into Programmatic SpiceSharp Circuits](src/docs/articles/subcircuit-library.md).
 
@@ -365,10 +484,41 @@ See [LTspice-Style Nonlinear Passives](src/docs/articles/nonlinear-passives.md) 
 `Q=` / `Flux=` syntax, transient behavior, scaling rules, and optional LTspice-backed
 golden tests for AC and transient parity.
 
-The package also includes an embedded, parameterized mixed-signal library built
-on `SpiceSubcircuitLibrary`. It provides buffer, inverter, AND, NAND, OR, NOR,
-XOR, XNOR, comparator, reset-dominant SR-latch, open-drain, and functional 555
-timer models for programmatic SpiceSharp circuits:
+#### Digital and Functional 555 Library
+
+The custom-components package ships a parameterized mixed-signal library built
+on `SpiceSubcircuitLibrary`. It is available in two forms:
+
+- `DigitalSubcircuitLibrary.LoadBuiltIn()` loads the assembly-embedded copy.
+- The NuGet package includes `standard-digital.lib` under
+  `contentFiles/any/any/SpiceSharpParser.CustomComponents/Digital` for direct
+  `.INCLUDE` use or inspection.
+
+The embedded facade is the simplest path for programmatic SpiceSharp circuits.
+The text file is useful when the same definition must also be instantiated from
+a conventional netlist.
+
+##### Included Models
+
+| C# API or kind | SPICE subcircuit | Ordered pins | Behavior |
+| --- | --- | --- | --- |
+| `DigitalGateKind.Buffer` | `DIG_BUF` | A, Y, VDD, VSS | Non-inverting unary gate |
+| `DigitalGateKind.Inverter` | `DIG_NOT` | A, Y, VDD, VSS | Inverting unary gate |
+| `DigitalGateKind.And2` | `DIG_AND2` | A, B, Y, VDD, VSS | Two-input AND |
+| `DigitalGateKind.Nand2` | `DIG_NAND2` | A, B, Y, VDD, VSS | Two-input NAND |
+| `DigitalGateKind.Or2` | `DIG_OR2` | A, B, Y, VDD, VSS | Two-input OR |
+| `DigitalGateKind.Nor2` | `DIG_NOR2` | A, B, Y, VDD, VSS | Two-input NOR |
+| `DigitalGateKind.Xor2` | `DIG_XOR2` | A, B, Y, VDD, VSS | Two-input XOR |
+| `DigitalGateKind.Xnor2` | `DIG_XNOR2` | A, B, Y, VDD, VSS | Two-input XNOR |
+| `AddComparator` | `DIG_COMP` | P, N, Y, VDD, VSS | High when P exceeds N plus `VOFF` |
+| `AddOpenDrain` | `DIG_OPEN_DRAIN` | A, Y, VDD, VSS | Active-high low-side pull-down |
+| `AddSetResetLatch` | `DIG_SR_LATCH` | S, R, Q, QB, VDD, VSS | Active-high, reset-dominant state |
+| `AddTimer555` | `TIMER555` | GND, TRIG, OUT, RESET, CTRL, THRESH, DISCH, VCC | Functional eight-pin 555 |
+
+`TIMER555` uses the standard package order from pin 1 through pin 8. Instance
+names still follow SPICE rules and must begin with `X`.
+
+##### Pure SpiceSharp Gate Example
 
 ```csharp
 using SpiceSharp;
@@ -376,28 +526,267 @@ using SpiceSharp.Components;
 using SpiceSharpParser.CustomComponents.Digital;
 
 var circuit = new Circuit(
-    new VoltageSource("VDD", "vdd", "0", 5.0));
-var digital = DigitalSubcircuitLibrary.LoadBuiltIn();
+    new VoltageSource("VDD", "vdd", "0", 5.0),
+    new VoltageSource("VA", "a", "0", 5.0),
+    new VoltageSource("VB", "b", "0", 5.0),
+    new Resistor("RLOAD", "y", "0", 10_000.0));
 
+var digital = DigitalSubcircuitLibrary.LoadBuiltIn();
 digital.AddBinaryGate(
     circuit,
     DigitalGateKind.Nand2,
-    "XU1",
-    "a",
-    "b",
-    "y",
-    "vdd",
-    "0");
+    instanceName: "XU1",
+    firstInputNode: "a",
+    secondInputNode: "b",
+    outputNode: "y",
+    positiveSupplyNode: "vdd",
+    negativeSupplyNode: "0");
+
+// circuit is still a normal SpiceSharp Circuit.
+var op = new SpiceSharp.Simulations.OP("op");
+var output = new SpiceSharp.Simulations.RealVoltageExport(op, "y");
+foreach (int _ in op.Run(circuit))
+{
+    Console.WriteLine(output.Value);
+}
 ```
 
-The models use supply-relative thresholds and support per-instance electrical
-overrides. `AddComparator`, `AddSetResetLatch`, `AddOpenDrain`, and
-`AddTimer555` expose the higher-level blocks. `TIMER555` uses standard pin order
-and implements the one-third/two-thirds thresholds and reset/trigger/threshold
-priority needed for astable and monostable timing circuits. All models can be
-added to pure SpiceSharp circuits or circuits already read by SpiceSharpParser
-with `UseCustomComponents()` enabled. See
-[Digital and 555 Subcircuit Library](src/docs/articles/digital-subcircuits.md).
+`AddBuffer` and `AddInverter` are unary shortcuts. `AddGate` accepts an ordered
+input collection when the kind is selected dynamically. `AddBinaryGate`
+handles the remaining six `DigitalGateKind` values.
+
+##### Comparator, Latch, and Open-Drain Examples
+
+```csharp
+digital.AddComparator(
+    circuit,
+    "XCMP",
+    positiveInputNode: "sense",
+    negativeInputNode: "reference",
+    outputNode: "comparison",
+    positiveSupplyNode: "vdd",
+    negativeSupplyNode: "0");
+
+digital.AddSetResetLatch(
+    circuit,
+    "XLATCH",
+    setNode: "set",
+    resetNode: "reset",
+    outputNode: "q",
+    invertedOutputNode: "qb",
+    positiveSupplyNode: "vdd",
+    negativeSupplyNode: "0");
+
+digital.AddOpenDrain(
+    circuit,
+    "XDRAIN",
+    inputNode: "enable",
+    outputNode: "openDrain",
+    positiveSupplyNode: "vdd",
+    negativeSupplyNode: "0");
+
+// An external pull-up defines the released open-drain level.
+circuit.Add(new Resistor("RPULL", "vdd", "openDrain", 10_000.0));
+```
+
+##### Functional 555 Astable in Pure SpiceSharp
+
+```csharp
+using SpiceSharp;
+using SpiceSharp.Components;
+using SpiceSharpParser.CustomComponents.Digital;
+
+var timerCircuit = new Circuit(
+    new VoltageSource("VCC", "vcc", "0", 5.0),
+    new Resistor("RA", "vcc", "discharge", 10_000.0),
+    new Resistor("RB", "discharge", "timing", 10_000.0),
+    new Capacitor("CT", "timing", "0", 10e-9),
+    new Capacitor("CCTRL", "control", "0", 10e-9),
+    new Resistor("RLOAD", "out", "0", 10_000.0));
+
+var digital = DigitalSubcircuitLibrary.LoadBuiltIn();
+digital.AddTimer555(
+    timerCircuit,
+    instanceName: "XU1",
+    groundNode: "0",
+    triggerNode: "timing",
+    outputNode: "out",
+    resetNode: "vcc",
+    controlNode: "control",
+    thresholdNode: "timing",
+    dischargeNode: "discharge",
+    positiveSupplyNode: "vcc");
+```
+
+TRIG and THRESH share the timing-capacitor node in the astable topology. RESET
+is tied to VCC. The discharge output connects to the RA/RB junction.
+
+##### The Same 555 from a Text Netlist
+
+```spice
+Functional 555 astable
+.include "standard-digital.lib"
+
+VCC vcc 0 5
+RA vcc discharge 10k
+RB discharge timing 10k
+CT timing 0 10n IC=0
+CCTRL control 0 10n IC=3.333333333
+RLOAD out 0 10k
+
+* Standard order: GND TRIG OUT RESET CTRL THRESH DISCH VCC
+XU1 0 timing out vcc control timing discharge vcc TIMER555
+
+.OPTIONS method=gear
+.TRAN 1u 1m 0 10n UIC
+.MEAS TRAN period TRIG V(out) VAL=2.5 RISE=2 TARG V(out) VAL=2.5 RISE=3
+.MEAS TRAN high_time TRIG V(out) VAL=2.5 RISE=2 TARG V(out) VAL=2.5 FALL=2
+.MEAS TRAN low_time TRIG V(out) VAL=2.5 FALL=2 TARG V(out) VAL=2.5 RISE=3
+.SAVE V(out) V(timing) V(discharge)
+.END
+```
+
+Compile this form with `SpiceCompiler.CompileFile(...)`; relative includes are
+resolved from the root netlist's directory. A complete checked example lives at
+[`circuits/timer555/timer555-astable.cir`](circuits/timer555/timer555-astable.cir).
+
+##### Mixing Parsed Netlists and Programmatic Digital Blocks
+
+The built-in digital library itself needs no custom reader mapping. It can be
+added after any netlist is read. Enable custom mappings only when the parsed
+netlist contains the optional ideal diode or nonlinear passive syntax:
+
+```csharp
+using SpiceSharpParser;
+using SpiceSharpParser.CustomComponents;
+using SpiceSharpParser.CustomComponents.Digital;
+
+var parser = new SpiceNetlistParser();
+var parsed = parser.ParseNetlist(netlistText);
+
+var reader = new SpiceSharpReader();
+reader.Settings.UseCustomComponents();
+var model = reader.Read(parsed.FinalModel);
+
+var digital = DigitalSubcircuitLibrary.LoadBuiltIn();
+digital.AddBuffer(
+    model.Circuit,
+    "XBUF",
+    inputNode: "logicIn",
+    outputNode: "logicOut",
+    positiveSupplyNode: "vdd",
+    negativeSupplyNode: "0");
+
+// Run the simulations already created by the parsed netlist, or add a normal
+// SpiceSharp simulation programmatically.
+```
+
+This is the central composition pattern: parse the parts that are convenient
+to express as SPICE text, add reusable subcircuits, and then drive or inspect
+the final circuit with the normal SpiceSharp API.
+
+##### Per-Instance Electrical Parameters
+
+Gate methods accept `DigitalGateParameters`:
+
+```csharp
+digital.AddBuffer(
+    circuit,
+    "XBUF",
+    "input",
+    "output",
+    "vdd",
+    "0",
+    new DigitalGateParameters
+    {
+        LogicThresholdRatio = 0.7,
+        PropagationDelay = 6e-9,
+        InputResistance = 1e9,
+        OutputResistance = 25.0,
+        OutputCapacitance = 4e-12,
+    });
+```
+
+| Gate property | SPICE name | Default | Purpose |
+| --- | --- | ---: | --- |
+| `LogicThresholdRatio` | `VTH` | 0.5 | Switching threshold as a fraction of VDD-VSS |
+| `PropagationDelay` | `TPD` | 10 ns | Transport delay |
+| `InputResistance` | `RIN` | 1 GOhm | Finite input loading to VSS |
+| `OutputResistance` | `ROUT` | 50 ohms | Finite output drive |
+| `OutputCapacitance` | `COUT` | 5 pF | Intrinsic output loading |
+
+The comparator, latch, open-drain, and timer methods accept raw SPICE parameter
+overrides as `IReadOnlyDictionary<string, string>`:
+
+```csharp
+digital.AddTimer555(
+    timerCircuit,
+    "XU1",
+    "0", "timing", "out", "vcc",
+    "control", "timing", "discharge", "vcc",
+    new Dictionary<string, string>
+    {
+        ["TPD"] = "250n",
+        ["ROUT"] = "35",
+        ["RDIS"] = "15",
+    });
+```
+
+| Subcircuit | Default parameters |
+| --- | --- |
+| `DIG_COMP` | `VOFF=0 TPD=10n RIN=1G ROUT=50 COUT=5p` |
+| `DIG_OPEN_DRAIN` | `VTH=0.5 RIN=1G RON=10 ROFF=1T COUT=5p` |
+| `DIG_SR_LATCH` | `VTH=0.5 TPD=10n RIN=1G ROUT=50 COUT=5p RSTATE=1k RHOLD=1T CMEM=1p` |
+| `TIMER555` | `TPD=100n RIN=1G ROUT=20 COUT=2n RDIS=10 ROFF=1T RDIV=5k` |
+
+##### 555 Behavior and Verified Timing
+
+The functional timer contains a three-resistor divider, two comparators, a
+reset-dominant SR latch, a finite-impedance output, and an open-drain discharge
+stage. Its control priority is:
+
+1. Active-low RESET forces OUT low and enables DISCH.
+2. Otherwise, TRIG below one-third VCC sets the latch.
+3. Otherwise, THRESH above two-thirds VCC resets the latch.
+4. Otherwise, the latch retains its previous state.
+
+For the usual astable connection:
+
+```text
+t_high = 0.693 * (RA + RB) * C
+t_low  = 0.693 * RB * C
+period = 0.693 * (RA + 2*RB) * C
+```
+
+The checked 5 V example uses RA=10 kohm, RB=10 kohm, and C=10 nF:
+
+| Measurement | Ideal | SpiceSharp result | Error |
+| --- | ---: | ---: | ---: |
+| High time | 138.600 us | 139.107 us | +0.37% |
+| Low time | 69.300 us | 69.781 us | +0.69% |
+| Period | 207.900 us | 208.887 us | +0.47% |
+| Frequency | 4.810 kHz | 4.787 kHz | -0.47% |
+
+Switching simulations need a maximum timestep below the modeled propagation
+delay and output edge time. The example uses Gear integration and a 10 ns
+`tmax`. When using `UIC`, initialize the control bypass near two-thirds VCC if
+the startup ramp is not itself under test.
+
+##### Model Scope
+
+These are functional mixed-signal models for logic, timing, topology, and
+control experiments. They do not model unknown logic states, metastability,
+protection structures, detailed supply current, output-current limits,
+temperature drift, noise, or family/vendor-specific input and output curves.
+`TIMER555` is not a transistor-level model of a particular NE555 or TLC555.
+Use a vendor macro-model when those effects are acceptance criteria.
+
+More detail:
+
+- [Digital and 555 Subcircuit Library](src/docs/articles/digital-subcircuits.md)
+- [555 requirements](circuits/timer555/requirements.md)
+- [555 design notes](circuits/timer555/documentation.md)
+- [555 measured results](circuits/timer555/results.md)
 
 ### Behavioral Modeling
 
@@ -405,16 +794,58 @@ with `UseCustomComponents()` enabled. See
 
 ## Documentation
 
-See the [documentation articles](src/docs/articles/) for detailed guides on each statement and device type.
+Start with the [documentation index](src/docs/index.md) or go directly to a
+workflow-specific guide:
+
+| Topic | Guide |
+| --- | --- |
+| Parser introduction and first simulation | [Introduction](src/docs/articles/intro.md) |
+| Loading text subcircuits into C#-built circuits | [Programmatic Subcircuit Libraries](src/docs/articles/subcircuit-library.md) |
+| Digital components and functional 555 | [Digital and 555 Subcircuit Library](src/docs/articles/digital-subcircuits.md) |
+| Stable compiler diagnostic codes | [Diagnostic Reference](docs/diagnostics.md) |
+| LTspice compatibility status | [Compatibility Matrix](roadmap/ltspice-compatibility-matrix.md) |
+| Custom ideal diode | [LTspice-Style Ideal Diode](src/docs/articles/ideal-diode.md) |
+| Nonlinear capacitors and inductors | [LTspice-Style Nonlinear Passives](src/docs/articles/nonlinear-passives.md) |
+| `.MEAS` syntax and structured results | [Measurements](src/docs/articles/meas.md) |
+
+Repository-level circuit artifacts provide executable examples alongside the
+API documentation:
+
+- [Functional 555 astable netlist](circuits/timer555/timer555-astable.cir)
+- [555 quantitative requirements](circuits/timer555/requirements.md)
+- [555 design and modeling notes](circuits/timer555/documentation.md)
+- [555 measured results and regression evidence](circuits/timer555/results.md)
 
 ## Building from Source
 
 ```bash
 git clone https://github.com/SpiceSharp/SpiceSharpParser.git
-cd SpiceSharpParser/src
-dotnet build
-dotnet test
+cd SpiceSharpParser
+
+dotnet restore src/SpiceSharp-Parser.sln
+dotnet build src/SpiceSharp-Parser.sln
+
+dotnet test src/SpiceSharpParser.Tests/SpiceSharpParser.Tests.csproj
+dotnet test src/SpiceSharpParser.IntegrationTests/SpiceSharpParser.IntegrationTests.csproj
 ```
+
+Run only the digital and 555 regression tests while developing those models:
+
+```bash
+dotnet test src/SpiceSharpParser.Tests/SpiceSharpParser.Tests.csproj \
+  --filter "FullyQualifiedName~DigitalSubcircuitLibraryTests"
+```
+
+Build and inspect the optional custom-components package:
+
+```bash
+dotnet build src/SpiceSharpParser.CustomComponents/SpiceSharpParser.CustomComponents.csproj \
+  --configuration Release
+```
+
+That project targets both .NET Standard 2.0 and .NET 8.0. Its generated NuGet
+archive includes the compiled assemblies, the embedded digital library, and a
+content-file copy of `standard-digital.lib`.
 
 ## License
 
