@@ -83,9 +83,9 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                     {
                         context.SetParameter(entity, ap.Name, ap.Value);
                     }
-                    catch (Exception)
+                    catch (Exception exception) when (ReaderExceptionClassifier.IsRecoverableInputException(exception))
                     {
-                        context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, $"Problem with setting parameter: {parameter}", parameter.LineInfo);
+                        context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, $"Problem with setting parameter: {parameter}", parameter.LineInfo, exception);
                     }
                 }
                 else

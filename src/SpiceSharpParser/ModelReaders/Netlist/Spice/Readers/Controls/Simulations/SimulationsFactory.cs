@@ -44,6 +44,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 var simulations = CreateSimulationsForAllParameterSweepsAndTemperaturesFactory.CreateSimulations(statement, context, createSimulation);
                 foreach (var simulation in simulations)
                 {
+                    if (simulation == null)
+                    {
+                        continue;
+                    }
+
                     var stochasticDecorator = new EnableStochasticModelsSimulationDecorator(context);
                     stochasticDecorator.Decorate(simulation);
 
@@ -55,6 +60,11 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls.Simulatio
                 var simulations = CreateSimulationsForMonteCarloFactory.Create(statement, context, createSimulation);
                 foreach (var simulation in simulations)
                 {
+                    if (simulation == null)
+                    {
+                        continue;
+                    }
+
                     var stochasticDecorator = new EnableStochasticModelsSimulationDecorator(context);
                     stochasticDecorator.Decorate(simulation);
 

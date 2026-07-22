@@ -13,7 +13,7 @@ namespace SpiceSharpParser.Parsers.Netlist
         /// <param name="message">An exception message.</param>
         /// <param name="lineNumber">A line number of SPICE netlist where exception occurs.</param>
         public ParseException(string message, int lineNumber)
-            : base($"{message} at line {lineNumber}")
+            : base(message, new Models.Netlist.Spice.SpiceLineInfo { LineNumber = lineNumber })
         {
         }
     }

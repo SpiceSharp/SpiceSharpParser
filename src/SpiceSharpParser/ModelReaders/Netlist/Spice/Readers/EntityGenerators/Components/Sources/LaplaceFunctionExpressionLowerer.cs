@@ -66,7 +66,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 root = ExpressionParser.Parse(Lexer.FromString(expression, _compatibility), true);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ReaderExceptionClassifier.IsRecoverableInputException(ex))
             {
                 if (ContainsLaplaceFunctionText(expression))
                 {
@@ -207,7 +207,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 AddError(ex.Message, _lineInfo, ex);
                 return false;
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ReaderExceptionClassifier.IsRecoverableInputException(ex))
             {
                 AddError("laplace transfer expression must be a rational polynomial in s", _lineInfo, ex);
                 return false;
@@ -451,7 +451,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 value = _evaluateDouble(parameter.Value);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ReaderExceptionClassifier.IsRecoverableInputException(ex))
             {
                 AddError(errorMessage, parameter.LineInfo, ex);
                 return false;
@@ -478,7 +478,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
             {
                 value = _evaluateDouble(expression);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ReaderExceptionClassifier.IsRecoverableInputException(ex))
             {
                 AddError(errorMessage, lineInfo, ex);
                 return false;

@@ -49,6 +49,11 @@ namespace SpiceSharpParser.Common.Processors
         public IFileReader FileReader { get; }
 
         /// <summary>
+        /// Gets or sets an optional callback that records dependency resolution attempts.
+        /// </summary>
+        public Action<SpiceDependency> DependencyRecorder { get; set; }
+
+        /// <summary>
         /// Gets the token provider.
         /// </summary>
         public ISpiceTokenProviderPool TokenProviderPool { get; }
@@ -59,6 +64,13 @@ namespace SpiceSharpParser.Common.Processors
         public ISingleSpiceNetlistParser SpiceNetlistParser { get; }
 
         public ValidationEntryCollection Validation { get; set; }
+
+        internal Func<
+            string,
+            string,
+            SpiceLexerSettings,
+            SingleSpiceNetlistParserSettings,
+            SpiceNetlist> SourceParser { get; set; }
 
         protected Func<string> InitialDirectoryPathProvider { get; }
 
@@ -116,7 +128,8 @@ namespace SpiceSharpParser.Common.Processors
         private void ReadSingleInclude(Statements statements, string currentDirectoryPath, Control include)
         {
             // get full path of .include
-            string includePath = include.Parameters.Get(0).Value;
+            string requestedPath = include.Parameters.Get(0).Value;
+            string includePath = requestedPath;
 
             includePath = PathConverter.Convert(includePath);
 
@@ -126,37 +139,102 @@ namespace SpiceSharpParser.Common.Processors
             // check if file exists
             if (!File.Exists(includeFullPath))
             {
+                RecordDependency(include, requestedPath, includeFullPath, SpiceDependencyStatus.NotFound);
                 Validation.AddError(
                     ValidationEntrySource.Processor,
                     $"Netlist include at {includeFullPath} is not found",
                     include.LineInfo);
+                statements.Replace(include, Enumerable.Empty<Statement>());
                 return;
             }
 
             // get include content
-            string includeContent = FileReader.ReadAll(includeFullPath);
+            string includeContent;
+            try
+            {
+                includeContent = FileReader.ReadAll(includeFullPath);
+            }
+            catch (IOException exception)
+            {
+                RecordUnreadableDependency(include, requestedPath, includeFullPath, exception);
+                statements.Replace(include, Enumerable.Empty<Statement>());
+                return;
+            }
+            catch (UnauthorizedAccessException exception)
+            {
+                RecordUnreadableDependency(include, requestedPath, includeFullPath, exception);
+                statements.Replace(include, Enumerable.Empty<Statement>());
+                return;
+            }
+            catch (System.Security.SecurityException exception)
+            {
+                RecordUnreadableDependency(include, requestedPath, includeFullPath, exception);
+                statements.Replace(include, Enumerable.Empty<Statement>());
+                return;
+            }
+
             if (includeContent != null)
             {
+                RecordDependency(include, requestedPath, includeFullPath, SpiceDependencyStatus.Resolved);
                 var lexerSettings = new SpiceLexerSettings(LexerSettings.IsDotStatementNameCaseSensitive)
                 {
                     HasTitle = false,
                     Compatibility = LexerSettings.Compatibility,
                 };
-
-                var tokens = TokenProviderPool.GetSpiceTokenProvider(lexerSettings).GetTokens(includeContent);
-
-                foreach (var token in tokens)
-                {
-                    token.FileName = includeFullPath;
-                }
-
-                SpiceNetlistParser.Settings = new SingleSpiceNetlistParserSettings(lexerSettings)
+                var parserSettings = new SingleSpiceNetlistParserSettings(lexerSettings)
                 {
                     IsNewlineRequired = false,
                     IsEndRequired = false,
                 };
 
-                SpiceNetlist includeModel = SpiceNetlistParser.Parse(tokens);
+                SpiceNetlist includeModel;
+                if (SourceParser != null)
+                {
+                    includeModel = SourceParser(includeContent, includeFullPath, lexerSettings, parserSettings);
+                    if (includeModel == null)
+                    {
+                        statements.Replace(include, Enumerable.Empty<Statement>());
+                        return;
+                    }
+                }
+                else
+                {
+                    SpiceToken[] tokens;
+                    try
+                    {
+                        tokens = TokenProviderPool.GetSpiceTokenProvider(lexerSettings).GetTokens(includeContent);
+                    }
+                    catch (global::SpiceSharpParser.Lexers.LexerException exception)
+                    {
+                        if (exception.LineInfo == null)
+                        {
+                            throw new global::SpiceSharpParser.Lexers.LexerException(
+                                exception.Message,
+                                exception,
+                                new SpiceLineInfo { FileName = includeFullPath });
+                        }
+
+                        SetExceptionSource(exception, includeFullPath);
+                        throw;
+                    }
+
+                    foreach (var token in tokens)
+                    {
+                        token.FileName = includeFullPath;
+                    }
+
+                    SpiceNetlistParser.Settings = parserSettings;
+
+                    try
+                    {
+                        includeModel = SpiceNetlistParser.Parse(tokens);
+                    }
+                    catch (SpiceSharpParserException exception)
+                    {
+                        SetExceptionSource(exception, includeFullPath);
+                        throw;
+                    }
+                }
 
                 // process includes of include netlist
                 includeModel.Statements = Process(includeModel.Statements, Path.GetDirectoryName(includeFullPath));
@@ -166,11 +244,49 @@ namespace SpiceSharpParser.Common.Processors
             }
             else
             {
+                RecordDependency(include, requestedPath, includeFullPath, SpiceDependencyStatus.Unreadable);
                 Validation.AddError(
                     ValidationEntrySource.Processor,
                     $"Netlist include at {includeFullPath} could not be read",
                     include.LineInfo);
+                statements.Replace(include, Enumerable.Empty<Statement>());
             }
+        }
+
+        private void RecordDependency(
+            Control include,
+            string requestedPath,
+            string resolvedPath,
+            SpiceDependencyStatus status)
+        {
+            DependencyRecorder?.Invoke(new SpiceDependency(
+                SpiceDependencyKind.Include,
+                requestedPath,
+                resolvedPath,
+                status,
+                global::SpiceSharpParser.Diagnostics.SourceSpan.FromLineInfo(include.LineInfo)));
+        }
+
+        private void SetExceptionSource(SpiceSharpParserException exception, string sourcePath)
+        {
+            if (exception.LineInfo != null && string.IsNullOrEmpty(exception.LineInfo.FileName))
+            {
+                exception.LineInfo.FileName = sourcePath;
+            }
+        }
+
+        private void RecordUnreadableDependency(
+            Control include,
+            string requestedPath,
+            string resolvedPath,
+            Exception exception)
+        {
+            RecordDependency(include, requestedPath, resolvedPath, SpiceDependencyStatus.Unreadable);
+            Validation.AddError(
+                ValidationEntrySource.Processor,
+                $"Netlist include at {resolvedPath} could not be read: {exception.Message}",
+                include.LineInfo,
+                exception);
         }
     }
 }

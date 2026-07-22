@@ -294,20 +294,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
                     SimulationPreparations.SetParameterBeforeTemperature(entity, parameterName, expression);
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex) when (logError && ReaderExceptionClassifier.IsRecoverableInputException(ex))
             {
-                if (logError)
-                {
-                    Result.ValidationResult.AddError(
-                        ValidationEntrySource.Reader,
-                        $"Problem with setting parameter {parameterName} for {entity.Name}",
-                        null,
-                        ex);
-                }
-                else
-                {
-                    throw;
-                }
+                Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    $"Problem with setting parameter {parameterName} for {entity.Name}",
+                    null,
+                    ex);
             }
         }
 
@@ -344,7 +337,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Context
             {
                 SetParameter(entity, parameterName, expression, beforeTemperature, simulation, logError: false);
             }
-            catch (Exception e)
+            catch (Exception e) when (ReaderExceptionClassifier.IsRecoverableInputException(e))
             {
                 Result.ValidationResult.AddError(
                     ValidationEntrySource.Reader,

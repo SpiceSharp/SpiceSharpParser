@@ -50,7 +50,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Laplace
             {
                 throw;
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ReaderExceptionClassifier.IsRecoverableInputException(ex))
             {
                 throw new LaplaceExpressionException(
                     "laplace transfer expression must be a rational polynomial in s",
@@ -72,7 +72,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Evaluation.Laplace
             {
                 throw;
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ReaderExceptionClassifier.IsRecoverableInputException(ex))
             {
                 throw new LaplaceExpressionException(
                     "laplace transfer expression must be a rational polynomial in s",

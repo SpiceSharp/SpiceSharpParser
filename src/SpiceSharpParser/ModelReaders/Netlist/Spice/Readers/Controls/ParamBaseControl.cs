@@ -53,7 +53,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                         {
                             SetParameter(parameterName, parameterExpression, context);
                         }
-                        catch (Exception e)
+                        catch (Exception e) when (ReaderExceptionClassifier.IsRecoverableInputException(e))
                         {
                             if (validate)
                             {

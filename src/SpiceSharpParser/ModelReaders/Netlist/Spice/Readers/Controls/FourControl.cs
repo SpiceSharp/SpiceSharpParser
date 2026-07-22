@@ -92,7 +92,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 frequency = context.Evaluator.EvaluateDouble(parameter.Value);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ReaderExceptionClassifier.IsRecoverableInputException(ex))
             {
                 context.Result.ValidationResult.AddError(
                     ValidationEntrySource.Reader,
@@ -125,7 +125,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 export = GenerateExport(signalParameter, context, simulation);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ReaderExceptionClassifier.IsRecoverableInputException(ex))
             {
                 context.Result.ValidationResult.AddError(
                     ValidationEntrySource.Reader,

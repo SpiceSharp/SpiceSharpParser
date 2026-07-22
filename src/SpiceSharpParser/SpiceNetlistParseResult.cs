@@ -22,5 +22,11 @@ namespace SpiceSharpParser
         /// Gets or sets validation result.
         /// </summary>
         public ValidationEntryCollection ValidationResult { get; set; }
+
+        /// <summary>
+        /// Gets or sets external dependencies encountered during preprocessing in discovery order.
+        /// </summary>
+        public System.Collections.Generic.IReadOnlyList<SpiceDependency> Dependencies { get; set; }
+            = System.Array.Empty<SpiceDependency>();
     }
 }

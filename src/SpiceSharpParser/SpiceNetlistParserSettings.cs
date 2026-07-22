@@ -10,6 +10,8 @@ namespace SpiceSharpParser
     /// </summary>
     public class SpiceNetlistParserSettings
     {
+        private int _maximumSyntaxErrors = 25;
+
         public SpiceNetlistParserSettings()
         {
             CaseSensitivity = new SpiceNetlistCaseSensitivitySettings();
@@ -31,6 +33,29 @@ namespace SpiceSharpParser
         /// Gets or sets dialect compatibility options.
         /// </summary>
         public CompatibilityOptions Compatibility { get; set; } = CompatibilityOptions.None;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether lexing and parsing should continue at the next
+        /// recoverable statement after a syntax error. The default is false for compatibility.
+        /// </summary>
+        public bool ContinueAfterErrors { get; set; }
+
+        /// <summary>
+        /// Gets or sets the maximum number of lexer and parser errors collected before recovery stops.
+        /// </summary>
+        public int MaximumSyntaxErrors
+        {
+            get => _maximumSyntaxErrors;
+            set
+            {
+                if (value <= 0)
+                {
+                    throw new System.ArgumentOutOfRangeException(nameof(value), "MaximumSyntaxErrors must be positive.");
+                }
+
+                _maximumSyntaxErrors = value;
+            }
+        }
 
         /// <summary>
         /// Gets the SPICE netlist lexer settings.

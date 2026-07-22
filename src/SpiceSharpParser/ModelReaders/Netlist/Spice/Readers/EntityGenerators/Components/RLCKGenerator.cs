@@ -923,7 +923,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                         {
                             context.SetParameter(res, ap.Name, ap.Value);
                         }
-                        catch (Exception e)
+                        catch (Exception e) when (ReaderExceptionClassifier.IsRecoverableInputException(e))
                         {
                             context.Result.ValidationResult.AddError(
                                 ValidationEntrySource.Reader,

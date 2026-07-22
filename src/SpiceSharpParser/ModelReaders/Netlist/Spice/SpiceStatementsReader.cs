@@ -75,12 +75,13 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 {
                     Readers[statement.GetType()].Read(statement, circuitContext);
                 }
-                catch (Exception e)
+                catch (Exception e) when (ReaderExceptionClassifier.IsRecoverableInputException(e))
                 {
+                    var parserException = e as Common.SpiceSharpParserException;
                     circuitContext.Result.ValidationResult.AddError(
                         ValidationEntrySource.Reader,
                         $"There was a problem during reading statement: {statement}",
-                        statement.LineInfo,
+                        parserException?.LineInfo ?? statement.LineInfo,
                         e);
                 }
             }

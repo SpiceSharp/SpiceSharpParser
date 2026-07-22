@@ -1,9 +1,8 @@
-﻿using SpiceSharpParser.ModelReaders.Netlist.Spice;
+using SpiceSharpParser.Common;
+using SpiceSharpParser.ModelReaders.Netlist.Spice;
 using SpiceSharpParser.Models.Netlist.Spice;
 using System;
 using System.Text;
-using SpiceSharp;
-using SpiceSharpParser.Common;
 
 namespace SpiceSharpParser
 {
@@ -23,16 +22,18 @@ namespace SpiceSharpParser
 
         public SpiceSharpModel Read(SpiceNetlist model)
         {
-            try
-            {
-                var reader = new SpiceNetlistReader(Settings);
-                return reader.Read(model);
-            }
-            catch (Exception ex)
-            {
-                throw new SpiceSharpException("Unhandled exception during reading model", ex);
-            }
-            
+            return ReadResult(model).PartialModel;
+        }
+
+        /// <summary>
+        /// Translates a parsed netlist and returns structured diagnostics and the partial model.
+        /// </summary>
+        /// <param name="model">The parsed netlist.</param>
+        /// <returns>A structured translation result.</returns>
+        public SpiceNetlistReadResult ReadResult(SpiceNetlist model)
+        {
+            var reader = new SpiceNetlistReader(Settings);
+            return reader.ReadResult(model);
         }
     }
 }

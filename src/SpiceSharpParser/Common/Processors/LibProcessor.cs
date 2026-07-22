@@ -56,6 +56,11 @@ namespace SpiceSharpParser.Common.Processors
         public IFileReader FileReader { get; }
 
         /// <summary>
+        /// Gets or sets an optional callback that records dependency resolution attempts.
+        /// </summary>
+        public Action<SpiceDependency> DependencyRecorder { get; set; }
+
+        /// <summary>
         /// Gets the SPICE netlist parser.
         /// </summary>
         public ISingleSpiceNetlistParser SpiceNetlistParser { get; }
@@ -69,6 +74,13 @@ namespace SpiceSharpParser.Common.Processors
         /// Gets or sets validation.
         /// </summary>
         public ValidationEntryCollection Validation { get; set; }
+
+        internal Func<
+            string,
+            string,
+            SpiceLexerSettings,
+            SingleSpiceNetlistParserSettings,
+            SpiceNetlist> SourceParser { get; set; }
 
         protected Func<string> InitialDirectoryPathProvider { get; }
 
@@ -91,7 +103,10 @@ namespace SpiceSharpParser.Common.Processors
             return ToStatements(allStatements);
         }
 
-        private static Statements GetSingleLibStatementsWithTwoArguments(Control lib, List<Statement> allStatements)
+        private static Statements GetSingleLibStatementsWithTwoArguments(
+            Control lib,
+            List<Statement> allStatements,
+            string libraryPath)
         {
             // Find lib by entry
             var libEntry = allStatements.SingleOrDefault(s => s is Control c && c.Name == "lib" && c.Parameters.Get(0).Value == lib.Parameters.Get(1).Value);
@@ -108,7 +123,9 @@ namespace SpiceSharpParser.Common.Processors
 
                 if (position == allStatements.Count)
                 {
-                    throw new SpiceSharpParserException("No .ENDL found");
+                    throw new SpiceSharpParserException(
+                        "No .ENDL found",
+                        new SpiceLineInfo { FileName = libraryPath });
                 }
                 else
                 {
@@ -196,55 +213,135 @@ namespace SpiceSharpParser.Common.Processors
         private void ReadSingleLib(Statements statements, string currentDirectoryPath, Control lib)
         {
             // get full path of .lib
-            string libPath = PathConverter.Convert(lib.Parameters.Get(0).Value);
+            string requestedPath = lib.Parameters.Get(0).Value;
+            string libPath = PathConverter.Convert(requestedPath);
             bool isAbsolutePath = Path.IsPathRooted(libPath);
             string libFullPath = isAbsolutePath ? libPath : Path.Combine(currentDirectoryPath, libPath);
 
             // check if file exists
             if (!File.Exists(libFullPath))
             {
+                RecordDependency(lib, requestedPath, libFullPath, SpiceDependencyStatus.NotFound);
                 Validation.AddError(
                     ValidationEntrySource.Processor,
                     $"Netlist include at {libFullPath} could not be found",
                     lib.LineInfo);
+                statements.Replace(lib, Enumerable.Empty<Statement>());
                 return;
             }
 
             // get lib content
-            string libContent = FileReader.ReadAll(libFullPath);
+            string libContent;
+            try
+            {
+                libContent = FileReader.ReadAll(libFullPath);
+            }
+            catch (IOException exception)
+            {
+                RecordUnreadableDependency(lib, requestedPath, libFullPath, exception);
+                statements.Replace(lib, Enumerable.Empty<Statement>());
+                return;
+            }
+            catch (UnauthorizedAccessException exception)
+            {
+                RecordUnreadableDependency(lib, requestedPath, libFullPath, exception);
+                statements.Replace(lib, Enumerable.Empty<Statement>());
+                return;
+            }
+            catch (System.Security.SecurityException exception)
+            {
+                RecordUnreadableDependency(lib, requestedPath, libFullPath, exception);
+                statements.Replace(lib, Enumerable.Empty<Statement>());
+                return;
+            }
+
             if (libContent != null)
             {
+                RecordDependency(lib, requestedPath, libFullPath, SpiceDependencyStatus.Resolved);
                 var lexerSettings = new SpiceLexerSettings(LexerSettings.IsDotStatementNameCaseSensitive)
                 {
                     HasTitle = false,
                     Compatibility = LexerSettings.Compatibility,
                 };
-
-                var tokens = TokenProviderPool.GetSpiceTokenProvider(lexerSettings).GetTokens(libContent);
-
-                foreach (var token in tokens)
-                {
-                    token.FileName = libFullPath;
-                }
-
-                SpiceNetlistParser.Settings = new SingleSpiceNetlistParserSettings(lexerSettings)
+                var parserSettings = new SingleSpiceNetlistParserSettings(lexerSettings)
                 {
                     IsNewlineRequired = false,
                     IsEndRequired = false,
                 };
 
-                SpiceNetlist includeModel = SpiceNetlistParser.Parse(tokens);
+                SpiceNetlist includeModel;
+                if (SourceParser != null)
+                {
+                    includeModel = SourceParser(libContent, libFullPath, lexerSettings, parserSettings);
+                    if (includeModel == null)
+                    {
+                        statements.Replace(lib, Enumerable.Empty<Statement>());
+                        return;
+                    }
+                }
+                else
+                {
+                    SpiceToken[] tokens;
+                    try
+                    {
+                        tokens = TokenProviderPool.GetSpiceTokenProvider(lexerSettings).GetTokens(libContent);
+                    }
+                    catch (global::SpiceSharpParser.Lexers.LexerException exception)
+                    {
+                        if (exception.LineInfo == null)
+                        {
+                            throw new global::SpiceSharpParser.Lexers.LexerException(
+                                exception.Message,
+                                exception,
+                                new SpiceLineInfo { FileName = libFullPath });
+                        }
+
+                        SetExceptionSource(exception, libFullPath);
+                        throw;
+                    }
+
+                    foreach (var token in tokens)
+                    {
+                        token.FileName = libFullPath;
+                    }
+
+                    SpiceNetlistParser.Settings = parserSettings;
+
+                    try
+                    {
+                        includeModel = SpiceNetlistParser.Parse(tokens);
+                    }
+                    catch (SpiceSharpParserException exception)
+                    {
+                        SetExceptionSource(exception, libFullPath);
+                        throw;
+                    }
+                }
 
                 var allStatements = includeModel.Statements.ToList();
                 Statements libStatements = null;
 
-                if (lib.Parameters.Count == 2)
+                try
                 {
-                    libStatements = GetSingleLibStatementsWithTwoArguments(lib, allStatements);
+                    if (lib.Parameters.Count == 2)
+                    {
+                        libStatements = GetSingleLibStatementsWithTwoArguments(lib, allStatements, libFullPath);
+                    }
+                    else if (lib.Parameters.Count == 1)
+                    {
+                        libStatements = GetSingleLibStatementsWithOneArgument(allStatements);
+                    }
                 }
-                else if (lib.Parameters.Count == 1)
+                catch (SpiceSharpParserException exception) when (SourceParser != null)
                 {
-                    libStatements = GetSingleLibStatementsWithOneArgument(allStatements);
+                    SetExceptionSource(exception, libFullPath);
+                    Validation.AddError(
+                        ValidationEntrySource.Processor,
+                        exception.Message,
+                        exception.LineInfo,
+                        exception);
+                    statements.Replace(lib, Enumerable.Empty<Statement>());
+                    return;
                 }
 
                 if (libStatements != null)
@@ -254,14 +351,63 @@ namespace SpiceSharpParser.Common.Processors
                     Process(libStatements, libDirectory);
                     statements.Replace(lib, libStatements);
                 }
+                else
+                {
+                    string section = lib.Parameters.Count > 1 ? lib.Parameters.Get(1).Value : null;
+                    Validation.AddError(
+                        ValidationEntrySource.Processor,
+                        $"Library section '{section}' was not found in {libFullPath}",
+                        lib.LineInfo);
+                    statements.Replace(lib, Enumerable.Empty<Statement>());
+                }
             }
             else
             {
+                RecordDependency(lib, requestedPath, libFullPath, SpiceDependencyStatus.Unreadable);
                 Validation.AddError(
                     ValidationEntrySource.Processor,
                     $"Netlist include at {libFullPath} could not be read",
                     lib.LineInfo);
+                statements.Replace(lib, Enumerable.Empty<Statement>());
             }
+        }
+
+        private void RecordDependency(
+            Control library,
+            string requestedPath,
+            string resolvedPath,
+            SpiceDependencyStatus status)
+        {
+            string section = library.Parameters.Count > 1 ? library.Parameters.Get(1).Value : null;
+            DependencyRecorder?.Invoke(new SpiceDependency(
+                SpiceDependencyKind.Library,
+                requestedPath,
+                resolvedPath,
+                status,
+                global::SpiceSharpParser.Diagnostics.SourceSpan.FromLineInfo(library.LineInfo),
+                section));
+        }
+
+        private void SetExceptionSource(SpiceSharpParserException exception, string sourcePath)
+        {
+            if (exception.LineInfo != null && string.IsNullOrEmpty(exception.LineInfo.FileName))
+            {
+                exception.LineInfo.FileName = sourcePath;
+            }
+        }
+
+        private void RecordUnreadableDependency(
+            Control library,
+            string requestedPath,
+            string resolvedPath,
+            Exception exception)
+        {
+            RecordDependency(library, requestedPath, resolvedPath, SpiceDependencyStatus.Unreadable);
+            Validation.AddError(
+                ValidationEntrySource.Processor,
+                $"Netlist library at {resolvedPath} could not be read: {exception.Message}",
+                library.LineInfo,
+                exception);
         }
     }
 }

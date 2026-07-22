@@ -168,7 +168,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 var reader = new FileReader(() => context.ReaderSettings.ExternalFilesEncoding);
                 lines = reader.ReadAllLines(fullFilePath);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ReaderExceptionClassifier.IsRecoverableInputException(ex))
             {
                 context.Result.ValidationResult.AddError(
                     ValidationEntrySource.Reader,
@@ -394,7 +394,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             {
                 factor = context.Evaluator.EvaluateDouble(assignment.Value);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ReaderExceptionClassifier.IsRecoverableInputException(ex))
             {
                 context.Result.ValidationResult.AddError(
                     ValidationEntrySource.Reader,
@@ -556,7 +556,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
             {
                 repeatCount = context.Evaluator.EvaluateDouble(expression);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ReaderExceptionClassifier.IsRecoverableInputException(ex))
             {
                 context.Result.ValidationResult.AddError(
                     ValidationEntrySource.Reader,
@@ -745,7 +745,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 value = context.Evaluator.EvaluateDouble(expression);
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ReaderExceptionClassifier.IsRecoverableInputException(ex))
             {
                 context.Result.ValidationResult.AddError(
                     ValidationEntrySource.Reader,

@@ -54,6 +54,103 @@ sim.EventExportData += (sender, args) => Console.WriteLine(export.Extract());
 sim.Execute(spiceModel.Circuit);
 ```
 
+## Structured Compilation
+
+For user-supplied or vendor netlists, use `SpiceCompiler` to run parsing,
+preprocessing, translation, and structural linting as one operation. Expected
+input failures are returned as stable diagnostics instead of being thrown:
+
+```csharp
+using System;
+using SpiceSharpParser;
+using SpiceSharpParser.Diagnostics;
+
+var options = new SpiceCompileOptions
+{
+    Dialect = SpiceDialect.LTspice,
+    WorkingDirectory = @"C:\Models",
+    ContinueAfterErrors = true,
+    MaximumSyntaxErrors = 25,
+    RunLinter = true,
+    DiagnosticPolicy = new SpiceDiagnosticPolicy
+    {
+        WarningsAsErrors = true,
+        SuppressedCodes = { SpiceDiagnosticCodes.IgnoredConstruct },
+        SeverityOverrides =
+        {
+            [SpiceDiagnosticCodes.NoSimulation] = DiagnosticSeverity.Info,
+        },
+    },
+};
+
+SpiceCompilationResult result =
+    SpiceCompiler.CompileFile(@"C:\Models\amplifier.net", options);
+
+foreach (var diagnostic in result.Diagnostics)
+{
+    Console.WriteLine(
+        $"{diagnostic.Code}: {diagnostic.Span.FilePath}" +
+        $"({diagnostic.Span.Start}): {diagnostic.Message}");
+}
+
+Console.WriteLine(
+    $"Compatibility: {result.Compatibility.BlockerCount} blockers, " +
+    $"{result.Compatibility.Unsupported.Count} unsupported constructs, " +
+    $"{result.Compatibility.Ignored.Count} ignored metadata items.");
+
+if (result.Model != null)
+{
+    // No raw error diagnostics remain; simulation can proceed.
+}
+
+// Effective diagnostics can be emitted directly to CI and editor tooling.
+string json = SpiceDiagnosticFormatter.ToJson(result);
+string sarif = SpiceDiagnosticFormatter.ToSarif(result);
+```
+
+`InputModel`, `ExpandedModel`, and `TranslatedModel` retain successfully
+produced intermediate artifacts for inspection. `TranslatedModel` may be
+partial and must not be simulated when errors are present. `Model` is exposed
+only when compilation has no error diagnostics. With `ContinueAfterErrors`
+enabled, lexer and parser failures in the root source and recursively loaded
+`.INCLUDE`/`.LIB` files recover at the next safe statement. The whole
+compilation shares one `MaximumSyntaxErrors` budget (25 by default). A
+dependency with a structural failure that cannot be synchronized is removed
+individually so valid sibling dependencies can still be expanded. The direct
+`SpiceNetlistParser` API preserves strict first-error behavior unless recovery
+is explicitly enabled in its settings.
+
+`CompileFile` resolves relative includes from the source file's directory by
+default; source-file access failures use `SSP2001`/`SSP2002` unless
+`ThrowOnFileAccessError` is enabled.
+
+`Dependencies` contains every `.INCLUDE`/`.INC` and file-backed `.LIB`
+occurrence in discovery order, including missing and unreadable files. Each
+`SpiceDependency` reports the requested and resolved paths, directive span,
+dependency kind, resolution status, and selected library section. Diagnostics
+inside loaded files expose a root-to-leaf `IncludeStack`; the same directive
+spans are also available through `RelatedLocations` for IDE integrations.
+
+`Compatibility` summarizes every diagnostic deterministically by stable code,
+construct, and source file. It separates simulation blockers from unsupported
+constructs, compatibility shims, ignored metadata, and numeric divergences.
+Reader compatibility diagnostics use specific `SSP3001`-`SSP3008` codes;
+ignored or divergent behavior uses `SSP6001`-`SSP6003`. Generic semantic reader
+failures remain `SSP4000`. Every built-in diagnostic has a stable `HelpLink`
+into the [diagnostic reference](docs/diagnostics.md).
+
+`DiagnosticPolicy` creates a CI/editor view without changing compilation
+safety. `AllDiagnostics` contains raw diagnostics; `Diagnostics` contains
+effective non-suppressed diagnostics; and `SuppressedDiagnostics` records
+non-error diagnostics hidden by policy. `Success` and `Model` are based only
+on raw errors, while `PolicySuccess` also honors severity overrides and
+`WarningsAsErrors`. Raw errors cannot be suppressed or downgraded.
+
+`SpiceDiagnosticFormatter.ToJson` preserves effective and raw diagnostics,
+precise spans, related locations, include stacks, suggested fixes, help links,
+and compatibility classes. `ToSarif` emits deterministic SARIF 2.1.0 with
+effective diagnostics for code-scanning and CI consumers.
+
 ## Workflow
 
 Using SpiceSharpParser involves three steps:
@@ -61,6 +158,14 @@ Using SpiceSharpParser involves three steps:
 1. **Parse** — convert a SPICE netlist string into a parse-tree model with `SpiceNetlistParser.ParseNetlist()`.
 2. **Read** — translate the parse-tree into SpiceSharp simulation objects with `SpiceSharpReader.Read()`.
 3. **Simulate** — run the SpiceSharp simulations and collect results via exports and events.
+
+For direct reader use, `SpiceSharpReader.ReadResult()` returns a
+`SpiceNetlistReadResult`. Its `Diagnostics` are immutable and source-located,
+`PartialModel` preserves successfully translated objects for inspection, and
+`Model` is non-null only when translation has no errors. `Read()` remains
+available for compatibility and returns the partial model. Netlist input
+failures become reader diagnostics; cancellation, API misuse, and unexpected
+reader failures still throw.
 
 ### SpiceSharpModel
 

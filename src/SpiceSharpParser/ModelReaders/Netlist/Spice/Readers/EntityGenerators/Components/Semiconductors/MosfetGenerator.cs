@@ -163,7 +163,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                             context.SetParameter(mosfet, ap.Name, ap.Value, true);
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception ex) when (ReaderExceptionClassifier.IsRecoverableInputException(ex))
                     {
                         context.Result.ValidationResult.AddError(ValidationEntrySource.Reader, $"Problem with setting parameter: {parameter}", parameter.LineInfo, ex);
                     }

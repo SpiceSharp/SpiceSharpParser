@@ -95,7 +95,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Waveforms
                 {
                     channel = (int)context.Evaluator.EvaluateDouble(channelParameter.Value);
                 }
-                catch (Exception ex)
+                catch (Exception ex) when (ReaderExceptionClassifier.IsRecoverableInputException(ex))
                 {
                     context.Result.ValidationResult.AddError(
                         ValidationEntrySource.Reader,

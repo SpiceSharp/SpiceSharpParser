@@ -37,6 +37,23 @@ namespace SpiceSharpParser.Tests.Common.Processors
             Assert.Same(includedComponent, statement);
         }
 
+        [Fact]
+        public void When_LibraryCannotBeRead_Expect_DiagnosticAndUnreadableDependency()
+        {
+            using var fixture = CreateFixture(CreateLibStatements(includeEndl: true));
+            fixture.Processor.FileReader.ReadAll(Arg.Any<string>())
+                .Returns(_ => throw new IOException("Access denied."));
+            var dependencies = new List<SpiceDependency>();
+            fixture.Processor.DependencyRecorder = dependencies.Add;
+
+            var exception = Record.Exception(() => fixture.Processor.Process(CreateRequestStatements(fixture.LibPath)));
+
+            Assert.Null(exception);
+            Assert.True(fixture.Processor.Validation.HasError);
+            SpiceDependency dependency = Assert.Single(dependencies);
+            Assert.Equal(SpiceDependencyStatus.Unreadable, dependency.Status);
+        }
+
         private static ProcessorFixture CreateFixture(Statements includeStatements)
         {
             var libPath = Path.GetTempFileName();

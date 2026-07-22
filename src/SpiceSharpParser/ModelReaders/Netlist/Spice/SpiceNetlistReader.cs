@@ -6,6 +6,7 @@ using SpiceSharpBehavioral.Parsers.Nodes;
 using SpiceSharpParser.Common;
 using SpiceSharpParser.Common.Evaluation;
 using SpiceSharpParser.Common.Mathematics.Probability;
+using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Names;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context.Updates;
@@ -43,6 +44,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
         /// </returns>
         public SpiceSharpModel Read(SpiceNetlist netlist)
         {
+            return ReadResult(netlist).PartialModel;
+        }
+
+        /// <summary>
+        /// Translates a netlist and returns structured reader diagnostics together with the partial model.
+        /// Failures caused by user input are returned as diagnostics; unexpected failures propagate.
+        /// </summary>
+        /// <param name="netlist">The parsed netlist to translate.</param>
+        /// <returns>A structured reader result.</returns>
+        public SpiceNetlistReadResult ReadResult(SpiceNetlist netlist)
+        {
             if (netlist == null)
             {
                 throw new System.ArgumentNullException(nameof(netlist));
@@ -53,75 +65,92 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
                 new Circuit(new EntityCollection(StringComparerProvider.Get(Settings.CaseSensitivity.IsEntityNamesCaseSensitive))),
                 netlist.Title);
 
-            // Set the separator.
-            Utility.Separator = Settings.Separator;
+            IReadingContext circuitContext = null;
 
-            // Set functions case-sensitivity
-            ComplexBuilderHelper.RemapFunctions(StringComparerProvider.Get(Settings.CaseSensitivity.IsFunctionNameCaseSensitive));
-            ComplexFunctionBuilderHelper.RemapFunctions(StringComparerProvider.Get(Settings.CaseSensitivity.IsFunctionNameCaseSensitive));
-            RealBuilderHelper.RemapFunctions(StringComparerProvider.Get(Settings.CaseSensitivity.IsFunctionNameCaseSensitive));
-            RealFunctionBuilderHelper.RemapFunctions(StringComparerProvider.Get(Settings.CaseSensitivity.IsFunctionNameCaseSensitive));
-            DerivativesHelper.RemapFunctions(StringComparerProvider.Get(Settings.CaseSensitivity.IsFunctionNameCaseSensitive));
+            try
+            {
+                // Set the separator.
+                Utility.Separator = Settings.Separator;
 
-            // Get reading context
-            var nodeNameGenerator = new MainCircuitNodeNameGenerator(
-                new[] { "0" },
-                Settings.CaseSensitivity.IsEntityNamesCaseSensitive,
-                Settings.Separator);
-            var objectNameGenerator = new ObjectNameGenerator(string.Empty, Settings.Separator);
-            INameGenerator nameGenerator = new NameGenerator(nodeNameGenerator, objectNameGenerator);
-            IRandomizer randomizer = new Randomizer(
-                Settings.CaseSensitivity.IsDistributionNameCaseSensitive,
-                seed: Settings.Seed);
+                // Set functions case-sensitivity
+                ComplexBuilderHelper.RemapFunctions(StringComparerProvider.Get(Settings.CaseSensitivity.IsFunctionNameCaseSensitive));
+                ComplexFunctionBuilderHelper.RemapFunctions(StringComparerProvider.Get(Settings.CaseSensitivity.IsFunctionNameCaseSensitive));
+                RealBuilderHelper.RemapFunctions(StringComparerProvider.Get(Settings.CaseSensitivity.IsFunctionNameCaseSensitive));
+                RealFunctionBuilderHelper.RemapFunctions(StringComparerProvider.Get(Settings.CaseSensitivity.IsFunctionNameCaseSensitive));
+                DerivativesHelper.RemapFunctions(StringComparerProvider.Get(Settings.CaseSensitivity.IsFunctionNameCaseSensitive));
 
-            IExpressionParserFactory expressionParserFactory = new ExpressionParserFactory(
-                Settings.CaseSensitivity,
-                Settings.Compatibility);
-            IExpressionResolverFactory expressionResolverFactory = new ExpressionResolverFactory(
-                Settings.CaseSensitivity,
-                Settings.Compatibility);
-            IExpressionFeaturesReader expressionFeaturesReader = new ExpressionFeaturesReader(expressionParserFactory, expressionResolverFactory);
+                // Get reading context
+                var nodeNameGenerator = new MainCircuitNodeNameGenerator(
+                    new[] { "0" },
+                    Settings.CaseSensitivity.IsEntityNamesCaseSensitive,
+                    Settings.Separator);
+                var objectNameGenerator = new ObjectNameGenerator(string.Empty, Settings.Separator);
+                INameGenerator nameGenerator = new NameGenerator(nodeNameGenerator, objectNameGenerator);
+                IRandomizer randomizer = new Randomizer(
+                    Settings.CaseSensitivity.IsDistributionNameCaseSensitive,
+                    seed: Settings.Seed);
 
-            EvaluationContext evaluationContext = new SpiceEvaluationContext(
-                string.Empty,
-                Settings.CaseSensitivity,
-                randomizer,
-                expressionParserFactory,
-                expressionFeaturesReader,
-                nameGenerator);
-            evaluationContext.Evaluator = new Evaluator(evaluationContext, new ExpressionValueProvider(expressionParserFactory));
+                IExpressionParserFactory expressionParserFactory = new ExpressionParserFactory(
+                    Settings.CaseSensitivity,
+                    Settings.Compatibility);
+                IExpressionResolverFactory expressionResolverFactory = new ExpressionResolverFactory(
+                    Settings.CaseSensitivity,
+                    Settings.Compatibility);
+                IExpressionFeaturesReader expressionFeaturesReader = new ExpressionFeaturesReader(expressionParserFactory, expressionResolverFactory);
 
-            ISpiceStatementsReader statementsReader = new SpiceStatementsReader(
-                Settings.Mappings.Controls,
-                Settings.Mappings.Models,
-                Settings.Mappings.Components);
-            IWaveformReader waveformReader = new WaveformReader(Settings.Mappings.Waveforms);
+                EvaluationContext evaluationContext = new SpiceEvaluationContext(
+                    string.Empty,
+                    Settings.CaseSensitivity,
+                    randomizer,
+                    expressionParserFactory,
+                    expressionFeaturesReader,
+                    nameGenerator);
+                evaluationContext.Evaluator = new Evaluator(evaluationContext, new ExpressionValueProvider(expressionParserFactory));
 
-            ISimulationPreparations simulationPreparations = new SimulationPreparations(
-                new EntityUpdates(Settings.CaseSensitivity.IsParameterNameCaseSensitive, evaluationContext),
-                new SimulationUpdates(evaluationContext.SimulationEvaluationContexts));
+                ISpiceStatementsReader statementsReader = new SpiceStatementsReader(
+                    Settings.Mappings.Controls,
+                    Settings.Mappings.Models,
+                    Settings.Mappings.Components);
+                IWaveformReader waveformReader = new WaveformReader(Settings.Mappings.Waveforms);
 
-            IReadingContext circuitContext = new ReadingContext(
-                "Root circuit context",
-                null,
-                evaluationContext,
-                simulationPreparations,
-                nameGenerator,
-                statementsReader,
-                waveformReader,
-                Settings.Mappings.Exporters,
-                new Readers.Controls.Simulations.Configurations.SimulationConfiguration(),
-                result,
-                Settings);
+                ISimulationPreparations simulationPreparations = new SimulationPreparations(
+                    new EntityUpdates(Settings.CaseSensitivity.IsParameterNameCaseSensitive, evaluationContext),
+                    new SimulationUpdates(evaluationContext.SimulationEvaluationContexts));
 
-            // Read statements form input netlist using created context
-            circuitContext.Read(netlist.Statements, Settings.Orderer);
+                circuitContext = new ReadingContext(
+                    "Root circuit context",
+                    null,
+                    evaluationContext,
+                    simulationPreparations,
+                    nameGenerator,
+                    statementsReader,
+                    waveformReader,
+                    Settings.Mappings.Exporters,
+                    new Readers.Controls.Simulations.Configurations.SimulationConfiguration(),
+                    result,
+                    Settings);
 
-            // Set final seed
-            result.Seed = circuitContext.EvaluationContext.Seed;
-            result.Circuit = circuitContext.ContextEntities;
+                // Read statements form input netlist using created context
+                circuitContext.Read(netlist.Statements, Settings.Orderer);
+            }
+            catch (System.Exception exception) when (ReaderExceptionClassifier.IsRecoverableInputException(exception))
+            {
+                var parserException = exception as SpiceSharpParserException;
+                result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    $"There was a problem during reading the netlist: {exception.Message}",
+                    parserException?.LineInfo,
+                    exception);
+            }
 
-            return result;
+            if (circuitContext != null)
+            {
+                // Preserve any successfully translated state for diagnostics and inspection.
+                result.Seed = circuitContext.EvaluationContext.Seed;
+                result.Circuit = circuitContext.ContextEntities;
+            }
+
+            return new SpiceNetlistReadResult(result);
         }
     }
 }
