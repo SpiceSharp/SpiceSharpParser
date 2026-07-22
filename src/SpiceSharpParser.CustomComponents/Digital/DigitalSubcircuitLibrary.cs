@@ -1,0 +1,214 @@
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Reflection;
+using SpiceSharp;
+using SpiceSharp.Entities;
+
+namespace SpiceSharpParser.CustomComponents.Digital
+{
+    /// <summary>
+    /// Provides reusable, parameterized digital gate models backed by
+    /// <see cref="SpiceSubcircuitLibrary"/>.
+    /// </summary>
+    public sealed class DigitalSubcircuitLibrary
+    {
+        private const string EmbeddedResourceName =
+            "SpiceSharpParser.CustomComponents.Digital.standard-digital.lib";
+
+        private static readonly IReadOnlyDictionary<DigitalGateKind, string> SubcircuitNames =
+            new ReadOnlyDictionary<DigitalGateKind, string>(
+                new Dictionary<DigitalGateKind, string>
+                {
+                    [DigitalGateKind.Buffer] = "DIG_BUF",
+                    [DigitalGateKind.Inverter] = "DIG_NOT",
+                    [DigitalGateKind.And2] = "DIG_AND2",
+                    [DigitalGateKind.Nand2] = "DIG_NAND2",
+                    [DigitalGateKind.Or2] = "DIG_OR2",
+                    [DigitalGateKind.Nor2] = "DIG_NOR2",
+                    [DigitalGateKind.Xor2] = "DIG_XOR2",
+                    [DigitalGateKind.Xnor2] = "DIG_XNOR2",
+                });
+
+        private DigitalSubcircuitLibrary(SpiceSubcircuitLibrary library)
+        {
+            Library = library ?? throw new ArgumentNullException(nameof(library));
+        }
+
+        /// <summary>
+        /// Gets the underlying general-purpose SPICE subcircuit library.
+        /// </summary>
+        public SpiceSubcircuitLibrary Library { get; }
+
+        /// <summary>
+        /// Loads the digital gate models embedded in the custom-components assembly.
+        /// </summary>
+        /// <param name="options">Compilation options, or null for defaults.</param>
+        /// <returns>A reusable digital subcircuit library.</returns>
+        public static DigitalSubcircuitLibrary LoadBuiltIn(SpiceCompileOptions options = null)
+        {
+            Assembly assembly = typeof(DigitalSubcircuitLibrary).GetTypeInfo().Assembly;
+            using (Stream stream = assembly.GetManifestResourceStream(EmbeddedResourceName))
+            {
+                if (stream == null)
+                {
+                    throw new InvalidOperationException(
+                        $"The embedded digital subcircuit resource '{EmbeddedResourceName}' was not found.");
+                }
+
+                using (var reader = new StreamReader(stream))
+                {
+                    return new DigitalSubcircuitLibrary(
+                        SpiceSubcircuitLibrary.LoadText(
+                            reader.ReadToEnd(),
+                            EmbeddedResourceName,
+                            options));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adds a built-in gate instance using its ordered input nodes followed by
+        /// output, VDD and VSS.
+        /// </summary>
+        /// <param name="circuit">The target SpiceSharp circuit.</param>
+        /// <param name="kind">The digital gate type.</param>
+        /// <param name="instanceName">A unique instance name.</param>
+        /// <param name="inputNodes">One input for buffer/inverter; two for other gates.</param>
+        /// <param name="outputNode">The output node.</param>
+        /// <param name="positiveSupplyNode">The VDD node.</param>
+        /// <param name="negativeSupplyNode">The VSS node.</param>
+        /// <param name="parameters">Optional electrical parameter overrides.</param>
+        /// <returns>The entities added to the circuit.</returns>
+        public IReadOnlyList<IEntity> AddGate(
+            Circuit circuit,
+            DigitalGateKind kind,
+            string instanceName,
+            IEnumerable<string> inputNodes,
+            string outputNode,
+            string positiveSupplyNode,
+            string negativeSupplyNode,
+            DigitalGateParameters parameters = null)
+        {
+            if (inputNodes == null)
+            {
+                throw new ArgumentNullException(nameof(inputNodes));
+            }
+
+            var nodes = new List<string>(inputNodes);
+            int expectedInputCount = IsUnary(kind) ? 1 : 2;
+            if (nodes.Count != expectedInputCount)
+            {
+                throw new ArgumentException(
+                    $"Gate '{kind}' requires {expectedInputCount} input node(s), but {nodes.Count} were supplied.",
+                    nameof(inputNodes));
+            }
+
+            nodes.Add(outputNode);
+            nodes.Add(positiveSupplyNode);
+            nodes.Add(negativeSupplyNode);
+
+            IReadOnlyDictionary<string, string> overrides = parameters?.ToOverrides();
+            return Library.AddInstance(
+                circuit,
+                GetSubcircuitName(kind),
+                instanceName,
+                nodes,
+                overrides);
+        }
+
+        /// <summary>
+        /// Adds a buffer instance.
+        /// </summary>
+        public IReadOnlyList<IEntity> AddBuffer(
+            Circuit circuit,
+            string instanceName,
+            string inputNode,
+            string outputNode,
+            string positiveSupplyNode,
+            string negativeSupplyNode,
+            DigitalGateParameters parameters = null)
+        {
+            return AddGate(
+                circuit,
+                DigitalGateKind.Buffer,
+                instanceName,
+                new[] { inputNode },
+                outputNode,
+                positiveSupplyNode,
+                negativeSupplyNode,
+                parameters);
+        }
+
+        /// <summary>
+        /// Adds an inverter instance.
+        /// </summary>
+        public IReadOnlyList<IEntity> AddInverter(
+            Circuit circuit,
+            string instanceName,
+            string inputNode,
+            string outputNode,
+            string positiveSupplyNode,
+            string negativeSupplyNode,
+            DigitalGateParameters parameters = null)
+        {
+            return AddGate(
+                circuit,
+                DigitalGateKind.Inverter,
+                instanceName,
+                new[] { inputNode },
+                outputNode,
+                positiveSupplyNode,
+                negativeSupplyNode,
+                parameters);
+        }
+
+        /// <summary>
+        /// Adds a two-input gate instance.
+        /// </summary>
+        public IReadOnlyList<IEntity> AddBinaryGate(
+            Circuit circuit,
+            DigitalGateKind kind,
+            string instanceName,
+            string firstInputNode,
+            string secondInputNode,
+            string outputNode,
+            string positiveSupplyNode,
+            string negativeSupplyNode,
+            DigitalGateParameters parameters = null)
+        {
+            if (IsUnary(kind))
+            {
+                throw new ArgumentException(
+                    $"Gate '{kind}' is unary; use AddGate, AddBuffer or AddInverter.",
+                    nameof(kind));
+            }
+
+            return AddGate(
+                circuit,
+                kind,
+                instanceName,
+                new[] { firstInputNode, secondInputNode },
+                outputNode,
+                positiveSupplyNode,
+                negativeSupplyNode,
+                parameters);
+        }
+
+        private static string GetSubcircuitName(DigitalGateKind kind)
+        {
+            if (!SubcircuitNames.TryGetValue(kind, out string result))
+            {
+                throw new ArgumentOutOfRangeException(nameof(kind), kind, "Unknown digital gate type.");
+            }
+
+            return result;
+        }
+
+        private static bool IsUnary(DigitalGateKind kind)
+        {
+            return kind == DigitalGateKind.Buffer || kind == DigitalGateKind.Inverter;
+        }
+    }
+}

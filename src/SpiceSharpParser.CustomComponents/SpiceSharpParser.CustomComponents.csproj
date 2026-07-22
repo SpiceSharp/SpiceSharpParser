@@ -40,4 +40,12 @@
   <ItemGroup>
     <ProjectReference Include="..\SpiceSharpParser\SpiceSharpParser.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Digital\Netlists\standard-digital.lib"
+                      LogicalName="SpiceSharpParser.CustomComponents.Digital.standard-digital.lib" />
+    <None Include="Digital\Netlists\standard-digital.lib"
+          Pack="true"
+          PackagePath="contentFiles\any\any\SpiceSharpParser.CustomComponents\Digital" />
+  </ItemGroup>
 </Project>

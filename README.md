@@ -365,6 +365,36 @@ See [LTspice-Style Nonlinear Passives](src/docs/articles/nonlinear-passives.md) 
 `Q=` / `Flux=` syntax, transient behavior, scaling rules, and optional LTspice-backed
 golden tests for AC and transient parity.
 
+The package also includes an embedded, parameterized digital gate library built
+on `SpiceSubcircuitLibrary`. It provides buffer, inverter, AND, NAND, OR, NOR,
+XOR, and XNOR models for programmatic SpiceSharp circuits:
+
+```csharp
+using SpiceSharp;
+using SpiceSharp.Components;
+using SpiceSharpParser.CustomComponents.Digital;
+
+var circuit = new Circuit(
+    new VoltageSource("VDD", "vdd", "0", 5.0));
+var digital = DigitalSubcircuitLibrary.LoadBuiltIn();
+
+digital.AddBinaryGate(
+    circuit,
+    DigitalGateKind.Nand2,
+    "XU1",
+    "a",
+    "b",
+    "y",
+    "vdd",
+    "0");
+```
+
+The models use supply-relative logic thresholds and support per-instance
+threshold, delay, input-resistance, output-resistance, and output-capacitance
+overrides. They can be added to pure SpiceSharp circuits or to circuits already
+read by SpiceSharpParser with `UseCustomComponents()` enabled. See
+[Digital Gate Subcircuit Library](src/docs/articles/digital-subcircuits.md).
+
 ### Behavioral Modeling
 
 `VALUE={expr}`, `TABLE={expr}`, `POLY(n)`, `B` sources, source-level `E` / `G` / `F` / `H` `LAPLACE` transfer functions, function-style `LAPLACE(input, transfer)` in behavioral expressions, and a full set of built-in math functions including LTspice-style `uplim(...)` and `dnlim(...)` smooth limiters. `LAPLACE` supports voltage-controlled and current-controlled forms with rational polynomials in `s`, including finite constant `M=`, `TD=`, and `DELAY=` options. Function-style calls also support call-local options, mixed-expression helper lowering, and arbitrary scalar input expressions.

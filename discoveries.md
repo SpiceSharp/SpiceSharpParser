@@ -32,3 +32,20 @@ Rule of thumb: tmax <= 1/10 of the AC period (for 50Hz: tmax <= 2ms; 100us works
 .MEAS TRAN settle_95 WHEN V(out) = 21.47 RISE=1
 ```
 Then in tests: `var meas = CircuitTestHelper.GetMeasurements(netlist);` and assert on named values.
+
+---
+
+## 3. Reusable digital gates work well as delayed behavioral subcircuits
+
+**Problem:** Programmatic SpiceSharp circuits need reusable digital logic while
+remaining compatible with netlists and optional parser custom components.
+
+**Solution:** Put supply-relative behavioral logic in parameterized
+`.SUBCKT` definitions, pass its result through `BVDelay`, and model output
+loading with series resistance and shunt capacitance. Load the text once with
+`SpiceSubcircuitLibrary` and add instances to any target `Circuit`.
+
+The switching threshold is
+`VTH * V(VDD,VSS)`. Keep `VTH`, propagation delay, input resistance, output
+resistance, and output capacitance overridable per instance. Verify every truth
+table row and use a small transient `tmax` when measuring nanosecond delays.
