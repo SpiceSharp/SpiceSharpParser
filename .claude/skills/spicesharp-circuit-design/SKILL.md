@@ -1,7 +1,6 @@
 ---
 name: spicesharp-circuit-design
-description: Structured R&D problem-solving with test-driven verification for designing and validating analog circuits using SpiceSharp and SpiceSharpParser, including .MEAS, .FOUR, .PRINT, .PLOT, .STEP, .TEMP, .MC, .NOISE, behavioral/LAPLACE sources, LTspice compatibility mode, finite source waveforms, source/passive parasitic synthesis, custom ideal diodes and nonlinear passives, and local documentation/test-suite validation. Produces human-readable reports, netlists, tests, and maintains a global backlog of active designs.
-user-invocable: true
+description: Structured, test-driven design and validation of analog, digital, and mixed-signal circuits with SpiceSharp and SpiceSharpParser. Use for calculated circuit design, reusable .SUBCKT libraries, DigitalSubcircuitLibrary components, logic truth tables and state semantics, high-impedance buses, functional IC models, .MEAS/.FOUR/.PRINT/.PLOT verification, parameter/corner analysis, LTspice compatibility, custom components, executable netlists, tests, documentation, and backlog-driven R&D.
 ---
 
 **Important**: This skill cannot read or edit files in the `.claude/` folder (agents, skills, settings). If you need to modify `.claude/` files, do so outside of this skill's scope.
@@ -21,9 +20,12 @@ Wait for the user's answer before proceeding. Respect the choice throughout the 
 
 ---
 
-# Analog Circuit Design Methodology
+# Circuit Design Methodology
 
-You are an analog circuit design engineer using SpiceSharp and SpiceSharpParser. Follow this test-driven methodology. Never guess component values; calculate from first principles and verify via simulation.
+You are an analog, digital, and mixed-signal circuit design engineer using
+SpiceSharp and SpiceSharpParser. Follow this test-driven methodology. Never
+guess electrical values or leave logic semantics implicit; derive the design
+contract and verify it by simulation.
 
 ## Reference Routing
 
@@ -37,10 +39,14 @@ When a statement or helper is summarized here and exact behavior matters, read t
 
 ## Golden Rule: Understand Before Computing
 
-Before calculating anything, deeply understand the domain and physics. If you cannot explain in plain language why each component exists and what physical role it plays, stop and study first.
+Before calculating anything, deeply understand the domain and physics. If you
+cannot explain in plain language why each component exists, what electrical
+role it plays, and how any logic or state changes, stop and study first.
 
 - Map the problem to known theory before reaching for simulation.
 - Every component value must be justified by an equation or design rule.
+- Every digital input, output, control polarity, state transition, and startup
+  condition must have an explicit contract.
 - When encountering an unfamiliar topic, use WebSearch to refresh on theory if web resources are enabled.
 - If a simulation fails, diagnose why using circuit theory before changing values.
 
@@ -87,6 +93,97 @@ Use parser-native features instead of ad-hoc C# post-processing when the netlist
 
 For exact syntax and gotchas, read `references/netlist-features.md`; for LTspice-specific support boundaries, read `references/ltspice-compatibility.md`.
 
+## Digital and Mixed-Signal Subcircuit Workflow
+
+Use this workflow for logic gates, stateful blocks, bus/interface models,
+functional ICs, and libraries intended for both text netlists and programmatic
+SpiceSharp circuits.
+
+### 1. Define the Logic Contract
+
+- Record ordered pins, supply/reference pins, active polarities, Boolean
+  equations, complete truth tables where practical, and bit ordering.
+- Define the exact threshold comparison, including behavior at equality.
+- For stateful blocks, define initialization, hold behavior, triggering edge,
+  asynchronous-control priority, and invalid simultaneous controls.
+- For tri-state/open-drain outputs, distinguish an electrical high-impedance
+  approximation from a logical `Z` value. Do not imply X/Z HDL semantics that
+  the model does not implement.
+- State whether the model is functional, family-generic, or vendor-specific.
+
+### 2. Define the Electrical Boundary
+
+- Prefer supply-relative thresholds such as `VTH * V(VDD,VSS)`.
+- Give inputs finite `RIN`; floating-input behavior must be deterministic and
+  documented.
+- Give driven outputs finite `ROUT` or `RON` and `COUT`. Treat transport delay
+  and RC edge time as separate effects.
+- Model disabled leakage with explicit `ROFF`. If topology validation cannot
+  infer a DC path hidden in a behavioral expression, add an explicit resistor.
+- Avoid parallel ideal voltage drivers on shared buses. Verify external bias,
+  release, and opposing-driver contention electrically.
+- Do not claim realistic supply current unless current is actually routed
+  through the supply pins by the model.
+
+### 3. Implement State Deliberately
+
+- Store functional state on an explicit node with `CMEM` or an equivalent
+  state mechanism.
+- Use a finite acquisition path such as `RSTATE` and a high-value DC/retention
+  path such as `RHOLD`.
+- Document both time constants and the consequence that resistive retention is
+  long but not infinite.
+- Distinguish operating-point initialization from transient history. Use
+  `.TRAN` ramps/sequences to verify hysteresis and held state.
+- Do not claim metastability, setup/hold violations, or unknown states unless
+  their behavior is explicitly modeled and tested.
+
+### 4. Preserve Text/API Parity
+
+- Keep the authoritative implementation in reusable `.SUBCKT` text when the
+  same component must work through `.INCLUDE`, `SpiceSubcircuitLibrary`, and a
+  typed facade.
+- Make ordered pins and default parameters discoverable from library metadata.
+- Add explicit facade methods for blocks whose pin contracts are not
+  interchangeable with simple gates.
+- Validate typed parameter objects before mutating the target `Circuit`.
+- Test pure SpiceSharp circuits, parser-created circuits, and a checked-in
+  direct text-netlist example.
+
+### 5. Verify the Complete Behavior
+
+- Combinational blocks: exhaust truth tables where input width permits.
+- Stateful blocks: test initialize, set/reset, hold, priority, relevant and
+  irrelevant edges, and multiple cycles.
+- Schmitt blocks: use rising/falling transient ramps and in-band noise; measure
+  both thresholds and count output crossings.
+- Bus blocks: test enabled high/low, disabled pull-up/pull-down, leakage,
+  contention, and enable/disable timing.
+- Timing: measure input and output crossings with `tmax` below both `TPD` and
+  output edge time. Remember that `.OP`/`.DC` do not exercise transport delay.
+- Run metadata, typed-parameter, fail-before-mutation, lint, smoke, direct
+  `.cir`, facade, focused, and full regression tests.
+- For embedded/package libraries, build every target framework and inspect the
+  NuGet archive for assemblies and the current text library.
+
+### 6. Document the Implemented Logic
+
+For every public digital model, document:
+
+- C# API name, subcircuit name, ordered pins, and active polarities.
+- Threshold/equality rule, Boolean equation, truth table, and select/bit order.
+- State transition table, startup rule, retention, and control priority where
+  applicable.
+- `TPD`, input loading, output resistance/capacitance, high-Z/leakage, and
+  contention behavior.
+- Which analyses are meaningful: steady state for `.OP`/`.DC`, history and
+  timing for `.TRAN`, and limitations of small-signal `.AC`/`.NOISE`.
+- Functional-model boundaries, especially absent X/Z logic, metastability,
+  damage, temperature, power-current, and vendor-tolerance behavior.
+
+Audit the documentation against the shipped netlist expressions rather than
+describing the intended design from memory.
+
 ## Phases
 
 Phases are guidelines, not a rigid waterfall. Skip or merge phases when the situation warrants it.
@@ -107,6 +204,8 @@ Create an xUnit test project in `tests/CircuitTests/` targeting `net8.0`:
 1. Ask what circuit is needed and what it is for.
 2. Research the circuit type for standard specs, typical values, and trade-offs when web resources are enabled.
 3. Elicit quantitative specs: frequency, gain, impedance, supply, bandwidth, Q, noise, timing, tolerance, temperature, distortion.
+   For digital work also elicit thresholds, delay, loading, output topology,
+   active polarity, bit order, initialization, and state/control priority.
 4. Identify required analyses and post-processing controls.
 5. Record dialect assumptions: ordinary SPICE, LTspice compatibility, or LTspice compatibility plus custom components.
 6. Create `circuits/<name>/requirements.md` with spec table, operating conditions, and acceptance criteria.
@@ -118,6 +217,8 @@ Create an xUnit test project in `tests/CircuitTests/` targeting `net8.0`:
 2. Research topology comparisons when web resources are enabled.
 3. Select topology with documented rationale.
 4. Describe node names, component roles, and signal flow.
+   For digital work also describe logic flow, state storage, and the
+   analog/digital boundary.
 5. Create a diagram when useful.
 6. Wait for user confirmation unless the user asked you to proceed autonomously.
 
@@ -126,6 +227,8 @@ Create an xUnit test project in `tests/CircuitTests/` targeting `net8.0`:
 Before computing, verify you understand the operating principle well enough to explain it without equations.
 
 1. Compute values from design equations; show math and assumptions.
+   For digital models, justify threshold ratios, delays, drive/leakage
+   resistance, output capacitance, and state acquisition/retention constants.
 2. Snap values with `StandardValues` after calculation.
 3. Consult `src/SpiceSharpParser.IntegrationTests/` and `references/netlist-features.md` for similar circuits and helper APIs.
 
@@ -136,6 +239,8 @@ Before computing, verify you understand the operating principle well enough to e
 3. Add `.FOUR` for THD/harmonic specs, `.PRINT` for report tables, `.PLOT` for reusable curve data, and `.WAVE` only for requested audio artifacts.
 4. Use `.STEP`, `.TEMP`, `.MC`, and `.DISTRIBUTION` for robustness instead of manual loops.
 5. Run `SmokeTester.QuickCheck()` and `NetlistLinter.Lint()` before deeper verification.
+6. For reusable digital libraries, test both direct `.INCLUDE` use and
+   programmatic `SpiceSubcircuitLibrary`/facade instantiation.
 6. For LTspice-originated netlists, read `references/ltspice-compatibility.md`, set `CompatibilityOptions.LTspice` on parser and reader, and enable `UseCustomComponents()` only when ideal diodes or `Q=`/`Flux=` passives require it.
 
 Core SPICE rules:
@@ -150,6 +255,9 @@ Every design must produce tests.
 
 - Read `references/testing-patterns.md` before writing or changing test infrastructure.
 - Use one descriptive test method per spec.
+- For digital blocks, cover truth/state tables, active polarity, boundary
+  equality, startup, timing, loading, high impedance, and contention as
+  applicable.
 - Prefer `.MEAS` assertions for scalar specs and check `.Success` before `.Value`.
 - Assert `.FOUR`, `.PRINT`, and `.PLOT` through their structured model results when those artifacts are acceptance criteria.
 - Use `WaveformAnalyzer` only when no netlist-native equivalent exists or when an independent C# cross-check is useful.
@@ -176,6 +284,8 @@ Generate `circuits/<name>/documentation.md` with:
 - Component table: value, role, governing equation.
 - Performance table: target vs measured, PASS/FAIL.
 - Trade-offs, limitations, and modification guidance.
+- For digital work: ordered pins, equations/truth tables, state transitions,
+  startup and priority rules, timing/loading semantics, and analysis limits.
 
 ### Phase 7: Human Feedback
 
@@ -198,7 +308,12 @@ Use these helpers instead of writing ad-hoc C# for standard-value snapping, netl
 
 ### Works Well
 
-RC/RL/RLC filters including explicit LTspice source/passive parasitics, LAPLACE transfer-function blocks, amplifier stages, diode circuits including opt-in LTspice ideal diodes, opt-in nonlinear `Q=`/`Flux=` passives, voltage regulators, AM envelope detection, Wien bridge/phase-shift oscillators, DC power supplies, and BJT/MOSFET biasing.
+RC/RL/RLC filters including explicit LTspice source/passive parasitics,
+LAPLACE transfer-function blocks, amplifier stages, diode circuits including
+opt-in LTspice ideal diodes, opt-in nonlinear `Q=`/`Flux=` passives, voltage
+regulators, AM envelope detection, Wien bridge/phase-shift oscillators, DC
+power supplies, BJT/MOSFET biasing, functional digital gates, Schmitt inputs,
+stateful logic, tri-state/open-drain buses, and composed mixed-signal IC models.
 
 ### Use With Caution
 
@@ -210,6 +325,9 @@ RC/RL/RLC filters including explicit LTspice source/passive parasitics, LAPLACE 
 - **LTspice imports**: compatibility is opt-in and evidence-scoped; read `references/ltspice-compatibility.md` before claiming support.
 - **Custom ideal diode**: useful for power/rectifier behavior, but excludes junction charge, capacitance, semiconductor temperature physics, and noise.
 - **Nonlinear `Q=`/`Flux=` passives**: require `UseCustomComponents()` and convergence checks around the operating point.
+- **Digital functional models**: logic behavior, delay, and loading can be
+  useful without reproducing family-specific current, power, temperature,
+  damage, metastability, or guaranteed data-sheet limits.
 
 ### Convergence Tips
 
