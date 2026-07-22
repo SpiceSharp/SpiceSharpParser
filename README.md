@@ -182,6 +182,61 @@ reader failures still throw.
 | `Title` | Netlist title (first line) |
 | `FourierAnalyses` | Fourier analysis results from .FOUR statements |
 
+### Reusable Subcircuit Libraries
+
+`SpiceSubcircuitLibrary` loads include-style text files containing `.SUBCKT`
+definitions and adds selected instances to an ordinary programmatic SpiceSharp
+`Circuit`. Library files do not need a title or `.END` statement.
+
+```csharp
+using SpiceSharp;
+using SpiceSharp.Components;
+using SpiceSharpParser;
+using System.Collections.Generic;
+
+var options = new SpiceCompileOptions
+{
+    Dialect = SpiceDialect.LTspice,
+    ExpandSubcircuits = true,
+};
+
+var library = SpiceSubcircuitLibrary.LoadFile("digital.lib", options);
+var circuit = new Circuit(
+    new VoltageSource("VDD", "vdd", "0", 5.0));
+
+library.AddInstance(
+    circuit,
+    subcircuitName: "NAND2",
+    instanceName: "XU1",
+    nodes: new[] { "a", "b", "y", "vdd", "0" });
+
+library.AddInstance(
+    circuit,
+    "RC_FILTER",
+    "XFILTER",
+    new[] { "y", "filtered", "0" },
+    new Dictionary<string, string>
+    {
+        ["R"] = "10k",
+        ["C"] = "100p",
+    });
+
+// Run any normal SpiceSharp simulation against circuit.
+```
+
+The loader exposes pin and default-parameter metadata through
+`library.Subcircuits`. Nested `.INCLUDE` files, root model definitions, nested
+subcircuits, parameter overrides, case-sensitivity settings, and configured
+custom reader mappings are retained. Set `ExpandSubcircuits = false` to produce
+a native SpiceSharp `Subcircuit` when the instance does not require parameter
+expansion. Instance names must start with `X`.
+
+For netlists that use `SpiceSharpParser.CustomComponents`, install that optional
+package and set `ConfigureReader = settings => settings.UseCustomComponents()`
+on the compile options.
+
+See [Loading Subcircuits into Programmatic SpiceSharp Circuits](src/docs/articles/subcircuit-library.md).
+
 ## Supported Features
 
 ### Analysis

@@ -175,6 +175,13 @@ namespace SpiceSharpParser.Common.Processors
 
             if (includeContent != null)
             {
+                if (includeContent.Length > 0
+                    && !includeContent.EndsWith("\n", StringComparison.Ordinal)
+                    && !includeContent.EndsWith("\r", StringComparison.Ordinal))
+                {
+                    includeContent += Environment.NewLine;
+                }
+
                 RecordDependency(include, requestedPath, includeFullPath, SpiceDependencyStatus.Resolved);
                 var lexerSettings = new SpiceLexerSettings(LexerSettings.IsDotStatementNameCaseSensitive)
                 {
