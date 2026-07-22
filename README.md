@@ -365,9 +365,10 @@ See [LTspice-Style Nonlinear Passives](src/docs/articles/nonlinear-passives.md) 
 `Q=` / `Flux=` syntax, transient behavior, scaling rules, and optional LTspice-backed
 golden tests for AC and transient parity.
 
-The package also includes an embedded, parameterized digital gate library built
+The package also includes an embedded, parameterized mixed-signal library built
 on `SpiceSubcircuitLibrary`. It provides buffer, inverter, AND, NAND, OR, NOR,
-XOR, and XNOR models for programmatic SpiceSharp circuits:
+XOR, XNOR, comparator, reset-dominant SR-latch, open-drain, and functional 555
+timer models for programmatic SpiceSharp circuits:
 
 ```csharp
 using SpiceSharp;
@@ -389,11 +390,14 @@ digital.AddBinaryGate(
     "0");
 ```
 
-The models use supply-relative logic thresholds and support per-instance
-threshold, delay, input-resistance, output-resistance, and output-capacitance
-overrides. They can be added to pure SpiceSharp circuits or to circuits already
-read by SpiceSharpParser with `UseCustomComponents()` enabled. See
-[Digital Gate Subcircuit Library](src/docs/articles/digital-subcircuits.md).
+The models use supply-relative thresholds and support per-instance electrical
+overrides. `AddComparator`, `AddSetResetLatch`, `AddOpenDrain`, and
+`AddTimer555` expose the higher-level blocks. `TIMER555` uses standard pin order
+and implements the one-third/two-thirds thresholds and reset/trigger/threshold
+priority needed for astable and monostable timing circuits. All models can be
+added to pure SpiceSharp circuits or circuits already read by SpiceSharpParser
+with `UseCustomComponents()` enabled. See
+[Digital and 555 Subcircuit Library](src/docs/articles/digital-subcircuits.md).
 
 ### Behavioral Modeling
 

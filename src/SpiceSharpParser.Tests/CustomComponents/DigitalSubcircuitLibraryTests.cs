@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using SpiceSharp;
 using SpiceSharp.Components;
 using SpiceSharp.Simulations;
+using SpiceSharpParser.Analysis;
 using SpiceSharpParser.CustomComponents;
 using SpiceSharpParser.CustomComponents.Digital;
 using SpiceSharpParser.Testing;
+using SpiceSharpParser.Validation;
 using Xunit;
 
 namespace SpiceSharpParser.Tests.CustomComponents
@@ -48,7 +51,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
         {
             DigitalSubcircuitLibrary digital = DigitalSubcircuitLibrary.LoadBuiltIn();
 
-            Assert.Equal(8, digital.Library.Subcircuits.Count);
+            Assert.Equal(12, digital.Library.Subcircuits.Count);
             SpiceSubcircuitInfo inverter = digital.Library["DIG_NOT"];
             Assert.Equal(new[] { "A", "Y", "VDD", "VSS" }, inverter.Pins);
             Assert.Equal("0.5", inverter.DefaultParameters["VTH"]);
@@ -56,6 +59,9 @@ namespace SpiceSharpParser.Tests.CustomComponents
             Assert.Equal("1G", inverter.DefaultParameters["RIN"]);
             Assert.Equal("50", inverter.DefaultParameters["ROUT"]);
             Assert.Equal("5p", inverter.DefaultParameters["COUT"]);
+            Assert.Equal(
+                new[] { "GND", "TRIG", "OUT", "RESET", "CTRL", "THRESH", "DISCH", "VCC" },
+                digital.Library["TIMER555"].Pins);
             Assert.Empty(digital.Library.Diagnostics);
         }
 
@@ -123,6 +129,296 @@ namespace SpiceSharpParser.Tests.CustomComponents
 
             Assert.InRange(defaultOutput, 4.9, 5.0);
             Assert.InRange(overriddenOutput, -1e-9, 0.1);
+        }
+
+        [Fact]
+        public void AddComparator_UsesDifferentialInputPolarity()
+        {
+            var circuit = new Circuit(
+                new VoltageSource("VDD", "vdd", "0", 5.0),
+                new VoltageSource("VP", "positive", "0", 3.0),
+                new VoltageSource("VN", "negative", "0", 2.0),
+                new Resistor("RHIGH", "high", "0", 10000.0),
+                new Resistor("RLOW", "low", "0", 10000.0));
+            DigitalSubcircuitLibrary digital = DigitalSubcircuitLibrary.LoadBuiltIn();
+
+            digital.AddComparator(
+                circuit,
+                "XHIGH",
+                "positive",
+                "negative",
+                "high",
+                "vdd",
+                "0");
+            digital.AddComparator(
+                circuit,
+                "XLOW",
+                "negative",
+                "positive",
+                "low",
+                "vdd",
+                "0");
+
+            Assert.InRange(RunOperatingPoint(circuit, "high"), 4.9, 5.0);
+            Assert.InRange(RunOperatingPoint(circuit, "low"), -1e-9, 0.1);
+        }
+
+        [Fact]
+        public void AddOpenDrain_PullsLowWhenEnabledAndReleasesWhenDisabled()
+        {
+            var circuit = new Circuit(
+                new VoltageSource("VDD", "vdd", "0", 5.0),
+                new VoltageSource("VENABLED", "enabled", "0", 5.0),
+                new VoltageSource("VDISABLED", "disabled", "0", 0.0),
+                new Resistor("RPULL1", "vdd", "pulled-low", 10000.0),
+                new Resistor("RPULL2", "vdd", "released", 10000.0));
+            DigitalSubcircuitLibrary digital = DigitalSubcircuitLibrary.LoadBuiltIn();
+
+            digital.AddOpenDrain(circuit, "XON", "enabled", "pulled-low", "vdd", "0");
+            digital.AddOpenDrain(circuit, "XOFF", "disabled", "released", "vdd", "0");
+
+            Assert.InRange(RunOperatingPoint(circuit, "pulled-low"), 0.0, 0.1);
+            Assert.InRange(RunOperatingPoint(circuit, "released"), 4.9, 5.0);
+        }
+
+        [Fact]
+        public void AddSetResetLatch_SetsHoldsAndResetsState()
+        {
+            var model = SpiceNetlistTestHelper.ParseAndRead(
+                "Set-reset latch sequence",
+                "VDD vdd 0 5",
+                "VSET set 0 PULSE(0 5 5n 100p 100p 10n 200n)",
+                "VRESET reset 0 PULSE(0 5 60n 100p 100p 10n 200n)",
+                "RQ q 0 10k",
+                "RQB qb 0 10k",
+                ".TRAN 200p 100n 0 200p UIC",
+                ".SAVE V(q) V(qb)",
+                ".END");
+            DigitalSubcircuitLibrary digital = DigitalSubcircuitLibrary.LoadBuiltIn();
+            digital.AddSetResetLatch(
+                model.Circuit,
+                "XLATCH",
+                "set",
+                "reset",
+                "q",
+                "qb",
+                "vdd",
+                "0",
+                new Dictionary<string, string>
+                {
+                    ["TPD"] = "1n",
+                    ["RSTATE"] = "100",
+                    ["CMEM"] = "1p",
+                });
+
+            Tuple<double, double, double>[] samples =
+                SpiceSimulationTestHelper.RunTransientPair(model, "V(q)", "V(qb)");
+            Tuple<double, double, double> held = NearestSample(samples, 30e-9);
+            Tuple<double, double, double> reset = NearestSample(samples, 80e-9);
+
+            Assert.InRange(held.Item2, 4.9, 5.0);
+            Assert.InRange(held.Item3, -1e-9, 0.1);
+            Assert.InRange(reset.Item2, -1e-9, 0.1);
+            Assert.InRange(reset.Item3, 4.9, 5.0);
+        }
+
+        [Fact]
+        public void AddSetResetLatch_WhenSetAndResetAreHigh_ResetDominates()
+        {
+            var circuit = new Circuit(
+                new VoltageSource("VDD", "vdd", "0", 5.0),
+                new VoltageSource("VSET", "set", "0", 5.0),
+                new VoltageSource("VRESET", "reset", "0", 5.0),
+                new Resistor("RQ", "q", "0", 10000.0),
+                new Resistor("RQB", "qb", "0", 10000.0));
+            DigitalSubcircuitLibrary digital = DigitalSubcircuitLibrary.LoadBuiltIn();
+
+            digital.AddSetResetLatch(
+                circuit,
+                "XLATCH",
+                "set",
+                "reset",
+                "q",
+                "qb",
+                "vdd",
+                "0");
+
+            Assert.InRange(RunOperatingPoint(circuit, "q"), -1e-9, 0.1);
+            Assert.InRange(RunOperatingPoint(circuit, "qb"), 4.9, 5.0);
+        }
+
+        [Fact]
+        public void AddTimer555_ImplementsResetTriggerThresholdPriority()
+        {
+            DigitalSubcircuitLibrary digital = DigitalSubcircuitLibrary.LoadBuiltIn();
+            Circuit triggerAndThreshold = CreateTimerPriorityCircuit(resetHigh: true);
+
+            digital.AddTimer555(
+                triggerAndThreshold,
+                "XTIMER",
+                "0",
+                "trigger",
+                "out",
+                "reset",
+                "control",
+                "threshold",
+                "discharge",
+                "vcc");
+
+            Assert.InRange(RunOperatingPoint(triggerAndThreshold, "out"), 4.9, 5.0);
+            Assert.InRange(RunOperatingPoint(triggerAndThreshold, "discharge"), 4.9, 5.0);
+
+            Circuit reset = CreateTimerPriorityCircuit(resetHigh: false);
+            digital.AddTimer555(
+                reset,
+                "XTIMER",
+                "0",
+                "trigger",
+                "out",
+                "reset",
+                "control",
+                "threshold",
+                "discharge",
+                "vcc");
+
+            Assert.InRange(RunOperatingPoint(reset, "out"), -1e-9, 0.1);
+            Assert.InRange(RunOperatingPoint(reset, "discharge"), 0.0, 0.1);
+        }
+
+        [Fact]
+        public void AddTimer555_StaticCircuitPassesSmokeAndLintChecks()
+        {
+            var model = SpiceNetlistTestHelper.ParseAndRead(
+                "Functional 555 static smoke fixture",
+                "VCC vcc 0 5",
+                "VTRIGGER trigger 0 5",
+                "VRESET reset 0 0",
+                "VTHRESHOLD threshold 0 0",
+                "RLOAD out 0 10k",
+                "RDISCH vcc discharge 10k",
+                ".OP",
+                ".SAVE V(out) V(discharge)",
+                ".END");
+            DigitalSubcircuitLibrary digital = DigitalSubcircuitLibrary.LoadBuiltIn();
+            digital.AddTimer555(
+                model.Circuit,
+                "XTIMER",
+                "0",
+                "trigger",
+                "out",
+                "reset",
+                "control",
+                "threshold",
+                "discharge",
+                "vcc");
+
+            LintResult lint = NetlistLinter.Lint(model);
+            Assert.False(lint.HasErrors, lint.ToString());
+
+            SmokeTestResult smoke = SmokeTester.QuickCheck(model);
+            Assert.True(smoke.IsPass, smoke.DiagnosticSummary());
+        }
+
+        [Fact]
+        public void AddTimer555_InAstableCircuitMatchesTimingEquations()
+        {
+            var model = SpiceNetlistTestHelper.ParseAndRead(
+                "Functional 555 astable",
+                "VCC vcc 0 5",
+                "RA vcc discharge 10k",
+                "RB discharge timing 10k",
+                "CT timing 0 10n IC=0",
+                "CCTRL control 0 10n IC=3.333333333",
+                "RLOAD out 0 10k",
+                ".OPTIONS method=gear",
+                ".TRAN 1u 1m 0 10n UIC",
+                ".MEAS TRAN period TRIG V(out) VAL=2.5 RISE=2 TARG V(out) VAL=2.5 RISE=3",
+                ".MEAS TRAN high_time TRIG V(out) VAL=2.5 RISE=2 TARG V(out) VAL=2.5 FALL=2",
+                ".MEAS TRAN low_time TRIG V(out) VAL=2.5 FALL=2 TARG V(out) VAL=2.5 RISE=3",
+                ".MEAS TRAN timing_min MIN V(timing) FROM=300u TO=1m",
+                ".MEAS TRAN timing_max MAX V(timing) FROM=300u TO=1m",
+                ".SAVE V(out) V(timing)",
+                ".END");
+            DigitalSubcircuitLibrary digital = DigitalSubcircuitLibrary.LoadBuiltIn();
+            digital.AddTimer555(
+                model.Circuit,
+                "XTIMER",
+                "0",
+                "timing",
+                "out",
+                "vcc",
+                "control",
+                "timing",
+                "discharge",
+                "vcc");
+
+            Tuple<double, double, double>[] samples =
+                SpiceSimulationTestHelper.RunTransientPair(model, "V(out)", "V(timing)");
+            Tuple<double, double, double>[] settled =
+                samples.Where(item => item.Item1 >= 300e-6).ToArray();
+            int risingCrossings = CountRisingCrossings(samples, item => item.Item2, 2.5);
+            int fallingCrossings = CountFallingCrossings(samples, item => item.Item2, 2.5);
+            Assert.True(
+                model.Measurements["period"][0].Success,
+                string.Format(
+                    "No measured period. Output {0} to {1} V; timing {2} to {3} V; "
+                    + "settled timing {4} to {5} V; crossings {6} rising/{7} falling; "
+                    + "final out/timing {8}/{9} V.",
+                    samples.Min(item => item.Item2),
+                    samples.Max(item => item.Item2),
+                    samples.Min(item => item.Item3),
+                    samples.Max(item => item.Item3),
+                    settled.Min(item => item.Item3),
+                    settled.Max(item => item.Item3),
+                    risingCrossings,
+                    fallingCrossings,
+                    samples.Last().Item2,
+                    samples.Last().Item3));
+
+            double period =
+                SpiceNetlistAssertions.AssertMeasurementSuccess(model, "period").Value;
+            double highTime =
+                SpiceNetlistAssertions.AssertMeasurementSuccess(model, "high_time").Value;
+            double lowTime =
+                SpiceNetlistAssertions.AssertMeasurementSuccess(model, "low_time").Value;
+            double timingMinimum =
+                SpiceNetlistAssertions.AssertMeasurementSuccess(model, "timing_min").Value;
+            double timingMaximum =
+                SpiceNetlistAssertions.AssertMeasurementSuccess(model, "timing_max").Value;
+
+            Assert.InRange(period, 0.95 * 207.9e-6, 1.05 * 207.9e-6);
+            Assert.InRange(highTime, 0.95 * 138.6e-6, 1.05 * 138.6e-6);
+            Assert.InRange(lowTime, 0.95 * 69.3e-6, 1.05 * 69.3e-6);
+            Assert.InRange(timingMinimum, 1.5, 1.85);
+            Assert.InRange(timingMaximum, 3.15, 3.5);
+        }
+
+        [Fact]
+        public void Timer555AstableExample_CompilesIncludesAndMeasuresTiming()
+        {
+            string path = FindRepositoryFile(
+                "circuits",
+                "timer555",
+                "timer555-astable.cir");
+            SpiceCompilationResult result = SpiceCompiler.CompileFile(path);
+
+            Assert.True(result.Success, string.Join(Environment.NewLine, result.Diagnostics));
+            Assert.NotNull(result.Model);
+
+            SpiceSimulationTestHelper.RunTransientPair(
+                result.Model,
+                "V(out)",
+                "V(timing)");
+            double period =
+                SpiceNetlistAssertions.AssertMeasurementSuccess(result.Model, "period").Value;
+            double highTime =
+                SpiceNetlistAssertions.AssertMeasurementSuccess(result.Model, "high_time").Value;
+            double lowTime =
+                SpiceNetlistAssertions.AssertMeasurementSuccess(result.Model, "low_time").Value;
+
+            Assert.InRange(period, 0.95 * 207.9e-6, 1.05 * 207.9e-6);
+            Assert.InRange(highTime, 0.95 * 138.6e-6, 1.05 * 138.6e-6);
+            Assert.InRange(lowTime, 0.95 * 69.3e-6, 1.05 * 69.3e-6);
         }
 
         [Fact]
@@ -232,6 +528,84 @@ namespace SpiceSharpParser.Tests.CustomComponents
             foreach (int ignored in simulation.Run(circuit))
             {
                 result = export.Value;
+            }
+
+            return result;
+        }
+
+        private static Circuit CreateTimerPriorityCircuit(bool resetHigh)
+        {
+            return new Circuit(
+                new VoltageSource("VCC", "vcc", "0", 5.0),
+                new VoltageSource("VTRIGGER", "trigger", "0", 0.0),
+                new VoltageSource("VTHRESHOLD", "threshold", "0", 5.0),
+                new VoltageSource("VRESET", "reset", "0", resetHigh ? 5.0 : 0.0),
+                new Resistor("ROUT", "out", "0", 10000.0),
+                new Resistor("RDISCH", "vcc", "discharge", 10000.0));
+        }
+
+        private static Tuple<double, double, double> NearestSample(
+            IEnumerable<Tuple<double, double, double>> samples,
+            double time)
+        {
+            return samples.OrderBy(item => Math.Abs(item.Item1 - time)).First();
+        }
+
+        private static string FindRepositoryFile(params string[] pathSegments)
+        {
+            var directory = new DirectoryInfo(AppContext.BaseDirectory);
+            while (directory != null)
+            {
+                string candidate = Path.Combine(
+                    directory.FullName,
+                    Path.Combine(pathSegments));
+                if (File.Exists(candidate))
+                {
+                    return candidate;
+                }
+
+                directory = directory.Parent;
+            }
+
+            throw new FileNotFoundException(
+                "Could not locate repository fixture.",
+                Path.Combine(pathSegments));
+        }
+
+        private static int CountRisingCrossings(
+            IEnumerable<Tuple<double, double, double>> samples,
+            Func<Tuple<double, double, double>, double> selector,
+            double threshold)
+        {
+            return CountCrossings(samples, selector, threshold, rising: true);
+        }
+
+        private static int CountFallingCrossings(
+            IEnumerable<Tuple<double, double, double>> samples,
+            Func<Tuple<double, double, double>, double> selector,
+            double threshold)
+        {
+            return CountCrossings(samples, selector, threshold, rising: false);
+        }
+
+        private static int CountCrossings(
+            IEnumerable<Tuple<double, double, double>> samples,
+            Func<Tuple<double, double, double>, double> selector,
+            double threshold,
+            bool rising)
+        {
+            Tuple<double, double, double>[] values = samples.ToArray();
+            int result = 0;
+            for (int index = 1; index < values.Length; index++)
+            {
+                double previous = selector(values[index - 1]);
+                double current = selector(values[index]);
+                if (rising
+                    ? previous < threshold && current >= threshold
+                    : previous > threshold && current <= threshold)
+                {
+                    result++;
+                }
             }
 
             return result;

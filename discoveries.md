@@ -49,3 +49,33 @@ The switching threshold is
 `VTH * V(VDD,VSS)`. Keep `VTH`, propagation delay, input resistance, output
 resistance, and output capacitance overridable per instance. Verify every truth
 table row and use a small transient `tmax` when measuring nanosecond delays.
+
+---
+
+## 4. Behavioral state nodes still need an explicit structural DC path
+
+**Problem:** A behavioral current source and capacitor can implement latch state,
+but structural lint reports the memory node as floating.
+
+**Root Cause:** The linter cannot infer a DC conductance from an arbitrary
+behavioral expression, and a capacitor is open at DC.
+
+**Solution:** Add an explicit very-high-value hold resistor from the state node
+to the local reference. Choose `RHOLD * CMEM` much longer than the simulated
+interval, document the retention time, and keep acquisition dynamics on a
+separate `RSTATE` parameter.
+
+---
+
+## 5. Ideal behavioral transitions need deliberate edge shaping
+
+**Problem:** A fast behavioral output observed with a timestep larger than its
+RC edge can ring outside the supply rails under trapezoidal integration.
+
+**Root Cause:** The solver undersamples a nearly discontinuous source driving a
+tiny capacitance.
+
+**Solution:** Give functional digital outputs finite resistance and capacitance,
+use Gear for switching-heavy transients when appropriate, and set transient
+`tmax` well below both propagation delay and output edge time. The functional
+555 uses `ROUT=20` and `COUT=2n` by default (about an 88 ns 10%-to-90% edge).

@@ -1,0 +1,19 @@
+Generic functional 555 timer astable example
+.include "../../src/SpiceSharpParser.CustomComponents/Digital/Netlists/standard-digital.lib"
+
+VCC vcc 0 5
+RA vcc discharge 10k
+RB discharge timing 10k
+CT timing 0 10n IC=0
+CCTRL control 0 10n IC=3.333333333
+RLOAD out 0 10k
+
+XU1 0 timing out vcc control timing discharge vcc TIMER555
+
+.OPTIONS method=gear
+.TRAN 1u 1m 0 10n UIC
+.MEAS TRAN period TRIG V(out) VAL=2.5 RISE=2 TARG V(out) VAL=2.5 RISE=3
+.MEAS TRAN high_time TRIG V(out) VAL=2.5 RISE=2 TARG V(out) VAL=2.5 FALL=2
+.MEAS TRAN low_time TRIG V(out) VAL=2.5 FALL=2 TARG V(out) VAL=2.5 RISE=3
+.SAVE V(out) V(timing) V(discharge)
+.END

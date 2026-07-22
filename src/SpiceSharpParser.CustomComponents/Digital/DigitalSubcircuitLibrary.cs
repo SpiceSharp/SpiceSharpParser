@@ -9,7 +9,7 @@ using SpiceSharp.Entities;
 namespace SpiceSharpParser.CustomComponents.Digital
 {
     /// <summary>
-    /// Provides reusable, parameterized digital gate models backed by
+    /// Provides reusable, parameterized digital and mixed-signal models backed by
     /// <see cref="SpiceSubcircuitLibrary"/>.
     /// </summary>
     public sealed class DigitalSubcircuitLibrary
@@ -42,7 +42,7 @@ namespace SpiceSharpParser.CustomComponents.Digital
         public SpiceSubcircuitLibrary Library { get; }
 
         /// <summary>
-        /// Loads the digital gate models embedded in the custom-components assembly.
+        /// Loads the digital models embedded in the custom-components assembly.
         /// </summary>
         /// <param name="options">Compilation options, or null for defaults.</param>
         /// <returns>A reusable digital subcircuit library.</returns>
@@ -193,6 +193,125 @@ namespace SpiceSharpParser.CustomComponents.Digital
                 outputNode,
                 positiveSupplyNode,
                 negativeSupplyNode,
+                parameters);
+        }
+
+        /// <summary>
+        /// Adds a differential comparator whose output is high when the positive
+        /// input exceeds the negative input plus the optional VOFF parameter.
+        /// </summary>
+        public IReadOnlyList<IEntity> AddComparator(
+            Circuit circuit,
+            string instanceName,
+            string positiveInputNode,
+            string negativeInputNode,
+            string outputNode,
+            string positiveSupplyNode,
+            string negativeSupplyNode,
+            IReadOnlyDictionary<string, string> parameters = null)
+        {
+            return Library.AddInstance(
+                circuit,
+                "DIG_COMP",
+                instanceName,
+                new[]
+                {
+                    positiveInputNode,
+                    negativeInputNode,
+                    outputNode,
+                    positiveSupplyNode,
+                    negativeSupplyNode,
+                },
+                parameters);
+        }
+
+        /// <summary>
+        /// Adds an active-high, reset-dominant set-reset latch.
+        /// </summary>
+        public IReadOnlyList<IEntity> AddSetResetLatch(
+            Circuit circuit,
+            string instanceName,
+            string setNode,
+            string resetNode,
+            string outputNode,
+            string invertedOutputNode,
+            string positiveSupplyNode,
+            string negativeSupplyNode,
+            IReadOnlyDictionary<string, string> parameters = null)
+        {
+            return Library.AddInstance(
+                circuit,
+                "DIG_SR_LATCH",
+                instanceName,
+                new[]
+                {
+                    setNode,
+                    resetNode,
+                    outputNode,
+                    invertedOutputNode,
+                    positiveSupplyNode,
+                    negativeSupplyNode,
+                },
+                parameters);
+        }
+
+        /// <summary>
+        /// Adds an active-high open-drain pull-down driver.
+        /// </summary>
+        public IReadOnlyList<IEntity> AddOpenDrain(
+            Circuit circuit,
+            string instanceName,
+            string inputNode,
+            string outputNode,
+            string positiveSupplyNode,
+            string negativeSupplyNode,
+            IReadOnlyDictionary<string, string> parameters = null)
+        {
+            return Library.AddInstance(
+                circuit,
+                "DIG_OPEN_DRAIN",
+                instanceName,
+                new[]
+                {
+                    inputNode,
+                    outputNode,
+                    positiveSupplyNode,
+                    negativeSupplyNode,
+                },
+                parameters);
+        }
+
+        /// <summary>
+        /// Adds a functional 555 timer using standard package pin order.
+        /// </summary>
+        public IReadOnlyList<IEntity> AddTimer555(
+            Circuit circuit,
+            string instanceName,
+            string groundNode,
+            string triggerNode,
+            string outputNode,
+            string resetNode,
+            string controlNode,
+            string thresholdNode,
+            string dischargeNode,
+            string positiveSupplyNode,
+            IReadOnlyDictionary<string, string> parameters = null)
+        {
+            return Library.AddInstance(
+                circuit,
+                "TIMER555",
+                instanceName,
+                new[]
+                {
+                    groundNode,
+                    triggerNode,
+                    outputNode,
+                    resetNode,
+                    controlNode,
+                    thresholdNode,
+                    dischargeNode,
+                    positiveSupplyNode,
+                },
                 parameters);
         }
 
