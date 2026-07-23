@@ -20,7 +20,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
         {
             DigitalSubcircuitLibrary digital = DigitalSubcircuitLibrary.LoadBuiltIn();
 
-            Assert.Equal(20, digital.Library.Subcircuits.Count);
+            Assert.Equal(23, digital.Library.Subcircuits.Count);
             Assert.Equal(
                 new[] { "A", "Y", "VDD", "VSS" },
                 digital.Library["DIG_SCHMITT_BUF"].Pins);

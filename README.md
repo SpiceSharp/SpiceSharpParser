@@ -450,7 +450,7 @@ extension is separate from LTspice's one-argument `random(x)` behavior.
 
 Topology-changing LTspice options that can be represented safely are synthesized as helper components in the parser. Behavior-changing constructs that are not represented by SpiceSharp are reported with targeted diagnostics instead of being silently ignored.
 
-See the [LTspice compatibility matrix](roadmap/ltspice-compatibility-matrix.md) and [LTspice netlist compatibility plan](roadmap/ltspice-netlist-compatibility-plan.md) for the current support classes, known gaps, and evidence policy. Selected compatibility surfaces also have optional LTspice-backed golden tests; set `LTSPICE_EXE` to an LTspice executable to enable them. LTspice schematic and symbol import (`.asc` / `.asy`) is out of scope.
+See the [LTspice compatibility matrix](roadmap/ltspice-compatibility-matrix.md) and [LTspice netlist compatibility plan](roadmap/ltspice-netlist-compatibility-plan.md) for the current support classes, known gaps, and evidence policy. Selected compatibility surfaces also have optional LTspice-backed golden tests; set `LTSPICE_EXE` to an LTspice executable to enable them. The `LTspiceADeviceCompatibilityGoldenTests` suite compares native A-devices with the corresponding digital and analog subcircuits. LTspice schematic and symbol import (`.asc` / `.asy`) is out of scope.
 
 ### Custom Components
 
@@ -485,19 +485,20 @@ See [LTspice-Style Nonlinear Passives](src/docs/articles/nonlinear-passives.md) 
 `Q=` / `Flux=` syntax, transient behavior, scaling rules, and optional LTspice-backed
 golden tests for AC and transient parity.
 
-#### Digital Component and Functional 555 Library
+#### Digital, Analog, and Functional 555 Subcircuit Libraries
 
-The custom-components package ships a parameterized mixed-signal library built
-on `SpiceSubcircuitLibrary`. It is available in two forms:
+The custom-components package ships separate parameterized libraries backed by
+`SpiceSubcircuitLibrary`:
 
-- `DigitalSubcircuitLibrary.LoadBuiltIn()` loads the assembly-embedded copy.
-- The NuGet package includes `standard-digital.lib` under
-  `contentFiles/any/any/SpiceSharpParser.CustomComponents/Digital` for direct
-  `.INCLUDE` use or inspection.
+- `DigitalSubcircuitLibrary.LoadBuiltIn()` loads digital, state-machine, and
+  functional 555 models from `standard-digital.lib`.
+- `AnalogSubcircuitLibrary.LoadBuiltIn()` loads sample/hold, OTA, varistor, and
+  modulator models from `standard-analog.lib`.
+- The NuGet package includes both netlists under their respective
+  `SpiceSharpParser.CustomComponents/Digital` and `Analog` content folders.
 
-The embedded facade is the simplest path for programmatic SpiceSharp circuits.
-The text file is useful when the same definition must also be instantiated from
-a conventional netlist.
+The embedded facades are the simplest path for programmatic SpiceSharp circuits.
+The text files are useful for direct `.INCLUDE` use or inspection.
 
 ##### Included Models
 
@@ -521,7 +522,14 @@ a conventional netlist.
 | `AddDecoder2To4` | `DIG_DEC2TO4` | A, B, EN, Y0, Y1, Y2, Y3, VDD, VSS | Active-high enable and one-hot outputs |
 | `AddComparator` | `DIG_COMP` | P, N, Y, VDD, VSS | High when P exceeds N plus `VOFF` |
 | `AddOpenDrain` | `DIG_OPEN_DRAIN` | A, Y, VDD, VSS | Active-high low-side pull-down |
-| `AddSetResetLatch` | `DIG_SR_LATCH` | S, R, Q, QB, VDD, VSS | Active-high, reset-dominant state |
+| `AddSetResetLatch` / `AddSetResetFlipFlop` | `DIG_SR_LATCH` | S, R, Q, QB, VDD, VSS | Active-high, reset-dominant state |
+| `AddDFlipFlop` | `DIG_DFF` | D, CLK, PRE, CLR, Q, QB, VDD, VSS | Rising-edge capture; asynchronous clear dominates preset |
+| `AddPhaseDetector` | `DIG_PHASE_DETECTOR` | A, B, OUT, COM | Type-II source/sink phase-frequency detector |
+| `AnalogSubcircuitLibrary.AddSampleHold` | `ANALOG_SAMPLE_HOLD` | INP, INN, CLK, SH, OUT, COM | Differential track or rising-edge sample |
+| `AnalogSubcircuitLibrary.AddOperationalTransconductanceAmplifier` | `ANALOG_OTA` | IN1N, IN1P, IN2P, IN2N, RAIL, OUT, COM | Four-quadrant transconductance stage |
+| `AnalogSubcircuitLibrary.AddVoltageControlledVaristor` | `ANALOG_VARISTOR` | CONTROL_P, CONTROL_N, OUT, COM | Bidirectional controlled clamp |
+| `AnalogSubcircuitLibrary.AddModulator` | `ANALOG_MODULATOR` | FM, AM, OUT, COM | MARK/SPACE VCO with amplitude input |
+| `AddCounter` | `DIG_COUNTER` | CLK, RESET, Q, QB, VDD, VSS | Rising-edge divide-by-N counter |
 | `AddTimer555` | `TIMER555` | GND, TRIG, OUT, RESET, CTRL, THRESH, DISCH, VCC | Functional eight-pin 555 |
 
 `TIMER555` uses the standard package order from pin 1 through pin 8. Instance
@@ -549,6 +557,9 @@ stage. Floating inputs tend low through `RIN`.
 | Comparator | High only when `V(P,N) > VOFF`; it has no hysteresis |
 | Open drain | A=1 pulls Y low; A=0 releases Y; an external pull-up establishes high |
 | SR latch | Active-high S/R; reset wins when both are high; otherwise set, reset, or hold |
+| D flip-flop | Captures D on a rising CLK edge; active-high CLR overrides PRE |
+| Phase detector | A leads: source `IOUT`; B leads: sink `IOUT`; matching edge: zero current |
+| Counter | Starts high, advances on rising CLK edges, and repeats after `cycles` edges |
 | 555 timer | Priority is active-low RESET, then low TRIG, then high THRESH, then hold |
 
 `TPD` is transport delay before the output RC response; it is not the complete
@@ -866,7 +877,10 @@ digital.AddTimer555(
 | `DIG_MUX2`, `DIG_MUX4`, `DIG_FULL_ADDER`, `DIG_DEC2TO4` | `VTH=0.5 TPD=10n RIN=1G ROUT=50 COUT=5p` |
 | `DIG_COMP` | `VOFF=0 TPD=10n RIN=1G ROUT=50 COUT=5p` |
 | `DIG_OPEN_DRAIN` | `VTH=0.5 RIN=1G RON=10 ROFF=1T COUT=5p` |
-| `DIG_SR_LATCH` | `VTH=0.5 TPD=10n RIN=1G ROUT=50 COUT=5p RSTATE=1k RHOLD=1T CMEM=1p` |
+| `DIG_SR_LATCH` | `VTH=0.5 TPD=10n RIN=1G ROUT=50 COUT=5p RSTATE=1k RHOLD=1T RINIT=100G CMEM=1p IC=0` |
+| `DIG_DFF` | `VTH=0.5 TPD=10n RIN=1G ROUT=50 COUT=5p RSTATE=10 RHOLD=1T RINIT=100G CMEM=1p IC=0` |
+| `DIG_PHASE_DETECTOR` | `REF=0.5 IOUT=1m VHIGH=10 VLOW=-10 RIN=1G ROUT=1T RCLAMP=1 COUT=1p RSTATE=10 RHOLD=1T CMEM=1p` |
+| `DIG_COUNTER` | `CYCLES=2 DUTY=0.5 VTH=0.5 RIN=1G ROUT=50 COUT=5p RHOLD=1T CMEM=10p RWRAP=1 CWRAP=1p` |
 | `TIMER555` | `TPD=100n RIN=1G ROUT=20 COUT=2n RDIS=10 ROFF=1T RDIV=5k` |
 
 ##### 555 Behavior and Verified Timing
@@ -914,6 +928,7 @@ Use a vendor macro-model when those effects are acceptance criteria.
 More detail:
 
 - [Digital and 555 Subcircuit Library](src/docs/articles/digital-subcircuits.md)
+- [Analog Special-Function Subcircuit Library](src/docs/articles/analog-subcircuits.md)
 - [Digital component roadmap](roadmap/digital-component-library-roadmap.md)
 - [Milestone A requirements](circuits/digital-milestone-a/requirements.md)
 - [Milestone A design notes](circuits/digital-milestone-a/documentation.md)
@@ -936,6 +951,7 @@ workflow-specific guide:
 | Parser introduction and first simulation | [Introduction](src/docs/articles/intro.md) |
 | Loading text subcircuits into C#-built circuits | [Programmatic Subcircuit Libraries](src/docs/articles/subcircuit-library.md) |
 | Digital logic, truth tables, routing, buses, and functional 555 | [Digital and 555 Subcircuit Library](src/docs/articles/digital-subcircuits.md) |
+| Analog sample/hold, OTA, varistor, and modulator | [Analog Special-Function Subcircuit Library](src/docs/articles/analog-subcircuits.md) |
 | Stable compiler diagnostic codes | [Diagnostic Reference](docs/diagnostics.md) |
 | LTspice compatibility status | [Compatibility Matrix](roadmap/ltspice-compatibility-matrix.md) |
 | Custom ideal diode | [LTspice-Style Ideal Diode](src/docs/articles/ideal-diode.md) |

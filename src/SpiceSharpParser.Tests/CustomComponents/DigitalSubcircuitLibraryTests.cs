@@ -51,7 +51,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
         {
             DigitalSubcircuitLibrary digital = DigitalSubcircuitLibrary.LoadBuiltIn();
 
-            Assert.Equal(20, digital.Library.Subcircuits.Count);
+            Assert.Equal(23, digital.Library.Subcircuits.Count);
             SpiceSubcircuitInfo inverter = digital.Library["DIG_NOT"];
             Assert.Equal(new[] { "A", "Y", "VDD", "VSS" }, inverter.Pins);
             Assert.Equal("0.5", inverter.DefaultParameters["VTH"]);

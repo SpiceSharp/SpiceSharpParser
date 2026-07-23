@@ -1,6 +1,6 @@
 # Digital and 555 Subcircuit Library
 
-SpiceSharpParser.CustomComponents includes twenty reusable mixed-signal models
+SpiceSharpParser.CustomComponents includes twenty-three reusable digital and mixed-signal models
 backed by SpiceSubcircuitLibrary. The definitions live in the embedded
 standard-digital.lib text library and expand into ordinary SpiceSharp entities,
 so the same blocks work in pure programmatic circuits and in circuits read by
@@ -28,11 +28,24 @@ SpiceSharpParser.
 | AddDecoder2To4 | DIG_DEC2TO4 | A, B, EN, Y0, Y1, Y2, Y3, VDD, VSS |
 | AddComparator | DIG_COMP | P, N, Y, VDD, VSS |
 | AddOpenDrain | DIG_OPEN_DRAIN | A, Y, VDD, VSS |
-| AddSetResetLatch | DIG_SR_LATCH | S, R, Q, QB, VDD, VSS |
+| AddSetResetLatch / AddSetResetFlipFlop | DIG_SR_LATCH | S, R, Q, QB, VDD, VSS |
+| AddDFlipFlop | DIG_DFF | D, CLK, PRE, CLR, Q, QB, VDD, VSS |
+| AddPhaseDetector | DIG_PHASE_DETECTOR | A, B, OUT, COM |
+| AddCounter | DIG_COUNTER | CLK, RESET, Q, QB, VDD, VSS |
 | AddTimer555 | TIMER555 | GND, TRIG, OUT, RESET, CTRL, THRESH, DISCH, VCC |
 
 The TIMER555 ordering matches the standard package pin numbers 1 through 8.
 RESET is active low. The SR latch is active high and reset dominant.
+
+The digital A-device-derived entries are portable functional models based on LTspice's
+public special-function behavior. They expand into ordinary SpiceSharp entities;
+they are not drop-in parsers for LTspice `A...` instance syntax and do not promise
+solver-identical waveforms. The pin lists in the table are the supported portable
+interfaces. Existing buffer, inverter, Boolean, and Schmitt models cover the
+corresponding public gate functions.
+
+Sample/hold, OTA, varistor, and modulator models are provided separately by
+[AnalogSubcircuitLibrary](analog-subcircuits.md).
 
 ## Logic and Electrical Conventions
 
@@ -582,7 +595,10 @@ digital.AddComparator(
 | DIG_MUX2, DIG_MUX4, DIG_FULL_ADDER, DIG_DEC2TO4 | VTH=0.5, TPD=10n, RIN=1G, ROUT=50, COUT=5p |
 | DIG_COMP | VOFF=0, TPD=10n, RIN=1G, ROUT=50, COUT=5p |
 | DIG_OPEN_DRAIN | VTH=0.5, RIN=1G, RON=10, ROFF=1T, COUT=5p |
-| DIG_SR_LATCH | VTH=0.5, TPD=10n, RIN=1G, ROUT=50, COUT=5p, RSTATE=1k, RHOLD=1T, CMEM=1p |
+| DIG_SR_LATCH | VTH=0.5, TPD=10n, RIN=1G, ROUT=50, COUT=5p, RSTATE=1k, RHOLD=1T, RINIT=100G, CMEM=1p, IC=0 |
+| DIG_DFF | VTH=0.5, TPD=10n, RIN=1G, ROUT=50, COUT=5p, RSTATE=10, RHOLD=1T, RINIT=100G, CMEM=1p, IC=0 |
+| DIG_PHASE_DETECTOR | REF=0.5, IOUT=1m, VHIGH=10, VLOW=-10, RIN=1G, ROUT=1T, RCLAMP=1, COUT=1p, RSTATE=10, RHOLD=1T, CMEM=1p |
+| DIG_COUNTER | CYCLES=2, DUTY=0.5, VTH=0.5, RIN=1G, ROUT=50, COUT=5p, RHOLD=1T, CMEM=10p, RWRAP=1, CWRAP=1p |
 | TIMER555 | TPD=100n, RIN=1G, ROUT=20, COUT=2n, RDIS=10, ROFF=1T, RDIV=5k |
 
 VOFF is the comparator differential offset. RON and RDIS set enabled
@@ -611,6 +627,14 @@ Use a transient maximum step comfortably below TPD and the output edge time.
 The example uses Gear integration and a 10 ns maximum step. When UIC is used,
 initializing the control bypass capacitor near two-thirds VCC avoids an
 artificial startup ramp.
+
+## LTspice A-device Compatibility
+
+The optional `LTspiceADeviceCompatibilityGoldenTests` suite runs native
+LTspice A-devices and these portable subcircuits with the same stimuli. Its
+digital cases cover `SRFLOP`, `DFLOP`, `PHASEDET`, and `COUNTER`. Set
+`LTSPICE_EXE` to the LTspice executable path to enable the tests; they are
+skipped when it is unset.
 
 ## Mixing with SpiceSharpParser Custom Components
 

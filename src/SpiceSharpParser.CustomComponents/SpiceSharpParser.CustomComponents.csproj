@@ -42,6 +42,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Analog\Netlists\standard-analog.lib"
+                      LogicalName="SpiceSharpParser.CustomComponents.Analog.standard-analog.lib" />
+    <None Include="Analog\Netlists\standard-analog.lib"
+          Pack="true"
+          PackagePath="contentFiles\any\any\SpiceSharpParser.CustomComponents\Analog" />
     <EmbeddedResource Include="Digital\Netlists\standard-digital.lib"
                       LogicalName="SpiceSharpParser.CustomComponents.Digital.standard-digital.lib" />
     <None Include="Digital\Netlists\standard-digital.lib"
