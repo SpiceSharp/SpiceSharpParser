@@ -52,7 +52,7 @@ Install-Package SpiceSharpParser.CustomComponents
 | --- | --- |
 | Parse and compile SPICE netlists | `SpiceSharp-Parser` |
 | Load user-authored `.SUBCKT` libraries into SpiceSharp | `SpiceSharp-Parser` |
-| LTspice-style ideal diode and nonlinear `Q=`/`Flux=` passives | `SpiceSharpParser.CustomComponents` |
+| LTspice-Compatible A-devices, ideal diodes, and nonlinear `Q=`/`Flux=` passives | `SpiceSharpParser.CustomComponents` |
 | Embedded digital gates, routing, bus drivers, comparator, latch, open-drain, and 555 timer | `SpiceSharpParser.CustomComponents` |
 
 ## Quick Example
@@ -200,7 +200,7 @@ Using SpiceSharpParser involves three steps:
 | Parse an in-memory netlist with direct control over parser and reader settings | `SpiceNetlistParser` followed by `SpiceSharpReader` |
 | Load selected `.SUBCKT` definitions into a programmatic SpiceSharp circuit | `SpiceSubcircuitLibrary.LoadFile(...)` or `LoadText(...)` |
 | Use the packaged digital and functional 555 models | `DigitalSubcircuitLibrary.LoadBuiltIn()` |
-| Parse LTspice ideal diodes or nonlinear passives | `reader.Settings.UseCustomComponents()` |
+| Parse supported LTspice A-devices, ideal diodes, or nonlinear passives | `reader.Settings.UseCustomComponents()` |
 | Load a user library containing those custom components | `SpiceCompileOptions.ConfigureReader` with `UseCustomComponents()` |
 
 These paths are composable. For example, a netlist can be parsed with custom
@@ -454,8 +454,9 @@ See the [LTspice compatibility matrix](roadmap/ltspice-compatibility-matrix.md) 
 
 ### Custom Components
 
-The optional `SpiceSharpParser.CustomComponents` package/project adds opt-in parser mappings for LTspice-style
-ideal diode models and nonlinear passive devices:
+The optional `SpiceSharpParser.CustomComponents` package/project adds opt-in
+parser mappings for native LTspice A-devices, LTspice-style ideal diode models,
+and nonlinear passive devices:
 
 ```spice
 .model did D(Ron=0.1 Roff=1e9 Vfwd=0.7 Ilimit=10 Epsilon=10m)
@@ -467,17 +468,48 @@ L1 in out Flux=1m*x+100u*x*x
 
 Add `using SpiceSharpParser.CustomComponents;` and enable the mappings with
 `reader.Settings.UseCustomComponents()` before calling `Read()`.
-The same opt-in mapping parses eight-terminal LTspice A-device lines for
-`SRFLOP`, `DFLOP`, `PHASEDET`, `COUNTER`, `SAMPLEHOLD`, `OTA`, `VARISTOR`,
-`MODULATE`, and `MODULATOR`:
+
+#### Native LTspice A-device Parsing
+
+The A-device mapping accepts the native eight-terminal form:
+
+```text
+A<name> n1 n2 n3 n4 n5 n6 n7 n8 <model> [parameter=value ...] [flag ...]
+```
+
+Supported models are routed to the appropriate portable library:
+
+| Native model | Library | Portable subcircuit |
+| --- | --- | --- |
+| `SRFLOP` | `DigitalSubcircuitLibrary` | `DIG_SR_LATCH` |
+| `DFLOP` | `DigitalSubcircuitLibrary` | `DIG_DFF` |
+| `PHASEDET` | `DigitalSubcircuitLibrary` | `DIG_PHASE_DETECTOR` |
+| `COUNTER` | `DigitalSubcircuitLibrary` | `DIG_COUNTER` |
+| `SAMPLEHOLD` | `AnalogSubcircuitLibrary` | `ANALOG_SAMPLE_HOLD` |
+| `OTA` | `AnalogSubcircuitLibrary` | `ANALOG_OTA` |
+| `VARISTOR` | `AnalogSubcircuitLibrary` | `ANALOG_VARISTOR` |
+| `MODULATE` / `MODULATOR` | `AnalogSubcircuitLibrary` | `ANALOG_MODULATOR` |
+
+For example:
 
 ```spice
 ADFF data 0 clock preset clear qb q 0 DFLOP Vhigh=5 Vlow=0 Td=1n
 AOTA in1n in1p in2p in2n 0 rail out 0 OTA G=1m Linear
 ```
 
-The parser expands digital models through `DigitalSubcircuitLibrary` and
-analog or mixed-signal models through `AnalogSubcircuitLibrary`.
+Model and parameter names are case-insensitive. Invalid terminal counts,
+duplicate parameters, unsupported parameters, and unsupported A-device models
+produce source-located reader diagnostics.
+
+`LTspiceADeviceCompatibilityGoldenTests` writes each test's native netlist once,
+executes that same netlist in LTspice and SpiceSharpParser, and compares the
+resulting `.MEAS` values. Set `LTSPICE_EXE` to enable the suite:
+
+```powershell
+$env:LTSPICE_EXE = 'C:\Program Files\ADI\LTspice\LTspice.exe'
+dotnet test src/SpiceSharpParser.Tests/SpiceSharpParser.Tests.csproj `
+  --filter 'FullyQualifiedName~LTspiceADeviceCompatibilityGoldenTests'
+```
 
 Ideal diode models support LTspice-style `Ron`, `Roff`, `Vfwd`, `Vrev`, `Rrev`,
 `Ilimit`, `RevIlimit`, `Epsilon`, `RevEpsilon`, `M`, and `N` behavior, while ordinary
