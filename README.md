@@ -490,12 +490,8 @@ Supported models are routed to the appropriate portable library:
 | `VARISTOR` | `AnalogSubcircuitLibrary` | `ANALOG_VARISTOR` |
 | `MODULATE` / `MODULATOR` | `AnalogSubcircuitLibrary` | `ANALOG_MODULATOR` |
 
-For example:
-
-```spice
-ADFF data 0 clock preset clear qb q 0 DFLOP Vhigh=5 Vlow=0 Td=1n
-AOTA in1n in1p in2p in2n 0 rail out 0 OTA G=1m Linear
-```
+Complete, runnable examples for every supported model are in
+[Easy LTspice A-device Examples](src/docs/articles/a-devices.md).
 
 Model and parameter names are case-insensitive. Invalid terminal counts,
 duplicate parameters, unsupported parameters, and unsupported A-device models
@@ -994,6 +990,7 @@ workflow-specific guide:
 | --- | --- |
 | Parser introduction and first simulation | [Introduction](src/docs/articles/intro.md) |
 | Loading text subcircuits into C#-built circuits | [Programmatic Subcircuit Libraries](src/docs/articles/subcircuit-library.md) |
+| Native LTspice A-device syntax and examples | [Easy LTspice A-device Examples](src/docs/articles/a-devices.md) |
 | Digital logic, truth tables, routing, buses, and functional 555 | [Digital and 555 Subcircuit Library](src/docs/articles/digital-subcircuits.md) |
 | Analog sample/hold, OTA, varistor, and modulator | [Analog Special-Function Subcircuit Library](src/docs/articles/analog-subcircuits.md) |
 | Stable compiler diagnostic codes | [Diagnostic Reference](docs/diagnostics.md) |
