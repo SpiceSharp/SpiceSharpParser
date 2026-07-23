@@ -24,6 +24,7 @@ namespace SpiceSharpParser.CustomComponents
             settings.Mappings.Components.Map("L", new NonlinearPassiveGenerator());
             settings.Mappings.Models.Map("D", new IdealDiodeModelGenerator());
             settings.Mappings.Components.Map("D", new IdealDiodeGenerator());
+            settings.Mappings.Components.Map("A", new LTspiceADeviceGenerator());
             return settings;
         }
     }

@@ -24,8 +24,10 @@ same file to
 | `AddModulator` | `ANALOG_MODULATOR` | FM, AM, OUT, COM | MARK/SPACE oscillator with amplitude input |
 
 These are analog or mixed-signal subcircuits built from ordinary SpiceSharp
-entities. They do not parse native LTspice `A...` instance lines and do not
-promise solver-identical waveforms.
+entities. With `UseCustomComponents()` enabled, SpiceSharpParser accepts native
+eight-terminal A-device lines for `SAMPLEHOLD`, `OTA`, `VARISTOR`, `MODULATE`,
+and `MODULATOR`, then expands them through this library. The models target
+functional compatibility and do not promise solver-identical waveforms.
 
 ## Behavior
 
@@ -88,8 +90,8 @@ analog.AddModulator(
 
 ## LTspice A-device Compatibility
 
-The optional `LTspiceADeviceCompatibilityGoldenTests` suite runs native
-LTspice A-devices and these portable subcircuits with the same stimuli. Its
-analog cases cover `SAMPLEHOLD`, `OTA`, `VARISTOR`, and `MODULATOR`. Set
-`LTSPICE_EXE` to the LTspice executable path to enable the tests; they are
-skipped when it is unset.
+The optional `LTspiceADeviceCompatibilityGoldenTests` suite executes each
+native A-device netlist unchanged in both LTspice and SpiceSharpParser, then
+compares their `.MEAS` results. Its analog cases cover `SAMPLEHOLD`, `OTA`,
+`VARISTOR`, and `MODULATOR`. Set `LTSPICE_EXE` to the LTspice executable path
+to enable the tests; they are skipped when it is unset.

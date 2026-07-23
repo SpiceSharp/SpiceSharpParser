@@ -450,7 +450,7 @@ extension is separate from LTspice's one-argument `random(x)` behavior.
 
 Topology-changing LTspice options that can be represented safely are synthesized as helper components in the parser. Behavior-changing constructs that are not represented by SpiceSharp are reported with targeted diagnostics instead of being silently ignored.
 
-See the [LTspice compatibility matrix](roadmap/ltspice-compatibility-matrix.md) and [LTspice netlist compatibility plan](roadmap/ltspice-netlist-compatibility-plan.md) for the current support classes, known gaps, and evidence policy. Selected compatibility surfaces also have optional LTspice-backed golden tests; set `LTSPICE_EXE` to an LTspice executable to enable them. The `LTspiceADeviceCompatibilityGoldenTests` suite compares native A-devices with the corresponding digital and analog subcircuits. LTspice schematic and symbol import (`.asc` / `.asy`) is out of scope.
+See the [LTspice compatibility matrix](roadmap/ltspice-compatibility-matrix.md) and [LTspice netlist compatibility plan](roadmap/ltspice-netlist-compatibility-plan.md) for the current support classes, known gaps, and evidence policy. Selected compatibility surfaces also have optional LTspice-backed golden tests; set `LTSPICE_EXE` to an LTspice executable to enable them. The `LTspiceADeviceCompatibilityGoldenTests` suite executes the same native A-device netlist in LTspice and SpiceSharpParser and compares its `.MEAS` results. LTspice schematic and symbol import (`.asc` / `.asy`) is out of scope.
 
 ### Custom Components
 
@@ -467,6 +467,18 @@ L1 in out Flux=1m*x+100u*x*x
 
 Add `using SpiceSharpParser.CustomComponents;` and enable the mappings with
 `reader.Settings.UseCustomComponents()` before calling `Read()`.
+The same opt-in mapping parses eight-terminal LTspice A-device lines for
+`SRFLOP`, `DFLOP`, `PHASEDET`, `COUNTER`, `SAMPLEHOLD`, `OTA`, `VARISTOR`,
+`MODULATE`, and `MODULATOR`:
+
+```spice
+ADFF data 0 clock preset clear qb q 0 DFLOP Vhigh=5 Vlow=0 Td=1n
+AOTA in1n in1p in2p in2n 0 rail out 0 OTA G=1m Linear
+```
+
+The parser expands digital models through `DigitalSubcircuitLibrary` and
+analog or mixed-signal models through `AnalogSubcircuitLibrary`.
+
 Ideal diode models support LTspice-style `Ron`, `Roff`, `Vfwd`, `Vrev`, `Rrev`,
 `Ilimit`, `RevIlimit`, `Epsilon`, `RevEpsilon`, `M`, and `N` behavior, while ordinary
 diode models still fall back to SpiceSharp's built-in semiconductor diode.

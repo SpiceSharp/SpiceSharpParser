@@ -37,12 +37,12 @@ SpiceSharpParser.
 The TIMER555 ordering matches the standard package pin numbers 1 through 8.
 RESET is active low. The SR latch is active high and reset dominant.
 
-The digital A-device-derived entries are portable functional models based on LTspice's
-public special-function behavior. They expand into ordinary SpiceSharp entities;
-they are not drop-in parsers for LTspice `A...` instance syntax and do not promise
-solver-identical waveforms. The pin lists in the table are the supported portable
-interfaces. Existing buffer, inverter, Boolean, and Schmitt models cover the
-corresponding public gate functions.
+The digital A-device-derived entries are portable functional models based on
+LTspice's public special-function behavior. With `UseCustomComponents()`
+enabled, SpiceSharpParser accepts native eight-terminal A-device lines for
+`SRFLOP`, `DFLOP`, `PHASEDET`, and `COUNTER`, then expands them through this
+library. The other digital models remain programmatic subcircuit interfaces.
+These functional models do not promise solver-identical waveforms.
 
 Sample/hold, OTA, varistor, and modulator models are provided separately by
 [AnalogSubcircuitLibrary](analog-subcircuits.md).
@@ -630,11 +630,11 @@ artificial startup ramp.
 
 ## LTspice A-device Compatibility
 
-The optional `LTspiceADeviceCompatibilityGoldenTests` suite runs native
-LTspice A-devices and these portable subcircuits with the same stimuli. Its
-digital cases cover `SRFLOP`, `DFLOP`, `PHASEDET`, and `COUNTER`. Set
-`LTSPICE_EXE` to the LTspice executable path to enable the tests; they are
-skipped when it is unset.
+The optional `LTspiceADeviceCompatibilityGoldenTests` suite executes each
+native A-device netlist unchanged in both LTspice and SpiceSharpParser, then
+compares their `.MEAS` results. Its digital cases cover `SRFLOP`, `DFLOP`,
+`PHASEDET`, and `COUNTER`. Set `LTSPICE_EXE` to the LTspice executable path to
+enable the tests; they are skipped when it is unset.
 
 ## Mixing with SpiceSharpParser Custom Components
 
