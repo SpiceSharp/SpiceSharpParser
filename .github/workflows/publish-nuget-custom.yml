@@ -1,0 +1,36 @@
+name: Publish to NuGet Custom Components
+
+on:
+  release:
+    branches: [ main ]
+    types: [ published ]
+  
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@master
+    
+    - name: Setup dotnet tooling
+      uses: actions/setup-dotnet@master
+      with:
+        dotnet-version: '8.0.x'
+    
+    - name: Restore dependencies
+      run: 
+          cd src
+          
+          dotnet restore
+
+
+    - name: Compile SpiceSharpParser.CustomComponents
+      run: dotnet build src\SpiceSharpParser.CustomComponents\SpiceSharpParser.CustomComponents.csproj --configuration Release --no-restore
+
+    - name: Publish to NuGet - Custom Components
+      env:
+        APIKEY: ${{ secrets.NUGET_APIKEY_CUSTOM_COMPONENTS }}
+      run: dotnet nuget push src\SpiceSharpParser.CustomComponents\bin\Release\SpiceSharpParser.CustomComponents.*.nupkg -k $env:APIKEY -s "https://api.nuget.org/v3/index.json"
+      
