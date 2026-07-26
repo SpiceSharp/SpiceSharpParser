@@ -208,7 +208,8 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
                 // CMOD 3 7 CMODEL L = 10u W = 1u
                 // CMOD 3 7 CMODEL L = 10u W = 1u IC=1
                 // CMOD 3 7 1.3 IC=1
-                if (parameters[2] is ValueParameter)
+                if (parameters[2] is ValueParameter
+                    || parameters[2] is ExpressionParameter)
                 {
                     context.SetParameter(capacitor, "capacitance", parameters.Get(2), true);
                 }

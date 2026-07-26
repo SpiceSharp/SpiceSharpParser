@@ -100,6 +100,8 @@ namespace SpiceSharpParser.CustomComponents.Analog
             string commonNode,
             IReadOnlyDictionary<string, string> parameters = null)
         {
+            IReadOnlyDictionary<string, string> effectiveParameters =
+                ApplyOtaDependentDefaults(parameters);
             return Library.AddInstance(
                 circuit,
                 "ANALOG_OTA",
@@ -114,7 +116,7 @@ namespace SpiceSharpParser.CustomComponents.Analog
                     outputNode,
                     commonNode,
                 },
-                parameters);
+                effectiveParameters);
         }
 
         /// <summary>
@@ -162,6 +164,48 @@ namespace SpiceSharpParser.CustomComponents.Analog
                     commonNode,
                 },
                 parameters);
+        }
+
+        private static IReadOnlyDictionary<string, string> ApplyOtaDependentDefaults(
+            IReadOnlyDictionary<string, string> parameters)
+        {
+            if (parameters == null)
+            {
+                return parameters;
+            }
+
+            string outputLimit = null;
+            foreach (KeyValuePair<string, string> parameter in parameters)
+            {
+                if (parameter.Key.Equals("IOUT", StringComparison.OrdinalIgnoreCase))
+                {
+                    outputLimit = parameter.Value;
+                    break;
+                }
+            }
+
+            if (outputLimit == null)
+            {
+                return parameters;
+            }
+
+            var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            foreach (KeyValuePair<string, string> parameter in parameters)
+            {
+                result[parameter.Key] = parameter.Value;
+            }
+
+            if (!result.ContainsKey("ISRC"))
+            {
+                result["ISRC"] = outputLimit;
+            }
+
+            if (!result.ContainsKey("ISINK"))
+            {
+                result["ISINK"] = "-(" + outputLimit + ")";
+            }
+
+            return result;
         }
     }
 }

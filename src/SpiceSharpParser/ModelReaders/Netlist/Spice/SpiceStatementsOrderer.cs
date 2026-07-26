@@ -48,6 +48,14 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice
 
             if (statement is Component)
             {
+                // A-devices expand into generated entities. Read ordinary components first so
+                // the expansion can choose names against the complete set of user entities.
+                if (statement is Component component
+                    && component.Name.StartsWith("A", StringComparison.OrdinalIgnoreCase))
+                {
+                    return 3100;
+                }
+
                 return 3000;
             }
 

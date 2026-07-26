@@ -25,8 +25,12 @@ Every native A-device line has eight terminal positions followed by its model:
 A<name> n1 n2 n3 n4 n5 n6 n7 n8 <model> [parameter=value ...] [flag ...]
 ```
 
-Unused terminals are written as `0`. Model and parameter names are
-case-insensitive.
+An A-device terminal is unused when it is connected to terminal 8 (`common`).
+When `common` is ground, unused terminals are therefore written as `0`; with a
+non-ground common, use that node name instead. A literal `0` remains an active
+global-ground connection when terminal 8 is not ground. Unused output terminals
+are electrically detached, while an unused `MODULATOR` amplitude terminal uses
+LTspice's default amplitude of 1. Model and parameter names are case-insensitive.
 
 ## Digital Examples
 
@@ -205,7 +209,8 @@ RLOAD out 0 100k
 ```
 
 `POSITIVE_PEAK` is approximately 2 V. `MODULATE` is accepted as an alias for
-`MODULATOR`.
+`MODULATOR`. Native LTspice requires both `Mark` and `Space`; the parser rejects
+either frequency when omitted instead of silently substituting a value.
 
 ## Math and Physical Intuition
 
@@ -439,4 +444,3 @@ $env:LTSPICE_EXE = 'C:\Program Files\ADI\LTspice\LTspice.exe'
 dotnet test src/SpiceSharpParser.Tests/SpiceSharpParser.Tests.csproj `
   --filter 'FullyQualifiedName~LTspiceADeviceCompatibilityGoldenTests'
 ```
-

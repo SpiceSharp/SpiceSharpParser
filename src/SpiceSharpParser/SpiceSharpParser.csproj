@@ -13,7 +13,7 @@
     <PackageId>SpiceSharp-Parser</PackageId>
     <Product>SpiceSharpParser</Product>
     <Description>SPICE netlists parser for .NET</Description>
-    <PackageReleaseNotes>Refer to the GitHub release for release notes</PackageReleaseNotes>
+    <PackageReleaseNotes>3.4.1 hardens LTspice A-device integration with unused-terminal semantics, required MODULATOR frequencies, strict validation, sweep-safe rejection, collision-safe transactional expansion, and capacitor-expression compatibility.</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
@@ -22,7 +22,7 @@
     <StartupObject />
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <LangVersion>latest</LangVersion>
-    <Version>3.4.0</Version>
+    <Version>3.4.1</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|AnyCPU'">

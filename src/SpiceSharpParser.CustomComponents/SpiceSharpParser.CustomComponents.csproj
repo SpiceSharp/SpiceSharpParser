@@ -13,14 +13,14 @@
     <PackageId>SpiceSharpParser.CustomComponents</PackageId>
     <Product>SpiceSharpParser.CustomComponents</Product>
     <Description>Custom SpiceSharp components for SpiceSharpParser integrations.</Description>
-    <PackageReleaseNotes>Refer to the GitHub release for release notes</PackageReleaseNotes>
+    <PackageReleaseNotes>0.1.1 hardens LTspice A-device models with unused-terminal semantics, native zero-delay and PHASEDET defaults, OTA limit and Cout fixes, nonleaking state, stable modulation, clock-independent edge capture, continuous varistor leakage, and explicit SAMPLEHOLD Td rejection.</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <OutputType>Library</OutputType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <LangVersion>latest</LangVersion>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|AnyCPU'">
@@ -49,6 +49,8 @@
           PackagePath="contentFiles\any\any\SpiceSharpParser.CustomComponents\Analog" />
     <EmbeddedResource Include="Digital\Netlists\standard-digital.lib"
                       LogicalName="SpiceSharpParser.CustomComponents.Digital.standard-digital.lib" />
+    <EmbeddedResource Include="Digital\Netlists\ltspice-a-device-zero-delay.lib"
+                      LogicalName="SpiceSharpParser.CustomComponents.Digital.ltspice-a-device-zero-delay.lib" />
     <None Include="Digital\Netlists\standard-digital.lib"
           Pack="true"
           PackagePath="contentFiles\any\any\SpiceSharpParser.CustomComponents\Digital" />

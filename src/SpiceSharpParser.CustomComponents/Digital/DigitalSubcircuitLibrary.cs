@@ -16,6 +16,8 @@ namespace SpiceSharpParser.CustomComponents.Digital
     {
         private const string EmbeddedResourceName =
             "SpiceSharpParser.CustomComponents.Digital.standard-digital.lib";
+        private const string ADeviceZeroDelayResourceName =
+            "SpiceSharpParser.CustomComponents.Digital.ltspice-a-device-zero-delay.lib";
 
         private static readonly IReadOnlyDictionary<DigitalGateKind, string> SubcircuitNames =
             new ReadOnlyDictionary<DigitalGateKind, string>(
@@ -48,13 +50,25 @@ namespace SpiceSharpParser.CustomComponents.Digital
         /// <returns>A reusable digital subcircuit library.</returns>
         public static DigitalSubcircuitLibrary LoadBuiltIn(SpiceCompileOptions options = null)
         {
+            return LoadEmbedded(EmbeddedResourceName, options);
+        }
+
+        internal static DigitalSubcircuitLibrary LoadADeviceZeroDelay(SpiceCompileOptions options = null)
+        {
+            return LoadEmbedded(ADeviceZeroDelayResourceName, options);
+        }
+
+        private static DigitalSubcircuitLibrary LoadEmbedded(
+            string resourceName,
+            SpiceCompileOptions options)
+        {
             Assembly assembly = typeof(DigitalSubcircuitLibrary).GetTypeInfo().Assembly;
-            using (Stream stream = assembly.GetManifestResourceStream(EmbeddedResourceName))
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
             {
                 if (stream == null)
                 {
                     throw new InvalidOperationException(
-                        $"The embedded digital subcircuit resource '{EmbeddedResourceName}' was not found.");
+                        $"The embedded digital subcircuit resource '{resourceName}' was not found.");
                 }
 
                 using (var reader = new StreamReader(stream))
@@ -62,7 +76,7 @@ namespace SpiceSharpParser.CustomComponents.Digital
                     return new DigitalSubcircuitLibrary(
                         SpiceSubcircuitLibrary.LoadText(
                             reader.ReadToEnd(),
-                            EmbeddedResourceName,
+                            resourceName,
                             options));
                 }
             }
