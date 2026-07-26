@@ -279,11 +279,12 @@ V_{REF}=V_{LOW}+0.5(V_{HIGH}-V_{LOW}).
 $$
 
 The finite output resistance and capacitance turn an ideal logic step into a
-first-order electrical transition. With an external capacitive load,
+first-order electrical transition. With an external capacitive load, the
+10%-to-90% rise time is approximately
 
 $$
-\tau\approx R_{OUT}\(C_{OUT}+C_{LOAD}\),
-\qquad t_{10\%-90\%}\approx2.2\tau.
+\tau\approx R_{OUT}(C_{OUT}+C_{LOAD}),
+\qquad t_r\approx2.2\tau.
 $$
 
 This is the physical bridge between Boolean logic and a voltage that can drive
