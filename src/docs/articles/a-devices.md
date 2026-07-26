@@ -436,8 +436,8 @@ The current law is
 $$
 i(v)=
 \begin{cases}
-\dfrac{v-V_C}{R_{CLAMP}}, & v>V_C,\\[6pt]
-\dfrac{v}{R_{OFF}}, & |v|\le V_C,\\[6pt]
+\dfrac{v-V_C}{R_{CLAMP}}, & v>V_C,\\
+\dfrac{v}{R_{OFF}}, & |v|\le V_C,\\
 \dfrac{v+V_C}{R_{CLAMP}}, & v<-V_C.
 \end{cases}
 $$
