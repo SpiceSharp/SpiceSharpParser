@@ -203,7 +203,7 @@ $$
 $$
 
 $$
-\text{phase}_k = \operatorname{atan2}(-b_k, a_k) \cdot \frac{180}{\pi}
+\text{phase}_k = \mathrm{atan2}(-b_k, a_k) \cdot \frac{180}{\pi}
 $$
 
 Phase is **conceptual here** — note that the `WaveformAnalyzer` helper does not

@@ -330,7 +330,7 @@ calculate setup time, hold time, or metastability probability.
 Let `k` be the number of rising edges since reset, `N=CYCLES`, and
 
 $$
-H=\operatorname{clip}(\operatorname{round}(N\cdot DUTY),1,N-1).
+H=\mathrm{clip}(\mathrm{round}(N\cdot DUTY),1,N-1).
 $$
 
 Then

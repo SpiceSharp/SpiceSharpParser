@@ -237,20 +237,20 @@ Transfers with singular DC gain, such as $1/s$, are rejected.
 For AC analysis, substitute $s = j\omega$:
 
 $$
-H(j\omega) = \operatorname{real} + j\,\operatorname{imag}
+H(j\omega) = \mathrm{real} + j\,\mathrm{imag}
 $$
 
 Magnitude:
 
 $$
 \left|H(j\omega)\right| =
-\sqrt{\operatorname{real}^2 + \operatorname{imag}^2}
+\sqrt{\mathrm{real}^2 + \mathrm{imag}^2}
 $$
 
 Phase:
 
 $$
-\text{phase} = \operatorname{atan2}(\operatorname{imag}, \operatorname{real})
+\text{phase} = \mathrm{atan2}(\mathrm{imag}, \mathrm{real})
 $$
 
 ### Low-Pass Example
