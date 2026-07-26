@@ -282,7 +282,7 @@ The finite output resistance and capacitance turn an ideal logic step into a
 first-order electrical transition. With an external capacitive load,
 
 $$
-\tau\approx R_{OUT}(C_{OUT}+C_{LOAD}),
+\tau\approx R_{OUT}\(C_{OUT}+C_{LOAD}\),
 \qquad t_{10\%-90\%}\approx2.2\tau.
 $$
 
