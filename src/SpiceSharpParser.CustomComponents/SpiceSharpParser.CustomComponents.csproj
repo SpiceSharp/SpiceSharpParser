@@ -14,14 +14,14 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Product>SpiceSharpParser.CustomComponents</Product>
     <Description>Custom SpiceSharp components for SpiceSharpParser integrations.</Description>
-    <PackageReleaseNotes>0.1.1 hardens LTspice A-device models with unused-terminal semantics, native zero-delay and PHASEDET defaults, OTA limit and Cout fixes, nonleaking state, stable modulation, clock-independent edge capture, continuous varistor leakage, and explicit SAMPLEHOLD Td rejection.</PackageReleaseNotes>
+    <PackageReleaseNotes>0.1.2</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <OutputType>Library</OutputType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <LangVersion>latest</LangVersion>
-    <Version>0.1.1</Version>
+    <Version>0.1.2</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|AnyCPU'">
