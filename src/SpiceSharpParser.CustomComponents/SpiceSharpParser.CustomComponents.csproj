@@ -11,6 +11,7 @@
     <RepositoryType></RepositoryType>
     <PackageTags>circuit electronics spice custom components ideal diode nonlinear capacitor inductor digital logic schmitt tri-state multiplexer timer 555</PackageTags>
     <PackageId>SpiceSharpParser.CustomComponents</PackageId>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <Product>SpiceSharpParser.CustomComponents</Product>
     <Description>Custom SpiceSharp components for SpiceSharpParser integrations.</Description>
     <PackageReleaseNotes>0.1.1 hardens LTspice A-device models with unused-terminal semantics, native zero-delay and PHASEDET defaults, OTA limit and Cout fixes, nonleaking state, stable modulation, clock-independent edge capture, continuous varistor leakage, and explicit SAMPLEHOLD Td rejection.</PackageReleaseNotes>
@@ -42,6 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
     <EmbeddedResource Include="Analog\Netlists\standard-analog.lib"
                       LogicalName="SpiceSharpParser.CustomComponents.Analog.standard-analog.lib" />
     <None Include="Analog\Netlists\standard-analog.lib"
