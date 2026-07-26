@@ -33,3 +33,8 @@ jobs:
         APIKEY: ${{ secrets.NUGET_APIKEY }}
       run: dotnet nuget push src\SpiceSharpParser\bin\Release\SpiceSharp-Parser.*.nupkg -k $env:APIKEY -s "https://api.nuget.org/v3/index.json"
       
+    - name: Publish to NuGet - Custom Components
+      env:
+        APIKEY: ${{ secrets.NUGET_APIKEY_CUSTOM_COMPONENTS }}
+      run: dotnet nuget push src\SpiceSharpParser.CustomComponents\bin\Release\SpiceSharpParser.CustomComponents.*.nupkg -k $env:APIKEY -s "https://api.nuget.org/v3/index.json"
+      
