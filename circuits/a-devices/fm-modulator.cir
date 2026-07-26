@@ -1,0 +1,17 @@
+LTspice A-device frequency-modulator example
+
+* FM=0 selects SPACE; FM=1 selects MARK.
+VFM fm 0 PWL(0 0 3m 0 3.01m 1 8m 1)
+
+* Terminal 2 repeats common, so AM is unused and defaults to amplitude 1.
+AMOD fm 0 0 0 0 0 carrier 0 MODULATOR mark=2k space=1k Rout=1
+RLOAD carrier 0 100k
+
+.OPTIONS plotwinsize=0
+.TRAN 10u 8m 0 10u UIC
+.MEAS TRAN space_period TRIG V(carrier) VAL=0 RISE=1 TD=500u TARG V(carrier) VAL=0 RISE=2 TD=500u
+.MEAS TRAN mark_period TRIG V(carrier) VAL=0 RISE=1 TD=4m TARG V(carrier) VAL=0 RISE=2 TD=4m
+.MEAS TRAN default_amplitude MAX V(carrier) FROM=500u TO=2.5m
+.SAVE V(fm) V(carrier)
+.PLOT TRAN V(fm) V(carrier)
+.END

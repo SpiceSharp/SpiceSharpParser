@@ -1,0 +1,15 @@
+LTspice A-device divide-by-four clock example
+
+VCLOCK clock 0 PULSE(0 5 5u 10n 10n 2u 10u)
+VRESET reset 0 0
+
+ACOUNT clock reset 0 0 0 divided_b divided 0 COUNTER cycles=4 duty=0.5 Vhigh=5 Vlow=0 Rout=10
+RLOAD divided 0 10k
+RLOADB divided_b 0 10k
+
+.TRAN 100n 150u 0 100n UIC
+.MEAS TRAN output_period TRIG V(divided) VAL=2.5 RISE=2 TARG V(divided) VAL=2.5 RISE=3
+.MEAS TRAN output_low FIND V(divided) AT=25u
+.SAVE V(clock) V(divided) V(divided_b)
+.PLOT TRAN V(clock) V(divided) V(divided_b)
+.END

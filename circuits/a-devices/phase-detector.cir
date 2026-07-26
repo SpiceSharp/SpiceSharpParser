@@ -1,0 +1,15 @@
+LTspice A-device phase-detector example
+
+VA reference 0 PULSE(0 1 1u 10n 10n 1u 20u)
+VB feedback 0 PULSE(0 1 3u 10n 10n 1u 20u)
+
+* The 1 kohm load turns the +/-1 mA charge-pump current into +/-1 V.
+APD reference feedback 0 0 0 0 error 0 PHASEDET Iout=1m Vhigh=5 Vlow=-5
+RLOOP error 0 1k
+
+.TRAN 100n 25u 0 100n UIC
+.MEAS TRAN reference_leads FIND V(error) AT=2.5u
+.MEAS TRAN edges_matched FIND V(error) AT=5u
+.SAVE V(reference) V(feedback) V(error)
+.PLOT TRAN V(reference) V(feedback) V(error)
+.END

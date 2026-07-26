@@ -349,14 +349,12 @@ S and R are active high. R has priority when both controls are asserted.
 
 Q and QB are generated as complements of one internal remembered state and
 then pass through matching delayed output stages. `RSTATE`/`CMEM` control state
-acquisition, while `RHOLD`/`CMEM` control retention. With the defaults, those
-time constants are 1 ns and 1 second respectively.
+acquisition. During hold, the ideal integration state has no artificial
+resistive leakage, so it remains stable until another input event.
 
-If an operating-point calculation starts with S=R=0 and no prior state,
-`RHOLD` resolves Q low and QB high. As with the Schmitt state, a held high is
-not retained forever: it decays on the very long `RHOLD*CMEM` scale. The model
-is deterministic and functional; it does not model metastability or an
-indeterminate forbidden state.
+If an operating-point calculation starts with S=R=0 and no prior state, `IC`
+selects the deterministic initial state. The model is functional; it does not
+model metastability or an indeterminate forbidden state.
 
 ### Functional 555 Timer
 
@@ -595,16 +593,17 @@ digital.AddComparator(
 | DIG_MUX2, DIG_MUX4, DIG_FULL_ADDER, DIG_DEC2TO4 | VTH=0.5, TPD=10n, RIN=1G, ROUT=50, COUT=5p |
 | DIG_COMP | VOFF=0, TPD=10n, RIN=1G, ROUT=50, COUT=5p |
 | DIG_OPEN_DRAIN | VTH=0.5, RIN=1G, RON=10, ROFF=1T, COUT=5p |
-| DIG_SR_LATCH | VTH=0.5, TPD=10n, RIN=1G, ROUT=50, COUT=5p, RSTATE=1k, RHOLD=1T, RINIT=100G, CMEM=1p, IC=0 |
-| DIG_DFF | VTH=0.5, TPD=10n, RIN=1G, ROUT=50, COUT=5p, RSTATE=10, RHOLD=1T, RINIT=100G, CMEM=1p, IC=0 |
+| DIG_SR_LATCH | VTH=0.5, TPD=10n, RIN=1G, ROUT=50, COUT=5p, RSTATE=1k, CMEM=1p, IC=0 |
+| DIG_DFF | VTH=0.5, TPD=10n, RIN=1G, ROUT=50, COUT=5p, RSTATE=10, CMEM=1p, IC=0 |
 | DIG_PHASE_DETECTOR | REF=0.5, IOUT=100u, VHIGH=10, VLOW=-10, RIN=1G, ROUT=1T, RCLAMP=1, COUT=1p, RSTATE=10, CMEM=1p |
-| DIG_COUNTER | CYCLES=2, DUTY=0.5, VTH=0.5, RIN=1G, ROUT=50, COUT=5p, RHOLD=1T, CMEM=10p, RWRAP=1, CWRAP=1p |
+| DIG_COUNTER | CYCLES=2, DUTY=0.5, VTH=0.5, RIN=1G, ROUT=50, COUT=5p, RSTATE=1m, CMEM=1p |
 | TIMER555 | TPD=100n, RIN=1G, ROUT=20, COUT=2n, RDIS=10, ROFF=1T, RDIV=5k |
 
 VOFF is the comparator differential offset. RON and RDIS set enabled
 pull-down resistance; ROFF sets leakage in the released state. RSTATE and CMEM
-set latch acquisition dynamics, while RHOLD and CMEM determine the functional
-state-retention time constant. TIMER555's COUT intentionally shapes the
+set state-transition dynamics. The SR latch, DFF, phase detector, and counter
+use ideal integration state during hold rather than an artificial retention
+resistor. TIMER555's COUT intentionally shapes the
 otherwise ideal behavioral output edge; it is not a physical pin capacitance.
 
 ## 555 Astable Configuration and Timing

@@ -1,0 +1,17 @@
+LTspice A-device D flip-flop edge-capture example
+
+* DATA is high at the first rising edge and low at the second.
+VDATA data 0 PULSE(0 5 5n 100p 100p 17n 40n)
+VCLOCK clock 0 PULSE(0 5 10n 100p 100p 5n 20n)
+
+* PRE and CLR are unused because their terminals repeat common.
+ADFF data 0 clock 0 0 qb q 0 DFLOP Vhigh=5 Vlow=0 Td=1n Rout=10
+RQ q 0 10k
+RQB qb 0 10k
+
+.TRAN 100p 40n 0 100p UIC
+.MEAS TRAN q_after_first_edge FIND V(q) AT=15n
+.MEAS TRAN q_after_second_edge FIND V(q) AT=35n
+.SAVE V(data) V(clock) V(q) V(qb)
+.PLOT TRAN V(data) V(clock) V(q) V(qb)
+.END

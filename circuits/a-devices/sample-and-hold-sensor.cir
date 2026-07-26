@@ -1,0 +1,16 @@
+LTspice A-device sampled sensor example
+
+VSENSOR sensor 0 PWL(0 0 1s 4 3s 4)
+VSAMPLE sample 0 PULSE(0 1 250m 1m 1m 100m 10s)
+
+* Terminal 4 is unused, selecting edge-triggered sample mode.
+ASH sensor 0 sample 0 0 0 held 0 SAMPLEHOLD Rout=10
+RLOAD held 0 100k
+
+.TRAN 1m 3s 0 1m UIC
+.MEAS TRAN held_early FIND V(held) AT=500m
+.MEAS TRAN held_late FIND V(held) AT=2.5s
+.MEAS TRAN sensor_late FIND V(sensor) AT=2.5s
+.SAVE V(sensor) V(sample) V(held)
+.PLOT TRAN V(sensor) V(sample) V(held)
+.END

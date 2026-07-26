@@ -1,0 +1,18 @@
+LTspice A-device OTA current-limiter example
+
+VIN1N in1n 0 0
+VIN1P in1p 0 PWL(0 0 1m 1 2m 1 2.1m -1 3m -1)
+VMULP mulp 0 1
+VMULN muln 0 0
+
+* Iout alone sets both +100 uA sourcing and -100 uA sinking limits.
+AOTA in1n in1p mulp muln 0 0 out 0 OTA G=1 Iout=100u Vhigh=5 Vlow=-5
+VSENSE out load 0
+RLOAD load 0 10k
+
+.TRAN 10u 3m 0 10u UIC
+.MEAS TRAN source_current FIND I(VSENSE) AT=1.5m
+.MEAS TRAN sink_current FIND I(VSENSE) AT=2.5m
+.SAVE V(in1p) V(load) I(VSENSE)
+.PLOT TRAN V(in1p) V(load) I(VSENSE)
+.END

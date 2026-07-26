@@ -36,8 +36,10 @@ LTspice's default amplitude of 1. Model and parameter names are case-insensitive
 
 ### SR flip-flop
 
-`SET` drives `Q` high and `RESET` drives it low. The complementary output is
-`QB`.
+An SR latch is a one-bit memory with separate Set and Reset controls. It is
+useful for asynchronous state, alarms, and switch debouncing because it holds
+its last state without a clock. `SET` drives `Q` high and `RESET` drives it low;
+the complementary output is `QB`. This implementation is reset-dominant.
 
 ```spice
 * Set Q, then reset it
@@ -58,8 +60,10 @@ RQB qb 0 10k
 
 ### D flip-flop
 
-`Q` captures `DATA` on each rising edge of `CLOCK`. `PRESET` and `CLEAR` are
-active high, so they are tied low here.
+A D flip-flop is clocked one-bit memory used in registers, counters, and state
+machines. `Q` captures `DATA` only on each rising edge of `CLOCK`, then holds
+that value between edges. `PRESET` and `CLEAR` are asynchronous active-high
+controls, so they are tied low here.
 
 ```spice
 * First clock edge captures high; second captures low
@@ -82,8 +86,11 @@ The two measurements are approximately 5 V and 0 V.
 
 ### Counter
 
-This counter repeats every four rising clock edges. `DUTY=0.5` keeps `Q` high
-for half of each count cycle.
+A counter remembers clock edges and advances through a repeating sequence. It
+is commonly used for event counting, timing, sequencing, and clock-frequency
+division. This counter repeats every four rising edges, so its output frequency
+is one quarter of the input frequency. `DUTY=0.5` keeps `Q` high for half of
+each count cycle.
 
 ```spice
 * Divide the input clock by four
@@ -104,8 +111,11 @@ Plot `V(clock)`, `V(q)`, and `V(qb)` to see the divide-by-four sequence.
 
 ### Phase detector
 
-The phase detector sources current when `A` leads `B` and sinks current when
-`B` leads `A`. A resistor converts that current into an easy-to-view voltage.
+A phase detector compares the arrival time of two repeating signals. It is the
+error-sensing element in a phase-locked loop: signed current pulses can charge
+or discharge a loop filter until a feedback oscillator aligns with a reference.
+This detector sources current when `A` leads `B` and sinks current when `B`
+leads `A`. A resistor converts that current into an easy-to-view voltage.
 
 ```spice
 * Convert phase error into an output voltage
@@ -128,8 +138,11 @@ to +1 V and -1 V.
 
 ### Sample-and-hold
 
-With terminal 4 tied low, the device captures its differential input when
-`SAMPLE` rises. The input keeps ramping while `HELD` retains the sampled value.
+A sample-and-hold is analog memory: it takes a voltage snapshot and keeps that
+value stable while the original signal continues changing. It is commonly
+used ahead of an analog-to-digital converter. With terminal 4 tied low, this
+device captures its differential input when `SAMPLE` rises. The input keeps
+ramping while `HELD` retains the sampled value.
 
 ```spice
 * Capture a ramp at 10 us
@@ -149,9 +162,12 @@ At 25 us, `INPUT` is about 2.5 V while `HELD` remains near 1 V.
 
 ### Operational transconductance amplifier
 
-In `Linear` mode, the OTA multiplies two differential input voltages and
-converts the result into output current. The load resistor converts that
-current into voltage.
+An operational transconductance amplifier (OTA) converts voltage difference
+into output current, making it useful in tunable filters, oscillators, and
+analog multipliers. Unlike a conventional op-amp description, its primary
+output is current rather than voltage. In `Linear` mode, this OTA multiplies
+two differential input voltages and converts the result into output current.
+The load resistor converts that current into voltage.
 
 ```spice
 * 0.1 V differential input multiplied by 1 V
@@ -172,8 +188,16 @@ This configuration produces approximately 1 V at `OUT`.
 
 ### Voltage-controlled varistor
 
-The control voltage sets the clamp magnitude. Here a 2 V control limits an
-output driven from a 10 V supply.
+A physical varistor is a voltage-dependent resistor used to protect circuits
+from excessive voltage. It draws little current inside its normal range, then
+becomes strongly conductive during an overvoltage event and diverts current
+away from the protected load. A common example is a two-terminal metal-oxide
+varistor (MOV) placed across a power input.
+
+The `VARISTOR` A-device is a programmable functional version: its differential
+control input sets the allowed voltage magnitude, and its output is clamped in
+both positive and negative directions relative to common. Here a 2 V control
+limits an output driven from a 10 V supply.
 
 ```spice
 * Clamp OUT near the 2 V control level
@@ -188,12 +212,17 @@ AVAR control 0 0 0 0 0 out 0 VARISTOR Rclamp=10
 .end
 ```
 
-`CLAMPED_OUTPUT` is slightly above 2 V because `RCLAMP` is finite.
+`CLAMPED_OUTPUT` is slightly above 2 V because `RCLAMP` is finite. See the
+[beginner VARISTOR walkthrough](../../../circuits/a-devices/guides/controlled-clamp-varistor.md)
+for the current path, terminal map, and bidirectional example.
 
 ### Frequency and amplitude modulator
 
-`FM=0.5 V` selects the midpoint between `SPACE=1 kHz` and `MARK=2 kHz`, giving
-a 1.5 kHz output. `AM=2 V` sets the sine-wave amplitude.
+A modulator changes a carrier according to a control signal. FM changes carrier
+frequency and AM changes carrier amplitude; both are used in communications
+and programmable waveform generation. Here `FM=0.5 V` selects the midpoint
+between `SPACE=1 kHz` and `MARK=2 kHz`, giving a 1.5 kHz output. `AM=2 V` sets
+the sine-wave amplitude.
 
 ```spice
 * 1.5 kHz sine wave with 2 V amplitude
@@ -211,6 +240,22 @@ RLOAD out 0 100k
 `POSITIVE_PEAK` is approximately 2 V. `MODULATE` is accepted as an alias for
 `MODULATOR`. Native LTspice requires both `Mark` and `Space`; the parser rejects
 either frequency when omitted instead of silently substituting a value.
+
+## Complete Runnable Circuits
+
+The checked [`circuits/a-devices`](../../../circuits/a-devices/README.md)
+example pack provides complete files for these common patterns:
+
+- dividing a clock with `COUNTER` and capturing data with `DFLOP`;
+- sampling a changing sensor voltage and retaining it for seconds;
+- applying symmetric OTA current limits through `Iout`;
+- converting phase error into a charge-pump voltage;
+- clamping positive and negative excursions with `VARISTOR`;
+- switching a modulator between SPACE and MARK with its AM input unused; and
+- using unused terminals correctly when terminal 8 is not ground.
+
+Each circuit includes `.SAVE` and `.MEAS` statements and is compiled and
+simulated by `LTspiceADeviceExampleTests`.
 
 ## Math and Physical Intuition
 
@@ -344,17 +389,15 @@ C_{MEM}\frac{dv_{MEM}}{dt}=
 \qquad \tau_{TRACK}=R_{TRACK}C_{MEM}.
 $$
 
-During hold, leakage produces droop:
+During hold, the portable model retains the last accepted value:
 
 $$
-\frac{dv_{MEM}}{dt}\approx
--\frac{v_{MEM}}{R_{HOLD}C_{MEM}},
-\qquad \tau_{HOLD}=R_{HOLD}C_{MEM}.
+\frac{dv_{MEM}}{dt}=0.
 $$
 
-Physically, this is an idealized switch charging a hold capacitor. With the
-default `RHOLD=1 TOhm` and `CMEM=10 pF`, the hold time constant is about 10 s,
-so microsecond-scale droop is negligible.
+Physically, this is an idealized switch charging a hold capacitor. Real
+sample-and-hold circuits exhibit leakage and dielectric absorption; this
+functional model intentionally avoids inventing an artificial droop rate.
 
 ### Operational transconductance amplifier
 

@@ -1,0 +1,14 @@
+LTspice A-device bidirectional controlled-clamp example
+
+VCONTROL control 0 2
+VDRIVE drive 0 PWL(0 10 1m 10 1.1m -10 2m -10)
+RDRIVE drive out 1k
+
+AVAR control 0 0 0 0 0 out 0 VARISTOR Rclamp=10 Roff=1T
+
+.TRAN 10u 2m 0 10u UIC
+.MEAS TRAN positive_clamp FIND V(out) AT=500u
+.MEAS TRAN negative_clamp FIND V(out) AT=1.5m
+.SAVE V(drive) V(control) V(out)
+.PLOT TRAN V(drive) V(control) V(out)
+.END

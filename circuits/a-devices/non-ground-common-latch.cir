@@ -1,0 +1,17 @@
+LTspice A-device non-ground-common latch example
+
+VCOMMON common 0 1
+VSET set common PULSE(0 5 10n 100p 100p 2n 100n)
+VRESET reset common PULSE(0 5 30n 100p 100p 2n 100n)
+
+* Unused terminals repeat COMMON, not global ground. QB is detached.
+ASR set reset common common common common q common SRFLOP Vhigh=5 Vlow=0 Td=1n Rout=1
+RLOAD q common 10k
+
+.TRAN 100p 45n 0 100p UIC
+.MEAS TRAN q_after_set FIND V(q,common) AT=20n
+.MEAS TRAN q_after_reset FIND V(q,common) AT=40n
+.MEAS TRAN absolute_q_after_set FIND V(q) AT=20n
+.SAVE V(set,common) V(reset,common) V(q,common)
+.PLOT TRAN V(set,common) V(reset,common) V(q,common)
+.END

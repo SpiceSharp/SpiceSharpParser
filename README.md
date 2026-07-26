@@ -491,7 +491,8 @@ Supported models are routed to the appropriate portable library:
 | `MODULATE` / `MODULATOR` | `AnalogSubcircuitLibrary` | `ANALOG_MODULATOR` |
 
 Complete, runnable examples for every supported model are in
-[Easy LTspice A-device Examples](src/docs/articles/a-devices.md).
+[Easy LTspice A-device Examples](src/docs/articles/a-devices.md), including the
+checked [runnable circuit pack](circuits/a-devices/README.md).
 
 Model and parameter names are case-insensitive. Invalid terminal counts,
 duplicate parameters, unsupported parameters, and unsupported A-device models
@@ -917,10 +918,10 @@ digital.AddTimer555(
 | `DIG_MUX2`, `DIG_MUX4`, `DIG_FULL_ADDER`, `DIG_DEC2TO4` | `VTH=0.5 TPD=10n RIN=1G ROUT=50 COUT=5p` |
 | `DIG_COMP` | `VOFF=0 TPD=10n RIN=1G ROUT=50 COUT=5p` |
 | `DIG_OPEN_DRAIN` | `VTH=0.5 RIN=1G RON=10 ROFF=1T COUT=5p` |
-| `DIG_SR_LATCH` | `VTH=0.5 TPD=10n RIN=1G ROUT=50 COUT=5p RSTATE=1k RHOLD=1T RINIT=100G CMEM=1p IC=0` |
-| `DIG_DFF` | `VTH=0.5 TPD=10n RIN=1G ROUT=50 COUT=5p RSTATE=10 RHOLD=1T RINIT=100G CMEM=1p IC=0` |
+| `DIG_SR_LATCH` | `VTH=0.5 TPD=10n RIN=1G ROUT=50 COUT=5p RSTATE=1k CMEM=1p IC=0` |
+| `DIG_DFF` | `VTH=0.5 TPD=10n RIN=1G ROUT=50 COUT=5p RSTATE=10 CMEM=1p IC=0` |
 | `DIG_PHASE_DETECTOR` | `REF=0.5 IOUT=100u VHIGH=10 VLOW=-10 RIN=1G ROUT=1T RCLAMP=1 COUT=1p RSTATE=10 CMEM=1p` |
-| `DIG_COUNTER` | `CYCLES=2 DUTY=0.5 VTH=0.5 RIN=1G ROUT=50 COUT=5p RHOLD=1T CMEM=10p RWRAP=1 CWRAP=1p` |
+| `DIG_COUNTER` | `CYCLES=2 DUTY=0.5 VTH=0.5 RIN=1G ROUT=50 COUT=5p RSTATE=1m CMEM=1p` |
 | `TIMER555` | `TPD=100n RIN=1G ROUT=20 COUT=2n RDIS=10 ROFF=1T RDIV=5k` |
 
 ##### 555 Behavior and Verified Timing

@@ -577,6 +577,17 @@ namespace SpiceSharpParser.Tests.CustomComponents
             AssertUnusedLatchOutput("qb", qbOmitted);
         }
 
+        internal static IReadOnlyDictionary<string, double> RunNativeExampleMeasurements(
+            string caseName,
+            IEnumerable<string> netlistLines,
+            params string[] measurementNames)
+        {
+            return RunLtspiceMeasurements(
+                caseName,
+                netlistLines,
+                measurementNames);
+        }
+
         private static void AssertUnusedLatchOutput(string outputName, string[] sharedNetlist)
         {
             IReadOnlyDictionary<string, double> golden = RunLtspiceMeasurements(
@@ -979,7 +990,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
             }
         }
 
-        private sealed class LtspiceFactAttribute : FactAttribute
+        internal sealed class LtspiceFactAttribute : FactAttribute
         {
             public LtspiceFactAttribute()
             {
