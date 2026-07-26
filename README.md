@@ -10,6 +10,10 @@ A .NET library that parses SPICE netlists and simulates them using [SpiceSharp](
 
 **Targets:** .NET Standard 2.0 / .NET 8.0
 
+**Current release:** `3.4.1` is a hardening-only release for experimental
+LTspice A-device integration. It adds fixes and regression coverage without
+adding new A-device families.
+
 ## Highlights
 
 - Parse complete SPICE netlists into ordinary SpiceSharp circuits and
@@ -20,9 +24,10 @@ A .NET library that parses SPICE netlists and simulates them using [SpiceSharp](
   definitions in circuits assembled directly with the SpiceSharp API.
 - Mix parsed netlists, programmatically created SpiceSharp components, and the
   optional `SpiceSharpParser.CustomComponents` models in one circuit.
-- Use twenty built-in digital and mixed-signal models: gates, Schmitt inputs,
-  tri-state drivers, multiplexers, arithmetic/routing blocks, a comparator,
-  an SR latch, an open-drain stage, and a functional 555 timer.
+- With the optional custom-components package, use twenty built-in digital and
+  mixed-signal models: gates, Schmitt inputs, tri-state drivers, multiplexers,
+  arithmetic/routing blocks, a comparator, an SR latch, an open-drain stage,
+  and a functional 555 timer.
 - Drive acceptance tests from netlist-native `.MEAS`, `.PRINT`, `.PLOT`, and
   `.FOUR` results instead of reimplementing every calculation in C#.
 
@@ -40,6 +45,11 @@ nonlinear passive, or built-in digital/555 models:
 ```bash
 dotnet add package SpiceSharpParser.CustomComponents
 ```
+
+See the
+[SpiceSharpParser.CustomComponents README](src/SpiceSharpParser.CustomComponents/README.md)
+for setup, A-device explanations, programmatic library use, and compatibility
+limits.
 
 NuGet Package Manager equivalents:
 
@@ -494,13 +504,23 @@ Complete, runnable examples for every supported model are in
 [Easy LTspice A-device Examples](src/docs/articles/a-devices.md), including the
 checked [runnable circuit pack](circuits/a-devices/README.md).
 
+Terminal 8 is the common node. A terminal position is unused only when it
+repeats that common node. When common is not ground, a literal `0` is an active
+global-ground connection rather than an unused terminal. Unused outputs are
+electrically detached, while an unused `MODULATOR` amplitude terminal selects
+the native default amplitude of 1.
+
 Model and parameter names are case-insensitive. Invalid terminal counts,
 duplicate parameters, unsupported parameters, and unsupported A-device models
-produce source-located reader diagnostics.
+produce source-located reader diagnostics. `MODULATOR` requires both `Mark` and
+`Space`; `COUNTER` requires `Cycles`; and `SAMPLEHOLD Td` is rejected until its
+native delayed timing semantics are implemented. Sweep-dependent A-device
+parameters are rejected instead of being frozen at one value.
 
 `LTspiceADeviceCompatibilityGoldenTests` writes each test's native netlist once,
 executes that same netlist in LTspice and SpiceSharpParser, and compares the
-resulting `.MEAS` values. Set `LTSPICE_EXE` to enable the suite:
+resulting `.MEAS` values. The suite includes native-default-only and
+long-duration state-retention cases. Set `LTSPICE_EXE` to enable it:
 
 ```powershell
 $env:LTSPICE_EXE = 'C:\Program Files\ADI\LTspice\LTspice.exe'
@@ -990,8 +1010,10 @@ workflow-specific guide:
 | Topic | Guide |
 | --- | --- |
 | Parser introduction and first simulation | [Introduction](src/docs/articles/intro.md) |
+| Optional custom-components package | [SpiceSharpParser.CustomComponents README](src/SpiceSharpParser.CustomComponents/README.md) |
 | Loading text subcircuits into C#-built circuits | [Programmatic Subcircuit Libraries](src/docs/articles/subcircuit-library.md) |
 | Native LTspice A-device syntax and examples | [Easy LTspice A-device Examples](src/docs/articles/a-devices.md) |
+| Runnable native LTspice A-device circuits | [A-device Example Pack](circuits/a-devices/README.md) |
 | Digital logic, truth tables, routing, buses, and functional 555 | [Digital and 555 Subcircuit Library](src/docs/articles/digital-subcircuits.md) |
 | Analog sample/hold, OTA, varistor, and modulator | [Analog Special-Function Subcircuit Library](src/docs/articles/analog-subcircuits.md) |
 | Stable compiler diagnostic codes | [Diagnostic Reference](docs/diagnostics.md) |
@@ -1038,8 +1060,9 @@ dotnet build src/SpiceSharpParser.CustomComponents/SpiceSharpParser.CustomCompon
 ```
 
 That project targets both .NET Standard 2.0 and .NET 8.0. Its generated NuGet
-archive includes the compiled assemblies, the embedded digital library, and a
-content-file copy of `standard-digital.lib`.
+archive includes its README, compiled assemblies, embedded digital and analog
+libraries, and content-file copies of `standard-digital.lib` and
+`standard-analog.lib`.
 
 ## License
 
