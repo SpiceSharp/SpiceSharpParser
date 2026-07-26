@@ -32,7 +32,11 @@ jobs:
       env:
         APIKEY: ${{ secrets.NUGET_APIKEY }}
       run: dotnet nuget push src\SpiceSharpParser\bin\Release\SpiceSharp-Parser.*.nupkg -k $env:APIKEY -s "https://api.nuget.org/v3/index.json"
-      
+
+
+    - name: Compile SpiceSharpParser.CustomComponents
+      run: dotnet build src\SpiceSharpParser.CustomComponents\SpiceSharpParser.CustomComponents.csproj --configuration Release --no-restore
+
     - name: Publish to NuGet - Custom Components
       env:
         APIKEY: ${{ secrets.NUGET_APIKEY_CUSTOM_COMPONENTS }}
