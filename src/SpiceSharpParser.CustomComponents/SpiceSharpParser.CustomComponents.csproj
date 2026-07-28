@@ -14,14 +14,14 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Product>SpiceSharpParser.CustomComponents</Product>
     <Description>Custom SpiceSharp components for SpiceSharpParser integrations.</Description>
-    <PackageReleaseNotes>0.1.2</PackageReleaseNotes>
+    <PackageReleaseNotes>Milestone B adds deterministic D latch, DFF, TFF, four-bit register, and four-bit synchronous counter models with typed parameters and golden tests.</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <OutputType>Library</OutputType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <LangVersion>latest</LangVersion>
-    <Version>0.1.2</Version>
+    <Version>0.2.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|AnyCPU'">
@@ -44,6 +44,7 @@
 
   <ItemGroup>
     <None Include="README.md" Pack="true" PackagePath="\" />
+    <None Include="RELEASE_NOTES.md" Pack="true" PackagePath="\" />
     <EmbeddedResource Include="Analog\Netlists\standard-analog.lib"
                       LogicalName="SpiceSharpParser.CustomComponents.Analog.standard-analog.lib" />
     <None Include="Analog\Netlists\standard-analog.lib"

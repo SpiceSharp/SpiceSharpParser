@@ -1,7 +1,7 @@
 # Digital and 555 Subcircuit Library
 
-SpiceSharpParser.CustomComponents includes twenty-three reusable digital and mixed-signal models
-backed by SpiceSubcircuitLibrary. The definitions live in the embedded
+SpiceSharpParser.CustomComponents includes twenty-seven reusable digital and
+mixed-signal models backed by SpiceSubcircuitLibrary. The definitions live in the embedded
 standard-digital.lib text library and expand into ordinary SpiceSharp entities,
 so the same blocks work in pure programmatic circuits and in circuits read by
 SpiceSharpParser.
@@ -29,7 +29,11 @@ SpiceSharpParser.
 | AddComparator | DIG_COMP | P, N, Y, VDD, VSS |
 | AddOpenDrain | DIG_OPEN_DRAIN | A, Y, VDD, VSS |
 | AddSetResetLatch / AddSetResetFlipFlop | DIG_SR_LATCH | S, R, Q, QB, VDD, VSS |
+| AddDLatch | DIG_D_LATCH | D, EN, PRE, CLR, Q, QB, VDD, VSS |
 | AddDFlipFlop | DIG_DFF | D, CLK, PRE, CLR, Q, QB, VDD, VSS |
+| AddToggleFlipFlop | DIG_TFF | T, CLK, PRE, CLR, Q, QB, VDD, VSS |
+| AddRegister4 | DIG_REG4 | D0, D1, D2, D3, CLK, CLR, OE, Q0, Q1, Q2, Q3, VDD, VSS |
+| AddCounter4 | DIG_COUNTER4_UP | CLK, EN, CLR, Q0, Q1, Q2, Q3, CARRY, VDD, VSS |
 | AddPhaseDetector | DIG_PHASE_DETECTOR | A, B, OUT, COM |
 | AddCounter | DIG_COUNTER | CLK, RESET, Q, QB, VDD, VSS |
 | AddTimer555 | TIMER555 | GND, TRIG, OUT, RESET, CTRL, THRESH, DISCH, VCC |
@@ -356,6 +360,49 @@ If an operating-point calculation starts with S=R=0 and no prior state, `IC`
 selects the deterministic initial state. The model is functional; it does not
 model metastability or an indeterminate forbidden state.
 
+### D Latch
+
+`DIG_D_LATCH` is transparent while active-high EN is asserted. Q follows the
+thresholded D input after `TPD`; when EN is low, the stored state is unchanged.
+QB is always the complement of the valid stored state.
+
+PRE and CLR are asynchronous and active high. The default `PRE_PRIORITY=0`
+makes clear dominant when both controls are asserted. Set `PRE_PRIORITY=1`, or
+use `DigitalAsynchronousPriority.Preset`, to make preset dominant. `IC=0` or
+`IC=1` selects deterministic startup when neither asynchronous input is active.
+
+### Positive-Edge D and T Flip-Flops
+
+`DIG_DFF` captures D on the positive clock edge. `DIG_TFF` toggles on that edge
+when T is high and holds when T is low. Both use the same PRE, CLR, priority,
+initialization, threshold, delay, and finite-output conventions as the D latch.
+
+The models use complementary master/slave tracking rather than a timed edge
+aperture. They are deterministic functional models: no physical setup time,
+hold time, metastability window, or violation waveform is claimed. Use a
+transient maximum step below `TPD` and the expected edge time.
+
+### Four-Bit Register
+
+`DIG_REG4` captures D3..D0 on the positive clock edge. D0 and Q0 are the
+least-significant bits. Active-high CLR asynchronously stores zero. Active-high
+OE controls only the output stage; disabling OE does not erase the stored word.
+
+With OE low, each output retains `COUT` to VSS and `ROFF` to VSS. This is an
+electrical high-impedance approximation, so an external pull-up, pull-down, or
+bus driver determines the pin voltage. `IC` accepts decimal values 0 through
+15 and initializes the complete word.
+
+### Four-Bit Synchronous Up Counter
+
+`DIG_COUNTER4_UP` increments once on each positive clock edge while EN is high.
+It holds while EN is low, asynchronously returns to zero while CLR is high, and
+rolls over from 15 to 0. Q0 is the least-significant bit.
+
+CARRY is high when EN is high and the stored count is 15. It is a terminal-count
+indication suitable for deciding when a following stage should advance; it is
+not a narrow pulse. `IC` accepts values 0 through 15.
+
 ### Functional 555 Timer
 
 `TIMER555` is composed from the comparator, reset-dominant SR latch, buffer,
@@ -430,9 +477,9 @@ digital.AddTimer555(
 
 AddBuffer and AddInverter are unary shortcuts. AddBinaryGate handles the six
 two-input kinds. Dedicated methods expose the Schmitt, tri-state, multiplexer,
-adder, decoder, comparator, open-drain, latch, and timer contracts. The Library
-property exposes the underlying SpiceSubcircuitLibrary, including pins and
-default parameters.
+adder, decoder, comparator, open-drain, sequential, and timer contracts. The
+Library property exposes the underlying SpiceSubcircuitLibrary, including pins
+and default parameters.
 
 ## Milestone A Routing Example
 
@@ -479,6 +526,46 @@ The directly executable netlist is
 [`circuits/digital-milestone-a/milestone-a-routing.cir`](../../../circuits/digital-milestone-a/milestone-a-routing.cir).
 It includes the shipped source library and verifies conditioned, disabled-bus,
 and enabled-bus voltages with `.MEAS`.
+
+## Milestone B Clocked-State Example
+
+```csharp
+var sequential = new DigitalSequentialParameters
+{
+    InitialValue = 0,
+    AsynchronousPriority = DigitalAsynchronousPriority.Clear,
+    PropagationDelay = 5e-9,
+};
+
+digital.AddToggleFlipFlop(
+    circuit,
+    "XTFF",
+    "toggle",
+    "clock",
+    "preset",
+    "clear",
+    "q",
+    "qb",
+    "vdd",
+    "0",
+    sequential);
+
+digital.AddCounter4(
+    circuit,
+    "XCOUNT",
+    "clock",
+    "enable",
+    "clear",
+    new[] { "q0", "q1", "q2", "q3" },
+    "carry",
+    "vdd",
+    "0");
+```
+
+The runnable
+[`milestone-b-clocked-state.cir`](../../../circuits/digital-milestone-b/milestone-b-clocked-state.cir)
+uses every Milestone B block. Its `.SAVE` and `.PLOT` directives expose the
+same signals, and its `.MEAS` samples are accompanied by `.PRINT` waveforms.
 
 ## Gate Parameters
 
@@ -564,10 +651,34 @@ finite contention voltage. `OffResistance` must be greater than
 Both typed parameter objects validate ratios, finite values, positive passive
 values, and parameter relationships before the target circuit is changed.
 
+## Sequential Parameters
+
+`AddDLatch`, the typed `AddDFlipFlop` overload, `AddToggleFlipFlop`,
+`AddRegister4`, and `AddCounter4` accept `DigitalSequentialParameters`.
+
+| Property | SPICE parameter | Default | Applies to |
+| --- | --- | ---: | --- |
+| LogicThresholdRatio | VTH | 0.5 | All sequential models |
+| PropagationDelay | TPD | 10 ns | All sequential models |
+| InputResistance | RIN | 1 GOhm | All sequential models |
+| OutputResistance | ROUT | 50 Ohm | All sequential models |
+| DisabledOutputResistance | ROFF | 1 TOhm | Four-bit register only |
+| OutputCapacitance | COUT | 5 pF | All sequential models |
+| StateResistance | RSTATE | Model-specific | All sequential models |
+| StateCapacitance | CMEM | 1 pF | All sequential models |
+| InitialValue | IC | 0 | 0..1 or 0..15 by model |
+| AsynchronousPriority | PRE_PRIORITY | Clear | D latch, DFF, and TFF |
+
+Ratios must be strictly between zero and one. Resistances and capacitances must
+be positive, delay must be nonnegative, and register `ROFF` must be greater than
+`ROUT`. Validation occurs before the circuit is mutated. The existing raw DFF
+overload remains available for advanced SPICE-expression overrides.
+
 ## Model Parameter Defaults
 
-Gate, Schmitt, and tri-state facade methods use the typed parameter classes
-described above. Comparator, latch, open-drain, and timer methods accept an
+Gate, Schmitt, tri-state, and sequential facade methods use the typed parameter
+classes described above. Comparator, SR latch, open-drain, phase detector,
+divide-by-N counter, and timer methods accept an
 `IReadOnlyDictionary<string, string>` of raw SPICE values. For example:
 
 ```csharp
@@ -594,7 +705,9 @@ digital.AddComparator(
 | DIG_COMP | VOFF=0, TPD=10n, RIN=1G, ROUT=50, COUT=5p |
 | DIG_OPEN_DRAIN | VTH=0.5, RIN=1G, RON=10, ROFF=1T, COUT=5p |
 | DIG_SR_LATCH | VTH=0.5, TPD=10n, RIN=1G, ROUT=50, COUT=5p, RSTATE=1k, CMEM=1p, IC=0 |
-| DIG_DFF | VTH=0.5, TPD=10n, RIN=1G, ROUT=50, COUT=5p, RSTATE=10, CMEM=1p, IC=0 |
+| DIG_D_LATCH, DIG_DFF, DIG_TFF | VTH=0.5, TPD=10n, RIN=1G, ROUT=50, COUT=5p, RSTATE=10, CMEM=1p, IC=0, PRE_PRIORITY=0 |
+| DIG_REG4 | VTH=0.5, TPD=10n, RIN=1G, ROUT=50, ROFF=1T, COUT=5p, RSTATE=10, CMEM=1p, IC=0 |
+| DIG_COUNTER4_UP | VTH=0.5, TPD=10n, RIN=1G, ROUT=50, COUT=5p, RSTATE=1m, CMEM=1p, IC=0 |
 | DIG_PHASE_DETECTOR | REF=0.5, IOUT=100u, VHIGH=10, VLOW=-10, RIN=1G, ROUT=1T, RCLAMP=1, COUT=1p, RSTATE=10, CMEM=1p |
 | DIG_COUNTER | CYCLES=2, DUTY=0.5, VTH=0.5, RIN=1G, ROUT=50, COUT=5p, RSTATE=1m, CMEM=1p |
 | TIMER555 | TPD=100n, RIN=1G, ROUT=20, COUT=2n, RDIS=10, ROFF=1T, RDIV=5k |

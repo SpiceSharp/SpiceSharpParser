@@ -51,7 +51,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
         {
             DigitalSubcircuitLibrary digital = DigitalSubcircuitLibrary.LoadBuiltIn();
 
-            Assert.Equal(23, digital.Library.Subcircuits.Count);
+            Assert.Equal(27, digital.Library.Subcircuits.Count);
             SpiceSubcircuitInfo inverter = digital.Library["DIG_NOT"];
             Assert.Equal(new[] { "A", "Y", "VDD", "VSS" }, inverter.Pins);
             Assert.Equal("0.5", inverter.DefaultParameters["VTH"]);
@@ -447,6 +447,51 @@ namespace SpiceSharpParser.Tests.CustomComponents
             Assert.InRange(conditionedHigh, 4.9, 5.0);
             Assert.InRange(disabledBus, 0.0, 0.1);
             Assert.InRange(enabledBus, 4.9, 5.0);
+        }
+
+        [Fact]
+        public void MilestoneBClockedStateExample_CompilesIncludesAndMeasuresSequence()
+        {
+            string path = FindRepositoryFile(
+                "circuits",
+                "digital-milestone-b",
+                "milestone-b-clocked-state.cir");
+            SpiceCompilationResult result = SpiceCompiler.CompileFile(path);
+
+            Assert.True(result.Success, string.Join(Environment.NewLine, result.Diagnostics));
+            Assert.NotNull(result.Model);
+
+            SpiceSimulationTestHelper.RunTransientPair(
+                result.Model,
+                "V(clock)",
+                "V(count_q0)");
+
+            string[] expectedHigh =
+            {
+                "latch_hold",
+                "dff_first",
+                "tff_first",
+                "register_q1",
+                "register_q3",
+                "counter_q0_after_three",
+                "counter_q1_after_three",
+            };
+            foreach (string measurement in expectedHigh)
+            {
+                double value = SpiceNetlistAssertions
+                    .AssertMeasurementSuccess(result.Model, measurement)
+                    .Value;
+                Assert.InRange(value, 4.9, 5.0);
+            }
+
+            Assert.InRange(
+                SpiceNetlistAssertions.AssertMeasurementSuccess(result.Model, "dff_second").Value,
+                -0.02,
+                0.1);
+            Assert.InRange(
+                SpiceNetlistAssertions.AssertMeasurementSuccess(result.Model, "tff_second").Value,
+                -0.02,
+                0.1);
         }
 
         [Fact]

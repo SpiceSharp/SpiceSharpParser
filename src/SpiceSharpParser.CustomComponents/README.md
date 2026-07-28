@@ -63,7 +63,7 @@ to use the standard SpiceSharp implementations.
 | Ideal diodes | LTspice-style `.MODEL D(...)` parameters such as `Ron`, `Roff`, `Vfwd`, reverse clamp, smoothing, and current limits |
 | Nonlinear capacitors | Charge-defined capacitors using `Q=<expression>` |
 | Nonlinear inductors | Flux-defined inductors using `Flux=<expression>` |
-| Digital subcircuits | Gates, Schmitt inputs, tri-state drivers, multiplexers, an adder, decoder, comparator, open-drain output, latches, flip-flops, a counter, phase detector, and functional 555 timer |
+| Digital subcircuits | Gates, routing, latches, DFF/TFF, four-bit register, synchronous and divide-by-N counters, phase detector, and functional 555 timer |
 | Analog subcircuits | Sample-and-hold, operational transconductance amplifier, voltage-controlled varistor, and frequency/amplitude modulator |
 
 ## A-device Quick Reference
@@ -142,6 +142,9 @@ digital.AddBinaryGate(
 Use `AnalogSubcircuitLibrary.LoadBuiltIn()` for the four analog functional
 models.
 
+Clocked models use `DigitalSequentialParameters` for validated threshold,
+delay, loading, initial state, and asynchronous-control priority overrides.
+
 ## Compatibility Notes
 
 - A-device support is experimental and intentionally limited to the eight
@@ -159,6 +162,7 @@ models.
 - [A-device guide](https://github.com/SpiceSharp/SpiceSharpParser/blob/main/src/docs/articles/a-devices.md)
 - [Runnable A-device examples](https://github.com/SpiceSharp/SpiceSharpParser/tree/main/circuits/a-devices)
 - [Digital subcircuit reference](https://github.com/SpiceSharp/SpiceSharpParser/blob/main/src/docs/articles/digital-subcircuits.md)
+- [Clocked-state example and guide](https://github.com/SpiceSharp/SpiceSharpParser/tree/main/circuits/digital-milestone-b)
 - [Analog subcircuit reference](https://github.com/SpiceSharp/SpiceSharpParser/blob/main/src/docs/articles/analog-subcircuits.md)
 - [Ideal diode guide](https://github.com/SpiceSharp/SpiceSharpParser/blob/main/src/docs/articles/ideal-diode.md)
 - [Nonlinear passive guide](https://github.com/SpiceSharp/SpiceSharpParser/blob/main/src/docs/articles/nonlinear-passives.md)

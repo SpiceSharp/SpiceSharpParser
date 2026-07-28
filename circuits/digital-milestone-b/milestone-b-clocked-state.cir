@@ -1,0 +1,46 @@
+Digital Milestone B clocked-state example
+.include "../../src/SpiceSharpParser.CustomComponents/Digital/Netlists/standard-digital.lib"
+
+VDD vdd 0 5
+VCONTROL control 0 0
+VCLK clock 0 PULSE(0 5 10n 100p 100p 5n 20n)
+VDATA data 0 PWL(0 5 25n 5 25.1n 0 85n 0)
+VLATCHEN latch_enable 0 PULSE(0 5 2n 100p 100p 8n 100n)
+
+RLATCHQ latch_q 0 10k
+RLATCHQB latch_qb 0 10k
+RDFFQ dff_q 0 10k
+RDFFQB dff_qb 0 10k
+RTFFQ tff_q 0 10k
+RTFFQB tff_qb 0 10k
+RREG0 reg_q0 0 10k
+RREG1 reg_q1 0 10k
+RREG2 reg_q2 0 10k
+RREG3 reg_q3 0 10k
+RCOUNT0 count_q0 0 10k
+RCOUNT1 count_q1 0 10k
+RCOUNT2 count_q2 0 10k
+RCOUNT3 count_q3 0 10k
+RCARRY carry 0 10k
+
+XLATCH data latch_enable control control latch_q latch_qb vdd 0 DIG_D_LATCH TPD=1n COUT=1p
+XDFF data clock control control dff_q dff_qb vdd 0 DIG_DFF TPD=1n COUT=1p
+XTFF vdd clock control control tff_q tff_qb vdd 0 DIG_TFF TPD=1n COUT=1p
+XREG 0 vdd 0 vdd clock control vdd reg_q0 reg_q1 reg_q2 reg_q3 vdd 0 DIG_REG4 TPD=1n COUT=1p
+XCOUNT clock vdd control count_q0 count_q1 count_q2 count_q3 carry vdd 0 DIG_COUNTER4_UP TPD=1n COUT=1p
+
+.OPTIONS method=gear
+.TRAN 100p 85n 0 100p UIC
+.MEAS TRAN latch_hold FIND V(latch_q) AT=20n
+.MEAS TRAN dff_first FIND V(dff_q) AT=20n
+.MEAS TRAN dff_second FIND V(dff_q) AT=40n
+.MEAS TRAN tff_first FIND V(tff_q) AT=20n
+.MEAS TRAN tff_second FIND V(tff_q) AT=40n
+.MEAS TRAN register_q1 FIND V(reg_q1) AT=20n
+.MEAS TRAN register_q3 FIND V(reg_q3) AT=20n
+.MEAS TRAN counter_q0_after_three FIND V(count_q0) AT=60n
+.MEAS TRAN counter_q1_after_three FIND V(count_q1) AT=60n
+.SAVE V(clock) V(latch_q) V(dff_q) V(tff_q) V(reg_q0) V(reg_q1) V(reg_q2) V(reg_q3) V(count_q0) V(count_q1) V(count_q2) V(count_q3) V(carry)
+.PLOT TRAN V(clock) V(latch_q) V(dff_q) V(tff_q) V(reg_q0) V(reg_q1) V(reg_q2) V(reg_q3) V(count_q0) V(count_q1) V(count_q2) V(count_q3) V(carry)
+.PRINT TRAN V(latch_q) V(dff_q) V(tff_q) V(reg_q1) V(reg_q3) V(count_q0) V(count_q1)
+.END

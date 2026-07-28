@@ -282,10 +282,8 @@ The finite output resistance and capacitance turn an ideal logic step into a
 first-order electrical transition. With an external capacitive load, the
 10%-to-90% rise time is approximately
 
-$$
-\tau\approx R_{OUT}(C_{OUT}+C_{LOAD}),
-\qquad t_r\approx2.2\tau.
-$$
+The approximate output time constant is `tau = ROUT * (COUT + CLOAD)`, and the
+10%-to-90% rise time is approximately `tr = 2.2 * tau`.
 
 This is the physical bridge between Boolean logic and a voltage that can drive
 the rest of the circuit.

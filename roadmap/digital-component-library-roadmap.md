@@ -1,6 +1,6 @@
 # Digital Component Library Roadmap
 
-Status: Active — Milestone A implemented on 2026-07-22
+Status: Active — Milestone B implemented on 2026-07-26
 
 ## Purpose
 
@@ -16,7 +16,7 @@ from duplicating state, delay, and output-stage logic.
 
 ## Current Baseline
 
-The embedded `standard-digital.lib` currently provides twenty definitions:
+The embedded `standard-digital.lib` currently provides twenty-seven definitions:
 
 | Category | Existing definitions |
 | --- | --- |
@@ -26,12 +26,14 @@ The embedded `standard-digital.lib` currently provides twenty definitions:
 | Bus drivers | `DIG_TRI_BUF`, `DIG_TRI_NOT` |
 | Routing and arithmetic | `DIG_MUX2`, `DIG_MUX4`, `DIG_FULL_ADDER`, `DIG_DEC2TO4` |
 | Mixed-signal primitives | `DIG_COMP`, `DIG_OPEN_DRAIN` |
-| Stateful primitive | `DIG_SR_LATCH` |
+| Stateful primitives | `DIG_SR_LATCH`, `DIG_D_LATCH`, `DIG_DFF`, `DIG_TFF` |
+| Word state | `DIG_REG4`, `DIG_COUNTER4_UP` |
+| Timing helpers | `DIG_PHASE_DETECTOR`, `DIG_COUNTER` |
 | Integrated functional model | `TIMER555` |
 
-The facade exposes typed gate, Schmitt, and tri-state parameters plus explicit
-methods for routing/arithmetic blocks, the comparator, SR latch, open-drain
-stage, and 555 timer.
+The facade exposes typed gate, Schmitt, tri-state, and sequential parameters
+plus explicit methods for routing/arithmetic blocks, word state, comparator,
+open-drain stage, phase detector, counters, and 555 timer.
 
 ## Goals
 
@@ -79,8 +81,8 @@ stage, and 555 timer.
 
 ## Priority 1: Core Primitives
 
-Milestone A items are complete. The D latch and D flip-flop remain the first
-clocked-state work for Milestone B.
+Milestone A and Milestone B items are complete. The next primitive expansion is
+the Milestone C data-movement layer.
 
 | Order | Component | Proposed subcircuit and ordered pins | Proposed facade API |
 | ---: | --- | --- | --- |
@@ -90,13 +92,13 @@ clocked-state work for Milestone B.
 | 4 | Inverting tri-state buffer | `DIG_TRI_NOT A OE Y VDD VSS` | `AddTriStateInverter` |
 | 5 | 2-to-1 multiplexer | `DIG_MUX2 D0 D1 S Y VDD VSS` | `AddMultiplexer2` |
 | 6 | 4-to-1 multiplexer | `DIG_MUX4 D0 D1 D2 D3 S0 S1 Y VDD VSS` | `AddMultiplexer4` |
-| 7 | D latch | `DIG_D_LATCH D EN Q QB PRE CLR VDD VSS` | `AddDLatch` |
-| 8 | D flip-flop | `DIG_DFF D CLK Q QB PRE CLR VDD VSS` | `AddDFlipFlop` |
+| 7 | D latch | `DIG_D_LATCH D EN PRE CLR Q QB VDD VSS` | `AddDLatch` |
+| 8 | D flip-flop | `DIG_DFF D CLK PRE CLR Q QB VDD VSS` | `AddDFlipFlop` |
 | 9 | Full adder | `DIG_FULL_ADDER A B CIN SUM COUT VDD VSS` | `AddFullAdder` |
 | 10 | 2-to-4 decoder | `DIG_DEC2TO4 A B EN Y0 Y1 Y2 Y3 VDD VSS` | `AddDecoder2To4` |
 
-Implemented in Milestone A: orders 1–6, 9, and 10. Deferred to Milestone B:
-orders 7 and 8.
+Implemented in Milestone A: orders 1–6, 9, and 10. Implemented in Milestone B:
+orders 7 and 8, plus the TFF, four-bit register, and synchronous counter.
 
 ### Schmitt-Trigger Requirements
 
@@ -364,7 +366,7 @@ NuGet content inspection.
 4. Full adder.
 5. 2-to-4 decoder.
 
-### Milestone B: Clocked State
+### Milestone B: Clocked State — Complete
 
 1. D latch.
 2. Positive-edge D flip-flop.
@@ -425,8 +427,7 @@ standard-logic devices provide useful functional contracts:
 
 ## Recommended Immediate Next Step
 
-Start Milestone B by specifying deterministic initialization and asynchronous
-PRE/CLR priority for `DIG_D_LATCH` and positive-edge `DIG_DFF`. Reuse the
-Milestone A conventions for explicit state-node DC paths, supply-relative
-thresholds, finite output stages, fail-before-mutation typed validation, and
-direct text-netlist verification.
+Start Milestone C with an eight-bit SIPO shift register and a reusable serial
+state-update convention. Specify bit ordering, clear/load priority, serial
+cascade timing, output-enable leakage, and deterministic initialization before
+adding the PISO register, bus transceiver, and HC595-style integration target.

@@ -20,7 +20,7 @@ namespace SpiceSharpParser.Tests.CustomComponents
             DigitalSubcircuitLibrary digital = DigitalSubcircuitLibrary.LoadBuiltIn();
             AnalogSubcircuitLibrary analog = AnalogSubcircuitLibrary.LoadBuiltIn();
 
-            Assert.Equal(23, digital.Library.Subcircuits.Count);
+            Assert.Equal(27, digital.Library.Subcircuits.Count);
             Assert.Equal(4, analog.Library.Subcircuits.Count);
             Assert.Equal(
                 new[] { "D", "CLK", "PRE", "CLR", "Q", "QB", "VDD", "VSS" },
