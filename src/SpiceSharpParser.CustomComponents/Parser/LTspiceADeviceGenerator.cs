@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Linq;
 using SpiceSharp.Components;
 using SpiceSharp.Entities;
-using SpiceSharpParser.Common.Validation;
 using SpiceSharpParser.CustomComponents.Analog;
 using SpiceSharpParser.CustomComponents.Digital;
 using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
@@ -20,10 +19,6 @@ namespace SpiceSharpParser.CustomComponents
     /// </summary>
     public sealed class LTspiceADeviceGenerator : IComponentGenerator
     {
-        private const int TerminalCount = 8;
-        private const int ModelIndex = TerminalCount;
-        private const int RequiredParameterCount = TerminalCount + 1;
-
         private static readonly IReadOnlyDictionary<string, string> SetResetParameterMap =
             CreateParameterMap(
                 ("vhigh", null),
@@ -119,18 +114,20 @@ namespace SpiceSharpParser.CustomComponents
             ParameterCollection parameters,
             IReadingContext context)
         {
-            if (!TryReadInstance(
+            if (!LTspiceADeviceInstanceReader.TryRead(
                     originalName,
                     parameters,
                     context,
-                    out string[] terminals,
-                    out string model,
-                    out IReadOnlyDictionary<string, ADeviceParameter> instanceParameters))
+                    out LTspiceADeviceInstance instance))
             {
                 return null;
             }
 
-            if (!TryValidateModelParameters(
+            string[] terminals = instance.Terminals;
+            string model = instance.Model;
+            IReadOnlyDictionary<string, ADeviceParameter> instanceParameters = instance.Parameters;
+
+            if (!LTspiceADeviceValidator.TryValidate(
                     originalName,
                     model,
                     instanceParameters,
@@ -145,7 +142,9 @@ namespace SpiceSharpParser.CustomComponents
                     ? StringComparison.Ordinal
                     : StringComparison.OrdinalIgnoreCase;
             bool[] unusedTerminals = terminals
-                .Select(terminal => terminal.Equals(terminals[TerminalCount - 1], nodeComparison))
+                .Select(terminal => terminal.Equals(
+                    terminals[LTspiceADeviceInstance.TerminalCount - 1],
+                    nodeComparison))
                 .ToArray();
             ApplyUnusedTerminalSemantics(
                 model,
@@ -194,7 +193,7 @@ namespace SpiceSharpParser.CustomComponents
                             $"Unsupported LTspice A-device model '{model}' on component '{originalName}'. "
                             + "Supported models are SRFLOP, DFLOP, PHASEDET, COUNTER, SAMPLEHOLD, "
                             + "OTA, VARISTOR, MODULATE, and MODULATOR.",
-                            parameters[ModelIndex].LineInfo);
+                            instance.ModelLineInfo);
                         break;
                 }
             }
@@ -211,103 +210,6 @@ namespace SpiceSharpParser.CustomComponents
             }
 
             return null;
-        }
-
-        private static bool TryReadInstance(
-            string originalName,
-            ParameterCollection parameters,
-            IReadingContext context,
-            out string[] terminals,
-            out string model,
-            out IReadOnlyDictionary<string, ADeviceParameter> instanceParameters)
-        {
-            terminals = null;
-            model = null;
-            instanceParameters = null;
-
-            if (parameters.Count < RequiredParameterCount)
-            {
-                AddError(
-                    context,
-                    $"LTspice A-device '{originalName}' expects eight terminals followed by a model name.",
-                    parameters.LineInfo);
-                return false;
-            }
-
-            for (int index = 0; index < RequiredParameterCount; index++)
-            {
-                if (!(parameters[index] is SingleParameter))
-                {
-                    string position = index < TerminalCount
-                        ? $"terminal {index + 1}"
-                        : "model name";
-                    AddError(
-                        context,
-                        $"LTspice A-device '{originalName}' has an invalid {position}.",
-                        parameters[index].LineInfo);
-                    return false;
-                }
-            }
-
-            terminals = new string[TerminalCount];
-            for (int index = 0; index < terminals.Length; index++)
-            {
-                string terminal = parameters[index].Value;
-                terminals[index] = context.ReaderSettings.ExpandSubcircuits
-                    ? context.NameGenerator.GenerateNodeName(terminal)
-                    : terminal;
-            }
-
-            model = parameters[ModelIndex].Value.ToUpperInvariant();
-            var parsed = new Dictionary<string, ADeviceParameter>(StringComparer.OrdinalIgnoreCase);
-            for (int index = RequiredParameterCount; index < parameters.Count; index++)
-            {
-                Parameter parameter = parameters[index];
-                string name;
-                string expression;
-                if (parameter is AssignmentParameter assignment)
-                {
-                    name = assignment.Name;
-                    expression = assignment.Value;
-                }
-                else if (parameter is SingleParameter flag)
-                {
-                    name = flag.Value;
-                    expression = "1";
-
-                    if (!IsAllowedFlag(model, name))
-                    {
-                        AddError(
-                            context,
-                            $"Unknown bare flag '{name}' on LTspice A-device '{originalName}' ({model}). "
-                            + "Only OTA Linear and Asym may use bare flag syntax.",
-                            parameter.LineInfo);
-                        return false;
-                    }
-                }
-                else
-                {
-                    AddError(
-                        context,
-                        $"Unsupported parameter syntax '{parameter}' on LTspice A-device '{originalName}'.",
-                        parameter.LineInfo);
-                    return false;
-                }
-
-                if (parsed.ContainsKey(name))
-                {
-                    AddError(
-                        context,
-                        $"Duplicate LTspice A-device parameter '{name}' on component '{originalName}'.",
-                        parameter.LineInfo);
-                    return false;
-                }
-
-                parsed.Add(name, new ADeviceParameter(expression, parameter.LineInfo));
-            }
-
-            instanceParameters = parsed;
-            return true;
         }
 
         private void AddSetResetFlipFlop(
@@ -683,41 +585,12 @@ namespace SpiceSharpParser.CustomComponents
             IReadingContext context,
             out Dictionary<string, string> result)
         {
-            result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            bool success = true;
-            foreach (KeyValuePair<string, ADeviceParameter> item in source)
-            {
-                if (!map.TryGetValue(item.Key, out string portableName))
-                {
-                    AddError(
-                        context,
-                        $"Unsupported LTspice A-device parameter '{item.Key}' on component '{componentName}'.",
-                        item.Value.LineInfo);
-                    success = false;
-                    continue;
-                }
-
-                if (portableName == null)
-                {
-                    continue;
-                }
-
-                if (TryEvaluateExpression(
-                        componentName,
-                        item.Key,
-                        item.Value,
-                        context,
-                        out double value))
-                {
-                    result[portableName] = value.ToString("R", CultureInfo.InvariantCulture);
-                }
-                else
-                {
-                    success = false;
-                }
-            }
-
-            return success;
+            return LTspiceADeviceParameterEvaluator.TryMap(
+                componentName,
+                source,
+                map,
+                context,
+                out result);
         }
 
         private static bool TryEvaluate(
@@ -728,355 +601,13 @@ namespace SpiceSharpParser.CustomComponents
             double defaultValue,
             out double result)
         {
-            if (!parameters.TryGetValue(name, out ADeviceParameter parameter))
-            {
-                result = defaultValue;
-                return true;
-            }
-
-            return TryEvaluateExpression(
-                componentName,
+            return LTspiceADeviceParameterEvaluator.TryEvaluate(
+                parameters,
                 name,
-                parameter,
-                context,
-                out result);
-        }
-
-        private static bool TryEvaluateExpression(
-            string componentName,
-            string parameterName,
-            ADeviceParameter parameter,
-            IReadingContext context,
-            out double result)
-        {
-            if (TryFindSteppedParameter(
-                    parameter.Expression,
-                    context,
-                    new HashSet<string>(StringComparer.OrdinalIgnoreCase),
-                    out string steppedParameter))
-            {
-                AddError(
-                    context,
-                    $"LTspice A-device '{componentName}' parameter '{parameterName}' depends on "
-                    + $"stepped parameter '{steppedParameter}'. Sweep-dependent A-device parameters "
-                    + "are not supported because expanding them would freeze the first sweep value.",
-                    parameter.LineInfo);
-                result = double.NaN;
-                return false;
-            }
-
-            try
-            {
-                result = context.Evaluator.EvaluateDouble(parameter.Expression);
-                if (double.IsNaN(result) || double.IsInfinity(result))
-                {
-                    AddError(
-                        context,
-                        $"LTspice A-device '{componentName}' parameter '{parameterName}' must be finite.",
-                        parameter.LineInfo);
-                    return false;
-                }
-
-                return true;
-            }
-            catch (Exception exception)
-            {
-                AddError(
-                    context,
-                    $"Could not evaluate LTspice A-device '{componentName}' parameter "
-                    + $"'{parameterName}': {exception.Message}",
-                    parameter.LineInfo);
-                result = double.NaN;
-                return false;
-            }
-        }
-
-        private static bool TryFindSteppedParameter(
-            string expression,
-            IReadingContext context,
-            ISet<string> visited,
-            out string steppedParameter)
-        {
-            steppedParameter = null;
-            foreach (string dependency in context.EvaluationContext.GetExpressionParameters(expression, false))
-            {
-                if (context.SimulationConfiguration.RegisteredParameterSweeps.Contains(dependency))
-                {
-                    steppedParameter = dependency;
-                    return true;
-                }
-
-                if (visited.Add(dependency)
-                    && context.EvaluationContext.Parameters.TryGetValue(dependency, out var parameter)
-                    && TryFindSteppedParameter(
-                        parameter.ValueExpression,
-                        context,
-                        visited,
-                        out steppedParameter))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private static bool TryValidateModelParameters(
-            string componentName,
-            string model,
-            IReadOnlyDictionary<string, ADeviceParameter> parameters,
-            IReadingContext context)
-        {
-            bool success = true;
-            switch (model)
-            {
-                case "SRFLOP":
-                case "DFLOP":
-                    success &= TryValidateOptional(
-                        componentName, parameters, "td", context, value => value >= 0.0, "zero or greater");
-                    success &= TryValidateOptional(
-                        componentName, parameters, "rout", context, value => value > 0.0, "greater than zero");
-                    success &= TryValidateOptional(
-                        componentName, parameters, "ic", context, value => value >= 0.0 && value <= 1.0, "between zero and one");
-                    break;
-                case "PHASEDET":
-                    success &= TryValidateOptional(
-                        componentName, parameters, "iout", context, value => value > 0.0, "greater than zero");
-                    success &= TryValidateOptional(
-                        componentName, parameters, "rout", context, value => value > 0.0, "greater than zero");
-                    success &= TryValidateOptional(
-                        componentName, parameters, "rclamp", context, value => value > 0.0, "greater than zero");
-                    success &= TryValidateOptional(
-                        componentName, parameters, "cout", context, value => value >= 0.0, "zero or greater");
-                    success &= TryValidateVoltageWindow(componentName, parameters, context, 10.0, -10.0);
-                    break;
-                case "COUNTER":
-                    if (!parameters.ContainsKey("cycles"))
-                    {
-                        AddError(
-                            context,
-                            $"LTspice A-device '{componentName}' (COUNTER) requires the Cycles parameter.",
-                            null);
-                        success = false;
-                    }
-                    else if (TryEvaluate(parameters, "cycles", componentName, context, 0.0, out double cycles))
-                    {
-                        if (cycles < 2.0 || Math.Abs(cycles - Math.Round(cycles)) > 1e-12)
-                        {
-                            AddParameterRangeError(
-                                context,
-                                componentName,
-                                "cycles",
-                                "an integer of at least two",
-                                parameters["cycles"]);
-                            success = false;
-                        }
-                    }
-                    else
-                    {
-                        success = false;
-                    }
-
-                    success &= TryValidateOptional(
-                        componentName, parameters, "duty", context, value => value > 0.0 && value < 1.0, "greater than zero and less than one");
-                    success &= TryValidateOptional(
-                        componentName, parameters, "rout", context, value => value > 0.0, "greater than zero");
-                    break;
-                case "SAMPLEHOLD":
-                    if (parameters.TryGetValue("td", out ADeviceParameter delay))
-                    {
-                        AddError(
-                            context,
-                            $"LTspice A-device '{componentName}' parameter 'Td' is not supported for "
-                            + "SAMPLEHOLD because its clock and track timing semantics are not yet implemented.",
-                            delay.LineInfo);
-                        success = false;
-                    }
-
-                    success &= TryValidateOptional(
-                        componentName, parameters, "rout", context, value => value > 0.0, "greater than zero");
-                    success &= TryValidateVoltageWindow(componentName, parameters, context, 10.0, -10.0);
-                    break;
-                case "OTA":
-                    success &= TryValidateOta(componentName, parameters, context);
-                    break;
-                case "VARISTOR":
-                    success &= TryValidateOptional(
-                        componentName, parameters, "rclamp", context, value => value > 0.0, "greater than zero");
-                    success &= TryValidateOptional(
-                        componentName, parameters, "roff", context, value => value > 0.0, "greater than zero");
-                    break;
-                case "MODULATE":
-                case "MODULATOR":
-                    if (!parameters.ContainsKey("mark"))
-                    {
-                        AddError(
-                            context,
-                            $"LTspice A-device '{componentName}' ({model}) requires the Mark parameter.",
-                            null);
-                        success = false;
-                    }
-                    else
-                    {
-                        success &= TryValidateOptional(
-                            componentName, parameters, "mark", context, value => value >= 0.0, "zero or greater");
-                    }
-
-                    if (!parameters.ContainsKey("space"))
-                    {
-                        AddError(
-                            context,
-                            $"LTspice A-device '{componentName}' ({model}) requires the Space parameter.",
-                            null);
-                        success = false;
-                    }
-                    else
-                    {
-                        success &= TryValidateOptional(
-                            componentName, parameters, "space", context, value => value >= 0.0, "zero or greater");
-                    }
-
-                    success &= TryValidateOptional(
-                        componentName, parameters, "rout", context, value => value > 0.0, "greater than zero");
-                    break;
-            }
-
-            return success;
-        }
-
-        private static bool TryValidateOta(
-            string componentName,
-            IReadOnlyDictionary<string, ADeviceParameter> parameters,
-            IReadingContext context)
-        {
-            bool success = true;
-            if (!TryEvaluate(parameters, "iout", componentName, context, 10e-6, out double outputLimit))
-            {
-                success = false;
-            }
-            else if (outputLimit <= 0.0)
-            {
-                AddParameterRangeError(
-                    context,
-                    componentName,
-                    "iout",
-                    "greater than zero",
-                    parameters.TryGetValue("iout", out ADeviceParameter iout) ? iout : null);
-                success = false;
-            }
-
-            if (!TryEvaluate(parameters, "isrc", componentName, context, outputLimit, out double sourceLimit))
-            {
-                success = false;
-            }
-            else if (sourceLimit <= 0.0)
-            {
-                AddParameterRangeError(
-                    context,
-                    componentName,
-                    "isrc",
-                    "greater than zero",
-                    parameters.TryGetValue("isrc", out ADeviceParameter isrc) ? isrc : null);
-                success = false;
-            }
-
-            if (!TryEvaluate(parameters, "isink", componentName, context, -outputLimit, out double sinkLimit))
-            {
-                success = false;
-            }
-            else if (sinkLimit >= 0.0)
-            {
-                AddParameterRangeError(
-                    context,
-                    componentName,
-                    "isink",
-                    "less than zero",
-                    parameters.TryGetValue("isink", out ADeviceParameter isink) ? isink : null);
-                success = false;
-            }
-
-            success &= TryValidateOptional(
-                componentName, parameters, "g", context, value => value > 0.0, "greater than zero");
-            success &= TryValidateOptional(
-                componentName, parameters, "rout", context, value => value > 0.0, "greater than zero");
-            success &= TryValidateOptional(
-                componentName, parameters, "rclamp", context, value => value > 0.0, "greater than zero");
-            success &= TryValidateOptional(
-                componentName, parameters, "cout", context, value => value >= 0.0, "zero or greater");
-            success &= TryValidateVoltageWindow(componentName, parameters, context, 2.0, 0.0);
-            return success;
-        }
-
-        private static bool TryValidateOptional(
-            string componentName,
-            IReadOnlyDictionary<string, ADeviceParameter> parameters,
-            string parameterName,
-            IReadingContext context,
-            Func<double, bool> predicate,
-            string requirement)
-        {
-            if (!parameters.ContainsKey(parameterName))
-            {
-                return true;
-            }
-
-            if (!TryEvaluate(parameters, parameterName, componentName, context, 0.0, out double value))
-            {
-                return false;
-            }
-
-            if (predicate(value))
-            {
-                return true;
-            }
-
-            AddParameterRangeError(
-                context,
                 componentName,
-                parameterName,
-                requirement,
-                parameters[parameterName]);
-            return false;
-        }
-
-        private static bool TryValidateVoltageWindow(
-            string componentName,
-            IReadOnlyDictionary<string, ADeviceParameter> parameters,
-            IReadingContext context,
-            double defaultHigh,
-            double defaultLow)
-        {
-            if (!TryEvaluate(parameters, "vhigh", componentName, context, defaultHigh, out double high)
-                || !TryEvaluate(parameters, "vlow", componentName, context, defaultLow, out double low))
-            {
-                return false;
-            }
-
-            if (high > low)
-            {
-                return true;
-            }
-
-            AddError(
                 context,
-                $"LTspice A-device '{componentName}' Vhigh ({high}) must be greater than Vlow ({low}).",
-                parameters.TryGetValue("vhigh", out ADeviceParameter highParameter)
-                    ? highParameter.LineInfo
-                    : null);
-            return false;
-        }
-
-        private static void AddParameterRangeError(
-            IReadingContext context,
-            string componentName,
-            string parameterName,
-            string requirement,
-            ADeviceParameter parameter)
-        {
-            AddError(
-                context,
-                $"LTspice A-device '{componentName}' parameter '{parameterName}' must be {requirement}.",
-                parameter?.LineInfo);
+                defaultValue,
+                out result);
         }
 
         private static string CreatePortableInstanceName(
@@ -1128,13 +659,6 @@ namespace SpiceSharpParser.CustomComponents
             }
         }
 
-        private static bool IsAllowedFlag(string model, string flag)
-        {
-            return model == "OTA"
-                && (flag.Equals("linear", StringComparison.OrdinalIgnoreCase)
-                    || flag.Equals("asym", StringComparison.OrdinalIgnoreCase));
-        }
-
         private static bool UsesZeroDelay(IReadOnlyDictionary<string, string> parameters)
         {
             return !parameters.TryGetValue("TPD", out string delay)
@@ -1170,23 +694,7 @@ namespace SpiceSharpParser.CustomComponents
             string message,
             SpiceLineInfo lineInfo)
         {
-            context.Result.ValidationResult.AddError(
-                ValidationEntrySource.Reader,
-                message,
-                lineInfo);
-        }
-
-        private sealed class ADeviceParameter
-        {
-            public ADeviceParameter(string expression, SpiceLineInfo lineInfo)
-            {
-                Expression = expression;
-                LineInfo = lineInfo;
-            }
-
-            public string Expression { get; }
-
-            public SpiceLineInfo LineInfo { get; }
+            LTspiceADeviceDiagnostics.AddError(context, message, lineInfo);
         }
     }
 }

@@ -6,6 +6,7 @@ using SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.Compo
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 using SpiceSharpParser.Models.Netlist.Spice.Objects.Parameters;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SpiceSharpParser.CustomComponents
@@ -15,6 +16,14 @@ namespace SpiceSharpParser.CustomComponents
     /// </summary>
     public class NonlinearPassiveGenerator : IComponentGenerator
     {
+        private static readonly ISet<string> OptionalParameterNames =
+            new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                "ic",
+                "m",
+                "n",
+            };
+
         private readonly RLCKGenerator _fallback = new RLCKGenerator();
 
         /// <inheritdoc />
@@ -44,62 +53,27 @@ namespace SpiceSharpParser.CustomComponents
                 return null;
             }
 
-            foreach (Parameter parameter in parameters.Skip(3))
+            if (!TryReadOptionalParameters(
+                    originalName,
+                    "capacitor",
+                    parameters,
+                    context,
+                    out IReadOnlyList<AssignmentParameter> optionalParameters))
             {
-                if (!(parameter is AssignmentParameter assignment))
-                {
-                    context.Result.ValidationResult.AddError(
-                        ValidationEntrySource.Reader,
-                        $"Invalid parameter for nonlinear capacitor '{originalName}': '{parameter}'.",
-                        parameter.LineInfo);
-                    return null;
-                }
-
-                if (assignment.Name.Equals("ic", StringComparison.OrdinalIgnoreCase)
-                    || assignment.Name.Equals("m", StringComparison.OrdinalIgnoreCase)
-                    || assignment.Name.Equals("n", StringComparison.OrdinalIgnoreCase))
-                {
-                    continue;
-                }
-
-                context.Result.ValidationResult.AddError(
-                    ValidationEntrySource.Reader,
-                    $"Unsupported LTspice nonlinear capacitor parameter '{assignment.Name}' on component '{originalName}'.",
-                    assignment.LineInfo);
                 return null;
             }
 
             var capacitor = new NonlinearCapacitor(name);
             context.CreateNodes(capacitor, parameters.Take(NonlinearCapacitor.PinCount));
             capacitor.Parameters.Expression = charge.Value;
-            capacitor.Parameters.ParseAction = parsedExpression =>
-            {
-                var parser = context.CreateExpressionResolver(null);
-                return parser.Resolve(parsedExpression);
-            };
+            SimulationExpressionResolver.Configure(
+                context,
+                charge.Value,
+                parser => capacitor.Parameters.ParseAction = parser);
 
-            foreach (Parameter parameter in parameters.Skip(3))
+            foreach (AssignmentParameter parameter in optionalParameters)
             {
-                if (parameter is AssignmentParameter assignment
-                    && (assignment.Name.Equals("ic", StringComparison.OrdinalIgnoreCase)
-                        || assignment.Name.Equals("m", StringComparison.OrdinalIgnoreCase)
-                        || assignment.Name.Equals("n", StringComparison.OrdinalIgnoreCase)))
-                {
-                    context.SetParameter(capacitor, assignment.Name, assignment.Value);
-                }
-            }
-
-            if (context.EvaluationContext.HaveFunctions(charge.Value))
-            {
-                context.SimulationPreparations.ExecuteActionBeforeSetup(simulation =>
-                {
-                    capacitor.Parameters.Expression = charge.Value;
-                    capacitor.Parameters.ParseAction = parsedExpression =>
-                    {
-                        var parser = context.CreateExpressionResolver(simulation);
-                        return parser.Resolve(parsedExpression);
-                    };
-                });
+                context.SetParameter(capacitor, parameter.Name, parameter.Value);
             }
 
             return capacitor;
@@ -118,55 +92,67 @@ namespace SpiceSharpParser.CustomComponents
                 return null;
             }
 
+            if (!TryReadOptionalParameters(
+                    originalName,
+                    "inductor",
+                    parameters,
+                    context,
+                    out IReadOnlyList<AssignmentParameter> optionalParameters))
+            {
+                return null;
+            }
+
             var inductor = new NonlinearInductor(name);
             context.CreateNodes(inductor, parameters.Take(NonlinearInductor.PinCount));
             inductor.Parameters.Expression = flux.Value;
-            inductor.Parameters.ParseAction = parsedExpression =>
-            {
-                var parser = context.CreateExpressionResolver(null);
-                return parser.Resolve(parsedExpression);
-            };
+            SimulationExpressionResolver.Configure(
+                context,
+                flux.Value,
+                parser => inductor.Parameters.ParseAction = parser);
 
+            foreach (AssignmentParameter parameter in optionalParameters)
+            {
+                context.SetParameter(inductor, parameter.Name, parameter.Value);
+            }
+
+            return inductor;
+        }
+
+        private static bool TryReadOptionalParameters(
+            string originalName,
+            string kind,
+            ParameterCollection parameters,
+            IReadingContext context,
+            out IReadOnlyList<AssignmentParameter> result)
+        {
+            var assignments = new List<AssignmentParameter>();
             foreach (Parameter parameter in parameters.Skip(3))
             {
                 if (!(parameter is AssignmentParameter assignment))
                 {
                     context.Result.ValidationResult.AddError(
                         ValidationEntrySource.Reader,
-                        $"Invalid parameter for nonlinear inductor '{originalName}': '{parameter}'.",
+                        $"Invalid parameter for nonlinear {kind} '{originalName}': '{parameter}'.",
                         parameter.LineInfo);
-                    return null;
+                    result = null;
+                    return false;
                 }
 
-                if (assignment.Name.Equals("ic", StringComparison.OrdinalIgnoreCase)
-                    || assignment.Name.Equals("m", StringComparison.OrdinalIgnoreCase)
-                    || assignment.Name.Equals("n", StringComparison.OrdinalIgnoreCase))
+                if (!OptionalParameterNames.Contains(assignment.Name))
                 {
-                    context.SetParameter(inductor, assignment.Name, assignment.Value);
-                    continue;
+                    context.Result.ValidationResult.AddError(
+                        ValidationEntrySource.Reader,
+                        $"Unsupported LTspice nonlinear {kind} parameter '{assignment.Name}' on component '{originalName}'.",
+                        assignment.LineInfo);
+                    result = null;
+                    return false;
                 }
 
-                context.Result.ValidationResult.AddError(
-                    ValidationEntrySource.Reader,
-                    $"Unsupported LTspice nonlinear inductor parameter '{assignment.Name}' on component '{originalName}'.",
-                    assignment.LineInfo);
-                return null;
+                assignments.Add(assignment);
             }
 
-            if (context.EvaluationContext.HaveFunctions(flux.Value))
-            {
-                context.SimulationPreparations.ExecuteActionBeforeSetup(simulation =>
-                {
-                    inductor.Parameters.Expression = flux.Value;
-                    inductor.Parameters.ParseAction = parsedExpression =>
-                    {
-                        var parser = context.CreateExpressionResolver(simulation);
-                        return parser.Resolve(parsedExpression);
-                    };
-                });
-            }
-
-            return inductor;
+            result = assignments;
+            return true;
         }
 
         private static bool ValidateTwoTerminal(string name, string kind, ParameterCollection parameters, IReadingContext context)
@@ -195,6 +181,5 @@ namespace SpiceSharpParser.CustomComponents
                     ? assignment
                     : null;
         }
-
     }
 }

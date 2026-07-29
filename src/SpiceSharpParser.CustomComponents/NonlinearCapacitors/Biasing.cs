@@ -4,12 +4,7 @@ using SpiceSharp.Behaviors;
 using SpiceSharp.Components;
 using SpiceSharp.ParameterSets;
 using SpiceSharp.Simulations;
-using SpiceSharp.Simulations.Variables;
-using SpiceSharpBehavioral.Builders.Functions;
-using SpiceSharpBehavioral.Parsers;
-using SpiceSharpBehavioral.Parsers.Nodes;
-using System;
-using System.Collections.Generic;
+using SpiceSharpParser.CustomComponents.Expressions;
 
 namespace SpiceSharpParser.CustomComponents.NonlinearCapacitors
 {
@@ -21,10 +16,7 @@ namespace SpiceSharpParser.CustomComponents.NonlinearCapacitors
         IBiasingBehavior,
         IParameterized<NonlinearCapacitorParameters>
     {
-        private static readonly VariableNode VoltageVariable = Node.Variable("x");
-        private readonly EvaluationVariable _voltageEvaluationVariable = new EvaluationVariable();
-        private Func<double> _charge;
-        private Func<double> _chargeDerivative;
+        private readonly SingleVariableExpression _chargeExpression;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Biasing" /> class.
@@ -40,7 +32,11 @@ namespace SpiceSharpParser.CustomComponents.NonlinearCapacitors
             var state = context.GetState<IBiasingSimulationState>();
 
             Variables = new NonlinearCapacitorVariables<double>(state, context);
-            BuildFunctions();
+            _chargeExpression = new SingleVariableExpression(
+                Parameters.Expression,
+                Parameters.ParseAction,
+                Units.Volt,
+                $"Charge expression is required for nonlinear capacitor '{Name}'.");
         }
 
         /// <inheritdoc />
@@ -105,8 +101,7 @@ namespace SpiceSharpParser.CustomComponents.NonlinearCapacitors
             double m = Parameters.ParallelMultiplier;
             double n = Parameters.SeriesMultiplier;
 
-            _voltageEvaluationVariable.Value = voltage;
-            return m * _charge() / n;
+            return m * _chargeExpression.Evaluate(voltage) / n;
         }
 
         /// <summary>
@@ -119,53 +114,7 @@ namespace SpiceSharpParser.CustomComponents.NonlinearCapacitors
             double m = Parameters.ParallelMultiplier;
             double n = Parameters.SeriesMultiplier;
 
-            _voltageEvaluationVariable.Value = voltage;
-            return m * _chargeDerivative() / n;
-        }
-
-        private void BuildFunctions()
-        {
-            if (string.IsNullOrWhiteSpace(Parameters.Expression))
-            {
-                throw new SpiceSharpException($"Charge expression is required for nonlinear capacitor '{Name}'.");
-            }
-
-            var chargeExpression = Parameters.ParseAction != null
-                ? Parameters.ParseAction(Parameters.Expression)
-                : Parser.Parse(Lexer.FromString(Parameters.Expression));
-
-            var derivative = new Derivatives
-            {
-                Variables = new HashSet<VariableNode> { VoltageVariable },
-                FunctionRules = DerivativesHelper.Defaults,
-            };
-            var derivativeExpression = derivative.Derive(chargeExpression)[VoltageVariable];
-
-            _charge = BuildFunction(chargeExpression);
-            _chargeDerivative = BuildFunction(derivativeExpression);
-        }
-
-        private Func<double> BuildFunction(Node expression)
-        {
-            var builder = new RealFunctionBuilder();
-            builder.VariableFound += (_, args) =>
-            {
-                if (args.Node.Equals(VoltageVariable))
-                {
-                    args.Variable = _voltageEvaluationVariable;
-                }
-            };
-
-            return builder.Build(expression);
-        }
-
-        private sealed class EvaluationVariable : IVariable<double>
-        {
-            public string Name => "x";
-
-            public IUnit Unit => Units.Volt;
-
-            public double Value { get; set; }
+            return m * _chargeExpression.EvaluateDerivative(voltage) / n;
         }
     }
 }

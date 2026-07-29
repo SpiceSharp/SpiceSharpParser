@@ -21,10 +21,7 @@ namespace SpiceSharpParser.CustomComponents.IdealDiodes
         IParameterized<IdealDiodeParameters>
     {
         private readonly IIterationSimulationState _iteration;
-        private readonly IdealDiode _diode;
-        private readonly ISimulation _simulation;
-        private readonly IdealDiodeParameters _instanceParameters;
-        private readonly IdealDiodeParameters _modelParameters;
+        private readonly IdealDiodeParameterResolver _parameterResolver;
 
         /// <summary>
         /// Gets the simulation biasing parameters.
@@ -104,10 +101,11 @@ namespace SpiceSharpParser.CustomComponents.IdealDiodes
             _iteration = context.GetState<IIterationSimulationState>();
 
             BiasingParameters = context.GetSimulationParameterSet<BiasingParameters>();
-            _diode = diode;
-            _simulation = simulation;
-            _instanceParameters = context.GetParameterSet<IdealDiodeParameters>();
-            _modelParameters = TryGetModelParameters(context);
+            _parameterResolver = new IdealDiodeParameterResolver(
+                diode,
+                simulation,
+                context.GetParameterSet<IdealDiodeParameters>(),
+                TryGetModelParameters(context));
             RefreshEffectiveParameters();
             Variables = new IdealDiodeVariables<double>(Name, state, context);
             Elements = new ElementSet<double>(
@@ -239,81 +237,7 @@ namespace SpiceSharpParser.CustomComponents.IdealDiodes
 
         protected void RefreshEffectiveParameters()
         {
-            var effectiveParameters = new IdealDiodeParameters();
-
-            var modelParameters = _diode?.GetModelParameters(_simulation) ?? _modelParameters;
-            if (modelParameters == null)
-            {
-                _instanceParameters.CopyTo(effectiveParameters);
-                Parameters = effectiveParameters;
-                return;
-            }
-
-            modelParameters.CopyTo(effectiveParameters);
-            if (_diode != null)
-            {
-                foreach (var modelParameterOverride in _diode.GetModelParameterOverrides(_simulation))
-                {
-                    effectiveParameters.SetParameter(modelParameterOverride.Key, modelParameterOverride.Value);
-                }
-            }
-
-            effectiveParameters.Area = _instanceParameters.Area;
-            effectiveParameters.Off = _instanceParameters.Off;
-            effectiveParameters.ParallelMultiplier = _instanceParameters.ParallelMultiplier;
-            effectiveParameters.SeriesMultiplier = _instanceParameters.SeriesMultiplier;
-
-            if (_instanceParameters.HasInstanceOverride("rs"))
-            {
-                effectiveParameters.Resistance = _instanceParameters.Resistance;
-            }
-
-            if (_instanceParameters.HasInstanceOverride("ron"))
-            {
-                effectiveParameters.OnResistance = _instanceParameters.OnResistance;
-            }
-
-            if (_instanceParameters.HasInstanceOverride("roff"))
-            {
-                effectiveParameters.OffResistance = _instanceParameters.OffResistance;
-            }
-
-            if (_instanceParameters.HasInstanceOverride("vfwd"))
-            {
-                effectiveParameters.ForwardVoltage = _instanceParameters.ForwardVoltage;
-            }
-
-            if (_instanceParameters.HasInstanceOverride("vrev"))
-            {
-                effectiveParameters.ReverseVoltage = _instanceParameters.ReverseVoltage;
-            }
-
-            if (_instanceParameters.HasInstanceOverride("rrev"))
-            {
-                effectiveParameters.ReverseResistance = _instanceParameters.ReverseResistance;
-            }
-
-            if (_instanceParameters.HasInstanceOverride("ilimit"))
-            {
-                effectiveParameters.ForwardCurrentLimit = _instanceParameters.ForwardCurrentLimit;
-            }
-
-            if (_instanceParameters.HasInstanceOverride("revilimit"))
-            {
-                effectiveParameters.ReverseCurrentLimit = _instanceParameters.ReverseCurrentLimit;
-            }
-
-            if (_instanceParameters.HasInstanceOverride("epsilon"))
-            {
-                effectiveParameters.ForwardEpsilon = _instanceParameters.ForwardEpsilon;
-            }
-
-            if (_instanceParameters.HasInstanceOverride("revepsilon"))
-            {
-                effectiveParameters.ReverseEpsilon = _instanceParameters.ReverseEpsilon;
-            }
-
-            Parameters = effectiveParameters;
+            Parameters = _parameterResolver.Resolve();
         }
     }
 }

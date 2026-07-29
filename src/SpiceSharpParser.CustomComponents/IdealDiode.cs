@@ -5,7 +5,6 @@ using SpiceSharp.ParameterSets;
 using SpiceSharp.Simulations;
 using SpiceSharpParser.CustomComponents.IdealDiodes;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace SpiceSharpParser.CustomComponents
@@ -19,9 +18,7 @@ namespace SpiceSharpParser.CustomComponents
     [Pin(0, "D+"), Pin(1, "D-")]
     public class IdealDiode : Component<IdealDiodeParameters>
     {
-        private readonly ConcurrentDictionary<ISimulation, IdealDiodeParameters> _simulationModelParameters = new ConcurrentDictionary<ISimulation, IdealDiodeParameters>();
-        private readonly ConcurrentDictionary<ISimulation, ConcurrentDictionary<string, double>> _simulationModelParameterOverrides =
-            new ConcurrentDictionary<ISimulation, ConcurrentDictionary<string, double>>();
+        private readonly IdealDiodeModelState _modelState = new IdealDiodeModelState();
 
         /// <summary>
         /// The pin count for ideal diodes.
@@ -29,50 +26,24 @@ namespace SpiceSharpParser.CustomComponents
         [ParameterName("pincount"), ParameterInfo("Number of pins")]
         public const int PinCount = 2;
 
-        internal IdealDiodeParameters ModelParameters { get; set; }
-
         internal void SetModelParameters(ISimulation simulation, IdealDiodeParameters parameters)
         {
-            if (simulation == null)
-            {
-                ModelParameters = parameters;
-                return;
-            }
-
-            _simulationModelParameters[simulation] = parameters;
+            _modelState.SetModelParameters(simulation, parameters);
         }
 
         internal IdealDiodeParameters GetModelParameters(ISimulation simulation)
         {
-            if (simulation != null && _simulationModelParameters.TryGetValue(simulation, out var parameters))
-            {
-                return parameters;
-            }
-
-            return ModelParameters;
+            return _modelState.GetModelParameters(simulation);
         }
 
         internal void SetModelParameterOverride(ISimulation simulation, string parameterName, double value)
         {
-            if (simulation == null)
-            {
-                return;
-            }
-
-            var overrides = _simulationModelParameterOverrides.GetOrAdd(
-                simulation,
-                _ => new ConcurrentDictionary<string, double>(StringComparer.OrdinalIgnoreCase));
-            overrides[parameterName] = value;
+            _modelState.SetModelParameterOverride(simulation, parameterName, value);
         }
 
         internal IEnumerable<KeyValuePair<string, double>> GetModelParameterOverrides(ISimulation simulation)
         {
-            if (simulation != null && _simulationModelParameterOverrides.TryGetValue(simulation, out var overrides))
-            {
-                return overrides;
-            }
-
-            return Array.Empty<KeyValuePair<string, double>>();
+            return _modelState.GetModelParameterOverrides(simulation);
         }
 
         /// <summary>

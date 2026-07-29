@@ -5,12 +5,7 @@ using SpiceSharp.Behaviors;
 using SpiceSharp.Components;
 using SpiceSharp.ParameterSets;
 using SpiceSharp.Simulations;
-using SpiceSharp.Simulations.Variables;
-using SpiceSharpBehavioral.Builders.Functions;
-using SpiceSharpBehavioral.Parsers;
-using SpiceSharpBehavioral.Parsers.Nodes;
-using System;
-using System.Collections.Generic;
+using SpiceSharpParser.CustomComponents.Expressions;
 
 namespace SpiceSharpParser.CustomComponents.NonlinearInductors
 {
@@ -23,11 +18,8 @@ namespace SpiceSharpParser.CustomComponents.NonlinearInductors
         IBranchedBehavior<double>,
         IParameterized<NonlinearInductorParameters>
     {
-        private static readonly VariableNode CurrentVariable = Node.Variable("x");
         private readonly ElementSet<double> _elements;
-        private readonly EvaluationVariable _currentEvaluationVariable = new EvaluationVariable();
-        private Func<double> _flux;
-        private Func<double> _fluxDerivative;
+        private readonly SingleVariableExpression _fluxExpression;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Biasing" /> class.
@@ -48,7 +40,11 @@ namespace SpiceSharpParser.CustomComponents.NonlinearInductors
                 state.Solver,
                 Variables.GetBiasingMatrixLocations(state.Map));
 
-            BuildFunctions();
+            _fluxExpression = new SingleVariableExpression(
+                Parameters.Expression,
+                Parameters.ParseAction,
+                Units.Ampere,
+                $"Flux expression is required for nonlinear inductor '{Name}'.");
         }
 
         /// <inheritdoc />
@@ -117,8 +113,7 @@ namespace SpiceSharpParser.CustomComponents.NonlinearInductors
             double m = Parameters.ParallelMultiplier;
             double n = Parameters.SeriesMultiplier;
 
-            _currentEvaluationVariable.Value = current / m;
-            return n * _flux();
+            return n * _fluxExpression.Evaluate(current / m);
         }
 
         /// <summary>
@@ -131,53 +126,7 @@ namespace SpiceSharpParser.CustomComponents.NonlinearInductors
             double m = Parameters.ParallelMultiplier;
             double n = Parameters.SeriesMultiplier;
 
-            _currentEvaluationVariable.Value = current / m;
-            return n * _fluxDerivative() / m;
-        }
-
-        private void BuildFunctions()
-        {
-            if (string.IsNullOrWhiteSpace(Parameters.Expression))
-            {
-                throw new SpiceSharpException($"Flux expression is required for nonlinear inductor '{Name}'.");
-            }
-
-            var fluxExpression = Parameters.ParseAction != null
-                ? Parameters.ParseAction(Parameters.Expression)
-                : Parser.Parse(Lexer.FromString(Parameters.Expression));
-
-            var derivative = new Derivatives
-            {
-                Variables = new HashSet<VariableNode> { CurrentVariable },
-                FunctionRules = DerivativesHelper.Defaults,
-            };
-            var derivativeExpression = derivative.Derive(fluxExpression)[CurrentVariable];
-
-            _flux = BuildFunction(fluxExpression);
-            _fluxDerivative = BuildFunction(derivativeExpression);
-        }
-
-        private Func<double> BuildFunction(Node expression)
-        {
-            var builder = new RealFunctionBuilder();
-            builder.VariableFound += (_, args) =>
-            {
-                if (args.Node.Equals(CurrentVariable))
-                {
-                    args.Variable = _currentEvaluationVariable;
-                }
-            };
-
-            return builder.Build(expression);
-        }
-
-        private sealed class EvaluationVariable : IVariable<double>
-        {
-            public string Name => "x";
-
-            public IUnit Unit => Units.Ampere;
-
-            public double Value { get; set; }
+            return n * _fluxExpression.EvaluateDerivative(current / m) / m;
         }
     }
 }
