@@ -159,6 +159,7 @@ delay, loading, initial state, and asynchronous-control priority overrides.
 
 ## Documentation and Examples
 
+- [Junior developer's science tutorial](TUTORIAL.md)
 - [Custom-components architecture](ARCHITECTURE.md)
 - [A-device guide](https://github.com/SpiceSharp/SpiceSharpParser/blob/main/src/docs/articles/a-devices.md)
 - [Runnable A-device examples](https://github.com/SpiceSharp/SpiceSharpParser/tree/main/circuits/a-devices)

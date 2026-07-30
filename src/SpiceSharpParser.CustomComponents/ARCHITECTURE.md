@@ -95,14 +95,18 @@ type so existing callers keep the same API.
 
 ### LTspice A-devices
 
-An A-device is translated in three stages:
+`LTspiceADeviceGenerator` coordinates a staged translation:
 
 1. `LTspiceADeviceInstanceReader` reads the eight terminals, model name, flags,
    and raw parameter expressions.
-2. `LTspiceADeviceValidator` checks model-specific requirements and parameter
+2. `LTspiceADeviceCatalog` selects a declarative definition containing the
+   portable subcircuit, terminal order, output terminals, and parameter map.
+3. `LTspiceADeviceValidator` checks model-specific requirements and parameter
    ranges.
-3. `LTspiceADeviceGenerator` selects the appropriate digital or analog
-   subcircuit expansion.
+4. `LTspiceADeviceConnections` applies terminal-8 common/unused semantics and
+   detaches unused outputs.
+5. `LTspiceADeviceExpander` evaluates parameters, creates any private digital
+   rails, and instantiates the selected digital or analog subcircuit.
 
 Expansion may add several entities. If any part fails, the generator restores
 the reading context to its pre-expansion state and reports one reader
