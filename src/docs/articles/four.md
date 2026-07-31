@@ -302,8 +302,8 @@ than these ideal ratios.
 
 ## What You Can Do Today: `WaveformAnalyzer` (C#)
 
-This is the **only Fourier path that actually runs today.** It is a plain static
-helper, not a netlist control. Source:
+This is the older, direct C# Fourier path. It is a plain static helper, not a
+netlist control, and it is separate from the `.FOUR` implementation. Source:
 [WaveformAnalyzer.cs](../../SpiceSharpParser/Analysis/WaveformAnalyzer.cs)
 (namespace `SpiceSharpParser.Analysis`).
 
@@ -419,6 +419,104 @@ were captured (see the practical tip above).
 ---
 
 ## `.FOUR` Netlist Support
+
+### Algorithm Used by `.FOUR`
+
+`.FOUR` uses **linear uniform resampling followed by direct Fourier projection
+at nine exact harmonic frequencies**. It does not call
+`WaveformAnalyzer.FFT`, and it does not calculate a complete FFT spectrum.
+
+The implementation is split between:
+
+- [`FourControl`](../../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/FourControl.cs),
+  which collects `(time, value)` samples during `.TRAN`; and
+- [`FourierAnalysisCalculator`](../../SpiceSharpParser/ModelReaders/Netlist/Spice/Readers/Controls/Fourier/FourierAnalysisCalculator.cs),
+  which analyzes the samples after the transient simulation finishes.
+
+For a requested fundamental frequency $f_0$, the calculator first determines
+the period:
+
+$$
+T = \frac{1}{f_0}
+$$
+
+It analyzes the final complete interval:
+
+$$
+[t_{\mathrm{end}} - T,\ t_{\mathrm{end}}]
+$$
+
+SpiceSharp transient samples normally use adaptive, non-uniform timesteps.
+The calculator therefore linearly interpolates that interval onto a uniform
+grid:
+
+$$
+N = \max(256,\ \text{number of original samples in the final period})
+$$
+
+$$
+t_i = t_{\mathrm{start}} + \frac{iT}{N},
+\qquad i = 0,\ldots,N-1
+$$
+
+The DC component is the arithmetic mean of the uniformly spaced samples:
+
+$$
+A_0 = \frac{1}{N}\sum_{i=0}^{N-1}x_i
+$$
+
+For each harmonic $k=1,\ldots,9$, the calculator projects the samples onto
+cosine and sine at exactly $k f_0$:
+
+$$
+a_k = \frac{2}{N}\sum_{i=0}^{N-1}
+x_i\cos(2\pi k f_0 t_i)
+$$
+
+$$
+b_k = \frac{2}{N}\sum_{i=0}^{N-1}
+x_i\sin(2\pi k f_0 t_i)
+$$
+
+Magnitude and phase are then:
+
+$$
+A_k = \sqrt{a_k^2+b_k^2}
+$$
+
+$$
+\phi_k = \operatorname{atan2}(-b_k,a_k)
+$$
+
+Phase uses a cosine reference. A cosine therefore has phase $0^\circ$, while
+a sine has phase approximately $-90^\circ$.
+
+Each non-DC magnitude is normalized to the fundamental:
+
+$$
+A_{k,\mathrm{normalized}} = \frac{A_k}{A_1}
+$$
+
+$$
+A_{k,\mathrm{dB}} =
+20\log_{10}\left(\frac{A_k}{A_1}\right)
+$$
+
+Finally, THD is computed from harmonics 2 through 9:
+
+$$
+\mathrm{THD} =
+100\frac{\sqrt{A_2^2+A_3^2+\cdots+A_9^2}}{A_1}
+$$
+
+In short, the algorithm is:
+
+> Final-period selection → linear uniform resampling → direct nine-bin DFT →
+> normalization and THD.
+
+Its cost is $O(9N)$, which is appropriate because `.FOUR` needs only nine
+specific harmonic bins. A full FFT would calculate many frequency bins that
+this statement does not use.
 
 ### How `.FOUR` Works
 
