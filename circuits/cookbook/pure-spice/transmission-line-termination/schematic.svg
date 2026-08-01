@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" xml:lang="en" height="374.44000000000005pt" width="949.0040000000001pt" viewBox="-81.064 -337.80000000000007 949.0040000000001 374.44000000000005" style="background-color:#ffffff;" role="img" aria-labelledby="title desc" data-generator="spicesharp-cookbook-schematic 0.1.0">
+  <title id="title">Transmission-line termination comparison</title>
+  <desc id="desc">Two identical five volt pulse drivers feed fifty ohm, twenty nanosecond lossless lines; one cable is nearly open and rings, while the other has a matched fifty ohm load.</desc>
+  <circle cx="0" cy="-90" r="18" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;" />
+  <circle cx="432" cy="-90" r="18" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;" />
+  <path d="M 252.0,-180.0 L 288,-180 L 324,-180" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 684.0,-180.0 L 720,-180 L 756,-180" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 0.0,-0.0 L 378,-0 L 756,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 0.0,-180.0 L 0,-108 L 0,-108 M 0,-72 L 0,-72 L 0,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 10.800000000000006,-93.60000000000001 L 5.4,-93.6 L 5.4,-88.2 L -5.4,-88.2 L -5.4,-93.6 L -10.8,-93.6" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 0.0,-180.0 L 36,-180 L 39,-189 L 45,-171 L 51,-189 L 57,-171 L 63,-189 L 69,-171 L 72,-180 L 108,-180" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 108.0,-180.0 L 154.8,-180 L 154.8,-199.8 L 205.2,-199.8 L 205.2,-160.2 L 154.8,-160.2 L 154.8,-180 M 205.2,-180 L 252,-180" style="stroke:#243247;fill:#f4f8fd;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 324.0,-180.0 L 324,-108 L 333,-105 L 315,-99 L 333,-93 L 315,-87 L 333,-81 L 315,-75 L 324,-72 L 324,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 432.0,-180.0 L 432,-108 L 432,-108 M 432,-72 L 432,-72 L 432,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 442.8,-93.60000000000001 L 437.4,-93.6 L 437.4,-88.2 L 426.6,-88.2 L 426.6,-93.6 L 421.2,-93.6" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 432.0,-180.0 L 468,-180 L 471,-189 L 477,-171 L 483,-189 L 489,-171 L 495,-189 L 501,-171 L 504,-180 L 540,-180" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 540.0,-180.0 L 586.8,-180 L 586.8,-199.8 L 637.2,-199.8 L 637.2,-160.2 L 586.8,-160.2 L 586.8,-180 M 637.2,-180 L 684,-180" style="stroke:#243247;fill:#f4f8fd;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 756.0,-180.0 L 756,-108 L 765,-105 L 747,-99 L 765,-93 L 747,-87 L 765,-81 L 747,-75 L 756,-72 L 756,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 756.0,-0.0 L 756,14.4 L 747,14.4 L 765,14.4 M 749.7,18.72 L 762.3,18.72 M 754.2,23.04 L 757.8,23.04" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <text x="-21.599999999999994" y="-103.0" dominant-baseline="central" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="-21.599999999999994" dy="13.0">VOPEN</tspan>
+  </text>
+  <text x="21.6" y="-102.0" dominant-baseline="central" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="21.6" dy="12.0">5 V pulse</tspan>
+  </text>
+  <text x="54.0" y="-205.6" dominant-baseline="ideographic" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="54.0" dy="13.0">RSOPEN</tspan>
+  </text>
+  <text x="54.0" y="-179.4" dominant-baseline="hanging" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="54.0" dy="12.0">10 Ω</tspan>
+  </text>
+  <text x="180.0" y="-216.4" dominant-baseline="ideographic" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="180.0" dy="13.0">TOPEN</tspan>
+  </text>
+  <text x="180.0" y="-168.6" dominant-baseline="hanging" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="180.0" dy="12.0">50 Ω / 20 ns</tspan>
+  </text>
+  <text x="410.40000000000003" y="-103.0" dominant-baseline="central" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="410.40000000000003" dy="13.0">VMATCH</tspan>
+  </text>
+  <text x="453.59999999999997" y="-102.0" dominant-baseline="central" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="453.59999999999997" dy="12.0">5 V pulse</tspan>
+  </text>
+  <text x="486.0" y="-205.6" dominant-baseline="ideographic" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="486.0" dy="13.0">RSMATCH</tspan>
+  </text>
+  <text x="486.0" y="-179.4" dominant-baseline="hanging" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="486.0" dy="12.0">10 Ω</tspan>
+  </text>
+  <text x="612.0" y="-216.4" dominant-baseline="ideographic" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="612.0" dy="13.0">TMATCH</tspan>
+  </text>
+  <text x="612.0" y="-168.6" dominant-baseline="hanging" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="612.0" dy="12.0">50 Ω / 20 ns</tspan>
+  </text>
+  <text x="111.60000000000001" y="-235.20000000000002" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="111.60000000000001" dy="12.0">open_in</tspan>
+  </text>
+  <text x="291.59999999999997" y="-235.20000000000002" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="291.59999999999997" dy="12.0">open_out</tspan>
+  </text>
+  <text x="543.6" y="-235.20000000000002" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="543.6" dy="12.0">match_in</tspan>
+  </text>
+  <text x="723.6" y="-235.20000000000002" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="723.6" dy="12.0">match_out</tspan>
+  </text>
+  <text x="248.39999999999998" y="-89.19999999999999" dominant-baseline="hanging" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="248.39999999999998" dy="10.0">RLOPEN\n1 MΩ</tspan>
+  </text>
+  <text x="781.2" y="-96.39999999999999" dominant-baseline="ideographic" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="781.2" dy="10.0">RLMATCH  50 Ω</tspan>
+  </text>
+  <text x="3.6" y="-260.4" dominant-baseline="ideographic" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="3.6" dy="12.0">Unterminated cable</tspan>
+  </text>
+  <text x="435.59999999999997" y="-260.4" dominant-baseline="ideographic" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="435.59999999999997" dy="12.0">50 Ω terminated cable</tspan>
+  </text>
+  <text x="3.6" y="-324.20000000000005" dominant-baseline="ideographic" fill="#172235" font-size="20.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="3.6" dy="20.0">Transmission-line termination comparison</tspan>
+  </text>
+  <text x="3.6" y="-291.0" dominant-baseline="ideographic" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="3.6" dy="12.0">The same cable with an open load and a matched load</tspan>
+  </text>
+</svg>

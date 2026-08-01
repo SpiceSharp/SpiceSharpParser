@@ -128,10 +128,14 @@ response summary, suggested experiments, and automated regression coverage.
 | Difficulty | Circuit | Main lesson |
 | --- | --- | --- |
 | Simple | [PWM digital-to-analog converter](circuits/cookbook/pure-spice/pwm-dac/README.md) | Duty-cycle averaging, ripple attenuation, and settling |
+| Simple | [RC sensor filter and input protector](circuits/cookbook/pure-spice/rc-sensor-input-filter/README.md) | Sensor bandwidth, noise attenuation, rail clamping, and fault current |
+| Simple | [BJT relay driver](circuits/cookbook/pure-spice/bjt-relay-driver/README.md) | Inductive-load switching, saturation, flyback, and release decay |
 | Medium | [Rectifier power supply](circuits/cookbook/pure-spice/rectifier-power-supply/README.md) | Rectification, reservoir ripple, Zener regulation, and load response |
 | Medium | [BJT audio preamplifier](circuits/cookbook/pure-spice/bjt-audio-preamplifier/README.md) | Biasing, AC gain, bandwidth, coupling, loading, and distortion |
+| Medium | [Active anti-alias filter](circuits/cookbook/pure-spice/active-anti-alias-filter/README.md) | Buffered poles, stopband attenuation, settling, and ADC loading |
 | Medium | [Ideal-diode redundant power input](circuits/cookbook/custom-components/ideal-diode-power-or/README.md) | Supply OR-ing, automatic failover, handback, and reverse-current blocking |
 | Difficult | [Simple phase-locked loop](circuits/cookbook/custom-components/simple-pll/README.md) | Phase detection, loop filtering, voltage-controlled oscillation, and lock behavior |
+| Difficult | [Transmission-line termination](circuits/cookbook/pure-spice/transmission-line-termination/README.md) | Propagation delay, reflections, ringing, and impedance matching |
 
 Cookbook schematics are generated from reviewable `schematic.toml` files with
 the repository-local SchemDraw renderer. The cookbook report verifies recipe

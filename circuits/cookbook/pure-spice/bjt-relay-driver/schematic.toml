@@ -1,0 +1,143 @@
+version = 1
+
+[schematic]
+netlist = "bjt-relay-driver.cir"
+output = "schematic.svg"
+title = "BJT relay driver with flyback diode"
+description = "A five volt control signal drives an NPN transistor that switches a twelve volt relay coil, with a diode returning inductive current safely to the supply when the transistor turns off."
+subtitle = "Low-side inductive-load switching with controlled turn-off"
+
+[[elements]]
+id = "VCTRL"
+start = [0, 2]
+end = [0, 0]
+value = "0 to 5 V"
+
+[[elements]]
+id = "RBASE"
+start = [0, 2]
+end = [4, 2]
+
+[[elements]]
+id = "RPD"
+start = [4, 2]
+end = [4, 0]
+label = ""
+value = ""
+
+[[elements]]
+id = "Q1"
+start = [8, 0]
+end = [8, 4]
+terminals = ["0", "collector"]
+label = ""
+value = ""
+
+[[elements]]
+id = "LCOIL"
+start = [8, 6.5]
+end = [8, 4]
+label = ""
+value = ""
+
+[[elements]]
+id = "RCOIL"
+start = [8, 8]
+end = [8, 6.5]
+label = ""
+value = ""
+
+[[elements]]
+id = "DFLY"
+start = [11, 4]
+end = [11, 8]
+label = ""
+value = ""
+
+[[elements]]
+id = "VCC"
+start = [14, 0]
+end = [14, 8]
+terminals = ["0", "vcc"]
+value = "12 V"
+
+[[wires]]
+node = "base"
+points = [[4, 2], [7.205, 2]]
+
+[[wires]]
+node = "collector"
+points = [[8, 4], [11, 4]]
+
+[[wires]]
+node = "vcc"
+points = [[8, 8], [14, 8]]
+
+[[wires]]
+node = "0"
+points = [[0, 0], [14, 0]]
+
+[[junctions]]
+node = "base"
+at = [4, 2]
+
+[[junctions]]
+node = "collector"
+at = [8, 4]
+
+[[junctions]]
+node = "vcc"
+at = [11, 8]
+
+[[node_labels]]
+node = "control"
+at = [1, 2.8]
+
+[[node_labels]]
+node = "base"
+at = [5.5, 2.7]
+
+[[node_labels]]
+node = "collector"
+at = [7.3, 4.7]
+location = "left"
+
+[[node_labels]]
+node = "vcc"
+at = [11.5, 8.6]
+text = "+12 V"
+
+[[symbols]]
+kind = "ground"
+node = "0"
+at = [14, 0]
+
+[[texts]]
+text = "RPD  100 kΩ"
+at = [4.7, 1]
+location = "right"
+size = 10
+
+[[texts]]
+text = "RCOIL  120 Ω"
+at = [8.7, 7.25]
+location = "right"
+size = 10
+
+[[texts]]
+text = "LCOIL  100 mH"
+at = [8.7, 5.25]
+location = "right"
+size = 10
+
+[[texts]]
+text = "DFLY  flyback"
+at = [11.7, 6]
+location = "right"
+size = 10
+
+[[texts]]
+text = "Q1  NPN switch"
+at = [8.8, 1.8]
+location = "right"
+size = 10

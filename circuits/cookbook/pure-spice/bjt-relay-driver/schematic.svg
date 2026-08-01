@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" xml:lang="en" height="439.24pt" width="639.836pt" viewBox="-76.228 -402.6 639.836 439.24" style="background-color:#ffffff;" role="img" aria-labelledby="title desc" data-generator="spicesharp-cookbook-schematic 0.1.0">
+  <title id="title">BJT relay driver with flyback diode</title>
+  <desc id="desc">A five volt control signal drives an NPN transistor that switches a twelve volt relay coil, with a diode returning inductive current safely to the supply when the transistor turns off.</desc>
+  <circle cx="0" cy="-36" r="18" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;" />
+  <path d="M 288 -207 a 4.5 4.5 90 1 1 0 9" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;" />
+  <path d="M 288 -198 a 4.5 4.5 90 1 1 0 9" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;" />
+  <path d="M 288 -189 a 4.5 4.5 90 1 1 0 9" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;" />
+  <path d="M 288 -180 a 4.5 4.5 90 1 1 0 9" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;" />
+  <polygon points="387,-209.7 396,-222.3 405,-209.7 " style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <circle cx="504" cy="-144" r="18" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;" />
+  <path d="M 144.0,-72.0 L 201.69,-72 L 259.38,-72" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 288.0,-144.0 L 342,-144 L 396,-144" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 288.0,-288.0 L 396,-288 L 504,-288" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 0.0,-0.0 L 252,-0 L 504,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 0.0,-72.0 L 0,-54 L 0,-54 M 0,-18 L 0,-18 L 0,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 10.8,-39.6 L 5.4,-39.6 L 5.4,-34.2 L -5.4,-34.2 L -5.4,-39.6 L -10.8,-39.6" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 0.0,-72.0 L 54,-72 L 57,-81 L 63,-63 L 69,-81 L 75,-63 L 81,-81 L 87,-63 L 90,-72 L 144,-72" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 144.0,-72.0 L 144,-54 L 153,-51 L 135,-45 L 153,-39 L 135,-33 L 153,-27 L 135,-21 L 144,-18 L 144,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 288.0,-0.0 L 288,-52.2 L 272.88,-64.8 L 272.88,-79.2 L 288,-91.8 L 288,-144" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 272.88,-58.5 L 272.88,-85.5" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 272.88,-72.0 L 259.38,-72" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 288.0,-52.199999999999996 L 279.794,-59.038" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 274.416 -63.52 L 282.099 -61.804 L 277.489 -56.273 Z" style="stroke:#243247;fill:#243247;stroke-linecap:butt;stroke-linejoin:miter;" />
+  <path d="M 288.0,-234.0 L 288,-207 M 288,-171 L 288,-144" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 288.0,-288.0 L 288,-279 L 297,-276 L 279,-270 L 297,-264 L 279,-258 L 297,-252 L 279,-246 L 288,-243 L 288,-234" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 396.0,-144.0 L 396,-209.7 M 387,-222.3 L 405,-222.3 M 396,-222.3 L 396,-288" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 504.0,-0.0 L 504,-126 L 504,-126 M 504,-162 L 504,-162 L 504,-288" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 507.59999999999997,-135.0 L 500.4,-135" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 504.0,-149.4 L 504,-156.6" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 507.59999999999997,-153.0 L 500.4,-153" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 504.0,-0.0 L 504,14.4 L 495,14.4 L 513,14.4 M 497.7,18.72 L 510.3,18.72 M 502.2,23.04 L 505.8,23.04" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <text x="-21.599999999999994" y="-49.0" dominant-baseline="central" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="-21.599999999999994" dy="13.0">VCTRL</tspan>
+  </text>
+  <text x="21.6" y="-48.0" dominant-baseline="central" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="21.6" dy="12.0">0 to 5 V</tspan>
+  </text>
+  <text x="72.0" y="-97.60000000000001" dominant-baseline="ideographic" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="72.0" dy="13.0">RBASE</tspan>
+  </text>
+  <text x="72.0" y="-71.4" dominant-baseline="hanging" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="72.0" dy="12.0">1k Ω</tspan>
+  </text>
+  <text x="482.40000000000003" y="-157.0" dominant-baseline="central" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="482.40000000000003" dy="13.0">VCC</tspan>
+  </text>
+  <text x="525.6" y="-156.0" dominant-baseline="central" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="525.6" dy="12.0">12 V</tspan>
+  </text>
+  <text x="32.4" y="-116.39999999999999" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="32.4" dy="12.0">control</tspan>
+  </text>
+  <text x="194.4" y="-112.80000000000001" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="194.4" dy="12.0">base</tspan>
+  </text>
+  <text x="259.2" y="-184.79999999999998" dominant-baseline="hanging" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="259.2" dy="12.0">collector</tspan>
+  </text>
+  <text x="410.40000000000003" y="-325.2" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="410.40000000000003" dy="12.0">+12 V</tspan>
+  </text>
+  <text x="165.60000000000002" y="-49.6" dominant-baseline="ideographic" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="165.60000000000002" dy="10.0">RPD  100 kΩ</tspan>
+  </text>
+  <text x="309.59999999999997" y="-274.59999999999997" dominant-baseline="ideographic" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="309.59999999999997" dy="10.0">RCOIL  120 Ω</tspan>
+  </text>
+  <text x="309.59999999999997" y="-202.6" dominant-baseline="ideographic" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="309.59999999999997" dy="10.0">LCOIL  100 mH</tspan>
+  </text>
+  <text x="417.59999999999997" y="-229.6" dominant-baseline="ideographic" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="417.59999999999997" dy="10.0">DFLY  flyback</tspan>
+  </text>
+  <text x="313.20000000000005" y="-78.4" dominant-baseline="ideographic" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="313.20000000000005" dy="10.0">Q1  NPN switch</tspan>
+  </text>
+  <text x="-3.6" y="-389.0" dominant-baseline="ideographic" fill="#172235" font-size="20.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="-3.6" dy="20.0">BJT relay driver with flyback diode</tspan>
+  </text>
+  <text x="-3.6" y="-355.79999999999995" dominant-baseline="ideographic" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="-3.6" dy="12.0">Low-side inductive-load switching with controlled turn-off</tspan>
+  </text>
+  <circle cx="144" cy="-72" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.2;stroke-dasharray:-;" />
+  <circle cx="288" cy="-144" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.2;stroke-dasharray:-;" />
+  <circle cx="396" cy="-288" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.2;stroke-dasharray:-;" />
+</svg>

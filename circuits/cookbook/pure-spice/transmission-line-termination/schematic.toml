@@ -1,0 +1,119 @@
+version = 1
+
+[schematic]
+netlist = "transmission-line-termination.cir"
+output = "schematic.svg"
+title = "Transmission-line termination comparison"
+description = "Two identical five volt pulse drivers feed fifty ohm, twenty nanosecond lossless lines; one cable is nearly open and rings, while the other has a matched fifty ohm load."
+subtitle = "The same cable with an open load and a matched load"
+
+[[elements]]
+id = "VOPEN"
+start = [0, 5]
+end = [0, 0]
+value = "5 V pulse"
+
+[[elements]]
+id = "RSOPEN"
+start = [0, 5]
+end = [3, 5]
+
+[[elements]]
+id = "TOPEN"
+kind = "block"
+start = [3, 5]
+end = [7, 5]
+terminals = ["open_in", "open_out"]
+label = "TOPEN"
+value = "50 Ω / 20 ns"
+
+[[elements]]
+id = "RLOPEN"
+start = [9, 5]
+end = [9, 0]
+label = ""
+value = ""
+
+[[elements]]
+id = "VMATCH"
+start = [12, 5]
+end = [12, 0]
+value = "5 V pulse"
+
+[[elements]]
+id = "RSMATCH"
+start = [12, 5]
+end = [15, 5]
+
+[[elements]]
+id = "TMATCH"
+kind = "block"
+start = [15, 5]
+end = [19, 5]
+terminals = ["match_in", "match_out"]
+label = "TMATCH"
+value = "50 Ω / 20 ns"
+
+[[elements]]
+id = "RLMATCH"
+start = [21, 5]
+end = [21, 0]
+label = ""
+value = ""
+
+[[wires]]
+node = "open_out"
+points = [[7, 5], [9, 5]]
+
+[[wires]]
+node = "match_out"
+points = [[19, 5], [21, 5]]
+
+[[wires]]
+node = "0"
+points = [[0, 0], [21, 0]]
+
+[[node_labels]]
+node = "open_in"
+at = [3, 6.3]
+
+[[node_labels]]
+node = "open_out"
+at = [8, 6.3]
+
+[[node_labels]]
+node = "match_in"
+at = [15, 6.3]
+
+[[node_labels]]
+node = "match_out"
+at = [20, 6.3]
+
+[[symbols]]
+kind = "ground"
+node = "0"
+at = [21, 0]
+
+[[texts]]
+text = "RLOPEN\\n1 MΩ"
+at = [6.8, 2.3]
+location = "left"
+size = 10
+
+[[texts]]
+text = "RLMATCH  50 Ω"
+at = [21.6, 2.5]
+location = "right"
+size = 10
+
+[[texts]]
+text = "Unterminated cable"
+at = [0, 7]
+location = "right"
+size = 12
+
+[[texts]]
+text = "50 Ω terminated cable"
+at = [12, 7]
+location = "right"
+size = 12

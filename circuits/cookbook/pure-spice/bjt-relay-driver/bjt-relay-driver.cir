@@ -1,0 +1,28 @@
+BJT relay driver with flyback diode
+VCC vcc 0 12
+VCTRL control 0 PULSE(0 5 1m 1u 1u 5m 12m)
+RBASE control base 1k
+RPD base 0 100k
+Q1 collector base 0 QSW
+RCOIL vcc coil 120
+LCOIL coil collector 100m IC=0
+DFLY collector vcc DFLYBACK
+
+.MODEL QSW NPN(Is=10f Bf=120 Vaf=80 Cje=15p Cjc=5p Tf=500p)
+.MODEL DFLYBACK D(Is=5n N=1.7 Rs=0.2 Cjo=20p)
+
+.OPTIONS method=gear
+.TRAN 2u 11m 0 1u UIC
+
+.MEAS TRAN coil_on_current AVG I(LCOIL) FROM=4m TO=5.5m
+.MEAS TRAN collector_on_voltage AVG V(collector) FROM=4m TO=5.5m
+.MEAS TRAN base_drive_current AVG I(RBASE) FROM=4m TO=5.5m
+.MEAS TRAN collector_flyback_peak MAX V(collector) FROM=6m TO=7m
+.MEAS TRAN flyback_peak_current MAX I(DFLY) FROM=6m TO=7m
+.MEAS TRAN coil_current_1ms_after FIND I(LCOIL) AT=7m
+.MEAS TRAN release_decay TRIG V(control) VAL=2.5 FALL=1
++ TARG I(LCOIL) VAL=36.8m FALL=1
+
+.SAVE V(control) V(base) V(collector) I(LCOIL) I(DFLY)
+.PLOT TRAN V(control) V(collector) I(LCOIL)
+.END

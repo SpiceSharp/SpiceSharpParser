@@ -9,11 +9,15 @@ documented design calculations, and automated regression coverage.
 
 | Circuit | Track | Analyses | Difficulty | Main lesson |
 | --- | --- | --- | --- | --- |
-| [Rectifier power supply](cookbook/pure-spice/rectifier-power-supply/README.md) | Pure SPICE | TRAN | Medium | Rectification, reservoir ripple, Zener regulation, and a load step |
 | [PWM digital-to-analog converter](cookbook/pure-spice/pwm-dac/README.md) | Pure SPICE | TRAN | Simple | Duty-cycle averaging, ripple attenuation, and settling |
+| [RC sensor filter and input protector](cookbook/pure-spice/rc-sensor-input-filter/README.md) | Pure SPICE | AC, TRAN | Simple | Noise filtering, bandwidth, rail clamps, and fault current |
+| [BJT relay driver with flyback diode](cookbook/pure-spice/bjt-relay-driver/README.md) | Pure SPICE | TRAN | Simple | Inductive-load switching, saturation, flyback clamping, and release decay |
+| [Rectifier power supply](cookbook/pure-spice/rectifier-power-supply/README.md) | Pure SPICE | TRAN | Medium | Rectification, reservoir ripple, Zener regulation, and a load step |
 | [BJT audio preamplifier](cookbook/pure-spice/bjt-audio-preamplifier/README.md) | Pure SPICE | OP, AC, TRAN, FOUR | Medium | Biasing, gain, bandwidth, coupling, loading, and harmonic distortion |
+| [Active anti-alias filter and ADC buffer](cookbook/pure-spice/active-anti-alias-filter/README.md) | Pure SPICE | AC, TRAN | Medium | Buffered filter poles, stopband attenuation, settling, and ADC loading |
 | [Ideal-diode redundant power input](cookbook/custom-components/ideal-diode-power-or/README.md) | CustomComponents | TRAN | Medium | Supply OR-ing, automatic failover, handback, and reverse-current blocking |
 | [Simple phase-locked loop](cookbook/custom-components/simple-pll/README.md) | CustomComponents | TRAN | Difficult | Phase detection, loop filtering, and voltage-controlled oscillation |
+| [Transmission-line termination](cookbook/pure-spice/transmission-line-termination/README.md) | Pure SPICE | TRAN | Difficult | Propagation delay, reflections, ringing, and impedance matching |
 
 ## Other Runnable Examples
 

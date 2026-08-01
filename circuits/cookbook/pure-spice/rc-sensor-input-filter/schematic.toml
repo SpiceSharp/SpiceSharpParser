@@ -1,0 +1,102 @@
+version = 1
+
+[schematic]
+netlist = "rc-sensor-input-filter.cir"
+output = "schematic.svg"
+title = "RC sensor filter and input protector"
+description = "A ten kilohm series resistor and ten nanofarad capacitor low-pass a sensor signal, while two clamp diodes limit excursions beyond a 3.3 volt ADC rail and ground."
+subtitle = "Low-pass filtering plus rail clamps for an ADC input"
+
+[[elements]]
+id = "VSENSOR"
+start = [0, 0]
+end = [0, 4]
+terminals = ["0", "source"]
+value = "sensor / AC 1"
+
+[[elements]]
+id = "RIN"
+start = [0, 4]
+end = [3.5, 4]
+
+[[elements]]
+id = "C1"
+start = [3.5, 4]
+end = [3.5, 0]
+label_location = "left"
+value_location = "right"
+
+[[elements]]
+id = "RLOAD"
+start = [6, 4]
+end = [6, 0]
+label = "RLOAD (ADC input)"
+value = "1 MΩ"
+label_location = "right"
+value_location = "left"
+
+[[elements]]
+id = "DHI"
+start = [8.5, 4]
+end = [8.5, 7]
+label_location = "left"
+value = "upper clamp"
+value_location = "right"
+
+[[elements]]
+id = "DLO"
+start = [10.5, 0]
+end = [10.5, 4]
+label_location = "left"
+value = "lower clamp"
+value_location = "right"
+
+[[elements]]
+id = "VDD"
+start = [13, 0]
+end = [13, 7]
+terminals = ["0", "vdd"]
+value = "3.3 V"
+
+[[wires]]
+node = "filtered"
+points = [[3.5, 4], [10.5, 4]]
+
+[[wires]]
+node = "vdd"
+points = [[8.5, 7], [13, 7]]
+
+[[wires]]
+node = "0"
+points = [[0, 0], [13, 0]]
+
+[[junctions]]
+node = "filtered"
+at = [3.5, 4]
+
+[[junctions]]
+node = "filtered"
+at = [6, 4]
+
+[[junctions]]
+node = "filtered"
+at = [8.5, 4]
+
+[[node_labels]]
+node = "source"
+at = [1.0, 4.8]
+
+[[node_labels]]
+node = "filtered"
+at = [5, 4.8]
+text = "protected ADC input"
+
+[[node_labels]]
+node = "vdd"
+at = [10.5, 7.6]
+text = "+3.3 V"
+
+[[symbols]]
+kind = "ground"
+node = "0"
+at = [13, 0]

@@ -1,0 +1,27 @@
+RC sensor noise filter and input protector
+VDD vdd 0 3.3
+VSENSOR source 0 PWL(0 0 1m 0 1.001m 5 4m 5 4.001m 0 6m 0 6.001m -2 9m -2 9.001m 0 11m 0) AC 1
+RIN source filtered 10k
+C1 filtered 0 10n
+RLOAD filtered 0 1Meg
+DHI filtered vdd DCLAMP
+DLO 0 filtered DCLAMP
+
+.MODEL DCLAMP D(Is=2n N=1.8 Rs=1 Cjo=2p)
+
+.AC DEC 40 10 1Meg
+.TRAN 2u 11m 0 1u
+
+.MEAS AC gain_100hz FIND VM(filtered) AT=100
+.MEAS AC gain_cutoff FIND VM(filtered) AT=1.6k
+.MEAS AC gain_10khz FIND VM(filtered) AT=10k
+.MEAS AC cutoff_frequency WHEN VM(filtered)=0.707 FALL=1
+.MEAS TRAN high_clamp_voltage AVG V(filtered) FROM=2m TO=3m
+.MEAS TRAN upper_clamp_current AVG I(DHI) FROM=2m TO=3m
+.MEAS TRAN low_clamp_voltage AVG V(filtered) FROM=7m TO=8m
+.MEAS TRAN lower_clamp_current AVG I(DLO) FROM=7m TO=8m
+.MEAS TRAN high_settling_time WHEN V(filtered)=3.5 RISE=1
+
+.SAVE V(source) V(filtered) I(DHI) I(DLO)
+.PLOT TRAN V(source) V(filtered)
+.END

@@ -127,6 +127,23 @@ windows away from the switching instant:
 The scalar values are asserted by `CircuitCookbookTests`; the netlist-native
 `.MEAS` statements remain the source of the measurements.
 
+## Real-World Applications
+
+This topology is useful for low-power auxiliary rails made from an already
+isolated AC transformer secondary. Examples include relay or control supplies,
+simple analog bias rails, educational bench supplies, and low-cost appliance
+control electronics. Full-wave bridge rectifiers are also common building
+blocks in home, office, and industrial AC/DC equipment.
+
+The Zener stage is most appropriate when the load current is small and modest
+regulation is acceptable. It wastes the unused current as heat, so a linear or
+switching regulator is normally preferable for efficient or widely varying
+loads. Never connect this example directly to mains: production hardware needs
+a certified transformer and suitable fusing, insulation, clearances, surge
+ratings, and thermal checks. For context, see Vishay's
+[bridge-rectifier applications](https://www.vishay.com/en/product/88613/) and
+Analog Devices' [diode power-supply and regulator examples](https://wiki.analog.com/university/courses/electronics/text/chapter-6).
+
 ## Experiments
 
 - Reduce `CRES` to 220 uF and compare measured ripple with the inverse

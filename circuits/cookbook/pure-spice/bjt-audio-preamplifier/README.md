@@ -146,6 +146,23 @@ harmonics are much smaller. Fourier output is asserted separately from the
 `.MEAS` table because `.FOUR` produces structured harmonic data rather than a
 scalar `.MEAS` result.
 
+## Real-World Applications
+
+This stage can raise a small signal before a high-impedance input. Practical
+uses include a dynamic-microphone preamplifier, a low-impedance analog-sensor
+front end, or an interstage voltage-gain block in simple audio and test
+equipment. The common-emitter topology is attractive where low part count and
+discrete-transistor operation matter.
+
+The 47 kohm load represents another amplifier stage, not a speaker or
+headphone. A product design must add the source's required biasing, supply
+decoupling, level or gain control, noise analysis, tolerances, and a buffer or
+power stage for low-impedance loads. Analog Devices' [common-emitter amplifier
+activity](https://www.analog.com/en/resources/analog-dialogue/studentzone/2020/04/27/18/11/studentzone-june-2020.html)
+covers bias, inversion, and emitter degeneration; the onsemi
+[2N3904 data sheet](https://www.onsemi.com/download/data-sheet/pdf/2n3904-d.pdf)
+provides real-device ratings.
+
 ## Experiments
 
 - Remove `CE` to observe the large gain reduction and improved linearity from

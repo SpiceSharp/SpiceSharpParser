@@ -1,0 +1,122 @@
+version = 1
+
+[schematic]
+netlist = "active-anti-alias-filter.cir"
+output = "schematic.svg"
+title = "Active anti-alias filter and ADC buffer"
+description = "Two buffered resistor-capacitor low-pass stages attenuate high-frequency sensor content, followed by a low-resistance output that drives an ADC input capacitance and load."
+subtitle = "Buffered two-pole filtering with a realistic converter input"
+
+[[elements]]
+id = "VSENSOR"
+start = [0, 4]
+end = [0, 0]
+value = "1 V step / AC 1"
+
+[[elements]]
+id = "RSOURCE"
+start = [0, 4]
+end = [2.5, 4]
+
+[[elements]]
+id = "R1"
+start = [2.5, 4]
+end = [5.5, 4]
+
+[[elements]]
+id = "C1"
+start = [5.5, 4]
+end = [5.5, 0]
+label_location = "left"
+value_location = "right"
+
+[[elements]]
+id = "EBUFFER1"
+kind = "block"
+start = [5.5, 4]
+end = [9, 4]
+terminals = ["pole1", "buffer1"]
+label = "EBUFFER1"
+value = "unity buffer"
+
+[[elements]]
+id = "R2"
+start = [9, 4]
+end = [12, 4]
+
+[[elements]]
+id = "C2"
+start = [12, 4]
+end = [12, 0]
+label_location = "left"
+value_location = "right"
+
+[[elements]]
+id = "EOUTPUT"
+kind = "block"
+start = [12, 4]
+end = [15.5, 4]
+terminals = ["pole2", "output"]
+label = "EOUTPUT"
+value = "ADC buffer"
+
+[[elements]]
+id = "ROUT"
+start = [15.5, 4]
+end = [18, 4]
+
+[[elements]]
+id = "CADC"
+start = [18, 4]
+end = [18, 0]
+label_location = "left"
+value_location = "right"
+
+[[elements]]
+id = "RLOAD"
+start = [20.5, 4]
+end = [20.5, 0]
+label_location = "right"
+value_location = "left"
+
+[[wires]]
+node = "adc"
+points = [[18, 4], [20.5, 4]]
+
+[[wires]]
+node = "0"
+points = [[0, 0], [20.5, 0]]
+
+[[junctions]]
+node = "pole1"
+at = [5.5, 4]
+
+[[junctions]]
+node = "pole2"
+at = [12, 4]
+
+[[junctions]]
+node = "adc"
+at = [18, 4]
+
+[[node_labels]]
+node = "input"
+at = [3.3, 4.8]
+
+[[node_labels]]
+node = "pole1"
+at = [5.5, 4.8]
+
+[[node_labels]]
+node = "pole2"
+at = [12, 4.8]
+
+[[node_labels]]
+node = "adc"
+at = [19.2, 4.8]
+text = "ADC input"
+
+[[symbols]]
+kind = "ground"
+node = "0"
+at = [20.5, 0]

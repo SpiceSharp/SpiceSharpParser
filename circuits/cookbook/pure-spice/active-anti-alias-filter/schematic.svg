@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" xml:lang="en" height="295.24pt" width="872.405pt" viewBox="-98.53599999999999 -258.6 872.405 295.24" style="background-color:#ffffff;" role="img" aria-labelledby="title desc" data-generator="spicesharp-cookbook-schematic 0.1.0">
+  <title id="title">Active anti-alias filter and ADC buffer</title>
+  <desc id="desc">Two buffered resistor-capacitor low-pass stages attenuate high-frequency sensor content, followed by a low-resistance output that drives an ADC input capacitance and load.</desc>
+  <circle cx="0" cy="-72" r="18" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;" />
+  <path d="M 648.0,-144.0 L 693,-144 L 738,-144" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 0.0,-0.0 L 369,-0 L 738,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 0.0,-144.0 L 0,-90 L 0,-90 M 0,-54 L 0,-54 L 0,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 10.800000000000004,-75.60000000000001 L 5.4,-75.6 L 5.4,-70.2 L -5.4,-70.2 L -5.4,-75.6 L -10.8,-75.6" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 0.0,-144.0 L 27,-144 L 30,-153 L 36,-135 L 42,-153 L 48,-135 L 54,-153 L 60,-135 L 63,-144 L 90,-144" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 90.0,-144.0 L 126,-144 L 129,-153 L 135,-135 L 141,-153 L 147,-135 L 153,-153 L 159,-135 L 162,-144 L 198,-144" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 198.0,-144.0 L 198,-75.24 M 207,-75.24 L 189,-75.24 M 207,-68.76 L 189,-68.76 M 198,-68.76 L 198,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 198.0,-144.0 L 235.8,-144 L 235.8,-163.8 L 286.2,-163.8 L 286.2,-124.2 L 235.8,-124.2 L 235.8,-144 M 286.2,-144 L 324,-144" style="stroke:#243247;fill:#f4f8fd;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 324.0,-144.0 L 360,-144 L 363,-153 L 369,-135 L 375,-153 L 381,-135 L 387,-153 L 393,-135 L 396,-144 L 432,-144" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 432.0,-144.0 L 432,-75.24 M 441,-75.24 L 423,-75.24 M 441,-68.76 L 423,-68.76 M 432,-68.76 L 432,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 432.0,-144.0 L 469.8,-144 L 469.8,-163.8 L 520.2,-163.8 L 520.2,-124.2 L 469.8,-124.2 L 469.8,-144 M 520.2,-144 L 558,-144" style="stroke:#243247;fill:#f4f8fd;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 558.0,-144.0 L 585,-144 L 588,-153 L 594,-135 L 600,-153 L 606,-135 L 612,-153 L 618,-135 L 621,-144 L 648,-144" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 648.0,-144.0 L 648,-75.24 M 657,-75.24 L 639,-75.24 M 657,-68.76 L 639,-68.76 M 648,-68.76 L 648,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 738.0,-144.0 L 738,-90 L 747,-87 L 729,-81 L 747,-75 L 729,-69 L 747,-63 L 729,-57 L 738,-54 L 738,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 738.0,-0.0 L 738,14.4 L 729,14.4 L 747,14.4 M 731.7,18.72 L 744.3,18.72 M 736.2,23.04 L 739.8,23.04" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <text x="-21.599999999999994" y="-85.0" dominant-baseline="central" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="-21.599999999999994" dy="13.0">VSENSOR</tspan>
+  </text>
+  <text x="21.6" y="-84.0" dominant-baseline="central" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="21.6" dy="12.0">1 V step / AC 1</tspan>
+  </text>
+  <text x="45.0" y="-169.6" dominant-baseline="ideographic" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="45.0" dy="13.0">RSOURCE</tspan>
+  </text>
+  <text x="45.0" y="-143.4" dominant-baseline="hanging" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="45.0" dy="12.0">1k Ω</tspan>
+  </text>
+  <text x="144.0" y="-169.6" dominant-baseline="ideographic" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="144.0" dy="13.0">R1</tspan>
+  </text>
+  <text x="144.0" y="-143.4" dominant-baseline="hanging" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="144.0" dy="12.0">3.3k Ω</tspan>
+  </text>
+  <text x="198.0" y="-9.400000000000013" dominant-baseline="hanging" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="198.0" dy="13.0">C1</tspan>
+  </text>
+  <text x="198.0" y="-159.6" dominant-baseline="ideographic" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="198.0" dy="12.0">22n F</tspan>
+  </text>
+  <text x="261.0" y="-180.4" dominant-baseline="ideographic" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="261.0" dy="13.0">EBUFFER1</tspan>
+  </text>
+  <text x="261.0" y="-132.60000000000002" dominant-baseline="hanging" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="261.0" dy="12.0">unity buffer</tspan>
+  </text>
+  <text x="378.0" y="-169.6" dominant-baseline="ideographic" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="378.0" dy="13.0">R2</tspan>
+  </text>
+  <text x="378.0" y="-143.4" dominant-baseline="hanging" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="378.0" dy="12.0">3.3k Ω</tspan>
+  </text>
+  <text x="432.0" y="-9.400000000000013" dominant-baseline="hanging" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="432.0" dy="13.0">C2</tspan>
+  </text>
+  <text x="432.0" y="-159.6" dominant-baseline="ideographic" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="432.0" dy="12.0">22n F</tspan>
+  </text>
+  <text x="495.0" y="-180.4" dominant-baseline="ideographic" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="495.0" dy="13.0">EOUTPUT</tspan>
+  </text>
+  <text x="495.0" y="-132.60000000000002" dominant-baseline="hanging" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="495.0" dy="12.0">ADC buffer</tspan>
+  </text>
+  <text x="603.0" y="-169.6" dominant-baseline="ideographic" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="603.0" dy="13.0">ROUT</tspan>
+  </text>
+  <text x="603.0" y="-143.4" dominant-baseline="hanging" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="603.0" dy="12.0">47 Ω</tspan>
+  </text>
+  <text x="648.0" y="-9.400000000000013" dominant-baseline="hanging" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="648.0" dy="13.0">CADC</tspan>
+  </text>
+  <text x="648.0" y="-159.6" dominant-baseline="ideographic" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="648.0" dy="12.0">1n F</tspan>
+  </text>
+  <text x="738.0" y="-160.6" dominant-baseline="ideographic" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="738.0" dy="13.0">RLOAD</tspan>
+  </text>
+  <text x="738.0" y="-8.400000000000013" dominant-baseline="hanging" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="738.0" dy="12.0">100k Ω</tspan>
+  </text>
+  <text x="122.39999999999999" y="-181.20000000000002" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="122.39999999999999" dy="12.0">input</tspan>
+  </text>
+  <text x="201.6" y="-181.20000000000002" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="201.6" dy="12.0">pole1</tspan>
+  </text>
+  <text x="435.59999999999997" y="-181.20000000000002" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="435.59999999999997" dy="12.0">pole2</tspan>
+  </text>
+  <text x="694.8000000000001" y="-181.20000000000002" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="694.8000000000001" dy="12.0">ADC input</tspan>
+  </text>
+  <text x="3.6" y="-245.0" dominant-baseline="ideographic" fill="#172235" font-size="20.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="3.6" dy="20.0">Active anti-alias filter and ADC buffer</tspan>
+  </text>
+  <text x="3.6" y="-211.79999999999998" dominant-baseline="ideographic" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="3.6" dy="12.0">Buffered two-pole filtering with a realistic converter input</tspan>
+  </text>
+  <circle cx="198" cy="-144" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.2;stroke-dasharray:-;" />
+  <circle cx="432" cy="-144" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.2;stroke-dasharray:-;" />
+  <circle cx="648" cy="-144" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.2;stroke-dasharray:-;" />
+</svg>

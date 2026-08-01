@@ -1,0 +1,26 @@
+Transmission line termination and cable driver
+VOPEN source_open 0 PULSE(0 5 5n 1n 1n 150n 300n)
+RSOPEN source_open open_in 10
+TOPEN open_in 0 open_out 0 Z0=50 TD=20n
+RLOPEN open_out 0 1Meg
+
+VMATCH source_match 0 PULSE(0 5 5n 1n 1n 150n 300n)
+RSMATCH source_match match_in 10
+TMATCH match_in 0 match_out 0 Z0=50 TD=20n
+RLMATCH match_out 0 50
+
+.OPTIONS method=gear
+.TRAN 500p 200n 0 250p
+
+.MEAS TRAN propagation_delay TRIG V(source_match) VAL=2.5 RISE=1
++ TARG V(match_out) VAL=2.0 RISE=1
+.MEAS TRAN unmatched_first_peak MAX V(open_out) FROM=25n TO=55n
+.MEAS TRAN unmatched_late_average AVG V(open_out) FROM=125n TO=145n
+.MEAS TRAN matched_level AVG V(match_out) FROM=35n TO=145n
+.MEAS TRAN matched_peak MAX V(match_out) FROM=25n TO=145n
+.MEAS TRAN source_end_first_step AVG V(open_in) FROM=10n TO=20n
+.MEAS TRAN source_end_after_echo AVG V(open_in) FROM=50n TO=60n
+
+.SAVE V(source_open) V(open_in) V(open_out) V(source_match) V(match_in) V(match_out)
+.PLOT TRAN V(open_out) V(match_out)
+.END

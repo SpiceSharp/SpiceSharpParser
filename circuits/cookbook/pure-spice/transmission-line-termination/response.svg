@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="520" viewBox="0 0 960 520" role="img" aria-labelledby="title desc">
+  <title id="title">Transmission-line termination comparison response</title>
+  <desc id="desc">The matched load receives a flat 4.167 volt pulse after 20 nanoseconds, while the nearly open load first reaches 8.333 volts and rings through later reflections.</desc>
+  <rect width="960" height="520" fill="#f8fafc"/>
+  <style>.t{font:700 25px Segoe UI,Arial,sans-serif;fill:#10233f}.s{font:15px Segoe UI,Arial,sans-serif;fill:#53657d}.h{font:700 17px Segoe UI,Arial,sans-serif;fill:#10233f}.v{font:700 22px Segoe UI,Arial,sans-serif;fill:#1565c0}.p{fill:#fff;stroke:#d5deea;stroke-width:2}.o{fill:none;stroke:#e26d3d;stroke-width:4}.m{fill:none;stroke:#1565c0;stroke-width:4}.g{stroke:#ccd6e3}</style>
+  <text class="t" x="42" y="48">Cable termination — verified reflection response</text>
+  <text class="s" x="42" y="76">50 Ω lossless lines, 20 ns delay, 10 Ω drivers</text>
+  <rect class="p" x="42" y="105" width="650" height="340" rx="14"/>
+  <text class="h" x="68" y="138">Far-end voltage</text><line class="g" x1="82" y1="390" x2="660" y2="390"/><line class="g" x1="82" y1="165" x2="82" y2="390"/>
+  <path class="m" d="M82 390 L160 390 L162 278 L660 278"/>
+  <path class="o" d="M82 390 L160 390 L162 165 L302 165 L304 315 L444 315 L446 215 L586 215 L588 282 L660 282"/>
+  <line x1="162" y1="160" x2="162" y2="390" stroke="#7b8da5" stroke-dasharray="6 5"/>
+  <text class="s" x="139" y="416">20 ns</text><text class="s" x="292" y="416">60 ns</text><text class="s" x="438" y="416">100 ns</text>
+  <text class="s" x="474" y="205" fill="#e26d3d">open / ringing</text><text class="s" x="474" y="270" fill="#1565c0">matched</text>
+  <rect class="p" x="720" y="105" width="198" height="100" rx="14"/><text class="h" x="742" y="137">Delay</text><text class="v" x="742" y="176">19.98 ns</text>
+  <rect class="p" x="720" y="225" width="198" height="100" rx="14"/><text class="h" x="742" y="257">Open peak</text><text class="v" x="742" y="296">8.333 V</text>
+  <rect class="p" x="720" y="345" width="198" height="100" rx="14"/><text class="h" x="742" y="377">Matched level</text><text class="v" x="742" y="416">4.167 V</text>
+</svg>

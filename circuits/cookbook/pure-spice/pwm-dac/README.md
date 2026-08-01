@@ -123,6 +123,22 @@ The small 10 mV difference between the ideal average and measured value is
 caused primarily by the finite PWM rise and fall timing and the precise
 measurement window. It remains well inside the design target.
 
+## Real-World Applications
+
+A filtered PWM output is useful when a microcontroller needs an inexpensive,
+slow analog control voltage without a dedicated DAC. It can provide setpoints
+for LED-current or motor-speed controllers, bias and calibration trims, slow
+sensor excitation, or control for a voltage-controlled oscillator. The PWM
+output is a command signal; it does not directly supply power to the final
+load.
+
+This example favors low ripple over fast response and is not a substitute for
+a precision or full-bandwidth audio DAC. In hardware, replace the ideal
+buffers with suitable op-amps, account for logic-output resistance and supply
+range, and buffer any low-impedance load. Microchip's
+[PWM DAC guidance](https://onlinedocs.microchip.com/oxy/GUID-15F56EF1-EBFF-405A-9412-E41CC95BAACF-en-US-2/GUID-34AC5DDB-B9AE-4272-842B-E2A1CEE69B6B.html)
+explains the resolution, carrier-frequency, ripple, and filter tradeoffs.
+
 ## Experiments
 
 - Change the PWM pulse width to 10 us or 40 us and verify the 1 V or 4 V

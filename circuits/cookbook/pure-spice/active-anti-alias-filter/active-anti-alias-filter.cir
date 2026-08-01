@@ -1,0 +1,29 @@
+Active anti-alias filter and ADC buffer
+VSENSOR source 0 PULSE(0 1 1m 1u 1u 4m 10m) AC 1
+RSOURCE source input 1k
+R1 input pole1 3.3k
+C1 pole1 0 22n
+EBUFFER1 buffer1 0 pole1 0 1
+R2 buffer1 pole2 3.3k
+C2 pole2 0 22n
+EOUTPUT output 0 pole2 0 1
+ROUT output adc 47
+CADC adc 0 1n
+RLOAD adc 0 100k
+
+.AC DEC 50 10 10Meg
+.TRAN 200n 6m 0 100n
+
+.MEAS AC gain_100hz FIND VM(adc) AT=100
+.MEAS AC gain_1khz FIND VM(adc) AT=1k
+.MEAS AC gain_10khz FIND VM(adc) AT=10k
+.MEAS AC first_stage_10khz FIND VM(pole1) AT=10k
+.MEAS AC filter_3db WHEN VM(adc)=0.7068 FALL=1
+.MEAS TRAN output_final AVG V(adc) FROM=3m TO=4m
+.MEAS TRAN output_peak MAX V(adc) FROM=1m TO=4m
+.MEAS TRAN settling_delay TRIG V(source) VAL=0.5 RISE=1
++ TARG V(adc) VAL=0.9 RISE=1
+
+.SAVE V(source) V(pole1) V(pole2) V(output) V(adc)
+.PLOT AC VM(pole1) VM(adc)
+.END

@@ -62,6 +62,61 @@ namespace SpiceSharpParser.Tests.CustomComponents
                     Expected("output_average", -0.010, 0.010));
 
                 yield return CookbookCase(
+                    "pure-spice",
+                    "rc-sensor-input-filter",
+                    "rc-sensor-input-filter.cir",
+                    false,
+                    Expected("gain_100hz", 0.96, 1.01),
+                    Expected("gain_cutoff", 0.68, 0.73),
+                    Expected("gain_10khz", 0.14, 0.18),
+                    Expected("cutoff_frequency", 1.45e3, 1.70e3),
+                    Expected("high_clamp_voltage", 3.65, 3.95),
+                    Expected("upper_clamp_current", 90e-6, 140e-6),
+                    Expected("low_clamp_voltage", -0.65, -0.40),
+                    Expected("lower_clamp_current", 120e-6, 180e-6),
+                    Expected("high_settling_time", 1.08e-3, 1.18e-3));
+
+                yield return CookbookCase(
+                    "pure-spice",
+                    "bjt-relay-driver",
+                    "bjt-relay-driver.cir",
+                    false,
+                    Expected("coil_on_current", 0.094, 0.102),
+                    Expected("collector_on_voltage", 0.04, 0.16),
+                    Expected("base_drive_current", 3.8e-3, 4.6e-3),
+                    Expected("collector_flyback_peak", 12.5, 13.1),
+                    Expected("flyback_peak_current", 0.094, 0.103),
+                    Expected("coil_current_1ms_after", 0.020, 0.032),
+                    Expected("release_decay", 0.60e-3, 0.90e-3));
+
+                yield return CookbookCase(
+                    "pure-spice",
+                    "active-anti-alias-filter",
+                    "active-anti-alias-filter.cir",
+                    false,
+                    Expected("gain_100hz", 0.97, 1.01),
+                    Expected("gain_1khz", 0.74, 0.82),
+                    Expected("gain_10khz", 0.030, 0.042),
+                    Expected("first_stage_10khz", 0.15, 0.18),
+                    Expected("filter_3db", 1.10e3, 1.35e3),
+                    Expected("output_final", 0.995, 1.002),
+                    Expected("output_peak", 0.995, 1.002),
+                    Expected("settling_delay", 0.28e-3, 0.38e-3));
+
+                yield return CookbookCase(
+                    "pure-spice",
+                    "transmission-line-termination",
+                    "transmission-line-termination.cir",
+                    false,
+                    Expected("propagation_delay", 19.5e-9, 20.5e-9),
+                    Expected("unmatched_first_peak", 8.0, 8.6),
+                    Expected("unmatched_late_average", 6.2, 6.8),
+                    Expected("matched_level", 4.0, 4.3),
+                    Expected("matched_peak", 4.0, 4.3),
+                    Expected("source_end_first_step", 4.0, 4.3),
+                    Expected("source_end_after_echo", 5.3, 5.8));
+
+                yield return CookbookCase(
                     "custom-components",
                     "ideal-diode-power-or",
                     "ideal-diode-power-or.cir",

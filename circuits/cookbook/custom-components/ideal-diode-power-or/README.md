@@ -185,6 +185,23 @@ Negative diode current means current is directed from `output` toward that
 supply. The two nanoampere-scale negative results demonstrate the finite 1
 Gohm off-state leakage, not an unintended conducting path.
 
+## Real-World Applications
+
+Supply OR-ing keeps a system alive when more than one source is available.
+Examples include redundant server, telecom, and industrial-controller rails;
+primary and backup batteries in safety-related vehicle electronics; and
+portable equipment that can run from either an external adapter or its
+battery. It also prevents a healthy rail from back-powering a failed or
+disconnected source.
+
+This passive arrangement naturally selects the source with the highest usable
+voltage. If an application needs explicit priority, current sharing, inrush
+control, or fault isolation, use a power multiplexer or ideal-diode controller
+with appropriately rated MOSFETs. TI's
+[Redundant Power Supply Topologies](https://www.ti.com/lit/an/slyt848/slyt848.pdf)
+compares OR-ing and priority selection and discusses reverse-current blocking
+in automotive and other redundant-power systems.
+
 ## Experiments
 
 - Lower the backup from 11.5 V to 10 V and observe the larger failover step.

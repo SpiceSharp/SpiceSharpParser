@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" xml:lang="en" height="403.24pt" width="629.744pt" viewBox="-98.53599999999999 -366.6 629.744 403.24" style="background-color:#ffffff;" role="img" aria-labelledby="title desc" data-generator="spicesharp-cookbook-schematic 0.1.0">
+  <title id="title">RC sensor filter and input protector</title>
+  <desc id="desc">A ten kilohm series resistor and ten nanofarad capacitor low-pass a sensor signal, while two clamp diodes limit excursions beyond a 3.3 volt ADC rail and ground.</desc>
+  <circle cx="0" cy="-72" r="18" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;" />
+  <polygon points="297,-191.7 306,-204.3 315,-191.7 " style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <polygon points="369,-65.7 378,-78.3 387,-65.7 " style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <circle cx="468" cy="-126" r="18" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;" />
+  <path d="M 126.0,-144.0 L 252,-144 L 378,-144" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 306.0,-252.0 L 387,-252 L 468,-252" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 0.0,-0.0 L 234,-0 L 468,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 0.0,-0.0 L 0,-54 L 0,-54 M 0,-90 L 0,-90 L 0,-144" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 3.600000000000004,-63.0 L -3.6,-63" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 4.739383112700256e-15,-77.39999999999999 L 0,-84.6" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 3.600000000000005,-81.0 L -3.6,-81" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 0.0,-144.0 L 45,-144 L 48,-153 L 54,-135 L 60,-153 L 66,-135 L 72,-153 L 78,-135 L 81,-144 L 126,-144" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 126.0,-144.0 L 126,-75.24 M 135,-75.24 L 117,-75.24 M 135,-68.76 L 117,-68.76 M 126,-68.76 L 126,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 216.0,-144.0 L 216,-90 L 225,-87 L 207,-81 L 225,-75 L 207,-69 L 225,-63 L 207,-57 L 216,-54 L 216,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 306.0,-144.0 L 306,-191.7 M 297,-204.3 L 315,-204.3 M 306,-204.3 L 306,-252" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 378.0,-0.0 L 378,-65.7 M 369,-78.3 L 387,-78.3 M 378,-78.3 L 378,-144" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 468.0,-0.0 L 468,-108 L 468,-108 M 468,-144 L 468,-144 L 468,-252" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 471.59999999999997,-117.0 L 464.4,-117" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 468.0,-131.4 L 468,-138.6" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 471.59999999999997,-135.0 L 464.4,-135" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 468.0,-0.0 L 468,14.4 L 459,14.4 L 477,14.4 M 461.7,18.72 L 474.3,18.72 M 466.2,23.04 L 469.8,23.04" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <text x="-21.599999999999994" y="-85.0" dominant-baseline="central" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="-21.599999999999994" dy="13.0">VSENSOR</tspan>
+  </text>
+  <text x="21.6" y="-84.0" dominant-baseline="central" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="21.6" dy="12.0">sensor / AC 1</tspan>
+  </text>
+  <text x="63.0" y="-169.6" dominant-baseline="ideographic" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="63.0" dy="13.0">RIN</tspan>
+  </text>
+  <text x="63.0" y="-143.4" dominant-baseline="hanging" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="63.0" dy="12.0">10k Ω</tspan>
+  </text>
+  <text x="126.00000000000001" y="-9.400000000000013" dominant-baseline="hanging" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="126.00000000000001" dy="13.0">C1</tspan>
+  </text>
+  <text x="126.0" y="-159.6" dominant-baseline="ideographic" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="126.0" dy="12.0">10n F</tspan>
+  </text>
+  <text x="216.0" y="-160.6" dominant-baseline="ideographic" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="216.0" dy="13.0">RLOAD (ADC input)</tspan>
+  </text>
+  <text x="216.0" y="-8.400000000000013" dominant-baseline="hanging" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="216.0" dy="12.0">1 MΩ</tspan>
+  </text>
+  <text x="306.0" y="-153.4" dominant-baseline="hanging" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="306.0" dy="13.0">DHI</tspan>
+  </text>
+  <text x="306.0" y="-267.6" dominant-baseline="ideographic" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="306.0" dy="12.0">upper clamp</tspan>
+  </text>
+  <text x="378.0" y="-9.399999999999997" dominant-baseline="hanging" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="378.0" dy="13.0">DLO</tspan>
+  </text>
+  <text x="378.0" y="-159.6" dominant-baseline="ideographic" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="378.0" dy="12.0">lower clamp</tspan>
+  </text>
+  <text x="446.40000000000003" y="-139.0" dominant-baseline="central" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="446.40000000000003" dy="13.0">VDD</tspan>
+  </text>
+  <text x="489.59999999999997" y="-138.0" dominant-baseline="central" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="489.59999999999997" dy="12.0">3.3 V</tspan>
+  </text>
+  <text x="32.4" y="-188.39999999999998" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="32.4" dy="12.0">source</tspan>
+  </text>
+  <text x="176.4" y="-188.39999999999998" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="176.4" dy="12.0">protected ADC input</tspan>
+  </text>
+  <text x="374.40000000000003" y="-289.2" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="374.40000000000003" dy="12.0">+3.3 V</tspan>
+  </text>
+  <text x="-3.6" y="-353.0" dominant-baseline="ideographic" fill="#172235" font-size="20.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="-3.6" dy="20.0">RC sensor filter and input protector</tspan>
+  </text>
+  <text x="-3.6" y="-319.79999999999995" dominant-baseline="ideographic" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="-3.6" dy="12.0">Low-pass filtering plus rail clamps for an ADC input</tspan>
+  </text>
+  <circle cx="126" cy="-144" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.2;stroke-dasharray:-;" />
+  <circle cx="216" cy="-144" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.2;stroke-dasharray:-;" />
+  <circle cx="306" cy="-144" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.2;stroke-dasharray:-;" />
+</svg>

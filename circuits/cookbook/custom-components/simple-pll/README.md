@@ -202,6 +202,22 @@ control voltage, and analog VCO output.
 The VCO period differs from the reference by about 1.6 percent for the sampled
 cycle and remains inside the stated functional-model target.
 
+## Real-World Applications
+
+PLLs are used for clock synchronization and recovery, frequency synthesis and
+multiplication, jitter reduction, tone decoding, and FM or FSK demodulation.
+This particular loop is a clear 1:1 tracking example: adding a divider in the
+feedback path turns the same principle into an integer-N frequency
+synthesizer.
+
+Use this functional model to explore capture, lock, loop direction, tuning
+range, and filter tradeoffs. Production clocking or communications hardware
+also requires phase-noise and jitter budgets, a stability calculation, divider
+and lock-detect behavior, supply-noise analysis, and real detector and VCO
+limits. TI's [CD4046B PLL application report](https://www.ti.com/lit/an/scha002a/scha002a.pdf)
+surveys these applications, while its [PLL synchronization report](https://www.ti.com/lit/an/slla259/slla259.pdf)
+discusses clock recovery, deskew, and jitter reduction.
+
 ## Experiments
 
 - Change `CLOOP` back to 1 uF to observe faster acquisition and stronger
