@@ -43,6 +43,24 @@ namespace SpiceSharpParser.Tests.CustomComponents
                     Expected("output_ripple", 0.0, 0.01),
                     Expected("settling_time", 3e-3, 10e-3));
 
+                yield return CookbookCaseWithFourier(
+                    "pure-spice",
+                    "bjt-audio-preamplifier",
+                    "bjt-audio-preamplifier.cir",
+                    false,
+                    new FourierExpectation(0.0, 0.5),
+                    Expected("collector_bias", 4.5, 6.5),
+                    Expected("base_bias", 1.9, 2.3),
+                    Expected("emitter_bias", 1.2, 1.7),
+                    Expected("gain_20hz", 11.0, 16.0),
+                    Expected("gain_1khz", 14.0, 20.0),
+                    Expected("gain_20khz", 14.0, 20.0),
+                    Expected("gain_1mhz", 13.0, 20.0),
+                    Expected("lower_3db", 10.0, 20.0),
+                    Expected("upper_3db", 2e6, 8e6),
+                    Expected("output_pp", 0.55, 0.80),
+                    Expected("output_average", -0.010, 0.010));
+
                 yield return CookbookCase(
                     "custom-components",
                     "ideal-diode-power-or",
@@ -76,7 +94,8 @@ namespace SpiceSharpParser.Tests.CustomComponents
             string directory,
             string fileName,
             bool useCustomComponents,
-            MeasurementExpectation[] expectations)
+            MeasurementExpectation[] expectations,
+            FourierExpectation fourierExpectation)
         {
             string path = FindRepositoryFile(
                 "circuits",
@@ -121,6 +140,31 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 }
             }
 
+            if (fourierExpectation == null)
+            {
+                Assert.Empty(result.Model.FourierAnalyses);
+            }
+            else
+            {
+                var fourier =
+                    SpiceNetlistAssertions.AssertSingleSuccessfulFourierResult(result.Model);
+                double actualThd = fourier.TotalHarmonicDistortionPercent;
+                this.output.WriteLine(
+                    "{0}/{1}: fourier_thd_percent={2:R}",
+                    track,
+                    directory,
+                    actualThd);
+                if (actualThd < fourierExpectation.MinimumThdPercent ||
+                    actualThd > fourierExpectation.MaximumThdPercent)
+                {
+                    failures.Add(string.Format(
+                        "fourier_thd_percent={0:R} is outside [{1:R}, {2:R}]",
+                        actualThd,
+                        fourierExpectation.MinimumThdPercent,
+                        fourierExpectation.MaximumThdPercent));
+                }
+            }
+
             Assert.True(failures.Count == 0, string.Join(Environment.NewLine, failures));
         }
 
@@ -138,6 +182,26 @@ namespace SpiceSharpParser.Tests.CustomComponents
                 fileName,
                 useCustomComponents,
                 expectations,
+                null,
+            };
+        }
+
+        private static object[] CookbookCaseWithFourier(
+            string track,
+            string directory,
+            string fileName,
+            bool useCustomComponents,
+            FourierExpectation fourierExpectation,
+            params MeasurementExpectation[] expectations)
+        {
+            return new object[]
+            {
+                track,
+                directory,
+                fileName,
+                useCustomComponents,
+                expectations,
+                fourierExpectation,
             };
         }
 
@@ -184,6 +248,19 @@ namespace SpiceSharpParser.Tests.CustomComponents
             public double Minimum { get; }
 
             public double Maximum { get; }
+        }
+
+        public sealed class FourierExpectation
+        {
+            public FourierExpectation(double minimumThdPercent, double maximumThdPercent)
+            {
+                this.MinimumThdPercent = minimumThdPercent;
+                this.MaximumThdPercent = maximumThdPercent;
+            }
+
+            public double MinimumThdPercent { get; }
+
+            public double MaximumThdPercent { get; }
         }
     }
 }

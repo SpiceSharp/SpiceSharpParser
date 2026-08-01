@@ -1,0 +1,38 @@
+BJT audio preamplifier
+VCC vcc 0 12
+VSIG source 0 SIN(0 20m 1k) AC 1
+RS source input 600
+CIN input base 1u
+R1 vcc base 82k
+R2 base 0 18k
+Q1 collector base emitter Q2N3904
+RC vcc collector 4.7k
+RE1 emitter emitter_bypass 220
+RE2 emitter_bypass 0 820
+CE emitter_bypass 0 100u
+COUT collector output 10u
+RL output 0 47k
+
+.MODEL Q2N3904 NPN(Is=6.734f Bf=416.4 Br=0.7374 Vaf=74.03
++ Cje=3.638p Cjc=4.493p Rb=10 Rc=1 Re=0.1 Tf=301.2p Tr=239.5n)
+
+.OP
+.AC DEC 40 10 100Meg
+.TRAN 2u 20m 0 2u
+
+.MEAS OP collector_bias FIND V(collector) AT=0
+.MEAS OP base_bias FIND V(base) AT=0
+.MEAS OP emitter_bias FIND V(emitter) AT=0
+.MEAS AC gain_20hz FIND VM(output) AT=20
+.MEAS AC gain_1khz FIND VM(output) AT=1k
+.MEAS AC gain_20khz FIND VM(output) AT=20k
+.MEAS AC gain_1mhz FIND VM(output) AT=1Meg
+.MEAS AC lower_3db WHEN VM(output)=11.98 RISE=1
+.MEAS AC upper_3db WHEN VM(output)=11.98 FALL=1
+.MEAS TRAN output_pp PP V(output) FROM=15m TO=20m
+.MEAS TRAN output_average AVG V(output) FROM=15m TO=20m
+
+.FOUR 1k V(output)
+.SAVE V(source) V(input) V(base) V(collector) V(emitter) V(output)
+.PLOT AC VM(output)
+.END

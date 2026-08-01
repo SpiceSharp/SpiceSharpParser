@@ -9,10 +9,11 @@ documented design calculations, and automated regression coverage.
 
 | Circuit | Track | Analyses | Difficulty | Main lesson |
 | --- | --- | --- | --- | --- |
-| [Rectifier power supply](cookbook/pure-spice/rectifier-power-supply/README.md) | Pure SPICE | TRAN | Intermediate | Rectification, reservoir ripple, Zener regulation, and a load step |
-| [PWM digital-to-analog converter](cookbook/pure-spice/pwm-dac/README.md) | Pure SPICE | TRAN | Beginner | Duty-cycle averaging, ripple attenuation, and settling |
-| [Ideal-diode redundant power input](cookbook/custom-components/ideal-diode-power-or/README.md) | CustomComponents | TRAN | Intermediate | Supply OR-ing, automatic failover, handback, and reverse-current blocking |
-| [Simple phase-locked loop](cookbook/custom-components/simple-pll/README.md) | CustomComponents | TRAN | Advanced | Phase detection, loop filtering, and voltage-controlled oscillation |
+| [Rectifier power supply](cookbook/pure-spice/rectifier-power-supply/README.md) | Pure SPICE | TRAN | Medium | Rectification, reservoir ripple, Zener regulation, and a load step |
+| [PWM digital-to-analog converter](cookbook/pure-spice/pwm-dac/README.md) | Pure SPICE | TRAN | Simple | Duty-cycle averaging, ripple attenuation, and settling |
+| [BJT audio preamplifier](cookbook/pure-spice/bjt-audio-preamplifier/README.md) | Pure SPICE | OP, AC, TRAN, FOUR | Medium | Biasing, gain, bandwidth, coupling, loading, and harmonic distortion |
+| [Ideal-diode redundant power input](cookbook/custom-components/ideal-diode-power-or/README.md) | CustomComponents | TRAN | Medium | Supply OR-ing, automatic failover, handback, and reverse-current blocking |
+| [Simple phase-locked loop](cookbook/custom-components/simple-pll/README.md) | CustomComponents | TRAN | Difficult | Phase detection, loop filtering, and voltage-controlled oscillation |
 
 ## Other Runnable Examples
 

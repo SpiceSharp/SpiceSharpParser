@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560" role="img" aria-labelledby="title desc">
+  <title id="title">Verified BJT audio preamplifier response summary</title>
+  <desc id="desc">The 12 volt common-emitter stage biases its collector at 5.505 volts, provides 16.94 volts per volt gain at 1 kilohertz, spans 16.08 hertz to 4.00 megahertz at minus three decibels, produces 0.678 volts peak to peak from a 20 millivolt peak input, and measures 0.108 percent total harmonic distortion.</desc>
+  <style>
+    .axis { stroke: #46546a; stroke-width: 2; }
+    .grid { stroke: #dde4ed; stroke-width: 1; }
+    .curve { fill: none; stroke: #1976d2; stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
+    .input { fill: none; stroke: #7b61a8; stroke-width: 2.3; }
+    .output { fill: none; stroke: #c23b52; stroke-width: 3; }
+    .threshold { fill: none; stroke: #8190a3; stroke-width: 1.5; stroke-dasharray: 6 5; }
+    .text { fill: #253248; font: 14px 'Segoe UI', sans-serif; }
+    .small { fill: #5b687b; font: 12px 'Segoe UI', sans-serif; }
+    .heading { fill: #182235; font: 600 21px 'Segoe UI', sans-serif; }
+    .panel-title { fill: #253248; font: 600 15px 'Segoe UI', sans-serif; }
+    .panel { fill: #f8fafc; stroke: #d7dee8; stroke-width: 1; }
+    .bias { fill: #1976d2; }
+    .harmonic { fill: #c23b52; }
+  </style>
+  <rect width="960" height="560" fill="#ffffff"/>
+  <text x="42" y="32" class="heading">Verified common-emitter preamplifier</text>
+  <text x="42" y="53" class="small">OP establishes headroom, AC measures bandwidth, and TRAN plus .FOUR check clean 1 kHz amplification.</text>
+
+  <rect x="42" y="72" width="876" height="86" rx="8" class="panel"/>
+  <text x="60" y="96" class="panel-title">DC operating point on a 12 V supply</text>
+  <line x1="86" y1="132" x2="874" y2="132" class="axis"/>
+  <rect x="86" y="119" width="139" height="13" rx="5" class="bias"/>
+  <rect x="86" y="119" width="542" height="13" rx="5" fill="#7b61a8" opacity="0.78"/>
+  <circle cx="181" cy="125.5" r="6" fill="#1976d2"/>
+  <circle cx="225" cy="125.5" r="6" fill="#1976d2"/>
+  <circle cx="448" cy="125.5" r="7" fill="#c23b52"/>
+  <text x="78" y="150" class="small">0 V</text>
+  <text x="157" y="114" class="small">emitter 1.440 V</text>
+  <text x="211" y="150" class="small">base 2.113 V</text>
+  <text x="414" y="114" class="small">collector 5.505 V</text>
+  <text x="845" y="150" class="small">12 V</text>
+
+  <rect x="42" y="174" width="876" height="190" rx="8" class="panel"/>
+  <text x="60" y="198" class="panel-title">Small-signal voltage gain</text>
+  <line x1="86" y1="330" x2="884" y2="330" class="axis"/>
+  <line x1="86" y1="214" x2="86" y2="330" class="axis"/>
+  <line x1="86" y1="238" x2="884" y2="238" class="grid"/>
+  <line x1="86" y1="257" x2="884" y2="257" class="threshold"/>
+  <text x="48" y="334" class="small">0 dB</text>
+  <text x="45" y="262" class="small">21.6</text>
+  <text x="45" y="242" class="small">24.6</text>
+  <path class="curve" d="M86 282 L109 267 L132 257 L166 246 L200 240 L314 238 L428 238 L541 238 L655 238 L769 240 L794 247 L813 257 L850 284 L884 315"/>
+  <line x1="109" y1="257" x2="109" y2="330" class="threshold"/>
+  <line x1="813" y1="257" x2="813" y2="330" class="threshold"/>
+  <circle cx="132" cy="250" r="5" fill="#1976d2"/>
+  <circle cx="314" cy="238" r="5" fill="#1976d2"/>
+  <circle cx="462" cy="238" r="5" fill="#1976d2"/>
+  <text x="116" y="221" class="small">20 Hz: 13.31 V/V</text>
+  <text x="290" y="225" class="small">1 kHz: 16.94 V/V</text>
+  <text x="444" y="225" class="small">20 kHz: 16.94 V/V</text>
+  <text x="93" y="350" class="small">16.08 Hz</text>
+  <text x="779" y="350" class="small">4.00 MHz</text>
+  <text x="78" y="348" class="small"></text>
+  <text x="186" y="348" class="small">100 Hz</text>
+  <text x="301" y="348" class="small">1 kHz</text>
+  <text x="414" y="348" class="small">10 kHz</text>
+  <text x="528" y="348" class="small">100 kHz</text>
+  <text x="641" y="348" class="small">1 MHz</text>
+
+  <rect x="42" y="380" width="570" height="146" rx="8" class="panel"/>
+  <text x="60" y="404" class="panel-title">Settled 1 kHz transient, normalized scales</text>
+  <line x1="70" y1="468" x2="590" y2="468" class="grid"/>
+  <path class="input" d="M70 468 C92 430 114 430 136 468 C158 506 180 506 202 468 C224 430 246 430 268 468 C290 506 312 506 334 468 C356 430 378 430 400 468 C422 506 444 506 466 468 C488 430 510 430 532 468 C554 506 576 506 590 480"/>
+  <path class="output" d="M70 468 C92 506 114 506 136 468 C158 430 180 430 202 468 C224 506 246 506 268 468 C290 430 312 430 334 468 C356 506 378 506 400 468 C422 430 444 430 466 468 C488 506 510 506 532 468 C554 430 576 430 590 456"/>
+  <line x1="70" y1="418" x2="104" y2="418" class="input"/>
+  <text x="112" y="423" class="small">input: 20 mV peak</text>
+  <line x1="277" y1="418" x2="311" y2="418" class="output"/>
+  <text x="319" y="423" class="small">output: 0.678 V p-p, inverted</text>
+  <text x="196" y="518" class="small">Output average: 0.884 mV after AC coupling</text>
+
+  <rect x="628" y="380" width="290" height="146" rx="8" class="panel"/>
+  <text x="646" y="404" class="panel-title">Fourier distortion at 1 kHz</text>
+  <line x1="660" y1="492" x2="892" y2="492" class="axis"/>
+  <rect x="684" y="426" width="34" height="66" class="harmonic"/>
+  <rect x="752" y="482" width="34" height="10" class="harmonic"/>
+  <rect x="820" y="489" width="34" height="3" class="harmonic"/>
+  <text x="690" y="510" class="small">H1</text>
+  <text x="758" y="510" class="small">H2</text>
+  <text x="826" y="510" class="small">H3+</text>
+  <text x="735" y="424" class="small">THD = 0.108%</text>
+  <text x="728" y="447" class="small">H2/H1 = 0.108%</text>
+
+  <rect x="42" y="538" width="876" height="16" rx="6" fill="#f3f7fb"/>
+  <text x="239" y="550" class="small">The split emitter resistor keeps DC bias stable while CE restores most AC gain.</text>
+</svg>

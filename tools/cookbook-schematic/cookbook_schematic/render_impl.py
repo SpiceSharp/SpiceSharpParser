@@ -42,6 +42,8 @@ class FunctionalBlock(Element2Term):
 
 
 _ELEMENT_FACTORIES: dict[str, Callable[[], elm.Element]] = {
+    "bjt-npn": elm.BjtNpn2,
+    "bjt-pnp": elm.BjtPnp2,
     "resistor": elm.Resistor,
     "resistor-iec": elm.ResistorIEC,
     "capacitor": elm.Capacitor,

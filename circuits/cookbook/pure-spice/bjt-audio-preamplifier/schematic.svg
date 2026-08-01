@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" xml:lang="en" height="583.24pt" width="831.7399999999999pt" viewBox="-31.59999999999999 -474.6 831.7399999999999 583.24" style="background-color:#ffffff;" role="img" aria-labelledby="title desc" data-generator="spicesharp-cookbook-schematic 0.1.0">
+  <title id="title">BJT audio preamplifier</title>
+  <desc id="desc">A 12 volt common-emitter 2N3904 stage with divider bias, split emitter degeneration and bypass, AC-coupled input and output, and a 47 kilohm load.</desc>
+  <circle cx="0" cy="-54" r="18" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;" />
+  <circle cx="720" cy="-144" r="18" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;" />
+  <path d="M 180.0,-180.0 L 255.69,-180 L 331.38,-180" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 360.0,-54.0 L 414,-54 L 468,-54" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 504.0,-252.0 L 540,-252 L 576,-252" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 234.0,-360.0 L 477,-360 L 720,-360" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 0.0,72.0 L 360,72 L 720,72" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 0.0,-180.0 L 0,-72 L 0,-72 M 0,-36 L 0,-36 L 0,72" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M -8.999999999999993,-54.0 L -8.25,-52.137 L -7.5,-50.4 L -6.75,-48.909 L -6,-47.765 L -5.25,-47.045 L -4.5,-46.8 L -3.75,-47.045 L -3,-47.765 L -2.25,-48.909 L -1.5,-50.4 L -0.75,-52.137 L 0,-54 L 0.75,-55.863 L 1.5,-57.6 L 2.25,-59.091 L 3,-60.235 L 3.75,-60.955 L 4.5,-61.2 L 5.25,-60.955 L 6,-60.235 L 6.75,-59.091 L 7.5,-57.6 L 8.25,-55.863 L 9,-54" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 0.0,-180.0 L 27,-180 L 30,-189 L 36,-171 L 42,-189 L 48,-171 L 54,-189 L 60,-171 L 63,-180 L 90,-180" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 90.0,-180.0 L 131.76,-180 M 131.76,-189 L 131.76,-171 M 138.24,-189 L 138.24,-171 M 138.24,-180 L 180,-180" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 234.0,-360.0 L 234,-288 L 243,-285 L 225,-279 L 243,-273 L 225,-267 L 243,-261 L 225,-255 L 234,-252 L 234,-180" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 234.0,-180.0 L 234,-72 L 243,-69 L 225,-63 L 243,-57 L 225,-51 L 243,-45 L 225,-39 L 234,-36 L 234,72" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 360.0,-108.0 L 360,-160.2 L 344.88,-172.8 L 344.88,-187.2 L 360,-199.8 L 360,-252" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 344.88,-166.5 L 344.88,-193.5" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 344.88,-180.0 L 331.38,-180" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 360.0,-160.20000000000002 L 351.794,-167.038" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 346.416 -171.52 L 354.099 -169.804 L 349.489 -164.273 Z" style="stroke:#243247;fill:#243247;stroke-linecap:butt;stroke-linejoin:miter;" />
+  <path d="M 360.0,-360.0 L 360,-324 L 369,-321 L 351,-315 L 369,-309 L 351,-303 L 369,-297 L 351,-291 L 360,-288 L 360,-252" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 360.0,-108.0 L 360,-99 L 369,-96 L 351,-90 L 369,-84 L 351,-78 L 369,-72 L 351,-66 L 360,-63 L 360,-54" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 360.0,-54.0 L 360,-9 L 369,-6 L 351,-0 L 369,6 L 351,12 L 369,18 L 351,24 L 360,27 L 360,72" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 468.0,-54.0 L 468,5.76 M 477,5.76 L 459,5.76 M 477,12.24 L 459,12.24 M 468,12.24 L 468,72" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 360.0,-252.0 L 428.76,-252 M 428.76,-261 L 428.76,-243 M 435.24,-261 L 435.24,-243 M 435.24,-252 L 504,-252" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 576.0,-252.0 L 576,-108 L 585,-105 L 567,-99 L 585,-93 L 567,-87 L 585,-81 L 567,-75 L 576,-72 L 576,72" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 720.0,72.0 L 720,-126 L 720,-126 M 720,-162 L 720,-162 L 720,-360" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 723.6,-135.0 L 716.4,-135" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 720.0,-149.4 L 720,-156.6" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 723.6,-153.0 L 716.4,-153" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 720.0,72.0 L 720,86.4 L 711,86.4 L 729,86.4 M 713.7,90.72 L 726.3,90.72 M 718.2,95.04 L 721.8,95.04" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <text x="45.0" y="-205.6" dominant-baseline="ideographic" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="45.0" dy="13.0">RS</tspan>
+  </text>
+  <text x="45.0" y="-179.4" dominant-baseline="hanging" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="45.0" dy="12.0">600 Ω</tspan>
+  </text>
+  <text x="135.0" y="-205.6" dominant-baseline="ideographic" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="135.0" dy="13.0">CIN</tspan>
+  </text>
+  <text x="135.0" y="-179.4" dominant-baseline="hanging" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="135.0" dy="12.0">1u F</tspan>
+  </text>
+  <text x="432.0" y="-277.59999999999997" dominant-baseline="ideographic" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="432.0" dy="13.0">COUT</tspan>
+  </text>
+  <text x="432.0" y="-251.4" dominant-baseline="hanging" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="432.0" dy="12.0">10u F</tspan>
+  </text>
+  <text x="113.39999999999999" y="-226.2" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="113.39999999999999" dy="12.0">input</tspan>
+  </text>
+  <text x="266.40000000000003" y="-219.0" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="266.40000000000003" dy="12.0">base</tspan>
+  </text>
+  <text x="334.8" y="-292.8" dominant-baseline="hanging" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="334.8" dy="12.0">collector</tspan>
+  </text>
+  <text x="376.20000000000005" y="-132.60000000000002" dominant-baseline="ideographic" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="376.20000000000005" dy="12.0">emitter</tspan>
+  </text>
+  <text x="536.4" y="-296.4" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="536.4" dy="12.0">output</tspan>
+  </text>
+  <text x="554.4" y="-397.2" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="554.4" dy="12.0">+12 V</tspan>
+  </text>
+  <text x="14.4" y="-120.80000000000001" dominant-baseline="ideographic" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="14.4" dy="10.0">VSIG</tspan>
+    <tspan x="14.4" dy="10.0">20 mV peak, 1 kHz</tspan>
+  </text>
+  <text x="252.0" y="-283.59999999999997" dominant-baseline="ideographic" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="252.0" dy="10.0">R1  82 kΩ</tspan>
+  </text>
+  <text x="252.0" y="-67.6" dominant-baseline="ideographic" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="252.0" dy="10.0">R2  18 kΩ</tspan>
+  </text>
+  <text x="381.59999999999997" y="-319.59999999999997" dominant-baseline="ideographic" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="381.59999999999997" dy="10.0">RC  4.7 kΩ</tspan>
+  </text>
+  <text x="399.59999999999997" y="-193.6" dominant-baseline="ideographic" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="399.59999999999997" dy="10.0">Q1  2N3904</tspan>
+  </text>
+  <text x="381.59999999999997" y="-105.39999999999999" dominant-baseline="ideographic" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="381.59999999999997" dy="10.0">RE1  220 Ω</tspan>
+  </text>
+  <text x="381.59999999999997" y="-4.6000000000000005" dominant-baseline="ideographic" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="381.59999999999997" dy="10.0">RE2  820 Ω</tspan>
+  </text>
+  <text x="486.0" y="-4.6000000000000005" dominant-baseline="ideographic" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="486.0" dy="10.0">CE  100 µF</tspan>
+  </text>
+  <text x="597.5999999999999" y="-103.60000000000001" dominant-baseline="ideographic" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="597.5999999999999" dy="10.0">RL  47 kΩ</tspan>
+  </text>
+  <text x="741.5999999999999" y="-157.6" dominant-baseline="ideographic" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="741.5999999999999" dy="10.0">VCC  12 V</tspan>
+  </text>
+  <text x="-3.6" y="-461.0" dominant-baseline="ideographic" fill="#172235" font-size="20.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="-3.6" dy="20.0">BJT audio preamplifier</tspan>
+  </text>
+  <text x="-3.6" y="-427.79999999999995" dominant-baseline="ideographic" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="-3.6" dy="12.0">Common-emitter voltage gain with stable DC bias</tspan>
+  </text>
+  <circle cx="234" cy="-180" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.2;stroke-dasharray:-;" />
+  <circle cx="360" cy="-252" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.2;stroke-dasharray:-;" />
+  <circle cx="360" cy="-54" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.2;stroke-dasharray:-;" />
+</svg>

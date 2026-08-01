@@ -23,6 +23,8 @@ from .netlist import canonical_node, parse_netlist
 SCHEMA_VERSION = 1
 ELEMENT_KINDS = frozenset(
     {
+        "bjt-npn",
+        "bjt-pnp",
         "resistor",
         "resistor-iec",
         "capacitor",

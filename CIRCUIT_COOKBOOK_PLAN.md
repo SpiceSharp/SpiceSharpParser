@@ -19,7 +19,7 @@ The repository contains the infrastructure needed for this direction:
 - `circuits/a-devices` demonstrates a strong example format: runnable
   netlists, `.SAVE`, `.PLOT`, `.MEAS`, explanatory guides, and automated
   verification.
-- `circuits/cookbook` contains four complete application-oriented recipes
+- `circuits/cookbook` contains five complete application-oriented recipes
   across the pure-SPICE and CustomComponents tracks.
 - `tools/cookbook-schematic` renders deterministic, accessible SVG schematics
   from a SPICE netlist plus a compact `schematic.toml` layout. Its validator
@@ -42,8 +42,8 @@ equations, assumptions, measurements, and educational value.
 
 The initial cookbook milestone is complete:
 
-- Rectifier power supply, PWM DAC, ideal-diode power OR, and simple PLL recipes
-  are present in the user-facing catalog.
+- Rectifier power supply, PWM DAC, BJT audio preamplifier, ideal-diode power
+  OR, and simple PLL recipes are present in the user-facing catalog.
 - Every current recipe has a runnable `.cir`, full guide, checked-in
   `schematic.toml`, generated `schematic.svg`, and accessible `response.svg`.
 - All current schematic layouts display every parsed netlist component and
@@ -52,9 +52,10 @@ The initial cookbook milestone is complete:
 - The data-driven `CircuitCookbookTests` suite compiles and simulates all
   current recipes and enforces their measurement ranges.
 
-The next circuit should be the BJT audio preamplifier. It expands the
-pure-SPICE track with operating-point and AC analysis instead of adding another
-transient-only example.
+The next circuit should be the RC sensor-noise filter and input protector. It
+adds an approachable Simple recipe after the Medium BJT preamplifier while
+introducing frequency-domain attenuation, step response, and clamp-current
+measurements.
 
 ## Cookbook Tracks
 
@@ -87,7 +88,7 @@ story. These recipes should be approachable without prior simulator expertise.
 | Circuit | Track | Status | Practical use | What it measures and teaches |
 | --- | --- | --- | --- | --- |
 | PWM-to-analog converter | Pure SPICE | Complete | Recover an analog control voltage from a microcontroller PWM output | Duty-cycle average, ripple, settling time, and cascaded filtering |
-| RC sensor-noise filter and input protector | Pure SPICE | Planned | Condition a noisy low-voltage sensor before an ADC input | Cutoff frequency, step response, attenuation, and clamp current |
+| RC sensor-noise filter and input protector | Pure SPICE | Next | Condition a noisy low-voltage sensor before an ADC input | Cutoff frequency, step response, attenuation, and clamp current |
 | BJT relay or solenoid driver with flyback diode | Pure SPICE | Planned | Drive an inductive load safely from a logic-level signal | Base drive, coil current, saturation voltage, turn-off transient, and flyback decay |
 | RC switch debouncer with Schmitt-trigger buffer | CustomComponents | Planned | Convert a bouncing mechanical switch into a clean digital edge | Threshold hysteresis, rejected pulse width, propagation delay, and output edge count |
 | Loaded voltage divider and emitter-follower buffer | Pure SPICE | Planned | Scale a battery or sensor voltage without heavily loading its source | Divider error, input impedance, output impedance, bias error, and headroom |
@@ -104,7 +105,7 @@ should introduce realistic design tradeoffs while remaining easy to modify.
 | --- | --- | --- | --- | --- |
 | Rectifier, reservoir, and Zener regulator | Pure SPICE | Complete | Produce filtered low-voltage DC from an isolated AC secondary | Startup, diode conduction, reservoir ripple, load regulation, and load steps |
 | Ideal-diode redundant power input | CustomComponents | Complete | OR two supplies with automatic failover and reverse-current blocking | Source priority, failover dip, handback, standby current, and reverse current |
-| BJT audio preamplifier | Pure SPICE | Next | Raise a small audio signal to a useful level for a following stage | Bias point, AC gain, bandwidth, clipping, loading, and Fourier distortion |
+| BJT audio preamplifier | Pure SPICE | Complete | Raise a small audio signal to a useful level for a following stage | Bias point, AC gain, bandwidth, clipping, loading, and Fourier distortion |
 | 555 monostable pulse stretcher and PWM controller | Packaged subcircuit | Planned | Create a fixed-duration event pulse and an adjustable LED or fan drive | Pulse width, duty range, frequency, reset behavior, and load response |
 | Active anti-alias filter and ADC buffer | Pure SPICE | Planned | Limit sensor bandwidth and drive a sampling input cleanly | Passband gain, cutoff, attenuation, phase shift, settling, and output loading |
 | Class-AB headphone or line-output buffer | Pure SPICE | Planned | Drive a low-impedance audio load from a small-signal source | Quiescent current, crossover distortion, voltage swing, output power, and efficiency |
@@ -128,8 +129,8 @@ simulations and a deeper stability or timing explanation.
 | Linear bench supply with current limiting and foldback | Pure SPICE | Planned | Provide a regulated DC output that survives overload and short-circuit conditions | Line regulation, load regulation, loop response, current limit, foldback, and device dissipation |
 | Digital frequency counter and tachometer | CustomComponents | Planned | Count input events over a fixed gate interval and retain a readable result | Gate timing, count accuracy, overflow, latch timing, reset sequencing, and low-frequency error |
 
-Keep the backlog balanced as recipes are completed. After the BJT
-preamplifier, prefer a simple circuit before starting another difficult one.
+Keep the backlog balanced as recipes are completed. Build the Simple RC
+sensor-noise filter next before starting another Difficult circuit.
 This roadmap is a candidate pool, not a commitment to publish all 24 circuits.
 Apply the selection criteria before promotion and keep the published catalog
 small enough to maintain well.
@@ -150,8 +151,9 @@ The starting sequence established three complementary examples:
    Demonstrated that CustomComponents can form a complete mixed-signal system,
    rather than only isolated device examples.
 
-The ideal-diode redundant power input was the first follow-on application. The
-next addition is the BJT audio preamplifier.
+The ideal-diode redundant power input was the first follow-on application, and
+the BJT audio preamplifier was the second. The next addition is the Simple RC
+sensor-noise filter and input protector.
 
 ## Current Repository Structure and Growth Path
 
@@ -172,6 +174,12 @@ circuits/
       pwm-dac/
         README.md
         pwm-dac.cir
+        schematic.toml
+        schematic.svg
+        response.svg
+      bjt-audio-preamplifier/
+        README.md
+        bjt-audio-preamplifier.cir
         schematic.toml
         schematic.svg
         response.svg
@@ -274,7 +282,7 @@ Each guide should begin with a compact table similar to this:
 | Requires | SpiceSharpParser core |
 | Dialect | Portable SPICE |
 | Analyses | OP, AC, TRAN |
-| Difficulty | Intermediate |
+| Difficulty | Medium |
 | Verified with | SpiceSharpParser 3.4.x |
 
 For custom circuits, `Requires` should explicitly name
@@ -366,7 +374,8 @@ stable across several additional circuits.
 
 ## Immediate Next Steps
 
-1. Add the BJT audio preamplifier with OP, AC, and transient measurements.
+1. Add the RC sensor-noise filter and input protector with AC, transient, and
+   clamp-current measurements.
 2. Define and trial the recipe manifest on the BJT recipe and one existing
    pure-SPICE recipe.
 3. Migrate the remaining cookbook test cases after the manifest format is

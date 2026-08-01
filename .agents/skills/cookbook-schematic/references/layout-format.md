@@ -73,7 +73,8 @@ Optional fields:
 - `color`, `fill`: CSS colors.
 - `reverse`, `flip`: SchemDraw orientation controls.
 
-Common `kind` values include `resistor`, `resistor-iec`, `capacitor`,
+Common `kind` values include `bjt-npn`, `bjt-pnp`, `resistor`,
+`resistor-iec`, `capacitor`,
 `capacitor-polarized`, `inductor`, `diode`, `zener`, `schottky`, `led`,
 `source-v`, `source-i`, `source-pulse`, `source-sin`, `buffer`, and `block`.
 

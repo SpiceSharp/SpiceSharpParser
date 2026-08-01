@@ -1,0 +1,219 @@
+version = 1
+
+[schematic]
+netlist = "bjt-audio-preamplifier.cir"
+output = "schematic.svg"
+title = "BJT audio preamplifier"
+description = "A 12 volt common-emitter 2N3904 stage with divider bias, split emitter degeneration and bypass, AC-coupled input and output, and a 47 kilohm load."
+subtitle = "Common-emitter voltage gain with stable DC bias"
+
+[[elements]]
+id = "VSIG"
+start = [0, 5]
+end = [0, -2]
+label = ""
+value = ""
+
+[[elements]]
+id = "RS"
+start = [0, 5]
+end = [2.5, 5]
+
+[[elements]]
+id = "CIN"
+start = [2.5, 5]
+end = [5, 5]
+
+[[elements]]
+id = "R1"
+start = [6.5, 10]
+end = [6.5, 5]
+label = ""
+value = ""
+
+[[elements]]
+id = "R2"
+start = [6.5, 5]
+end = [6.5, -2]
+label = ""
+value = ""
+
+[[elements]]
+id = "Q1"
+start = [10, 3]
+end = [10, 7]
+terminals = ["emitter", "collector"]
+label = ""
+value = ""
+
+[[elements]]
+id = "RC"
+start = [10, 10]
+end = [10, 7]
+label = ""
+value = ""
+
+[[elements]]
+id = "RE1"
+start = [10, 3]
+end = [10, 1.5]
+label = ""
+value = ""
+
+[[elements]]
+id = "RE2"
+start = [10, 1.5]
+end = [10, -2]
+label = ""
+value = ""
+
+[[elements]]
+id = "CE"
+start = [13, 1.5]
+end = [13, -2]
+label = ""
+value = ""
+
+[[elements]]
+id = "COUT"
+start = [10, 7]
+end = [14, 7]
+
+[[elements]]
+id = "RL"
+start = [16, 7]
+end = [16, -2]
+label = ""
+value = ""
+
+[[elements]]
+id = "VCC"
+start = [20, -2]
+end = [20, 10]
+terminals = ["0", "vcc"]
+label = ""
+value = ""
+
+[[wires]]
+node = "base"
+points = [[5, 5], [9.205, 5]]
+
+[[wires]]
+node = "emitter_bypass"
+points = [[10, 1.5], [13, 1.5]]
+
+[[wires]]
+node = "output"
+points = [[14, 7], [16, 7]]
+
+[[wires]]
+node = "vcc"
+points = [[6.5, 10], [20, 10]]
+
+[[wires]]
+node = "0"
+points = [[0, -2], [20, -2]]
+
+[[junctions]]
+node = "base"
+at = [6.5, 5]
+
+[[junctions]]
+node = "collector"
+at = [10, 7]
+
+[[junctions]]
+node = "emitter_bypass"
+at = [10, 1.5]
+
+[[node_labels]]
+node = "input"
+at = [3.25, 5.85]
+
+[[node_labels]]
+node = "base"
+at = [7.5, 5.65]
+
+[[node_labels]]
+node = "collector"
+at = [9.4, 7.7]
+location = "left"
+
+[[node_labels]]
+node = "emitter"
+at = [10.55, 3.25]
+location = "right"
+
+[[node_labels]]
+node = "output"
+at = [15, 7.8]
+
+[[node_labels]]
+node = "vcc"
+at = [15.5, 10.6]
+text = "+12 V"
+
+[[symbols]]
+kind = "ground"
+node = "0"
+at = [20, -2]
+
+[[texts]]
+text = "VSIG\n20 mV peak, 1 kHz"
+at = [0.5, 2.7]
+location = "right"
+size = 10
+
+[[texts]]
+text = "R1  82 kΩ"
+at = [7.1, 7.5]
+location = "right"
+size = 10
+
+[[texts]]
+text = "R2  18 kΩ"
+at = [7.1, 1.5]
+location = "right"
+size = 10
+
+[[texts]]
+text = "RC  4.7 kΩ"
+at = [10.7, 8.5]
+location = "right"
+size = 10
+
+[[texts]]
+text = "Q1  2N3904"
+at = [11.2, 5]
+location = "right"
+size = 10
+
+[[texts]]
+text = "RE1  220 Ω"
+at = [10.7, 2.55]
+location = "right"
+size = 10
+
+[[texts]]
+text = "RE2  820 Ω"
+at = [10.7, -0.25]
+location = "right"
+size = 10
+
+[[texts]]
+text = "CE  100 µF"
+at = [13.6, -0.25]
+location = "right"
+size = 10
+
+[[texts]]
+text = "RL  47 kΩ"
+at = [16.7, 2.5]
+location = "right"
+size = 10
+
+[[texts]]
+text = "VCC  12 V"
+at = [20.7, 4]
+location = "right"
+size = 10
