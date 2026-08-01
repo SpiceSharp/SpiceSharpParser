@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="500" viewBox="0 0 960 500" role="img" aria-labelledby="title desc">
+  <title id="title">Verified loaded-divider and emitter-follower response</title>
+  <desc id="desc">At a 100 microamp load step, the directly loaded divider falls from 0.8553 volt to 0.1425 volt, while the emitter-follower output falls only from 2.3403 volts to 2.3260 volts.</desc>
+  <style>
+    .axis{stroke:#46546a;stroke-width:2}.grid{stroke:#dde4ed;stroke-width:1}.direct{fill:none;stroke:#c23b52;stroke-width:3}.buffered{fill:none;stroke:#1976d2;stroke-width:3}.base{fill:none;stroke:#7b61a8;stroke-width:2;stroke-dasharray:7 5}.event{stroke:#8190a3;stroke-width:1.5;stroke-dasharray:5 5}.text{fill:#253248;font:14px 'Segoe UI',sans-serif}.small{fill:#5b687b;font:12px 'Segoe UI',sans-serif}.heading{fill:#182235;font:600 21px 'Segoe UI',sans-serif}.panel{fill:#f8fafc;stroke:#d7dee8}.tag{font:600 13px 'Segoe UI',sans-serif}
+  </style>
+  <rect width="960" height="500" fill="#fff"/>
+  <text x="44" y="32" class="heading">Verified load-step response</text>
+  <text x="44" y="54" class="small">Curves summarize the simulated transient; scalar annotations are .MEAS results.</text>
+  <rect x="76" y="86" width="814" height="324" class="panel"/>
+  <line x1="76" y1="410" x2="890" y2="410" class="axis"/><line x1="76" y1="86" x2="76" y2="410" class="axis"/>
+  <line x1="76" y1="309" x2="890" y2="309" class="grid"/><line x1="76" y1="208" x2="890" y2="208" class="grid"/><line x1="76" y1="107" x2="890" y2="107" class="grid"/>
+  <text x="38" y="414" class="small">0 V</text><text x="38" y="313" class="small">1 V</text><text x="38" y="212" class="small">2 V</text><text x="38" y="111" class="small">3 V</text>
+  <line x1="347" y1="86" x2="347" y2="410" class="event"/>
+  <text x="294" y="78" class="small">100 µA step at 1.001 ms</text>
+  <text x="70" y="432" class="small">0</text><text x="334" y="432" class="small">1 ms</text><text x="605" y="432" class="small">2 ms</text><text x="876" y="432" class="small">3 ms</text>
+  <path class="base" d="M76 110 L890 110"/>
+  <path class="buffered" d="M76 174 L347 174 L348 176 L890 176"/>
+  <path class="direct" d="M76 324 L347 324 L348 396 L890 396"/>
+  <circle cx="347" cy="324" r="4.5" fill="#c23b52"/><circle cx="348" cy="396" r="4.5" fill="#c23b52"/>
+  <circle cx="347" cy="174" r="4.5" fill="#1976d2"/><circle cx="348" cy="176" r="4.5" fill="#1976d2"/>
+  <line x1="110" y1="124" x2="147" y2="124" class="base"/><text x="156" y="129" class="small">buffer base: 2.9650 V</text>
+  <line x1="386" y1="124" x2="423" y2="124" class="buffered"/><text x="432" y="129" class="small">buffered: 2.3403 → 2.3260 V</text>
+  <line x1="674" y1="124" x2="711" y2="124" class="direct"/><text x="720" y="129" class="small">direct: 0.8553 → 0.1425 V</text>
+  <rect x="76" y="450" width="814" height="30" rx="6" fill="#f3f7fb"/>
+  <text x="165" y="470" class="text">Measured output resistance: direct 7.127 kΩ; buffered 143.2 Ω; droop improvement 49.76×.</text>
+</svg>

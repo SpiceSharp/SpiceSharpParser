@@ -12,6 +12,9 @@ documented design calculations, and automated regression coverage.
 | [PWM digital-to-analog converter](cookbook/pure-spice/pwm-dac/README.md) | Pure SPICE | TRAN | Simple | Duty-cycle averaging, ripple attenuation, and settling |
 | [RC sensor filter and input protector](cookbook/pure-spice/rc-sensor-input-filter/README.md) | Pure SPICE | AC, TRAN | Simple | Noise filtering, bandwidth, rail clamps, and fault current |
 | [BJT relay driver with flyback diode](cookbook/pure-spice/bjt-relay-driver/README.md) | Pure SPICE | TRAN | Simple | Inductive-load switching, saturation, flyback clamping, and release decay |
+| [Loaded voltage divider and emitter-follower buffer](cookbook/pure-spice/loaded-voltage-divider/README.md) | Pure SPICE | OP, TRAN | Simple | Source loading, Thevenin resistance, transistor buffering, and output impedance |
+| [Diode peak detector and AM envelope follower](cookbook/pure-spice/diode-envelope-detector/README.md) | Pure SPICE | TRAN | Simple | Diode-drop error, RC attack/release, carrier ripple, and envelope recovery |
+| [Two-transistor astable LED flasher](cookbook/pure-spice/astable-led-flasher/README.md) | Pure SPICE | TRAN | Simple | Cross-coupled feedback, RC timing, transistor switching, and free-running oscillation |
 | [Rectifier power supply](cookbook/pure-spice/rectifier-power-supply/README.md) | Pure SPICE | TRAN | Medium | Rectification, reservoir ripple, Zener regulation, and a load step |
 | [BJT audio preamplifier](cookbook/pure-spice/bjt-audio-preamplifier/README.md) | Pure SPICE | OP, AC, TRAN, FOUR | Medium | Biasing, gain, bandwidth, coupling, loading, and harmonic distortion |
 | [Active anti-alias filter and ADC buffer](cookbook/pure-spice/active-anti-alias-filter/README.md) | Pure SPICE | AC, TRAN | Medium | Buffered filter poles, stopband attenuation, settling, and ADC loading |

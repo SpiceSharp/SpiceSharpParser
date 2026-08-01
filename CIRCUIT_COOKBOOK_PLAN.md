@@ -40,9 +40,9 @@ equations, assumptions, measurements, and educational value.
 
 ## Current Implementation Status
 
-The initial cookbook milestone is complete:
+The cookbook now has a broader simple-circuit foundation:
 
-- Nine recipes are present in the user-facing catalog: three Simple, four
+- Twelve recipes are present in the user-facing catalog: six Simple, four
   Medium, and two Difficult circuits across the Pure SPICE and
   CustomComponents tracks.
 - Every current recipe has a runnable `.cir`, full guide, checked-in
@@ -54,7 +54,7 @@ The initial cookbook milestone is complete:
   current recipes and enforces their measurement ranges.
 
 The next circuit should be the buck converter with a saturating inductor. It
-will bring the completed mix to three Simple, four Medium, and three Difficult
+will bring the completed mix to six Simple, four Medium, and three Difficult
 recipes while adding switching conversion, magnetic nonlinearity, startup,
 ripple, and load-step measurements.
 
@@ -92,9 +92,9 @@ story. These recipes should be approachable without prior simulator expertise.
 | RC sensor-noise filter and input protector | Pure SPICE | Complete | Condition a noisy low-voltage sensor before an ADC input | Cutoff frequency, step response, attenuation, and clamp current |
 | BJT relay or solenoid driver with flyback diode | Pure SPICE | Complete | Drive an inductive load safely from a logic-level signal | Base drive, coil current, saturation voltage, turn-off transient, and flyback decay |
 | RC switch debouncer with Schmitt-trigger buffer | CustomComponents | Planned | Convert a bouncing mechanical switch into a clean digital edge | Threshold hysteresis, rejected pulse width, propagation delay, and output edge count |
-| Loaded voltage divider and emitter-follower buffer | Pure SPICE | Planned | Scale a battery or sensor voltage without heavily loading its source | Divider error, input impedance, output impedance, bias error, and headroom |
-| Diode peak detector and audio envelope follower | Pure SPICE | Planned | Recover the peak or amplitude envelope of an AC signal | Diode-drop error, attack time, release time, ripple, and load sensitivity |
-| Two-transistor astable LED beacon | Pure SPICE | Planned | Build a low-cost flasher without a timer IC | Startup, oscillation frequency, duty cycle, capacitor charging, and transistor switching |
+| Loaded voltage divider and emitter-follower buffer | Pure SPICE | Complete | Scale a battery or sensor voltage without heavily loading its source | Divider error, input impedance, output impedance, bias error, and headroom |
+| Diode peak detector and audio envelope follower | Pure SPICE | Complete | Recover the peak or amplitude envelope of an AC signal | Diode-drop error, attack time, release time, ripple, and load sensitivity |
+| Two-transistor astable LED beacon | Pure SPICE | Complete | Build a low-cost flasher without a timer IC | Startup, oscillation frequency, duty cycle, capacitor charging, and transistor switching |
 | Varistor-protected DC input | CustomComponents | Planned | Clamp a supply surge before it reaches a sensitive load | Clamp voltage, surge current, absorbed energy, leakage, and source impedance |
 
 ### Medium circuits
@@ -132,7 +132,7 @@ simulations and a deeper stability or timing explanation.
 
 Keep the backlog balanced as recipes are completed. The next Difficult buck
 converter brings the category counts closer together and exercises the
-CustomComponents track after four consecutive Pure SPICE additions.
+CustomComponents track after seven consecutive Pure SPICE additions.
 This roadmap is a candidate pool, not a commitment to publish all 24 circuits.
 Apply the selection criteria before promotion and keep the published catalog
 small enough to maintain well.

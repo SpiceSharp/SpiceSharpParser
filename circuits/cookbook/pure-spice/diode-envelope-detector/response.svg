@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="500" viewBox="0 0 960 500" role="img" aria-labelledby="title desc">
+  <title id="title">Verified diode envelope-detector response</title>
+  <desc id="desc">The one-diode RC detector follows a one-to-three-volt, 100 hertz input envelope with a detected range of 0.4170 to 2.1994 volts and 90.99 millivolts peak-to-peak carrier ripple.</desc>
+  <style>
+    .axis{stroke:#46546a;stroke-width:2}.grid{stroke:#dde4ed;stroke-width:1}.input{fill:none;stroke:#7b61a8;stroke-width:2.5;stroke-dasharray:7 5}.detected{fill:none;stroke:#c23b52;stroke-width:3}.text{fill:#253248;font:14px 'Segoe UI',sans-serif}.small{fill:#5b687b;font:12px 'Segoe UI',sans-serif}.heading{fill:#182235;font:600 21px 'Segoe UI',sans-serif}.panel{fill:#f8fafc;stroke:#d7dee8}.marker{stroke:#8190a3;stroke-width:1.4;stroke-dasharray:5 5}
+  </style>
+  <rect width="960" height="500" fill="#fff"/>
+  <text x="44" y="32" class="heading">Verified AM envelope recovery</text>
+  <text x="44" y="54" class="small">The 20 kHz carrier is omitted for clarity; the dashed curve is its 100 Hz peak envelope.</text>
+  <rect x="76" y="86" width="814" height="324" class="panel"/>
+  <line x1="76" y1="410" x2="890" y2="410" class="axis"/><line x1="76" y1="86" x2="76" y2="410" class="axis"/>
+  <line x1="76" y1="309" x2="890" y2="309" class="grid"/><line x1="76" y1="208" x2="890" y2="208" class="grid"/><line x1="76" y1="107" x2="890" y2="107" class="grid"/>
+  <text x="38" y="414" class="small">0 V</text><text x="38" y="313" class="small">1 V</text><text x="38" y="212" class="small">2 V</text><text x="38" y="111" class="small">3 V</text>
+  <text x="62" y="432" class="small">20 ms</text><text x="263" y="432" class="small">22.5 ms</text><text x="468" y="432" class="small">25 ms</text><text x="665" y="432" class="small">27.5 ms</text><text x="860" y="432" class="small">30 ms</text>
+  <path class="input" d="M76 208 C143 141 210 107 280 107 C350 107 417 141 483 208 C550 275 617 309 687 309 C757 309 824 275 890 208"/>
+  <path class="detected" d="M76 260 C122 230 170 185 217 151 C247 130 272 126 294 137 L310 132 L326 141 L342 136 L358 148 C411 174 462 219 514 267 C565 314 617 354 668 368 C695 374 718 370 739 359 C786 331 837 278 890 232"/>
+  <line x1="280" y1="86" x2="280" y2="410" class="marker"/><line x1="687" y1="86" x2="687" y2="410" class="marker"/>
+  <circle cx="280" cy="132" r="5" fill="#c23b52"/><circle cx="687" cy="368" r="5" fill="#c23b52"/>
+  <text x="292" y="101" class="small">input crest 2.9958 V</text><text x="292" y="119" class="small">detected high 2.1994 V</text>
+  <text x="700" y="386" class="small">detected low 0.4170 V</text>
+  <line x1="110" y1="124" x2="147" y2="124" class="input"/><text x="156" y="129" class="small">input peak envelope</text>
+  <line x1="110" y1="148" x2="147" y2="148" class="detected"/><text x="156" y="153" class="small">diode + 1 ms RC detector</text>
+  <rect x="76" y="450" width="814" height="30" rx="6" fill="#f3f7fb"/>
+  <text x="176" y="470" class="text">Measured high error 0.7964 V; detected swing 1.7824 V; local carrier ripple 90.99 mV p-p.</text>
+</svg>

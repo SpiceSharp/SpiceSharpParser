@@ -130,6 +130,9 @@ response summary, suggested experiments, and automated regression coverage.
 | Simple | [PWM digital-to-analog converter](circuits/cookbook/pure-spice/pwm-dac/README.md) | Duty-cycle averaging, ripple attenuation, and settling |
 | Simple | [RC sensor filter and input protector](circuits/cookbook/pure-spice/rc-sensor-input-filter/README.md) | Sensor bandwidth, noise attenuation, rail clamping, and fault current |
 | Simple | [BJT relay driver](circuits/cookbook/pure-spice/bjt-relay-driver/README.md) | Inductive-load switching, saturation, flyback, and release decay |
+| Simple | [Loaded voltage divider and emitter-follower buffer](circuits/cookbook/pure-spice/loaded-voltage-divider/README.md) | Source loading, Thevenin resistance, transistor buffering, and output impedance |
+| Simple | [Diode peak detector and AM envelope follower](circuits/cookbook/pure-spice/diode-envelope-detector/README.md) | Diode-drop error, RC attack/release, carrier ripple, and envelope recovery |
+| Simple | [Two-transistor astable LED flasher](circuits/cookbook/pure-spice/astable-led-flasher/README.md) | Cross-coupled feedback, RC timing, transistor switching, and free-running oscillation |
 | Medium | [Rectifier power supply](circuits/cookbook/pure-spice/rectifier-power-supply/README.md) | Rectification, reservoir ripple, Zener regulation, and load response |
 | Medium | [BJT audio preamplifier](circuits/cookbook/pure-spice/bjt-audio-preamplifier/README.md) | Biasing, AC gain, bandwidth, coupling, loading, and distortion |
 | Medium | [Active anti-alias filter](circuits/cookbook/pure-spice/active-anti-alias-filter/README.md) | Buffered poles, stopband attenuation, settling, and ADC loading |

@@ -1,0 +1,212 @@
+version = 1
+
+[schematic]
+netlist = "loaded-voltage-divider.cir"
+output = "schematic.svg"
+title = "Loaded voltage divider and emitter-follower buffer"
+description = "Two identical 100 kilohm and 33 kilohm dividers drive 10 kilohm loads. The direct branch is compared with a 2N3904 emitter-follower branch under matching 100 microampere load steps."
+subtitle = "Load error and output resistance, with and without a transistor buffer"
+
+[[elements]]
+id = "VBAT"
+start = [0, 0]
+end = [0, 7]
+terminals = ["0", "vbat"]
+label = ""
+value = ""
+
+[[elements]]
+id = "RTOP_DIRECT"
+start = [4, 7]
+end = [4, 4.5]
+label = ""
+value = ""
+
+[[elements]]
+id = "RBOT_DIRECT"
+start = [4, 4.5]
+end = [4, 0]
+label = ""
+value = ""
+
+[[elements]]
+id = "RLOAD_DIRECT"
+start = [7, 4.5]
+end = [7, 0]
+label = ""
+value = ""
+
+[[elements]]
+id = "ISTEP_DIRECT"
+start = [10, 4.5]
+end = [10, 0]
+label = ""
+value = ""
+
+[[elements]]
+id = "RTOP_BUFFER"
+start = [13, 7]
+end = [13, 4.5]
+label = ""
+value = ""
+
+[[elements]]
+id = "RBOT_BUFFER"
+start = [13, 4.5]
+end = [13, 0]
+label = ""
+value = ""
+
+[[elements]]
+id = "Q1"
+start = [16, 2]
+end = [16, 7]
+terminals = ["buffered", "vbat"]
+label = ""
+value = ""
+
+[[elements]]
+id = "RLOAD_BUFFER"
+start = [19, 2]
+end = [19, 0]
+label = ""
+value = ""
+
+[[elements]]
+id = "ISTEP_BUFFER"
+start = [22, 2]
+end = [22, 0]
+label = ""
+value = ""
+
+[[wires]]
+node = "vbat"
+points = [[0, 7], [16, 7]]
+
+[[wires]]
+node = "direct"
+points = [[4, 4.5], [10, 4.5]]
+
+[[wires]]
+node = "base"
+points = [[13, 4.5], [15.205, 4.5]]
+
+[[wires]]
+node = "buffered"
+points = [[16, 2], [22, 2]]
+
+[[wires]]
+node = "0"
+points = [[0, 0], [22, 0]]
+
+[[junctions]]
+node = "direct"
+at = [4, 4.5]
+
+[[junctions]]
+node = "direct"
+at = [7, 4.5]
+
+[[junctions]]
+node = "base"
+at = [13, 4.5]
+
+[[junctions]]
+node = "buffered"
+at = [19, 2]
+
+[[node_labels]]
+node = "vbat"
+at = [8, 7.7]
+text = "+12 V battery"
+
+[[node_labels]]
+node = "direct"
+at = [7, 5.2]
+text = "direct output"
+
+[[node_labels]]
+node = "base"
+at = [13, 5.2]
+
+[[node_labels]]
+node = "buffered"
+at = [19, 2.7]
+text = "buffered output"
+
+[[symbols]]
+kind = "ground"
+node = "0"
+at = [22, 0]
+
+[[texts]]
+text = "DIRECTLY LOADED"
+at = [7, 8.8]
+location = "center"
+size = 11
+
+[[texts]]
+text = "EMITTER-FOLLOWER BUFFERED"
+at = [17.5, 8.8]
+location = "center"
+size = 11
+
+[[texts]]
+text = "VBAT  12 V"
+at = [0.7, 3.5]
+location = "right"
+size = 10
+
+[[texts]]
+text = "RTOP_DIRECT\n100 kΩ"
+at = [3.3, 5.8]
+location = "left"
+size = 9
+
+[[texts]]
+text = "RBOT_DIRECT\n33 kΩ"
+at = [3.3, 2.2]
+location = "left"
+size = 9
+
+[[texts]]
+text = "RLOAD_DIRECT\n10 kΩ"
+at = [7.7, 2.2]
+location = "right"
+size = 9
+
+[[texts]]
+text = "ISTEP_DIRECT\n100 µA"
+at = [10.7, 3.2]
+location = "right"
+size = 9
+
+[[texts]]
+text = "RTOP_BUFFER\n100 kΩ"
+at = [12.3, 5.8]
+location = "left"
+size = 9
+
+[[texts]]
+text = "RBOT_BUFFER\n33 kΩ"
+at = [12.3, 2.2]
+location = "left"
+size = 9
+
+[[texts]]
+text = "Q1  2N3904"
+at = [16.9, 4.6]
+location = "right"
+size = 10
+
+[[texts]]
+text = "RLOAD_BUFFER\n10 kΩ"
+at = [19.7, 0.9]
+location = "right"
+size = 9
+
+[[texts]]
+text = "ISTEP_BUFFER\n100 µA"
+at = [21.3, 3.2]
+location = "left"
+size = 9

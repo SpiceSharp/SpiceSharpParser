@@ -1,0 +1,25 @@
+Diode peak detector and AM envelope follower
+
+* The carrier envelope varies from 1 V to 3 V at a 100 Hz message rate.
+VSIGNAL input 0 AM(1 2 100 20k 0 0 0)
+RSOURCE input diode_input 100
+D1 diode_input envelope DDET
+C1 envelope 0 100n IC=0
+RLOAD envelope 0 10k
+
+.MODEL DDET D(Is=2n N=1.7 Rs=2 Cjo=2p)
+
+.OPTIONS method=gear
+.TRAN 2u 30m 0 1u UIC
+
+.MEAS TRAN input_positive_peak MAX V(input) FROM=22m TO=23m
+.MEAS TRAN detected_high MAX V(envelope) FROM=22m TO=23m
+.MEAS TRAN detected_low MIN V(envelope) FROM=27m TO=28m
+.MEAS TRAN high_peak_error PARAM='input_positive_peak-detected_high'
+.MEAS TRAN envelope_swing PARAM='detected_high-detected_low'
+.MEAS TRAN carrier_ripple PP V(envelope) FROM=22.45m TO=22.55m
+.MEAS TRAN peak_diode_current MAX I(D1) FROM=22m TO=23m
+
+.SAVE V(input) V(diode_input) V(envelope) I(D1)
+.PLOT TRAN V(input) V(envelope)
+.END

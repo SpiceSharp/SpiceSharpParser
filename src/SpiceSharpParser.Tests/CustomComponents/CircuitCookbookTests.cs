@@ -23,6 +23,48 @@ namespace SpiceSharpParser.Tests.CustomComponents
             {
                 yield return CookbookCase(
                     "pure-spice",
+                    "loaded-voltage-divider",
+                    "loaded-voltage-divider.cir",
+                    false,
+                    Expected("direct_loaded_voltage", 0.84, 0.87),
+                    Expected("buffer_base_voltage", 2.94, 2.99),
+                    Expected("buffered_loaded_voltage", 2.31, 2.37),
+                    Expected("direct_droop", 0.69, 0.74),
+                    Expected("buffered_droop", 0.010, 0.020),
+                    Expected("direct_output_resistance", 6.9e3, 7.4e3),
+                    Expected("buffered_output_resistance", 100.0, 200.0),
+                    Expected("droop_improvement", 40.0, 60.0));
+
+                yield return CookbookCase(
+                    "pure-spice",
+                    "diode-envelope-detector",
+                    "diode-envelope-detector.cir",
+                    false,
+                    Expected("input_positive_peak", 2.98, 3.01),
+                    Expected("detected_high", 2.15, 2.25),
+                    Expected("detected_low", 0.38, 0.48),
+                    Expected("high_peak_error", 0.74, 0.85),
+                    Expected("envelope_swing", 1.70, 1.85),
+                    Expected("carrier_ripple", 0.07, 0.12),
+                    Expected("peak_diode_current", 1.5e-3, 3.5e-3));
+
+                yield return CookbookCase(
+                    "pure-spice",
+                    "astable-led-flasher",
+                    "astable-led-flasher.cir",
+                    false,
+                    Expected("period_q1", 0.50, 0.56),
+                    Expected("period_q2", 0.50, 0.56),
+                    Expected("blink_frequency", 1.75, 2.05),
+                    Expected("led1_peak_current", 8.5e-3, 9.7e-3),
+                    Expected("led2_peak_current", 8.5e-3, 9.7e-3),
+                    Expected("led1_average_current", 4.2e-3, 5.3e-3),
+                    Expected("collector_low", 0.02, 0.08),
+                    Expected("collector_high", 3.3, 3.7),
+                    Expected("base_reverse_peak", -2.9, -2.5));
+
+                yield return CookbookCase(
+                    "pure-spice",
                     "rectifier-power-supply",
                     "rectifier-power-supply.cir",
                     false,

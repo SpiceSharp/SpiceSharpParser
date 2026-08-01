@@ -1,0 +1,39 @@
+Loaded voltage divider and emitter-follower buffer
+VBAT vbat 0 12
+
+* A 100 kOhm / 33 kOhm divider is heavily loaded by a 10 kOhm input.
+RTOP_DIRECT vbat direct 100k
+RBOT_DIRECT direct 0 33k
+RLOAD_DIRECT direct 0 10k
+ISTEP_DIRECT direct 0 PWL(0 0 1m 0 1.001m 100u 3m 100u)
+
+* The same divider drives an emitter follower and the same 10 kOhm load.
+RTOP_BUFFER vbat base 100k
+RBOT_BUFFER base 0 33k
+Q1 vbat base buffered Q2N3904
+RLOAD_BUFFER buffered 0 10k
+ISTEP_BUFFER buffered 0 PWL(0 0 1m 0 1.001m 100u 3m 100u)
+
+.MODEL Q2N3904 NPN(Is=6.734f Bf=416.4 Br=0.7374 Vaf=74.03
++ Cje=3.638p Cjc=4.493p Rb=10 Rc=1 Re=0.1 Tf=301.2p Tr=239.5n)
+
+.OPTIONS method=gear
+.OP
+.TRAN 5u 3m 0 1u
+
+.MEAS OP direct_loaded_voltage FIND V(direct) AT=0
+.MEAS OP buffer_base_voltage FIND V(base) AT=0
+.MEAS OP buffered_loaded_voltage FIND V(buffered) AT=0
+.MEAS TRAN direct_before AVG V(direct) FROM=0.5m TO=0.9m
+.MEAS TRAN direct_after AVG V(direct) FROM=2m TO=2.5m
+.MEAS TRAN buffered_before AVG V(buffered) FROM=0.5m TO=0.9m
+.MEAS TRAN buffered_after AVG V(buffered) FROM=2m TO=2.5m
+.MEAS TRAN direct_droop PARAM='direct_before-direct_after'
+.MEAS TRAN buffered_droop PARAM='buffered_before-buffered_after'
+.MEAS TRAN direct_output_resistance PARAM='direct_droop/100u'
+.MEAS TRAN buffered_output_resistance PARAM='buffered_droop/100u'
+.MEAS TRAN droop_improvement PARAM='direct_droop/buffered_droop'
+
+.SAVE V(vbat) V(direct) V(base) V(buffered)
+.PLOT TRAN V(direct) V(base) V(buffered)
+.END

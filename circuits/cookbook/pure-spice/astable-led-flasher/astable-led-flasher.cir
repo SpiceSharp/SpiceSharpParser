@@ -1,0 +1,37 @@
+Two-transistor astable LED flasher
+VCC vcc 0 5
+
+RLED1 vcc led1_anode 330
+DLED1 led1_anode collector1 DRED
+Q1 collector1 base1 0 Q2N3904
+RB1 vcc base1 22k
+C1 collector2 base1 22u IC=10m
+
+RLED2 vcc led2_anode 330
+DLED2 led2_anode collector2 DRED
+Q2 collector2 base2 0 Q2N3904
+RB2 vcc base2 22k
+C2 collector1 base2 22u IC=0
+
+.MODEL Q2N3904 NPN(Is=6.734f Bf=416.4 Br=0.7374 Vaf=74.03
++ Cje=3.638p Cjc=4.493p Rb=10 Rc=1 Re=0.1 Tf=301.2p Tr=239.5n)
+.MODEL DRED D(Is=1e-18 N=2 Rs=5 Cjo=20p)
+
+.OPTIONS method=gear
+.TRAN 1m 5 0 100u UIC
+
+.MEAS TRAN period_q1 TRIG V(collector1) VAL=2.5 RISE=4
++ TARG V(collector1) VAL=2.5 RISE=5
+.MEAS TRAN period_q2 TRIG V(collector2) VAL=2.5 RISE=4
++ TARG V(collector2) VAL=2.5 RISE=5
+.MEAS TRAN blink_frequency PARAM='1/period_q1'
+.MEAS TRAN led1_peak_current MAX I(DLED1) FROM=2 TO=4
+.MEAS TRAN led2_peak_current MAX I(DLED2) FROM=2 TO=4
+.MEAS TRAN led1_average_current AVG I(DLED1) FROM=2 TO=4
+.MEAS TRAN collector_low MIN V(collector1) FROM=2 TO=4
+.MEAS TRAN collector_high MAX V(collector1) FROM=2 TO=4
+.MEAS TRAN base_reverse_peak MIN V(base1) FROM=2 TO=4
+
+.SAVE V(base1) V(base2) V(collector1) V(collector2) I(DLED1) I(DLED2)
+.PLOT TRAN V(collector1) V(collector2) I(DLED1) I(DLED2)
+.END

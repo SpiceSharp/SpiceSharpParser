@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" xml:lang="en" height="432.84000000000003pt" width="779.3599999999999pt" viewBox="-31.59999999999999 -396.2 779.3599999999999 432.84000000000003" style="background-color:#ffffff;" role="img" aria-labelledby="title desc" data-generator="spicesharp-cookbook-schematic 0.1.0">
+  <title id="title">Two-transistor astable LED flasher</title>
+  <desc id="desc">Two 2N3904 common-emitter stages have LED collector loads and are cross-coupled by 22 microfarad timing capacitors. The symmetric positive-feedback loop alternately lights the two LEDs from a 5 volt supply.</desc>
+  <circle cx="0" cy="-144" r="18" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;" />
+  <polygon points="225,-213.3 216,-200.7 207,-213.3 " style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <polygon points="657,-213.3 648,-200.7 639,-213.3 " style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 0.0,-288.0 L 324,-288 L 648,-288" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 540.0,-180.0 L 540,-153 L 540,-126" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 540.0,-126.0 L 450,-126 L 360,-126" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 360.0,-126.0 L 360,-108 L 360,-90" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 360.0,-90.0 L 302.31,-90 L 244.62,-90" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 324.0,-180.0 L 324,-111.6 L 324,-43.2" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 324.0,-43.199999999999996 L 414,-43.2 L 504,-43.2" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 504.0,-43.199999999999996 L 504,-66.6 L 504,-90" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 504.0,-90.0 L 561.69,-90 L 619.38,-90" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 0.0,-0.0 L 324,-0 L 648,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 0.0,-0.0 L 0,-126 L 0,-126 M 0,-162 L 0,-162 L 0,-288" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 3.6000000000000085,-135.0 L -3.6,-135" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 9.14811158963073e-15,-149.4 L 0,-156.6" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 3.60000000000001,-153.0 L -3.6,-153" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 216.0,-288.0 L 216,-279 L 225,-276 L 207,-270 L 225,-264 L 207,-258 L 225,-252 L 207,-246 L 216,-243 L 216,-234" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 216.0,-234.0 L 216,-213.3 M 225,-200.7 L 207,-200.7 M 216,-200.7 L 216,-180" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 229.5,-204.29999999999998 L 238.999,-198.872" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 243.514 -196.292 L 237.57 -196.372 L 240.428 -201.373 Z" style="stroke:#243247;fill:#243247;stroke-linecap:butt;stroke-linejoin:miter;" />
+  <path d="M 229.5,-212.4 L 238.999,-206.972" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 243.514 -204.392 L 237.57 -204.472 L 240.428 -209.473 Z" style="stroke:#243247;fill:#243247;stroke-linecap:butt;stroke-linejoin:miter;" />
+  <path d="M 216.0,-0.0 L 216,-70.2 L 231.12,-82.8 L 231.12,-97.2 L 216,-109.8 L 216,-180" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 231.12,-76.5 L 231.12,-103.5" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 231.12,-90.0 L 244.62,-90" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 216.0,-70.2 L 224.206,-77.038" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 229.584 -81.52 L 226.511 -74.273 L 221.901 -79.804 Z" style="stroke:#243247;fill:#243247;stroke-linecap:butt;stroke-linejoin:miter;" />
+  <path d="M 360.0,-288.0 L 360,-207 L 369,-204 L 351,-198 L 369,-192 L 351,-186 L 369,-180 L 351,-174 L 360,-171 L 360,-90" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 648.0,-180.0 L 597.24,-180 M 597.24,-171 L 597.24,-189 M 590.76,-171 L 590.76,-189 M 590.76,-180 L 540,-180" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 648.0,-288.0 L 648,-279 L 657,-276 L 639,-270 L 657,-264 L 639,-258 L 657,-252 L 639,-246 L 648,-243 L 648,-234" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 648.0,-234.0 L 648,-213.3 M 657,-200.7 L 639,-200.7 M 648,-200.7 L 648,-180" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 661.5,-204.29999999999998 L 670.999,-198.872" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 675.514 -196.292 L 669.57 -196.372 L 672.428 -201.373 Z" style="stroke:#243247;fill:#243247;stroke-linecap:butt;stroke-linejoin:miter;" />
+  <path d="M 661.5,-212.4 L 670.999,-206.972" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 675.514 -204.392 L 669.57 -204.472 L 672.428 -209.473 Z" style="stroke:#243247;fill:#243247;stroke-linecap:butt;stroke-linejoin:miter;" />
+  <path d="M 648.0,-0.0 L 648,-70.2 L 632.88,-82.8 L 632.88,-97.2 L 648,-109.8 L 648,-180" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 632.8800000000001,-76.5 L 632.88,-103.5" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 632.8800000000001,-90.0 L 619.38,-90" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 648.0,-70.2 L 639.794,-77.038" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 634.416 -81.52 L 642.099 -79.804 L 637.489 -74.273 Z" style="stroke:#243247;fill:#243247;stroke-linecap:butt;stroke-linejoin:miter;" />
+  <path d="M 504.0,-288.0 L 504,-207 L 513,-204 L 495,-198 L 513,-192 L 495,-186 L 513,-180 L 495,-174 L 504,-171 L 504,-90" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 216.0,-180.0 L 266.76,-180 M 266.76,-189 L 266.76,-171 M 273.24,-189 L 273.24,-171 M 273.24,-180 L 324,-180" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 648.0,-0.0 L 648,14.4 L 639,14.4 L 657,14.4 M 641.7,18.72 L 654.3,18.72 M 646.2,23.04 L 649.8,23.04" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <text x="435.59999999999997" y="-328.79999999999995" dominant-baseline="ideographic" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="435.59999999999997" dy="12.0">+5 V</tspan>
+  </text>
+  <text x="295.2" y="-91.2" dominant-baseline="ideographic" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="295.2" dy="12.0">base1</tspan>
+  </text>
+  <text x="576.0" y="-91.2" dominant-baseline="ideographic" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="576.0" dy="12.0">base2</tspan>
+  </text>
+  <text x="32.4" y="-157.6" dominant-baseline="central" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="32.4" dy="10.0">VCC  5 V</tspan>
+  </text>
+  <text x="194.39999999999998" y="-278.09999999999997" dominant-baseline="central" fill="#57667a" font-size="9.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="194.39999999999998" dy="9.0">RLED1</tspan>
+    <tspan x="194.39999999999998" dy="9.0">330 Ω</tspan>
+  </text>
+  <text x="194.39999999999998" y="-219.6" dominant-baseline="central" fill="#57667a" font-size="9.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="194.39999999999998" dy="9.0">DLED1</tspan>
+  </text>
+  <text x="190.79999999999998" y="-103.60000000000001" dominant-baseline="central" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="190.79999999999998" dy="10.0">Q1  2N3904</tspan>
+  </text>
+  <text x="342.0" y="-261.9" dominant-baseline="central" fill="#57667a" font-size="9.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="342.0" dy="9.0">RB1</tspan>
+    <tspan x="342.0" dy="9.0">22 kΩ</tspan>
+  </text>
+  <text x="273.59999999999997" y="-225.89999999999998" dominant-baseline="central" fill="#57667a" font-size="9.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="273.59999999999997" dy="9.0">C2  22 µF</tspan>
+    <tspan x="273.59999999999997" dy="9.0">Q1 → Q2</tspan>
+  </text>
+  <text x="676.8000000000001" y="-278.09999999999997" dominant-baseline="central" fill="#57667a" font-size="9.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="676.8000000000001" dy="9.0">RLED2</tspan>
+    <tspan x="676.8000000000001" dy="9.0">330 Ω</tspan>
+  </text>
+  <text x="676.8000000000001" y="-219.6" dominant-baseline="central" fill="#57667a" font-size="9.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="676.8000000000001" dy="9.0">DLED2</tspan>
+  </text>
+  <text x="680.4000000000001" y="-103.60000000000001" dominant-baseline="central" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="680.4000000000001" dy="10.0">Q2  2N3904</tspan>
+  </text>
+  <text x="529.1999999999999" y="-261.9" dominant-baseline="central" fill="#57667a" font-size="9.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="529.1999999999999" dy="9.0">RB2</tspan>
+    <tspan x="529.1999999999999" dy="9.0">22 kΩ</tspan>
+  </text>
+  <text x="597.6" y="-225.89999999999998" dominant-baseline="central" fill="#57667a" font-size="9.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="597.6" dy="9.0">C1  22 µF</tspan>
+    <tspan x="597.6" dy="9.0">Q2 → Q1</tspan>
+  </text>
+  <text x="3.6" y="-392.59999999999997" dominant-baseline="central" fill="#172235" font-size="20.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="3.6" dy="20.0">Two-transistor astable LED flasher</tspan>
+  </text>
+  <text x="3.6" y="-359.4" dominant-baseline="central" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="3.6" dy="12.0">A free-running, cross-coupled transistor beacon</tspan>
+  </text>
+  <circle cx="216" cy="-180" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.2;stroke-dasharray:-;" />
+  <circle cx="648" cy="-180" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.2;stroke-dasharray:-;" />
+  <circle cx="360" cy="-90" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.2;stroke-dasharray:-;" />
+  <circle cx="504" cy="-90" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.2;stroke-dasharray:-;" />
+</svg>

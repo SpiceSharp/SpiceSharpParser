@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" xml:lang="en" height="334.8pt" width="490.112pt" viewBox="-57.59199999999999 -273.0 490.112 334.8" style="background-color:#ffffff;" role="img" aria-labelledby="title desc" data-generator="spicesharp-cookbook-schematic 0.1.0">
+  <title id="title">Diode peak detector and AM envelope follower</title>
+  <desc id="desc">A 20 kilohertz amplitude-modulated source drives a silicon diode that charges a 100 nanofarad capacitor. A 10 kilohm load releases the stored voltage to follow the 100 hertz envelope.</desc>
+  <circle cx="0" cy="-72" r="18" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;" />
+  <polygon points="155.7,-153 168.3,-144 155.7,-135 " style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 216.0,-144.0 L 270,-144 L 324,-144" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 0.0,-0.0 L 162,-0 L 324,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 0.0,-0.0 L 0,-54 L 0,-54 M 0,-90 L 0,-90 L 0,-144" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 3.600000000000004,-63.0 L -3.6,-63" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 4.739383112700256e-15,-77.39999999999999 L 0,-84.6" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 3.600000000000005,-81.0 L -3.6,-81" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 0.0,-144.0 L 36,-144 L 39,-153 L 45,-135 L 51,-153 L 57,-135 L 63,-153 L 69,-135 L 72,-144 L 108,-144" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 108.0,-144.0 L 155.7,-144 M 168.3,-153 L 168.3,-135 M 168.3,-144 L 216,-144" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 216.0,-144.0 L 216,-75.24 M 225,-75.24 L 207,-75.24 M 225,-68.76 L 207,-68.76 M 216,-68.76 L 216,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 324.0,-144.0 L 324,-90 L 333,-87 L 315,-81 L 333,-75 L 315,-69 L 333,-63 L 315,-57 L 324,-54 L 324,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 324.0,-0.0 L 324,14.4 L 315,14.4 L 333,14.4 M 317.7,18.72 L 330.3,18.72 M 322.2,23.04 L 325.8,23.04" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <text x="54.0" y="-169.6" dominant-baseline="ideographic" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="54.0" dy="13.0">RSOURCE</tspan>
+  </text>
+  <text x="54.0" y="-143.4" dominant-baseline="hanging" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="54.0" dy="12.0">100 Ω</tspan>
+  </text>
+  <text x="162.0" y="-169.6" dominant-baseline="ideographic" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="162.0" dy="13.0">D1</tspan>
+  </text>
+  <text x="162.0" y="-143.4" dominant-baseline="hanging" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="162.0" dy="12.0">DDET</tspan>
+  </text>
+  <text x="3.6" y="-195.60000000000002" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="3.6" dy="12.0">AM input</tspan>
+  </text>
+  <text x="273.59999999999997" y="-195.60000000000002" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="273.59999999999997" dy="12.0">detected envelope</tspan>
+  </text>
+  <text x="25.2" y="-98.39999999999999" dominant-baseline="ideographic" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="25.2" dy="10.0">VSIGNAL</tspan>
+    <tspan x="25.2" dy="10.0">1–3 V envelope</tspan>
+    <tspan x="25.2" dy="10.0">20 kHz carrier / 100 Hz message</tspan>
+  </text>
+  <text x="194.39999999999998" y="-78.39999999999999" dominant-baseline="hanging" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="194.39999999999998" dy="10.0">C1</tspan>
+    <tspan x="194.39999999999998" dy="10.0">100 nF</tspan>
+  </text>
+  <text x="352.79999999999995" y="-88.39999999999999" dominant-baseline="ideographic" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="352.79999999999995" dy="10.0">RLOAD</tspan>
+    <tspan x="352.79999999999995" dy="10.0">10 kΩ</tspan>
+  </text>
+  <text x="273.59999999999997" y="33.2" dominant-baseline="central" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="273.59999999999997" dy="10.0">τ = RLOAD × C1 = 1 ms</tspan>
+  </text>
+  <text x="3.6" y="-259.4" dominant-baseline="ideographic" fill="#172235" font-size="20.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="3.6" dy="20.0">Diode peak detector and AM envelope follower</tspan>
+  </text>
+  <text x="3.6" y="-226.20000000000002" dominant-baseline="ideographic" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="3.6" dy="12.0">One-diode detection with an RC attack, release, and ripple tradeoff</tspan>
+  </text>
+  <circle cx="216" cy="-144" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.2;stroke-dasharray:-;" />
+</svg>

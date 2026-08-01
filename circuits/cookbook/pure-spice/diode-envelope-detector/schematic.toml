@@ -1,0 +1,91 @@
+version = 1
+
+[schematic]
+netlist = "diode-envelope-detector.cir"
+output = "schematic.svg"
+title = "Diode peak detector and AM envelope follower"
+description = "A 20 kilohertz amplitude-modulated source drives a silicon diode that charges a 100 nanofarad capacitor. A 10 kilohm load releases the stored voltage to follow the 100 hertz envelope."
+subtitle = "One-diode detection with an RC attack, release, and ripple tradeoff"
+
+[[elements]]
+id = "VSIGNAL"
+start = [0, 0]
+end = [0, 4]
+terminals = ["0", "input"]
+label = ""
+value = ""
+
+[[elements]]
+id = "RSOURCE"
+start = [0, 4]
+end = [3, 4]
+
+[[elements]]
+id = "D1"
+start = [3, 4]
+end = [6, 4]
+
+[[elements]]
+id = "C1"
+start = [6, 4]
+end = [6, 0]
+label = ""
+value = ""
+
+[[elements]]
+id = "RLOAD"
+start = [9, 4]
+end = [9, 0]
+label = ""
+value = ""
+
+[[wires]]
+node = "envelope"
+points = [[6, 4], [9, 4]]
+
+[[wires]]
+node = "0"
+points = [[0, 0], [9, 0]]
+
+[[junctions]]
+node = "envelope"
+at = [6, 4]
+
+[[node_labels]]
+node = "input"
+at = [0, 5.2]
+text = "AM input"
+
+[[node_labels]]
+node = "envelope"
+at = [7.5, 5.2]
+text = "detected envelope"
+
+[[symbols]]
+kind = "ground"
+node = "0"
+at = [9, 0]
+
+[[texts]]
+text = "VSIGNAL\n1–3 V envelope\n20 kHz carrier / 100 Hz message"
+at = [0.6, 2]
+location = "right"
+size = 10
+
+[[texts]]
+text = "C1\n100 nF"
+at = [5.3, 2]
+location = "left"
+size = 10
+
+[[texts]]
+text = "RLOAD\n10 kΩ"
+at = [9.7, 2]
+location = "right"
+size = 10
+
+[[texts]]
+text = "τ = RLOAD × C1 = 1 ms"
+at = [7.5, -1.1]
+location = "center"
+size = 10

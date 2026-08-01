@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" xml:lang="en" height="439.2400000000001pt" width="855.1999999999999pt" viewBox="-31.59999999999999 -402.6000000000001 855.1999999999999 439.2400000000001" style="background-color:#ffffff;" role="img" aria-labelledby="title desc" data-generator="spicesharp-cookbook-schematic 0.1.0">
+  <title id="title">Loaded voltage divider and emitter-follower buffer</title>
+  <desc id="desc">Two identical 100 kilohm and 33 kilohm dividers drive 10 kilohm loads. The direct branch is compared with a 2N3904 emitter-follower branch under matching 100 microampere load steps.</desc>
+  <circle cx="0" cy="-126" r="18" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;" />
+  <circle cx="360" cy="-81" r="18" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;" />
+  <circle cx="792" cy="-36" r="18" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;" />
+  <path d="M 0.0,-252.0 L 288,-252 L 576,-252" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 144.0,-162.0 L 252,-162 L 360,-162" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 468.0,-162.0 L 507.69,-162 L 547.38,-162" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 576.0,-72.0 L 684,-72 L 792,-72" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 0.0,-0.0 L 396,-0 L 792,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 0.0,-0.0 L 0,-108 L 0,-108 M 0,-144 L 0,-144 L 0,-252" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 3.600000000000007,-117.0 L -3.6,-117" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 8.045929470398112e-15,-131.4 L 0,-138.6" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 3.6000000000000085,-135.0 L -3.6,-135" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 144.0,-252.0 L 144,-225 L 153,-222 L 135,-216 L 153,-210 L 135,-204 L 153,-198 L 135,-192 L 144,-189 L 144,-162" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 144.0,-162.0 L 144,-99 L 153,-96 L 135,-90 L 153,-84 L 135,-78 L 153,-72 L 135,-66 L 144,-63 L 144,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 252.0,-162.0 L 252,-99 L 261,-96 L 243,-90 L 261,-84 L 243,-78 L 261,-72 L 243,-66 L 252,-63 L 252,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 360.0,-162.0 L 360,-99 L 360,-99 M 360,-63 L 360,-63 L 360,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 360.0,-90.0 L 360,-81" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 360 -74 L 357.3 -81 L 362.7 -81 Z" style="stroke:#243247;fill:#243247;stroke-linecap:butt;stroke-linejoin:miter;" />
+  <path d="M 468.0,-252.0 L 468,-225 L 477,-222 L 459,-216 L 477,-210 L 459,-204 L 477,-198 L 459,-192 L 468,-189 L 468,-162" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 468.0,-162.0 L 468,-99 L 477,-96 L 459,-90 L 477,-84 L 459,-78 L 477,-72 L 459,-66 L 468,-63 L 468,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 576.0,-72.0 L 576,-142.2 L 560.88,-154.8 L 560.88,-169.2 L 576,-181.8 L 576,-252" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 560.88,-148.5 L 560.88,-175.5" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 560.88,-162.0 L 547.38,-162" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 576.0,-142.20000000000002 L 567.794,-149.038" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 562.416 -153.52 L 570.099 -151.804 L 565.489 -146.273 Z" style="stroke:#243247;fill:#243247;stroke-linecap:butt;stroke-linejoin:miter;" />
+  <path d="M 684.0,-72.0 L 684,-54 L 693,-51 L 675,-45 L 693,-39 L 675,-33 L 693,-27 L 675,-21 L 684,-18 L 684,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 792.0,-72.0 L 792,-54 L 792,-54 M 792,-18 L 792,-18 L 792,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 792.0,-45.0 L 792,-36" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 792 -29 L 789.3 -36 L 794.7 -36 Z" style="stroke:#243247;fill:#243247;stroke-linecap:butt;stroke-linejoin:miter;" />
+  <path d="M 792.0,-0.0 L 792,14.4 L 783,14.4 L 801,14.4 M 785.7,18.72 L 798.3,18.72 M 790.2,23.04 L 793.8,23.04" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <text x="291.59999999999997" y="-285.6" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="291.59999999999997" dy="12.0">+12 V battery</tspan>
+  </text>
+  <text x="255.6" y="-195.60000000000002" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="255.6" dy="12.0">direct output</tspan>
+  </text>
+  <text x="471.59999999999997" y="-195.60000000000002" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="471.59999999999997" dy="12.0">base</tspan>
+  </text>
+  <text x="687.6" y="-105.60000000000001" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="687.6" dy="12.0">buffered output</tspan>
+  </text>
+  <text x="255.6" y="-324.20000000000005" dominant-baseline="central" fill="#57667a" font-size="11.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="255.6" dy="11.0">DIRECTLY LOADED</tspan>
+  </text>
+  <text x="633.6" y="-324.20000000000005" dominant-baseline="central" fill="#57667a" font-size="11.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="633.6" dy="11.0">EMITTER-FOLLOWER BUFFERED</tspan>
+  </text>
+  <text x="28.799999999999997" y="-132.39999999999998" dominant-baseline="ideographic" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="28.799999999999997" dy="10.0">VBAT  12 V</tspan>
+  </text>
+  <text x="122.39999999999999" y="-214.20000000000002" dominant-baseline="hanging" fill="#57667a" font-size="9.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="122.39999999999999" dy="9.0">RTOP_DIRECT</tspan>
+    <tspan x="122.39999999999999" dy="9.0">100 kΩ</tspan>
+  </text>
+  <text x="122.39999999999999" y="-84.60000000000001" dominant-baseline="hanging" fill="#57667a" font-size="9.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="122.39999999999999" dy="9.0">RBOT_DIRECT</tspan>
+    <tspan x="122.39999999999999" dy="9.0">33 kΩ</tspan>
+  </text>
+  <text x="280.8" y="-93.60000000000001" dominant-baseline="ideographic" fill="#57667a" font-size="9.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="280.8" dy="9.0">RLOAD_DIRECT</tspan>
+    <tspan x="280.8" dy="9.0">10 kΩ</tspan>
+  </text>
+  <text x="388.79999999999995" y="-129.60000000000002" dominant-baseline="ideographic" fill="#57667a" font-size="9.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="388.79999999999995" dy="9.0">ISTEP_DIRECT</tspan>
+    <tspan x="388.79999999999995" dy="9.0">100 µA</tspan>
+  </text>
+  <text x="446.40000000000003" y="-214.20000000000002" dominant-baseline="hanging" fill="#57667a" font-size="9.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="446.40000000000003" dy="9.0">RTOP_BUFFER</tspan>
+    <tspan x="446.40000000000003" dy="9.0">100 kΩ</tspan>
+  </text>
+  <text x="446.40000000000003" y="-84.60000000000001" dominant-baseline="hanging" fill="#57667a" font-size="9.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="446.40000000000003" dy="9.0">RBOT_BUFFER</tspan>
+    <tspan x="446.40000000000003" dy="9.0">33 kΩ</tspan>
+  </text>
+  <text x="612.0" y="-172.0" dominant-baseline="ideographic" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="612.0" dy="10.0">Q1  2N3904</tspan>
+  </text>
+  <text x="712.8000000000001" y="-46.8" dominant-baseline="ideographic" fill="#57667a" font-size="9.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="712.8000000000001" dy="9.0">RLOAD_BUFFER</tspan>
+    <tspan x="712.8000000000001" dy="9.0">10 kΩ</tspan>
+  </text>
+  <text x="770.4000000000001" y="-120.60000000000001" dominant-baseline="hanging" fill="#57667a" font-size="9.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="770.4000000000001" dy="9.0">ISTEP_BUFFER</tspan>
+    <tspan x="770.4000000000001" dy="9.0">100 µA</tspan>
+  </text>
+  <text x="3.6" y="-389.00000000000006" dominant-baseline="ideographic" fill="#172235" font-size="20.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="3.6" dy="20.0">Loaded voltage divider and emitter-follower buffer</tspan>
+  </text>
+  <text x="3.6" y="-355.8" dominant-baseline="ideographic" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="3.6" dy="12.0">Load error and output resistance, with and without a transistor buffer</tspan>
+  </text>
+  <circle cx="144" cy="-162" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.2;stroke-dasharray:-;" />
+  <circle cx="252" cy="-162" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.2;stroke-dasharray:-;" />
+  <circle cx="468" cy="-162" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.2;stroke-dasharray:-;" />
+  <circle cx="684" cy="-72" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.2;stroke-dasharray:-;" />
+</svg>
