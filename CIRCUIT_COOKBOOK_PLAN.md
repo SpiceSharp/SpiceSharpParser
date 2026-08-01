@@ -20,8 +20,6 @@ direction:
 - `circuits/a-devices` demonstrates a strong example format: runnable
   netlists, `.SAVE`, `.PLOT`, `.MEAS`, explanatory guides, and automated
   verification.
-- `circuits/timer555` compares calculated behavior with simulated results and
-  documents the model boundary.
 - The main documentation is comprehensive about syntax, analyses, and
   components, but it is not yet organized around practical things users can
   build.
@@ -48,17 +46,17 @@ complete applications rather than isolated component behavior.
 
 ## Candidate Circuit Roadmap
 
-| Circuit | Foundation | What it demonstrates |
-| --- | --- | --- |
-| Rectifier, reservoir, and simple regulator | Pure SPICE | Diodes, ripple, load regulation, startup, and peak current |
-| BJT audio preamplifier | Pure SPICE | Bias point, AC gain, bandwidth, clipping, and Fourier distortion |
-| PWM-to-analog converter | Pure SPICE | Switching, settling time, average output, and ripple |
-| Transmission-line termination experiment | Pure SPICE | Reflections, propagation delay, and source/load matching |
-| Ideal-diode redundant power input | CustomComponents | Supply OR-ing, failover, and reverse-current blocking |
-| 555 monostable and PWM controller | Packaged subcircuit | Practical applications beyond the existing astable validation |
-| Buck stage with a saturating inductor | Nonlinear `Flux=` inductor | Current ripple and the consequences of magnetic saturation |
-| Sampled sensor alarm or data recorder | Sample-and-hold plus digital library | A complete analog-to-digital signal chain |
-| Simple phase-locked loop | `PHASEDET`, loop filter, and `MODULATOR` | A mixed-signal system assembled from existing components |
+| Circuit | Foundation | Status | What it demonstrates |
+| --- | --- | --- | --- |
+| Rectifier, reservoir, and simple regulator | Pure SPICE | Complete | Diodes, ripple, load regulation, startup, and peak current |
+| BJT audio preamplifier | Pure SPICE | Planned | Bias point, AC gain, bandwidth, clipping, and Fourier distortion |
+| PWM-to-analog converter | Pure SPICE | Complete | Switching, settling time, average output, and ripple |
+| Transmission-line termination experiment | Pure SPICE | Planned | Reflections, propagation delay, and source/load matching |
+| Ideal-diode redundant power input | CustomComponents | Complete | Supply OR-ing, failover, and reverse-current blocking |
+| 555 monostable and PWM controller | Packaged subcircuit | Planned | Practical applications beyond the existing astable validation |
+| Buck stage with a saturating inductor | Nonlinear `Flux=` inductor | Planned | Current ripple and the consequences of magnetic saturation |
+| Sampled sensor alarm or data recorder | Sample-and-hold plus digital library | Planned | A complete analog-to-digital signal chain |
+| Simple phase-locked loop | `PHASEDET`, loop filter, and `MODULATOR` | Complete | A mixed-signal system assembled from existing components |
 
 ## Recommended Starting Sequence
 
@@ -77,6 +75,11 @@ complete applications rather than isolated component behavior.
 This sequence covers nonlinear analog behavior, switching behavior, and a
 composed custom-component application without requiring new library features.
 
+The three-circuit starting sequence is complete. The ideal-diode redundant
+power input is the first follow-on application. The next recommended addition
+is the BJT audio preamplifier, which expands the pure-SPICE track with operating
+point and AC analysis instead of adding another transient-only example.
+
 ## Proposed Repository Structure
 
 Add a user-oriented catalog while initially leaving existing historical and
@@ -92,10 +95,20 @@ circuits/
         rectifier-power-supply.cir
         schematic.svg
         response.svg
+      pwm-dac/
+        README.md
+        pwm-dac.cir
+        schematic.svg
+        response.svg
     custom-components/
       ideal-diode-power-or/
         README.md
         ideal-diode-power-or.cir
+        schematic.svg
+        response.svg
+      simple-pll/
+        README.md
+        simple-pll.cir
         schematic.svg
         response.svg
 ```

@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Verified ideal-diode power OR failover response</title>
+  <desc id="desc">The output is 11.842 volts on primary power, transfers to 11.302 volts and 0.942 amperes from the backup between 4 and 8 milliseconds, then returns to primary power.</desc>
+  <style>
+    .axis { fill: none; stroke: #46566c; stroke-width: 2; }
+    .grid { fill: none; stroke: #dbe3ed; stroke-width: 1; stroke-dasharray: 5 5; }
+    .event { fill: none; stroke: #8a97a8; stroke-width: 2; stroke-dasharray: 7 5; }
+    .output { fill: none; stroke: #c23b52; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+    .primary { fill: none; stroke: #1976d2; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+    .backup { fill: none; stroke: #27845a; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+    .panel { fill: #fbfcfe; stroke: #cbd6e3; stroke-width: 1.5; }
+    .label { fill: #172235; font: 15px 'Segoe UI', sans-serif; }
+    .small { fill: #57667a; font: 13px 'Segoe UI', sans-serif; }
+    .tiny { fill: #64748b; font: 12px 'Segoe UI', sans-serif; }
+    .heading { fill: #172235; font: 600 22px 'Segoe UI', sans-serif; }
+    .value { fill: #172235; font: 600 14px 'Segoe UI', sans-serif; }
+  </style>
+
+  <rect width="960" height="540" fill="#ffffff"/>
+  <text x="36" y="38" class="heading">Redundant power input: automatic failover and recovery</text>
+  <text x="36" y="62" class="small">Labels are measured values; connecting curves summarize the verified transient response</text>
+
+  <!-- Output-voltage panel. -->
+  <rect x="78" y="88" width="824" height="205" rx="7" class="panel"/>
+  <text x="96" y="114" class="label">Output voltage</text>
+  <line x1="100" y1="132" x2="880" y2="132" class="grid"/>
+  <line x1="100" y1="222" x2="880" y2="222" class="grid"/>
+  <line x1="100" y1="272" x2="880" y2="272" class="grid"/>
+  <line x1="100" y1="120" x2="100" y2="272" class="axis"/>
+  <line x1="100" y1="272" x2="880" y2="272" class="axis"/>
+  <text x="50" y="137" class="small">12.0 V</text>
+  <text x="50" y="227" class="small">11.3 V</text>
+  <text x="50" y="277" class="small">11.0 V</text>
+
+  <line x1="360" y1="88" x2="360" y2="495" class="event"/>
+  <line x1="620" y1="88" x2="620" y2="495" class="event"/>
+  <text x="315" y="84" class="small">primary fails</text>
+  <text x="575" y="84" class="small">primary returns</text>
+
+  <path d="M100 151 H354 C360 151 364 171 369 198 C374 216 380 222 392 222 H614 C620 222 624 201 629 174 C634 157 640 151 652 151 H880" class="output"/>
+  <circle cx="250" cy="151" r="5" fill="#c23b52"/>
+  <circle cx="490" cy="222" r="5" fill="#c23b52"/>
+  <circle cx="750" cy="151" r="5" fill="#c23b52"/>
+  <text x="177" y="143" class="value">11.84198 V</text>
+  <text x="426" y="214" class="value">11.30164 V minimum</text>
+  <text x="680" y="143" class="value">11.84198 V</text>
+  <text x="142" y="253" class="tiny">primary-powered</text>
+  <text x="454" y="253" class="tiny">backup-powered</text>
+  <text x="708" y="253" class="tiny">primary-powered</text>
+
+  <!-- Diode-current panel. -->
+  <rect x="78" y="315" width="824" height="190" rx="7" class="panel"/>
+  <text x="96" y="341" class="label">Source-path current</text>
+  <line x1="100" y1="365" x2="880" y2="365" class="grid"/>
+  <line x1="100" y1="475" x2="880" y2="475" class="grid"/>
+  <line x1="100" y1="352" x2="100" y2="475" class="axis"/>
+  <line x1="100" y1="475" x2="880" y2="475" class="axis"/>
+  <text x="55" y="370" class="small">1.0 A</text>
+  <text x="70" y="480" class="small">0 A</text>
+
+  <path d="M100 367 H354 C359 367 362 415 368 475 H614 C619 475 622 425 628 367 H880" class="primary"/>
+  <path d="M100 475 H354 C359 475 362 420 368 373 H614 C619 373 622 426 628 475 H880" class="backup"/>
+  <text x="151" y="358" class="value">DPRIMARY ≈ 0.987 A</text>
+  <text x="415" y="364" class="value">DBACKUP = 0.94180 A</text>
+  <text x="410" y="493" class="tiny">DPRIMARY reverse leakage = -11.302 nA</text>
+  <text x="670" y="358" class="value">DPRIMARY ≈ 0.987 A</text>
+  <text x="134" y="493" class="tiny">backup standby = -0.342 nA</text>
+
+  <!-- Shared time axis and legend. -->
+  <text x="96" y="522" class="small">0 ms</text>
+  <text x="346" y="522" class="small">4 ms</text>
+  <text x="606" y="522" class="small">8 ms</text>
+  <text x="860" y="522" class="small">12 ms</text>
+  <line x1="100" y1="510" x2="880" y2="510" class="axis"/>
+  <text x="464" y="532" class="small">simulation time</text>
+
+</svg>

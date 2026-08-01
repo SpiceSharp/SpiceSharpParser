@@ -45,6 +45,19 @@ namespace SpiceSharpParser.Tests.CustomComponents
 
                 yield return CookbookCase(
                     "custom-components",
+                    "ideal-diode-power-or",
+                    "ideal-diode-power-or.cir",
+                    true,
+                    Expected("primary_output_avg", 11.75, 11.9),
+                    Expected("backup_output_avg", 11.2, 11.4),
+                    Expected("failover_min", 11.2, 11.4),
+                    Expected("recovered_output_avg", 11.75, 11.9),
+                    Expected("backup_standby_current", -10e-9, 10e-9),
+                    Expected("backup_active_current", 0.9, 0.98),
+                    Expected("primary_reverse_current", -100e-9, 0.0));
+
+                yield return CookbookCase(
+                    "custom-components",
                     "simple-pll",
                     "simple-pll.cir",
                     true,

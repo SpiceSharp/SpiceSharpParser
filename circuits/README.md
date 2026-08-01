@@ -11,6 +11,7 @@ documented design calculations, and automated regression coverage.
 | --- | --- | --- | --- | --- |
 | [Rectifier power supply](cookbook/pure-spice/rectifier-power-supply/README.md) | Pure SPICE | TRAN | Intermediate | Rectification, reservoir ripple, Zener regulation, and a load step |
 | [PWM digital-to-analog converter](cookbook/pure-spice/pwm-dac/README.md) | Pure SPICE | TRAN | Beginner | Duty-cycle averaging, ripple attenuation, and settling |
+| [Ideal-diode redundant power input](cookbook/custom-components/ideal-diode-power-or/README.md) | CustomComponents | TRAN | Intermediate | Supply OR-ing, automatic failover, handback, and reverse-current blocking |
 | [Simple phase-locked loop](cookbook/custom-components/simple-pll/README.md) | CustomComponents | TRAN | Advanced | Phase detection, loop filtering, and voltage-controlled oscillation |
 
 ## Other Runnable Examples
@@ -19,7 +20,6 @@ The following directories remain valuable device demonstrations and
 implementation-validation fixtures:
 
 - [LTspice A-device examples](a-devices/README.md)
-- [Functional 555 astable](timer555/documentation.md)
 - [Digital routing milestone](digital-milestone-a/documentation.md)
 - [Digital clocked-state milestone](digital-milestone-b/documentation.md)
 

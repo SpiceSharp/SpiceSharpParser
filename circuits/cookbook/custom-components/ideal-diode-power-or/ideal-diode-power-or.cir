@@ -1,0 +1,33 @@
+Redundant power input with ideal-diode OR-ing and automatic failover
+
+* The 12 V primary fails at 4 ms and recovers at 8 ms.
+VPRIMARY primary_raw 0 PWL(0 12 4m 12 4.01m 0 8m 0 8.01m 12 12m 12)
+RPRIMARY primary_raw primary_input 100m
+
+* The 11.5 V backup remains available throughout the experiment.
+VBACKUP backup_raw 0 11.5
+RBACKUP backup_raw backup_input 150m
+
+* Low-loss OR-ing elements block current into the inactive supply.
+DPRIMARY primary_input output IDEAL_OR
+DBACKUP backup_input output IDEAL_OR
+.MODEL IDEAL_OR D(Ron=50m Roff=1G Vfwd=10m)
+
+* The output capacitor holds the bus while conduction transfers between inputs.
+COUT output 0 100u
+RLOAD output 0 12
+
+.OPTIONS method=gear
+.TRAN 5u 12m 0 1u
+
+.MEAS TRAN primary_output_avg AVG V(output) FROM=2m TO=3.5m
+.MEAS TRAN backup_output_avg AVG V(output) FROM=6m TO=7.5m
+.MEAS TRAN failover_min MIN V(output) FROM=3.9m TO=4.5m
+.MEAS TRAN recovered_output_avg AVG V(output) FROM=9m TO=10.5m
+.MEAS TRAN backup_standby_current AVG I(DBACKUP) FROM=2m TO=3.5m
+.MEAS TRAN backup_active_current AVG I(DBACKUP) FROM=6m TO=7.5m
+.MEAS TRAN primary_reverse_current AVG I(DPRIMARY) FROM=6m TO=7.5m
+
+.SAVE V(primary_input) V(backup_input) V(output) I(DPRIMARY) I(DBACKUP)
+.PLOT TRAN V(primary_input) V(backup_input) V(output) I(DPRIMARY) I(DBACKUP)
+.END
