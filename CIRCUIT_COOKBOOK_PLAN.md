@@ -74,17 +74,65 @@ complete applications rather than isolated component behavior.
 
 ## Candidate Circuit Roadmap
 
-| Circuit | Foundation | Status | What it demonstrates |
-| --- | --- | --- | --- |
-| Rectifier, reservoir, and simple regulator | Pure SPICE | Complete | Diodes, ripple, load regulation, startup, and peak current |
-| BJT audio preamplifier | Pure SPICE | Next | Bias point, AC gain, bandwidth, clipping, and Fourier distortion |
-| PWM-to-analog converter | Pure SPICE | Complete | Switching, settling time, average output, and ripple |
-| Transmission-line termination experiment | Pure SPICE | Planned | Reflections, propagation delay, and source/load matching |
-| Ideal-diode redundant power input | CustomComponents | Complete | Supply OR-ing, failover, and reverse-current blocking |
-| 555 monostable and PWM controller | Packaged subcircuit | Planned | Practical applications beyond the existing astable validation |
-| Buck stage with a saturating inductor | Nonlinear `Flux=` inductor | Planned | Current ripple and the consequences of magnetic saturation |
-| Sampled sensor alarm or data recorder | Sample-and-hold plus digital library | Planned | A complete analog-to-digital signal chain |
-| Simple phase-locked loop | `PHASEDET`, loop filter, and `MODULATOR` | Complete | A mixed-signal system assembled from existing components |
+Maintain a balanced cookbook with simple, medium, and difficult circuits.
+Difficulty describes the design and explanation burden, not usefulness: every
+entry must solve a recognizable practical problem and expose objective
+measurements.
+
+### Simple circuits
+
+Use one main functional stage, a compact netlist, and a short measurement
+story. These recipes should be approachable without prior simulator expertise.
+
+| Circuit | Track | Status | Practical use | What it measures and teaches |
+| --- | --- | --- | --- | --- |
+| PWM-to-analog converter | Pure SPICE | Complete | Recover an analog control voltage from a microcontroller PWM output | Duty-cycle average, ripple, settling time, and cascaded filtering |
+| RC sensor-noise filter and input protector | Pure SPICE | Planned | Condition a noisy low-voltage sensor before an ADC input | Cutoff frequency, step response, attenuation, and clamp current |
+| BJT relay or solenoid driver with flyback diode | Pure SPICE | Planned | Drive an inductive load safely from a logic-level signal | Base drive, coil current, saturation voltage, turn-off transient, and flyback decay |
+| RC switch debouncer with Schmitt-trigger buffer | CustomComponents | Planned | Convert a bouncing mechanical switch into a clean digital edge | Threshold hysteresis, rejected pulse width, propagation delay, and output edge count |
+| Loaded voltage divider and emitter-follower buffer | Pure SPICE | Planned | Scale a battery or sensor voltage without heavily loading its source | Divider error, input impedance, output impedance, bias error, and headroom |
+| Diode peak detector and audio envelope follower | Pure SPICE | Planned | Recover the peak or amplitude envelope of an AC signal | Diode-drop error, attack time, release time, ripple, and load sensitivity |
+| Two-transistor astable LED beacon | Pure SPICE | Planned | Build a low-cost flasher without a timer IC | Startup, oscillation frequency, duty cycle, capacitor charging, and transistor switching |
+| Varistor-protected DC input | CustomComponents | Planned | Clamp a supply surge before it reaches a sensitive load | Clamp voltage, surge current, absorbed energy, leakage, and source impedance |
+
+### Medium circuits
+
+Combine several functional stages or more than one analysis. These recipes
+should introduce realistic design tradeoffs while remaining easy to modify.
+
+| Circuit | Track | Status | Practical use | What it measures and teaches |
+| --- | --- | --- | --- | --- |
+| Rectifier, reservoir, and Zener regulator | Pure SPICE | Complete | Produce filtered low-voltage DC from an isolated AC secondary | Startup, diode conduction, reservoir ripple, load regulation, and load steps |
+| Ideal-diode redundant power input | CustomComponents | Complete | OR two supplies with automatic failover and reverse-current blocking | Source priority, failover dip, handback, standby current, and reverse current |
+| BJT audio preamplifier | Pure SPICE | Next | Raise a small audio signal to a useful level for a following stage | Bias point, AC gain, bandwidth, clipping, loading, and Fourier distortion |
+| 555 monostable pulse stretcher and PWM controller | Packaged subcircuit | Planned | Create a fixed-duration event pulse and an adjustable LED or fan drive | Pulse width, duty range, frequency, reset behavior, and load response |
+| Active anti-alias filter and ADC buffer | Pure SPICE | Planned | Limit sensor bandwidth and drive a sampling input cleanly | Passband gain, cutoff, attenuation, phase shift, settling, and output loading |
+| Class-AB headphone or line-output buffer | Pure SPICE | Planned | Drive a low-impedance audio load from a small-signal source | Quiescent current, crossover distortion, voltage swing, output power, and efficiency |
+| Window-comparator battery monitor with latched alarm | CustomComponents | Planned | Detect under-voltage and over-voltage conditions and retain a fault indication | Threshold accuracy, hysteresis, alarm latency, reset behavior, and chatter rejection |
+| Constant-current LED string driver | Pure SPICE | Planned | Hold LED current steady as supply and load voltage change | Current regulation, compliance voltage, transistor dissipation, line response, and load response |
+
+### Difficult circuits
+
+Use feedback, mixed-signal state, nonlinear energy storage, or distributed
+effects. These recipes should remain practical, but may require longer
+simulations and a deeper stability or timing explanation.
+
+| Circuit | Track | Status | Practical use | What it measures and teaches |
+| --- | --- | --- | --- | --- |
+| Simple phase-locked loop | CustomComponents | Complete | Synchronize a controllable oscillator to a reference clock | Acquisition, phase/frequency correction, control ripple, period error, and lock behavior |
+| Buck converter with saturating inductor | CustomComponents | Planned | Step a DC rail down efficiently while exposing magnetic limits | Current ripple, output ripple, duty ratio, startup, saturation onset, and load response |
+| Transmission-line termination and cable driver | Pure SPICE | Planned | Preserve signal integrity over a delayed interconnect | Propagation delay, reflections, overshoot, settling, and source/load matching |
+| Sampled sensor alarm and data recorder | CustomComponents | Planned | Sample an analog sensor, retain its value, and trigger digital decisions | Aperture timing, held-value droop, thresholds, alarm latency, and mixed-signal sequencing |
+| Closed-loop PWM DC-motor speed controller | CustomComponents | Planned | Regulate motor speed through supply and mechanical load changes | Startup current, back EMF, speed error, loop response, duty limits, and load rejection |
+| Class-D audio amplifier with LC output filter | CustomComponents | Planned | Drive a speaker efficiently from a PWM switching stage | Modulation, dead time, output ripple, harmonic distortion, filter response, and efficiency |
+| Linear bench supply with current limiting and foldback | Pure SPICE | Planned | Provide a regulated DC output that survives overload and short-circuit conditions | Line regulation, load regulation, loop response, current limit, foldback, and device dissipation |
+| Digital frequency counter and tachometer | CustomComponents | Planned | Count input events over a fixed gate interval and retain a readable result | Gate timing, count accuracy, overflow, latch timing, reset sequencing, and low-frequency error |
+
+Keep the backlog balanced as recipes are completed. After the BJT
+preamplifier, prefer a simple circuit before starting another difficult one.
+This roadmap is a candidate pool, not a commitment to publish all 24 circuits.
+Apply the selection criteria before promotion and keep the published catalog
+small enough to maintain well.
 
 ## Completed Starting Sequence
 
