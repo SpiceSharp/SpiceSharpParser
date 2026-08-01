@@ -125,7 +125,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                             break;
 
                         case "seed":
-                            var seed = int.Parse(value);
+                            var seed = int.Parse(value, System.Globalization.CultureInfo.InvariantCulture);
                             context.SimulationConfiguration.Seed = seed;
                             context.EvaluationContext.Seed = seed;
                             break;

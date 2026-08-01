@@ -106,7 +106,12 @@ namespace SpiceSharpParser.Common.Evaluation
                 throw new ArgumentNullException(nameof(expressionName));
             }
 
-            return NamedExpressions[expressionName];
+            if (!NamedExpressions.TryGetValue(expressionName, out NamedExpression expression))
+            {
+                throw new SpiceSharpParserException($"Expression '{expressionName}' is not defined");
+            }
+
+            return expression;
         }
 
         public void AddOrUpdate(string parameterName, Expression parameterExpression)

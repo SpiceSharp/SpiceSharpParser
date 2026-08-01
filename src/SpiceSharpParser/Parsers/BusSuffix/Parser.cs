@@ -138,7 +138,7 @@ namespace SpiceSharpParser.Parsers.BusSuffix
         private int ParseNumber(Lexer lexer)
         {
             var numberString = ReadToken(lexer, TokenType.Digit);
-            return int.Parse(numberString);
+            return int.Parse(numberString, System.Globalization.CultureInfo.InvariantCulture);
         }
 
         private string ReadToken(Lexer lexer, TokenType type)

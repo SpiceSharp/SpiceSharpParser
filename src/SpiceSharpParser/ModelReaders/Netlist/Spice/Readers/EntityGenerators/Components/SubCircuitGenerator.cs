@@ -247,11 +247,15 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.EntityGenerators.C
         {
             var parameterParameters = 0;
             subCktParameters = new List<AssignmentParameter>();
-            while (true)
+            while (parameterParameters < parameters.Count)
             {
                 if (parameters[parameters.Count - parameterParameters - 1].Value.ToLower() == "params:")
                 {
                     parameterParameters++;
+                    if (parameterParameters >= parameters.Count)
+                    {
+                        break;
+                    }
                 }
 
                 if (!(parameters[parameters.Count - parameterParameters - 1] is AssignmentParameter a))

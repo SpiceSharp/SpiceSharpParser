@@ -86,14 +86,12 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Mappings
         /// </returns>
         public TElement GetValue(string key, bool caseSensitive)
         {
-            if (caseSensitive)
+            if (TryGetValue(key, caseSensitive, out TElement value))
             {
-                return Elements[key];
+                return value;
             }
 
-            return
-                Elements
-                    .First(e => e.Key.Equals(key, StringComparison.OrdinalIgnoreCase)).Value;
+            throw new KeyNotFoundException($"A mapping for key '{key}' was not found");
         }
 
         /// <summary>

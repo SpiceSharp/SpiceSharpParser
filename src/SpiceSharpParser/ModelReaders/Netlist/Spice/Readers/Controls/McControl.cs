@@ -1,4 +1,6 @@
-﻿using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
+﻿using System.Globalization;
+using SpiceSharpParser.Common.Validation;
+using SpiceSharpParser.ModelReaders.Netlist.Spice.Context;
 using SpiceSharpParser.Models.Netlist.Spice.Objects;
 
 namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
@@ -20,8 +22,17 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                 throw new System.ArgumentNullException(nameof(statement));
             }
 
+            if (statement.Parameters.Count < 4)
+            {
+                context.Result.ValidationResult.AddError(
+                    ValidationEntrySource.Reader,
+                    "Too few parameters for .MC",
+                    statement.LineInfo);
+                return;
+            }
+
             context.SimulationConfiguration.MonteCarloConfiguration.Enabled = true;
-            context.SimulationConfiguration.MonteCarloConfiguration.Runs = int.Parse(statement.Parameters.Get(0).Value);
+            context.SimulationConfiguration.MonteCarloConfiguration.Runs = int.Parse(statement.Parameters.Get(0).Value, CultureInfo.InvariantCulture);
             context.SimulationConfiguration.MonteCarloConfiguration.SimulationType = statement.Parameters.Get(1).Value.ToLower();
             context.SimulationConfiguration.MonteCarloConfiguration.OutputVariable = statement.Parameters[2];
             context.SimulationConfiguration.MonteCarloConfiguration.Function = statement.Parameters.Get(3).Value;
@@ -30,7 +41,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
             {
                 if (a.Name.ToLower() == "seed")
                 {
-                    int seed = int.Parse(a.Value);
+                    int seed = int.Parse(a.Value, CultureInfo.InvariantCulture);
                     context.SimulationConfiguration.MonteCarloConfiguration.Seed = seed;
                 }
             }

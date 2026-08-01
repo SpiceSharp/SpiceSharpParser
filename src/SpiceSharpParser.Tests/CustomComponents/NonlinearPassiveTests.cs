@@ -144,6 +144,54 @@ namespace SpiceSharpParser.Tests.CustomComponents
         }
 
         [Fact]
+        public void Tran_WhenChargeExpressionIsConstant_BehavesAsOpenCircuit()
+        {
+            var circuit = new Circuit(
+                new VoltageSource("V1", "in", "0", 10.0),
+                new Resistor("R1", "in", "out", 10e3),
+                new Resistor("R2", "out", "0", 10e3),
+                new NonlinearCapacitor("C1", "out", "0", "1e-9"));
+
+            double actual = RunTransient(circuit, "out", 1e-8, 1e-6);
+
+            AssertClose(5.0, actual, 1e-6);
+        }
+
+        [Fact]
+        public void Tran_WhenFluxExpressionIsConstant_BehavesAsShortCircuit()
+        {
+            var circuit = new Circuit(
+                new VoltageSource("V1", "in", "0", 5.0),
+                new NonlinearInductor("L1", "in", "out", "1e-3"),
+                new Resistor("R1", "out", "0", 1e3));
+
+            double actual = RunTransient(circuit, "out", 1e-6, 1e-4);
+
+            AssertClose(5.0, actual, 1e-6);
+        }
+
+        [Fact]
+        public void Ac_WhenChargeExpressionIsNonlinearWithSeriesMultiplier_UsesPerCellVoltage()
+        {
+            var capacitor = new NonlinearCapacitor("C1", "out", "0", "1e-6*x*x");
+            capacitor.Parameters.SeriesMultiplier = 2.0;
+
+            var circuit = new Circuit(
+                new VoltageSource("V1", "in", "0", 2.0).SetParameter("acmag", 1.0),
+                new Resistor("R1", "in", "out", 10.0),
+                capacitor);
+
+            Complex actual = RunAc(circuit, "out");
+
+            // Two series cells biased at 1 V each: C = d/dV [1e-6*(V/2)^2] = 1e-6 at V = 2.
+            double capacitance = 1e-6;
+            Complex expected = 1.0 / (1.0 + (Complex.ImaginaryOne * 2.0 * Math.PI * 10.0 * capacitance));
+
+            AssertClose(expected.Real, actual.Real, 1e-9);
+            AssertClose(expected.Imaginary, actual.Imaginary, 1e-9);
+        }
+
+        [Fact]
         public void Ac_WhenChargeExpressionIsLinear_UsesIncrementalCapacitance()
         {
             var capacitor = new NonlinearCapacitor("C1", "out", "0", "2e-6*x");

@@ -27,7 +27,10 @@ namespace SpiceSharpParser.Common.Processors
             }
 
             var akoModels = statements
-                .Where(statement => statement is Model m && (m.Parameters[0] is WordParameter wp && wp.Value.ToLower().StartsWith("ako")))
+                .Where(statement => statement is Model m
+                    && m.Parameters.Count > 0
+                    && m.Parameters[0] is WordParameter wp
+                    && wp.Value.StartsWith("ako:", StringComparison.OrdinalIgnoreCase))
                 .Cast<Model>().ToList();
 
             if (akoModels.Any())
@@ -43,8 +46,8 @@ namespace SpiceSharpParser.Common.Processors
 
         private void ReplaceAko(Statements statements, Model akoModel)
         {
-            var sourceModelName = akoModel.Parameters[0].Value.Substring(4);
-            var sourceModel = (Model)statements.FirstOrDefault(s => s is Model m && m.Name == sourceModelName);
+            var sourceModelName = akoModel.Parameters[0].Value.Substring("ako:".Length);
+            var sourceModel = (Model)statements.FirstOrDefault(s => s is Model m && string.Equals(m.Name, sourceModelName, StringComparison.OrdinalIgnoreCase));
 
             if (sourceModel != null)
             {

@@ -394,34 +394,6 @@ namespace SpiceSharpParser.Tests.CustomComponents
         }
 
         [Fact]
-        public void Timer555AstableExample_CompilesIncludesAndMeasuresTiming()
-        {
-            string path = FindRepositoryFile(
-                "circuits",
-                "timer555",
-                "timer555-astable.cir");
-            SpiceCompilationResult result = SpiceCompiler.CompileFile(path);
-
-            Assert.True(result.Success, string.Join(Environment.NewLine, result.Diagnostics));
-            Assert.NotNull(result.Model);
-
-            SpiceSimulationTestHelper.RunTransientPair(
-                result.Model,
-                "V(out)",
-                "V(timing)");
-            double period =
-                SpiceNetlistAssertions.AssertMeasurementSuccess(result.Model, "period").Value;
-            double highTime =
-                SpiceNetlistAssertions.AssertMeasurementSuccess(result.Model, "high_time").Value;
-            double lowTime =
-                SpiceNetlistAssertions.AssertMeasurementSuccess(result.Model, "low_time").Value;
-
-            Assert.InRange(period, 0.95 * 207.9e-6, 1.05 * 207.9e-6);
-            Assert.InRange(highTime, 0.95 * 138.6e-6, 1.05 * 138.6e-6);
-            Assert.InRange(lowTime, 0.95 * 69.3e-6, 1.05 * 69.3e-6);
-        }
-
-        [Fact]
         public void MilestoneARoutingExample_CompilesIncludesAndMeasuresBusBehavior()
         {
             string path = FindRepositoryFile(

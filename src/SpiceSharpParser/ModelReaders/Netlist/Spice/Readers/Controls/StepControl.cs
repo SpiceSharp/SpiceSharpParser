@@ -32,6 +32,7 @@ namespace SpiceSharpParser.ModelReaders.Netlist.Spice.Readers.Controls
                     ValidationEntrySource.Reader,
                     "Too few parameters for .STEP",
                     statement.LineInfo);
+                return;
             }
 
             string firstParam = statement.Parameters[0].Value;

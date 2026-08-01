@@ -44,7 +44,13 @@ namespace SpiceSharpParser.CustomComponents.Expressions
                 Variables = new HashSet<VariableNode> { VariableNode },
                 FunctionRules = DerivativesHelper.Defaults,
             };
-            Node derivativeExpression = derivatives.Derive(valueExpression)[VariableNode];
+
+            // Derive returns null when the expression does not depend on x.
+            Dictionary<VariableNode, Node> derivativeMap = derivatives.Derive(valueExpression);
+            Node derivativeExpression =
+                derivativeMap != null && derivativeMap.TryGetValue(VariableNode, out Node derivative)
+                    ? derivative
+                    : Node.Zero;
 
             _value = Build(valueExpression);
             _derivative = Build(derivativeExpression);

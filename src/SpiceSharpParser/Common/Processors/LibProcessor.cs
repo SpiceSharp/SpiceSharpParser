@@ -108,8 +108,11 @@ namespace SpiceSharpParser.Common.Processors
             List<Statement> allStatements,
             string libraryPath)
         {
-            // Find lib by entry
-            var libEntry = allStatements.SingleOrDefault(s => s is Control c && c.Name == "lib" && c.Parameters.Get(0).Value == lib.Parameters.Get(1).Value);
+            // Find lib by entry (SPICE directives and section names are case-insensitive)
+            var libEntry = allStatements.FirstOrDefault(s => s is Control c
+                && c.Name.Equals("lib", StringComparison.OrdinalIgnoreCase)
+                && c.Parameters.Count > 0
+                && c.Parameters.Get(0).Value.Equals(lib.Parameters.Get(1).Value, StringComparison.OrdinalIgnoreCase));
             if (libEntry != null)
             {
                 // look for .endl

@@ -263,7 +263,10 @@ namespace SpiceSharpParser.CustomComponents
                 parameters["ROUT"] = "1";
             }
 
-            parameters["COUT"] = "1f";
+            if (!parameters.ContainsKey("COUT"))
+            {
+                parameters["COUT"] = "1f";
+            }
         }
     }
 }

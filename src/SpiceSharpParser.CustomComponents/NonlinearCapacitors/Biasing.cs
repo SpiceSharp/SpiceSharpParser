@@ -101,7 +101,9 @@ namespace SpiceSharpParser.CustomComponents.NonlinearCapacitors
             double m = Parameters.ParallelMultiplier;
             double n = Parameters.SeriesMultiplier;
 
-            return m * _chargeExpression.Evaluate(voltage) / n;
+            // Each of the n series cells sees voltage / n; the chain stores the
+            // charge of a single cell, and m parallel branches multiply it.
+            return m * _chargeExpression.Evaluate(voltage / n);
         }
 
         /// <summary>
@@ -114,7 +116,7 @@ namespace SpiceSharpParser.CustomComponents.NonlinearCapacitors
             double m = Parameters.ParallelMultiplier;
             double n = Parameters.SeriesMultiplier;
 
-            return m * _chargeExpression.EvaluateDerivative(voltage) / n;
+            return m * _chargeExpression.EvaluateDerivative(voltage / n) / n;
         }
     }
 }
