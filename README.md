@@ -118,6 +118,37 @@ input selects the native amplitude of 1.
 Complete netlists, `.SAVE`/`.PLOT` waveforms, `.MEAS` checks, and guides are in
 the [runnable A-device example pack](circuits/a-devices/README.md).
 
+## Circuit Cookbook
+
+The [Circuit Cookbook](circuits/README.md) turns parser features into complete,
+practical designs. Every recipe includes a runnable netlist, named
+measurements, design calculations, an accessible generated schematic, a
+response summary, suggested experiments, and automated regression coverage.
+
+| Difficulty | Circuit | Main lesson |
+| --- | --- | --- |
+| Simple | [PWM digital-to-analog converter](circuits/cookbook/pure-spice/pwm-dac/README.md) | Duty-cycle averaging, ripple attenuation, and settling |
+| Medium | [Rectifier power supply](circuits/cookbook/pure-spice/rectifier-power-supply/README.md) | Rectification, reservoir ripple, Zener regulation, and load response |
+| Medium | [BJT audio preamplifier](circuits/cookbook/pure-spice/bjt-audio-preamplifier/README.md) | Biasing, AC gain, bandwidth, coupling, loading, and distortion |
+| Medium | [Ideal-diode redundant power input](circuits/cookbook/custom-components/ideal-diode-power-or/README.md) | Supply OR-ing, automatic failover, handback, and reverse-current blocking |
+| Difficult | [Simple phase-locked loop](circuits/cookbook/custom-components/simple-pll/README.md) | Phase detection, loop filtering, voltage-controlled oscillation, and lock behavior |
+
+Cookbook schematics are generated from reviewable `schematic.toml` files with
+the repository-local SchemDraw renderer. The cookbook report verifies recipe
+structure, netlist/layout consistency, SVG accessibility, and generated-asset
+freshness:
+
+```powershell
+.\tools\cookbook-schematic\.venv\Scripts\cookbook-report
+```
+
+Run the simulation and measurement regressions separately:
+
+```powershell
+dotnet test src/SpiceSharpParser.Tests/SpiceSharpParser.Tests.csproj `
+  --filter 'FullyQualifiedName~CircuitCookbookTests'
+```
+
 ## Documentation
 
 The former long README reference is split across these focused documents:
