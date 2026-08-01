@@ -19,7 +19,7 @@ The repository contains the infrastructure needed for this direction:
 
 
 - `SpiceSharpParser.AIExamples` contains 948 unique measured netlists. These
-  provide candidates for human review and promotion into the cookbook.
+  provide candidates for human and AI review and promotion into the cookbook.
 - `circuits/a-devices` demonstrates a strong example format: runnable
   netlists, `.SAVE`, `.PLOT`, `.MEAS`, explanatory guides, and automated
   verification.
