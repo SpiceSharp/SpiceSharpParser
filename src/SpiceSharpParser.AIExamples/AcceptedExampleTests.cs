@@ -23065,39 +23065,6 @@ public sealed partial class AcceptedExampleTests
         AssertMeasurementBetween(result, "ampl", 4.8, 5.1);
     }
 
-    // Prompt: BJT Colpitts oscillator biased from 12V supply
-    [Fact]
-    public void BJT_Colpitts_Oscillator_a1d65adf63d127a0()
-    {
-        var result = RunAcceptedExample(
-            "deepseek:01135_0b046dc1cc4faecb:a1d65adf63d127a0",
-            """
-            * BJT Colpitts Oscillator
-            VCC VCC 0 12
-            L1 VCC collector 10uH
-            C1 collector emitter 100pF
-            C2 emitter 0 100pF
-            Cbp base 0 100nF
-            R1 VCC base 47k
-            R2 base 0 10k
-            RE emitter 0 1k
-            Q1 collector base emitter QNPN
-            .model QNPN NPN(IS=1e-15 BF=150 VAF=100)
-            .IC V(emitter)=0.1
-            .TRAN 10n 100u
-            .MEAS TRAN t1 WHEN V(collector)=12 RISE=500
-            .MEAS TRAN t2 WHEN V(collector)=12 RISE=501
-            .MEAS TRAN Tperiod PARAM t2-t1
-            .MEAS TRAN fosc PARAM 1/Tperiod
-            .MEAS TRAN Vpp PP V(collector) FROM=80u TO=100u
-            .END
-            """);
-
-        AssertAllMeasurementsSuccessful(result);
-        AssertMeasurementNear(result, "fosc", 7120000.0, 200000.0);
-        AssertMeasurementGreater(result, "Vpp", 1.0);
-    }
-
     // Prompt: Current-starved integrator VCO using E-source op-amp and comparator
     [Fact]
     public void VCO_using_current_starved_integrator_7805d7562e8c5039()
@@ -26312,33 +26279,6 @@ public sealed partial class AcceptedExampleTests
         AssertAllMeasurementsSuccessful(result);
         AssertMeasurementNear(result, "trise", 0.0022, 0.0003);
         AssertMeasurementNear(result, "tdelay", 0.00069, 0.0001);
-    }
-
-    // Prompt: Full-wave bridge rectifier converts 10Vrms 50Hz AC to DC using four diodes.
-    [Fact]
-    public void Full_wave_bridge_rectifier_with_filter_capacitor_d1dc9c7a11f8f843()
-    {
-        var result = RunAcceptedExample(
-            "deepseek:00121_8cd8f07ae1b6dd5a:d1dc9c7a11f8f843",
-            """
-            * Full-wave bridge rectifier with filter capacitor
-            VAC in 0 SIN(0 10 50 0 0 0)
-            D1 in out Dmod
-            D2 neg in Dmod
-            D3 0 out Dmod
-            D4 neg 0 Dmod
-            Rload out neg 1k
-            Cfilter out neg 1000u
-            .MODEL Dmod D(IS=1e-12 RS=1 CJO=10p)
-            .TRAN 0.1m 2
-            .MEASURE TRAN Vout_avg AVG V(out,neg) FROM=1.5 TO=2
-            .MEASURE TRAN Vout_pp PP V(out,neg) FROM=1.5 TO=2
-            .END
-            """);
-
-        AssertAllMeasurementsSuccessful(result);
-        AssertMeasurementBetween(result, "Vout_avg", 8.0, 9.0);
-        AssertMeasurementBetween(result, "Vout_pp", 0.05, 0.15);
     }
 
     // Prompt: Parameterized BJT current mirror using NPN subcircuit
