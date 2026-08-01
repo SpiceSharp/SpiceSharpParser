@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "spicesharp-cookbook-report"
+version = "0.1.0"
+description = "Audit SpiceSharp cookbook recipes and generated schematic assets"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+cookbook-report = "cookbook_report.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["cookbook_report*"]

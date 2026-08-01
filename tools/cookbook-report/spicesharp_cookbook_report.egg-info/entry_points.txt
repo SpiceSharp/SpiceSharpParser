@@ -1,0 +1,2 @@
+[console_scripts]
+cookbook-report = cookbook_report.cli:main

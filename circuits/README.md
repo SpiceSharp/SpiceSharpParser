@@ -37,7 +37,14 @@ A cookbook circuit must:
 - document its calculations, assumptions, experiments, and model boundary;
 - pass the data-driven `CircuitCookbookTests` regression suite.
 
-Run the cookbook verification from the repository root:
+Run the fast documentation, layout, and generated-asset audit from the
+repository root:
+
+```powershell
+.\tools\cookbook-schematic\.venv\Scripts\cookbook-report
+```
+
+Then run the simulation regression suite:
 
 ```powershell
 dotnet test src/SpiceSharpParser.Tests/SpiceSharpParser.Tests.csproj `

@@ -1,0 +1,15 @@
+README.md
+pyproject.toml
+cookbook_report/__init__.py
+cookbook_report/__main__.py
+cookbook_report/audit.py
+cookbook_report/cli.py
+cookbook_report/formatters.py
+cookbook_report/model.py
+spicesharp_cookbook_report.egg-info/PKG-INFO
+spicesharp_cookbook_report.egg-info/SOURCES.txt
+spicesharp_cookbook_report.egg-info/dependency_links.txt
+spicesharp_cookbook_report.egg-info/entry_points.txt
+spicesharp_cookbook_report.egg-info/top_level.txt
+tests/test_audit.py
+tests/test_cli.py

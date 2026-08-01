@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cookbook Report"
+  short_description: "Audit cookbook recipes and generated SVG assets"
+  default_prompt: "Use $cookbook-report to check the cookbook and summarize any recipe or generated-asset problems."

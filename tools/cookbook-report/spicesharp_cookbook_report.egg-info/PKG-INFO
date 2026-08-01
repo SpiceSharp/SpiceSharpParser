@@ -1,0 +1,5 @@
+Metadata-Version: 2.4
+Name: spicesharp-cookbook-report
+Version: 0.1.0
+Summary: Audit SpiceSharp cookbook recipes and generated schematic assets
+Requires-Python: >=3.11

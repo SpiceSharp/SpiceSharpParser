@@ -12,14 +12,24 @@ runnable, measured, and clearly documented designs.
 
 ## Existing Foundation
 
-The repository already contains most of the infrastructure needed for this
-direction:
+The repository contains the infrastructure needed for this direction:
 
 - `SpiceSharpParser.AIExamples` contains 948 unique measured netlists. These
   provide candidates for human review and promotion into the cookbook.
 - `circuits/a-devices` demonstrates a strong example format: runnable
   netlists, `.SAVE`, `.PLOT`, `.MEAS`, explanatory guides, and automated
   verification.
+- `circuits/cookbook` contains four complete application-oriented recipes
+  across the pure-SPICE and CustomComponents tracks.
+- `tools/cookbook-schematic` renders deterministic, accessible SVG schematics
+  from a SPICE netlist plus a compact `schematic.toml` layout. Its validator
+  keeps displayed component and node names synchronized with the netlist.
+- `tools/cookbook-report` provides a read-only cookbook quality gate. It checks
+  required documentation, analysis and output directives, measurement-table
+  coverage, layout topology, SVG accessibility, and generated schematic
+  freshness. It can emit stable JSON for CI or another AI tool.
+- Repository-local `cookbook-schematic` and `cookbook-report` skills document
+  the corresponding AI workflows.
 - The main documentation is comprehensive about syntax, analyses, and
   components, but it is not yet organized around practical things users can
   build.
@@ -27,6 +37,24 @@ direction:
 The accepted AI examples should be treated as a quarry rather than published
 as-is. Promoted circuits must receive an independent review of their topology,
 equations, assumptions, measurements, and educational value.
+
+## Current Implementation Status
+
+The initial cookbook milestone is complete:
+
+- Rectifier power supply, PWM DAC, ideal-diode power OR, and simple PLL recipes
+  are present in the user-facing catalog.
+- Every current recipe has a runnable `.cir`, full guide, checked-in
+  `schematic.toml`, generated `schematic.svg`, and accessible `response.svg`.
+- All current schematic layouts display every parsed netlist component and
+  render reproducibly from their checked-in sources.
+- The repository-local cookbook report passes without errors or warnings.
+- The data-driven `CircuitCookbookTests` suite compiles and simulates all
+  current recipes and enforces their measurement ranges.
+
+The next circuit should be the BJT audio preamplifier. It expands the
+pure-SPICE track with operating-point and AC analysis instead of adding another
+transient-only example.
 
 ## Cookbook Tracks
 
@@ -49,7 +77,7 @@ complete applications rather than isolated component behavior.
 | Circuit | Foundation | Status | What it demonstrates |
 | --- | --- | --- | --- |
 | Rectifier, reservoir, and simple regulator | Pure SPICE | Complete | Diodes, ripple, load regulation, startup, and peak current |
-| BJT audio preamplifier | Pure SPICE | Planned | Bias point, AC gain, bandwidth, clipping, and Fourier distortion |
+| BJT audio preamplifier | Pure SPICE | Next | Bias point, AC gain, bandwidth, clipping, and Fourier distortion |
 | PWM-to-analog converter | Pure SPICE | Complete | Switching, settling time, average output, and ripple |
 | Transmission-line termination experiment | Pure SPICE | Planned | Reflections, propagation delay, and source/load matching |
 | Ideal-diode redundant power input | CustomComponents | Complete | Supply OR-ing, failover, and reverse-current blocking |
@@ -58,31 +86,28 @@ complete applications rather than isolated component behavior.
 | Sampled sensor alarm or data recorder | Sample-and-hold plus digital library | Planned | A complete analog-to-digital signal chain |
 | Simple phase-locked loop | `PHASEDET`, loop filter, and `MODULATOR` | Complete | A mixed-signal system assembled from existing components |
 
-## Recommended Starting Sequence
+## Completed Starting Sequence
+
+The starting sequence established three complementary examples:
 
 1. **Rectifier and filtered DC supply**
-   Establish the cookbook structure with an accessible, practical pure-SPICE
-   circuit.
+   Established the cookbook structure with an accessible, practical
+   pure-SPICE circuit.
 
 2. **PWM DAC**
-   Add a compact transient example with clear measurements for output average,
-   ripple, and settling time.
+   Added a compact transient example with clear measurements for output
+   average, ripple, and settling time.
 
 3. **Simple PLL**
-   Demonstrate that CustomComponents can form a complete mixed-signal system,
+   Demonstrated that CustomComponents can form a complete mixed-signal system,
    rather than only isolated device examples.
 
-This sequence covers nonlinear analog behavior, switching behavior, and a
-composed custom-component application without requiring new library features.
+The ideal-diode redundant power input was the first follow-on application. The
+next addition is the BJT audio preamplifier.
 
-The three-circuit starting sequence is complete. The ideal-diode redundant
-power input is the first follow-on application. The next recommended addition
-is the BJT audio preamplifier, which expands the pure-SPICE track with operating
-point and AC analysis instead of adding another transient-only example.
+## Current Repository Structure and Growth Path
 
-## Proposed Repository Structure
-
-Add a user-oriented catalog while initially leaving existing historical and
+Keep the user-oriented catalog beside the source while leaving historical and
 milestone directories intact.
 
 ```text
@@ -93,28 +118,38 @@ circuits/
       rectifier-power-supply/
         README.md
         rectifier-power-supply.cir
+        schematic.toml
         schematic.svg
         response.svg
       pwm-dac/
         README.md
         pwm-dac.cir
+        schematic.toml
         schematic.svg
         response.svg
     custom-components/
       ideal-diode-power-or/
         README.md
         ideal-diode-power-or.cir
+        schematic.toml
         schematic.svg
         response.svg
       simple-pll/
         README.md
         simple-pll.cir
+        schematic.toml
         schematic.svg
         response.svg
+tools/
+  cookbook-schematic/
+  cookbook-report/
+.agents/skills/
+  cookbook-schematic/
+  cookbook-report/
 ```
 
-The root `circuits/README.md` should be the searchable cookbook catalog. It
-should classify circuits by application, required package, analysis type, and
+The root `circuits/README.md` is the searchable cookbook catalog. It should
+classify circuits by application, required package, analysis type, and
 difficulty.
 
 Implementation-oriented examples such as `digital-milestone-a` can remain as
@@ -143,7 +178,10 @@ Every circuit `README.md` should use the same order.
    compatibility.
 
 4. **Schematic**
-   Include a readable SVG with node names matching the netlist.
+   Include a readable, accessible SVG with component and node names matching
+   the netlist. Keep layout intent in `schematic.toml`, generate
+   `schematic.svg` with `cookbook-schematic`, and do not hand-edit the generated
+   SVG.
 
 5. **Runnable netlist**
    Link to the complete `.cir` file. Include only the most instructive excerpt
@@ -162,7 +200,9 @@ Every circuit `README.md` should use the same order.
 
 9. **Expected behavior and measurements**
    Identify the important waveforms and compare `.MEAS` results with calculated
-   targets or documented acceptance ranges.
+   targets or documented acceptance ranges. Include an accessible
+   `response.svg` that summarizes the signals and scalar results discussed in
+   the guide.
 
 10. **Experiments**
     Suggest safe parameter changes that help users understand or adapt the
@@ -205,12 +245,90 @@ A cookbook circuit is complete only when it satisfies all of the following:
 - The documentation compares simulation with theory or an independent
   expectation.
 - Saved waveforms and plots correspond to the signals discussed in the guide.
-- The schematic and netlist use matching names.
+- `schematic.toml` passes topology and netlist-reference validation.
+- `schematic.svg` is a fresh renderer output and uses matching component and
+  node names.
+- Both SVG assets have useful accessible title and description metadata.
 - The model boundary and significant limitations are explicit.
 - Another user can run it by following only the documented instructions.
 
+Run the fast, read-only structural and generated-asset gate first:
+
+```powershell
+.\tools\cookbook-schematic\.venv\Scripts\cookbook-report
+```
+
+Use deterministic JSON when CI or an AI agent needs to consume the result:
+
+```powershell
+.\tools\cookbook-schematic\.venv\Scripts\cookbook-report `
+  --format json --output artifacts\cookbook-report.json
+```
+
+Then run the compile, simulation, plot, and measurement regression suite:
+
+```powershell
+dotnet test src\SpiceSharpParser.Tests\SpiceSharpParser.Tests.csproj `
+  --filter 'FullyQualifiedName~CircuitCookbookTests'
+```
+
 Portable-SPICE claims should be checked with another simulator when practical.
 Native LTspice comparison can continue for LTspice A-device examples.
+
+## Tooling Roadmap
+
+Develop the cookbook tooling in small, independently useful layers.
+
+### Complete: schematic source and rendering
+
+`cookbook-schematic` supplies a versioned TOML layout, netlist-aware
+validation, deterministic accessible SVG rendering, and a documented AI
+workflow. Continue extending its symbol vocabulary only when a real cookbook
+circuit needs a conventional symbol that cannot be expressed clearly today.
+
+### Complete: read-only cookbook report
+
+`cookbook-report` discovers recipes and produces deterministic text or JSON. It
+checks the static cookbook contract and compares each checked-in schematic with
+a fresh render without overwriting repository files.
+
+### Next: recipe manifest and data-driven coverage
+
+Add one small versioned manifest per recipe containing its netlist, required
+dialect or custom mappings, analysis types, measurement acceptance ranges, and
+catalog metadata. Migrate `CircuitCookbookTests` from hard-coded cases to these
+manifests so adding a recipe does not require editing a central C# list.
+
+The report should then compare manifest measurement names with `.MEAS`
+statements and the guide's Verified Measurements table.
+
+### Later: structured simulation reports
+
+Add a thin .NET runner that compiles each manifest with the correct dialect and
+custom mappings, executes its analyses, and returns versioned JSON containing
+diagnostics, plot names, measurement values, and convergence status. Integrate
+that output into `cookbook-report` only after the JSON contract is stable.
+
+### Later: deterministic response summaries and catalog generation
+
+Generate `response.svg` from reviewed plot specifications plus structured
+simulation results, while retaining visual review as a required step. Generate
+the catalog table from recipe manifests once the manifest schema has proved
+stable across several additional circuits.
+
+## Immediate Next Steps
+
+1. Add the BJT audio preamplifier with OP, AC, and transient measurements.
+2. Define and trial the recipe manifest on the BJT recipe and one existing
+   pure-SPICE recipe.
+3. Migrate the remaining cookbook test cases after the manifest format is
+   validated.
+4. Implement the structured .NET simulation runner and add an opt-in
+   simulation mode to `cookbook-report`.
+5. Add deterministic `response.svg` generation after structured simulation
+   output and plot specifications are available.
+6. Cross-check portable-SPICE recipes with an independent simulator where
+   practical.
 
 ## Keeping the Project Small
 
@@ -234,6 +352,10 @@ feature growth:
 - Document expected values and tolerances; let CI report current test counts.
 - Prefer one authoritative circuit guide instead of separate requirements,
   documentation, and results files unless the design is genuinely complex.
+- Keep generated files reproducible from compact, reviewable source files; do
+  not introduce a new generator without a corresponding freshness check.
+- Keep report and validation commands read-only unless their command name and
+  documentation explicitly promise generation or repair.
 
 ## Selection Criteria
 
