@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "spicesharp-cookbook-schematic"
+version = "0.1.0"
+description = "Render validated SpiceSharp cookbook schematics with SchemDraw"
+requires-python = ">=3.11"
+dependencies = [
+  "schemdraw==0.23",
+]
+
+[project.scripts]
+cookbook-schematic = "cookbook_schematic.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["cookbook_schematic*"]

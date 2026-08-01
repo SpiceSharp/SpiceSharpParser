@@ -1,0 +1,125 @@
+version = 1
+
+[schematic]
+netlist = "pwm-dac.cir"
+output = "schematic.svg"
+title = "PWM digital-to-analog converter"
+description = "A PWM source drives two buffered RC low-pass poles and a resistive load. Displayed node and component names match pwm-dac.cir."
+subtitle = "20 kHz, 40% PWM · two isolated 1 kΩ / 1 µF poles"
+
+[theme]
+signal_color = "#1976d2"
+accent_color = "#c23b52"
+
+[[elements]]
+id = "VPWM"
+kind = "source-pulse"
+start = [0, 3]
+end = [0, 0]
+value = "0–5 V"
+color = "#1976d2"
+
+[[elements]]
+id = "R1"
+start = [0, 3]
+end = [3, 3]
+value = "1 kΩ"
+
+[[elements]]
+id = "C1"
+start = [3, 3]
+end = [3, 0]
+value = "1 µF"
+
+[[elements]]
+id = "EBUFFER1"
+kind = "buffer"
+start = [3, 3]
+end = [6, 3]
+terminals = ["pole1", "buffer1"]
+value = "gain 1"
+
+[[elements]]
+id = "R2"
+start = [6, 3]
+end = [9, 3]
+value = "1 kΩ"
+
+[[elements]]
+id = "C2"
+start = [9, 3]
+end = [9, 0]
+value = "1 µF"
+
+[[elements]]
+id = "EOUTPUT"
+kind = "buffer"
+start = [9, 3]
+end = [12, 3]
+terminals = ["pole2", "output"]
+value = "gain 1"
+
+[[elements]]
+id = "RLOAD"
+start = [12, 3]
+end = [12, 0]
+value = "10 kΩ"
+
+[[wires]]
+node = "0"
+points = [[0, 0], [12, 0]]
+
+[[junctions]]
+node = "pole1"
+at = [3, 3]
+
+[[junctions]]
+node = "pole2"
+at = [9, 3]
+
+[[junctions]]
+node = "output"
+at = [12, 3]
+
+[[junctions]]
+node = "0"
+at = [3, 0]
+
+[[junctions]]
+node = "0"
+at = [9, 0]
+
+[[junctions]]
+node = "0"
+at = [12, 0]
+
+[[node_labels]]
+node = "pwm"
+at = [0, 3.5]
+location = "center"
+
+[[node_labels]]
+node = "pole1"
+at = [3, 3.5]
+location = "center"
+
+[[node_labels]]
+node = "buffer1"
+at = [6, 3.5]
+location = "center"
+
+[[node_labels]]
+node = "pole2"
+at = [9, 3.5]
+location = "center"
+
+[[node_labels]]
+node = "output"
+at = [12, 3.5]
+location = "center"
+
+[[symbols]]
+kind = "ground"
+node = "0"
+at = [12, 0]
+

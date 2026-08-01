@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cookbook Schematic"
+  short_description: "Render validated electronics schematics to SVG"
+  default_prompt: "Use $cookbook-schematic to create or update a cookbook schematic SVG from a SPICE netlist."

@@ -1,83 +1,93 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420" role="img" aria-labelledby="title desc">
-  <title id="title">Two-pole buffered PWM digital-to-analog converter</title>
-  <desc id="desc">A PWM source drives an RC low-pass pole, a unity buffer, a second RC pole, an output buffer, and a load.</desc>
-  <style>
-    .wire { fill: none; stroke: #243247; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
-    .part { fill: #ffffff; stroke: #243247; stroke-width: 2.5; }
-    .node { fill: #243247; }
-    .label { fill: #172235; font: 15px 'Segoe UI', sans-serif; }
-    .small { fill: #57667a; font: 13px 'Segoe UI', sans-serif; }
-    .heading { fill: #172235; font: 600 22px 'Segoe UI', sans-serif; }
-    .signal { fill: none; stroke: #1976d2; stroke-width: 3; }
-    .analog { fill: none; stroke: #c23b52; stroke-width: 3; }
-    .buffer { fill: #f4f8fd; stroke: #526d91; stroke-width: 2.5; }
-  </style>
-  <rect width="960" height="420" fill="#ffffff"/>
-  <text x="36" y="38" class="heading">PWM digital-to-analog converter</text>
-  <text x="36" y="62" class="small">Two isolated 1 kohm / 1 uF poles; node names match pwm-dac.cir</text>
-
-  <rect x="42" y="112" width="118" height="108" rx="8" class="part"/>
-  <path d="M58 178 L58 145 L77 145 L77 178 L96 178 L96 145 L115 145 L115 178 L134 178 L134 145 L150 145" class="signal"/>
-  <text x="63" y="201" class="label">VPWM</text>
-  <text x="55" y="239" class="small">0 to 5 V</text>
-  <text x="51" y="258" class="small">20 kHz, 40%</text>
-
-  <line x1="160" y1="166" x2="202" y2="166" class="signal"/>
-  <polyline points="202,166 214,154 226,178 238,154 250,178 262,154 274,166" class="wire"/>
-  <text x="214" y="137" class="label">R1 1k</text>
-  <line x1="274" y1="166" x2="324" y2="166" class="wire"/>
-  <circle cx="306" cy="166" r="5" class="node"/>
-  <text x="282" y="143" class="small">pole1</text>
-
-  <line x1="306" y1="166" x2="306" y2="235" class="wire"/>
-  <line x1="286" y1="235" x2="326" y2="235" class="wire"/>
-  <line x1="286" y1="248" x2="326" y2="248" class="wire"/>
-  <line x1="306" y1="248" x2="306" y2="326" class="wire"/>
-  <text x="276" y="276" class="label">C1 1u</text>
-
-  <polygon points="350,121 350,211 436,166" class="buffer"/>
-  <text x="363" y="160" class="label">E1</text>
-  <text x="359" y="180" class="small">gain 1</text>
-  <line x1="324" y1="166" x2="350" y2="166" class="wire"/>
-  <line x1="436" y1="166" x2="475" y2="166" class="wire"/>
-  <text x="404" y="118" class="small">buffer1</text>
-
-  <polyline points="475,166 487,154 499,178 511,154 523,178 535,154 547,166" class="wire"/>
-  <text x="487" y="137" class="label">R2 1k</text>
-  <line x1="547" y1="166" x2="598" y2="166" class="wire"/>
-  <circle cx="579" cy="166" r="5" class="node"/>
-  <text x="555" y="143" class="small">pole2</text>
-
-  <line x1="579" y1="166" x2="579" y2="235" class="wire"/>
-  <line x1="559" y1="235" x2="599" y2="235" class="wire"/>
-  <line x1="559" y1="248" x2="599" y2="248" class="wire"/>
-  <line x1="579" y1="248" x2="579" y2="326" class="wire"/>
-  <text x="549" y="276" class="label">C2 1u</text>
-
-  <polygon points="625,121 625,211 711,166" class="buffer"/>
-  <text x="638" y="160" class="label">E2</text>
-  <text x="634" y="180" class="small">gain 1</text>
-  <line x1="598" y1="166" x2="625" y2="166" class="wire"/>
-  <line x1="711" y1="166" x2="772" y2="166" class="analog"/>
-  <circle cx="772" cy="166" r="5" class="node"/>
-  <text x="744" y="143" class="small">output</text>
-
-  <line x1="772" y1="166" x2="772" y2="202" class="wire"/>
-  <polyline points="772,202 760,214 784,226 760,238 784,250 760,262 772,274" class="wire"/>
-  <line x1="772" y1="274" x2="772" y2="326" class="wire"/>
-  <text x="795" y="233" class="label">RLOAD</text>
-  <text x="795" y="253" class="small">10 kohm</text>
-
-  <line x1="111" y1="326" x2="840" y2="326" class="wire"/>
-  <line x1="111" y1="220" x2="111" y2="326" class="wire"/>
-  <circle cx="306" cy="326" r="5" class="node"/>
-  <circle cx="579" cy="326" r="5" class="node"/>
-  <circle cx="772" cy="326" r="5" class="node"/>
-  <line x1="824" y1="326" x2="824" y2="340" class="wire"/>
-  <line x1="806" y1="340" x2="842" y2="340" class="wire"/>
-  <line x1="812" y1="348" x2="836" y2="348" class="wire"/>
-  <line x1="818" y1="356" x2="830" y2="356" class="wire"/>
-
-  <rect x="52" y="377" width="856" height="28" rx="6" fill="#f5f8fc"/>
-  <text x="68" y="396" class="small">R1/C1 remove most carrier energy; E1 prevents loading; R2/C2 suppress the remaining ripple; E2 drives the load.</text>
+<svg xmlns="http://www.w3.org/2000/svg" xml:lang="en" height="248.44pt" width="566.4259999999999pt" viewBox="-75.68199999999999 -211.79999999999998 566.4259999999999 248.44" style="background-color:#ffffff;" role="img" aria-labelledby="title desc" data-generator="spicesharp-cookbook-schematic 0.1.0">
+  <title id="title">PWM digital-to-analog converter</title>
+  <desc id="desc">A PWM source drives two buffered RC low-pass poles and a resistive load. Displayed node and component names match pwm-dac.cir.</desc>
+  <circle cx="0" cy="-54" r="18" style="stroke:#1976d2;fill:none;stroke-width:2.2;stroke-dasharray:-;" />
+  <path d="M 0.0,-0.0 L 216,-0 L 432,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 0.0,-108.0 L 0,-72 L 0,-72 M 0,-36 L 0,-36 L 0,-0" style="stroke:#1976d2;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 10.800000000000004,-57.6 L 5.4,-57.6 L 5.4,-52.2 L -5.4,-52.2 L -5.4,-57.6 L -10.8,-57.6" style="stroke:#1976d2;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 0.0,-108.0 L 36,-108 L 39,-117 L 45,-99 L 51,-117 L 57,-99 L 63,-117 L 69,-99 L 72,-108 L 108,-108" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 108.0,-108.0 L 108,-57.24 M 117,-57.24 L 99,-57.24 M 117,-50.76 L 99,-50.76 M 108,-50.76 L 108,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 108.0,-108.0 L 150.3,-108 M 173.7,-108 L 216,-108" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 150.29999999999998,-126.0 L 173.7,-108 L 150.3,-90 L 150.3,-126" style="stroke:#243247;fill:#f4f8fd;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 216.0,-108.0 L 252,-108 L 255,-117 L 261,-99 L 267,-117 L 273,-99 L 279,-117 L 285,-99 L 288,-108 L 324,-108" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 324.0,-108.0 L 324,-57.24 M 333,-57.24 L 315,-57.24 M 333,-50.76 L 315,-50.76 M 324,-50.76 L 324,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 324.0,-108.0 L 366.3,-108 M 389.7,-108 L 432,-108" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 366.3,-126.0 L 389.7,-108 L 366.3,-90 L 366.3,-126" style="stroke:#243247;fill:#f4f8fd;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 432.0,-108.0 L 432,-72 L 441,-69 L 423,-63 L 441,-57 L 423,-51 L 441,-45 L 423,-39 L 432,-36 L 432,-0" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 432.0,-0.0 L 432,14.4 L 423,14.4 L 441,14.4 M 425.7,18.72 L 438.3,18.72 M 430.2,23.04 L 433.8,23.04" style="stroke:#243247;fill:none;stroke-width:2.2;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <text x="-21.599999999999994" y="-67.0" dominant-baseline="central" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="-21.599999999999994" dy="13.0">VPWM</tspan>
+  </text>
+  <text x="21.6" y="-66.0" dominant-baseline="central" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="21.6" dy="12.0">0–5 V</tspan>
+  </text>
+  <text x="54.0" y="-133.60000000000002" dominant-baseline="ideographic" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="54.0" dy="13.0">R1</tspan>
+  </text>
+  <text x="54.0" y="-107.39999999999999" dominant-baseline="hanging" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="54.0" dy="12.0">1 kΩ</tspan>
+  </text>
+  <text x="95.4" y="-67.0" dominant-baseline="central" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="95.4" dy="13.0">C1</tspan>
+  </text>
+  <text x="120.60000000000001" y="-66.0" dominant-baseline="central" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="120.60000000000001" dy="12.0">1 µF</tspan>
+  </text>
+  <text x="162.0" y="-142.6" dominant-baseline="ideographic" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="162.0" dy="13.0">EBUFFER1</tspan>
+  </text>
+  <text x="162.0" y="-98.39999999999999" dominant-baseline="hanging" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="162.0" dy="12.0">gain 1</tspan>
+  </text>
+  <text x="270.0" y="-133.60000000000002" dominant-baseline="ideographic" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="270.0" dy="13.0">R2</tspan>
+  </text>
+  <text x="270.0" y="-107.39999999999999" dominant-baseline="hanging" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="270.0" dy="12.0">1 kΩ</tspan>
+  </text>
+  <text x="311.40000000000003" y="-67.0" dominant-baseline="central" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="311.40000000000003" dy="13.0">C2</tspan>
+  </text>
+  <text x="336.59999999999997" y="-66.0" dominant-baseline="central" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="336.59999999999997" dy="12.0">1 µF</tspan>
+  </text>
+  <text x="378.0" y="-142.6" dominant-baseline="ideographic" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="378.0" dy="13.0">EOUTPUT</tspan>
+  </text>
+  <text x="378.0" y="-98.39999999999999" dominant-baseline="hanging" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="378.0" dy="12.0">gain 1</tspan>
+  </text>
+  <text x="419.40000000000003" y="-67.0" dominant-baseline="central" fill="#172235" font-size="13.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="419.40000000000003" dy="13.0">RLOAD</tspan>
+  </text>
+  <text x="444.59999999999997" y="-66.0" dominant-baseline="central" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="444.59999999999997" dy="12.0">10 kΩ</tspan>
+  </text>
+  <text x="3.6" y="-134.39999999999998" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="3.6" dy="12.0">pwm</tspan>
+  </text>
+  <text x="111.60000000000001" y="-134.39999999999998" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="111.60000000000001" dy="12.0">pole1</tspan>
+  </text>
+  <text x="219.6" y="-134.39999999999998" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="219.6" dy="12.0">buffer1</tspan>
+  </text>
+  <text x="327.59999999999997" y="-134.39999999999998" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="327.59999999999997" dy="12.0">pole2</tspan>
+  </text>
+  <text x="435.59999999999997" y="-134.39999999999998" dominant-baseline="central" fill="#1976d2" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="435.59999999999997" dy="12.0">output</tspan>
+  </text>
+  <text x="3.6" y="-198.20000000000002" dominant-baseline="ideographic" fill="#172235" font-size="20.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="3.6" dy="20.0">PWM digital-to-analog converter</tspan>
+  </text>
+  <text x="3.6" y="-165.0" dominant-baseline="ideographic" fill="#57667a" font-size="12.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="3.6" dy="12.0">20 kHz, 40% PWM · two isolated 1 kΩ / 1 µF poles</tspan>
+  </text>
+  <circle cx="108" cy="-108" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.2;stroke-dasharray:-;" />
+  <circle cx="324" cy="-108" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.2;stroke-dasharray:-;" />
+  <circle cx="432" cy="-108" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.2;stroke-dasharray:-;" />
+  <circle cx="108" cy="-0" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.2;stroke-dasharray:-;" />
+  <circle cx="324" cy="-0" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.2;stroke-dasharray:-;" />
+  <circle cx="432" cy="-0" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.2;stroke-dasharray:-;" />
 </svg>

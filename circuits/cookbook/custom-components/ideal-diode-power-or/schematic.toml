@@ -1,0 +1,173 @@
+version = 1
+
+[schematic]
+netlist = "ideal-diode-power-or.cir"
+output = "schematic.svg"
+title = "Ideal-diode redundant power input"
+description = "A 12 volt primary supply and an 11.5 volt backup supply feed a common output through separate series resistances and ideal diodes. Both diode cathodes join at output, where a hold-up capacitor and 12 ohm load return to node zero."
+subtitle = "50 mΩ ideal diodes · primary fails 4–8 ms · automatic backup takeover"
+
+[theme]
+font_size = 12
+unit = 2.2
+line_width = 2.2
+signal_color = "#1976d2"
+accent_color = "#c23b52"
+
+[[elements]]
+id = "VPRIMARY"
+kind = "source-pulse"
+start = [2.5, 7]
+end = [0, 7]
+value = "12 V · off 4–8 ms"
+color = "#1976d2"
+
+[[elements]]
+id = "RPRIMARY"
+start = [5, 7]
+end = [8, 7]
+value = "100 mΩ"
+color = "#1976d2"
+
+[[elements]]
+id = "DPRIMARY"
+start = [10.5, 7]
+end = [13.5, 7]
+value = "IDEAL_OR"
+color = "#1976d2"
+
+[[elements]]
+id = "VBACKUP"
+kind = "source-v"
+start = [2.5, 3.5]
+end = [0, 3.5]
+value = "11.5 V · always on"
+color = "#27845a"
+
+[[elements]]
+id = "RBACKUP"
+start = [5, 3.5]
+end = [8, 3.5]
+value = "150 mΩ"
+color = "#27845a"
+
+[[elements]]
+id = "DBACKUP"
+start = [10.5, 3.5]
+end = [13.5, 3.5]
+value = "IDEAL_OR"
+color = "#27845a"
+
+[[elements]]
+id = "COUT"
+start = [17, 5.25]
+end = [17, 0]
+value = "100 µF"
+
+[[elements]]
+id = "RLOAD"
+start = [20, 5.25]
+end = [20, 0]
+value = "12 Ω"
+
+[[wires]]
+node = "primary_raw"
+points = [[2.5, 7], [5, 7]]
+color = "#1976d2"
+
+[[wires]]
+node = "primary_input"
+points = [[8, 7], [10.5, 7]]
+color = "#1976d2"
+
+[[wires]]
+node = "backup_raw"
+points = [[2.5, 3.5], [5, 3.5]]
+color = "#27845a"
+
+[[wires]]
+node = "backup_input"
+points = [[8, 3.5], [10.5, 3.5]]
+color = "#27845a"
+
+[[wires]]
+node = "output"
+points = [[13.5, 7], [13.5, 3.5]]
+color = "#c23b52"
+
+[[wires]]
+node = "output"
+points = [[13.5, 5.25], [20, 5.25]]
+color = "#c23b52"
+
+[[wires]]
+node = "0"
+points = [[0, 7], [0, 0], [20, 0]]
+
+[[junctions]]
+node = "output"
+at = [13.5, 7]
+
+[[junctions]]
+node = "output"
+at = [13.5, 5.25]
+
+[[junctions]]
+node = "output"
+at = [13.5, 3.5]
+
+[[junctions]]
+node = "output"
+at = [17, 5.25]
+
+[[junctions]]
+node = "output"
+at = [20, 5.25]
+
+[[junctions]]
+node = "0"
+at = [0, 3.5]
+
+[[junctions]]
+node = "0"
+at = [17, 0]
+
+[[junctions]]
+node = "0"
+at = [20, 0]
+
+[[node_labels]]
+node = "primary_raw"
+at = [3.75, 7.65]
+location = "center"
+
+[[node_labels]]
+node = "primary_input"
+at = [9.25, 7.65]
+location = "center"
+
+[[node_labels]]
+node = "backup_raw"
+at = [3.75, 4.15]
+location = "center"
+
+[[node_labels]]
+node = "backup_input"
+at = [9.25, 4.15]
+location = "center"
+
+[[node_labels]]
+node = "output"
+at = [17, 5.9]
+location = "center"
+
+[[node_labels]]
+node = "0"
+at = [20.5, 0]
+location = "right"
+
+[[symbols]]
+kind = "ground"
+node = "0"
+at = [20, 0]
+

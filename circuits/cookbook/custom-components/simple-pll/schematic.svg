@@ -1,75 +1,108 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="470" viewBox="0 0 960 470" role="img" aria-labelledby="title desc">
-  <title id="title">Simple phase-locked loop schematic</title>
-  <desc id="desc">A square-wave reference drives a phase detector. Its charge-pump output charges a loop capacitor and controls a voltage-controlled oscillator. A zero-crossing comparator returns logic feedback to the detector.</desc>
-  <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M0 0 L10 5 L0 10 Z" fill="#26364c"/>
-    </marker>
-  </defs>
-  <style>
-    .wire { fill: none; stroke: #26364c; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; marker-end: url(#arrow); }
-    .plain { fill: none; stroke: #26364c; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
-    .block { fill: #f4f8fd; stroke: #526d91; stroke-width: 2.5; rx: 10; }
-    .custom { fill: #f4f0fb; stroke: #7357a2; stroke-width: 2.5; rx: 10; }
-    .filter { fill: #fff5f7; stroke: #b74459; stroke-width: 2.5; rx: 10; }
-    .node { fill: #26364c; }
-    .label { fill: #172235; font: 15px 'Segoe UI', sans-serif; }
-    .small { fill: #57667a; font: 13px 'Segoe UI', sans-serif; }
-    .heading { fill: #172235; font: 600 22px 'Segoe UI', sans-serif; }
-    .purple { fill: none; stroke: #7357a2; stroke-width: 3; marker-end: url(#arrow); }
-    .red { fill: none; stroke: #b74459; stroke-width: 3; marker-end: url(#arrow); }
-  </style>
-  <rect width="960" height="470" fill="#ffffff"/>
-  <text x="36" y="38" class="heading">Simple phase-locked loop</text>
-  <text x="36" y="62" class="small">A-device phase detector + passive loop filter + A-device VCO</text>
-
-  <rect x="38" y="120" width="146" height="92" class="block"/>
-  <path d="M54 179 L54 145 L76 145 L76 179 L99 179 L99 145 L121 145 L121 179 L144 179 L144 145 L168 145" class="plain"/>
-  <text x="63" y="200" class="label">VREFERENCE</text>
-  <text x="69" y="232" class="small">reference</text>
-  <text x="73" y="250" class="small">1.5 kHz</text>
-
-  <line x1="184" y1="166" x2="248" y2="166" class="wire"/>
-  <rect x="248" y="102" width="184" height="150" class="custom"/>
-  <text x="286" y="132" class="label">APHASE</text>
-  <text x="285" y="155" class="label">PHASEDET</text>
-  <text x="270" y="186" class="small">reference edge  +</text>
-  <text x="270" y="209" class="small">feedback edge   -</text>
-  <text x="294" y="235" class="small">±50 uA pump</text>
-
-  <line x1="432" y1="177" x2="493" y2="177" class="red"/>
-  <circle cx="493" cy="177" r="5" class="node"/>
-  <text x="459" y="154" class="small">control</text>
-  <rect x="493" y="107" width="146" height="140" class="filter"/>
-  <text x="525" y="137" class="label">Loop filter</text>
-  <line x1="548" y1="161" x2="548" y2="190" class="plain"/>
-  <line x1="527" y1="190" x2="569" y2="190" class="plain"/>
-  <line x1="527" y1="204" x2="569" y2="204" class="plain"/>
-  <line x1="548" y1="204" x2="548" y2="229" class="plain"/>
-  <text x="575" y="187" class="small">4.7 uF</text>
-  <text x="514" y="265" class="small">IC = 0.1 V</text>
-
-  <line x1="639" y1="177" x2="696" y2="177" class="purple"/>
-  <rect x="696" y="102" width="224" height="150" class="custom"/>
-  <text x="759" y="132" class="label">AVCO</text>
-  <text x="742" y="155" class="label">MODULATOR</text>
-  <path d="M720 201 C735 165 750 237 765 201 C780 165 795 237 810 201 C825 165 840 237 855 201 C870 165 885 237 900 201" class="plain"/>
-  <text x="743" y="235" class="small">1 to 2 kHz sine</text>
-
-  <line x1="808" y1="252" x2="808" y2="315" class="wire"/>
-  <text x="824" y="284" class="small">vco</text>
-  <rect x="662" y="315" width="292" height="82" class="block"/>
-  <text x="706" y="347" class="label">BFEEDBACK zero-crossing comparator</text>
-  <text x="739" y="374" class="small">sine &gt; 0 → feedback = 1 V</text>
-
-  <path d="M662 356 L340 356 L340 252" class="wire"/>
-  <text x="449" y="377" class="small">feedback edge stream</text>
-
-  <rect x="38" y="290" width="515" height="82" rx="8" fill="#f7f9fc" stroke="#d4dce7"/>
-  <text x="57" y="320" class="label">Negative feedback direction</text>
-  <text x="57" y="344" class="small">reference leads → pump raises control → VCO speeds up</text>
-  <text x="57" y="364" class="small">feedback leads → pump lowers control → VCO slows down</text>
-
-  <rect x="38" y="424" width="882" height="29" rx="6" fill="#f5f8fc"/>
-  <text x="126" y="444" class="small">At lock, control averages near 0.5 V and reference/feedback edges repeat at nearly the same rate.</text>
+<svg xmlns="http://www.w3.org/2000/svg" xml:lang="en" height="422.8400000000001pt" width="1094.183pt" viewBox="-107.99799999999998 -386.20000000000005 1094.183 422.8400000000001" style="background-color:#ffffff;" role="img" aria-labelledby="title desc" data-generator="spicesharp-cookbook-schematic 0.1.0">
+  <title id="title">Simple charge-pump phase-locked loop</title>
+  <desc id="desc">A 1.5 kilohertz square-wave reference enters a phase detector whose charge-pump output drives a capacitor and leak resistor. The resulting control voltage tunes a one-to-two kilohertz VCO. A zero-crossing behavioral source converts the VCO sine wave into feedback edges and closes the loop.</desc>
+  <circle cx="0" cy="-108" r="18" style="stroke:#1976d2;fill:none;stroke-width:2.1;stroke-dasharray:-;" />
+  <path d="M 0.0,-216.0 L 54,-216 L 99,-216" style="stroke:#1976d2;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 106 -216 L 99 -213.3 L 99 -218.7 Z" style="stroke:#1976d2;fill:#1976d2;stroke-linecap:butt;stroke-linejoin:miter;" />
+  <path d="M 216.0,-216.0 L 306,-216 L 396,-216" style="stroke:#c23b52;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 504.0,-216.0 L 558,-216 L 612,-216" style="stroke:#7357a2;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 612.0,-216.0 L 684,-216 L 756,-216" style="stroke:#7357a2;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 756.0,-216.0 L 756,-135 L 756,-54" style="stroke:#7357a2;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 756.0,-54.0 L 763.2,-54 L 761.4,-54" style="stroke:#7357a2;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 768.4 -54 L 761.4 -51.3 L 761.4 -56.7 Z" style="stroke:#7357a2;fill:#7357a2;stroke-linecap:butt;stroke-linejoin:miter;" />
+  <path d="M 792.0,-108.0 L 855,-108 L 918,-108" style="stroke:#1976d2;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 792.0,-108.0 L 792,-198 L 792,-288" style="stroke:#1976d2;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 792.0,-288.0 L 477,-288 L 162,-288" style="stroke:#1976d2;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 162.0,-288.0 L 162,-264.6 L 162,-250.2" style="stroke:#1976d2;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 162 -243.2 L 159.3 -250.2 L 164.7 -250.2 Z" style="stroke:#1976d2;fill:#1976d2;stroke-linecap:butt;stroke-linejoin:miter;" />
+  <path d="M 0.0,-0.0 L 459,-0 L 918,-0" style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 0.0,-216.0 L 0,-126 L 0,-126 M 0,-90 L 0,-90 L 0,-0" style="stroke:#1976d2;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 10.800000000000006,-111.60000000000001 L 5.4,-111.6 L 5.4,-106.2 L -5.4,-106.2 L -5.4,-111.6 L -10.8,-111.6" style="stroke:#1976d2;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 108.0,-216.0 L 136.8,-216 L 136.8,-235.8 L 187.2,-235.8 L 187.2,-196.2 L 136.8,-196.2 L 136.8,-216 M 187.2,-216 L 216,-216" style="stroke:#7357a2;fill:#f4f0fb;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 216.0,-216.0 L 216,-111.24 M 225,-111.24 L 207,-111.24 M 225,-104.76 L 207,-104.76 M 216,-104.76 L 216,-0" style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 342.0,-216.0 L 342,-126 L 351,-123 L 333,-117 L 351,-111 L 333,-105 L 351,-99 L 333,-93 L 342,-90 L 342,-0" style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 396.0,-216.0 L 424.8,-216 L 424.8,-235.8 L 475.2,-235.8 L 475.2,-196.2 L 424.8,-196.2 L 424.8,-216 M 475.2,-216 L 504,-216" style="stroke:#7357a2;fill:#f4f0fb;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 612.0,-216.0 L 612,-126 L 621,-123 L 603,-117 L 621,-111 L 603,-105 L 621,-99 L 603,-93 L 612,-90 L 612,-0" style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 792.0,-108.0 L 792,-79.2 L 811.8,-79.2 L 811.8,-28.8 L 772.2,-28.8 L 772.2,-79.2 L 792,-79.2 M 792,-28.8 L 792,-0" style="stroke:#526d91;fill:#f4f8fd;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 918.0,-108.0 L 918,-72 L 927,-69 L 909,-63 L 927,-57 L 909,-51 L 927,-45 L 909,-39 L 918,-36 L 918,-0" style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 918.0,-0.0 L 918,14.4 L 909,14.4 L 927,14.4 M 911.7,18.72 L 924.3,18.72 M 916.2,23.04 L 919.8,23.04" style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <text x="-21.59999999999999" y="-119.0" dominant-baseline="central" fill="#172235" font-size="11.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="-21.59999999999999" dy="11.0">VREFERENCE</tspan>
+  </text>
+  <text x="21.60000000000001" y="-118.0" dominant-baseline="central" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="21.60000000000001" dy="10.0">1.5 kHz</tspan>
+  </text>
+  <text x="165.6" y="-230.6" dominant-baseline="central" fill="#172235" font-size="11.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="165.6" dy="11.0">APHASE</tspan>
+  </text>
+  <text x="162.0" y="-202.6" dominant-baseline="hanging" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="162.0" dy="10.0">PHASEDET · ±50 µA</tspan>
+  </text>
+  <text x="329.40000000000003" y="-119.0" dominant-baseline="central" fill="#172235" font-size="11.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="329.40000000000003" dy="11.0">RLOOP_LEAK</tspan>
+  </text>
+  <text x="354.59999999999997" y="-118.0" dominant-baseline="central" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="354.59999999999997" dy="10.0">10 MΩ</tspan>
+  </text>
+  <text x="453.59999999999997" y="-230.6" dominant-baseline="central" fill="#172235" font-size="11.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="453.59999999999997" dy="11.0">AVCO</tspan>
+  </text>
+  <text x="450.0" y="-202.6" dominant-baseline="hanging" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="450.0" dy="10.0">MODULATOR · 1–2 kHz</tspan>
+  </text>
+  <text x="599.4" y="-119.0" dominant-baseline="central" fill="#172235" font-size="11.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="599.4" dy="11.0">RVCO_LOAD</tspan>
+  </text>
+  <text x="624.6" y="-118.0" dominant-baseline="central" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="624.6" dy="10.0">100 kΩ</tspan>
+  </text>
+  <text x="57.6" y="-242.20000000000002" dominant-baseline="central" fill="#1976d2" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="57.6" dy="10.0">reference</tspan>
+  </text>
+  <text x="300.59999999999997" y="-242.20000000000002" dominant-baseline="central" fill="#1976d2" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="300.59999999999997" dy="10.0">control</tspan>
+  </text>
+  <text x="561.6" y="-242.20000000000002" dominant-baseline="central" fill="#1976d2" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="561.6" dy="10.0">vco</tspan>
+  </text>
+  <text x="471.59999999999997" y="-308.8" dominant-baseline="central" fill="#1976d2" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="471.59999999999997" dy="10.0">feedback edge stream</tspan>
+  </text>
+  <text x="939.6" y="-6.4" dominant-baseline="ideographic" fill="#1976d2" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="939.6" dy="10.0">0</tspan>
+  </text>
+  <text x="183.6" y="-126.19999999999999" dominant-baseline="central" fill="#172235" font-size="11.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="183.6" dy="11.0">CLOOP</tspan>
+  </text>
+  <text x="183.6" y="-102.60000000000001" dominant-baseline="central" fill="#57667a" font-size="9.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="183.6" dy="9.0">4.7 µF · IC 0.1 V</tspan>
+  </text>
+  <text x="795.6" y="-135.2" dominant-baseline="central" fill="#172235" font-size="11.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="795.6" dy="11.0">BFEEDBACK</tspan>
+  </text>
+  <text x="795.6" y="-97.19999999999999" dominant-baseline="central" fill="#57667a" font-size="9.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="795.6" dy="9.0">zero crossing</tspan>
+  </text>
+  <text x="921.6" y="-135.2" dominant-baseline="central" fill="#172235" font-size="11.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="921.6" dy="11.0">RFEEDBACK_LOAD</tspan>
+  </text>
+  <text x="921.6" y="-97.19999999999999" dominant-baseline="central" fill="#57667a" font-size="9.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="921.6" dy="9.0">10 kΩ</tspan>
+  </text>
+  <text x="3.6" y="-372.6" dominant-baseline="ideographic" fill="#172235" font-size="18.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="3.6" dy="18.0">Simple charge-pump phase-locked loop</tspan>
+  </text>
+  <text x="3.6" y="-339.40000000000003" dominant-baseline="ideographic" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="3.6" dy="10.0">PHASEDET + 4.7 µF loop filter + 1–2 kHz MODULATOR VCO</tspan>
+  </text>
+  <circle cx="216" cy="-216" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.1;stroke-dasharray:-;" />
+  <circle cx="342" cy="-216" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.1;stroke-dasharray:-;" />
+  <circle cx="612" cy="-216" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.1;stroke-dasharray:-;" />
+  <circle cx="792" cy="-108" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.1;stroke-dasharray:-;" />
+  <circle cx="918" cy="-108" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.1;stroke-dasharray:-;" />
+  <circle cx="216" cy="-0" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.1;stroke-dasharray:-;" />
+  <circle cx="342" cy="-0" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.1;stroke-dasharray:-;" />
+  <circle cx="612" cy="-0" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.1;stroke-dasharray:-;" />
+  <circle cx="792" cy="-0" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.1;stroke-dasharray:-;" />
+  <circle cx="918" cy="-0" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.1;stroke-dasharray:-;" />
 </svg>

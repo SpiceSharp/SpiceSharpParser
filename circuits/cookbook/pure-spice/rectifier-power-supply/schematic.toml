@@ -1,0 +1,224 @@
+version = 1
+
+[schematic]
+netlist = "rectifier-power-supply.cir"
+output = "schematic.svg"
+title = "Full-wave rectifier and Zener regulator"
+description = "A grounded 12 volt RMS AC source drives a four-diode bridge. Its floating reservoir and dc_return rails feed a reservoir capacitor, series resistor, 9.1 volt Zener shunt, permanent load, and a switched parallel load."
+subtitle = "12 V RMS, 50 Hz · floating DC return · 680 Ω load step at 150 ms"
+
+[theme]
+font_size = 11
+unit = 2.2
+line_width = 2.1
+signal_color = "#1976d2"
+accent_color = "#c23b52"
+
+[[elements]]
+id = "VSECONDARY"
+kind = "source-sin"
+start = [0, 3]
+end = [0, 0]
+value = ""
+color = "#1976d2"
+
+[[elements]]
+id = "D1"
+start = [3, 3]
+end = [3, 6]
+value = ""
+
+[[elements]]
+id = "D2"
+start = [6, 3]
+end = [6, 6]
+value = ""
+
+[[elements]]
+id = "D3"
+start = [3, 0]
+end = [3, 3]
+value = ""
+
+[[elements]]
+id = "D4"
+start = [6, 0]
+end = [6, 3]
+value = ""
+
+[[elements]]
+id = "CRES"
+start = [9, 6]
+end = [9, 0]
+value = "1000 µF"
+
+[[elements]]
+id = "RSERIES"
+start = [9, 6]
+end = [12, 6]
+value = "220 Ω"
+
+[[elements]]
+id = "DZENER"
+kind = "zener"
+start = [14, 0]
+end = [14, 6]
+value = "9.1 V"
+
+[[elements]]
+id = "RLOAD"
+start = [17, 6]
+end = [17, 0]
+value = "1 kΩ"
+
+[[elements]]
+id = "RLOAD_STEP"
+start = [20, 6]
+end = [20, 3]
+value = "680 Ω"
+
+[[elements]]
+id = "SLOAD"
+kind = "switch"
+start = [20, 3]
+end = [20, 0]
+terminals = ["stepped_load", "dc_return"]
+value = ""
+
+[[elements]]
+id = "VLOAD_CONTROL"
+kind = "source-pulse"
+start = [25, 3]
+end = [25, 0]
+value = "0 → 5 V"
+color = "#64748b"
+
+[[wires]]
+node = "ac_live"
+points = [[0, 3], [3, 3]]
+color = "#1976d2"
+
+[[wires]]
+node = "reservoir"
+points = [[3, 6], [9, 6]]
+color = "#1976d2"
+
+[[wires]]
+node = "output"
+points = [[12, 6], [20, 6]]
+color = "#c23b52"
+
+[[wires]]
+node = "dc_return"
+points = [[3, 0], [20, 0]]
+
+[[wires]]
+node = "0"
+points = [[0, 0], [0, -1], [7, -1], [7, 3], [6, 3]]
+
+[[wires]]
+node = "0"
+points = [[25, 0], [25, -1], [7, -1]]
+
+[[wires]]
+node = "load_control"
+points = [[25, 3], [23, 3], [23, 2.5], [21, 2.5]]
+color = "#64748b"
+arrow = "end"
+
+[[junctions]]
+node = "ac_live"
+at = [3, 3]
+
+[[junctions]]
+node = "0"
+at = [6, 3]
+
+[[junctions]]
+node = "reservoir"
+at = [9, 6]
+
+[[junctions]]
+node = "output"
+at = [14, 6]
+
+[[junctions]]
+node = "output"
+at = [17, 6]
+
+[[junctions]]
+node = "output"
+at = [20, 6]
+
+[[junctions]]
+node = "stepped_load"
+at = [20, 3]
+
+[[junctions]]
+node = "dc_return"
+at = [9, 0]
+
+[[junctions]]
+node = "dc_return"
+at = [14, 0]
+
+[[junctions]]
+node = "dc_return"
+at = [17, 0]
+
+[[junctions]]
+node = "dc_return"
+at = [20, 0]
+
+[[junctions]]
+node = "0"
+at = [7, -1]
+
+[[node_labels]]
+node = "ac_live"
+at = [1.5, 3.5]
+location = "center"
+
+[[node_labels]]
+node = "reservoir"
+at = [8.5, 6.5]
+location = "center"
+
+[[node_labels]]
+node = "output"
+at = [15.5, 6.5]
+location = "center"
+
+[[node_labels]]
+node = "dc_return"
+at = [12, 0.45]
+location = "center"
+text = "dc_return · floating"
+
+[[node_labels]]
+node = "stepped_load"
+at = [21, 3.35]
+location = "center"
+
+[[node_labels]]
+node = "load_control"
+at = [25, 3.5]
+location = "center"
+
+[[node_labels]]
+node = "0"
+at = [7.5, -1]
+location = "right"
+
+[[symbols]]
+kind = "ground"
+node = "0"
+at = [7, -1]
+
+[[texts]]
+text = "bridge"
+at = [4.5, 6.75]
+location = "center"
+size = 10
+color = "#57667a"
+

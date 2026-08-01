@@ -1,0 +1,233 @@
+version = 1
+
+[schematic]
+netlist = "simple-pll.cir"
+output = "schematic.svg"
+title = "Simple charge-pump phase-locked loop"
+description = "A 1.5 kilohertz square-wave reference enters a phase detector whose charge-pump output drives a capacitor and leak resistor. The resulting control voltage tunes a one-to-two kilohertz VCO. A zero-crossing behavioral source converts the VCO sine wave into feedback edges and closes the loop."
+subtitle = "PHASEDET + 4.7 µF loop filter + 1–2 kHz MODULATOR VCO"
+
+[theme]
+font_size = 11
+unit = 2.1
+line_width = 2.1
+signal_color = "#1976d2"
+accent_color = "#c23b52"
+block_fill = "#f4f0fb"
+
+[[elements]]
+id = "VREFERENCE"
+kind = "source-pulse"
+start = [0, 6]
+end = [0, 0]
+value = "1.5 kHz"
+color = "#1976d2"
+
+[[elements]]
+id = "APHASE"
+kind = "block"
+start = [3, 6]
+end = [6, 6]
+terminals = ["reference", "control"]
+label_location = "center"
+value = "PHASEDET · ±50 µA"
+fill = "#f4f0fb"
+color = "#7357a2"
+
+[[elements]]
+id = "CLOOP"
+start = [6, 6]
+end = [6, 0]
+label = ""
+value = ""
+
+[[elements]]
+id = "RLOOP_LEAK"
+start = [9.5, 6]
+end = [9.5, 0]
+value = "10 MΩ"
+
+[[elements]]
+id = "AVCO"
+kind = "block"
+start = [11, 6]
+end = [14, 6]
+terminals = ["control", "vco"]
+label_location = "center"
+value = "MODULATOR · 1–2 kHz"
+fill = "#f4f0fb"
+color = "#7357a2"
+
+[[elements]]
+id = "RVCO_LOAD"
+start = [17, 6]
+end = [17, 0]
+value = "100 kΩ"
+
+[[elements]]
+id = "BFEEDBACK"
+kind = "block"
+start = [22, 3]
+end = [22, 0]
+label = ""
+value = ""
+fill = "#f4f8fd"
+color = "#526d91"
+
+[[elements]]
+id = "RFEEDBACK_LOAD"
+start = [25.5, 3]
+end = [25.5, 0]
+label = ""
+value = ""
+
+[[wires]]
+node = "reference"
+points = [[0, 6], [3, 6]]
+color = "#1976d2"
+arrow = "end"
+
+[[wires]]
+node = "control"
+points = [[6, 6], [11, 6]]
+color = "#c23b52"
+
+[[wires]]
+node = "vco"
+points = [[14, 6], [17, 6]]
+color = "#7357a2"
+
+[[wires]]
+node = "vco"
+points = [[17, 6], [21, 6], [21, 1.5], [21.4, 1.5]]
+color = "#7357a2"
+arrow = "end"
+
+[[wires]]
+node = "feedback"
+points = [[22, 3], [25.5, 3]]
+color = "#1976d2"
+
+[[wires]]
+node = "feedback"
+points = [[22, 3], [22, 8], [4.5, 8], [4.5, 6.7]]
+color = "#1976d2"
+arrow = "end"
+
+[[wires]]
+node = "0"
+points = [[0, 0], [25.5, 0]]
+
+[[junctions]]
+node = "control"
+at = [6, 6]
+
+[[junctions]]
+node = "control"
+at = [9.5, 6]
+
+[[junctions]]
+node = "vco"
+at = [17, 6]
+
+[[junctions]]
+node = "feedback"
+at = [22, 3]
+
+[[junctions]]
+node = "feedback"
+at = [25.5, 3]
+
+[[junctions]]
+node = "0"
+at = [6, 0]
+
+[[junctions]]
+node = "0"
+at = [9.5, 0]
+
+[[junctions]]
+node = "0"
+at = [17, 0]
+
+[[junctions]]
+node = "0"
+at = [22, 0]
+
+[[junctions]]
+node = "0"
+at = [25.5, 0]
+
+[[node_labels]]
+node = "reference"
+at = [1.5, 6.55]
+location = "center"
+
+[[node_labels]]
+node = "control"
+at = [8.25, 6.55]
+location = "center"
+
+[[node_labels]]
+node = "vco"
+at = [15.5, 6.55]
+location = "center"
+
+[[node_labels]]
+node = "feedback"
+at = [13, 8.4]
+location = "center"
+text = "feedback edge stream"
+
+[[node_labels]]
+node = "0"
+at = [26, 0]
+location = "right"
+
+[[symbols]]
+kind = "ground"
+node = "0"
+at = [25.5, 0]
+
+[[texts]]
+text = "CLOOP"
+at = [5, 3.3]
+location = "center"
+size = 11
+color = "#172235"
+
+[[texts]]
+text = "4.7 µF · IC 0.1 V"
+at = [5, 2.7]
+location = "center"
+size = 9
+color = "#57667a"
+
+[[texts]]
+text = "BFEEDBACK"
+at = [22, 3.55]
+location = "center"
+size = 11
+color = "#172235"
+
+[[texts]]
+text = "zero crossing"
+at = [22, 2.55]
+location = "center"
+size = 9
+color = "#57667a"
+
+[[texts]]
+text = "RFEEDBACK_LOAD"
+at = [25.5, 3.55]
+location = "center"
+size = 11
+color = "#172235"
+
+[[texts]]
+text = "10 kΩ"
+at = [25.5, 2.55]
+location = "center"
+size = 9
+color = "#57667a"
+

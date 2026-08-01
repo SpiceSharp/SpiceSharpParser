@@ -1,124 +1,140 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="500" viewBox="0 0 960 500" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" xml:lang="en" height="399.44000000000005pt" width="1075.4479999999999pt" viewBox="-110.96799999999999 -326.80000000000007 1075.4479999999999 399.44000000000005" style="background-color:#ffffff;" role="img" aria-labelledby="title desc" data-generator="spicesharp-cookbook-schematic 0.1.0">
   <title id="title">Full-wave rectifier and Zener regulator</title>
-  <desc id="desc">A grounded AC source feeds an isolated four-diode bridge. The bridge reservoir output supplies a capacitor, series resistor, Zener shunt, permanent load, and switched parallel load, all returned to the floating bridge-negative node.</desc>
-  <style>
-    .wire { fill: none; stroke: #233044; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
-    .control { fill: none; stroke: #64748b; stroke-width: 2.5; stroke-dasharray: 7 5; stroke-linecap: round; }
-    .part { fill: #ffffff; stroke: #233044; stroke-width: 2.5; }
-    .node { fill: #233044; }
-    .terminal { fill: #ffffff; stroke: #233044; stroke-width: 2.5; }
-    .label { fill: #182235; font: 15px 'Segoe UI', sans-serif; }
-    .small { fill: #526176; font: 13px 'Segoe UI', sans-serif; }
-    .tiny { fill: #526176; font: 12px 'Segoe UI', sans-serif; }
-    .heading { fill: #182235; font: 600 22px 'Segoe UI', sans-serif; }
-    .accent { fill: none; stroke: #1976d2; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
-    .regulated { fill: none; stroke: #c23b52; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
-    .block { fill: #f5f8fc; stroke: #8ca0ba; stroke-width: 2; }
-    .control-block { fill: #f8fafc; stroke: #94a3b8; stroke-width: 1.5; }
-  </style>
-
-  <rect width="960" height="500" fill="#ffffff"/>
-  <text x="36" y="38" class="heading">Rectifier power supply</text>
-  <text x="36" y="62" class="small">Every terminal follows rectifier-power-supply.cir; 0 and dc_return are separate nodes</text>
-
-  <!-- Ground-referenced AC source. -->
-  <circle cx="78" cy="235" r="34" class="part"/>
-  <path d="M54 235 C62 216 70 254 78 235 C86 216 94 254 102 235" class="wire"/>
-  <line x1="78" y1="201" x2="78" y2="195" class="wire"/>
-  <path d="M78 195 H126 V190 H170" class="wire"/>
-  <line x1="78" y1="269" x2="78" y2="275" class="wire"/>
-  <path d="M78 275 H126 V280 H170" class="wire"/>
-  <circle cx="126" cy="280" r="5" class="node"/>
-  <line x1="126" y1="280" x2="126" y2="303" class="wire"/>
-  <line x1="108" y1="303" x2="144" y2="303" class="wire"/>
-  <line x1="114" y1="311" x2="138" y2="311" class="wire"/>
-  <line x1="120" y1="319" x2="132" y2="319" class="wire"/>
-  <text x="35" y="348" class="label">VSECONDARY</text>
-  <text x="37" y="368" class="small">12 V RMS, 50 Hz</text>
-  <text x="110" y="180" class="small">ac_live</text>
-  <text x="137" y="301" class="small">0</text>
-
-  <!-- Four-port bridge block keeps the AC ground distinct from dc_return. -->
-  <rect x="170" y="120" width="205" height="220" rx="9" class="block"/>
-  <text x="207" y="150" class="label">Full-wave bridge</text>
-  <text x="222" y="171" class="small">D1 · D2 · D3 · D4</text>
-  <line x1="170" y1="190" x2="198" y2="190" class="wire"/>
-  <line x1="170" y1="280" x2="198" y2="280" class="wire"/>
-  <line x1="347" y1="190" x2="375" y2="190" class="accent"/>
-  <line x1="347" y1="280" x2="375" y2="280" class="wire"/>
-  <text x="204" y="195" class="small">AC: ac_live</text>
-  <text x="204" y="285" class="small">AC: 0</text>
-  <text x="285" y="195" class="small">+ reservoir</text>
-  <text x="276" y="285" class="small">− dc_return</text>
-  <text x="193" y="225" class="tiny">D1: ac_live → reservoir</text>
-  <text x="193" y="243" class="tiny">D2: 0 → reservoir</text>
-  <text x="193" y="261" class="tiny">D3/D4 return through dc_return</text>
-
-  <!-- Reservoir rail and floating bridge-negative return. -->
-  <line x1="375" y1="190" x2="475" y2="190" class="accent"/>
-  <circle cx="425" cy="190" r="5" class="node"/>
-  <text x="392" y="173" class="small">reservoir</text>
-  <path d="M375 280 H395 V385 H890" class="wire"/>
-  <circle cx="395" cy="385" r="5" class="node"/>
-  <text x="412" y="409" class="small">dc_return (floating bridge negative; not node 0)</text>
-
-  <!-- Reservoir capacitor. -->
-  <line x1="425" y1="190" x2="425" y2="253" class="wire"/>
-  <line x1="405" y1="253" x2="445" y2="253" class="wire"/>
-  <line x1="405" y1="266" x2="445" y2="266" class="wire"/>
-  <line x1="425" y1="266" x2="425" y2="385" class="wire"/>
-  <circle cx="425" cy="385" r="5" class="node"/>
-  <text x="442" y="293" class="label">CRES</text>
-  <text x="442" y="313" class="small">1000 uF</text>
-
-  <!-- Series feed and continuous regulated-output rail. -->
-  <polyline points="475,190 487,178 499,202 511,178 523,202 535,178 547,190" class="wire"/>
-  <text x="482" y="160" class="label">RSERIES 220</text>
-  <line x1="547" y1="190" x2="855" y2="190" class="regulated"/>
-  <circle cx="600" cy="190" r="5" class="node"/>
-  <circle cx="720" cy="190" r="5" class="node"/>
-  <circle cx="855" cy="190" r="5" class="node"/>
-  <text x="576" y="171" class="small">output</text>
-
-  <!-- Zener shunt. -->
-  <line x1="600" y1="190" x2="600" y2="242" class="wire"/>
-  <polygon points="585,242 615,242 600,266" class="part"/>
-  <polyline points="584,271 592,267 608,275 616,271" class="wire"/>
-  <line x1="600" y1="273" x2="600" y2="385" class="wire"/>
-  <circle cx="600" cy="385" r="5" class="node"/>
-  <text x="552" y="302" class="label">DZENER</text>
-  <text x="565" y="322" class="small">9.1 V</text>
-
-  <!-- Permanent load: both terminals visibly land on output and dc_return. -->
-  <line x1="720" y1="190" x2="720" y2="230" class="wire"/>
-  <polyline points="720,230 708,242 732,254 708,266 732,278 708,290 720,302" class="wire"/>
-  <line x1="720" y1="302" x2="720" y2="385" class="wire"/>
-  <circle cx="720" cy="385" r="5" class="node"/>
-  <text x="678" y="328" class="label">RLOAD</text>
-  <text x="691" y="348" class="small">1 kohm</text>
-
-  <!-- Switched parallel load: resistor and switch contacts are both wired. -->
-  <line x1="855" y1="190" x2="855" y2="220" class="wire"/>
-  <polyline points="855,220 843,232 867,244 843,256 867,268 843,280 855,292" class="wire"/>
-  <line x1="855" y1="292" x2="855" y2="310" class="wire"/>
-  <circle cx="855" cy="310" r="5" class="terminal"/>
-  <circle cx="855" cy="353" r="5" class="terminal"/>
-  <line x1="855" y1="353" x2="842" y2="319" class="wire"/>
-  <line x1="855" y1="358" x2="855" y2="385" class="wire"/>
-  <circle cx="855" cy="385" r="5" class="node"/>
-  <text x="746" y="238" class="label">RLOAD_STEP</text>
-  <text x="770" y="258" class="small">680 ohm</text>
-  <text x="781" y="342" class="small">SLOAD</text>
-
-  <!-- The ideal switch control is isolated from the load terminals. -->
-  <rect x="705" y="424" width="220" height="48" rx="7" class="control-block"/>
-  <text x="720" y="445" class="small">VLOAD_CONTROL: 0 → 5 V</text>
-  <text x="720" y="463" class="tiny">closes SLOAD at 150 ms</text>
-  <path d="M855 424 V397 H820 V346" class="control"/>
-
-  <rect x="36" y="430" width="620" height="42" fill="#f5f8fc" rx="7"/>
-  <line x1="55" y1="448" x2="95" y2="448" class="accent"/>
-  <text x="105" y="453" class="small">unregulated reservoir</text>
-  <line x1="283" y1="448" x2="323" y2="448" class="regulated"/>
-  <text x="333" y="453" class="small">regulated output rail feeds both loads</text>
+  <desc id="desc">A grounded 12 volt RMS AC source drives a four-diode bridge. Its floating reservoir and dc_return rails feed a reservoir capacitor, series resistor, 9.1 volt Zener shunt, permanent load, and a switched parallel load.</desc>
+  <circle cx="0" cy="-54" r="18" style="stroke:#1976d2;fill:none;stroke-width:2.1;stroke-dasharray:-;" />
+  <polygon points="99,-155.7 108,-168.3 117,-155.7 " style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <polygon points="207,-155.7 216,-168.3 225,-155.7 " style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <polygon points="99,-47.7 108,-60.3 117,-47.7 " style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <polygon points="207,-47.7 216,-60.3 225,-47.7 " style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <polygon points="495,-101.7 504,-114.3 513,-101.7 " style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <circle cx="900" cy="-54" r="18" style="stroke:#64748b;fill:none;stroke-width:2.1;stroke-dasharray:-;" />
+  <path d="M 0.0,-108.0 L 54,-108 L 108,-108" style="stroke:#1976d2;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 108.0,-216.0 L 216,-216 L 324,-216" style="stroke:#1976d2;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 432.0,-216.0 L 576,-216 L 720,-216" style="stroke:#c23b52;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 108.0,-0.0 L 414,-0 L 720,-0" style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 0.0,-0.0 L 0,18 L 0,36" style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 0.0,36.0 L 126,36 L 252,36" style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 252.0,36.0 L 252,-36 L 252,-108" style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 252.0,-108.0 L 234,-108 L 216,-108" style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 900.0,-0.0 L 900,18 L 900,36" style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 900.0,36.0 L 576,36 L 252,36" style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 900.0,-108.0 L 864,-108 L 828,-108" style="stroke:#64748b;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 828.0,-108.0 L 828,-99 L 828,-90" style="stroke:#64748b;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 828.0,-90.0 L 792,-90 L 765,-90" style="stroke:#64748b;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 758 -90 L 765 -92.7 L 765 -87.3 Z" style="stroke:#64748b;fill:#64748b;stroke-linecap:butt;stroke-linejoin:miter;" />
+  <path d="M 0.0,-108.0 L 0,-72 L 0,-72 M 0,-36 L 0,-36 L 0,-0" style="stroke:#1976d2;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M -8.999999999999996,-54.0 L -8.25,-52.137 L -7.5,-50.4 L -6.75,-48.909 L -6,-47.765 L -5.25,-47.045 L -4.5,-46.8 L -3.75,-47.045 L -3,-47.765 L -2.25,-48.909 L -1.5,-50.4 L -0.75,-52.137 L 0,-54 L 0.75,-55.863 L 1.5,-57.6 L 2.25,-59.091 L 3,-60.235 L 3.75,-60.955 L 4.5,-61.2 L 5.25,-60.955 L 6,-60.235 L 6.75,-59.091 L 7.5,-57.6 L 8.25,-55.863 L 9,-54" style="stroke:#1976d2;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 108.0,-108.0 L 108,-155.7 M 99,-168.3 L 117,-168.3 M 108,-168.3 L 108,-216" style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 216.0,-108.0 L 216,-155.7 M 207,-168.3 L 225,-168.3 M 216,-168.3 L 216,-216" style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 108.0,-0.0 L 108,-47.7 M 99,-60.3 L 117,-60.3 M 108,-60.3 L 108,-108" style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 216.0,-0.0 L 216,-47.7 M 207,-60.3 L 225,-60.3 M 216,-60.3 L 216,-108" style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 324.0,-216.0 L 324,-111.24 M 333,-111.24 L 315,-111.24 M 333,-104.76 L 315,-104.76 M 324,-104.76 L 324,-0" style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 324.0,-216.0 L 360,-216 L 363,-225 L 369,-207 L 375,-225 L 381,-207 L 387,-225 L 393,-207 L 396,-216 L 432,-216" style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 504.0,-0.0 L 504,-101.7 M 495,-114.3 L 513,-114.3 M 504,-114.3 L 504,-216" style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 495.0,-114.30000000000001 L 491.4,-117.9" style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 513.0,-114.30000000000001 L 516.6,-110.7" style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 612.0,-216.0 L 612,-126 L 621,-123 L 603,-117 L 621,-111 L 603,-105 L 621,-99 L 603,-93 L 612,-90 L 612,-0" style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 720.0,-216.0 L 720,-180 L 729,-177 L 711,-171 L 729,-165 L 711,-159 L 729,-153 L 711,-147 L 720,-144 L 720,-108" style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 720.0,-108.0 L 720,-72 M 723.6,-63.36 L 736.2,-43.2 M 720,-36 L 720,-0" style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 900.0,-108.0 L 900,-72 L 900,-72 M 900,-36 L 900,-36 L 900,-0" style="stroke:#64748b;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 910.8000000000001,-57.6 L 905.4,-57.6 L 905.4,-52.2 L 894.6,-52.2 L 894.6,-57.6 L 889.2,-57.6" style="stroke:#64748b;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <path d="M 252.0,36.0 L 252,50.4 L 243,50.4 L 261,50.4 M 245.7,54.72 L 258.3,54.72 M 250.2,59.04 L 253.8,59.04" style="stroke:#243247;fill:none;stroke-width:2.1;stroke-dasharray:-;stroke-linecap:round;stroke-linejoin:round;" />
+  <text x="-21.599999999999994" y="-65.0" dominant-baseline="central" fill="#172235" font-size="11.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="-21.599999999999994" dy="11.0">VSECONDARY</tspan>
+  </text>
+  <text x="95.4" y="-173.0" dominant-baseline="central" fill="#172235" font-size="11.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="95.4" dy="11.0">D1</tspan>
+  </text>
+  <text x="203.4" y="-173.0" dominant-baseline="central" fill="#172235" font-size="11.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="203.4" dy="11.0">D2</tspan>
+  </text>
+  <text x="95.4" y="-65.0" dominant-baseline="central" fill="#172235" font-size="11.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="95.4" dy="11.0">D3</tspan>
+  </text>
+  <text x="203.4" y="-65.0" dominant-baseline="central" fill="#172235" font-size="11.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="203.4" dy="11.0">D4</tspan>
+  </text>
+  <text x="311.40000000000003" y="-119.0" dominant-baseline="central" fill="#172235" font-size="11.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="311.40000000000003" dy="11.0">CRES</tspan>
+  </text>
+  <text x="336.59999999999997" y="-118.0" dominant-baseline="central" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="336.59999999999997" dy="10.0">1000 µF</tspan>
+  </text>
+  <text x="378.0" y="-239.6" dominant-baseline="ideographic" fill="#172235" font-size="11.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="378.0" dy="11.0">RSERIES</tspan>
+  </text>
+  <text x="378.0" y="-213.4" dominant-baseline="hanging" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="378.0" dy="10.0">220 Ω</tspan>
+  </text>
+  <text x="487.8" y="-119.0" dominant-baseline="central" fill="#172235" font-size="11.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="487.8" dy="11.0">DZENER</tspan>
+  </text>
+  <text x="520.1999999999999" y="-118.0" dominant-baseline="central" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="520.1999999999999" dy="10.0">9.1 V</tspan>
+  </text>
+  <text x="599.4" y="-119.0" dominant-baseline="central" fill="#172235" font-size="11.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="599.4" dy="11.0">RLOAD</tspan>
+  </text>
+  <text x="624.6" y="-118.0" dominant-baseline="central" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="624.6" dy="10.0">1 kΩ</tspan>
+  </text>
+  <text x="707.4" y="-173.0" dominant-baseline="central" fill="#172235" font-size="11.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="707.4" dy="11.0">RLOAD_STEP</tspan>
+  </text>
+  <text x="732.6" y="-172.0" dominant-baseline="central" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="732.6" dy="10.0">680 Ω</tspan>
+  </text>
+  <circle cx="720" cy="-67.68" r="4.32" style="stroke:#243247;fill:#ffffff;stroke-width:2.1;stroke-dasharray:-;" />
+  <circle cx="720" cy="-40.32" r="4.32" style="stroke:#243247;fill:#ffffff;stroke-width:2.1;stroke-dasharray:-;" />
+  <text x="712.08" y="-65.0" dominant-baseline="central" fill="#172235" font-size="11.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="712.08" dy="11.0">SLOAD</tspan>
+  </text>
+  <text x="878.4" y="-65.0" dominant-baseline="central" fill="#172235" font-size="11.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="end">
+    <tspan x="878.4" dy="11.0">VLOAD_CONTROL</tspan>
+  </text>
+  <text x="921.6" y="-64.0" dominant-baseline="central" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="921.6" dy="10.0">0 → 5 V</tspan>
+  </text>
+  <text x="57.6" y="-132.39999999999998" dominant-baseline="central" fill="#1976d2" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="57.6" dy="10.0">ac_live</tspan>
+  </text>
+  <text x="309.59999999999997" y="-240.4" dominant-baseline="central" fill="#1976d2" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="309.59999999999997" dy="10.0">reservoir</tspan>
+  </text>
+  <text x="561.6" y="-240.4" dominant-baseline="central" fill="#1976d2" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="561.6" dy="10.0">output</tspan>
+  </text>
+  <text x="435.59999999999997" y="-22.6" dominant-baseline="central" fill="#1976d2" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="435.59999999999997" dy="10.0">dc_return · floating</tspan>
+  </text>
+  <text x="759.6" y="-127.0" dominant-baseline="central" fill="#1976d2" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="759.6" dy="10.0">stepped_load</tspan>
+  </text>
+  <text x="903.6" y="-132.39999999999998" dominant-baseline="central" fill="#1976d2" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="903.6" dy="10.0">load_control</tspan>
+  </text>
+  <text x="273.59999999999997" y="29.6" dominant-baseline="ideographic" fill="#1976d2" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="273.59999999999997" dy="10.0">0</tspan>
+  </text>
+  <text x="165.6" y="-249.4" dominant-baseline="central" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="middle">
+    <tspan x="165.6" dy="10.0">bridge</tspan>
+  </text>
+  <text x="3.6" y="-313.20000000000005" dominant-baseline="ideographic" fill="#172235" font-size="18.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="3.6" dy="18.0">Full-wave rectifier and Zener regulator</tspan>
+  </text>
+  <text x="3.6" y="-280.0" dominant-baseline="ideographic" fill="#57667a" font-size="10.0" font-family="Segoe UI, DejaVu Sans, sans-serif" text-anchor="start">
+    <tspan x="3.6" dy="10.0">12 V RMS, 50 Hz · floating DC return · 680 Ω load step at 150 ms</tspan>
+  </text>
+  <circle cx="108" cy="-108" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.1;stroke-dasharray:-;" />
+  <circle cx="216" cy="-108" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.1;stroke-dasharray:-;" />
+  <circle cx="324" cy="-216" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.1;stroke-dasharray:-;" />
+  <circle cx="504" cy="-216" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.1;stroke-dasharray:-;" />
+  <circle cx="612" cy="-216" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.1;stroke-dasharray:-;" />
+  <circle cx="720" cy="-216" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.1;stroke-dasharray:-;" />
+  <circle cx="720" cy="-108" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.1;stroke-dasharray:-;" />
+  <circle cx="324" cy="-0" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.1;stroke-dasharray:-;" />
+  <circle cx="504" cy="-0" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.1;stroke-dasharray:-;" />
+  <circle cx="612" cy="-0" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.1;stroke-dasharray:-;" />
+  <circle cx="720" cy="-0" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.1;stroke-dasharray:-;" />
+  <circle cx="252" cy="36" r="2.7" style="stroke:#243247;fill:#243247;stroke-width:2.1;stroke-dasharray:-;" />
 </svg>
