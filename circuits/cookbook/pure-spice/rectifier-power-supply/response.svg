@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="430" viewBox="0 0 960 430" role="img" aria-labelledby="title desc">
+  <title id="title">Verified rectifier response summary</title>
+  <desc id="desc">The reservoir charges to about 15 volts with ripple. The regulated output remains near 9.4 volts and drops by 0.124 volts when the parallel load turns on at 150 milliseconds.</desc>
+  <style>
+    .axis { stroke: #445268; stroke-width: 2; }
+    .grid { stroke: #dce3ec; stroke-width: 1; }
+    .reservoir { fill: none; stroke: #1976d2; stroke-width: 3; stroke-linejoin: round; }
+    .output { fill: none; stroke: #c23b52; stroke-width: 3; stroke-linejoin: round; }
+    .step { fill: none; stroke: #6b7280; stroke-width: 2; stroke-dasharray: 7 6; }
+    .text { fill: #253248; font: 14px 'Segoe UI', sans-serif; }
+    .small { fill: #5b687b; font: 12px 'Segoe UI', sans-serif; }
+    .heading { fill: #182235; font: 600 21px 'Segoe UI', sans-serif; }
+    .panel { fill: #f8fafc; stroke: #d7dee8; stroke-width: 1; }
+  </style>
+  <rect width="960" height="430" fill="#ffffff"/>
+  <text x="44" y="34" class="heading">Verified transient response summary</text>
+  <text x="44" y="55" class="small">Curves summarize the simulated behavior; annotations are netlist-native .MEAS results.</text>
+
+  <rect x="72" y="82" width="820" height="260" class="panel"/>
+  <line x1="72" y1="342" x2="892" y2="342" class="axis"/>
+  <line x1="72" y1="82" x2="72" y2="342" class="axis"/>
+
+  <line x1="72" y1="282" x2="892" y2="282" class="grid"/>
+  <line x1="72" y1="222" x2="892" y2="222" class="grid"/>
+  <line x1="72" y1="162" x2="892" y2="162" class="grid"/>
+  <line x1="72" y1="102" x2="892" y2="102" class="grid"/>
+  <text x="41" y="346" class="small">0 V</text>
+  <text x="35" y="286" class="small">4 V</text>
+  <text x="35" y="226" class="small">8 V</text>
+  <text x="29" y="166" class="small">12 V</text>
+  <text x="29" y="106" class="small">16 V</text>
+
+  <line x1="345" y1="82" x2="345" y2="342" class="grid"/>
+  <line x1="619" y1="82" x2="619" y2="342" class="step"/>
+  <line x1="892" y1="82" x2="892" y2="342" class="grid"/>
+  <text x="64" y="365" class="small">0 ms</text>
+  <text x="326" y="365" class="small">100 ms</text>
+  <text x="600" y="365" class="small">200 ms</text>
+  <text x="872" y="365" class="small">300 ms</text>
+  <text x="560" y="392" class="text">time</text>
+
+  <path class="reservoir" d="M72 342
+    C86 294 98 235 111 160
+    L124 121 L137 130 L151 112 L165 122 L178 107 L192 118
+    L206 104 L219 116 L233 102 L247 114 L260 101 L274 113
+    L288 100 L301 112 L315 100 L329 112 L342 100 L356 112
+    L370 100 L383 112 L397 100 L411 112 L424 100 L438 112
+    L452 100 L465 112 L479 100 L493 112 L506 100 L520 112
+    L534 100 L547 112 L561 100 L575 112 L588 100 L602 112
+    L616 100 L629 114 L643 102 L657 115 L670 103 L684 116
+    L698 104 L711 117 L725 105 L739 118 L752 106 L766 119
+    L780 107 L793 120 L807 108 L821 121 L834 109 L848 122
+    L862 110 L875 123 L892 111"/>
+
+  <path class="output" d="M72 342
+    C95 306 116 262 138 220
+    C167 202 199 200 240 201
+    L610 201
+    C616 201 620 202 624 203
+    C642 205 671 203 700 203
+    L892 203"/>
+
+  <line x1="619" y1="90" x2="619" y2="330" class="step"/>
+  <text x="630" y="92" class="small">680 ohm load enabled</text>
+
+  <line x1="716" y1="118" x2="760" y2="118" class="reservoir"/>
+  <text x="770" y="123" class="text">reservoir: 15.137 V light, 0.229 V p-p loaded</text>
+  <line x1="716" y1="151" x2="760" y2="151" class="output"/>
+  <text x="770" y="156" class="text">output: 9.408 V to 9.285 V</text>
+
+  <rect x="72" y="384" width="402" height="30" rx="6" fill="#f3f7fb"/>
+  <text x="88" y="404" class="small">Measured load regulation: 0.124 V</text>
+  <rect x="490" y="384" width="402" height="30" rx="6" fill="#fff4f6"/>
+  <text x="506" y="404" class="small">Measured regulated ripple: 14.7 mV p-p</text>
+</svg>

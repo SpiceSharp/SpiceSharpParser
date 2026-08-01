@@ -1,0 +1,35 @@
+Simple phase-locked loop using LTspice A-device functional models
+
+* The reference is a 1.5 kHz square wave.
+VREFERENCE reference 0 PULSE(0 1 100u 1u 1u 332.333u 666.667u)
+
+* A type-II phase/frequency detector charges the loop capacitor.
+* Terminal 7 is the charge-pump output and terminal 8 is common.
+APHASE reference feedback 0 0 0 0 control 0 PHASEDET
++ Iout=50u Vhigh=1 Vlow=0
+CLOOP control 0 4.7u IC=0.1
+RLOOP_LEAK control 0 10Meg
+
+* FM control maps 0..1 V to 1..2 kHz. AM repeats common and therefore
+* uses the MODULATOR default amplitude of 1 V.
+AVCO control 0 0 0 0 0 vco 0 MODULATOR Mark=2k Space=1k Rout=10
+RVCO_LOAD vco 0 100k
+
+* Convert the sine-wave VCO output into the logic feedback edge stream.
+BFEEDBACK feedback 0 V={if(V(vco)>0,1,0)}
+RFEEDBACK_LOAD feedback 0 10k
+
+.OPTIONS method=gear plotwinsize=0
+.TRAN 20u 80m 0 2u UIC
+
+.MEAS TRAN reference_period TRIG V(reference) VAL=0.5 RISE=1 TD=60m
++ TARG V(reference) VAL=0.5 RISE=2 TD=60m
+.MEAS TRAN vco_period TRIG V(vco) VAL=0 RISE=1 TD=60m
++ TARG V(vco) VAL=0 RISE=2 TD=60m
+.MEAS TRAN control_average AVG V(control) FROM=60m TO=80m
+.MEAS TRAN control_ripple PP V(control) FROM=60m TO=80m
+.MEAS TRAN vco_amplitude PP V(vco) FROM=60m TO=80m
+
+.SAVE V(reference) V(feedback) V(control) V(vco)
+.PLOT TRAN V(reference) V(feedback) V(control) V(vco)
+.END

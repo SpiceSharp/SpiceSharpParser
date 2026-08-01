@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="500" viewBox="0 0 960 500" role="img" aria-labelledby="title desc">
+  <title id="title">Verified PLL acquisition and lock summary</title>
+  <desc id="desc">The control voltage rises from 0.1 volts toward 0.5 volts. Reference and feedback edge rates converge. In the settled interval, control averages 0.4944 volts and the measured VCO period is 677.269 microseconds.</desc>
+  <style>
+    .axis { stroke: #46546a; stroke-width: 2; }
+    .grid { stroke: #dde4ed; stroke-width: 1; }
+    .control { fill: none; stroke: #b74459; stroke-width: 3; }
+    .reference { fill: none; stroke: #1976d2; stroke-width: 2.5; stroke-linejoin: round; }
+    .feedback { fill: none; stroke: #7357a2; stroke-width: 2.5; stroke-linejoin: round; }
+    .target { fill: none; stroke: #8190a3; stroke-width: 1.5; stroke-dasharray: 6 5; }
+    .text { fill: #253248; font: 14px 'Segoe UI', sans-serif; }
+    .small { fill: #5b687b; font: 12px 'Segoe UI', sans-serif; }
+    .heading { fill: #182235; font: 600 21px 'Segoe UI', sans-serif; }
+    .panel { fill: #f8fafc; stroke: #d7dee8; stroke-width: 1; }
+  </style>
+  <rect width="960" height="500" fill="#ffffff"/>
+  <text x="44" y="32" class="heading">Verified PLL acquisition and lock</text>
+  <text x="44" y="53" class="small">Curves summarize the simulated behavior; annotations are netlist-native .MEAS results.</text>
+
+  <rect x="76" y="76" width="816" height="206" class="panel"/>
+  <line x1="76" y1="282" x2="892" y2="282" class="axis"/>
+  <line x1="76" y1="76" x2="76" y2="282" class="axis"/>
+  <line x1="76" y1="179" x2="892" y2="179" class="target"/>
+  <line x1="280" y1="76" x2="280" y2="282" class="grid"/>
+  <line x1="484" y1="76" x2="484" y2="282" class="grid"/>
+  <line x1="688" y1="76" x2="688" y2="282" class="grid"/>
+  <text x="32" y="286" class="small">0 V</text>
+  <text x="25" y="183" class="small">0.5 V</text>
+  <text x="25" y="81" class="small">1.0 V</text>
+  <text x="800" y="171" class="small">0.5 V lock target</text>
+  <text x="19" y="122" class="text">control</text>
+
+  <path class="control" d="M76 261
+    C112 257 148 243 181 225
+    C218 205 250 189 287 179
+    C321 170 348 173 375 181
+    C403 189 429 186 455 178
+    C482 169 508 172 534 181
+    C560 190 586 185 612 177
+    C638 169 665 173 691 181
+    C718 188 743 184 768 177
+    C794 171 819 174 844 181
+    C862 185 878 181 892 178"/>
+  <line x1="688" y1="76" x2="688" y2="282" class="target"/>
+  <text x="700" y="100" class="small">measurement window 60–80 ms</text>
+  <text x="699" y="121" class="small">average 0.4944 V</text>
+  <text x="699" y="142" class="small">ripple 40.60 mV p-p</text>
+
+  <rect x="76" y="316" width="816" height="125" class="panel"/>
+  <text x="17" y="350" class="small">reference</text>
+  <text x="17" y="410" class="small">feedback</text>
+  <path class="reference" d="M76 365 L76 331 L108 331 L108 365 L140 365 L140 331 L172 331 L172 365
+    L204 365 L204 331 L236 331 L236 365 L268 365 L268 331 L300 331 L300 365
+    L332 365 L332 331 L364 331 L364 365 L396 365 L396 331 L428 331 L428 365
+    L460 365 L460 331 L492 331 L492 365 L524 365 L524 331 L556 331 L556 365
+    L588 365 L588 331 L620 331 L620 365 L652 365 L652 331 L684 331 L684 365
+    L716 365 L716 331 L748 331 L748 365 L780 365 L780 331 L812 331 L812 365
+    L844 365 L844 331 L876 331 L876 365 L892 365"/>
+  <path class="feedback" d="M76 425 L76 391 L120 391 L120 425 L164 425 L164 391 L207 391 L207 425
+    L249 425 L249 391 L289 391 L289 425 L328 425 L328 391 L366 391 L366 425
+    L402 425 L402 391 L438 391 L438 425 L473 425 L473 391 L507 391 L507 425
+    L541 425 L541 391 L574 391 L574 425 L607 425 L607 391 L640 391 L640 425
+    L673 425 L673 391 L705 391 L705 425 L737 425 L737 391 L769 391 L769 425
+    L801 425 L801 391 L833 391 L833 425 L865 425 L865 391 L892 391"/>
+
+  <text x="76" y="462" class="small">0 ms</text>
+  <text x="266" y="462" class="small">20 ms</text>
+  <text x="470" y="462" class="small">40 ms</text>
+  <text x="674" y="462" class="small">60 ms</text>
+  <text x="861" y="462" class="small">80 ms</text>
+  <text x="292" y="486" class="text">Feedback begins slower, then converges on the 666.667 us reference period.</text>
+
+  <rect x="621" y="290" width="271" height="19" rx="5" fill="#f4f0fb"/>
+  <text x="636" y="304" class="small">Measured VCO cycle: 677.269 us</text>
+</svg>

@@ -125,6 +125,7 @@ The former long README reference is split across these focused documents:
 | Topic | Document |
 | --- | --- |
 | Full project reference | [Detailed Project Guide](PROJECT_GUIDE.md) |
+| Practical, measured designs | [Circuit Cookbook](circuits/README.md) |
 | Documentation by statement and device | [Documentation Index](src/docs/index.md) |
 | Parser introduction | [Introduction](src/docs/articles/intro.md) |
 | Compiler diagnostics | [Diagnostic Reference](docs/diagnostics.md) |

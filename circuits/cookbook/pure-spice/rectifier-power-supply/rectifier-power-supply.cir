@@ -1,0 +1,39 @@
+Full-wave rectifier, reservoir capacitor, Zener regulator, and load step
+
+* A 12 Vrms, 50 Hz isolated secondary has a 16.97 V peak.
+VSECONDARY ac_live 0 SINE(0 16.97 50)
+
+* Full-wave bridge. dc_return is the floating negative DC terminal.
+D1 ac_live reservoir DRECT
+D2 0 reservoir DRECT
+D3 dc_return ac_live DRECT
+D4 dc_return 0 DRECT
+
+* Reservoir and 9.1 V shunt regulator.
+CRES reservoir dc_return 1000u IC=0
+RSERIES reservoir output 220
+DZENER dc_return output DZ9V1
+RLOAD output dc_return 1k
+
+* Add a 680 ohm parallel load after 150 ms.
+VLOAD_CONTROL load_control 0 PULSE(0 5 150m 1u 1u 1 2)
+SLOAD stepped_load dc_return load_control 0 LOAD_SWITCH
+RLOAD_STEP output stepped_load 680
+
+.MODEL DRECT D(IS=2.5n RS=0.08 N=1.8 CJO=25p TT=2u)
+.MODEL DZ9V1 D(IS=5n RS=5 N=1.5 BV=9.1 IBV=5m)
+.MODEL LOAD_SWITCH SW(RON=0.01 ROFF=1G VT=2.5 VH=0.1)
+
+.OPTIONS method=gear
+.TRAN 100u 300m 0 20u UIC
+
+.MEAS TRAN reservoir_light_avg AVG V(reservoir,dc_return) FROM=100m TO=140m
+.MEAS TRAN output_light_avg AVG V(output,dc_return) FROM=100m TO=140m
+.MEAS TRAN output_loaded_avg AVG V(output,dc_return) FROM=250m TO=290m
+.MEAS TRAN reservoir_loaded_ripple PP V(reservoir,dc_return) FROM=250m TO=290m
+.MEAS TRAN output_loaded_ripple PP V(output,dc_return) FROM=250m TO=290m
+.MEAS TRAN load_regulation PARAM output_light_avg-output_loaded_avg
+
+.SAVE V(ac_live) V(reservoir,dc_return) V(output,dc_return) V(load_control)
+.PLOT TRAN V(ac_live) V(reservoir,dc_return) V(output,dc_return) V(load_control)
+.END

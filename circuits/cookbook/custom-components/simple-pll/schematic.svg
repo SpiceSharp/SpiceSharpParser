@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="470" viewBox="0 0 960 470" role="img" aria-labelledby="title desc">
+  <title id="title">Simple phase-locked loop schematic</title>
+  <desc id="desc">A square-wave reference drives a phase detector. Its charge-pump output charges a loop capacitor and controls a voltage-controlled oscillator. A zero-crossing comparator returns logic feedback to the detector.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#26364c"/>
+    </marker>
+  </defs>
+  <style>
+    .wire { fill: none; stroke: #26364c; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; marker-end: url(#arrow); }
+    .plain { fill: none; stroke: #26364c; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    .block { fill: #f4f8fd; stroke: #526d91; stroke-width: 2.5; rx: 10; }
+    .custom { fill: #f4f0fb; stroke: #7357a2; stroke-width: 2.5; rx: 10; }
+    .filter { fill: #fff5f7; stroke: #b74459; stroke-width: 2.5; rx: 10; }
+    .node { fill: #26364c; }
+    .label { fill: #172235; font: 15px 'Segoe UI', sans-serif; }
+    .small { fill: #57667a; font: 13px 'Segoe UI', sans-serif; }
+    .heading { fill: #172235; font: 600 22px 'Segoe UI', sans-serif; }
+    .purple { fill: none; stroke: #7357a2; stroke-width: 3; marker-end: url(#arrow); }
+    .red { fill: none; stroke: #b74459; stroke-width: 3; marker-end: url(#arrow); }
+  </style>
+  <rect width="960" height="470" fill="#ffffff"/>
+  <text x="36" y="38" class="heading">Simple phase-locked loop</text>
+  <text x="36" y="62" class="small">A-device phase detector + passive loop filter + A-device VCO</text>
+
+  <rect x="38" y="120" width="146" height="92" class="block"/>
+  <path d="M54 179 L54 145 L76 145 L76 179 L99 179 L99 145 L121 145 L121 179 L144 179 L144 145 L168 145" class="plain"/>
+  <text x="63" y="200" class="label">VREFERENCE</text>
+  <text x="69" y="232" class="small">reference</text>
+  <text x="73" y="250" class="small">1.5 kHz</text>
+
+  <line x1="184" y1="166" x2="248" y2="166" class="wire"/>
+  <rect x="248" y="102" width="184" height="150" class="custom"/>
+  <text x="286" y="132" class="label">APHASE</text>
+  <text x="285" y="155" class="label">PHASEDET</text>
+  <text x="270" y="186" class="small">reference edge  +</text>
+  <text x="270" y="209" class="small">feedback edge   -</text>
+  <text x="294" y="235" class="small">±50 uA pump</text>
+
+  <line x1="432" y1="177" x2="493" y2="177" class="red"/>
+  <circle cx="493" cy="177" r="5" class="node"/>
+  <text x="459" y="154" class="small">control</text>
+  <rect x="493" y="107" width="146" height="140" class="filter"/>
+  <text x="525" y="137" class="label">Loop filter</text>
+  <line x1="548" y1="161" x2="548" y2="190" class="plain"/>
+  <line x1="527" y1="190" x2="569" y2="190" class="plain"/>
+  <line x1="527" y1="204" x2="569" y2="204" class="plain"/>
+  <line x1="548" y1="204" x2="548" y2="229" class="plain"/>
+  <text x="575" y="187" class="small">4.7 uF</text>
+  <text x="514" y="265" class="small">IC = 0.1 V</text>
+
+  <line x1="639" y1="177" x2="696" y2="177" class="purple"/>
+  <rect x="696" y="102" width="224" height="150" class="custom"/>
+  <text x="759" y="132" class="label">AVCO</text>
+  <text x="742" y="155" class="label">MODULATOR</text>
+  <path d="M720 201 C735 165 750 237 765 201 C780 165 795 237 810 201 C825 165 840 237 855 201 C870 165 885 237 900 201" class="plain"/>
+  <text x="743" y="235" class="small">1 to 2 kHz sine</text>
+
+  <line x1="808" y1="252" x2="808" y2="315" class="wire"/>
+  <text x="824" y="284" class="small">vco</text>
+  <rect x="662" y="315" width="292" height="82" class="block"/>
+  <text x="706" y="347" class="label">BFEEDBACK zero-crossing comparator</text>
+  <text x="739" y="374" class="small">sine &gt; 0 → feedback = 1 V</text>
+
+  <path d="M662 356 L340 356 L340 252" class="wire"/>
+  <text x="449" y="377" class="small">feedback edge stream</text>
+
+  <rect x="38" y="290" width="515" height="82" rx="8" fill="#f7f9fc" stroke="#d4dce7"/>
+  <text x="57" y="320" class="label">Negative feedback direction</text>
+  <text x="57" y="344" class="small">reference leads → pump raises control → VCO speeds up</text>
+  <text x="57" y="364" class="small">feedback leads → pump lowers control → VCO slows down</text>
+
+  <rect x="38" y="424" width="882" height="29" rx="6" fill="#f5f8fc"/>
+  <text x="126" y="444" class="small">At lock, control averages near 0.5 V and reference/feedback edges repeat at nearly the same rate.</text>
+</svg>

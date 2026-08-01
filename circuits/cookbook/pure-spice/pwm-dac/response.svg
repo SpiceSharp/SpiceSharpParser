@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="470" viewBox="0 0 960 470" role="img" aria-labelledby="title desc">
+  <title id="title">Verified PWM DAC response summary</title>
+  <desc id="desc">A 40 percent PWM waveform is filtered into a two volt analog output that settles in 5.566 milliseconds with 0.385 millivolts peak-to-peak ripple.</desc>
+  <style>
+    .axis { stroke: #46546a; stroke-width: 2; }
+    .grid { stroke: #dde4ed; stroke-width: 1; }
+    .pwm { fill: none; stroke: #1976d2; stroke-width: 2.5; stroke-linejoin: round; }
+    .pole1 { fill: none; stroke: #7b61a8; stroke-width: 2.5; }
+    .output { fill: none; stroke: #c23b52; stroke-width: 3.2; }
+    .target { fill: none; stroke: #8190a3; stroke-width: 1.5; stroke-dasharray: 6 5; }
+    .text { fill: #253248; font: 14px 'Segoe UI', sans-serif; }
+    .small { fill: #5b687b; font: 12px 'Segoe UI', sans-serif; }
+    .heading { fill: #182235; font: 600 21px 'Segoe UI', sans-serif; }
+    .panel { fill: #f8fafc; stroke: #d7dee8; stroke-width: 1; }
+  </style>
+  <rect width="960" height="470" fill="#ffffff"/>
+  <text x="44" y="32" class="heading">Verified PWM DAC transient response</text>
+  <text x="44" y="53" class="small">Curves summarize the simulated response; scalar annotations are .MEAS results.</text>
+
+  <rect x="74" y="76" width="820" height="92" class="panel"/>
+  <text x="18" y="125" class="text">PWM</text>
+  <line x1="74" y1="150" x2="894" y2="150" class="axis"/>
+  <path class="pwm" d="M74 150 L74 92 L90 92 L90 150 L114 150 L114 92 L130 92 L130 150 L154 150 L154 92 L170 92 L170 150
+    L194 150 L194 92 L210 92 L210 150 L234 150 L234 92 L250 92 L250 150 L274 150 L274 92 L290 92 L290 150
+    L314 150 L314 92 L330 92 L330 150 L354 150 L354 92 L370 92 L370 150 L394 150 L394 92 L410 92 L410 150
+    L434 150 L434 92 L450 92 L450 150 L474 150 L474 92 L490 92 L490 150 L514 150 L514 92 L530 92 L530 150
+    L554 150 L554 92 L570 92 L570 150 L594 150 L594 92 L610 92 L610 150 L634 150 L634 92 L650 92 L650 150
+    L674 150 L674 92 L690 92 L690 150 L714 150 L714 92 L730 92 L730 150 L754 150 L754 92 L770 92 L770 150
+    L794 150 L794 92 L810 92 L810 150 L834 150 L834 92 L850 92 L850 150 L874 150 L874 92 L894 92"/>
+  <text x="803" y="111" class="small">5 V</text>
+  <text x="802" y="162" class="small">40% duty</text>
+
+  <rect x="74" y="196" width="820" height="210" class="panel"/>
+  <line x1="74" y1="406" x2="894" y2="406" class="axis"/>
+  <line x1="74" y1="196" x2="74" y2="406" class="axis"/>
+  <line x1="74" y1="322" x2="894" y2="322" class="grid"/>
+  <line x1="74" y1="238" x2="894" y2="238" class="target"/>
+  <text x="37" y="410" class="small">0 V</text>
+  <text x="37" y="326" class="small">1 V</text>
+  <text x="37" y="242" class="small">2 V</text>
+  <text x="792" y="232" class="small">2.0 V target</text>
+
+  <line x1="279" y1="196" x2="279" y2="406" class="grid"/>
+  <line x1="484" y1="196" x2="484" y2="406" class="grid"/>
+  <line x1="689" y1="196" x2="689" y2="406" class="grid"/>
+  <text x="68" y="426" class="small">0</text>
+  <text x="267" y="426" class="small">5 ms</text>
+  <text x="468" y="426" class="small">10 ms</text>
+  <text x="673" y="426" class="small">15 ms</text>
+  <text x="874" y="426" class="small">20 ms</text>
+
+  <path class="pole1" d="M74 406 C102 360 131 318 165 286 C204 256 245 243 290 239 C350 236 420 236 484 236
+    C570 236 650 236 730 236 C792 236 842 236 894 236"/>
+  <path class="output" d="M74 406 C117 401 153 385 187 358 C225 328 259 292 298 266 C338 242 379 238 430 237
+    C514 237 600 237 689 237 C765 237 831 237 894 237"/>
+
+  <line x1="302" y1="238" x2="302" y2="406" class="target"/>
+  <circle cx="302" cy="238" r="5" fill="#c23b52"/>
+  <text x="314" y="260" class="small">1.96 V at 5.566 ms</text>
+
+  <line x1="104" y1="214" x2="142" y2="214" class="pole1"/>
+  <text x="151" y="219" class="small">pole1: 59.97 mV p-p ripple</text>
+  <line x1="388" y1="214" x2="426" y2="214" class="output"/>
+  <text x="435" y="219" class="small">output: 2.0100 V average, 0.385 mV p-p</text>
+
+  <rect x="74" y="440" width="820" height="23" rx="6" fill="#f3f7fb"/>
+  <text x="238" y="456" class="small">Two buffered poles preserve the duty-cycle average while strongly attenuating the 20 kHz carrier.</text>
+</svg>

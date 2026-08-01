@@ -85,18 +85,19 @@ milestone directories intact.
 ```text
 circuits/
   README.md
-  pure-spice/
-    rectifier-power-supply/
-      README.md
-      rectifier-power-supply.cir
-      schematic.svg
-      response.svg
-  custom-components/
-    ideal-diode-power-or/
-      README.md
-      ideal-diode-power-or.cir
-      schematic.svg
-      response.svg
+  cookbook/
+    pure-spice/
+      rectifier-power-supply/
+        README.md
+        rectifier-power-supply.cir
+        schematic.svg
+        response.svg
+    custom-components/
+      ideal-diode-power-or/
+        README.md
+        ideal-diode-power-or.cir
+        schematic.svg
+        response.svg
 ```
 
 The root `circuits/README.md` should be the searchable cookbook catalog. It

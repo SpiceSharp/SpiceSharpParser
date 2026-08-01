@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="500" viewBox="0 0 960 500" role="img" aria-labelledby="title desc">
+  <title id="title">Full-wave rectifier and Zener regulator</title>
+  <desc id="desc">A grounded AC source feeds an isolated four-diode bridge. The bridge reservoir output supplies a capacitor, series resistor, Zener shunt, permanent load, and switched parallel load, all returned to the floating bridge-negative node.</desc>
+  <style>
+    .wire { fill: none; stroke: #233044; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    .control { fill: none; stroke: #64748b; stroke-width: 2.5; stroke-dasharray: 7 5; stroke-linecap: round; }
+    .part { fill: #ffffff; stroke: #233044; stroke-width: 2.5; }
+    .node { fill: #233044; }
+    .terminal { fill: #ffffff; stroke: #233044; stroke-width: 2.5; }
+    .label { fill: #182235; font: 15px 'Segoe UI', sans-serif; }
+    .small { fill: #526176; font: 13px 'Segoe UI', sans-serif; }
+    .tiny { fill: #526176; font: 12px 'Segoe UI', sans-serif; }
+    .heading { fill: #182235; font: 600 22px 'Segoe UI', sans-serif; }
+    .accent { fill: none; stroke: #1976d2; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    .regulated { fill: none; stroke: #c23b52; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    .block { fill: #f5f8fc; stroke: #8ca0ba; stroke-width: 2; }
+    .control-block { fill: #f8fafc; stroke: #94a3b8; stroke-width: 1.5; }
+  </style>
+
+  <rect width="960" height="500" fill="#ffffff"/>
+  <text x="36" y="38" class="heading">Rectifier power supply</text>
+  <text x="36" y="62" class="small">Every terminal follows rectifier-power-supply.cir; 0 and dc_return are separate nodes</text>
+
+  <!-- Ground-referenced AC source. -->
+  <circle cx="78" cy="235" r="34" class="part"/>
+  <path d="M54 235 C62 216 70 254 78 235 C86 216 94 254 102 235" class="wire"/>
+  <line x1="78" y1="201" x2="78" y2="195" class="wire"/>
+  <path d="M78 195 H126 V190 H170" class="wire"/>
+  <line x1="78" y1="269" x2="78" y2="275" class="wire"/>
+  <path d="M78 275 H126 V280 H170" class="wire"/>
+  <circle cx="126" cy="280" r="5" class="node"/>
+  <line x1="126" y1="280" x2="126" y2="303" class="wire"/>
+  <line x1="108" y1="303" x2="144" y2="303" class="wire"/>
+  <line x1="114" y1="311" x2="138" y2="311" class="wire"/>
+  <line x1="120" y1="319" x2="132" y2="319" class="wire"/>
+  <text x="35" y="348" class="label">VSECONDARY</text>
+  <text x="37" y="368" class="small">12 V RMS, 50 Hz</text>
+  <text x="110" y="180" class="small">ac_live</text>
+  <text x="137" y="301" class="small">0</text>
+
+  <!-- Four-port bridge block keeps the AC ground distinct from dc_return. -->
+  <rect x="170" y="120" width="205" height="220" rx="9" class="block"/>
+  <text x="207" y="150" class="label">Full-wave bridge</text>
+  <text x="222" y="171" class="small">D1 · D2 · D3 · D4</text>
+  <line x1="170" y1="190" x2="198" y2="190" class="wire"/>
+  <line x1="170" y1="280" x2="198" y2="280" class="wire"/>
+  <line x1="347" y1="190" x2="375" y2="190" class="accent"/>
+  <line x1="347" y1="280" x2="375" y2="280" class="wire"/>
+  <text x="204" y="195" class="small">AC: ac_live</text>
+  <text x="204" y="285" class="small">AC: 0</text>
+  <text x="285" y="195" class="small">+ reservoir</text>
+  <text x="276" y="285" class="small">− dc_return</text>
+  <text x="193" y="225" class="tiny">D1: ac_live → reservoir</text>
+  <text x="193" y="243" class="tiny">D2: 0 → reservoir</text>
+  <text x="193" y="261" class="tiny">D3/D4 return through dc_return</text>
+
+  <!-- Reservoir rail and floating bridge-negative return. -->
+  <line x1="375" y1="190" x2="475" y2="190" class="accent"/>
+  <circle cx="425" cy="190" r="5" class="node"/>
+  <text x="392" y="173" class="small">reservoir</text>
+  <path d="M375 280 H395 V385 H890" class="wire"/>
+  <circle cx="395" cy="385" r="5" class="node"/>
+  <text x="412" y="409" class="small">dc_return (floating bridge negative; not node 0)</text>
+
+  <!-- Reservoir capacitor. -->
+  <line x1="425" y1="190" x2="425" y2="253" class="wire"/>
+  <line x1="405" y1="253" x2="445" y2="253" class="wire"/>
+  <line x1="405" y1="266" x2="445" y2="266" class="wire"/>
+  <line x1="425" y1="266" x2="425" y2="385" class="wire"/>
+  <circle cx="425" cy="385" r="5" class="node"/>
+  <text x="442" y="293" class="label">CRES</text>
+  <text x="442" y="313" class="small">1000 uF</text>
+
+  <!-- Series feed and continuous regulated-output rail. -->
+  <polyline points="475,190 487,178 499,202 511,178 523,202 535,178 547,190" class="wire"/>
+  <text x="482" y="160" class="label">RSERIES 220</text>
+  <line x1="547" y1="190" x2="855" y2="190" class="regulated"/>
+  <circle cx="600" cy="190" r="5" class="node"/>
+  <circle cx="720" cy="190" r="5" class="node"/>
+  <circle cx="855" cy="190" r="5" class="node"/>
+  <text x="576" y="171" class="small">output</text>
+
+  <!-- Zener shunt. -->
+  <line x1="600" y1="190" x2="600" y2="242" class="wire"/>
+  <polygon points="585,242 615,242 600,266" class="part"/>
+  <polyline points="584,271 592,267 608,275 616,271" class="wire"/>
+  <line x1="600" y1="273" x2="600" y2="385" class="wire"/>
+  <circle cx="600" cy="385" r="5" class="node"/>
+  <text x="552" y="302" class="label">DZENER</text>
+  <text x="565" y="322" class="small">9.1 V</text>
+
+  <!-- Permanent load: both terminals visibly land on output and dc_return. -->
+  <line x1="720" y1="190" x2="720" y2="230" class="wire"/>
+  <polyline points="720,230 708,242 732,254 708,266 732,278 708,290 720,302" class="wire"/>
+  <line x1="720" y1="302" x2="720" y2="385" class="wire"/>
+  <circle cx="720" cy="385" r="5" class="node"/>
+  <text x="678" y="328" class="label">RLOAD</text>
+  <text x="691" y="348" class="small">1 kohm</text>
+
+  <!-- Switched parallel load: resistor and switch contacts are both wired. -->
+  <line x1="855" y1="190" x2="855" y2="220" class="wire"/>
+  <polyline points="855,220 843,232 867,244 843,256 867,268 843,280 855,292" class="wire"/>
+  <line x1="855" y1="292" x2="855" y2="310" class="wire"/>
+  <circle cx="855" cy="310" r="5" class="terminal"/>
+  <circle cx="855" cy="353" r="5" class="terminal"/>
+  <line x1="855" y1="353" x2="842" y2="319" class="wire"/>
+  <line x1="855" y1="358" x2="855" y2="385" class="wire"/>
+  <circle cx="855" cy="385" r="5" class="node"/>
+  <text x="746" y="238" class="label">RLOAD_STEP</text>
+  <text x="770" y="258" class="small">680 ohm</text>
+  <text x="781" y="342" class="small">SLOAD</text>
+
+  <!-- The ideal switch control is isolated from the load terminals. -->
+  <rect x="705" y="424" width="220" height="48" rx="7" class="control-block"/>
+  <text x="720" y="445" class="small">VLOAD_CONTROL: 0 → 5 V</text>
+  <text x="720" y="463" class="tiny">closes SLOAD at 150 ms</text>
+  <path d="M855 424 V397 H820 V346" class="control"/>
+
+  <rect x="36" y="430" width="620" height="42" fill="#f5f8fc" rx="7"/>
+  <line x1="55" y1="448" x2="95" y2="448" class="accent"/>
+  <text x="105" y="453" class="small">unregulated reservoir</text>
+  <line x1="283" y1="448" x2="323" y2="448" class="regulated"/>
+  <text x="333" y="453" class="small">regulated output rail feeds both loads</text>
+</svg>

@@ -1,0 +1,25 @@
+Two-pole PWM digital-to-analog converter
+
+* 5 V logic, 20 kHz carrier, and 40 percent duty cycle target 2.0 V DC.
+VPWM pwm 0 PULSE(0 5 0 100n 100n 20u 50u)
+
+* Two buffered 1 kOhm / 1 uF poles keep each cutoff near 159 Hz.
+R1 pwm pole1 1k
+C1 pole1 0 1u IC=0
+EBUFFER1 buffer1 0 pole1 0 1
+R2 buffer1 pole2 1k
+C2 pole2 0 1u IC=0
+EOUTPUT output 0 pole2 0 1
+RLOAD output 0 10k
+
+.OPTIONS method=gear
+.TRAN 5u 20m 0 500n UIC
+
+.MEAS TRAN output_average AVG V(output) FROM=15m TO=20m
+.MEAS TRAN first_pole_ripple PP V(pole1) FROM=15m TO=20m
+.MEAS TRAN output_ripple PP V(output) FROM=15m TO=20m
+.MEAS TRAN settling_time WHEN V(output)=1.96 RISE=1
+
+.SAVE V(pwm) V(pole1) V(output)
+.PLOT TRAN V(pwm) V(pole1) V(output)
+.END
